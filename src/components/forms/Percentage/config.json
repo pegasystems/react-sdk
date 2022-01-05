@@ -1,0 +1,71 @@
+{
+  "name": "Percentage",
+  "description": "Percentage",
+  "type": "Field",
+  "subtype": "DATA_CAPTURE",
+  "icon": "images/pz-text-input-active.svg",
+  "properties": [
+    {
+      "name": "label",
+      "label": "Field label",
+      "format": "TEXT",
+      "required": true
+    },
+    {
+      "name": "readOnly",
+      "label": "Edit mode",
+      "format": "READONLY"
+    },
+    {
+      "name": "decimalPrecision",
+      "label": "Decimal places",
+      "format": "NUMBER",
+      "min": 0
+    },
+    {
+      "name": "showGroupSeparators",
+      "label": "Show thousands separator",
+      "format": "BOOLEAN"
+    },
+    {
+      "label": "Input settings",
+      "format": "GROUP",
+      "visibility": "(!readOnly = true)",
+      "properties": [
+        {
+          "name": "placeholder",
+          "label": "Placeholder",
+          "format": "TEXT"
+        },
+        {
+          "name": "helperText",
+          "label": "Helper text",
+          "format": "TEXT"
+        }
+      ]
+    },
+    {
+      "label": "Conditions",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "required",
+          "label": "Required",
+          "format": "REQUIRED",
+          "visibility": "(!readOnly = true)"
+        },
+        {
+          "name": "disabled",
+          "label": "Disabled",
+          "format": "DISABLED",
+          "visibility": "(!readOnly = true)"
+        },
+        {
+          "name": "visibility",
+          "label": "Visibility",
+          "format": "VISIBILITY"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+html {
+  font-family: Roboto, Verdana, Arial, sans-serif;
+}
+
+body {
+  margin: 0px;
+}
+
+#app-nopega {
+  margin: 8px;
+}
+
+/* some simple Flexbox */
+.flexbox {
+  display: flex;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}
+
+.column-narrow {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 200px;
+}
+
+/* some other simple CSS for our index.html */
+
+.button-bar {
+  border-right: 2px solid darkslategray;
+  padding: 5px;
+}
+
+.main-content {
+  vertical-align: top;
+  padding: 0px;
+}

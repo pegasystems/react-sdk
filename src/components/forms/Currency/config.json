@@ -1,0 +1,102 @@
+{
+  "name": "Currency",
+  "description": "Currency",
+  "type": "Field",
+  "subtype": "DATA_CAPTURE",
+  "icon": "images/pz-currency-active.svg",
+  "properties": [
+    {
+      "name": "label",
+      "label": "Label value",
+      "format": "TEXT",
+      "required": true
+    },
+    {
+      "name": "readOnly",
+      "label": "Edit mode",
+      "format": "READONLY"
+    },
+    {
+      "format": "CASCADE",
+      "source": {
+        "format": "SELECT",
+        "label": "ISO Code Selection",
+        "name": "isoCodeSelection",
+        "defaultValue": "constant",
+        "source": [
+          {
+            "key": "constant",
+            "value": "Constant"
+          },
+          {
+            "key": "propertyRef",
+            "value": "Property Reference"
+          }
+        ]
+      },
+      "cascadeElements": [
+        {
+          "key": "currencyISOCode",
+          "format": "TEXT",
+          "name": "currencyISOCode",
+          "label": "Currency ISO Code",
+          "defaultValue": "USD",
+          "match": "constant"
+        },
+        {
+          "key": "currencyISOCode",
+          "format": "PROPERTY",
+          "name": "currencyISOCode",
+          "label": "Currency ISO Code",
+          "match": "propertyRef"
+        }
+      ]
+    },
+    {
+      "label": "Input settings",
+      "format": "GROUP",
+      "visibility": "(!readOnly = true)",
+      "properties": [
+        {
+          "name": "allowDecimals",
+          "label": "Allow Decimals",
+          "format": "BOOLEAN",
+          "defaultValue": true
+        },
+        {
+          "name": "placeholder",
+          "label": "Placeholder",
+          "format": "TEXT"
+        },
+        {
+          "name": "helperText",
+          "label": "Helper text",
+          "format": "TEXT"
+        }
+      ]
+    },
+    {
+      "label": "Conditions",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "required",
+          "label": "Required",
+          "format": "REQUIRED",
+          "visibility": "(!readOnly = true)"
+        },
+        {
+          "name": "disabled",
+          "label": "Disabled",
+          "format": "DISABLED",
+          "visibility": "(!readOnly = true)"
+        },
+        {
+          "name": "visibility",
+          "label": "Visibility",
+          "format": "VISIBILITY"
+        }
+      ]
+    }
+  ]
+}

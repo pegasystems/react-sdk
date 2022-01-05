@@ -1,0 +1,28 @@
+{
+  "name": "TextContent",
+  "description": "Text",
+  "type": "Field",
+  "subtype": "DATA_DISPLAY",
+  "icon": "images/text-content.svg",
+  "properties": [
+    {
+      "format": "SELECT",
+      "name": "displayAs",
+      "label": "Component",
+      "defaultValue": "Paragraph",
+      "source": [
+        { "key": "Paragraph", "value": "Paragraph" },
+        { "key": "Heading 1", "value": "Heading 1" },
+        { "key": "Heading 2", "value": "Heading 2" },
+        { "key": "Heading 3", "value": "Heading 3" },
+        { "key": "Heading 4", "value": "Heading 4" }
+      ]
+    },
+    {
+      "name": "content",
+      "label": " ",
+      "format": "TEXT",
+      "multiline": true
+    }
+  ]
+}

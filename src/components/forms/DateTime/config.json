@@ -1,0 +1,181 @@
+{
+  "name": "DateTime",
+  "description": "Date & time",
+  "type": "Field",
+  "subtype": "DATA_CAPTURE",
+  "icon": "images/pz-date-time-active.svg",
+  "properties": [
+    {
+      "name": "label",
+      "label": "Field label",
+      "format": "TEXT",
+      "required": true
+    },
+    {
+      "name": "readOnly",
+      "label": "Edit mode",
+      "format": "READONLY"
+    },
+    {
+      "format": "SELECT",
+      "name": "clockFormat",
+      "label": "Clock",
+      "defaultValue": "use locale",
+      "source": [
+        {
+          "key": 0,
+          "value": "use locale"
+        },
+        {
+          "key": 12,
+          "value": "12 hours"
+        },
+        {
+          "key": 24,
+          "value": "24 hours"
+        }
+      ]
+    },
+    {
+      "name": "withSeconds",
+      "label": "Display Seconds",
+      "format": "BOOLEAN"
+    },
+    {
+      "label": "Input settings",
+      "format": "GROUP",
+      "visibility": "(!readOnly = true)",
+      "properties": [
+        {
+          "format": "LABEL",
+          "label": "Year range",
+          "variant": "secondary"
+        },
+        {
+          "format": "INLINE",
+          "elements": [
+            {
+              "key": "next",
+              "format": "LABEL",
+              "label": "Next",
+              "variant": "secondary"
+            },
+            {
+              "key": "nextYears",
+              "format": "NUMBER",
+              "label": "",
+              "name": "nextYearRange",
+              "min": 0
+            },
+            {
+              "key": "year",
+              "format": "LABEL",
+              "label": "years",
+              "variant": "secondary"
+            }
+          ]
+        },
+        {
+          "format": "INLINE",
+          "elements": [
+            {
+              "key": "previous",
+              "format": "LABEL",
+              "label": "Previous",
+              "variant": "secondary"
+            },
+            {
+              "key": "previousYears",
+              "format": "NUMBER",
+              "label": "",
+              "name": "previousYearRange",
+              "min": 0
+            },
+            {
+              "key": "year",
+              "format": "LABEL",
+              "label": "years",
+              "variant": "secondary"
+            }
+          ]
+        },
+        {
+          "name": "showWeekNumber",
+          "label": "Display week numbers on calendar",
+          "format": "BOOLEAN"
+        },
+        {
+          "format": "SELECT",
+          "name": "pickerInterval",
+          "label": "Time picker",
+          "defaultValue": "30",
+          "source": [
+            {
+              "key": "5",
+              "value": "5 min"
+            },
+            {
+              "key": "10",
+              "value": "10 min"
+            },
+            {
+              "key": "15",
+              "value": "15 min"
+            },
+            {
+              "key": "20",
+              "value": "20 min"
+            },
+            {
+              "key": "30",
+              "value": "30 min"
+            },
+            {
+              "key": "60",
+              "value": "1 hr"
+            }
+          ]
+        },
+        {
+          "name": "helperText",
+          "label": "Helper text",
+          "format": "TEXT"
+        }
+      ]
+    },
+    {
+      "label": "Read-only settings",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "showAsFormattedText",
+          "label": "Show as formatted text",
+          "format": "BOOLEAN"
+        }
+      ]
+    },
+    {
+      "label": "Conditions",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "required",
+          "label": "Required",
+          "format": "REQUIRED",
+          "visibility": "(!readOnly = true)"
+        },
+        {
+          "name": "disabled",
+          "label": "Disabled",
+          "format": "DISABLED",
+          "visibility": "(!readOnly = true)"
+        },
+        {
+          "name": "visibility",
+          "label": "Visibility",
+          "format": "VISIBILITY"
+        }
+      ]
+    }
+  ]
+}

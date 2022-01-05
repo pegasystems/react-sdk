@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src='auth.js'></script>
+        <script>
+            let peConfig = sessionStorage.getItem("peConfig");
+            let authConfig = peConfig ? JSON.parse(peConfig) : null;
+        </script>        
+   </head>
+    <body>
+        <script>
+            const pegaAuth = new PegaAuth(authConfig);
+
+            (function() {
+                 /** 
+                 *  Authentication piece, need to be specific to custom implementation
+                 *  this implementation targetting oAuth2
+                  **/
+
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                const code = urlParams.get("code");
+                urlParams.delete("code");
+
+                if (code) {
+                    pegaAuth.getToken(code).then(token => {
+                        window.opener.setToken(token.access_token);
+                    });
+                } else {
+                  pegaAuth.readAuthCode(authConfig);
+                }
+            })();
+        </script>
+    </body>
+</html>
+
+

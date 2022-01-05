@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "experimentalDecorators": true,
+    "strict": true,
+    "sourceMap": true,
+    "module": "es6",
+    "target": "es6",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "allowJs": true,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true
+  }
+}

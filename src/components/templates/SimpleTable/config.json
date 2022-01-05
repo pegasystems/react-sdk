@@ -1,0 +1,62 @@
+{
+  "name": "SimpleTable",
+  "description": "Datatype List Template",
+  "type": "Template",
+  "subtype": "DATAVIEW",
+  "icon": "EditableTable.svg",
+  "hideTemplatePicker": true,
+  "hideFromTemplatePicker": true,
+  "editing": true,
+  "properties": [
+    {
+      "name": "parameters",
+      "label": "",
+      "format": "PARAMETERS"
+    },
+    {
+      "name": "renderMode",
+      "label": "Mode",
+      "format": "RENDERMODE"
+    },
+    {
+      "name": "Columns",
+      "label": "Columns",
+      "format": "CONTENTPICKER",
+      "addTypeList": ["Fields", "Associations"],
+      "hideModifyIcons": false,
+      "modifyPanelOverrideProp": "renderMode",
+      "modifyPanelOverride": {
+        "ReadOnly": "ListField"
+      }
+    },
+    {
+      "name": "fillAvailableSpace",
+      "label": "Column to take up remaining width",
+      "format": "FILLCOLUMNWIDTH"
+    },
+    {
+      "label": "Conditions",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "required",
+          "label": "Required",
+          "format": "REQUIRED",
+          "saveToReference": true
+        },
+        {
+          "name": "disabled",
+          "label": "Disabled",
+          "format": "DISABLED",
+          "saveToReference": true
+        },
+        {
+          "name": "visibility",
+          "label": "Visibility",
+          "format": "VISIBILITY",
+          "saveToReference": true
+        }
+      ]
+    }
+  ]
+}

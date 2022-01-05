@@ -1,0 +1,5 @@
+The react-sdk uses third-party libraries or other resources that may
+be distributed under licenses different than the react-sdk software.
+
+The third-party libraries and links to their licenses can be found in the 
+node_modules folder after **npm install** has been run.

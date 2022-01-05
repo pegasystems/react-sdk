@@ -1,0 +1,19 @@
+
+.psdk-csf-status-style {
+  /* background-color: #e9eef3;
+  border-radius: calc(0.25 * 0.5rem);
+  color: #4c5a67; */
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: bold;
+  line-height: calc(0.5rem * 2.5);
+  height: calc(0.5rem * 2.5);
+  padding: 0 0.5rem;
+  text-transform: uppercase;
+}
+
+.psdk-case-summary-fields {
+  padding: calc(2 * 0.5rem);
+  display: grid;
+  grid-row-gap: calc(2 * 0.5rem);
+}

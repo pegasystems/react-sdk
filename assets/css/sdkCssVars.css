@@ -1,0 +1,54 @@
+/* CSS Variables used in SDK components */
+:root {
+
+  --app-primary-color: #007bff; /* was #673ab7; */
+  --app-primary-dark-color: #0048cc; /* was #4527A0; */
+  --app-primary-light-color: #33aeff; /* was #B499FC; */
+  --app-secondary-color: #FFC400;
+  --app-neutral-color: grey;
+  --app-neutral-light-color: lightgrey;
+  --app-neutral-dark-color: #262626;
+  --app-error-color: #f44336;
+  --app-error-light-color: #e57373;
+  --app-error-dark-color: #d32f2f;
+  --app-warning-color: #ff9800;
+  --app-warning-color-light: #ffb74d;
+  --app-warning-color-dark: #f57c00;
+  
+  --app-background-color: whitesmoke;
+  --app-form-color: white;
+  
+  /* svg filter colors that match above, go here to generate https://codepen.io/sosuke/pen/Pjoqqp */
+  /* replaced 3 filters when the primary, primary-dark, and primary-light were updated above
+  --app-primary-color-filter: invert(23%) sepia(23%) saturate(6785%) hue-rotate(250deg) brightness(93%) contrast(88%);
+  --app-primary-dark-color-filter: invert(19%) sepia(20%) saturate(6809%) hue-rotate(242deg) brightness(100%) contrast(106%);
+  --app-secondary-color-filter: invert(83%) sepia(31%) saturate(4626%) hue-rotate(360deg) brightness(103%) contrast(104%);
+  */
+  --app-primary-color-filter: invert(37%) sepia(58%) saturate(6604%) hue-rotate(201deg) brightness(106%) contrast(103%);
+  --app-primary-dark-color-filter: invert(17%) sepia(54%) saturate(6351%) hue-rotate(208deg) brightness(87%) contrast(119%);
+  --app-secondary-color-filter: invert(64%) sepia(14%) saturate(7498%) hue-rotate(177deg) brightness(99%) contrast(105%);
+
+  --app-neutral-color-filter: invert(55%) sepia(25%) saturate(0%) hue-rotate(269deg) brightness(87%) contrast(91%);
+  --app-neutral-light-color-filter: invert(69%) sepia(74%) saturate(0%) hue-rotate(205deg) brightness(102%) contrast(103%);
+  --app-white-color-filter: invert(100%) sepia(99%) saturate(0%) hue-rotate(144deg) brightness(109%) contrast(101%);
+  
+  
+  /* App Navigation */
+  --app-nav-bg: #262626;  /*!default*/
+  --app-nav-color: #d9d9d9; /* invert( var(--app-nav-bg)) !default */
+  --app-nav-width: 13rem; /*!default*/
+  /* $app-nav-width: 15.625rem !default; */
+  --app-nav-width-expanded: 13rem /*!default*/;
+
+  /* Things related to movement - migrated from NavBar */
+  --transition-slow: 0.5s; /*!default */
+  --transition-medium: 0.3s; /*!default */
+  --transition-fast: 0.1s;  /*!default */
+  --natural-ease: cubic-bezier(0.4, 0.6, 0.1, 1); /*!default */
+
+  /* Some standard values for typography */
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-normal: 400;
+
+}

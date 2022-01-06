@@ -13,6 +13,7 @@ import { gbLoggedIn } from '../../../helpers/authWrapper';
 import { constellationInit } from "../../../helpers/c11nboot";
 
 import EmbeddedSwatch from '../EmbeddedSwatch';
+import { compareSdkPCoreVersions } from '../../../helpers/versionHelpers';
 
 
 // declare var gbLoggedIn: boolean;
@@ -390,6 +391,9 @@ export default function EmbeddedTopLevel() {
     PCore.onPCoreReady(renderObj => {
       // eslint-disable-next-line no-console
       console.log(`PCore ready!`);
+      // Check that we're seeing the PCore version we expect
+      compareSdkPCoreVersions();
+
       establishPCoreSubscriptions();
       setShowAppName(true);
       initialRender(renderObj);

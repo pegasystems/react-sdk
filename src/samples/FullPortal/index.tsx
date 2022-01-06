@@ -7,6 +7,7 @@ import StoreContext from "../../bridge/Context/StoreContext";
 import createPConnectComponent from "../../bridge/react_pconnect";
 import { constellationInit } from "../../helpers/c11nboot";
 import { SdkConfigAccess } from '../../helpers/config_access';
+import { compareSdkPCoreVersions } from '../../helpers/versionHelpers';
 
 declare const PCore: any;
 declare const myLoadPortal: any;
@@ -115,6 +116,9 @@ export default function FullPortal() {
 
     // NOTE: When loadMashup is complete, this will be called.
     PCore.onPCoreReady(renderObj => {
+      // Check that we're seeing the PCore version we expect
+      compareSdkPCoreVersions();
+
       initialRender(renderObj);
     });
 

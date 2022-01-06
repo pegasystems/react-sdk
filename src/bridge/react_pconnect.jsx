@@ -344,7 +344,6 @@ const createPConnectComponent = (declarative=false) => {
      *  Attaches common handler (eventHandler) for all actions.
      */
     processActions() {
-      this.c11nEnv.processActions(this.eventHandler);
       if (this.c11nEnv.isEditable()) {
         this.c11nEnv.setAction("onChange", this.changeHandler);
         this.c11nEnv.setAction("onBlur", this.eventHandler);

@@ -184,7 +184,7 @@ const RootContainer = (props) => {
     const items = Object.keys(containers).filter((item) =>
       item.includes("root")
     );
-    PCore.getContainerItems().addContainerItems(items);
+    PCore.getContainerUtils().getContainerAPI().addContainerItems(items);
   }, [routingInfo]);
 
   // const { store } = useConstellationContext();

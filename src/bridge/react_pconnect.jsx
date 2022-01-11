@@ -324,6 +324,10 @@ const createPConnectComponent = (declarative=false) => {
       };
     }
 
+    componentDidMount() {
+      this.c11nEnv.addFormField()
+    }
+
     componentDidCatch(error, info) {
       // eslint-disable-next-line no-console
       console.error(

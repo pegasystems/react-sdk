@@ -48,6 +48,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function FlowContainer(props) {
+  const pCoreConstants = PCore.getConstants();
+
   const { getPConnect, routingInfo } = props;
 
   const {displayOnlyFA} = useContext(StoreContext);
@@ -194,10 +196,6 @@ export default function FlowContainer(props) {
 
   }
 
-  // From Nebula outside constructor
-  // const { CASE_INFO: CASE_CONSTS, CONTAINER_TYPE } = PCore.getConstants();
-  // const ERROR_WHILE_RENDERING = "ERROR_WHILE_RENDERING";
-
 
   useEffect(() => {
     // from WC SDK connectedCallback (mount)
@@ -209,8 +207,8 @@ export default function FlowContainer(props) {
   function isCaseWideLocalAction() {
     const ourPConn = getPConnect();
 
-    const actionID = ourPConn.getValue("caseInfo.activeActionID");
-    const caseActions = ourPConn.getValue("caseInfo.availableActions");
+    const actionID = ourPConn.getValue(pCoreConstants.CASE_INFO.ACTIVE_ACTION_ID);
+    const caseActions = ourPConn.getValue(pCoreConstants.CASE_INFO.AVAILABLEACTIONS);
     let bCaseWideAction = false;
     if (caseActions && actionID) {
       const actionObj = caseActions.find(
@@ -227,7 +225,7 @@ export default function FlowContainer(props) {
   function hasChildCaseAssignments() {
     const ourPConn = getPConnect();
 
-    const childCases = ourPConn.getValue("caseInfo.childCases");
+    const childCases = ourPConn.getValue(pCoreConstants.CASE_INFO.CHILD_ASSIGNMENTS);
     // const allAssignments = [];
     if (childCases && childCases.length > 0) {
       return true;
@@ -240,12 +238,22 @@ export default function FlowContainer(props) {
     const ourPConn = getPConnect();
 
     let bHasAssignments = false;
-    const assignmentsList = ourPConn.getValue("caseInfo.assignments");
+    const assignmentsList: Array<any> = ourPConn.getValue(pCoreConstants.CASE_INFO.D_CASE_ASSIGNMENTS_RESULTS);
+    const thisOperator = PCore.getEnvironmentInfo().getOperatorIdentifier();
+    // 8.7 includes assignments in Assignments List that may be assigned to
+    //  a different operator. So, see if there are any assignments for
+    //  the current operator
+    let bAssignmentsForThisOperator = false;
+    for (const assignment of assignmentsList) {
+      if (assignment["assigneeInfo"]["ID"] === thisOperator) {
+        bAssignmentsForThisOperator = true;
+      }
+    }
 
     const bHasChildCaseAssignments = hasChildCaseAssignments();
 
     if (
-      assignmentsList ||
+      bAssignmentsForThisOperator ||
       bHasChildCaseAssignments ||
       isCaseWideLocalAction()
     ) {
@@ -262,7 +270,7 @@ export default function FlowContainer(props) {
 
     let activeActionLabel = "";
 
-    const { CASE_INFO: CASE_CONSTS } = PCore.getConstants();
+    const { CASE_INFO: CASE_CONSTS } = pCoreConstants;
 
     const caseActions = ourPConn.getValue(CASE_CONSTS.CASE_INFO_ACTIONS);
     const activeActionID = ourPConn.getValue(CASE_CONSTS.ACTIVE_ACTION_ID);
@@ -310,7 +318,7 @@ export default function FlowContainer(props) {
 
     const caseViewMode = thePConn.getValue("context_data.caseViewMode");
 
-    const { CASE_INFO: CASE_CONSTS } = PCore.getConstants();
+    const { CASE_INFO: CASE_CONSTS } = pCoreConstants;
 
 
     if (caseViewMode && caseViewMode === "review") {

@@ -300,7 +300,7 @@ Step 7: Run webpack server with arguments to use the keys (assumes private.pem a
 
 This project is licensed under the terms of the **Apache 2** license.
 
->You can see the full license [here](docs/LICENSE) or directly on [apache.org](https://www.apache.org/licenses/LICENSE-2.0).
+>You can see the full license [here](LICENSE) or directly on [apache.org](https://www.apache.org/licenses/LICENSE-2.0).
 
 <br>
 
@@ -319,4 +319,4 @@ Please refer to our [guidelines for contributors](./docs/CONTRIBUTING.md) if you
 
 ## Additional Resources
 
-* TBD
+* __Material UI__: https://v4.mui.com/

@@ -39,11 +39,14 @@ const forcePopupForReauths = ( bForce ) => {
  */
  const clearAuthMgr = () => {
   // Remove any local storage for the user
+  sessionStorage.removeItem('accessToken');
   sessionStorage.removeItem("rsdk_CI");
   sessionStorage.removeItem("rsdk_TI");
   sessionStorage.removeItem("rsdk_loggingIn");
   gbLoggedIn = false;
   gbLoginInProgress = false;
+  forcePopupForReauths(false);
+  authSetEmbedded(false);
   // Not removing the authMgr structure itself...as it can be leveraged on next login
 }
 
@@ -262,7 +265,7 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
 }
 
 export function logout() {
-  sessionStorage.removeItem('accessToken');
+  clearAuthMgr();
   updateLoginStatus();
 
   // Remove the <div id="pega-root"> that was created (if it exists)
@@ -290,10 +293,3 @@ export function authSetEmbedded(isEmbedded) {
 export function authIsEmbedded() {
   return sessionStorage.getItem("rsdk_Embedded") === "1";
 };
-
-// If loggedIn then send event to load bootstrap
-if( gbLoggedIn ) {
-  window.addEventListener("SdkConfigAccessReady", () => {
-    fireTokenAvailable(null);
-  });
-}

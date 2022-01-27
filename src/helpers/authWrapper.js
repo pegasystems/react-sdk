@@ -9,7 +9,7 @@ import { SdkConfigAccess } from './config_access';
 import PegaAuth from './auth';
 
 // eslint-disable-next-line import/no-mutable-exports
-export let gbLoggedIn = sessionStorage.getItem("pega_authHdr") !== null;
+export let gbLoggedIn = sessionStorage.getItem('accessToken') !== null;
 // eslint-disable-next-line import/no-mutable-exports
 export let gbLoggingIn = sessionStorage.getItem("rsdk_loggingIn") === "1";
 
@@ -135,7 +135,7 @@ function getAuthMgr( bInit ) {
 
 
 export function updateLoginStatus() {
-  const sAuthHdr = sessionStorage.getItem('pega_authHdr');
+  const sAuthHdr = sessionStorage.getItem('accessToken');
   gbLoggedIn = sAuthHdr && sAuthHdr.length > 0;
   const elBtnLogin = document.getElementById('btnLogin');
   if (elBtnLogin) {
@@ -190,12 +190,12 @@ const processTokenOnLogin = ( token ) => {
   if( token.refresh_token ) {
       userHasRefreshToken = true;
       sessionStorage.setItem("rsdk_hasrefresh", "1");
-      forcePopupForReauths(true);
     }
+  // gbLoggedIn is getting updated in setToken -> updateLoginStatus
   gbLoggedIn = true;
   gbLoggingIn = false;
   sessionStorage.removeItem("rsdk_loggingIn");
-  // forcePopupForReauths(true);
+  forcePopupForReauths(true);
   // userService.setToken(token.access_token);
 }
 
@@ -230,15 +230,16 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
 }
 
 export function setToken(token) {
-  sessionStorage.setItem('pega_authHdr', `Bearer ${token.access_token}`);
+  // Happening in c11nboot as part of handling SdkLoggedIn event
+  // sessionStorage.setItem('accessToken', token.access_token);
   updateLoginStatus();
   // Create and dispatch the SdkLoggedIn event to trigger constellationInit
-  const event = new CustomEvent('SdkLoggedIn', { detail: token });
+  const event = new CustomEvent('SdkLoggedIn', { detail: token.access_token });
   document.dispatchEvent(event);
 }
 
 export function logout() {
-  sessionStorage.removeItem('pega_authHdr');
+  sessionStorage.removeItem('accessToken');
   updateLoginStatus();
 
   // Remove the <div id="pega-root"> that was created (if it exists)

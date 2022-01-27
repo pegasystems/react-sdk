@@ -1,7 +1,9 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
+import { getHomeUrl, authSetEmbedded } from "../../helpers/authWrapper";
 import EmbeddedTopLevel from "../Embedded/EmbeddedTopLevel";
 import FullPortal from "../FullPortal";
+import AuthPage from "../AuthPage";
 
 // The Main component renders one of the three provided
 // Routes (provided that one matches). Both the /roster
@@ -10,9 +12,22 @@ import FullPortal from "../FullPortal";
 // when the pathname is exactly the string "/"
 const AppSelector = () => {
 
+  const bHasToken = !!sessionStorage.getItem("rsdk_TI");
+  const homeUrl = getHomeUrl();
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const code = urlParams.get("code");
+
+  if(!bHasToken && !code) {
+    authSetEmbedded( location.pathname.indexOf("/embedded") !== -1 );
+  }
+
   return (
       <div>
         <Switch>
+          {(!bHasToken && code &&
+            <Route path="/" component={AuthPage} />
+          )}
           <Route exact path="/" component={EmbeddedTopLevel} />
           <Route path="/embedded" component={EmbeddedTopLevel} />
           <Route path="/portal" component={FullPortal} />

@@ -1,6 +1,6 @@
 import React from 'react';
 import AppSelector from '../AppSelector';
-import { gbLoggedIn, login, authEmbeddedLogin, isPortalLogin } from '../../helpers/authWrapper';
+import { gbLoggedIn, gbLoggingIn, login } from '../../helpers/authWrapper';
 
 const TopLevelApp = () => {
 
@@ -10,12 +10,8 @@ const TopLevelApp = () => {
     console.log(`TopLevelApp: SdkConfigAccessReady`);
     if (typeof(login) === 'function') {
       // If not logged in, login.
-      if (!gbLoggedIn) {
-        if (isPortalLogin()) {
-          login();
-        } else {
-          authEmbeddedLogin();
-        }
+      if (!gbLoggedIn && !gbLoggingIn) {
+        login();
       }
     } else {
       // eslint-disable-next-line no-console

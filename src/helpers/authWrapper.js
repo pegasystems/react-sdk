@@ -6,45 +6,133 @@
 //  For now, export all of the vars/functions so they can be used as needed.
 
 import { SdkConfigAccess } from './config_access';
+import PegaAuth from './auth';
 
 // eslint-disable-next-line import/no-mutable-exports
-export let gbLoggedIn = false;
+export let gbLoggedIn = sessionStorage.getItem("pega_authHdr") !== null;
+// eslint-disable-next-line import/no-mutable-exports
+export let gbLoggingIn = sessionStorage.getItem("rsdk_loggingIn") === "1";
 
-/**
- * getLoginType: looks at the page's pathname to determine whether we're trying
- * to log in to a portal or an embedded use case
- *  For now, look to see if the pathname includes "portal".
- *    If it does, assume a "portal" use case
- *    Otherwise, assume an "embedded" use case
- * @returns string either "portal" or embedded
- * @private
+// will store the PegaAuth instance
+let authMgr = null;
+let authTokenExpired = false;
+// Since this variable is loaded in a separate instance in the popup scenario, use storage to coordinate across the two
+let usePopupForRestOfSession = sessionStorage.getItem("rsdk_popup") === "1";
+// To have this work smoothly on a browser refresh, use storage
+let userHasRefreshToken = sessionStorage.getItem("rsdk_hasrefresh") === "1";
+
+/*
+ * Set to use popup experience for rest of session
  */
-function getLoginType() {
-  const winLocPath = window.location.pathname.split('/')[1].toLowerCase(); // remove leading slash
-  const strPortal = 'portal';
-  const strEmbedded = 'embedded';
-
-  if (winLocPath.includes(strPortal)) {
-    return strPortal;
+const forcePopupForReauths = ( bForce ) => {
+  if( bForce ) {
+      sessionStorage.setItem("pega_react_popup", "1");
+      usePopupForRestOfSession = true;
   } else {
-    return strEmbedded;
+      sessionStorage.removeItem("pega_react_popup");
+      usePopupForRestOfSession = false;
   }
 }
 
 /**
- * isPortalLogin
- *  uses getLoginType() and returns true if the current
- *  pathname indicates a "portal" login type
+ * Clean up any web storage allocated for the user session.
  */
-export function isPortalLogin() {
-  let bRet = false;
+ const clearAuthMgr = () => {
+  // Remove any local storage for the user
+  sessionStorage.removeItem("rsdk_CI");
+  sessionStorage.removeItem("rsdk_TI");
+  sessionStorage.removeItem("rsdk_loggingIn");
+  gbLoggedIn = false;
+  gbLoggingIn = false;
+  // Not removing the authMgr structure itself...as it can be leveraged on next login
+}
 
-  if (getLoginType() === 'portal') {
-    bRet = true;
+
+/**
+ * Initialize OAuth config structure members  and create authMgr instance
+ * bInit - governs whether to create new sessionStorage or load existing one
+ */
+const initOAuth = (bInit) => {
+
+  // Check if sessionStorage exists (and if so if for same authorize endpoint).  Otherwise, assume
+  //  sessionStorage is out of date (user just edited endpoints).  Else, logout required to clear
+  //  sessionStorage and get other endpoints updates.
+  // Doing this as sessionIndex might have been added to this storage structure
+  let sSI = sessionStorage.getItem("rsdk_CI");
+  if( sSI ) {
+    try {
+        const oSI = JSON.parse(sSI);
+        if( oSI.authorizeUri !== authConfig.authorize ) {
+            clearAuthMgr();
+            sSI = null;
+        }
+    } catch(e) {
+    }
   }
 
-  return bRet;
+  if( !sSI || bInit ) {
+    const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
+    const pegaUrl = SdkConfigAccess.getSdkConfigServer().infinityRestServerUrl;
+    const bPortalLogin = !authIsEmbedded();
+
+    // Construct default OAuth endpoints (if not explicitly specified)
+    if (pegaUrl) {
+      if (!sdkConfigAuth.authorize) {
+        sdkConfigAuth.authorize = `${pegaUrl}/PRRestService/oauth2/v1/authorize`;
+      }
+      if (!sdkConfigAuth.token) {
+        sdkConfigAuth.token = `${pegaUrl}/PRRestService/oauth2/v1/token`;
+      }
+      if (!sdkConfigAuth.revoke) {
+        sdkConfigAuth.revoke = `${pegaUrl}/PRRestService/oauth2/v1/revoke`;
+      }
+    }
+    // Auth service alias
+    if( !sdkConfigAuth.authService) {
+      sdkConfigAuth.authService = "pega";
+    }
+
+    let authConfig = {
+      clientId: bPortalLogin ? sdkConfigAuth.portalClientId : sdkConfigAuth.mashupClientId,
+      authorizeUri: sdkConfigAuth.authorize,
+      tokenUri: sdkConfigAuth.token,
+      revokeUri: sdkConfigAuth.revoke,
+      redirectUri: `${window.location.origin}/`,
+      authService: sdkConfigAuth.authService
+    };
+    /*
+    // We don't want to use secret unless one is specified
+    if (!bPortalLogin && sdkConfigAuth.mashupClientSecret) {
+      authConfig.clientSecret = sdkConfigAuth.mashupClientSecret;
+    }
+    */
+   if( !bPortalLogin ) {
+     authConfig.userIdentifier = sdkConfigAuth.mashupUserIdentifier;
+     authConfig.password = sdkConfigAuth.mashupPassword;
+   }
+    sessionStorage.setItem('rsdk_CI', JSON.stringify(authConfig));
+  }
+  authMgr = new PegaAuth('rsdk_CI');
+};
+
+function getAuthMgr( bInit ) {
+  return new Promise( (resolve, reject) => {
+    let toNextCheck = null;
+    const fnCheckForAuthMgr = () => {
+      if( PegaAuth && !authMgr ) {
+        initOAuth( bInit );
+      }
+      if(authMgr) {
+        if( toNextCheck ) {
+          clearInterval(toNextCheck);
+        }
+        return resolve(authMgr);
+      }
+    }
+    toNextCheck = setInterval(fnCheckForAuthMgr, 500);
+  });
 }
+
 
 export function updateLoginStatus() {
   const sAuthHdr = sessionStorage.getItem('pega_authHdr');
@@ -66,29 +154,87 @@ export function login() {
     return;
   }
 
-  const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
-  const bPortalLogin = isPortalLogin();
+  gbLoggingIn = true;
+  // Needed so a redirect to login screen and back will know we are still in process of logging in
+  sessionStorage.setItem("rsdk_loggingIn", "1");
 
-  const authConfig = {
-    clientId: bPortalLogin ? sdkConfigAuth.portalClientId : sdkConfigAuth.mashupClientId,
-    clientSecret: bPortalLogin ? '' : sdkConfigAuth.mashupClientSecret,
-    tokenUri: `${sdkConfigAuth.accessTokenUri}`,
-    authorizeUri: `${sdkConfigAuth.authorizationUri}`,
-    redirectUri: `${window.location.protocol}//localhost:3502/auth.html`,
-    authService: `${sdkConfigAuth.authQueryParams.authentication_service}`
-  };
-  sessionStorage.setItem('peConfig', JSON.stringify(authConfig));
-  const myWindow = window.open('auth.html', '_blank', 'width=700,height=500,left=200,top=100');
-  window.myWindow = myWindow;
-  window.setToken = function setTokenFn(token) {
-    const authorizationHeader = `Bearer ${token}`;
-    sessionStorage.setItem('pega_authHdr', authorizationHeader);
-    window.myWindow.close();
-    updateLoginStatus();
-    // Create and dispatch the SdkLoggedIn event to trigger constellationInit
-    const event = new CustomEvent('SdkLoggedIn', { detail: token });
-    document.dispatchEvent(event);
-  };
+  getAuthMgr(true).then( (aMgr) => {
+    const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
+    const bPortalLogin = !authIsEmbedded();
+
+    // If portal will redirect to main page, otherwise will authorize in a popup window
+    if (bPortalLogin) {
+      debugger;
+      authMgr.loginRedirect();
+      // Don't have token til after the redirect
+      return Promise.resolve(undefined);
+    } else {
+      return new Promise( (resolve, reject) => {
+        aMgr.login().then(token => {
+            processTokenOnLogin(token);
+            resolve(token.access_token);
+        }).catch( (e) => {
+            gbLoggingIn = false;
+            sessionStorage.removeItem("rsdk_loggingIn");
+            console.log(e);
+            reject(e);
+        })
+      });
+    }
+  });
+}
+
+const processTokenOnLogin = ( token ) => {
+  sessionStorage.setItem("rsdk_TI", JSON.stringify(token));
+  setToken(token);
+  if( token.refresh_token ) {
+      userHasRefreshToken = true;
+      sessionStorage.setItem("rsdk_hasrefresh", "1");
+      forcePopupForReauths(true);
+    }
+  gbLoggedIn = true;
+  gbLoggingIn = false;
+  sessionStorage.removeItem("rsdk_loggingIn");
+  // forcePopupForReauths(true);
+  // userService.setToken(token.access_token);
+}
+
+export const getHomeUrl = () => {
+  return window.location.origin + "/";
+}
+
+
+export const authIsMainRedirect = () => {
+  // Even with main redirect, we want to use it only for the first login (so it doesn't wipe out any state or the reload)
+  return !authIsEmbedded() && !usePopupForRestOfSession;
+}
+
+export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
+  // Get code from href and swap for token
+  const aHrefParts = href.split('?');
+  const urlParams = new URLSearchParams(aHrefParts.length>1 ? `?${aHrefParts[1]}` : '');
+  const code = urlParams.get("code");
+
+  getAuthMgr(false).then( aMgr => {
+    aMgr.getToken(code).then(token => {
+      if( token && token.access_token ) {
+          processTokenOnLogin(token);
+          if( fnLoggedInCB ) {
+              fnLoggedInCB( token.access_token );
+          }
+      }
+    });
+
+  });
+
+}
+
+export function setToken(token) {
+  sessionStorage.setItem('pega_authHdr', `Bearer ${token.access_token}`);
+  updateLoginStatus();
+  // Create and dispatch the SdkLoggedIn event to trigger constellationInit
+  const event = new CustomEvent('SdkLoggedIn', { detail: token });
+  document.dispatchEvent(event);
 }
 
 export function logout() {
@@ -109,38 +255,14 @@ export function logout() {
   }
 }
 
-export function authEmbeddedLogin() {
-  if (!SdkConfigAccess) {
-    // eslint-disable-next-line no-console
-    console.error(`Trying authEmbeddedLogin before SdkConfigAccessReady!`);
-    return;
+export function authSetEmbedded(isEmbedded) {
+  if( isEmbedded ) {
+    sessionStorage.setItem("rsdk_Embedded", "1");
+  } else {
+    sessionStorage.removeItem("rsdk_Embedded");
   }
-
-  // Get authConfig block from the SDK Config
-  const authConfig = SdkConfigAccess.getSdkConfigAuth();
-
-  const urlSearchParams = new URLSearchParams();
-  urlSearchParams.set('client_id', authConfig.mashupClientId);
-  if (authConfig.mashupClientSecret) {
-    urlSearchParams.set('client_secret', authConfig.mashupClientSecret);
-  }
-
-  const grantType = authConfig.mashupGrantType;
-  urlSearchParams.set('grant_type', grantType);
-
-  fetch(authConfig.accessTokenUri, {
-    method: 'POST',
-    headers: {
-      // 'Content-Type': 'application/json'
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-    },
-    body: urlSearchParams
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      gbLoggedIn = true;
-      // Create and dispatch the SdkLoggedIn event to trigger constellationInit
-      const event = new CustomEvent('SdkLoggedIn', { detail: data.access_token });
-      document.dispatchEvent(event);
-    });
 }
+
+export function authIsEmbedded() {
+  return sessionStorage.getItem("rsdk_Embedded") === "1";
+};

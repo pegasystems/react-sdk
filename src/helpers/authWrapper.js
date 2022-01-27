@@ -107,7 +107,8 @@ const initOAuth = (bInit) => {
         const oSI = JSON.parse(sSI);
         if( oSI.authorizeUri !== authConfig.authorizeUri ||
             oSI.clientId !== authConfig.clientId ||
-            oSI.userIdentifier !== authConfig.userIdentifier ) {
+            oSI.userIdentifier !== authConfig.userIdentifier ||
+            oSI.password !== authConfig.password) {
             clearAuthMgr();
             sSI = null;
         }
@@ -189,14 +190,23 @@ export function login() {
   });
 }
 
+const getCurrentTokens = () => {
+  let tokens = null;
+  const sTI = sessionStorage.getItem('rsdk_TI');
+  if(!sTI) return;
+  try {
+    tokens = JSON.parse(sTI);
+  } catch(e) {
+    tokens = null;
+  }
+  return tokens;
+}
+
 const fireTokenAvailable = (token) => {
   if( !token ) {
     // This is used on page reload to load the token from sessionStorage and carry on
-    const sTI = sessionStorage.getItem('rsdk_TI');
-    if(!sTI) return;
-    try {
-      token = JSON.parse(sTI);
-    } catch(e) {
+    token = getCurrentTokens();
+    if( !token ) {
       token = {access_token: sessionStorage.getItem('accessToken')};
     }
   }
@@ -205,10 +215,6 @@ const fireTokenAvailable = (token) => {
   // TODO: Prehaps remove from
   sessionStorage.setItem('accessToken', token.access_token);
   updateLoginStatus();
-
-  // Create and dispatch the SdkLoggedIn event to trigger constellationInit
-  const event = new CustomEvent('SdkLoggedIn', { detail: token.access_token });
-  document.dispatchEvent(event);
 
   if( token.refresh_token ) {
       userHasRefreshToken = true;
@@ -219,6 +225,10 @@ const fireTokenAvailable = (token) => {
   gbLoginInProgress = false;
   sessionStorage.removeItem("rsdk_loggingIn");
   forcePopupForReauths(true);
+
+  // Create and dispatch the SdkLoggedIn event to trigger constellationInit
+  const event = new CustomEvent('SdkLoggedIn', { detail: token.access_token });
+  document.dispatchEvent(event);
 }
 
 const processTokenOnLogin = ( token ) => {
@@ -269,21 +279,29 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
 }
 
 export function logout() {
-  clearAuthMgr();
-  updateLoginStatus();
 
-  // Remove the <div id="pega-root"> that was created (if it exists)
-  //  with the original <div id="pega-here">
-  const thePegaRoot = document.getElementById('pega-root');
-  if (thePegaRoot) {
-    const thePegaHere = document.createElement('div');
-    thePegaHere.setAttribute('id', 'pega-here');
-    thePegaRoot.replaceWith(thePegaHere);
-    const theLogoutMsgDiv = document.createElement('div');
-    theLogoutMsgDiv.setAttribute('style', 'margin: 5px;');
-    theLogoutMsgDiv.innerHTML = `You are logged out. Refresh the page to log in again.`;
-    thePegaHere.appendChild(theLogoutMsgDiv);
-  }
+  getAuthMgr(false).then( aMgr => {
+    const tokens = getCurrentTokens();
+    if( tokens ) {
+      aMgr.revokeTokens(tokens.access_token, tokens.refresh_token);
+    }
+
+    clearAuthMgr();
+    updateLoginStatus();
+
+    // Remove the <div id="pega-root"> that was created (if it exists)
+    //  with the original <div id="pega-here">
+    const thePegaRoot = document.getElementById('pega-root');
+    if (thePegaRoot) {
+      const thePegaHere = document.createElement('div');
+      thePegaHere.setAttribute('id', 'pega-here');
+      thePegaRoot.replaceWith(thePegaHere);
+      const theLogoutMsgDiv = document.createElement('div');
+      theLogoutMsgDiv.setAttribute('style', 'margin: 5px;');
+      theLogoutMsgDiv.innerHTML = `You are logged out. Refresh the page to log in again.`;
+      thePegaHere.appendChild(theLogoutMsgDiv);
+    }
+  });
 }
 
 export function authSetEmbedded(isEmbedded) {

@@ -45,8 +45,7 @@ const forcePopupForReauths = ( bForce ) => {
   sessionStorage.removeItem("rsdk_loggingIn");
   gbLoggedIn = false;
   gbLoginInProgress = false;
-  forcePopupForReauths(false);
-  authSetEmbedded(false);
+  forcePopupForReauths(true);
   // Not removing the authMgr structure itself...as it can be leveraged on next login
 }
 
@@ -57,6 +56,47 @@ const forcePopupForReauths = ( bForce ) => {
  */
 const initOAuth = (bInit) => {
 
+  const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
+  const pegaUrl = SdkConfigAccess.getSdkConfigServer().infinityRestServerUrl;
+  const bPortalLogin = -1 !== location.pathname.indexOf("/portal");
+  const bEmbeddedLogin = -1 !== location.pathname.indexOf("/embedded");
+  // Sometimes the pathname may be just "/"...in which case we want it to use what ever was previously set
+  if( bPortalLogin) {
+    authSetEmbedded(false);
+  } else if( bEmbeddedLogin ) {
+    authSetEmbedded(true);
+  }
+
+  // Construct default OAuth endpoints (if not explicitly specified)
+  if (pegaUrl) {
+    if (!sdkConfigAuth.authorize) {
+      sdkConfigAuth.authorize = `${pegaUrl}/PRRestService/oauth2/v1/authorize`;
+    }
+    if (!sdkConfigAuth.token) {
+      sdkConfigAuth.token = `${pegaUrl}/PRRestService/oauth2/v1/token`;
+    }
+    if (!sdkConfigAuth.revoke) {
+      sdkConfigAuth.revoke = `${pegaUrl}/PRRestService/oauth2/v1/revoke`;
+    }
+  }
+  // Auth service alias
+  if( !sdkConfigAuth.authService) {
+    sdkConfigAuth.authService = "pega";
+  }
+
+  let authConfig = {
+    clientId: bPortalLogin ? sdkConfigAuth.portalClientId : sdkConfigAuth.mashupClientId,
+    authorizeUri: sdkConfigAuth.authorize,
+    tokenUri: sdkConfigAuth.token,
+    revokeUri: sdkConfigAuth.revoke,
+    redirectUri: `${window.location.origin}/`,
+    authService: sdkConfigAuth.authService
+  };
+  if( authIsEmbedded() ) {
+    authConfig.userIdentifier = sdkConfigAuth.mashupUserIdentifier;
+    authConfig.password = sdkConfigAuth.mashupPassword;
+  }
+
   // Check if sessionStorage exists (and if so if for same authorize endpoint).  Otherwise, assume
   //  sessionStorage is out of date (user just edited endpoints).  Else, logout required to clear
   //  sessionStorage and get other endpoints updates.
@@ -65,7 +105,9 @@ const initOAuth = (bInit) => {
   if( sSI ) {
     try {
         const oSI = JSON.parse(sSI);
-        if( oSI.authorizeUri !== authConfig.authorize ) {
+        if( oSI.authorizeUri !== authConfig.authorizeUri ||
+            oSI.clientId !== authConfig.clientId ||
+            oSI.userIdentifier !== authConfig.userIdentifier ) {
             clearAuthMgr();
             sSI = null;
         }
@@ -74,45 +116,6 @@ const initOAuth = (bInit) => {
   }
 
   if( !sSI || bInit ) {
-    const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
-    const pegaUrl = SdkConfigAccess.getSdkConfigServer().infinityRestServerUrl;
-    const bPortalLogin = !authIsEmbedded();
-
-    // Construct default OAuth endpoints (if not explicitly specified)
-    if (pegaUrl) {
-      if (!sdkConfigAuth.authorize) {
-        sdkConfigAuth.authorize = `${pegaUrl}/PRRestService/oauth2/v1/authorize`;
-      }
-      if (!sdkConfigAuth.token) {
-        sdkConfigAuth.token = `${pegaUrl}/PRRestService/oauth2/v1/token`;
-      }
-      if (!sdkConfigAuth.revoke) {
-        sdkConfigAuth.revoke = `${pegaUrl}/PRRestService/oauth2/v1/revoke`;
-      }
-    }
-    // Auth service alias
-    if( !sdkConfigAuth.authService) {
-      sdkConfigAuth.authService = "pega";
-    }
-
-    let authConfig = {
-      clientId: bPortalLogin ? sdkConfigAuth.portalClientId : sdkConfigAuth.mashupClientId,
-      authorizeUri: sdkConfigAuth.authorize,
-      tokenUri: sdkConfigAuth.token,
-      revokeUri: sdkConfigAuth.revoke,
-      redirectUri: `${window.location.origin}/`,
-      authService: sdkConfigAuth.authService
-    };
-    /*
-    // We don't want to use secret unless one is specified
-    if (!bPortalLogin && sdkConfigAuth.mashupClientSecret) {
-      authConfig.clientSecret = sdkConfigAuth.mashupClientSecret;
-    }
-    */
-   if( !bPortalLogin ) {
-     authConfig.userIdentifier = sdkConfigAuth.mashupUserIdentifier;
-     authConfig.password = sdkConfigAuth.mashupPassword;
-   }
     sessionStorage.setItem('rsdk_CI', JSON.stringify(authConfig));
   }
   authMgr = new PegaAuth('rsdk_CI');
@@ -227,6 +230,7 @@ const processTokenOnLogin = ( token ) => {
  * Silent or visible login based on login status
  */
 export const loginIfNecessary = () => {
+  initOAuth(true);
   if( gbLoggedIn ) {
     fireTokenAvailable(null);
   } else {

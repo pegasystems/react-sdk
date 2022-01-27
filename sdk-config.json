@@ -16,7 +16,7 @@
   },
   "serverConfig": {
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
-    "infinityRestServerUrl": "https://lab0641.lab.pega.com/prweb",
+    "infinityRestServerUrl": "https://localhost:1080/prweb",
 
     "sdkContentServerUrl_comment": "If specified, the given URL will be used. If left blank, window.location.origin will be used.",
     "sdkContentServerUrl": "",

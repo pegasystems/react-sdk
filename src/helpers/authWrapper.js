@@ -11,7 +11,7 @@ import PegaAuth from './auth';
 // eslint-disable-next-line import/no-mutable-exports
 export let gbLoggedIn = sessionStorage.getItem('accessToken') !== null;
 // eslint-disable-next-line import/no-mutable-exports
-export let gbLoggingIn = sessionStorage.getItem("rsdk_loggingIn") === "1";
+export let gbLoginInProgress = sessionStorage.getItem("rsdk_loggingIn") === "1";
 
 // will store the PegaAuth instance
 let authMgr = null;
@@ -43,7 +43,7 @@ const forcePopupForReauths = ( bForce ) => {
   sessionStorage.removeItem("rsdk_TI");
   sessionStorage.removeItem("rsdk_loggingIn");
   gbLoggedIn = false;
-  gbLoggingIn = false;
+  gbLoginInProgress = false;
   // Not removing the authMgr structure itself...as it can be leveraged on next login
 }
 
@@ -154,7 +154,7 @@ export function login() {
     return;
   }
 
-  gbLoggingIn = true;
+  gbLoginInProgress = true;
   // Needed so a redirect to login screen and back will know we are still in process of logging in
   sessionStorage.setItem("rsdk_loggingIn", "1");
 
@@ -164,7 +164,6 @@ export function login() {
 
     // If portal will redirect to main page, otherwise will authorize in a popup window
     if (bPortalLogin) {
-      debugger;
       authMgr.loginRedirect();
       // Don't have token til after the redirect
       return Promise.resolve(undefined);
@@ -174,7 +173,7 @@ export function login() {
             processTokenOnLogin(token);
             resolve(token.access_token);
         }).catch( (e) => {
-            gbLoggingIn = false;
+            gbLoginInProgress = false;
             sessionStorage.removeItem("rsdk_loggingIn");
             console.log(e);
             reject(e);
@@ -184,19 +183,52 @@ export function login() {
   });
 }
 
-const processTokenOnLogin = ( token ) => {
-  sessionStorage.setItem("rsdk_TI", JSON.stringify(token));
-  setToken(token);
+const fireTokenAvailable = (token) => {
+  if( !token ) {
+    // This is used on page reload to load the token from sessionStorage and carry on
+    const sTI = sessionStorage.getItem('rsdk_TI');
+    if(!sTI) return;
+    try {
+      token = JSON.parse(sTI);
+    } catch(e) {
+      token = {access_token: sessionStorage.getItem('accessToken')};
+    }
+  }
+
+  // accessToken being redundantly set in c11nboot as part of handling SdkLoggedIn event
+  // TODO: Prehaps remove from
+  sessionStorage.setItem('accessToken', token.access_token);
+  updateLoginStatus();
+
+  // Create and dispatch the SdkLoggedIn event to trigger constellationInit
+  const event = new CustomEvent('SdkLoggedIn', { detail: token.access_token });
+  document.dispatchEvent(event);
+
   if( token.refresh_token ) {
       userHasRefreshToken = true;
       sessionStorage.setItem("rsdk_hasrefresh", "1");
     }
-  // gbLoggedIn is getting updated in setToken -> updateLoginStatus
+  // gbLoggedIn is getting updated in updateLoginStatus
   gbLoggedIn = true;
-  gbLoggingIn = false;
+  gbLoginInProgress = false;
   sessionStorage.removeItem("rsdk_loggingIn");
   forcePopupForReauths(true);
-  // userService.setToken(token.access_token);
+}
+
+const processTokenOnLogin = ( token ) => {
+  sessionStorage.setItem("rsdk_TI", JSON.stringify(token));
+  fireTokenAvailable(token);
+}
+
+/**
+ * Silent or visible login based on login status
+ */
+export const loginIfNecessary = () => {
+  if( gbLoggedIn ) {
+    fireTokenAvailable(null);
+  } else {
+    return login();
+  }
 }
 
 export const getHomeUrl = () => {
@@ -229,15 +261,6 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
 
 }
 
-export function setToken(token) {
-  // Happening in c11nboot as part of handling SdkLoggedIn event
-  // sessionStorage.setItem('accessToken', token.access_token);
-  updateLoginStatus();
-  // Create and dispatch the SdkLoggedIn event to trigger constellationInit
-  const event = new CustomEvent('SdkLoggedIn', { detail: token.access_token });
-  document.dispatchEvent(event);
-}
-
 export function logout() {
   sessionStorage.removeItem('accessToken');
   updateLoginStatus();
@@ -267,3 +290,10 @@ export function authSetEmbedded(isEmbedded) {
 export function authIsEmbedded() {
   return sessionStorage.getItem("rsdk_Embedded") === "1";
 };
+
+// If loggedIn then send event to load bootstrap
+if( gbLoggedIn ) {
+  window.addEventListener("SdkConfigAccessReady", () => {
+    fireTokenAvailable(null);
+  });
+}

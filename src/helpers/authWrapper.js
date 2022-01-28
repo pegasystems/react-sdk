@@ -300,6 +300,15 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
 
 }
 
+export const authTokenUpdated = (tokenInfo ) => {
+  sessionStorage.setItem("rsdk_TI", JSON.stringify(tokenInfo));
+}
+
+export const authGetAccessToken = () => {
+  const tokens = getCurrentTokens();
+  return tokens.access_token;
+}
+
 export function logout() {
 
   if( window.PCore ) {
@@ -320,7 +329,8 @@ export function logout() {
         thePegaHere.appendChild(theLogoutMsgDiv);
       }
     }).catch(err => {
-        console.log("Error:",err?.message);
+      // eslint-disable-next-line no-console
+      console.log("Error:",err?.message);
     });
   }
 

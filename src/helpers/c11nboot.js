@@ -1,4 +1,5 @@
 import { SdkConfigAccess } from './config_access';
+import { authTokenUpdated } from './authWrapper';
 
 /**
  * Initiate the process to get the Constellation bootstrap shell loaded and initialized
@@ -25,7 +26,7 @@ export const constellationInit = (authConfig, tokenInfo) => {
   // Pass in auth info to Constellation
   constellationBootConfig.authInfo = {
     authType: "OAuth2.0",
-    tokenInfo: tokenInfo,
+    tokenInfo,
     popupReauth: true,
     client_id: authConfig.clientId,
     authentication_service: authConfig.authService,
@@ -36,12 +37,8 @@ export const constellationInit = (authConfig, tokenInfo) => {
         revoke: authConfig.revokeUri
     },
     // TODO: setup callback so we can update own storage
-    // onTokenRetrieval: this.#tokensUpdated.bind(this)
+    onTokenRetrieval: authTokenUpdated
   }
-
-  // This seems to be used by selectPortal.  Might be best to just have an internal event that publishes when a token has changed
-  //  and then allow react sdk components to react to it...similar to the logged in event.
-  window.sessionStorage.setItem('accessToken', tokenInfo.access_token);
 
   // Note that staticContentServerUrl already ends with a slash (see above), so no slash added.
   // In order to have this import succeed and to have it done with the webpackIgnore magic comment tag.  See:  https://webpack.js.org/api/module-methods/

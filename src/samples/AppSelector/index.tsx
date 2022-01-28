@@ -1,6 +1,6 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
-import { getHomeUrl, authSetEmbedded } from "../../helpers/authWrapper";
+import { Switch, Route } from 'react-router-dom';
+import { authSetEmbedded } from "../../helpers/authWrapper";
 import EmbeddedTopLevel from "../Embedded/EmbeddedTopLevel";
 import FullPortal from "../FullPortal";
 import AuthPage from "../AuthPage";
@@ -13,13 +13,13 @@ import AuthPage from "../AuthPage";
 const AppSelector = () => {
 
   const bHasToken = !!sessionStorage.getItem("rsdk_TI");
-  const homeUrl = getHomeUrl();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const code = urlParams.get("code");
 
   if(!bHasToken && !code) {
-    authSetEmbedded( location.pathname.indexOf("/embedded") !== -1 );
+    // eslint-disable-next-line no-restricted-globals
+    authSetEmbedded( location.pathname.includes("/embedded") );
   }
 
   return (

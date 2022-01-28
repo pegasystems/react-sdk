@@ -7,7 +7,7 @@ class PegaAuth {
   }
 
   reloadConfig() {
-      let peConfig = window.sessionStorage.getItem(this.ssKeyConfig);
+      const peConfig = window.sessionStorage.getItem(this.ssKeyConfig);
       let obj = {};
       if( peConfig ) {
           try {
@@ -15,7 +15,7 @@ class PegaAuth {
           } catch (e) {
               try {
                   obj = JSON.parse(window.atob(peConfig));
-              } catch(e) {
+              } catch(e2) {
                   obj = {};
               }
           }
@@ -25,7 +25,7 @@ class PegaAuth {
   }
 
   updateConfig() {
-      let sSI = JSON.stringify(this.config);
+      const sSI = JSON.stringify(this.config);
       window.sessionStorage.setItem(this.ssKeyConfig, this.bEncodeSI ? window.btoa(sSI) : sSI);
   }
 
@@ -74,11 +74,11 @@ class PegaAuth {
       };
 
       const redirectOrigin = fnGetRedirectUriOrigin();
+      // eslint-disable-next-line no-restricted-globals
       const state = window.btoa(location.origin);
 
       return new Promise( (resolve, reject) => {
 
-          /* eslint-disable consistent-return, prefer-promise-reject-errors */
           this.buildAuthorizeUrl(state).then((url) => {
               let myWindow = null; // popup or iframe
               let elIframe = null;
@@ -89,29 +89,34 @@ class PegaAuth {
                   try{
                       if( bWinIframe ) {
                           elIframe.contentWindow.postMessage({type:"PegaAuth"}, redirectOrigin);
+                          // eslint-disable-next-line no-console
                           console.log("authjs(login): loaded a page in iFrame");
                       } else {
                           myWindow.postMessage({type:"PegaAuth"}, redirectOrigin);
                       }
                   } catch(e) {
+                      // eslint-disable-next-line no-console
                       console.log("authjs(login): Exception trying to postMessage on load");
                   }
               };
-              let fnOpenPopup = () => {
+              const fnOpenPopup = () => {
                   myWindow = window.open(url, '_blank', 'width=700,height=500,left=200,top=100');
                   if( !myWindow ) {
                       // Blocked by popup-blocker
+                      // eslint-disable-next-line prefer-promise-reject-errors
                       return reject("blocked");
                   }
                   checkWindowClosed = setInterval( () => {
                       if( myWindow.closed ) {
                           clearInterval(checkWindowClosed);
+                          // eslint-disable-next-line prefer-promise-reject-errors
                           reject("closed");
                       }
                   }, 500);
                   try {
                       myWindow.addEventListener("load", myWinOnLoad, true);
                   } catch(e) {
+                      // eslint-disable-next-line no-console
                       console.log("authjs(login): Exception trying to add onload handler to opened window;")
                   }
               };
@@ -172,12 +177,14 @@ class PegaAuth {
                       return;
                   if( !event.data || !event.data.type || event.data.type !== "PegaAuth" )
                       return;
+                  // eslint-disable-next-line no-console
                   console.log("authjs(login): postMessage received with code");
-                  let code = event.data.code.toString();
+                  const code = event.data.code.toString();
                   fnGetTokenAndFinish(code);
               };
               window.addEventListener("message", authMessageReceiver, false);
-              window.authCodeCallback = function(code) {
+              window.authCodeCallback = (code) => {
+                  // eslint-disable-next-line no-console
                   console.log("authjs(login): authCodeCallback used with code");
                   fnGetTokenAndFinish(code);
               };
@@ -187,8 +194,10 @@ class PegaAuth {
 
   // Login redirect
   loginRedirect() {
-      const state = window.btoa(location.origin);
+      // eslint-disable-next-line no-restricted-globals
+      const state = btoa(location.origin);
       this.buildAuthorizeUrl(state).then((url) => {
+          // eslint-disable-next-line no-restricted-globals
           location.href = url;
       });
   }
@@ -201,11 +210,12 @@ class PegaAuth {
 
       const {clientId, clientSecret, redirectUri, tokenUri, codeVerifier} = this.config;
 
-      const queryString = window.location.search;
+      // eslint-disable-next-line no-restricted-globals
+      const queryString = location.search;
       const urlParams = new URLSearchParams(queryString);
       const code = authCode || urlParams.get("code");
 
-      let formData = new URLSearchParams();
+      const formData = new URLSearchParams();
       formData.append("client_id", clientId);
       if( clientSecret ) {
           formData.append("client_secret", clientSecret);
@@ -227,7 +237,6 @@ class PegaAuth {
       .then(token => {
           // .expires_in contains the # of seconds before access token expires
           // add property to keep track of current time when the token expires
-          /* eslint-disable camelcase */
           token.eA = Date.now() + (token.expires_in * 1000);
           let bUpdateConfig = false;
           if( this.config.codeVerifier ) {
@@ -244,16 +253,18 @@ class PegaAuth {
               this.updateConfig();
           }
           return token;
-          /* eslint-enable camelcase */
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        // eslint-disable-next-line no-console
+        console.log(e)
+      });
   }
 
   /* eslint-disable camelcase */
   async refreshToken(refresh_token) {
       const {clientId, clientSecret, tokenUri} = this.config;
 
-      let formData = new URLSearchParams();
+      const formData = new URLSearchParams();
       formData.append("client_id", clientId);
       if( clientSecret ) {
           formData.append("client_secret", clientSecret);
@@ -270,7 +281,7 @@ class PegaAuth {
         body: formData.toString(),
       })
       .then((response) => {
-        if( !response.ok && 401 === response.status ) {
+        if( !response.ok && response.status === 401 ) {
             return null;
         }
         return response.json();
@@ -283,7 +294,10 @@ class PegaAuth {
           }
           return token;
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        // eslint-disable-next-line no-console
+        console.log(e)
+      });
   }
 
   async revokeTokens(access_token, refresh_token = null) {
@@ -293,16 +307,17 @@ class PegaAuth {
       }
       const {clientId, clientSecret, revokeUri} = this.config;
 
-      let hdrs = {"content-type":"application/x-www-form-urlencoded"};
+      const hdrs = {"content-type":"application/x-www-form-urlencoded"};
       if( clientSecret ) {
-          hdrs["authorization"] = "Basic " + window.btoa(clientId+":"+clientSecret);
+          const creds = `${clientId}:${clientSecret}`;
+          hdrs.authorization = `Basic ${window.btoa(creds)}`;
       }
-      let aTknProps = ["access_token"];
+      const aTknProps = ["access_token"];
       if( refresh_token ) {
         aTknProps.push("refresh_token");
       }
       aTknProps.forEach( (prop) => {
-          let formData = new URLSearchParams();
+          const formData = new URLSearchParams();
           if( !clientSecret ) {
               formData.append("client_id", clientId);
           }
@@ -315,10 +330,12 @@ class PegaAuth {
           })
           .then((response) => {
               if( !response.ok ) {
-                  console.log( "Error revoking " + prop + ":" + response.status);
+                  // eslint-disable-next-line no-console
+                  console.log( `Error revoking ${prop}:${response.status}` );
               }
           })
           .catch(e => {
+              // eslint-disable-next-line no-console
               console.log(e);
           });
       } );
@@ -330,13 +347,13 @@ class PegaAuth {
   }
   /* eslint-enable camelcase */
 
-  /* eslint-disable-next-line class-methods-use-this */
+  // eslint-disable-next-line class-methods-use-this
   sha256Hash(str) {
       return window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
   }
 
   // Base64 encode
-  /* eslint-disable-next-line class-methods-use-this */
+  // eslint-disable-next-line class-methods-use-this
   encode64(buff) {
       return window.btoa(new Uint8Array(buff).reduce((s, b) => s + String.fromCharCode(b), ''));
   }
@@ -358,7 +375,10 @@ class PegaAuth {
             return this.base64UrlSafeEncode(hashed)
           }
       ).catch(
-          (error) => { console.log(error) }
+          (error) => {
+            // eslint-disable-next-line no-console
+            console.log(error)
+          }
       ).finally(
           () => { return null }
       )

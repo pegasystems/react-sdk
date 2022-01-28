@@ -24,7 +24,7 @@ export default function AuthPage() {
 
     authRedirectCallback(window.location.href, () => {
       // eslint-disable-next-line no-restricted-globals
-      location.href = getHomeUrl() + "portal";
+      location.href = `${getHomeUrl()}portal`;
     });
   } else {
     const queryString = window.location.search;

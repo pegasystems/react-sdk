@@ -135,7 +135,7 @@ export default function FullPortal() {
   document.addEventListener("SdkLoggedIn", (event: any) => {
     // eslint-disable-next-line no-console
     console.log(`SdkLoggedIn received`);
-    constellationInit( event.detail );
+    constellationInit( event.detail.authConfig, event.detail.tokenInfo );
   });
 
 

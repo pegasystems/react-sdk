@@ -2,15 +2,15 @@ import { SdkConfigAccess } from './config_access';
 
 /**
  * Initiate the process to get the Constellation bootstrap shell loaded and initialized
- * @param {String} accessToken
+ * @param {Object} authConfig
+ * @param {Object} tokenInfo
  */
-export const constellationInit = (accessToken) => {
+export const constellationInit = (authConfig, tokenInfo) => {
   // eslint-disable-next-line sonarjs/prefer-object-literal
   const constellationBootConfig = {};
 
   // Set up constellationConfig with data that bootstrapWithAuthHeader expects
   // constellationConfig.appAlias = "";
-  constellationBootConfig.authorizationHeader = `Bearer ${accessToken}`;
   constellationBootConfig.customRendering = true;
   constellationBootConfig.restServerUrl =
     SdkConfigAccess.getSdkConfigServer().infinityRestServerUrl;
@@ -22,7 +22,26 @@ export const constellationInit = (accessToken) => {
     constellationBootConfig.staticContentServerUrl = `${constellationBootConfig.staticContentServerUrl}/`;
   }
 
-  window.sessionStorage.setItem('accessToken', accessToken);
+  // Pass in auth info to Constellation
+  constellationBootConfig.authInfo = {
+    authType: "OAuth2.0",
+    tokenInfo: tokenInfo,
+    popupReauth: true,
+    client_id: authConfig.clientId,
+    authentication_service: authConfig.authService,
+    redirect_uri: authConfig.redirectUri,
+    endPoints: {
+        authorize: authConfig.authorizeUri,
+        token: authConfig.tokenUri,
+        revoke: authConfig.revokeUri
+    },
+    // TODO: setup callback so we can update own storage
+    // onTokenRetrieval: this.#tokensUpdated.bind(this)
+  }
+
+  // This seems to be used by selectPortal.  Might be best to just have an internal event that publishes when a token has changed
+  //  and then allow react sdk components to react to it...similar to the logged in event.
+  window.sessionStorage.setItem('accessToken', tokenInfo.access_token);
 
   // Note that staticContentServerUrl already ends with a slash (see above), so no slash added.
   // In order to have this import succeed and to have it done with the webpackIgnore magic comment tag.  See:  https://webpack.js.org/api/module-methods/

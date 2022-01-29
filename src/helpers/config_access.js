@@ -1,16 +1,16 @@
 // Helper singleton class to assist with loading and accessing
 //  the SDK Config JSON
-
+import {authGetAccessToken} from './authWrapper';
 class ConfigAccess {
 
   static sdkConfig = {};
   // isConfigLoaded will be updated to true after the async load is complete
   static isConfigLoaded = false;
-  
+
   constructor() {
     // sdkConfig is the JSON object read from the sdk-config.json file
 
-    // The "work" to load the config file is done (asynchronously) via the initialize 
+    // The "work" to load the config file is done (asynchronously) via the initialize
     //  (Factory function) below)
   }
 
@@ -37,7 +37,7 @@ class ConfigAccess {
   }
 
   /**
-   * 
+   *
    * @returns the sdk-config JSON object
    */
   getSdkConfig = () => {
@@ -46,7 +46,7 @@ class ConfigAccess {
 
 
   /**
-   * 
+   *
    * @returns the authConfig block in the SDK Config object
    */
   getSdkConfigAuth = () => {
@@ -54,7 +54,7 @@ class ConfigAccess {
   }
 
   /**
-   * 
+   *
    * @returns the serverConfig bloc from the sdk-config.json file
    */
   getSdkConfigServer = () => {
@@ -69,10 +69,10 @@ class ConfigAccess {
   setSdkConfigServer = (key, value) => {
 
     ConfigAccess.sdkConfig.serverConfig[key] = value;
-    
+
   }
 
-  /** 
+  /**
    * If ConfigAccess.sdkConfig.serverConfig.sdkContentServerUrl is set, leave it and the specified URL will be used.
    * If not set, set SdkConfigAccess.serverConfig.sdkContentServerUrl to window.location.origin
   */
@@ -111,7 +111,7 @@ class ConfigAccess {
         method: 'GET',
         headers: {
           'Content-Type' : 'application/json',
-          'Authorization' : 'Bearer ' + window.sessionStorage.getItem("accessToken"),
+          'Authorization' : `Bearer ${authGetAccessToken()}`
         },
       })
       .then( response => response.json())
@@ -166,7 +166,7 @@ createSdkConfigAccess().then( theConfigJson => {
   // Create and dispatch the SdkConfigAccessReady event
   var event = new CustomEvent("SdkConfigAccessReady", { });
   document.dispatchEvent(event);
-  
+
 }).catch(err => {
   console.error( `createSdkConfigAccess error: ${err}` );
 });

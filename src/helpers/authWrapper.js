@@ -199,8 +199,18 @@ const fireTokenAvailable = (token) => {
   sessionStorage.removeItem("rsdk_loggingIn");
   forcePopupForReauths(true);
 
+  const sSI = sessionStorage.getItem("rsdk_CI");
+  let authConfig = null;
+  if( sSI ) {
+    try {
+        authConfig = JSON.parse(sSI);
+    } catch(e) {
+      // do nothing
+    }
+  }
+
   // Create and dispatch the SdkLoggedIn event to trigger constellationInit
-  const event = new CustomEvent('SdkLoggedIn', { detail: token.access_token });
+  const event = new CustomEvent('SdkLoggedIn', { detail: { authConfig, tokenInfo: token } });
   document.dispatchEvent(event);
 }
 
@@ -290,28 +300,38 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
 
 }
 
+export const authTokenUpdated = (tokenInfo ) => {
+  sessionStorage.setItem("rsdk_TI", JSON.stringify(tokenInfo));
+}
+
+export const authGetAccessToken = () => {
+  const tokens = getCurrentTokens();
+  return tokens.access_token;
+}
+
 export function logout() {
 
-  getAuthMgr(false).then( aMgr => {
-    const tokens = getCurrentTokens();
-    if( tokens ) {
-      aMgr.revokeTokens(tokens.access_token, tokens.refresh_token);
-    }
+  if( window.PCore ) {
+    window.PCore.getAuthUtils().revokeTokens().then(() => {
+      clearAuthMgr();
+      updateLoginStatus();
 
-    clearAuthMgr();
-    updateLoginStatus();
+      // Remove the <div id="pega-root"> that was created (if it exists)
+      //  with the original <div id="pega-here">
+      const thePegaRoot = document.getElementById('pega-root');
+      if (thePegaRoot) {
+        const thePegaHere = document.createElement('div');
+        thePegaHere.setAttribute('id', 'pega-here');
+        thePegaRoot.replaceWith(thePegaHere);
+        const theLogoutMsgDiv = document.createElement('div');
+        theLogoutMsgDiv.setAttribute('style', 'margin: 5px;');
+        theLogoutMsgDiv.innerHTML = `You are logged out. Refresh the page to log in again.`;
+        thePegaHere.appendChild(theLogoutMsgDiv);
+      }
+    }).catch(err => {
+      // eslint-disable-next-line no-console
+      console.log("Error:",err?.message);
+    });
+  }
 
-    // Remove the <div id="pega-root"> that was created (if it exists)
-    //  with the original <div id="pega-here">
-    const thePegaRoot = document.getElementById('pega-root');
-    if (thePegaRoot) {
-      const thePegaHere = document.createElement('div');
-      thePegaHere.setAttribute('id', 'pega-here');
-      thePegaRoot.replaceWith(thePegaHere);
-      const theLogoutMsgDiv = document.createElement('div');
-      theLogoutMsgDiv.setAttribute('style', 'margin: 5px;');
-      theLogoutMsgDiv.innerHTML = `You are logged out. Refresh the page to log in again.`;
-      thePegaHere.appendChild(theLogoutMsgDiv);
-    }
-  });
 }

@@ -1,5 +1,5 @@
 import { SdkConfigAccess } from './config_access';
-import { authTokenUpdated } from './authWrapper';
+import { authIsEmbedded, authTokenUpdated, logout } from './authWrapper';
 
 /**
  * Initiate the process to get the Constellation bootstrap shell loaded and initialized
@@ -27,7 +27,8 @@ export const constellationInit = (authConfig, tokenInfo) => {
   constellationBootConfig.authInfo = {
     authType: "OAuth2.0",
     tokenInfo,
-    popupReauth: true,
+    // Set whether we want constellation to try to do a full re-Auth or not ()
+    popupReauth: !authIsEmbedded(),
     client_id: authConfig.clientId,
     authentication_service: authConfig.authService,
     redirect_uri: authConfig.redirectUri,
@@ -62,7 +63,16 @@ export const constellationInit = (authConfig, tokenInfo) => {
 
       const event = new CustomEvent('ConstellationReady', {});
       document.dispatchEvent(event);
-    });
+    })
+    .catch( e => {
+      // Assume error caught is because token is not valid and attempt a full reauth
+      // eslint-disable-next-line no-console
+      console.log(e);
+      // clear any cached tokens
+      logout().then(() => {
+        constellationTerm();
+      })
+    })
   });
   /* Ends here */
 };
@@ -79,7 +89,9 @@ export const constellationTerm = () => {
   // }
 
   // Just reload the page to get the login button again
-  window.location.reload();
+  // eslint-disable-next-line no-restricted-globals
+  location.href = location.href;
+  // window.location.reload();
 };
 
 // Code that sets up use of Constellation once it's been loaded and ready

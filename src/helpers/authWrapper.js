@@ -34,7 +34,7 @@ const forcePopupForReauths = ( bForce ) => {
 /**
  * Clean up any web storage allocated for the user session.
  */
- const clearAuthMgr = () => {
+const clearAuthMgr = () => {
   // Remove any local storage for the user
   sessionStorage.removeItem('accessToken');
   sessionStorage.removeItem("rsdk_CI");
@@ -42,11 +42,11 @@ const forcePopupForReauths = ( bForce ) => {
   sessionStorage.removeItem("rsdk_loggingIn");
   gbLoggedIn = false;
   gbLoginInProgress = false;
-  forcePopupForReauths(true);
+  forcePopupForReauths(false);
   // Not removing the authMgr structure itself...as it can be leveraged on next login
 }
 
-export function authSetEmbedded(isEmbedded) {
+export const authSetEmbedded = (isEmbedded) => {
   if( isEmbedded ) {
     sessionStorage.setItem("rsdk_Embedded", "1");
   } else {
@@ -54,7 +54,7 @@ export function authSetEmbedded(isEmbedded) {
   }
 }
 
-export function authIsEmbedded() {
+export const authIsEmbedded = () => {
   return sessionStorage.getItem("rsdk_Embedded") === "1";
 };
 
@@ -157,7 +157,7 @@ function getAuthMgr( bInit ) {
 }
 
 
-export function updateLoginStatus() {
+export const updateLoginStatus = () => {
   const sAuthHdr = sessionStorage.getItem('accessToken');
   gbLoggedIn = sAuthHdr && sAuthHdr.length > 0;
   const elBtnLogin = document.getElementById('btnLogin');
@@ -223,7 +223,7 @@ const processTokenOnLogin = ( token ) => {
 }
 
 
-export function login() {
+export const login = () => {
   if (!SdkConfigAccess) {
     // eslint-disable-next-line no-console
     console.error(`Trying login before SdkConfigAccessReady!`);
@@ -234,13 +234,12 @@ export function login() {
   // Needed so a redirect to login screen and back will know we are still in process of logging in
   sessionStorage.setItem("rsdk_loggingIn", "1");
 
-
   getAuthMgr(true).then( (aMgr) => {
     const bPortalLogin = !authIsEmbedded();
 
     // If portal will redirect to main page, otherwise will authorize in a popup window
     if (bPortalLogin) {
-      authMgr.loginRedirect();
+      aMgr.loginRedirect();
       // Don't have token til after the redirect
       return Promise.resolve(undefined);
     } else {
@@ -312,13 +311,10 @@ export const authGetAccessToken = () => {
   return tokens.access_token;
 }
 
-export function logout() {
-
-  if( window.PCore ) {
-    window.PCore.getAuthUtils().revokeTokens().then(() => {
+export const logout = () => {
+  return new Promise((resolve) => {
+    let fnClearAndResolve = () => {
       clearAuthMgr();
-      updateLoginStatus();
-
       // Remove the <div id="pega-root"> that was created (if it exists)
       //  with the original <div id="pega-here">
       const thePegaRoot = document.getElementById('pega-root');
@@ -331,10 +327,29 @@ export function logout() {
         theLogoutMsgDiv.innerHTML = `You are logged out. Refresh the page to log in again.`;
         thePegaHere.appendChild(theLogoutMsgDiv);
       }
-    }).catch(err => {
-      // eslint-disable-next-line no-console
-      console.log("Error:",err?.message);
-    });
-  }
+      resolve();
+    };
+    let tokenInfo = getCurrentTokens();
+    if( tokenInfo && tokenInfo.access_token ) {
+        if( window.PCore ) {
+            PCore.getAuthUtils().revokeTokens().then(() => {
+                fnClearAndResolve();
+            }).catch(err => {
+                console.log("Error:",err?.message);
+            });
+        } else {
+          getAuthMgr(false).then( aMgr => {
+            aMgr.revokeTokens(tokenInfo.access_token, tokenInfo.refresh_token).then(() => {
+              // Go to finally
+            })
+            .finally(() => {
+              fnClearAndResolve();
+            });
 
+          });
+        }
+    } else {
+        fnClearAndResolve();
+    }
+  });
 }

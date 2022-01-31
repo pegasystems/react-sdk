@@ -102,6 +102,9 @@ const initOAuth = (bInit) => {
     redirectUri: `${window.location.origin}/`,
     authService: sdkConfigAuth.authService
   };
+  if( 'silentTimeout' in sdkConfigAuth ) {
+    authConfig.silentTimeout = sdkConfigAuth.silentTimeout;
+  }
   if( authIsEmbedded() ) {
     authConfig.userIdentifier = sdkConfigAuth.mashupUserIdentifier;
     authConfig.password = sdkConfigAuth.mashupPassword;

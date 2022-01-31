@@ -1,5 +1,5 @@
 import { SdkConfigAccess } from './config_access';
-import { authIsEmbedded, authTokenUpdated, logout } from './authWrapper';
+import { authTokenUpdated, authFullReauth } from './authWrapper';
 
 /**
  * Initiate the process to get the Constellation bootstrap shell loaded and initialized
@@ -28,7 +28,8 @@ export const constellationInit = (authConfig, tokenInfo) => {
     authType: "OAuth2.0",
     tokenInfo,
     // Set whether we want constellation to try to do a full re-Auth or not ()
-    popupReauth: !authIsEmbedded(),
+    // true doesn't seem to be working in SDK scenario so always passing false for now
+    popupReauth: false /* !authIsEmbedded() */,
     client_id: authConfig.clientId,
     authentication_service: authConfig.authService,
     redirect_uri: authConfig.redirectUri,
@@ -56,10 +57,12 @@ export const constellationInit = (authConfig, tokenInfo) => {
     bootstrapShell.bootstrapWithAuthHeader(constellationBootConfig, 'shell').then(() => {
       // eslint-disable-next-line no-console
       console.log('Bootstrap successful!');
+      /* Don't believe this is still relevant
       // If logging in via oauth...it creates its own window
       if (window.myWindow) {
         window.myWindow.close();
       }
+      */
 
       const event = new CustomEvent('ConstellationReady', {});
       document.dispatchEvent(event);
@@ -68,10 +71,17 @@ export const constellationInit = (authConfig, tokenInfo) => {
       // Assume error caught is because token is not valid and attempt a full reauth
       // eslint-disable-next-line no-console
       console.log(e);
+      authFullReauth();
+      /*
       // clear any cached tokens
       logout().then(() => {
-        constellationTerm();
+        // Get current url and just load it again
+        // eslint-disable-next-line no-restricted-globals
+        const currRef = location.href
+        // eslint-disable-next-line no-restricted-globals
+        location.href = currRef;
       })
+      */
     })
   });
   /* Ends here */
@@ -89,9 +99,7 @@ export const constellationTerm = () => {
   // }
 
   // Just reload the page to get the login button again
-  // eslint-disable-next-line no-restricted-globals
-  location.href = location.href;
-  // window.location.reload();
+  window.location.reload();
 };
 
 // Code that sets up use of Constellation once it's been loaded and ready
@@ -101,6 +109,10 @@ document.addEventListener('ConstellationReady', () => {
   //  Seems to have issue with TypeScript
   // eslint-disable-next-line no-undef
   PCore.setBehaviorOverride('dynamicLoadComponents', false);
+
+  // Setup listener for the reauth event
+  // eslint-disable-next-line no-undef
+  PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_FULL_REAUTH, authFullReauth, "authFullReauth");
 
   // Element with id="pega-here" is where the React SDK React entry point for
   //  the Pega embedded/portal will be placed.

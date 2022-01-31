@@ -19,8 +19,8 @@ The React SDK assumes that you have access to a Pega Infinity server (8.6.1 GA) 
 We provide a sample application - **MediaCo** - to licensed Pega Infinity customers that is configured as a Constellation application.
 
 SDK tested with:
-- node 6.14.15
-- npm 8.1.2
+- node 14.18.1
+- npm 6.14.15
 
 Please refer to the **React SDK Guide** provided in the Marketplace download for steps to prepare your Infinity server and node environment for steps in the next section.
 

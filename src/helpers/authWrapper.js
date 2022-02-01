@@ -29,32 +29,34 @@ const forcePopupForReauths = ( bForce ) => {
       sessionStorage.removeItem("pega_react_popup");
       usePopupForRestOfSession = false;
   }
-}
+};
 
 /**
  * Clean up any web storage allocated for the user session.
  */
- const clearAuthMgr = () => {
+const clearAuthMgr = (bFullReauth=false) => {
   // Remove any local storage for the user
   sessionStorage.removeItem('accessToken');
-  sessionStorage.removeItem("rsdk_CI");
+  if( !bFullReauth ) {
+    sessionStorage.removeItem("rsdk_CI");
+  }
   sessionStorage.removeItem("rsdk_TI");
   sessionStorage.removeItem("rsdk_loggingIn");
   gbLoggedIn = false;
   gbLoginInProgress = false;
-  forcePopupForReauths(true);
+  forcePopupForReauths(bFullReauth);
   // Not removing the authMgr structure itself...as it can be leveraged on next login
-}
+};
 
-export function authSetEmbedded(isEmbedded) {
+export const authSetEmbedded = (isEmbedded) => {
   if( isEmbedded ) {
     sessionStorage.setItem("rsdk_Embedded", "1");
   } else {
     sessionStorage.removeItem("rsdk_Embedded");
   }
-}
+};
 
-export function authIsEmbedded() {
+export const authIsEmbedded = () => {
   return sessionStorage.getItem("rsdk_Embedded") === "1";
 };
 
@@ -100,8 +102,12 @@ const initOAuth = (bInit) => {
     tokenUri: sdkConfigAuth.token,
     revokeUri: sdkConfigAuth.revoke,
     redirectUri: `${window.location.origin}/`,
-    authService: sdkConfigAuth.authService
+    authService: sdkConfigAuth.authService,
+    useLocking: true
   };
+  if( 'silentTimeout' in sdkConfigAuth ) {
+    authConfig.silentTimeout = sdkConfigAuth.silentTimeout;
+  }
   if( authIsEmbedded() ) {
     authConfig.userIdentifier = sdkConfigAuth.mashupUserIdentifier;
     authConfig.password = sdkConfigAuth.mashupPassword;
@@ -135,7 +141,7 @@ const initOAuth = (bInit) => {
 
 // TODO: See if we still need such a solution to keep trying for stuff to be loaded
 // Was needed when we were trying to invoke this as source file loaded (before SdkConfigAccessReady event)
-function getAuthMgr( bInit ) {
+const getAuthMgr = ( bInit ) => {
   return new Promise( (resolve) => {
     let idNextCheck = null;
     const fnCheckForAuthMgr = () => {
@@ -151,10 +157,10 @@ function getAuthMgr( bInit ) {
     }
     idNextCheck = setInterval(fnCheckForAuthMgr, 500);
   });
-}
+};
 
 
-export function updateLoginStatus() {
+export const updateLoginStatus = () => {
   const sAuthHdr = sessionStorage.getItem('accessToken');
   gbLoggedIn = sAuthHdr && sAuthHdr.length > 0;
   const elBtnLogin = document.getElementById('btnLogin');
@@ -165,7 +171,7 @@ export function updateLoginStatus() {
   if (elBtnLogout) {
     elBtnLogout.disabled = !gbLoggedIn;
   }
-}
+};
 
 const getCurrentTokens = () => {
   let tokens = null;
@@ -177,7 +183,7 @@ const getCurrentTokens = () => {
     tokens = null;
   }
   return tokens;
-}
+};
 
 const fireTokenAvailable = (token) => {
   if( !token ) {
@@ -212,15 +218,34 @@ const fireTokenAvailable = (token) => {
   // Create and dispatch the SdkLoggedIn event to trigger constellationInit
   const event = new CustomEvent('SdkLoggedIn', { detail: { authConfig, tokenInfo: token } });
   document.dispatchEvent(event);
-}
+};
 
 const processTokenOnLogin = ( token ) => {
   sessionStorage.setItem("rsdk_TI", JSON.stringify(token));
-  fireTokenAvailable(token);
+  if( window.PCore ) {
+    window.PCore.getAuthUtils().setTokens(token);
+  } else {
+    fireTokenAvailable(token);
+  }
+};
+
+const updateRedirectUri = (aMgr, sRedirectUri) => {
+  const sSI = sessionStorage.getItem("rsdk_CI");
+  let authConfig = null;
+  if( sSI ) {
+    try {
+        authConfig = JSON.parse(sSI);
+    } catch(e) {
+      // do nothing
+    }
+  }
+  authConfig.redirectUri = sRedirectUri;
+  sessionStorage.setItem("rsdk_CI", JSON.stringify(authConfig));
+  aMgr.reloadConfig();
 }
 
 
-export function login() {
+export const login = (bFullReauth=false) => {
   if (!SdkConfigAccess) {
     // eslint-disable-next-line no-console
     console.error(`Trying login before SdkConfigAccessReady!`);
@@ -231,16 +256,19 @@ export function login() {
   // Needed so a redirect to login screen and back will know we are still in process of logging in
   sessionStorage.setItem("rsdk_loggingIn", "1");
 
-
-  getAuthMgr(true).then( (aMgr) => {
+  getAuthMgr(!bFullReauth).then( (aMgr) => {
     const bPortalLogin = !authIsEmbedded();
 
     // If portal will redirect to main page, otherwise will authorize in a popup window
-    if (bPortalLogin) {
-      authMgr.loginRedirect();
+    if (bPortalLogin && !bFullReauth) {
+      // update redirect uri to be the root
+      updateRedirectUri(aMgr, `${window.location.origin}/`);
+      aMgr.loginRedirect();
       // Don't have token til after the redirect
       return Promise.resolve(undefined);
     } else {
+      // Set redirectUri to static auth.html
+      updateRedirectUri(aMgr, `${window.location.origin}/auth.html`)
       return new Promise( (resolve, reject) => {
         aMgr.login().then(token => {
             processTokenOnLogin(token);
@@ -255,30 +283,30 @@ export function login() {
       });
     }
   });
-}
+};
 
 
 /**
  * Silent or visible login based on login status
  */
 export const loginIfNecessary = () => {
-  initOAuth(true);
+  initOAuth(false);
   if( gbLoggedIn ) {
     fireTokenAvailable(null);
   } else {
     return login();
   }
-}
+};
 
 export const getHomeUrl = () => {
   return `${window.location.origin}/`;
-}
+};
 
 
 export const authIsMainRedirect = () => {
   // Even with main redirect, we want to use it only for the first login (so it doesn't wipe out any state or the reload)
   return !authIsEmbedded() && !usePopupForRestOfSession;
-}
+};
 
 export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
   // Get code from href and swap for token
@@ -298,24 +326,21 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
 
   });
 
-}
+};
 
 export const authTokenUpdated = (tokenInfo ) => {
   sessionStorage.setItem("rsdk_TI", JSON.stringify(tokenInfo));
-}
+};
 
 export const authGetAccessToken = () => {
   const tokens = getCurrentTokens();
   return tokens.access_token;
-}
+};
 
-export function logout() {
-
-  if( window.PCore ) {
-    window.PCore.getAuthUtils().revokeTokens().then(() => {
+export const logout = () => {
+  return new Promise((resolve) => {
+    const fnClearAndResolve = () => {
       clearAuthMgr();
-      updateLoginStatus();
-
       // Remove the <div id="pega-root"> that was created (if it exists)
       //  with the original <div id="pega-here">
       const thePegaRoot = document.getElementById('pega-root');
@@ -328,10 +353,53 @@ export function logout() {
         theLogoutMsgDiv.innerHTML = `You are logged out. Refresh the page to log in again.`;
         thePegaHere.appendChild(theLogoutMsgDiv);
       }
-    }).catch(err => {
-      // eslint-disable-next-line no-console
-      console.log("Error:",err?.message);
-    });
-  }
+      resolve();
+    };
+    const tokenInfo = getCurrentTokens();
+    if( tokenInfo && tokenInfo.access_token ) {
+        if( window.PCore ) {
+            window.PCore.getAuthUtils().revokeTokens().then(() => {
+                fnClearAndResolve();
+            }).catch(err => {
+                // eslint-disable-next-line no-console
+                console.log("Error:",err?.message);
+            });
+        } else {
+          getAuthMgr(false).then( aMgr => {
+            aMgr.revokeTokens(tokenInfo.access_token, tokenInfo.refresh_token).then(() => {
+              // Go to finally
+            })
+            .finally(() => {
+              fnClearAndResolve();
+            });
 
-}
+          });
+        }
+    } else {
+        fnClearAndResolve();
+    }
+  });
+};
+
+// Callback routine for custom event to ask for updated tokens
+export const authUpdateTokens = (token) => {
+  processTokenOnLogin( token );
+};
+
+
+// Initiate a full OAuth re-authorization.  Assume for embedded we want to do an external reauth and for
+//  non-Embedded we want to have constellation drive the re-auth UI experience
+export const authFullReauth = () => {
+  const bHandleHere = true; // Other alternative is to raise an event and have someone else handle it
+
+  if( bHandleHere ) {
+    // Don't want to do a full clear of authMgr as will loose sessionIndex.  Rather just clear the tokens
+    clearAuthMgr(true);
+    login(true);
+  } else {
+    // Create and dispatch the SdkLoggedIn event to trigger constellationInit
+    // detail will be callback function to call once a new token structure is obtained
+    const event = new CustomEvent('SdkFullReauth', { detail: authUpdateTokens });
+    document.dispatchEvent(event);
+  }
+};

@@ -82,7 +82,8 @@ class PegaAuth {
           this.buildAuthorizeUrl(state).then((url) => {
               let myWindow = null; // popup or iframe
               let elIframe = null;
-              let bWinIframe = (!!this.config.userIdentifier && !!this.config.password) || this.config.authService !== "pega";
+              const iframeTimeout = this.config.silentTimeout !== undefined ? this.config.silentTimeout : 5000;
+              let bWinIframe = iframeTimeout > 0 && ((!!this.config.userIdentifier && !!this.config.password) || this.config.authService !== "pega");
               let tmrAuthComplete = null;
               let checkWindowClosed = null;
               const myWinOnLoad = () => {
@@ -146,7 +147,7 @@ class PegaAuth {
                       // Now try to do regular popup open
                       bWinIframe = false;
                       fnOpenPopup();
-                  }, 5000);
+                  }, iframeTimeout);
               } else {
                   fnOpenPopup();
               }

@@ -229,6 +229,21 @@ const processTokenOnLogin = ( token ) => {
   }
 };
 
+const updateRedirectUri = (aMgr, sRedirectUri) => {
+  const sSI = sessionStorage.getItem("rsdk_CI");
+  let authConfig = null;
+  if( sSI ) {
+    try {
+        authConfig = JSON.parse(sSI);
+    } catch(e) {
+      // do nothing
+    }
+  }
+  authConfig.redirectUri = sRedirectUri;
+  sessionStorage.setItem("rsdk_CI", JSON.stringify(authConfig));
+  aMgr.reloadConfig();
+}
+
 
 export const login = (bFullReauth=false) => {
   if (!SdkConfigAccess) {
@@ -246,10 +261,14 @@ export const login = (bFullReauth=false) => {
 
     // If portal will redirect to main page, otherwise will authorize in a popup window
     if (bPortalLogin && !bFullReauth) {
+      // update redirect uri to be the root
+      updateRedirectUri(aMgr, `${window.location.origin}/`);
       aMgr.loginRedirect();
       // Don't have token til after the redirect
       return Promise.resolve(undefined);
     } else {
+      // Set redirectUri to static auth.html
+      updateRedirectUri(aMgr, `${window.location.origin}/auth.html`)
       return new Promise( (resolve, reject) => {
         aMgr.login().then(token => {
             processTokenOnLogin(token);
@@ -376,7 +395,7 @@ export const authFullReauth = () => {
   if( bHandleHere ) {
     // Don't want to do a full clear of authMgr as will loose sessionIndex.  Rather just clear the tokens
     clearAuthMgr(true);
-    login();
+    login(true);
   } else {
     // Create and dispatch the SdkLoggedIn event to trigger constellationInit
     // detail will be callback function to call once a new token structure is obtained

@@ -5,6 +5,6 @@ export default function Attachment(/* props */) {
 
 
   return (
-      <div>Attachment component: not yet available in the SDK</div>
+      <div>Attachment: <em>Not yet available in the SDK</em></div>
     );
 }

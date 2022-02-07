@@ -182,7 +182,7 @@ export default function SimpleTable(props) {
 
   // Using string literal to force the line break
   const tempPreamble = `SimpleTable component not complete in the React SDK. This is a work in progress...
-    ${ requestedReadOnlyMode ? 'Table is readOnly' : 'You have requested an editable table which is not yet supported. Displaying in a modified readOnly mode.' }`;
+    ${ requestedReadOnlyMode ? 'Table is readOnly' : 'You have requested an editable table which is not yet available. Displaying in a modified readOnly mode.' }`;
 
 
   return (

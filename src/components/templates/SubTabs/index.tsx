@@ -25,7 +25,7 @@ export default function SubTabs() {
 
   return (
       <Card className={classes.root}>
-        <CardHeader title={<Typography variant="h6" component="div">{componentName} - <em>unsupported</em></Typography>} />
+        <CardHeader title={<Typography variant="h6" component="div">{componentName}: <em>Not yet available in the SDK</em></Typography>} />
         <CardContent>
           <Typography>{componentName} content</Typography>
         </CardContent>

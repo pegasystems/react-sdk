@@ -14,6 +14,7 @@ import AppAnnouncement from '../components/widgets/AppAnnouncement';
 import AppShell from '../components/templates/AppShell';
 import Attachment from '../components/Attachment';
 import AutoComplete from '../components/forms/AutoComplete';
+import CaseCreateStage from '../components/CaseCreateStage';
 import CaseHistory from '../components/widgets/CaseHistory';
 import CaseSummary from '../components/templates/CaseSummary';
 import CaseView from '../components/templates/CaseView';
@@ -37,6 +38,7 @@ import Region from '../components/Region';
 import RootContainer from '../components/RootContainer';
 import SimpleTable from '../components/templates/SimpleTable';
 import Stages from '../components/Stages';
+import Text from '../components/forms/Text';
 import TextArea from '../components/forms/TextArea';
 import TextContent from '../components/forms/TextContent';
 import TextInput from '../components/forms/TextInput';
@@ -45,6 +47,7 @@ import ToDo from '../components/ToDo';
 import URLComponent from '../components/forms/URL';
 import View from '../components/View';
 import ViewContainer from '../components/ViewContainer';
+import ModalViewContainer from '../components/ModalViewContainer';
 
 const connectRedux = (component) => {
 
@@ -135,12 +138,16 @@ const getComponent = (c11nEnv, declarative) => {
         component = AutoComplete;
         break;
 
-      case "CaseSummary":
-        component = CaseSummary;
+      case "CaseCreateStage":
+        component = CaseCreateStage;
         break;
 
       case "CaseHistory":
         component = CaseHistory;
+        break;
+
+      case "CaseSummary":
+        component = CaseSummary;
         break;
 
       case "CaseView":
@@ -195,6 +202,10 @@ const getComponent = (c11nEnv, declarative) => {
         component = Integer;
         break;
 
+      case "ModalViewContainer":
+        component = ModalViewContainer;
+        break;
+
       case "Percentage":
         component = Percentage;
         break;
@@ -225,6 +236,10 @@ const getComponent = (c11nEnv, declarative) => {
 
       case "Stages":
         component = Stages;
+        break;
+
+      case "Text":
+        component = Text;
         break;
 
       case "TextArea":

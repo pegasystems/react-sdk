@@ -142,6 +142,9 @@ export default function View(props) {
         break;
     }
 
+    // for debugging/investigation
+    // console.log(`View rendering template: ${template}`);
+
     // spreading because all props should go to the template
     let RenderedTemplate = <ViewTemplate {...props}>{children}</ViewTemplate>;
 

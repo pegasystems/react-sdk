@@ -244,6 +244,12 @@ export default function FlowContainer(props) {
     //  a different operator. So, see if there are any assignments for
     //  the current operator
     let bAssignmentsForThisOperator = false;
+
+    // Bail out if there isn't an assignmentsList
+    if (!assignmentsList) {
+      return bHasAssignments;
+    }
+
     for (const assignment of assignmentsList) {
       if (assignment["assigneeInfo"]["ID"] === thisOperator) {
         bAssignmentsForThisOperator = true;

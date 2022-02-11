@@ -33,6 +33,7 @@ import Percentage from '../components/forms/Percentage';
 import Phone from '../components/forms/Phone';
 import Pulse from '../components/Pulse';
 import RadioButtons from '../components/forms/RadioButtons';
+import Reference from '../components/Reference';
 import Region from '../components/Region';
 import RootContainer from '../components/RootContainer';
 import SimpleTable from '../components/templates/SimpleTable';
@@ -209,6 +210,11 @@ const getComponent = (c11nEnv, declarative) => {
 
       case "RadioButtons":
         component = RadioButtons;
+        break;
+
+      case "reference":
+      case "Reference":
+        component = Reference;
         break;
 
       case "Region":

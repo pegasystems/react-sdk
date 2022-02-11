@@ -30,7 +30,9 @@ import './ToDo.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    paddingBottom: theme.spacing(2),
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
     borderLeft: "6px solid",
     borderLeftColor: theme.palette.primary.light
   },

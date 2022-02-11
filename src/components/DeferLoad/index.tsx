@@ -135,6 +135,13 @@ export default function DeferLoad(props) {
         break;
       }
 
+      case "reference":
+      case "Reference": {
+        const theReferenceAsReact = createElement(createPConnectComponent(), createdPConnect);
+        arComponent.push(theReferenceAsReact);
+        break;
+      }
+
       case "":
         // Until loadActiveTab has loaded the View, it's normal for componentName to be blank.
         //  This means there's nothing to show yet.

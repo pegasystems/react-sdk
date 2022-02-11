@@ -26,7 +26,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
-
+import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -56,6 +56,7 @@ export default function ListView(props) {
   const thePConn = getPConnect();
 
   const componentConfig = thePConn.getComponentConfig();
+  const resolvedConfigProps = thePConn.getConfigProps();
 
   const [arRows, setRows] = useState<Array<any>>([]);
   const [arColumns, setColumns] = useState<Array<any>>([]);
@@ -77,6 +78,7 @@ export default function ListView(props) {
     },
     paper: {
       width: '100%',
+      marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
     },
     search: {
@@ -110,6 +112,10 @@ export default function ListView(props) {
       top: 20,
       width: 1,
     },
+    title: {
+      marginTop: theme.spacing(1),
+      marginLeft: theme.spacing(1),
+    }
   }),
 );
 
@@ -797,14 +803,38 @@ export default function ListView(props) {
       default:
         break;
     }
+  }
 
+  function _listTitle() {
+    const defaultTitle = "List";
+    let title = resolvedConfigProps.title ? resolvedConfigProps.title : defaultTitle;
+    const inheritedProps = resolvedConfigProps?.inheritedProps;
+
+    // Let any title in resolvedConfigProps that isn't the default take precedence
+    //  but only look in inheritedProps if they exist
+    if (title === defaultTitle && inheritedProps) {
+      for (const inheritedProp of inheritedProps) {
+        if (inheritedProp?.prop === "label") {
+          title = inheritedProp?.value;
+          break;
+        }
+      }
+    }
+
+    return title;
 
   }
+
+  // eslint-disable-next-line no-debugger
+  debugger;
 
   return (
     <>
     { arColumns && arColumns.length > 0 &&
-      <Paper>
+      <Paper className={classes.paper}>
+        <Typography className={classes.title} variant="h6" color="textPrimary" gutterBottom>
+          { _listTitle() }
+        </Typography>
          {globalSearch &&
             <Grid container spacing={1} alignItems="flex-end" className={classes.search}>
                <Grid item>

@@ -825,8 +825,6 @@ export default function ListView(props) {
 
   }
 
-  // eslint-disable-next-line no-debugger
-  debugger;
 
   return (
     <>

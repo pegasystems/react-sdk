@@ -46,6 +46,7 @@ import ToDo from '../components/ToDo';
 import URLComponent from '../components/forms/URL';
 import View from '../components/View';
 import ViewContainer from '../components/ViewContainer';
+import ModalViewContainer from '../components/ModalViewContainer';
 
 const connectRedux = (component) => {
 
@@ -136,15 +137,15 @@ const getComponent = (c11nEnv, declarative) => {
         component = AutoComplete;
         break;
 
-      case "CaseSummary":
-        component = CaseSummary;
-        break;
-
       case "CaseHistory":
         component = CaseHistory;
         break;
 
-      case "CaseView":
+      case "CaseSummary":
+        component = CaseSummary;
+        break;
+
+        case "CaseView":
         component = CaseView;
         break;
 
@@ -194,6 +195,10 @@ const getComponent = (c11nEnv, declarative) => {
 
       case "Integer":
         component = Integer;
+        break;
+
+      case "ModalViewContainer":
+        component = ModalViewContainer;
         break;
 
       case "Percentage":
@@ -457,6 +462,7 @@ const createPConnectComponent = (declarative=false) => {
 
 // Move these into ConstellationReady so PCore is available
 document.addEventListener("ConstellationReady", () => {
+
   // eslint-disable-next-line no-undef
   PCore.registerComponentCreator((c11nEnv, additionalProps = {}) => {
     const PConnectComp = createPConnectComponent();

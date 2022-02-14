@@ -239,7 +239,7 @@ const RootContainer = (props) => {
     return (
       <div id="ModalManager">
           {rootView}
-          <div id="MemoizedModalViewContainer"></div>
+          {MemoizedModalViewContainer}
           <div id="MemoizedPreviewViewContainer"></div>
           <div id="ReAuthMessageModal"></div>
       </div>
@@ -271,15 +271,18 @@ const RootContainer = (props) => {
     // <ModalManager>
     //       {httpMessages ? <div id="root-container">{banners}</div> : ""}
     //       {children}
-    //       {MemoisedModalViewContainer}
+    //       {MemoizedModalViewContainer}
     //       <ReAuthMessageModal openModal={false} key="reauthMessageModel" />
     //       {MemoizedPreviewViewContainer}
     //     </ModalManager>
 
     return (
-      <div id="root-container">
+      <React.Fragment>
         <div>RootContainer: Has children. Trying to show ModalManager with children, etc.</div>
-      </div>
+        {children}
+        {MemoizedModalViewContainer}
+      </React.Fragment>
+
     );
   } else if (skeleton) {
     // TODO: need to update once skeletons are available

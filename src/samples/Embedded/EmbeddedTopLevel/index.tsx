@@ -8,9 +8,7 @@ import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles
 import StoreContext from "../../../bridge/Context/StoreContext";
 import createPConnectComponent from "../../../bridge/react_pconnect";
 
-import { gbLoggedIn } from '../../../helpers/authWrapper';
-
-import { constellationInit } from "../../../helpers/c11nboot";
+import { gbLoggedIn, loginIfNecessary } from '../../../helpers/authWrapper';
 
 import EmbeddedSwatch from '../EmbeddedSwatch';
 import { compareSdkPCoreVersions } from '../../../helpers/versionHelpers';
@@ -507,11 +505,10 @@ export default function EmbeddedTopLevel() {
 
   }
 
+  document.addEventListener("SdkConfigAccessReady", () => {
+    // Login and indicate this is an embedded scenario
+    loginIfNecessary("embedded", true);
 
-  document.addEventListener("SdkLoggedIn", (event: any) => {
-    // eslint-disable-next-line no-console
-    console.log(`SdkLoggedIn received`);
-    constellationInit( event.detail.authConfig, event.detail.tokenInfo );
   });
 
   document.addEventListener("ConstellationReady", () => {

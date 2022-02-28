@@ -9,7 +9,7 @@
     "mashupClient_comment2": "See SDK Guide for instructions on how to generate and obtain the proper values for the following entries",
     "mashupClientId": "88249793673398954156",
     "mashupUserIdentifier": "customer@mediaco",
-    "mashupPassword": "cGVnYQ==",
+    "mashupPassword": "",
 
     "portalClientId_comment": "Client ID from the OAuth 2.0 Client Registration record used for portal use case",
     "portalClientId": "88249793673398954156"
@@ -17,6 +17,8 @@
   "serverConfig": {
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
     "infinityRestServerUrl": "https://localhost:1080/prweb",
+    "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
+    "appAlias": "",
 
     "sdkContentServerUrl_comment": "If specified, the given URL will be used. If left blank, window.location.origin will be used.",
     "sdkContentServerUrl": "",

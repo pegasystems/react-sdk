@@ -1,5 +1,5 @@
 {
-  "comment_sdk_config": "This is the configuration file for the Web-Components-SDK",
+  "comment_sdk_config": "This is the configuration file for the React-SDK",
   "authConfig": {
     "authConfig_comment": "Optional Full paths to Infinity server OAuth endpoints (Only needed if using custom OAuth service)",
     "authConfig_comment2": "Optional attributes are: authorize, token, revoke, authService, silentTimeout",

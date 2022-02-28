@@ -71,13 +71,13 @@ file.
       this configuration setting!
       * **portalClientID** specifies the Client ID of the Infinity OAuth 2.0 Client
       Registration record that will be used by the SDK for the **/portal** use.
-      * **appAlias** allows you specify the application alias that the operator that is logging in will use. (E.g., "MediaCo").
-      When specified, this value will be used to further constrain the REST URL
-      that the Constellation JavaScript Engine uses when making REST calls to Infinity.
    <br><br>
     * The **serverConfig** section contains values related to the Pega Infinity server and SDK Content Server.
       * **infinityRestServerUrl** indicates where the SDK expects to find the Infinity REST server. The default configuration is set to **https://localhost:1080/prweb**. You will need to change this if you are using a
       different path to access your Infinity server.
+      * **appAlias** specifies the application alias the operator that is logging in will use. (E.g., "MediaCo").
+      When specified, this value will be used to further constrain the REST URL
+      that the Constellation JavaScript Engine uses when making REST calls to Infinity.
     <br><br>
 
 3. Obtain the necessary Constellation files (ex: bootstrap-shell, lib_asset, constellation-core) that need to be installed to enable the SDK to connect to the Constellation UI Service. Licensed and authorized Pega clients can access these files from https://community.pega.com/ or from a Pega representative. Instructions for installing these files can be found in **constellation/__Install-constellation-files.md**

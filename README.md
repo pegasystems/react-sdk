@@ -125,7 +125,7 @@ file.
 
 ### **Access** the sample application from your browser
 
-**NOTE**: It is _**strongly recommended**_ that you test that you confirm
+**NOTE**: It is _**strongly recommended**_ that you confirm
 that the **MediaCo** sample application is working for **both** the **/portal**
 and **/embedded** usage before you try to get the SDK working for your
 own application. This will validate the SDK installation with a known good

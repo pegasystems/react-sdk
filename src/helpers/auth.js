@@ -49,7 +49,7 @@ class PegaAuth {
       }
 
       // Trim alias to include just the real alias piece
-      const addtlScope = appAlias ? `+app.alias${appAlias.replace(/^app\//, '')}` : "";
+      const addtlScope = appAlias ? `+app.alias.${appAlias.replace(/^app\//, '')}` : "";
 
       // Add explicit creds if specified to try to avoid login popup
       const moreAuthArgs =

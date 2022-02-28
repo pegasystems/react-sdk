@@ -80,7 +80,8 @@ export const authIsEmbedded = () => {
 const initOAuth = (bInit) => {
 
   const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
-  const pegaUrl = SdkConfigAccess.getSdkConfigServer().infinityRestServerUrl;
+  const sdkConfigServer = SdkConfigAccess.getSdkConfigServer();
+  const pegaUrl = sdkConfigServer.infinityRestServerUrl;
   const bIsEmbedded = authIsEmbedded();
 
   // Construct default OAuth endpoints (if not explicitly specified)
@@ -111,6 +112,9 @@ const initOAuth = (bInit) => {
     authService: sdkConfigAuth.authService,
     useLocking: true
   };
+  if( sdkConfigServer.appAlias ) {
+    authConfig.appAlias = sdkConfigServer.appAlias;
+  }
   if( 'silentTimeout' in sdkConfigAuth ) {
     authConfig.silentTimeout = sdkConfigAuth.silentTimeout;
   }

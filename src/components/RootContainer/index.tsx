@@ -102,7 +102,6 @@ const RootContainer = (props) => {
     // />
     // );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const MemoizedModalViewContainer = useMemo(() => {
     return createElement(
       createPConnectComponent(),

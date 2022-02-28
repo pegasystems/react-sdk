@@ -5,9 +5,9 @@ import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import StoreContext from "../../bridge/Context/StoreContext";
 import createPConnectComponent from "../../bridge/react_pconnect";
-import { constellationInit } from "../../helpers/c11nboot";
 import { SdkConfigAccess } from '../../helpers/config_access';
 import { compareSdkPCoreVersions } from '../../helpers/versionHelpers';
+import { loginIfNecessary } from '../../helpers/authWrapper';
 
 declare const PCore: any;
 declare const myLoadPortal: any;
@@ -132,18 +132,18 @@ export default function FullPortal() {
     })
   }
 
-  document.addEventListener("SdkLoggedIn", (event: any) => {
-    // eslint-disable-next-line no-console
-    console.log(`SdkLoggedIn received`);
-    constellationInit( event.detail.authConfig, event.detail.tokenInfo );
-  });
-
 
   document.addEventListener("ConstellationReady", () => {
     // start the portal
     startPortal();
   });
 
+  document.addEventListener("SdkConfigAccessReady", () => {
+
+    // Login and indicate not an embedded scenario
+    loginIfNecessary("portal",false);
+
+  });
 
   return (
     <div>

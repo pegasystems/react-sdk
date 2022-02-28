@@ -23,7 +23,7 @@
     "build-dev-only": "webpack --mode=development && npm run copy-index && npm run copy-configs",
     "build-prod-only": "webpack --mode=production && npm run copy-index && npm run copy-configs",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "copy-index": "shx cp dist/index.html dist/simpleportal.html && shx cp dist/index.html dist/portal.html && shx cp dist/index.html dist/fullportal.html && shx cp dist/index.html dist/embedded.html && shx cp dist/index.html dist/mashup.html"
+    "copy-index": "shx cp dist/index.html dist/simpleportal.html && shx cp dist/index.html dist/portal.html && shx cp dist/index.html dist/fullportal.html && shx cp dist/index.html dist/embedded.html"
   },
   "dependencies": {
     "@date-io/dayjs": "^1.3.13",

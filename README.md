@@ -53,14 +53,28 @@ See the React SDK Guide available at Pega Marketplace for complete instructions.
 
 ### **Configure** the React SDK
 
-2. Edit **sdk-config.js** and, if necessary, update the values that will be used
-    * The **authConfig** section contains values for the information you obtained earlier from OAuth: the Client ID, endpoints, etc.<br><br>
-      * **Note:** it is **required** that you configure a value for **authConfig.mashupClientSecret**.
-      * Navigate to Records / Security / OAuth 2.0 Client Registration landing page and open the `SDK-OAuth` record
-      * Click the **Regenerate Client Secret** button, download the Client Credentials (as the ClientID and Secret values will be needed) and save the record.
-      * Then, use the generated **Client Secret** value as the value for**authConfig.mashupClientSecret**. (The ClientID value should remain unchanged.)
-      <br><br>
+See the **React SDK Guide** in the Marketplace download for more complete documentation about the configuration of the React SDK via the **sdk-config.json**
+file.
+
+2. Edit **sdk-config.json** and, if necessary, update the values that will be used
+    * The **authConfig** section contains values related to the OAuth 2.0 client
+    registration record you will be using and Operator ID and login infomation
+    related to the /embedded use. The default **sdk-config.json** file is set up to use the **MediaCoOauth** record that is included with the MediaCo sample application.<br><br>
+      * **authService** specifies the authentication service that will be used by the Infinity server to authenticate Operator IDs. The default configuration uses the built-in Infinity authentication service: **pega**.
+      * **mashupClientID** specifies the Client ID of the Infinity OAuth 2.0 Client
+      Registration record that will be used by the SDK for the **/embedded** use.
+      * **mashupUserIdentifier** specifies the Operator ID that will be logged in
+      automatically on behalf of the user for the /embedded use.
+      * **mashupPassword** specifies the base64 encoding of the password for the
+      Operator ID given in the **mashupUserIdentifier** (above). You can use a tool such as [https://www.base64encode.org](https://www.base64encode.org) to
+      generate a base64 encoding from a plaintext string. **NOTE**: The **/embedded** use _**will not work**_ until the correct password is provided in
+      this configuration setting!
+      * **portalClientID** specifies the Client ID of the Infinity OAuth 2.0 Client
+      Registration record that will be used by the SKD for the **/portal** use.
+   <br><br>
     * The **serverConfig** section contains values related to the Pega Infinity server and SDK Content Server.
+      * **infinityRestServerUrl** indicates where the SDK expects to find the Infinity REST server. The default configuration is set to **https://localhost:1080/prweb**. You will need to change this if you are using a
+      different path to access your Infinity server.
     <br><br>
 
 3. Obtain the necessary Constellation files (ex: bootstrap-shell, lib_asset, constellation-core) that need to be installed to enable the SDK to connect to the Constellation UI Service. Licensed and authorized Pega clients can access these files from https://community.pega.com/ or from a Pega representative. Instructions for installing these files can be found in **constellation/__Install-constellation-files.md**
@@ -107,6 +121,13 @@ See the React SDK Guide available at Pega Marketplace for complete instructions.
 <br>
 
 ### **Access** the sample application from your browser
+
+**NOTE**: It is _**strongly recommended**_ that you test that you confirm
+that the **MediaCo** sample application is working for **both** the **/portal**
+and **/embedded** usage before you try to get the SDK working for your
+own applicaiton. This will validate the SDK installation with a known good
+application.
+
 
 6. **Embedded** (formerly known as Mashup)
 

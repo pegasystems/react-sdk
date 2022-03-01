@@ -248,7 +248,7 @@ If the `MediaCo` app was imported to your Infinity server, a `MediaCoOAuth` OAut
    * Select "Authorization Code" for the Grant type
    * Add RedirectURI values based on what was specified above: auth.html as well as ones for any non embedded scenarios you want to directly access via a url. For non-embedded portal scenarios, it will redirect back to that same portal page route
    * Enable the "Enable proof code for pkce" option
-   * Set the "Access token lifetime" to the interval you want the logged in session to last before the token is silently refreshed. We recommend somewhere between 15 minutes (900) and at most 60 minutes (3600).
+   * Set the "Access token lifetime" to the interval you want the logged in session to last before the token is silently refreshed. We recommend somewhere between 10 minutes (600) and at most 60 minutes (3600).
    * Set the "Refresh token lifetime" to the interval before the user should encounter a full re-authentication challenge. We recommend somewhere between 18 hours (64800) and 24 hours (86400).
    * Enter the appropriate values within **sdk-config.json**
 

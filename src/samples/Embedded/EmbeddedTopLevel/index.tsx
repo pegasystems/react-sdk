@@ -8,7 +8,7 @@ import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles
 import StoreContext from "../../../bridge/Context/StoreContext";
 import createPConnectComponent from "../../../bridge/react_pconnect";
 
-import { gbLoggedIn, loginIfNecessary } from '../../../helpers/authWrapper';
+import { gbLoggedIn, loginIfNecessary } from '../../../helpers/authManager';
 
 import EmbeddedSwatch from '../EmbeddedSwatch';
 import { compareSdkPCoreVersions } from '../../../helpers/versionHelpers';

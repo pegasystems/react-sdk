@@ -33,7 +33,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useNavBar } from "../templates/AppShell";
 
-import { logout } from '../../helpers/authWrapper';
+import { logout } from '../../helpers/authManager';
 
 declare const PCore;
 

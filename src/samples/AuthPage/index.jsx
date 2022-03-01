@@ -1,5 +1,5 @@
 import React from 'react';
-import { getHomeUrl, authIsMainRedirect, authRedirectCallback } from "../../helpers/authWrapper";
+import { getHomeUrl, authIsMainRedirect, authRedirectCallback } from "../../helpers/authManager";
 
 function getEmbedOriginFromState(state) {
   let embedOrigin = null;

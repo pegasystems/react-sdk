@@ -15,7 +15,7 @@ The alternative design system used in this React SDK is Material UI (https://mui
 
 ## Pega Infinity Server and Constellation-enabled Application
 
-The React SDK assumes that you have access to a Pega Infinity server (8.7.0 GA) running an application that is configured to run using the Constellation UI service.
+The React SDK assumes that you have access to a Pega Infinity server (8.7.0 GA) running an application that is configured to run using the Constellation UI service. The sample application can be found in the React SDK download associated with this repo that will be available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk)
 
 The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk)
 

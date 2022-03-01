@@ -7,7 +7,7 @@ import StoreContext from "../../bridge/Context/StoreContext";
 import createPConnectComponent from "../../bridge/react_pconnect";
 import { SdkConfigAccess } from '../../helpers/config_access';
 import { compareSdkPCoreVersions } from '../../helpers/versionHelpers';
-import { loginIfNecessary } from '../../helpers/authWrapper';
+import { loginIfNecessary } from '../../helpers/authManager';
 
 declare const PCore: any;
 declare const myLoadPortal: any;

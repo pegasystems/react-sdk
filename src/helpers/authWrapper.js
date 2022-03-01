@@ -185,11 +185,12 @@ export const updateLoginStatus = () => {
 const getCurrentTokens = () => {
   let tokens = null;
   const sTI = sessionStorage.getItem('rsdk_TI');
-  if(!sTI) return;
-  try {
-    tokens = JSON.parse(sTI);
-  } catch(e) {
-    tokens = null;
+  if(sTI) {
+    try {
+      tokens = JSON.parse(sTI);
+    } catch(e) {
+      tokens = null;
+    }
   }
   return tokens;
 };

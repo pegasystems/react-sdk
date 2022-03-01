@@ -215,9 +215,9 @@ To ensure that the application is redirected to the proper page after authentica
 
 The MediaCoOauth record that is included with the MediaCo sample application include the necessary redirect URIs for the default configuration:
 
-* http://localhost:3502/portal and https://localhost:3502/portal for the Portal use case
+* http://localhost:3502/portal and https://localhost:3502/portal for the Portal use case (initial portal authentication)
 
-*	http://localhost:3502/embedded/auth.html and https://localhost:3502/embedded/auth.html for the Embedded use case
+*	http://localhost:3502/auth.html and https://localhost:3502/auth.html for all Embedded use cases as well as for any full reAuthentication challenges for non-embedded use cases
 
 If you configure your installation to have the React SDK static content served from a different **host:port** than the default, you should add new Redirect URIs to the list:
 
@@ -227,9 +227,9 @@ If you configure your installation to have the React SDK static content served f
 
   * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/portal (for the portal use case)
 
-  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/embedded/auth.html (for the embedded use case)
+  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html (for the embedded use case as well as for any full re-authentication scenarios for any sample page))
 
-  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/embedded/auth.html (for the embedded use case)
+  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html (for the embedded use case as well as for any full re-authentication scenarios for any sample page))
 
   * Note that entries are needed for either **http** or **https** depending on how you access your React SDK server
 
@@ -246,9 +246,10 @@ If the `MediaCo` app was imported to your Infinity server, a `MediaCoOAuth` OAut
    * You might name it the same name as your applicaion
    * Specify "Public" for the type of client
    * Select "Authorization Code" for the Grant type
-   * Add a RedirectURI value based on the url used to access the deployed React SDK (e.g., http://localhost:3502/auth.html)
+   * Add RedirectURI values based on what was specified above: auth.html as well as ones for any non embedded scenarios you want to directly access via a url. For non-embedded portal scenarios, it will redirect back to that same portal page route
    * Enable the "Enable proof code for pkce" option
-   * Set the "Access token lifetime" for how long you want the logged in session to last before the token is refreshed.
+   * Set the "Access token lifetime" to the interval you want the logged in session to last before the token is silently refreshed. We recommend somewhere between 15 minutes (900) and at most 60 minutes (3600).
+   * Set the "Refresh token lifetime" to the interval before the user should encounter a full re-authentication challenge. We recommend somewhere between 18 hours (64800) and 24 hours (86400).
    * Enter the appropriate values within **sdk-config.json**
 
 <br>

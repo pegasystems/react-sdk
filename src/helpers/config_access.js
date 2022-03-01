@@ -1,6 +1,6 @@
 // Helper singleton class to assist with loading and accessing
 //  the SDK Config JSON
-import {authGetAccessToken} from './authWrapper';
+import {authGetAccessToken} from './authManager';
 class ConfigAccess {
 
   static sdkConfig = {};

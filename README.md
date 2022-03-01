@@ -132,7 +132,7 @@ own application. This will validate the SDK installation with a known good
 application.
 
 
-6. **Embedded** (formerly known as Mashup)
+6. **Embedded**
 
     6.1 Access **http://localhost:3502/embedded** or **https://localhost:3502/embedded** (if run start-*-https was used)
 
@@ -202,34 +202,34 @@ Typically, you can resolve this error by indicating to your browser that you are
 
 ### Verify/update OAuth 2.0 Client Registration Infinity records
 
-The MediaCo sample application (available to Pega licensed users) includes OAuth Client Registration records that it uses for authentication in your Infinity server (available in Security | OAuth 2.0 Client Registration): **MediaCoOauthNoLogin** (for the Embedded use case) and **MediaCoOauth** (for the Portal use case).
+The MediaCo sample application (available to Pega licensed users) includes an OAuth Client Registration record that it uses for authentication in your Infinity server (available in Security | OAuth 2.0 Client Registration): **MediaCoOauth** (for the Portal and Embedded use cases).
 
-You may use these records. If you want to create your own OAuth 2.0 Client Registration record, please refer to the **How to create OAuth2 registration in Infinity** section found below.
+You may use this existing registration record. If you want to create your own OAuth 2.0 Client Registration record, please refer to the **How to create OAuth2 registration in Infinity** section found below.
 
-* For the **Embedded** use case, you will use the OAuth 2.0 Client Registration record’s **Client ID** and **Client secret** as the values for **mashupClientId** and **mashupClientSecret** in the SDK’s **sdk-config.js** file.
+* For the **Embedded** use case, you will use the OAuth 2.0 Client Registration record’s **Client ID** as the value for **mashupClientId** in the SDK’s **sdk-config.js** file.
 
 * For the **Portal** use case, you will use the OAuth 2.0 Client Registration record’s **Client ID** as the value of **portalClientId** in the SDK’s **sdk-config.js** file.
 
 
 To ensure that the application is redirected to the proper page after authentication succeeds, you may need to update the OAuth 2.0 Client Registration record’s **List of redirect URIs** shown in the record’s **Supported grant types** section.
 
-The MediaCoOauth and MediaCoOauthNoLogin records that are included with the MediaCo sample application include the necessary redirect URIs for the default configuration:
+The MediaCoOauth record that is included with the MediaCo sample application include the necessary redirect URIs for the default configuration:
 
-* http://localhost:3502/auth.html and https://localhost:3502/auth.html for the Portal use case
+* http://localhost:3502/portal and https://localhost:3502/portal for the Portal use case (initial portal authentication)
 
-*	http://localhost:3502/mashup/auth.html and https://localhost:3502/mashup/auth.html for the Embedded use case
+*	http://localhost:3502/auth.html and https://localhost:3502/auth.html for all Embedded use cases as well as for any full reAuthentication challenges for non-embedded use cases
 
 If you configure your installation to have the React SDK static content served from a different **host:port** than the default, you should add new Redirect URIs to the list:
 
 * In the **Supported grant types** section add the following URLS to the list of redirect URLs by clicking on the + sign. (Note that the default port is 3502.)
 
-  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html (for the portal use case)
+  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/portal (for the portal use case)
 
-  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html (for the portal use case)
+  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/portal (for the portal use case)
 
-  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/mashup/auth.html
+  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html (for the embedded use case as well as for any full re-authentication scenarios for any sample page))
 
-  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/mashup/auth.html
+  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html (for the embedded use case as well as for any full re-authentication scenarios for any sample page))
 
   * Note that entries are needed for either **http** or **https** depending on how you access your React SDK server
 
@@ -244,11 +244,12 @@ If you configure your installation to have the React SDK static content served f
 If the `MediaCo` app was imported to your Infinity server, a `MediaCoOAuth` OAuth 2.0 Client Registration record will have been imported as well. That record's clientId is currently referenced within sdk-config.json.  However, you can create your own OAuth 2.0 Client Registration record using the following procedure:
    * Create a new "Security/OAuth 2.0 Client Registration" record for your app
    * You might name it the same name as your applicaion
-   * Specify "Public" for the type of client (as browser apps are not able to prevent any "Client secret" from being compromised)
+   * Specify "Public" for the type of client
    * Select "Authorization Code" for the Grant type
-   * Add a RedirectURI value based on the url used to access the deployed React SDK (e.g., http://localhost:3502/auth.html)
+   * Add RedirectURI values based on what was specified above: auth.html as well as ones for any non embedded scenarios you want to directly access via a url. For non-embedded portal scenarios, it will redirect back to that same portal page route
    * Enable the "Enable proof code for pkce" option
-   * Set the "Access token lifetime" for how long you want the logged in session to last.  Pega does not presently support the ability to referesh the token (for Public clients), so the user will have to reauthenticate again after this interval.
+   * Set the "Access token lifetime" to the interval you want the logged in session to last before the token is silently refreshed. We recommend somewhere between 10 minutes (600) and at most 60 minutes (3600).
+   * Set the "Refresh token lifetime" to the interval before the user should encounter a full re-authentication challenge. We recommend somewhere between 18 hours (64800) and 24 hours (86400).
    * Enter the appropriate values within **sdk-config.json**
 
 <br>

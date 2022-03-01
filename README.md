@@ -132,7 +132,7 @@ own application. This will validate the SDK installation with a known good
 application.
 
 
-6. **Embedded** (formerly known as Mashup)
+6. **Embedded**
 
     6.1 Access **http://localhost:3502/embedded** or **https://localhost:3502/embedded** (if run start-*-https was used)
 

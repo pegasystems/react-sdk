@@ -14,7 +14,7 @@ The React SDK is the initial GA release.  It is built on the new and modernized 
 
 ## Pega Infinity Server and Constellation-enabled Application
 
-The React SDK assumes that you have access to a Pega Infinity server (8.6.1 GA) running an application that is configured to run using the Constellation UI service. The sample application can be found in the React SDK download associated with this repo that will be available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk)
+The React SDK assumes that you have access to a Pega Infinity server (8.7.0 GA) running an application that is configured to run using the Constellation UI service. The sample application can be found in the React SDK download associated with this repo that will be available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk)
 
 We provide a sample application - **MediaCo** - to licensed Pega Infinity customers that is configured as a Constellation application.
 
@@ -215,21 +215,21 @@ To ensure that the application is redirected to the proper page after authentica
 
 The MediaCoOauth record that is included with the MediaCo sample application include the necessary redirect URIs for the default configuration:
 
-* http://localhost:3502/portal and https://localhost:3502/portal for the Portal use case (initial portal authentication)
+* http://localhost:3502/auth.html and https://localhost:3502/auth.html for all Embedded use cases as well as for any full reAuthentication challenges for non-embedded use cases
 
-*	http://localhost:3502/auth.html and https://localhost:3502/auth.html for all Embedded use cases as well as for any full reAuthentication challenges for non-embedded use cases
+* http://localhost:3502/portal and https://localhost:3502/portal for initial authentication for the Portal use case
 
 If you configure your installation to have the React SDK static content served from a different **host:port** than the default, you should add new Redirect URIs to the list:
 
 * In the **Supported grant types** section add the following URLS to the list of redirect URLs by clicking on the + sign. (Note that the default port is 3502.)
 
-  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/portal (for the portal use case)
+  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html (for the embedded use case as well as for any full re-authentication scenarios for any sample page)
 
-  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/portal (for the portal use case)
+  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html (for the embedded use case as well as for any full re-authentication scenarios for any sample page)
 
-  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html (for the embedded use case as well as for any full re-authentication scenarios for any sample page))
+  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/portal (for initial authentication for the portal use case)
 
-  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html (for the embedded use case as well as for any full re-authentication scenarios for any sample page))
+  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/portal (for initial authentication for the portal use case)
 
   * Note that entries are needed for either **http** or **https** depending on how you access your React SDK server
 

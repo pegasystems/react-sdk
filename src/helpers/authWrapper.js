@@ -7,7 +7,7 @@
 
 import { SdkConfigAccess } from './config_access';
 import PegaAuth from './auth';
-import { constellationInit } from '../helpers/c11nboot';
+import { constellationInit } from './c11nboot';
 
 // eslint-disable-next-line import/no-mutable-exports
 export let gbLoggedIn = sessionStorage.getItem('accessToken') !== null;
@@ -25,10 +25,10 @@ let usePopupForRestOfSession = sessionStorage.getItem("rsdk_popup") === "1";
  */
 const forcePopupForReauths = ( bForce ) => {
   if( bForce ) {
-      sessionStorage.setItem("pega_react_popup", "1");
+      sessionStorage.setItem("rsdk_popup", "1");
       usePopupForRestOfSession = true;
   } else {
-      sessionStorage.removeItem("pega_react_popup");
+      sessionStorage.removeItem("rsdk_popup");
       usePopupForRestOfSession = false;
   }
 };
@@ -325,7 +325,7 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
  * Silent or visible login based on login status
  */
 export const loginIfNecessary = (appName, isEmbedded=false, deferLogin=false) => {
-  // If embedded status of page changed...logout
+  // If embedded status of page changed...clearAuthMgr
   const currEmbedded = authIsEmbedded();
   const currAppName = sessionStorage.getItem("rsdk_appName");
   if( appName !== currAppName || isEmbedded !== currEmbedded) {

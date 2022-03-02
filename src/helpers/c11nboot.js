@@ -70,7 +70,7 @@ export const constellationInit = (authConfig, tokenInfo, authTokenUpdated, authF
     .catch( e => {
       // Assume error caught is because token is not valid and attempt a full reauth
       // eslint-disable-next-line no-console
-      console.log(`Constellation JS Engine bootstrap failed. ${e}`);
+      console.error(`Constellation JS Engine bootstrap failed. ${e}`);
       authFullReauth();
     })
   });

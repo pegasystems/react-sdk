@@ -80,7 +80,7 @@ file.
       different path to access your Infinity server.
       * **appAlias** is the application alias that operatorIDs logging in to this instance of the React SDK content server will use. (E.g., "MediaCo").
       When specified, this value will be used to further constrain the REST URL
-      that the Constellation JavaScript Engine uses when making REST calls to Infinity. It is **_strongly recommended_** that the appAlias value be set before putting an application into production to further improve the security of the application.
+      that the Constellation JavaScript Engine uses when making REST calls to Infinity. It is **_strongly recommended_** that the appAlias value be set before putting an application into production to allow operators who may have the application access group listed as the _non-primary_ access group also work.
     <br><br>
 
 3. Obtain the necessary Constellation files (ex: bootstrap-shell, lib_asset, constellation-core) that need to be installed to enable the SDK to connect to the Constellation UI Service. These are available in the React SDK download available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). Instructions for installing these files can be found in **constellation/__Install-constellation-files.md**

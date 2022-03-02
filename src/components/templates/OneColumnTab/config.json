@@ -1,0 +1,17 @@
+{
+  "name": "OneColumnTab",
+  "label": "One column",
+  "description": "One column",
+  "type": "Template",
+  "subtype": "TAB",
+  "icon": "OneColumnTab.svg",
+  "viewNameLabel": "Tab name",
+  "properties": [
+    {
+      "name": "A",
+      "label": "Region A",
+      "format": "CONTENTPICKER",
+      "addTypeList": ["Widgets", "Views", "Fields", "Insights"]
+    }
+  ]
+}

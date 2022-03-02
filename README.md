@@ -20,8 +20,8 @@ The React SDK assumes that you have access to a Pega Infinity server (8.7.0 GA) 
 The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download.
 
 The **React SDK** has been tested with:
-- node 14.18.1
-- npm 6.14.15
+- node 14.18.*
+- npm 6.14.*
 
 Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
 
@@ -208,7 +208,7 @@ Typically, you can resolve this error by indicating to your browser that you are
 
 ### Verify/update OAuth 2.0 Client Registration Infinity records
 
-The **React SDK** sample application is preconfigured to use the **MediaCo_ReactSDK** Client Registration record that is included in the React SDK download available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). This Client Registration record is using for the **Embedded** and **Portal** use cases.
+The **React SDK** sample application is preconfigured to use the **MediaCo_ReactSDK** Client Registration record that is included in the React SDK download available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). This Client Registration record is used for the **Embedded** and **Portal** use cases.
 
 You may use this existing registration record. If you want to create your own OAuth 2.0 Client Registration record, please refer to the **How to create OAuth2 registration in Infinity** section found below.
 

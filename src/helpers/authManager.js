@@ -19,8 +19,6 @@ export let gbLoginInProgress = sessionStorage.getItem("rsdk_loggingIn") !== null
 let authMgr = null;
 // Since this variable is loaded in a separate instance in the popup scenario, use storage to coordinate across the two
 let usePopupForRestOfSession = sessionStorage.getItem("rsdk_popup") === "1";
-// Used to prevent trying to load constellation bootstrap a second time
-let gbC11NInitStarted = false;
 
 /*
  * Set to use popup experience for rest of session
@@ -227,8 +225,7 @@ const fireTokenAvailable = (token) => {
     }
   }
 
-  if( !window.PCore && !gbC11NInitStarted) {
-    gbC11NInitStarted = true;
+  if( !window.PCore ) {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     constellationInit( authConfig, token, authTokenUpdated, authFullReauth );
   }

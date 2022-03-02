@@ -20,8 +20,7 @@ The React SDK assumes that you have access to a Pega Infinity server (8.7.0 GA) 
 The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download.
 
 The **React SDK** has been tested with:
-- node 14.18.*
-- npm 6.14.*
+- node 14.18.* (and associated npm versions)
 
 Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
 

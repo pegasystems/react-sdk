@@ -211,9 +211,9 @@ The **React SDK** sample application is preconfigured to use the **MediaCo_React
 
 You may use this existing registration record. If you want to create your own OAuth 2.0 Client Registration record, please refer to the **How to create OAuth2 registration in Infinity** section found below.
 
-* For the **Embedded** use case, you will use the OAuth 2.0 Client Registration record’s **Client ID** as the value for **mashupClientId** in the SDK’s **sdk-config.js** file.
+* For the **Embedded** use case, you will use the OAuth 2.0 Client Registration record’s **Client ID** as the value for **mashupClientId** in the SDK’s **sdk-config.json** file.
 
-* For the **Portal** use case, you will use the OAuth 2.0 Client Registration record’s **Client ID** as the value of **portalClientId** in the SDK’s **sdk-config.js** file.
+* For the **Portal** use case, you will use the OAuth 2.0 Client Registration record’s **Client ID** as the value of **portalClientId** in the SDK’s **sdk-config.json** file.
 
 
 To ensure that the application is redirected to the proper page after authentication succeeds, you may need to update the OAuth 2.0 Client Registration record’s **List of redirect URIs** shown in the record’s **Supported grant types** section.

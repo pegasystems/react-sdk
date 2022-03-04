@@ -195,7 +195,7 @@ const getCurrentTokens = () => {
   return tokens;
 };
 
-const fireTokenAvailable = (token) => {
+const fireTokenAvailable = (token, bLoadC11N=true) => {
   if( !token ) {
     // This is used on page reload to load the token from sessionStorage and carry on
     token = getCurrentTokens();
@@ -225,7 +225,7 @@ const fireTokenAvailable = (token) => {
     }
   }
 
-  if( !window.PCore ) {
+  if( !window.PCore && bLoadC11N ) {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     constellationInit( authConfig, token, authTokenUpdated, authFullReauth );
   }
@@ -237,12 +237,12 @@ const fireTokenAvailable = (token) => {
   */
 };
 
-const processTokenOnLogin = ( token ) => {
+const processTokenOnLogin = ( token, bLoadC11N=true ) => {
   sessionStorage.setItem("rsdk_TI", JSON.stringify(token));
   if( window.PCore ) {
     window.PCore.getAuthUtils().setTokens(token);
   } else {
-    fireTokenAvailable(token);
+    fireTokenAvailable(token, bLoadC11N);
   }
 };
 
@@ -311,7 +311,7 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
   getAuthMgr(false).then( aMgr => {
     aMgr.getToken(code).then(token => {
       if( token && token.access_token ) {
-          processTokenOnLogin(token);
+          processTokenOnLogin(token, false);
           if( fnLoggedInCB ) {
               fnLoggedInCB( token.access_token );
           }

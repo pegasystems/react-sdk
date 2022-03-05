@@ -7,7 +7,6 @@
 
 import { SdkConfigAccess } from './config_access';
 import PegaAuth from './auth';
-import { constellationInit } from './c11nboot';
 
 // eslint-disable-next-line import/no-mutable-exports
 export let gbLoggedIn = sessionStorage.getItem('accessToken') !== null;
@@ -19,6 +18,7 @@ export let gbLoginInProgress = sessionStorage.getItem("rsdk_loggingIn") !== null
 let authMgr = null;
 // Since this variable is loaded in a separate instance in the popup scenario, use storage to coordinate across the two
 let usePopupForRestOfSession = sessionStorage.getItem("rsdk_popup") === "1";
+let gbC11NBootstrapInProgress = false;
 
 /*
  * Set to use popup experience for rest of session
@@ -169,6 +169,94 @@ const getAuthMgr = ( bInit ) => {
   });
 };
 
+/**
+ * Initiate the process to get the Constellation bootstrap shell loaded and initialized
+ * @param {Object} authConfig
+ * @param {Object} tokenInfo
+ * @param {Function} authTokenUpdated - callback invoked when Constellation JS Engine silently updates
+ *      an expired access_token
+ * @param {Function} authFullReauth - callback invoked when a full reauth is needed
+ */
+ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, authFullReauth) => {
+  const constellationBootConfig = {};
+  const sdkConfigServer = SdkConfigAccess.getSdkConfigServer();
+
+  // Set up constellationConfig with data that bootstrapWithAuthHeader expects
+  constellationBootConfig.customRendering = true;
+  constellationBootConfig.restServerUrl = sdkConfigServer.infinityRestServerUrl;
+  // NOTE: Needs a trailing slash! So add one if not provided
+  constellationBootConfig.staticContentServerUrl = `${sdkConfigServer.sdkContentServerUrl}/constellation/`;
+  if (constellationBootConfig.staticContentServerUrl.slice(-1) !== '/') {
+    constellationBootConfig.staticContentServerUrl = `${constellationBootConfig.staticContentServerUrl}/`;
+  }
+  // If appAlias specified, use it
+  if( sdkConfigServer.appAlias ) {
+    constellationBootConfig.appAlias = sdkConfigServer.appAlias;
+  }
+
+  // Pass in auth info to Constellation
+  constellationBootConfig.authInfo = {
+    authType: "OAuth2.0",
+    tokenInfo,
+    // Set whether we want constellation to try to do a full re-Auth or not ()
+    // true doesn't seem to be working in SDK scenario so always passing false for now
+    popupReauth: false /* !authIsEmbedded() */,
+    client_id: authConfig.clientId,
+    authentication_service: authConfig.authService,
+    redirect_uri: authConfig.redirectUri,
+    endPoints: {
+        authorize: authConfig.authorizeUri,
+        token: authConfig.tokenUri,
+        revoke: authConfig.revokeUri
+    },
+    // TODO: setup callback so we can update own storage
+    onTokenRetrieval: authTokenUpdated
+  }
+
+  // Turn off dynamic load components (should be able to do it here instead of after load?)
+  constellationBootConfig.dynamicLoadComponents = false;
+
+  if( gbC11NBootstrapInProgress ) {
+    return;
+  } else {
+    gbC11NBootstrapInProgress = true;
+  }
+
+  // Note that staticContentServerUrl already ends with a slash (see above), so no slash added.
+  // In order to have this import succeed and to have it done with the webpackIgnore magic comment tag.
+  // See:  https://webpack.js.org/api/module-methods/
+  import(/* webpackIgnore: true */ `${constellationBootConfig.staticContentServerUrl}bootstrap-shell.js`).then((bootstrapShell) => {
+    // NOTE: once this callback is done, we lose the ability to access loadMashup.
+    //  So, create a reference to it
+    window.myLoadMashup = bootstrapShell.loadMashup;
+
+    // For experimentation, save a reference to loadPortal, too!
+    window.myLoadPortal = bootstrapShell.loadPortal;
+
+    bootstrapShell.bootstrapWithAuthHeader(constellationBootConfig, 'shell').then(() => {
+      // eslint-disable-next-line no-console
+      console.log('Bootstrap successful!');
+      gbC11NBootstrapInProgress = false;
+
+      // Setup listener for the reauth event
+      // eslint-disable-next-line no-undef
+      PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_FULL_REAUTH, authFullReauth, "authFullReauth");
+
+      const event = new CustomEvent('ConstellationReady', {});
+      document.dispatchEvent(event);
+    })
+    .catch( e => {
+      // Assume error caught is because token is not valid and attempt a full reauth
+      // eslint-disable-next-line no-console
+      console.error(`Constellation JS Engine bootstrap failed. ${e}`);
+      gbC11NBootstrapInProgress = false;
+      authFullReauth();
+    })
+  });
+  /* Ends here */
+};
+
+
 export const updateLoginStatus = () => {
   const sAuthHdr = sessionStorage.getItem('accessToken');
   gbLoggedIn = sAuthHdr && sAuthHdr.length > 0;
@@ -195,7 +283,7 @@ const getCurrentTokens = () => {
   return tokens;
 };
 
-const fireTokenAvailable = (token) => {
+const fireTokenAvailable = (token, bLoadC11N=true) => {
   if( !token ) {
     // This is used on page reload to load the token from sessionStorage and carry on
     token = getCurrentTokens();
@@ -225,7 +313,7 @@ const fireTokenAvailable = (token) => {
     }
   }
 
-  if( !window.PCore ) {
+  if( !window.PCore && bLoadC11N ) {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     constellationInit( authConfig, token, authTokenUpdated, authFullReauth );
   }
@@ -237,12 +325,12 @@ const fireTokenAvailable = (token) => {
   */
 };
 
-const processTokenOnLogin = ( token ) => {
+const processTokenOnLogin = ( token, bLoadC11N=true ) => {
   sessionStorage.setItem("rsdk_TI", JSON.stringify(token));
   if( window.PCore ) {
     window.PCore.getAuthUtils().setTokens(token);
   } else {
-    fireTokenAvailable(token);
+    fireTokenAvailable(token, bLoadC11N);
   }
 };
 
@@ -311,7 +399,7 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
   getAuthMgr(false).then( aMgr => {
     aMgr.getToken(code).then(token => {
       if( token && token.access_token ) {
-          processTokenOnLogin(token);
+          processTokenOnLogin(token, false);
           if( fnLoggedInCB ) {
               fnLoggedInCB( token.access_token );
           }

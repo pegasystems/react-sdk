@@ -20,7 +20,8 @@ The React SDK assumes that you have access to a Pega Infinity server (8.7.0 GA) 
 The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download.
 
 The **React SDK** has been tested with:
-- node 14.18.* (and associated npm versions)
+- node 14.18.*
+- npm 6.14.*
 
 Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
 
@@ -50,7 +51,7 @@ See the React SDK Guide available at Pega Marketplace for complete instructions.
 
    At this time, you will note that there are 3 “high security vulnerabilities” reported by Node related to the “trim” package. Research into these reported issues indicate that these flags represent more of a possible slowdown than a security exploit problem. (See https://github.com/mdx-js/mdx/discussions/1864) We are following this and will provide an update this issue is resolved. Since these issues are related to linting of Markdown files, if you are concerned about these reports, you can remove the eslint-plugin-mdx and @pega/configs devDependencies and use the SDK without linting. These issues have no impact on the SDK's runtime.
 
-   Also, if you run npm install after it has already been run once, you may see a number of warnings related to npm peer dependencies that are related to various lint packages. You can ignore these warnings as they do not affect the linting and are not associated with the runtime behavior.
+   Also, if you run npm install after it has already been run once, you may see a number of warnings related to npm peer dependencies that are related to various lint packages. You can ignore these warnings as they affect the linting and are not associated with the runtime behavior.
 
 
 ### **Configure** the React SDK
@@ -78,8 +79,7 @@ file.
       * **infinityRestServerUrl** indicates where the SDK expects to find the Infinity REST server. The default configuration is set to **https://localhost:1080/prweb**. You will need to change this if you are using a
       different path to access your Infinity server.
       * **appAlias** is the application alias that operatorIDs logging in to this instance of the React SDK content server will use. (E.g., "MediaCo").
-      When specified, this value will be used to further constrain the REST URL
-      that the Constellation JavaScript Engine uses when making REST calls to Infinity. It is **_strongly recommended_** that the appAlias value be set before putting an application into production to allow operators who may have the application access group listed as the _non-primary_ access group also work.
+      When specified, this value will be used to further constrain the REST URL which the Constellation JavaScript Engine uses when making REST calls to Infinity. It is **_strongly recommended_** that the appAlias value be set before putting an application into production.  If this is not specified, the server will always utilize the _default_ access group specified within the `Application access` area for the current Operator when invoking any DX API REST calls.  Hence, not specifying the appAlias will result in application access issues for all applications other than the operator's designated default application.
     <br><br>
 
 3. Obtain the necessary Constellation files (ex: bootstrap-shell, lib_asset, constellation-core) that need to be installed to enable the SDK to connect to the Constellation UI Service. These are available in the React SDK download available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). Instructions for installing these files can be found in **constellation/__Install-constellation-files.md**

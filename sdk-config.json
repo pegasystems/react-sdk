@@ -17,6 +17,7 @@
   "serverConfig": {
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
     "infinityRestServerUrl": "https://localhost:1080/prweb",
+
     "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
     "appAlias": "",
 

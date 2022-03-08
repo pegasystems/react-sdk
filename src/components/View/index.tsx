@@ -14,6 +14,7 @@ import ListPage from '../templates/ListPage';
 import ListView from '../templates/ListView';
 import NarrowWidePage from "../templates/NarrowWidePage";
 import NarrowWideForm from "../templates/NarrowWideForm";
+import NarrowWideDetails from "../templates/NarrowWideDetails";
 import OneColumn from "../templates/OneColumn";
 import OneColumnTab from '../templates/OneColumnTab';
 import SimpleTable from '../templates/SimpleTable';
@@ -22,6 +23,7 @@ import TwoColumn from '../templates/TwoColumn';
 import TwoColumnPage from '../templates/TwoColumnPage';
 import WideNarrowForm from "../templates/WideNarrowForm";
 import WideNarrowPage from "../templates/WideNarrowPage";
+import WideNarrowDetails from "../templates/WideNarrowDetails";
 
 //
 // WARNING:  It is not expected that this file should be modified.  It is part of infrastructure code that works with
@@ -104,6 +106,10 @@ export default function View(props) {
         ViewTemplate= NarrowWidePage;
         break;
 
+      case "NarrowWideDetails":
+        ViewTemplate= NarrowWideDetails;
+        break;
+
       case "OneColumn":
         ViewTemplate = OneColumn;
         break;
@@ -134,6 +140,10 @@ export default function View(props) {
 
       case "WideNarrowPage":
         ViewTemplate= WideNarrowPage;
+        break;
+
+      case "WideNarrowDetails":
+        ViewTemplate= WideNarrowDetails;
         break;
 
       default:

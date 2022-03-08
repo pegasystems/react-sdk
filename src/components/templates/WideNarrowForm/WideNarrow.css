@@ -1,21 +1,21 @@
-.psdk-narrow-wide-column {
+.psd-wide-narrow-column {
     display: flow-root;
     height: 100%;
 }
 
 /* Create two equal columns that floats next to each other */
-.psdk-narrow-column-column {
+.psd-wide-narrow-column .psdk-narrow-column-column {
     width: 30%;
     float: left;
-    padding: 0rem 0.3125rem;
+    padding: 0rem 0.3125rem 0rem 0rem;
     height: 100%;
 
 }
 
-.psdk-wide-column-column {
+.psd-wide-narrow-column .psdk-wide-column-column {
     width: 70%;
     float: left;
-    padding: 0rem 0.3125rem;
+    padding: 0rem 0rem 0rem 0.3125rem;
     height: 100%;
 
 }

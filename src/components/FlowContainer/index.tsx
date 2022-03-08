@@ -380,8 +380,10 @@ export default function FlowContainer(props) {
     const theCaseMessages = thePConn.getValue("caseMessages");
 
     if (theCaseMessages || !hasAssignments()) {
-      // debugger;
-      setCaseMessages(theCaseMessages);
+
+       // Temp fix for 8.7 change: confirmationNote no longer coming through in caseMessages$.
+       // So, if we get here and caseMessages$ is empty, use default value in DX API response
+      setCaseMessages(theCaseMessages || "Thank you! The next step in this case has been routed appropriately.");
       setHasCaseMessages(true);
 
 

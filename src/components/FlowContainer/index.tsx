@@ -473,7 +473,8 @@ export default function FlowContainer(props) {
 
   const caseId = thePConn.getCaseSummary().content.pyID;
   const urgency = getPConnect().getCaseSummary().assignments ? getPConnect().getCaseSummary().assignments[0].urgency : "";
-  const operatorInitials = Utils.getInitials(PCore.getEnvironmentInfo().getOperatorName())
+  const operatorInitials = Utils.getInitials(PCore.getEnvironmentInfo().getOperatorName());
+  const instructionText = thePConn.getCaseSummary().assignments[0].instructions;
 
   return (
     <div style={{ textAlign: "left" }} id={buildName} className="psdk-flow-container-top">
@@ -491,6 +492,7 @@ export default function FlowContainer(props) {
                 }
               ></CardHeader>
               <MuiPickersUtilsProvider utils={DayjsUtils}>
+                { instructionText !== '' ? <Typography variant="caption">{instructionText}</Typography> : null }
                 <Assignment getPConnect={getPConnect} itemKey={itemKey}>
                   {arNewChildrenAsReact}
                 </Assignment>
@@ -499,6 +501,7 @@ export default function FlowContainer(props) {
             :
             <Card className={classes.root}>
               <Typography variant="h6">{containerName}</Typography>
+              { instructionText !== '' ? <Typography variant="caption">{instructionText}</Typography> : null }
               <MuiPickersUtilsProvider utils={DayjsUtils}>
                 <Assignment getPConnect={getPConnect} itemKey={itemKey}>
                   {arNewChildrenAsReact}

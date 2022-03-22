@@ -2,7 +2,7 @@ import React from "react";
 import MuiPhoneNumber from 'material-ui-phone-number';
 
 export default function Phone(props) {
-  const {label, required, disabled, value, validatemessage, status, onChange, onBlur, readOnly} = props;
+  const {label, required, disabled, value, validatemessage, status, onChange, readOnly} = props;
   if (readOnly) {
     const disableDropdown = true;
     return (
@@ -28,9 +28,9 @@ export default function Phone(props) {
   }
 
   const handleChange = (inputVal) => {
-    let value = inputVal && inputVal.replace(/\D+/g, '');
-    value = `+${value}`;
-    onChange({value});
+    let phoneValue = inputVal && inputVal.replace(/\D+/g, '');
+    phoneValue = `+${phoneValue}`;
+    onChange({value: phoneValue});
   }
 
   return (
@@ -40,7 +40,7 @@ export default function Phone(props) {
         helperText={validatemessage}
         placeholder=""
         size="small"
-        defaultCountry={'us'}
+        defaultCountry='us'
         required={required}
         disabled={disabled}
         onChange={handleChange}

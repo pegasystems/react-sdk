@@ -1,26 +1,49 @@
 import React from "react";
-import { TextField } from "@material-ui/core";
-import TextInput from "../TextInput";
+import MuiPhoneNumber from 'material-ui-phone-number';
 
 export default function Phone(props) {
-  const {label, required, disabled, value, validatemessage, status, onChange, onBlur, readOnly} = props;
-
+  const {label, required, disabled, value, validatemessage, status, onChange, readOnly} = props;
   if (readOnly) {
-    return ( <TextInput {...props} /> );
-  }
-
-  return (
-      <TextField
-        type="tel"
+    const disableDropdown = true;
+    return (
+      <div>
+        <MuiPhoneNumber
         fullWidth
-        variant="outlined"
         helperText={validatemessage}
         placeholder=""
         size="small"
         required={required}
         disabled={disabled}
         onChange={onChange}
-        onBlur={onBlur}
+        error={status === "error"}
+        label={label}
+        value={value}
+        InputProps={{
+            readOnly: true,
+        }}
+        disableDropdown={disableDropdown}
+      />
+      </div>
+    );
+  }
+
+  const handleChange = (inputVal) => {
+    let phoneValue = inputVal && inputVal.replace(/\D+/g, '');
+    phoneValue = `+${phoneValue}`;
+    onChange({value: phoneValue});
+  }
+
+  return (
+      <MuiPhoneNumber
+        fullWidth
+        variant="outlined"
+        helperText={validatemessage}
+        placeholder=""
+        size="small"
+        defaultCountry='us'
+        required={required}
+        disabled={disabled}
+        onChange={handleChange}
         error={status === "error"}
         label={label}
         value={value}

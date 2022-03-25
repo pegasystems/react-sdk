@@ -32,6 +32,7 @@ export default function DefaultForm(props) {
   // to take the children and create components for them, put in an array and pass as the
   // defaultForm kids
   const arChildren = getPConnect().getChildren()[0].getPConnect().getChildren();
+  // eslint-disable-next-line react/no-array-index-key
   const dfChildren = arChildren.map((kid, idx) => createElement(createPConnectComponent(), {...kid, key: idx}));
 
   return (

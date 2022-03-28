@@ -491,8 +491,8 @@ export default function FlowContainer(props) {
                   </Avatar>
                 }
               ></CardHeader>
+              { instructionText !== '' ? <Typography variant="caption">{instructionText}</Typography> : null }
               <MuiPickersUtilsProvider utils={DayjsUtils}>
-                { instructionText !== '' ? <Typography variant="caption">{instructionText}</Typography> : null }
                 <Assignment getPConnect={getPConnect} itemKey={itemKey}>
                   {arNewChildrenAsReact}
                 </Assignment>

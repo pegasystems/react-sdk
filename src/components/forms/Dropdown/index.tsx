@@ -26,7 +26,12 @@ export default function Dropdown(props) {
     onChange({value: evt.target.value});
   }
 
+  // Material UI shows a warning if the component is rendered before options are set.
+  //  So, hold off on rendering anything until options are available...
   return (
+    options.length === 0 ?
+      null
+      :
       <TextField
         fullWidth
         variant={ readOnly ? "standard" : "outlined"}

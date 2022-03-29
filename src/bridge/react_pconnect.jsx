@@ -48,6 +48,7 @@ import View from '../components/View';
 import ViewContainer from '../components/ViewContainer';
 import ModalViewContainer from '../components/ModalViewContainer';
 
+
 const connectRedux = (component, c11nEnv) => {
 
   // console.log(`in connectRedux: ${component.name}`);
@@ -73,7 +74,7 @@ const connectRedux = (component, c11nEnv) => {
         );
       }
 
-      //const obj = c11nEnv.getConfigProps();
+      // const obj = c11nEnv.getConfigProps();
       c11nEnv.getConfigProps(obj);
 
       // debugging/investigation help
@@ -105,11 +106,13 @@ const connectRedux = (component, c11nEnv) => {
       areStatePropsEqual: (next,prev) => {
         const allStateProps = c11nEnv.getStateProps();
         for(const key in allStateProps){
+          // eslint-disable-next-line no-undef
           if(!shallowEqual(next[key], prev[key]) || (next.routingInfo && !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))){
             return false;
           }
         }
         /* TODO For some rawConfig we are not getting routingInfo under allStateProps */
+        // eslint-disable-next-line no-undef
         if('routingInfo' in next && (!shallowEqual(next.routingInfo, prev.routingInfo) || !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))){
           return false;
         }

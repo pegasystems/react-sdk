@@ -3,7 +3,7 @@ import { KeyboardDatePicker } from '@material-ui/pickers';
 import TextInput from "../TextInput";
 
 export default function Date(props) {
-  const {label, required, disabled, value, validatemessage, status, onChange, readOnly} = props;
+  const {label, required, disabled, value='', validatemessage, status, onChange, readOnly} = props;
 
   if (readOnly) {
     // const theReadOnlyComp = <TextInput props />

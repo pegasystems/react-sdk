@@ -163,7 +163,7 @@ export default function ToDo(props) {
     // setOpen(false);
 
     const { id } = inAssignmentArray[0];
-    let { classname } = inAssignmentArray[0];
+    let { classname = "" } = inAssignmentArray[0];
     const sTarget = thePConn.getContainerName();
     const sTargetContainerName = sTarget;
 

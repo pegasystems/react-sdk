@@ -2,7 +2,7 @@ import React from "react";
 import { TextField } from "@material-ui/core";
 
 export default function TextInput(props) {
-  const {label, required, disabled, value, validatemessage, status, onChange, onBlur, readOnly} = props;
+  const {label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly} = props;
 
   let readOnlyProp = {};  // Note: empty if NOT ReadOnly
 

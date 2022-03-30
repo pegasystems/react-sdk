@@ -6,7 +6,7 @@ import TextInput from "../TextInput";
 //  Otherwise, we were getting all kinds of weird errors when we
 //  referred to URL as a component.
 export default function URLComponent(props) {
-  const {label, required, disabled, value, validatemessage, status, onChange, onBlur, readOnly} = props;
+  const {label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly} = props;
 
   if (readOnly) {
     return ( <TextInput {...props} /> );

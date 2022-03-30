@@ -15,6 +15,8 @@ import StoreContext from "../../bridge/Context/StoreContext";
 import DayjsUtils from "@date-io/dayjs";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
+import { addContainerItem, getToDoAssignments } from './helpers';
+
 declare const PCore;
 
 //
@@ -105,14 +107,8 @@ export default function FlowContainer(props) {
         type: containerType
       });
 
-      containerMgr.addContainerItem({
-        semanticURL: "",
-        key: ourPConn.getValue("key"),
-        flowName: ourPConn.getValue("flowName"),
-        caseViewMode: "perform",
-        data: ourPConn.getDataObject(baseContext),
-        containerType
-      });
+      // updated for 8.7 - 30-Mar-2022
+      addContainerItem(ourPConn);
     }
   }
 
@@ -331,31 +327,18 @@ export default function FlowContainer(props) {
 
       setTimeout(() => {
 
-      const assignmentsList = localPConn.getValue(
-        CASE_CONSTS.D_CASE_ASSIGNMENTS_RESULTS
-      );
+        // updated for 8.7 - 30-Mar-2022
 
-      if (assignmentsList?.length > 0) {
-        // add status
-        const status = localPConn.getValue("caseInfo.status");
+        const todoAssignments = getToDoAssignments(thePConn);
 
-        const localAssignment = JSON.parse(JSON.stringify(assignmentsList[0]));
-        localAssignment.status = status;
-        const localAssignmentsList: Array<any> = [];
-        localAssignmentsList.push(localAssignment);
-
-        const caseActions = localPConn.getValue(CASE_CONSTS.CASE_INFO_ACTIONS);
-
-        if (caseActions) {
-          // debugger;
-          setCaseInfoID(localPConn.getValue(CASE_CONSTS.CASE_INFO_ID));
-          setTodoDatasource({ source: localAssignmentsList });
-
-          // debugger;
-          setShowTodo(true);
-          setShowTodoList(false);
+        if (todoAssignments && todoAssignments.length > 0) {
+          setCaseInfoID(thePConn.getValue(CASE_CONSTS.CASE_INFO_ID));
+          setTodoDatasource({ source: todoAssignments });
         }
-      }
+
+        setShowTodo(true);
+        setShowTodoList(false);
+
 
       }, 100);
 

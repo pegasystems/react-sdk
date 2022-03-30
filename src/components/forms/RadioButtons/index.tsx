@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 export default function RadioButtons(props) {
 
   const classes = useStyles();
-  const {getPConnect, label, value, readOnly} = props;
+  const {getPConnect, label, value='', readOnly} = props;
   const [theSelectedButton, setSelectedButton] = useState(value);
 
   const thePConn = getPConnect();

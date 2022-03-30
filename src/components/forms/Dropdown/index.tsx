@@ -9,7 +9,7 @@ interface IOption {
 }
 
 export default function Dropdown(props) {
-  const {getPConnect, label, required, disabled, placeholder, value, datasource=[], validatemessage, status, onChange, readOnly} = props;
+  const {getPConnect, label, required, disabled, placeholder, value='', datasource=[], validatemessage, status, onChange, readOnly} = props;
   const [options, setOptions] = useState<Array<IOption>>([]);
 
   useEffect(() => {

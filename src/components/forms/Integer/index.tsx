@@ -3,7 +3,7 @@ import { TextField } from "@material-ui/core";
 import TextInput from "../TextInput";
 
 export default function Integer(props) {
-  const {label, required, disabled, value, validatemessage, status, onChange, onBlur, readOnly} = props;
+  const {label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly} = props;
 
   // console.log(`Integer: label: ${label} value: ${value}`);
 

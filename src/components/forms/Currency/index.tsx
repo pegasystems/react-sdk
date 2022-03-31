@@ -6,7 +6,7 @@ import handleEvent from '../../../helpers/event-utils';
 // Using control from: https://github.com/unicef/material-ui-currency-textfield
 
 export default function Currency(props) {
-  const {getPConnect, label, required, disabled, value, validatemessage, status, /* onChange, onBlur, */ readOnly} = props;
+  const {getPConnect, label, required, disabled, value='', validatemessage, status, /* onChange, onBlur, */ readOnly} = props;
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
   const propName = pConn.getStateProps().value;

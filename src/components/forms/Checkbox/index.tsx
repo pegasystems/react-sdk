@@ -4,7 +4,7 @@ import handleEvent from '../../../helpers/event-utils';
 
 
 export default function CheckboxComponent(props) {
-  const {getPConnect, value, readOnly} = props;
+  const {getPConnect, value=false, readOnly} = props;
 
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();

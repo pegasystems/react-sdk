@@ -40,10 +40,22 @@ export default function DeferLoad(props) {
   const [bShowDefer, setShowDefer] = useState(false);
   const [componentName, setComponentName] = useState("");
   const [createdPConnect, setCreatedPConnect] = useState({});
-  const [currentlyLoadedName, setCurrentlyLoadedName] = useState(loadData.config.name);
+  const [currentLoadedTabConfigName, setCurrentLoadedTabConfigName] = useState(loadData.config.name);
+  const [currentLoadedAssignment, setCurrentLoadedAssignment] = useState("");
 
-  if (loadData.config.name !== currentlyLoadedName && isComponentMounted) {
-    setCurrentlyLoadedName(loadData.config.name);
+  const theRequestedAssignment = thePConn.getValue( PCore.getConstants().CASE_INFO.ASSIGNMENT_LABEL);
+
+  // Only need to check for updates when the component is mounted.
+  //  Then, need to trigger update when the Tab config.name changes
+  //  OR when the tab is the same but the assignment within that tab changes
+  if (isComponentMounted) {
+    if (loadData.config.name !== currentLoadedTabConfigName) {
+      // console.log(`DeferLoad: currentLoadedTabConfig about to change from ${currentLoadedTabConfigName} to ${loadData.config.name}`);
+      setCurrentLoadedTabConfigName(loadData.config.name);
+    } else if (theRequestedAssignment !== currentLoadedAssignment)  {
+      // console.log(`DeferLoad: currentLoadedAssignment about to change from ${currentLoadedAssignment} to ${theRequestedAssignment}`);
+      setCurrentLoadedAssignment(theRequestedAssignment);
+    }
   }
 
 
@@ -110,9 +122,10 @@ export default function DeferLoad(props) {
 
 
   // useEffect to only update the active tab when the requested tab name changes
+  //  OR the Assignment within a Tab changes (ex: navigating from one "Customer" to "Address")
   useEffect(() => {
 
-      loadActiveTab();
+     loadActiveTab();
 
     return () => {
       // Inspired by https://juliangaramendy.dev/blog/use-promise-subscription
@@ -122,7 +135,7 @@ export default function DeferLoad(props) {
       //  any calls to setState functions in the code. (That would show warnings)
       isComponentMounted = false;
     }
-  }, [currentlyLoadedName]);
+  }, [currentLoadedTabConfigName, currentLoadedAssignment]);
 
 
   function getDeferLoadRender(): any {

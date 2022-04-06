@@ -1,7 +1,7 @@
 import React, { Children, Component, createElement } from "react";
 // import { render, unmountComponentAtNode } from "react-dom";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { connect, shallowEqual } from "react-redux";
 // Initial simplification to remove ErrorBoundary
 import ErrorBoundary from "../components/ErrorBoundary";
 import ComponentMap, { LazyMap as LazyComponentMap } from "../components_map";
@@ -48,14 +48,15 @@ import View from '../components/View';
 import ViewContainer from '../components/ViewContainer';
 import ModalViewContainer from '../components/ModalViewContainer';
 
-const connectRedux = (component) => {
+
+const connectRedux = (component, c11nEnv) => {
 
   // console.log(`in connectRedux: ${component.name}`);
 
   return connect(
     (state, ownProps) => {
-      const c11nEnv = ownProps.getPConnect();
       let addProps = {};
+      const obj = {};
 
 
       // JA - testing
@@ -73,7 +74,8 @@ const connectRedux = (component) => {
         );
       }
 
-      const obj = c11nEnv.getConfigProps();
+      // const obj = c11nEnv.getConfigProps();
+      c11nEnv.getConfigProps(obj);
 
       // debugging/investigation help
       // if (obj.routingInfo) {
@@ -99,7 +101,24 @@ const connectRedux = (component) => {
     },
     null,
     null,
-    { context: StoreContext }
+    {
+      context: StoreContext,
+      areStatePropsEqual: (next,prev) => {
+        const allStateProps = c11nEnv.getStateProps();
+        for(const key in allStateProps){
+          // eslint-disable-next-line no-undef
+          if(!shallowEqual(next[key], prev[key]) || (next.routingInfo && !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))){
+            return false;
+          }
+        }
+        /* TODO For some rawConfig we are not getting routingInfo under allStateProps */
+        // eslint-disable-next-line no-undef
+        if('routingInfo' in next && (!shallowEqual(next.routingInfo, prev.routingInfo) || !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))){
+          return false;
+        }
+        return true;
+      }
+    }
   )(component);
 };
 
@@ -290,9 +309,9 @@ const getComponent = (c11nEnv, declarative) => {
 
   if (c11nEnv.isConditionExist()) {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    component = connectRedux(createPConnectComponent(true));
+    component = connectRedux(createPConnectComponent(true), c11nEnv);
   } else {
-    component = connectRedux(component);
+    component = connectRedux(component, c11nEnv);
   }
   return component;
 };
@@ -336,7 +355,7 @@ const createPConnectComponent = (declarative=false) => {
     }
 
     componentDidMount() {
-      this.c11nEnv.addFormField()
+      this.c11nEnv.addFormField();
     }
 
     componentDidCatch(error, info) {
@@ -376,8 +395,8 @@ const createPConnectComponent = (declarative=false) => {
       //      getActionProcessor().eventHandler(this.c11nEnv, event);
     }
 
-    addChild(child) {
-      this.children.push(createElement(createPConnectComponent(), child));
+    addChildren(child) {
+      this.configProps.children.push(createElement(createPConnectComponent(), child));
     }
 
     /* This should be called only once per component instance
@@ -385,15 +404,21 @@ const createPConnectComponent = (declarative=false) => {
      *  which would be used to call redux connect for re-render purpose on state change
      */
     initialize() {
+      const { getPConnect } = this.props;
+      this.c11nEnv = getPConnect();
+      this.configProps = {};
       this.eventHandler = this.eventHandler.bind(this);
       this.changeHandler = this.changeHandler.bind(this);
       this.processActions(this.c11nEnv);
+      this.propsToChild = {};
+
+      this.configProps.children = [];
 
       if (this.c11nEnv.hasChildren()) {
         const children = this.c11nEnv.getChildren() || [];
-        children.forEach(child => this.addChild(child));
-        this.children = Children.toArray(
-          this.children
+        children.forEach((child) => this.addChildren(child));
+        this.configProps.children = Children.toArray(
+          this.configProps.children
         );
       }
     }
@@ -421,6 +446,7 @@ const createPConnectComponent = (declarative=false) => {
       const finalProps = {
         ...props,
         getPConnect,
+        ...this.configProps,
         ...actions,
         additionalProps,
         ...otherProps
@@ -428,11 +454,7 @@ const createPConnectComponent = (declarative=false) => {
 
       // console.log(`react_pconnect: used to return: <this.Control {...finalProps} />`);
 
-      return (
-          <this.Control {...finalProps} >
-            { this.children }
-          </this.Control>
-        );
+      return <this.Control {...finalProps} />;
     }
   }
 

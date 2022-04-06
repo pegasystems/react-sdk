@@ -2,7 +2,7 @@ import React from "react";
 import MuiPhoneNumber from 'material-ui-phone-number';
 
 export default function Phone(props) {
-  const {label, required, disabled, value, validatemessage, status, onChange, readOnly} = props;
+  const {label, required, disabled, value='', validatemessage, status, onChange, readOnly} = props;
   if (readOnly) {
     const disableDropdown = true;
     return (

@@ -25,7 +25,7 @@ const useStyles = makeStyles((/* theme */) => ({
 export default function Percentage(props) {
   const classes = useStyles();
 
-  const {label, required, disabled, value, validatemessage, status, onChange, onBlur, readOnly} = props;
+  const {label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly} = props;
 
   // console.log(`Percentage: label: ${label} value: ${value}`);
 

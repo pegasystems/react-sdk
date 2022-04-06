@@ -61,7 +61,7 @@ file.
 
 2. Edit **sdk-config.json** and, if necessary, update the values that will be used
     * The **authConfig** section contains values related to the OAuth 2.0 client
-    registration record you will be using and Operator ID and login infomation
+    registration record you will be using and Operator ID and login information
     related to the /embedded use. The default **sdk-config.json** file is set up to use the **MediaCo_ReactSDK** record that is included with the React SDK Marketplace download.<br><br>
       * **authService** specifies the authentication service that will be used by the Infinity server to authenticate Operator IDs. The default configuration uses the built-in Infinity authentication service: **pega**.
       * **mashupClientID** specifies the Client ID of the Infinity OAuth 2.0 Client
@@ -248,11 +248,11 @@ If you configure your installation to have the React SDK static content served f
 
 When preparing your Infinity server for use with the `React SDK`, a `MediaCo_ReactSDK` OAuth 2.0 Client Registration record will have been imported. That record's Client Id is currently referenced within sdk-config.json.  However, you can create your own OAuth 2.0 Client Registration record using the following procedure:
    * Create a new "Security/OAuth 2.0 Client Registration" record for your app
-   * You might name it the same name as your applicaion
+   * You might name it the same name as your application
    * Specify "Public" for the type of client
    * Select "Authorization Code" for the Grant type
    * Add RedirectURI values based on what was specified above: auth.html as well as ones for any non embedded scenarios you want to directly access via a url. For non-embedded portal scenarios, it will redirect back to that same portal page route
-   * Enable the "Enable proof code for pkce" option
+   * Enable the "Enable proof code for PKCE" option
    * Set the "Access token lifetime" to the interval you want the logged in session to last before the token is silently refreshed. We recommend somewhere between 10 minutes (600) and at most 60 minutes (3600).
    * Set the "Refresh token lifetime" to the interval before the user should encounter a full re-authentication challenge. We recommend somewhere between 18 hours (64800) and 24 hours (86400).
    * Enter the appropriate values within **sdk-config.json**

@@ -13,7 +13,7 @@ interface IOption {
 
 export default function AutoComplete(props) {
 
-  const {getPConnect, label, required, placeholder, value, validatemessage, datasource=[], onChange, readOnly} = props;
+  const {getPConnect, label, required, placeholder, value='', validatemessage, datasource=[], onChange, readOnly} = props;
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [theDatasource, setDatasource] = useState(null);

@@ -11,17 +11,8 @@
   position: relative;
 }
 
-.file-display {
-  border: 0.0625rem solid rgb(207, 207, 207);
-  border-radius: calc(0.25rem);
-  background-color: rgb(255, 255, 255);
-  padding: calc(0.25rem);
-  min-height: 3rem;
-}
-
-.file-name {
-  width: 90%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.progress-div {
+  text-align: center;
+  position: absolute;
+  left: 47%;
 }

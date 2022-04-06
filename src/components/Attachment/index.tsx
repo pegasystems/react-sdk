@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { buildFilePropsFromResponse, getIconFromFileType, validateMaxSize, getIconForAttachment } from './AttachmentUtils';
 import './Attachment.css';
 import SummaryList from '../widgets/SummaryList'
+import { Box, CircularProgress } from "@material-ui/core";
 declare const PCore: any;
 
-export default function Attachment(props) {
+export default function Attachment(this: any, props) {
   // const {getPConnect} = props;
   const {
     value,
@@ -19,7 +20,6 @@ export default function Attachment(props) {
     hideLabel
   } = props;
   /* this is a temporary fix because required is supposed to be passed as a boolean and NOT as a string */
-  let removeFileFromList$: any;
   let { required, disabled } = props;
   [required, disabled] = [required, disabled].map(
     prop => prop === true || (typeof prop === 'string' && prop === 'true')
@@ -41,7 +41,6 @@ export default function Attachment(props) {
   valueRef = valueRef.indexOf('.') === 0 ? valueRef.substring(1) : valueRef;
 
   const [file, setFile] = useState(fileTemp);
- // removeFileFromList$ = { onClick: _removeFileFromList.bind(this) }
   const onFileAdded = (event) => {
    const addedFile = event.target.files[0];
     /* temporarily hardcoded to max 5 MB */
@@ -69,17 +68,7 @@ export default function Attachment(props) {
     let arFiles$ = getFiles(event.target.files);
     let myFiles: any = Array.from(arFiles$);
     const onUploadProgress = (ev) => {
-      const progress = Math.floor((ev.loaded / ev.total) * 100);
-      setFile((current) => {
-        return {
-          ...current,
-          props: {
-            ...current.props,
-            progress
-          },
-          inProgress: true
-        };
-      });
+
     };
 
     const errorHandler = (isFetchCanceled) => {
@@ -128,6 +117,8 @@ export default function Attachment(props) {
               ...current.props,
               arFileList$
             },
+            inProgress: false,
+            attachmentUploaded: true
           };
         });
       })
@@ -161,110 +152,117 @@ export default function Attachment(props) {
   }
 
   function _removeFileFromList(item: any) {
+    let arFileList = file.props.arFileList$;
     if (item != null) {
-      for (let fileIndex in arFileList$) {
-        if (arFileList$[fileIndex].id == item.id) {
+      for (let fileIndex in arFileList) {
+        if (arFileList[fileIndex].id == item.id) {
           // remove the file from the list and redraw
-          arFileList$.splice(parseInt(fileIndex), 1);
-
-            // call delete attachment
-            // if (this.value$ && this.value$.pxResults[0]) {
-            //   this.pConn$.attachmentsInfo = {
-            //     type: "File",
-            //     attachmentFieldName: this.att_valueRef,
-            //     delete: true
-            //   };
-            // } else {
-            //   pConn.attachmentsInfo = null;
-            // }
-
-            // this.bShowSelector$ = true;
+          arFileList.splice(parseInt(fileIndex), 1);
+           // call delete attachment
+            if (value && value.pxResults[0]) {
+              pConn.attachmentsInfo = {
+                type: "File",
+                attachmentFieldName: valueRef,
+                delete: true
+              };
+            } else {
+              pConn.attachmentsInfo = null;
+            }
+            setFile((current) => {
+              return {
+                ...current,
+                props: {
+                  ...current.props,
+                  arFileList
+                },
+              };
+            });
         }
       }
     }
   }
 
+  function getNewListUtilityItemProps({
+      att,
+      cancelFile,
+      downloadFile,
+      deleteFile,
+      removeFile
+    }) {
+      let actions;
+      let isDownloadable = false;
 
-function getNewListUtilityItemProps({
-    att,
-    cancelFile,
-    downloadFile,
-    deleteFile,
-    removeFile
-  }) {
-    let actions;
-    let isDownloadable = false;
-
-    if (att.progress && att.progress !== 100) {
-      actions = [
-        {
-          id: `Cancel-${att.ID}`,
-          text: "Cancel",
-          icon: "times",
-          onClick: cancelFile
-        }
-      ];
-    } else if (att.links) {
-      const isFile = att.type === "FILE";
-      const ID = att.ID.replace(/\s/gi, "");
-      const actionsMap = new Map([
-        [
-          "download",
+      if (att.progress && att.progress !== 100) {
+        actions = [
           {
-            id: `download-${ID}`,
-            text: isFile ? "Download" : "Open",
-            icon: isFile ? "download" : "open",
-            onClick: downloadFile
+            id: `Cancel-${att.ID}`,
+            text: "Cancel",
+            icon: "times",
+            onClick: cancelFile
           }
-        ],
-        [
-          "delete",
+        ];
+      } else if (att.links) {
+        const isFile = att.type === "FILE";
+        const ID = att.ID.replace(/\s/gi, "");
+        const actionsMap = new Map([
+          [
+            "download",
+            {
+              id: `download-${ID}`,
+              text: isFile ? "Download" : "Open",
+              icon: isFile ? "download" : "open",
+              onClick: downloadFile
+            }
+          ],
+          [
+            "delete",
+            {
+              id: `Delete-${ID}`,
+              text: "Delete",
+              icon: "trash",
+              onClick: deleteFile
+            }
+          ]
+        ]);
+        actions = [];
+        actionsMap.forEach((action, actionKey) => {
+          if (att.links[actionKey]) {
+            actions.push(action);
+          }
+        });
+        isDownloadable = att.links.download;
+      } else if (att.error) {
+        actions = [
           {
-            id: `Delete-${ID}`,
-            text: "Delete",
+            id: `Remove-${att.ID}`,
+            text: "Remove",
             icon: "trash",
-            onClick: deleteFile
+            onClick: removeFile
           }
-        ]
-      ]);
-      actions = [];
-      actionsMap.forEach((action, actionKey) => {
-        if (att.links[actionKey]) {
-          actions.push(action);
-        }
-      });
-      isDownloadable = att.links.download;
-    } else if (att.error) {
-      actions = [
-        {
-          id: `Remove-${att.ID}`,
-          text: "Remove",
+        ];
+      }
+      return  {
+        id: att.ID,
+        visual: {
+          icon: getIconForAttachment(att),
+          progress: att.progress == 100 ? undefined: att.progress,
+        },
+        primary: {
+          type: att.type,
+          name: att.name,
           icon: "trash",
-          onClick: removeFile
-        }
-      ];
-    }
-    return  {
-      id: att.ID,
-      visual: {
-        icon: getIconForAttachment(att),
-        progress: att.progress == 100 ? undefined: att.progress,
-      },
-      primary: {
-        type: att.type,
-        name: att.name,
-        icon: "trash",
-        click: removeFile,
-      },
-      secondary: {
-        text: att.meta
-      },
-      actions
-    };
+          click: removeFile,
+        },
+        secondary: {
+          text: att.meta
+        },
+        actions
+      };
   };
 
   let content = (
     <div className='file-div'>
+        {file.inProgress && (<div className="progress-div"><CircularProgress /></div>)}
         <label htmlFor='upload-photo'>
           <input
             style={{ display: 'none' }}
@@ -281,23 +279,15 @@ function getNewListUtilityItemProps({
     </div>
   );
 
-  if (file && file.inProgress) {
-    // let progressValue = file.props.progress;
-    // content = (<div className="file-display">
-    //   <SummaryList menuIconOverride$='trash' arItems$={file.props.arFileList$}></SummaryList>
-    // </div>)
-    content = (
-      <div>
-        {file.props.arFileList$ && file.props.arFileList$.length > 0 && (
-           <SummaryList menuIconOverride$='trash' arItems$={file.props.arFileList$}></SummaryList>
-        )}
-        {file.props.arFileList$ && file.props.arFileList$.length===0 && (
-            <></>
-        )}
-      </div>
-    );
+  if (file && file.attachmentUploaded) {
+    if (file.props.arFileList$ && file.props.arFileList$.length > 0) {
+      content = (
+        <div>
+          <SummaryList menuIconOverride$='trash' arItems$={file.props.arFileList$} menuIconOverrideAction$={_removeFileFromList}></SummaryList>
+        </div>
+      );
+    }
   }
-
 
   return (
     <div className='file-upload-container'>

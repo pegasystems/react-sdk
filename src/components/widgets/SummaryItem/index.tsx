@@ -14,8 +14,12 @@ export default function SummaryItem(props) {
   settingsSvgIcon$ = Utils.getImageSrc("more", PCore.getAssetLoader().getStaticServerUrl());
   item$ = props.arItems$;
   srcImg = `${imagePath$}${item$.visual.icon}.svg`
-  if (menuIconOverride$ != "") {
+  if (menuIconOverride$) {
     menuIconOverride$ = Utils.getImageSrc(menuIconOverride$ , PCore.getAssetLoader().getStaticServerUrl());
+  }
+
+  function removeAttachment() {
+    props.menuIconOverrideAction$(item$)
   }
   return (
     <div className="psdk-utility-card">
@@ -27,9 +31,9 @@ export default function SummaryItem(props) {
         {item$.secondary.text && (<div>{item$.secondary.text}</div>)}
       </div>
       <div>
-        <button className="psdk-utility-button">
+        {menuIconOverride$ && (<button className="psdk-utility-button" onClick={removeAttachment}>
             <img className="psdk-utility-card-action-svg-icon" src={menuIconOverride$}></img>
-        </button>
+        </button>)}
       </div>
     </div>
   )

@@ -1,24 +1,14 @@
 import { Button } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { buildFilePropsFromResponse, getIconFromFileType, validateMaxSize, getIconForAttachment } from './AttachmentUtils';
 import './Attachment.css';
 import SummaryList from '../widgets/SummaryList'
-import { Box, CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
+
 declare const PCore: any;
 
-export default function Attachment(this: any, props) {
-  // const {getPConnect} = props;
-  const {
-    value,
-    validatemessage,
-    getPConnect,
-    label,
-    helperText,
-    testId,
-    displayMode,
-    variant,
-    hideLabel
-  } = props;
+export default function Attachment(props) {
+  const {value, getPConnect, label} = props;
   /* this is a temporary fix because required is supposed to be passed as a boolean and NOT as a string */
   let { required, disabled } = props;
   [required, disabled] = [required, disabled].map(
@@ -41,23 +31,104 @@ export default function Attachment(this: any, props) {
   valueRef = valueRef.indexOf('.') === 0 ? valueRef.substring(1) : valueRef;
 
   const [file, setFile] = useState(fileTemp);
+
+  function setNewFiles(arFiles) {
+    let index = 0;
+    for (const item of arFiles) {
+      if (!validateMaxSize(item, 5)) {
+        item.error = true;
+        item.meta = "File is too big. Max allowed size is 5MB.";
+      }
+      item.mimeType = item.type;
+      item.icon = getIconFromFileType(item.type);
+      item.ID = `${new Date().getTime()}I${index}`;
+      index+=1;
+    }
+    return arFiles;
+  }
+
+  function getFiles(arFiles: Array<any>) {
+    return setNewFiles(arFiles);
+  }
+
+  function getNewListUtilityItemProps({
+    att,
+    cancelFile,
+    downloadFile,
+    deleteFile,
+    removeFile
+  }) {
+    let actions;
+
+    if (att.progress && att.progress !== 100) {
+      actions = [
+        {
+          id: `Cancel-${att.ID}`,
+          text: "Cancel",
+          icon: "times",
+          onClick: cancelFile
+        }
+      ];
+    } else if (att.links) {
+      const isFile = att.type === "FILE";
+      const ID = att.ID.replace(/\s/gi, "");
+      const actionsMap = new Map([
+        [
+          "download",
+          {
+            id: `download-${ID}`,
+            text: isFile ? "Download" : "Open",
+            icon: isFile ? "download" : "open",
+            onClick: downloadFile
+          }
+        ],
+        [
+          "delete",
+          {
+            id: `Delete-${ID}`,
+            text: "Delete",
+            icon: "trash",
+            onClick: deleteFile
+          }
+        ]
+      ]);
+      actions = [];
+      actionsMap.forEach((action, actionKey) => {
+        if (att.links[actionKey]) {
+          actions.push(action);
+        }
+      });
+    } else if (att.error) {
+      actions = [
+        {
+          id: `Remove-${att.ID}`,
+          text: "Remove",
+          icon: "trash",
+          onClick: removeFile
+        }
+      ];
+    }
+    return  {
+      id: att.ID,
+      visual: {
+        icon: getIconForAttachment(att),
+        progress: att.progress === 100 ? undefined: att.progress,
+      },
+      primary: {
+        type: att.type,
+        name: att.name,
+        icon: "trash",
+        click: removeFile,
+      },
+      secondary: {
+        text: att.meta
+      },
+      actions
+    };
+  };
+
   const onFileAdded = (event) => {
    const addedFile = event.target.files[0];
-    /* temporarily hardcoded to max 5 MB */
-    // const maxAttachmentSize = PCore.getEnvironmentInfo().getMaxAttachmentSize() || 5;
-
-    // if (!validateMaxSize(addedFile, maxAttachmentSize)) {
-    //   setFile({
-    //     props: {
-    //       name: pConn.getLocalizedValue('Unable to upload file'),
-    //       meta: pConn.getLocalizedValue(`File is too big. Max allowed size is ${maxAttachmentSize}MB.`),
-    //       icon: getIconFromFileType(addedFile.type),
-    //       error: true
-    //     }
-    //   });
-    //   return;
-    // }
-
     setFile({
       props: {
         name: addedFile.name,
@@ -65,15 +136,12 @@ export default function Attachment(this: any, props) {
       },
       inProgress: true
     });
-    let arFiles$ = getFiles(event.target.files);
-    let myFiles: any = Array.from(arFiles$);
-    const onUploadProgress = (ev) => {
+    const arFiles$ = getFiles(event.target.files);
+    const myFiles: any = Array.from(arFiles$);
 
-    };
+    const onUploadProgress = () => {};
 
-    const errorHandler = (isFetchCanceled) => {
-
-    };
+    const errorHandler = () => {};
 
     PCore.getAttachmentUtils()
       .uploadAttachment(
@@ -123,41 +191,19 @@ export default function Attachment(this: any, props) {
         });
       })
 
-      .catch((error) => {
+      .catch(() => {
         // just catching the rethrown error at uploadAttachment
         // to handle Unhandled rejections
       });
   };
 
-  function getFiles(arFiles: Array<any>) {
-
-    return setNewFiles(arFiles);
-  }
-
-  function setNewFiles(arFiles, current = []) {
-
-    let index = 0;
-    for (let file of arFiles) {
-      if (!validateMaxSize(file, 5)) {
-        file.error = true;
-        file.meta = "File is too big. Max allowed size is 5MB.";
-      }
-      file.mimeType = file.type;
-      file.icon = getIconFromFileType(file.type);
-      file.ID = `${new Date().getTime()}I${index}`;
-      index++;
-    }
-
-    return arFiles;
-  }
-
   function _removeFileFromList(item: any) {
-    let arFileList = file.props.arFileList$;
-    if (item != null) {
-      for (let fileIndex in arFileList) {
-        if (arFileList[fileIndex].id == item.id) {
+    const arFileList = file.props.arFileList$;
+    if (item !== null) {
+      for (const fileIndex in arFileList) {
+        if (arFileList[fileIndex].id === item.id) {
           // remove the file from the list and redraw
-          arFileList.splice(parseInt(fileIndex), 1);
+          arFileList.splice(parseInt(fileIndex, 10), 1);
            // call delete attachment
             if (value && value.pxResults[0]) {
               pConn.attachmentsInfo = {
@@ -182,84 +228,6 @@ export default function Attachment(this: any, props) {
     }
   }
 
-  function getNewListUtilityItemProps({
-      att,
-      cancelFile,
-      downloadFile,
-      deleteFile,
-      removeFile
-    }) {
-      let actions;
-      let isDownloadable = false;
-
-      if (att.progress && att.progress !== 100) {
-        actions = [
-          {
-            id: `Cancel-${att.ID}`,
-            text: "Cancel",
-            icon: "times",
-            onClick: cancelFile
-          }
-        ];
-      } else if (att.links) {
-        const isFile = att.type === "FILE";
-        const ID = att.ID.replace(/\s/gi, "");
-        const actionsMap = new Map([
-          [
-            "download",
-            {
-              id: `download-${ID}`,
-              text: isFile ? "Download" : "Open",
-              icon: isFile ? "download" : "open",
-              onClick: downloadFile
-            }
-          ],
-          [
-            "delete",
-            {
-              id: `Delete-${ID}`,
-              text: "Delete",
-              icon: "trash",
-              onClick: deleteFile
-            }
-          ]
-        ]);
-        actions = [];
-        actionsMap.forEach((action, actionKey) => {
-          if (att.links[actionKey]) {
-            actions.push(action);
-          }
-        });
-        isDownloadable = att.links.download;
-      } else if (att.error) {
-        actions = [
-          {
-            id: `Remove-${att.ID}`,
-            text: "Remove",
-            icon: "trash",
-            onClick: removeFile
-          }
-        ];
-      }
-      return  {
-        id: att.ID,
-        visual: {
-          icon: getIconForAttachment(att),
-          progress: att.progress == 100 ? undefined: att.progress,
-        },
-        primary: {
-          type: att.type,
-          name: att.name,
-          icon: "trash",
-          click: removeFile,
-        },
-        secondary: {
-          text: att.meta
-        },
-        actions
-      };
-  };
-
   let content = (
     <div className='file-div'>
         {file.inProgress && (<div className="progress-div"><CircularProgress /></div>)}
@@ -279,14 +247,12 @@ export default function Attachment(this: any, props) {
     </div>
   );
 
-  if (file && file.attachmentUploaded) {
-    if (file.props.arFileList$ && file.props.arFileList$.length > 0) {
-      content = (
-        <div>
-          <SummaryList menuIconOverride$='trash' arItems$={file.props.arFileList$} menuIconOverrideAction$={_removeFileFromList}></SummaryList>
-        </div>
-      );
-    }
+  if (file && file.attachmentUploaded && file.props.arFileList$ && file.props.arFileList$.length > 0) {
+    content = (
+      <div>
+        <SummaryList menuIconOverride$='trash' arItems$={file.props.arFileList$} menuIconOverrideAction$={_removeFileFromList}></SummaryList>
+      </div>
+    );
   }
 
   return (

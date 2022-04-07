@@ -7,10 +7,8 @@ import download from "downloadjs";
 import SummaryList from '../../widgets/SummaryList'
 import './FileUtility.css';
 import  { IconButton, Menu, MenuItem } from '@material-ui/core';
-// import Menu from '@material-ui/core';
-// import MenuItem from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-// import @material-ui/icons
+
 declare const PCore;
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,23 +30,44 @@ export default function FileUtility(props) {
   const thePConn = getPConnect();
   const { label } = props;
   let arFullListAttachments: Array<any> = [];
-  let lu_arItems$: any = [];
+  let arItems: any = [];
   let attachmentsCount = 0;
-  let headerSvgIcon$: string;
   const [file, setFile] = useState([]);
   console.log('file', file);
-  headerSvgIcon$ = Utils.getImageSrc('paper-clip', PCore.getAssetLoader().getStaticServerUrl());
-  let configProps: any = thePConn.resolveConfigProps(thePConn.getConfigProps());
-  let header = configProps.label;
+  const headerSvgIcon$ = Utils.getImageSrc('paper-clip', PCore.getAssetLoader().getStaticServerUrl());
+  const configProps: any = thePConn.resolveConfigProps(thePConn.getConfigProps());
+  const header = configProps.label;
   console.log('name', header);
-  let options = ['Add files', 'Add links'];
+  const options = ['Add files', 'Add links'];
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  function addAttachments(attsFromResp: Array<any> = [], attachedFileID: string = "") {
+    // this.lu_bLoading$ = false;
+
+     attsFromResp = attsFromResp.map((respAtt) => {
+       const updatedAtt = {
+         ...respAtt,
+         meta: `${respAtt.category} . ${Utils.generateDateTime(respAtt.createTime, "DateTime-Since")}, ${
+           respAtt.createdBy
+         }`
+       };
+       if (updatedAtt.type === "FILE") {
+         updatedAtt.nameWithExt = updatedAtt.fileName;
+       }
+       return updatedAtt;
+     });
+
+
+     return attsFromResp;
+
+  }
+
   const getAttachments = () => {
 
     const attachmentUtils = PCore.getAttachmentUtils();
     const caseID = thePConn.getValue(PCore.getConstants().CASE_INFO.CASE_INFO_ID);
 
-    if (caseID && caseID != "") {
+    if (caseID && caseID !== "") {
       let attPromise = attachmentUtils.getCaseAttachments(caseID, thePConn.getContextName());
 
       attPromise
@@ -58,7 +77,7 @@ export default function FileUtility(props) {
           attachmentsCount = arFullListAttachments.length;
          // this.lu_arActions$ = this.addAttachmentsActions;
 
-          lu_arItems$ = arFullListAttachments.slice(0, 3).map((att) => {
+          arItems = arFullListAttachments.slice(0, 3).map((att) => {
             return getListUtilityItemProps({
               att,
               downloadFile: !att.progress ? () => downloadFile(att) : null,
@@ -67,7 +86,7 @@ export default function FileUtility(props) {
               removeFile: att.error ? () => removeFile(att.ID) : null
             });
           });
-          setFile(lu_arItems$);
+          setFile(arItems);
           console.log('file', file);
           // this.va_arItems$ = arFullListAttachments.map((att) => {
           //   return getListUtilityItemProps({
@@ -85,27 +104,6 @@ export default function FileUtility(props) {
 
   }
 
-  function addAttachments(attsFromResp: Array<any> = [], attachedFileID: string = "") {
-   // this.lu_bLoading$ = false;
-
-    attsFromResp = attsFromResp.map((respAtt) => {
-      const updatedAtt = {
-        ...respAtt,
-        meta: `${respAtt.category} . ${Utils.generateDateTime(respAtt.createTime, "DateTime-Since")}, ${
-          respAtt.createdBy
-        }`
-      };
-      if (updatedAtt.type === "FILE") {
-        updatedAtt.nameWithExt = updatedAtt.fileName;
-      }
-      return updatedAtt;
-    });
-
-
-    return attsFromResp;
-
-  }
-
   function getListUtilityItemProps({
     att,
     cancelFile,
@@ -114,7 +112,7 @@ export default function FileUtility(props) {
     removeFile
   }) {
     let actions;
-    let isDownloadable = false;
+
 
     if (att.progress && att.progress !== 100) {
       actions = [
@@ -154,7 +152,6 @@ export default function FileUtility(props) {
           actions.push(action);
         }
       });
-      isDownloadable = att.links.download;
     } else if (att.error) {
       actions = [
         {
@@ -276,7 +273,7 @@ export default function FileUtility(props) {
   return (
     <div className="psdk-utility">
       <div className="psdk-header">
-        <img className="psdk-utility-card-svg-icon" src={headerSvgIcon$}></img>
+        <img className="psdk-file-utility-card-svg-icon" src={headerSvgIcon$}></img>
         <div className="header-text">{header}</div>
         <div className="psdk-utility-count">{attachmentsCount}</div>
         <div>

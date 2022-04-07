@@ -1,6 +1,5 @@
 import React from "react";
 import SummaryItem from '../SummaryItem/index'
-declare const PCore: any;
 
 export default function SummaryList(props) {
   return (

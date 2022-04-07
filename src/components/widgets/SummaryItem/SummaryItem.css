@@ -1,70 +1,9 @@
-
-
-.psdk-icon {
-    padding: 0rem 0.125rem;
-    min-width: unset;
-}
-
-/* .psdk-utility-divider {
-} */
-
-.psdk-utility-view-all {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.psdk-utility-count {
-    border-radius: calc(1.125 * 0.5rem);
-    color: black;
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-align: center;
-    width: 1.125rem;
-
-    vertical-align: top;
-    margin: 0 0 0.313rem 1rem;
-}
-
-.psdk-utility .header-text {
-    font-size: 1rem;
-    font-weight: bold;
-    padding-bottom: 0.3125rem;
-    text-align: left;
-    display: inline-block;
-}
-
-.psdk-utility .header-icon {
-    display: inline-block;
-}
-
 .psdk-utility {
     width: 100%;
     padding: 0.625rem 0rem;
     text-align: left;
     border-radius: 0.6125rem;
     margin: 0.3125rem 0rem;
-}
-.psdk-utility .header {
-    text-align: left;
-    display: flex;
-    align-items: center;;
-}
-
-.psdk-utility-svg-icon {
-    width: 1.4rem;
-    display: inline-block;
-}
-
-.psdk-settings-svg-icon {
-    width: 1.4rem;
-    display: inline-block;
-}
-
-
-.psdk-utility .message {
-    text-align: center;
 }
 
 .psdk-utility-card {
@@ -90,14 +29,6 @@
     max-width: 16.563rem;
 }
 
-/* .psdk-utility-card-main-primary-url {
-    color: $app-primary-color;
-} */
-
-.psdk-utility-card-main-primary-url .mat-button.mat-primary {
-    padding-left: 0px;
-}
-
 .psdk-utility-card-main-primary-label {
     font-weight: bold;
     text-overflow: ellipsis;
@@ -105,29 +36,12 @@
     white-space: nowrap;
 }
 
-.psdk-utility-card-actions {
-    flex-grow: 1;
-    text-align: right;
-}
-
 .psdk-utility-card-action-svg-icon {
     width: 1.4rem;
     display: inline-block;
 }
 
-.psdk-utility-card-actions-svg-icon {
-    width: 1.4rem;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.psdk-utility-card-action-actions-svg-icon {
-    width: 1.5rem;
-    display: inline-block;
-    vertical-align: bottom;
-}
-
-.psdk-utility-card{
+.psdk-utility-card {
   display: flex;
   align-items: center;
   border: 0.0625rem solid rgb(207, 207, 207);

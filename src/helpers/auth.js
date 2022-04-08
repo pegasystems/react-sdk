@@ -54,13 +54,13 @@ class PegaAuth {
       // Add explicit creds if specified to try to avoid login popup
       const moreAuthArgs =
           (authService ? `&authentication_service=${encodeURIComponent(authService)}` : "") +
-          (sessionIndex ? `&sessionIndex=${sessionIndex}` : "") +
+          (sessionIndex ? `&session_index=${sessionIndex}` : "") +
           (useLocking ? `&enable_psyncId=true` : '') +
           (userIdentifier ? `&UserIdentifier=${encodeURIComponent(userIdentifier)}` : '') +
           (userIdentifier && password ? `&Password=${encodeURIComponent(window.atob(password))}` : '');
 
       return this.getCodeChallenge(this.config.codeVerifier).then( cc => {
-        // Now includes new enable_psyncId=true and sessionIndex params
+        // Now includes new enable_psyncId=true and session_index params
         return `${authorizeUri}?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=openid${addtlScope}&state=${state}&code_challenge=${cc}&code_challenge_method=S256${moreAuthArgs}`;
       });
   }

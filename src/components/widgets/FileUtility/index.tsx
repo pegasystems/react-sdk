@@ -40,7 +40,7 @@ export default function FileUtility(props) {
     linkSecondaryButtons: [{ actionID: "cancel", jsAction: "cancel", name: "Cancel"}]
   };
   const [linkData, setLinkData] = useState(linkTemp);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   function addAttachments(attsFromResp: Array<any> = []) {
@@ -145,7 +145,7 @@ export default function FileUtility(props) {
   function downloadAttachedFile(att: any) {
     const attachUtils = PCore.getAttachmentUtils();
     const {ID, name, extension, type} = att;
-    const context = PCore.getContextName();
+    const context = thePConn.getContextName();
 
     attachUtils
     .downloadAttachment(ID, context)
@@ -164,26 +164,16 @@ export default function FileUtility(props) {
   }
 
   function deleteAttachedFile(att: any) {
-    setTimeout(() => {
-      const attachUtils = PCore.getAttachmentUtils();
-      const {ID} = att;
-      const context = PCore.getContextName();
+    const attachUtils = PCore.getAttachmentUtils();
+    const {ID} = att;
+    const context = thePConn.getContextName();
 
-      attachUtils
-      .deleteAttachment(ID, context)
+    attachUtils.deleteAttachment(ID, context)
       .then(() => {
-        // this.updateSelf();
-        // let newAttachments;
-        // setAttachments((current) => {
-        //   newAttachments = current.filter((file) => file.ID !== ID);
-        //   return newAttachments;
-        // });
-        // if (callbackFn) {
-        //   callbackFn(newAttachments);
-        // }
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        getAttachments();
       })
       .catch();
-    });
   }
 
   const getAttachments = () => {

@@ -29,7 +29,7 @@ export default function SummaryItem(props) {
         <div className="psdk-utility-card-main-primary-label">{item$.primary.name}</div>
         {item$.secondary.text && (<div>{item$.secondary.text}</div>)}
       </div>
-      <div>
+      <div className="psdk-utility-action">
         {menuIconOverride$ && (<button type="button" className="psdk-utility-button" onClick={removeAttachment}>
             <img className="psdk-utility-card-action-svg-icon" src={menuIconOverride$}></img>
         </button>)}

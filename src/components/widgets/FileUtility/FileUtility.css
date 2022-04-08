@@ -1,0 +1,97 @@
+.psdk-utility {
+  width: 100%;
+  padding: 0.625rem 0rem;
+  text-align: left;
+  background-color: white;
+  border-radius: 0.6125rem;
+  margin: 0.3125rem 0rem;
+  position: relative;
+}
+
+.psdk-header {
+  display: flex;
+  align-items: center;
+}
+
+.psdk-file-utility-card-svg-icon {
+  width: 1.4rem;
+  display: inline-block;
+}
+
+.header-text {
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0px 5px;
+}
+
+.psdk-utility-count {
+  background: #65b5f5;
+  border-radius: calc(1.125 * 0.5rem);
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-align: center;
+  width: 1.125rem;
+}
+
+.psdk-dialog-background {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(100,100,100, 0.4);
+  position: fixed;
+  z-index: 999;
+  top: 0px;
+  left: 0px;
+}
+
+.psdk-modal-file-top {
+  display: table;
+  margin: auto;
+  min-width: 650px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px 3px #777;
+}
+
+.psdk-modal-file-selector {
+  border: 1px dashed;
+  width: 100%;
+  padding: 0.3rem;
+  text-align: center;;
+}
+
+.psdk-modal-links-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.psdk-links-two-column {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(1rem);
+  width: 83%;
+}
+
+.psdk-modal-link-data {
+  flex-grow: 3;
+}
+
+.psdk-modal-link-add {
+  flex-grow: 1;
+  margin-left: 10px;
+}
+
+.psdk-add-link-action {
+  background-color: #3f51b5 !important;
+  color: white !important;
+  padding: 6px 14px !important;
+  text-transform: unset !important;
+  font-size: 14px;
+}

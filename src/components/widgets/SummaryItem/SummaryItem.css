@@ -10,6 +10,7 @@
     display: flex;
     flex-direction: row;
     padding: 0.25rem 0rem 0.25rem 0.25rem;
+    margin-bottom: 0.5rem
 }
 
 .psdk-utility-card-icon {
@@ -47,11 +48,16 @@
   border: 0.0625rem solid rgb(207, 207, 207);
   border-radius: calc(0.25rem);
   min-height: 3rem;
-  max-width: 22rem;
+  /* max-width: 22rem; */
 }
 
 .psdk-utility-button {
   background: none;
   border: none;
   cursor: pointer;
+}
+
+.psdk-utility-action {
+    flex-grow: 1;
+    text-align: right;
 }

@@ -1,0 +1,63 @@
+.psdk-utility {
+    width: 100%;
+    padding: 0.625rem 0rem;
+    text-align: left;
+    border-radius: 0.6125rem;
+    margin: 0.3125rem 0rem;
+}
+
+.psdk-utility-card {
+    display: flex;
+    flex-direction: row;
+    padding: 0.25rem 0rem 0.25rem 0.25rem;
+    margin-bottom: 0.5rem
+}
+
+.psdk-utility-card-icon {
+    flex-grow: 1;
+    max-width: 2.813rem;
+    align-content: center;
+    display: flex;
+}
+
+.psdk-utility-card-svg-icon {
+    width: 2.5rem;
+    display: inline-block;
+}
+
+.psdk-utility-card-main {
+    flex-grow: 2;
+    max-width: 16.563rem;
+}
+
+.psdk-utility-card-main-primary-label {
+    font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.psdk-utility-card-action-svg-icon {
+    width: 1.4rem;
+    display: inline-block;
+}
+
+.psdk-utility-card {
+  display: flex;
+  align-items: center;
+  border: 0.0625rem solid rgb(207, 207, 207);
+  border-radius: calc(0.25rem);
+  min-height: 3rem;
+  /* max-width: 22rem; */
+}
+
+.psdk-utility-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.psdk-utility-action {
+    flex-grow: 1;
+    text-align: right;
+}

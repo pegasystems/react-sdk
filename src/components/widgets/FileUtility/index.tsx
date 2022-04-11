@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TextField } from "@material-ui/core";
+import TextField from '@material-ui/core/TextField';
 import { Utils } from "../../../helpers/utils";
 import download from "downloadjs";
 import SummaryList from '../../widgets/SummaryList';
@@ -9,6 +9,7 @@ import  { IconButton, Menu, MenuItem } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Button } from '@material-ui/core';
 import { validateMaxSize } from '../../Attachment/AttachmentUtils';
+import { CircularProgress } from "@material-ui/core";
 
 declare const PCore;
 
@@ -42,7 +43,8 @@ export default function FileUtility(props) {
   const [linkData, setLinkData] = useState(linkTemp);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
+  const [link, setLink] = useState({title: '', url: ''});
+  const [inProgress, setProgress] = useState(false);
   function addAttachments(attsFromResp: Array<any> = []) {
      attsFromResp = attsFromResp.map((respAtt) => {
        const updatedAtt = {
@@ -197,7 +199,7 @@ export default function FileUtility(props) {
               removeFile: null
             });
           });
-
+          setProgress(false);
           setList((current) => {
             return {...current, count: attachmentsCount, data: arItems}
           });
@@ -226,9 +228,9 @@ export default function FileUtility(props) {
 
   function uploadMyFiles(event) {
     // alert($event.target.files[0]); // outputs the first file
-    const arFiles: any = getFiles(event.target.files);
+    const arFiles = getFiles(event.target.files);
     // convert FileList to an array
-    const myFiles = Array.from(arFiles);
+    const myFiles: any = Array.from(arFiles);
 
     const arFileList$: any = myFiles.map((att: any) => {
       return getListUtilityItemProps({
@@ -240,7 +242,7 @@ export default function FileUtility(props) {
       });
     });
     setFileData((current) => {
-      return {...current, fileList: arFileList$, attachedFiles: arFiles}
+      return {...current, fileList: arFileList$, attachedFiles: myFiles}
     });
   }
 
@@ -264,15 +266,13 @@ export default function FileUtility(props) {
   }
 
   function removeFileFromList(item: any) {
-    const arFileList: any = fileData.attachedFiles;
+    let attachedFiles: any = fileData.attachedFiles;
+    let fileList: any = fileData.fileList;
     if (item !== null) {
-      for (const fileIndex in arFileList) {
-        if (arFileList[fileIndex].id === item.id) {
-          arFileList.splice(parseInt(fileIndex, 10), 1);
-        }
-      }
+      attachedFiles = attachedFiles.filter(ele => ele.ID !== item.id);
+      fileList = fileList.filter(ele => ele.id !== item.id);
       setFileData((current) => {
-        return {...current, fileList: arFileList}
+        return {...current, fileList, attachedFiles}
       });
     }
   }
@@ -289,6 +289,9 @@ export default function FileUtility(props) {
     const onUploadProgress = () => {};
     const errorHandler = () => {};
     closeFilePopup()
+    if (fileData.attachedFiles && fileData.attachedFiles.length > 0 ) {
+      setProgress(true);
+    }
     for (const file of fileData.attachedFiles) {
       attachmentUtils
       .uploadAttachment(
@@ -331,8 +334,105 @@ export default function FileUtility(props) {
     });
   }
 
+  const fieldlinkOnChange = (event) => {
+    const title = event.target.value;
+    setLink((current) => {
+      return {...current, title}
+    });
+  }
+
+  function fieldurlOnChange(event) {
+    const url = event.target.value;
+    setLink((current) => {
+      return {...current, url}
+    });
+  }
+
+  function addLink() {
+    // copy list locally
+    const localList: any = linkData.linksList.slice();
+    const url = link.url;
+    if (!/^(http|https):\/\//.test(link.url)) {
+      link.url  = `http://${link.url}`;
+    }
+
+    // list for display
+    let oLink: any = {};
+    oLink.icon = "chain";
+    oLink.ID = `${new Date().getTime()}`;
+    oLink = getListUtilityItemProps({
+      att: oLink,
+      downloadFile: null,
+      cancelFile: null,
+      deleteFile: null,
+      removeFile: null
+    });
+    oLink.type = "URL";
+    oLink.primary.type = oLink.type;
+    oLink.visual.icon = "chain";
+    oLink.primary.name = link.title;
+    oLink.primary.icon = "open";
+    oLink.secondary.text = url;
+
+    localList.push(oLink);
+
+    // list for actually attachments
+    const attachedListTemp: any = linkData.attachedLinks.slice();
+    const attachedLink: any = {};
+    attachedLink.id = oLink.id;
+    attachedLink.linkTitle = link.title;
+    attachedLink.type = oLink.type;
+    attachedLink.url = url;
+
+    attachedListTemp.push(attachedLink);
+    setLinkData((current) => {
+      return {...current, linksList: localList, attachedLinks: attachedListTemp}
+    });
+    // clear values
+    setLink({title: '', url: ''});
+  }
+
+  function removeLinksFromList(item: any) {
+    let attachedLinks: any = linkData.attachedLinks;
+    let linksList: any = linkData.linksList;
+    if (item !== null) {
+      attachedLinks = attachedLinks.filter(ele => ele.id !== item.id);
+      linksList = linksList.filter(ele => ele.id !== item.id);
+      setLinkData((current) => {
+        return {...current, linksList, attachedLinks}
+      });
+    }
+  }
+
+  function onAttachLinks() {
+    const attachmentUtils = PCore.getAttachmentUtils();
+    const caseID = thePConn.getValue(PCore.getConstants().CASE_INFO.CASE_INFO_ID);
+    const links = linkData.attachedLinks;
+    closeAddLinksPopup();
+    const linksToAttach = links.map((item: any) => ({
+      type: "URL",
+      category: "URL",
+      url: item.url,
+      name: item.linkTitle
+    }));
+
+    if (linksToAttach && linksToAttach.length > 0) {
+      setProgress(true);
+      attachmentUtils
+      .linkAttachmentsToCase(caseID, linksToAttach, "URL", thePConn.getContextName())
+      .then( () => {
+        setLinkData((current) => {
+          return {...current, linksList: [], attachedLinks: []};
+        });
+        getAttachments();
+      })
+      .catch();
+    }
+  }
+
   return (
     <div className="psdk-utility">
+      {inProgress && (<div className="progress-div"><CircularProgress /></div>)}
       <div className="psdk-header">
         <img className="psdk-file-utility-card-svg-icon" src={headerSvgIcon$}></img>
         <div className="header-text">{header}</div>
@@ -369,9 +469,9 @@ export default function FileUtility(props) {
           <h3>Add local files</h3>
           <div className="psdk-modal-body">
             <div className="psdk-modal-file-selector">
-              <label htmlFor='upload-photo'>
-                <input style={{ display: 'none' }} id='upload-photo' name='upload-photo' type='file' multiple onChange={uploadMyFiles}/>
-                <Button variant='outlined' color='primary' component="span">Upload file</Button>
+              <label htmlFor='upload-files'>
+                <input style={{ display: 'none' }} id='upload-files' name='upload-files' type='file' multiple onChange={uploadMyFiles}/>
+                <Button variant='outlined' color='primary' component="span">Upload file(s)</Button>
               </label>
             </div>
             {fileData.fileList.length > 0 && (<div style={{marginTop: '1rem'}}>
@@ -392,18 +492,21 @@ export default function FileUtility(props) {
               <div className="psdk-modal-links-row">
                   <div className="psdk-links-two-column">
                     <div className="psdk-modal-link-data">
-                      <TextField fullWidth variant="outlined" label="Link title" size="small" required={required}/>
+                      <TextField fullWidth variant="outlined" label="Link title" size="small" required={required} value={link.title} onChange={fieldlinkOnChange}/>
                     </div>
                     <div className="psdk-modal-link-data">
-                      <TextField fullWidth variant="outlined" label="URL" size="small" required={required}/>
+                      <TextField fullWidth variant="outlined" label="URL" size="small" required={required} value={link.url} onChange={fieldurlOnChange}/>
                     </div>
                   </div>
                   <div className="psdk-modal-link-add">
-                    <Button className="psdk-add-link-action" component="span">Add Link</Button>
+                    <Button className="psdk-add-link-action" component="span" onClick={addLink}>Add Link</Button>
                   </div>
                 </div>
+                {linkData.linksList.length > 0 && (<div style={{marginTop: '1rem'}}>
+                  <SummaryList menuIconOverride$='trash' arItems$={linkData.linksList} menuIconOverrideAction$={removeLinksFromList}></SummaryList>
+                </div>)}
                 <ActionButtons arMainButtons={linkData.linkMainButtons} arSecondaryButtons={linkData.linkSecondaryButtons}
-                secondaryAction={closeAddLinksPopup}></ActionButtons>
+                primaryAction={onAttachLinks} secondaryAction={closeAddLinksPopup}></ActionButtons>
             </div>
           </div>
         </div>

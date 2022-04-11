@@ -61,3 +61,19 @@
     flex-grow: 1;
     text-align: right;
 }
+
+.psdk-utility-card-actions-svg-icon {
+    width: 1.4rem;
+    display: inline-block;
+    vertical-align: middle;
+    filter: invert(28%) sepia(20%) saturate(3903%) hue-rotate(209deg) brightness(101%) contrast(87%);
+}
+
+.psdk-link-button {
+    background: none;
+    border: none;
+    align-items: center;
+    display: flex;
+    padding: 0;
+    color: #3f51b5;
+}

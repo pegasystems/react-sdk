@@ -202,7 +202,7 @@ export default function FileUtility(props) {
               removeFile: null
             });
           });
-          const va_arItems: any = arFullListAttachments.map((att) => {
+          const viewAllarItems: any = arFullListAttachments.map((att) => {
             return getListUtilityItemProps({
               att,
               downloadFile: !att.progress ? () => downloadAttachedFile(att) : null,
@@ -215,7 +215,7 @@ export default function FileUtility(props) {
           setList((current) => {
             return {...current, count: attachmentsCount, data: arItems}
           });
-          setFullAttachments(va_arItems);
+          setFullAttachments(viewAllarItems);
         });
     }
   }
@@ -477,7 +477,7 @@ export default function FileUtility(props) {
         <SummaryList arItems$={list.data}></SummaryList>
       </div>)}
       {list.count > 3 && (<div className="psdk-utility-view-all">
-        <Button style={{textTransform: 'none'}} color="primary" onClick = {(e) => setViewAll(true)}>View all</Button>
+        <Button style={{textTransform: 'none'}} color="primary" onClick = {() => setViewAll(true)}>View all</Button>
       </div>)}
       {fileData.showfileModal && (
         <div className="psdk-dialog-background">
@@ -531,7 +531,8 @@ export default function FileUtility(props) {
         <div className="psdk-modal-file-top">
           <div className="psdk-view-all-header">
               <h3>Attachments</h3>
-              <button className="psdk-close-button" onClick = {() => setViewAll(false)}><img className="psdk-utility-card-actions-svg-icon" src={closeSvgIcon}></img></button>
+              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+              <button type="button" className="psdk-close-button" onClick = {() => setViewAll(false)}><img className="psdk-utility-card-actions-svg-icon" src={closeSvgIcon}></img></button>
           </div>
           <div className="psdk-view-all-body"><SummaryList arItems$={vaItems}></SummaryList></div>
         </div>

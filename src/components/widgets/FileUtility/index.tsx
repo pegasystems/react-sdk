@@ -23,6 +23,7 @@ export default function FileUtility(props) {
   };
   const [list, setList] = useState(listTemp);
   const headerSvgIcon$ = Utils.getImageSrc('paper-clip', PCore.getAssetLoader().getStaticServerUrl());
+  const closeSvgIcon = Utils.getImageSrc("times", PCore.getAssetLoader().getStaticServerUrl());
   const configProps: any = thePConn.resolveConfigProps(thePConn.getConfigProps());
   const header = configProps.label;
   const fileTemp = {
@@ -45,6 +46,8 @@ export default function FileUtility(props) {
   const open = Boolean(anchorEl);
   const [link, setLink] = useState({title: '', url: ''});
   const [inProgress, setProgress] = useState(false);
+  const [showViewAllModal, setViewAll] = useState(false);
+  const [vaItems, setFullAttachments] = useState([]);
   function addAttachments(attsFromResp: Array<any> = []) {
      attsFromResp = attsFromResp.map((respAtt) => {
        const updatedAtt = {
@@ -199,10 +202,20 @@ export default function FileUtility(props) {
               removeFile: null
             });
           });
+          const va_arItems: any = arFullListAttachments.map((att) => {
+            return getListUtilityItemProps({
+              att,
+              downloadFile: !att.progress ? () => downloadAttachedFile(att) : null,
+              cancelFile: null,
+              deleteFile: !att.progress ? () => deleteAttachedFile(att) : null,
+              removeFile: null
+            });
+          });
           setProgress(false);
           setList((current) => {
             return {...current, count: attachmentsCount, data: arItems}
           });
+          setFullAttachments(va_arItems);
         });
     }
   }
@@ -463,6 +476,9 @@ export default function FileUtility(props) {
       {list.data.length > 0 && (<div style={{marginTop: '1rem'}}>
         <SummaryList arItems$={list.data}></SummaryList>
       </div>)}
+      {list.count > 3 && (<div className="psdk-utility-view-all">
+        <Button style={{textTransform: 'none'}} color="primary" onClick = {(e) => setViewAll(true)}>View all</Button>
+      </div>)}
       {fileData.showfileModal && (
         <div className="psdk-dialog-background">
         <div className="psdk-modal-file-top">
@@ -511,6 +527,15 @@ export default function FileUtility(props) {
           </div>
         </div>
       )}
+      {showViewAllModal && (<div className="psdk-dialog-background">
+        <div className="psdk-modal-file-top">
+          <div className="psdk-view-all-header">
+              <h3>Attachments</h3>
+              <button className="psdk-close-button" onClick = {() => setViewAll(false)}><img className="psdk-utility-card-actions-svg-icon" src={closeSvgIcon}></img></button>
+          </div>
+          <div className="psdk-view-all-body"><SummaryList arItems$={vaItems}></SummaryList></div>
+        </div>
+      </div>)}
     </div>
 
   )

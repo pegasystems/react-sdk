@@ -37,7 +37,13 @@ export default function SummaryItem(props) {
         <img className="psdk-utility-card-svg-icon" src={srcImg}></img>
       </div>
       <div className="psdk-utility-card-main">
-        <div className="psdk-utility-card-main-primary-label">{item.primary.name}</div>
+        {item.primary.type !== 'URL' && (<div className="psdk-utility-card-main-primary-label">{item.primary.name}</div>)}
+        {item.primary.type === 'URL' && (<div className="psdk-utility-card-main-primary-url">
+          <button type="button" className="psdk-link-button">
+            {item.primary.name}&nbsp;
+            <img className="psdk-utility-card-actions-svg-icon" src={`${imagePath$}${item.primary.icon}.svg`}></img>
+          </button>
+        </div>)}
         {item.secondary.text && (<div>{item.secondary.text}</div>)}
       </div>
       <div className="psdk-utility-action">

@@ -27,14 +27,14 @@
 
 .psdk-utility-card-main {
     flex-grow: 2;
-    max-width: 16.563rem;
+    margin-left: 5px;
 }
 
 .psdk-utility-card-main-primary-label {
     font-weight: bold;
     text-overflow: ellipsis;
     overflow: hidden;
-    white-space: nowrap;
+    white-space: normal;
 }
 
 .psdk-utility-card-action-svg-icon {
@@ -48,7 +48,6 @@
   border: 0.0625rem solid rgb(207, 207, 207);
   border-radius: calc(0.25rem);
   min-height: 3rem;
-  /* max-width: 22rem; */
 }
 
 .psdk-utility-button {
@@ -60,4 +59,20 @@
 .psdk-utility-action {
     flex-grow: 1;
     text-align: right;
+}
+
+.psdk-utility-card-actions-svg-icon {
+    width: 1.4rem;
+    display: inline-block;
+    vertical-align: middle;
+    filter: invert(28%) sepia(20%) saturate(3903%) hue-rotate(209deg) brightness(101%) contrast(87%);
+}
+
+.psdk-link-button {
+    background: none;
+    border: none;
+    align-items: center;
+    display: flex;
+    padding: 0;
+    color: #3f51b5;
 }

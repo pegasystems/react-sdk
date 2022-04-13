@@ -189,13 +189,13 @@ export default function CaseView(props) {
           </Card>
         </Grid>
 
-        <Grid item xs={7}>
+        <Grid item xs={6}>
           {theStagesRegion}
           {theTodoRegion}
           <DeferLoad getPConnect={getPConnect} loadData={deferLoadInfo[activeVertTab]} />
         </Grid>
 
-        <Grid item xs={2}>
+        <Grid item xs={3}>
           {theUtilitiesRegion}
         </Grid>
       </Grid>

@@ -1,9 +1,10 @@
 import { Button } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { buildFilePropsFromResponse, getIconFromFileType, validateMaxSize, getIconForAttachment } from './AttachmentUtils';
 import './Attachment.css';
 import SummaryList from '../widgets/SummaryList'
 import { CircularProgress } from "@material-ui/core";
+import download from "downloadjs";
 
 declare const PCore: any;
 
@@ -14,13 +15,10 @@ export default function Attachment(props) {
   [required, disabled] = [required, disabled].map(
     prop => prop === true || (typeof prop === 'string' && prop === 'true')
   );
-  let arFileList$: any;
+  let arFileList$: Array<any> = [];
   const pConn = getPConnect();
 
   let fileTemp: any = {};
-  if (value && value.pxResults && +value.pyCount > 0) {
-    fileTemp = buildFilePropsFromResponse(value.pxResults[0]);
-  }
 
   let categoryName = '';
   if (value && value.pyCategoryName) {
@@ -29,8 +27,22 @@ export default function Attachment(props) {
 
   let valueRef = pConn.getStateProps().value;
   valueRef = valueRef.indexOf('.') === 0 ? valueRef.substring(1) : valueRef;
-
   const [file, setFile] = useState(fileTemp);
+
+  const fileDownload = (data, fileName, ext) => {
+    const fileData = ext ? `${fileName}.${ext}` : fileName;
+    download(atob(data), fileData);
+  };
+
+  function _downloadFileFromList(fileObj: any) {
+    PCore.getAttachmentUtils()
+      .downloadAttachment(fileObj.pzInsKey, pConn.getContextName())
+      .then((content) => {
+        const extension = fileObj.pyAttachName.split(".").pop();
+        fileDownload(content.data, fileObj.pyFileName, extension);
+      })
+      .catch(() => {});
+  }
 
   function setNewFiles(arFiles) {
     let index = 0;
@@ -59,7 +71,6 @@ export default function Attachment(props) {
     removeFile
   }) {
     let actions;
-
     if (att.progress && att.progress !== 100) {
       actions = [
         {
@@ -186,7 +197,8 @@ export default function Attachment(props) {
               arFileList$
             },
             inProgress: false,
-            attachmentUploaded: true
+            attachmentUploaded: true,
+            showMenuIcon: false
           };
         });
       })
@@ -197,8 +209,8 @@ export default function Attachment(props) {
       });
   };
 
-  function _removeFileFromList(item: any) {
-    const arFileList = file.props.arFileList$;
+  function _removeFileFromList(item: any, list) {
+    const arFileList = file.props ? file.props.arFileList$ : list;
     if (item !== null) {
       for (const fileIndex in arFileList) {
         if (arFileList[fileIndex].id === item.id) {
@@ -228,6 +240,64 @@ export default function Attachment(props) {
     }
   }
 
+  useEffect(() => {
+    if (value && value.pxResults && +value.pyCount > 0) {
+    fileTemp = buildFilePropsFromResponse(value.pxResults[0]);
+
+    if (fileTemp.responseProps) {
+      if (!pConn.attachmentsInfo) {
+        pConn.attachmentsInfo = {
+          type: "File",
+          attachmentFieldName: valueRef,
+          category: categoryName
+        };
+      }
+
+      if (fileTemp.responseProps.pzInsKey && !fileTemp.responseProps.pzInsKey.includes("temp")) {
+
+        fileTemp.props.type = fileTemp.responseProps.pyMimeFileExtension;
+        fileTemp.props.mimeType = fileTemp.responseProps.pyMimeFileExtension;
+        fileTemp.props.ID = fileTemp.responseProps.pzInsKey;
+        // create the actions for the "more" menu on the attachment
+        const arMenuList: Array<any> = [];
+        let oMenu: any = {};
+
+        oMenu.icon = "download";
+        oMenu.text = "Download";
+        oMenu.onClick = () => { _downloadFileFromList(value.pxResults[0])}
+        arMenuList.push(oMenu);
+        oMenu = {};
+        oMenu.icon = "trash";
+        oMenu.text = "Delete";
+        oMenu.onClick = () => { _removeFileFromList(arFileList$[0], arFileList$)}
+        arMenuList.push(oMenu);
+
+        arFileList$.push(getNewListUtilityItemProps({
+          att: fileTemp.props,
+          downloadFile: null,
+          cancelFile: null,
+          deleteFile: null,
+          removeFile: null
+        }));
+        arFileList$[0].actions = arMenuList;
+
+        setFile((current) => {
+          return {
+            ...current,
+            props: {
+              ...current.props,
+              arFileList$
+            },
+            inProgress: false,
+            attachmentUploaded: true,
+            showMenuIcon: true
+          };
+        });
+      }
+    }
+  }
+  }, [""]);
+
   let content = (
     <div className='file-div'>
         {file.inProgress && (<div className="progress-div"><CircularProgress /></div>)}
@@ -250,8 +320,10 @@ export default function Attachment(props) {
   if (file && file.attachmentUploaded && file.props.arFileList$ && file.props.arFileList$.length > 0) {
     content = (
       <div>
-        <SummaryList menuIconOverride$='trash' arItems$={file.props.arFileList$} menuIconOverrideAction$={_removeFileFromList}></SummaryList>
+         {file.showMenuIcon && (<SummaryList arItems$={file.props.arFileList$} menuIconOverrideAction$={_removeFileFromList}></SummaryList>)}
+         {!file.showMenuIcon && (<SummaryList menuIconOverride$='trash' arItems$={file.props.arFileList$} menuIconOverrideAction$={_removeFileFromList}></SummaryList>)}
       </div>
+
     );
   }
 

@@ -11,7 +11,7 @@
 ## Release SDK-R.87.1
 * This is the first public release of the React SDK for Infinity 8.7.
 * This SDK release supports Infinity **8.7.0**.
-* Use the corresponding ConstellationJS files found in the SDK-R.87.0 download from Pega Marketplace: https://community.pega.com/marketplace/components/react-sdk
+* Use the corresponding ConstellationJS files found in the SDK-R.87.1 download from Pega Marketplace: https://community.pega.com/marketplace/components/react-sdk
 * The React SDK does not include every component that a Constellation application supports. At this time, we provide the most commonly used components to get you started with your application.
 
 ## Release SDK-R.87.0

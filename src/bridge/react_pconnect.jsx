@@ -116,6 +116,20 @@ const connectRedux = (component, c11nEnv) => {
         if('routingInfo' in next && (!shallowEqual(next.routingInfo, prev.routingInfo) || !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))){
           return false;
         }
+
+        // For CaseSummary (when status === ".pyStatusWork"), we need to compare changes in
+        //  primaryFields and secondary Fields
+        if (allStateProps.status === ".pyStatusWork") {
+          for(const key in prev){
+            // eslint-disable-next-line no-undef
+            if (!PCore.isDeepEqual(next[key], prev[key])) {
+              return false;
+            }
+          }
+        }
+
+        // eslint-disable-next-line no-console
+        // console.log(` >>> ${theCompName}: returning true`);
         return true;
       }
     }

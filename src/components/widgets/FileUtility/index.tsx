@@ -10,6 +10,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Button } from '@material-ui/core';
 import { validateMaxSize } from '../../Attachment/AttachmentUtils';
 import { CircularProgress } from "@material-ui/core";
+import PropTypes from "prop-types";
 
 declare const PCore;
 
@@ -25,6 +26,9 @@ export default function FileUtility(props) {
   const headerSvgIcon$ = Utils.getImageSrc('paper-clip', PCore.getAssetLoader().getStaticServerUrl());
   const closeSvgIcon = Utils.getImageSrc("times", PCore.getAssetLoader().getStaticServerUrl());
   const configProps: any = thePConn.resolveConfigProps(thePConn.getConfigProps());
+  console.log('props', props);
+  console.log('configProps', configProps);
+  const [lastRefreshTime, setLastRefresh] = useState(null);
   const header = configProps.label;
   const fileTemp = {
     showfileModal: false,
@@ -48,6 +52,35 @@ export default function FileUtility(props) {
   const [inProgress, setProgress] = useState(false);
   const [showViewAllModal, setViewAll] = useState(false);
   const [vaItems, setFullAttachments] = useState([]);
+
+  if (configProps && (configProps.lastRefreshTime !== lastRefreshTime))  {
+    console.log('configProps.lastRefreshTime', configProps.lastRefreshTime);
+    setLastRefresh(configProps.lastRefreshTime);
+  }
+  useEffect(() => {
+    getAttachments();
+  }, []);
+
+  useEffect(() => {
+    thePConn.registerAdditionalProps({
+      lastRefreshTime: `@P ${
+        PCore.getConstants().SUMMARY_OF_ATTACHMENTS_LAST_REFRESH_TIME
+      }`
+    });
+  }, [])
+
+  // useEffect(() => {
+  //   thePConn.registerAdditionalProps({
+  //     lastRefreshTime: `@P ${
+  //       PCore.getConstants().SUMMARY_OF_ATTACHMENTS_LAST_REFRESH_TIME
+  //     }`
+  //   });
+  // }, [configProps.lastRefreshTime]);
+
+  useEffect(() => {
+    console.log('In refresh attachment')
+    getAttachments();
+  }, [lastRefreshTime]);
   function addAttachments(attsFromResp: Array<any> = []) {
      attsFromResp = attsFromResp.map((respAtt) => {
        const updatedAtt = {
@@ -259,9 +292,7 @@ export default function FileUtility(props) {
     });
   }
 
-  useEffect(() => {
-    getAttachments();
-  }, [""]);
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -541,3 +572,13 @@ export default function FileUtility(props) {
 
   )
 }
+
+FileUtility.defaultProps = {
+  // lastRefreshTime: ""
+};
+
+FileUtility.propTypes = {
+ label: PropTypes.string.isRequired,
+ getPConnect: PropTypes.func.isRequired,
+ lastRefreshTime: PropTypes.string
+};

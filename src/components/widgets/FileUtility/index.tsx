@@ -26,9 +26,14 @@ export default function FileUtility(props) {
   const headerSvgIcon$ = Utils.getImageSrc('paper-clip', PCore.getAssetLoader().getStaticServerUrl());
   const closeSvgIcon = Utils.getImageSrc("times", PCore.getAssetLoader().getStaticServerUrl());
   const configProps: any = thePConn.resolveConfigProps(thePConn.getConfigProps());
-  console.log('props', props);
-  console.log('configProps', configProps);
+
+  /* eslint-disable no-console */
+  console.log(`props: ${JSON.stringify(props)}`);
+  console.log(`configProps: ${JSON.stringify(configProps)}`);
+  /* eslint-enable no-console */
+
   const [lastRefreshTime, setLastRefresh] = useState(null);
+
   const header = configProps.label;
   const fileTemp = {
     showfileModal: false,
@@ -54,10 +59,12 @@ export default function FileUtility(props) {
   const [vaItems, setFullAttachments] = useState([]);
 
   if (configProps && (configProps.lastRefreshTime !== lastRefreshTime))  {
-    console.log('configProps.lastRefreshTime', configProps.lastRefreshTime);
+    // eslint-disable-next-line no-console
+    console.log(`configProps.lastRefreshTime: ${configProps.lastRefreshTime}`);
     setLastRefresh(configProps.lastRefreshTime);
   }
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     getAttachments();
   }, []);
 
@@ -78,9 +85,12 @@ export default function FileUtility(props) {
   // }, [configProps.lastRefreshTime]);
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
     console.log('In refresh attachment')
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     getAttachments();
   }, [lastRefreshTime]);
+
   function addAttachments(attsFromResp: Array<any> = []) {
      attsFromResp = attsFromResp.map((respAtt) => {
        const updatedAtt = {
@@ -578,7 +588,7 @@ FileUtility.defaultProps = {
 };
 
 FileUtility.propTypes = {
- label: PropTypes.string.isRequired,
+ //  label: PropTypes.string.isRequired,
  getPConnect: PropTypes.func.isRequired,
- lastRefreshTime: PropTypes.string
+ // lastRefreshTime: PropTypes.string
 };

@@ -253,11 +253,9 @@ export default function FileUtility(props) {
         "caseAttachmentsUpdateFromCaseview"
       );
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    console.log('In refresh attachment')
     getAttachments();
   }, [lastRefreshTime]);
 

@@ -25,6 +25,7 @@ export default function FileUtility(props) {
   const headerSvgIcon$ = Utils.getImageSrc('paper-clip', PCore.getAssetLoader().getStaticServerUrl());
   const closeSvgIcon = Utils.getImageSrc("times", PCore.getAssetLoader().getStaticServerUrl());
   const configProps: any = thePConn.resolveConfigProps(thePConn.getConfigProps());
+
   const header = configProps.label;
   const fileTemp = {
     showfileModal: false,
@@ -48,6 +49,7 @@ export default function FileUtility(props) {
   const [inProgress, setProgress] = useState(false);
   const [showViewAllModal, setViewAll] = useState(false);
   const [vaItems, setFullAttachments] = useState([]);
+
   function addAttachments(attsFromResp: Array<any> = []) {
      attsFromResp = attsFromResp.map((respAtt) => {
        const updatedAtt = {
@@ -220,6 +222,26 @@ export default function FileUtility(props) {
     }
   }
 
+  useEffect(() => {
+    getAttachments();
+  }, []);
+
+
+  useEffect(() => {
+    PCore.getPubSubUtils().subscribe(
+      PCore.getEvents().getCaseEvent().CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW,
+      getAttachments,
+      "caseAttachmentsUpdateFromCaseview"
+    );
+
+    return () => {
+      PCore.getPubSubUtils().unsubscribe(
+        PCore.getEvents().getCaseEvent().CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW,
+        "caseAttachmentsUpdateFromCaseview"
+      );
+    };
+  }, []);
+
   function setNewFiles(arFiles) {
     let index = 0;
     for (const file of arFiles) {
@@ -259,9 +281,7 @@ export default function FileUtility(props) {
     });
   }
 
-  useEffect(() => {
-    getAttachments();
-  }, [""]);
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

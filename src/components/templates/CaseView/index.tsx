@@ -43,13 +43,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CaseView(props) {
+  console.log('props CaseView', props);
   const {
     getPConnect,
     icon,
     header,
     subheader,
     children,
-    caseInfo: { availableActions = [], availableProcesses = [] }
+    caseInfo: { availableActions = [], availableProcesses = [], hasNewAttachments }
   } = props;
 
   let isComponentMounted = true;
@@ -137,6 +138,11 @@ export default function CaseView(props) {
     }
   }, [])
 
+  useEffect(() => {
+    if (hasNewAttachments) {
+      PCore.getPubSubUtils().publish(PCore.getEvents().getCaseEvent().CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW, true);
+    }
+  }, [hasNewAttachments]);
 
   function _editClick() {
 

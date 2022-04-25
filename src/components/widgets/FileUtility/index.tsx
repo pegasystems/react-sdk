@@ -74,15 +74,24 @@ export default function FileUtility(props) {
         PCore.getConstants().SUMMARY_OF_ATTACHMENTS_LAST_REFRESH_TIME
       }`
     });
-  }, [])
+  }, [thePConn])
 
-  // useEffect(() => {
-  //   thePConn.registerAdditionalProps({
-  //     lastRefreshTime: `@P ${
-  //       PCore.getConstants().SUMMARY_OF_ATTACHMENTS_LAST_REFRESH_TIME
-  //     }`
-  //   });
-  // }, [configProps.lastRefreshTime]);
+  useEffect(() => {
+    console.log('In refresh attachment1')
+    PCore.getPubSubUtils().subscribe(
+      PCore.getEvents().getCaseEvent().CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW,
+      getAttachments,
+      "caseAttachmentsUpdateFromCaseview"
+    );
+
+    return () => {
+      PCore.getPubSubUtils().unsubscribe(
+        PCore.getEvents().getCaseEvent().CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW,
+        "caseAttachmentsUpdateFromCaseview"
+      );
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     // eslint-disable-next-line no-console

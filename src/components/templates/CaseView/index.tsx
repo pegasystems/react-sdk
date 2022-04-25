@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CaseView(props) {
-  console.log('props CaseView', props);
   const {
     getPConnect,
     icon,

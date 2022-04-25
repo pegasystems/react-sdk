@@ -26,12 +26,6 @@ export default function FileUtility(props) {
   const headerSvgIcon$ = Utils.getImageSrc('paper-clip', PCore.getAssetLoader().getStaticServerUrl());
   const closeSvgIcon = Utils.getImageSrc("times", PCore.getAssetLoader().getStaticServerUrl());
   const configProps: any = thePConn.resolveConfigProps(thePConn.getConfigProps());
-
-  /* eslint-disable no-console */
-  console.log(`props: ${JSON.stringify(props)}`);
-  console.log(`configProps: ${JSON.stringify(configProps)}`);
-  /* eslint-enable no-console */
-
   const [lastRefreshTime, setLastRefresh] = useState(null);
 
   const header = configProps.label;
@@ -59,46 +53,8 @@ export default function FileUtility(props) {
   const [vaItems, setFullAttachments] = useState([]);
 
   if (configProps && (configProps.lastRefreshTime !== lastRefreshTime))  {
-    // eslint-disable-next-line no-console
-    console.log(`configProps.lastRefreshTime: ${configProps.lastRefreshTime}`);
     setLastRefresh(configProps.lastRefreshTime);
   }
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    getAttachments();
-  }, []);
-
-  useEffect(() => {
-    thePConn.registerAdditionalProps({
-      lastRefreshTime: `@P ${
-        PCore.getConstants().SUMMARY_OF_ATTACHMENTS_LAST_REFRESH_TIME
-      }`
-    });
-  }, [thePConn])
-
-  useEffect(() => {
-    console.log('In refresh attachment1')
-    PCore.getPubSubUtils().subscribe(
-      PCore.getEvents().getCaseEvent().CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW,
-      getAttachments,
-      "caseAttachmentsUpdateFromCaseview"
-    );
-
-    return () => {
-      PCore.getPubSubUtils().unsubscribe(
-        PCore.getEvents().getCaseEvent().CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW,
-        "caseAttachmentsUpdateFromCaseview"
-      );
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('In refresh attachment')
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    getAttachments();
-  }, [lastRefreshTime]);
 
   function addAttachments(attsFromResp: Array<any> = []) {
      attsFromResp = attsFromResp.map((respAtt) => {
@@ -271,6 +227,39 @@ export default function FileUtility(props) {
         });
     }
   }
+
+  useEffect(() => {
+    getAttachments();
+  }, []);
+
+  useEffect(() => {
+    thePConn.registerAdditionalProps({
+      lastRefreshTime: `@P ${
+        PCore.getConstants().SUMMARY_OF_ATTACHMENTS_LAST_REFRESH_TIME
+      }`
+    });
+  }, [thePConn])
+
+  useEffect(() => {
+    PCore.getPubSubUtils().subscribe(
+      PCore.getEvents().getCaseEvent().CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW,
+      getAttachments,
+      "caseAttachmentsUpdateFromCaseview"
+    );
+
+    return () => {
+      PCore.getPubSubUtils().unsubscribe(
+        PCore.getEvents().getCaseEvent().CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW,
+        "caseAttachmentsUpdateFromCaseview"
+      );
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    console.log('In refresh attachment')
+    getAttachments();
+  }, [lastRefreshTime]);
 
   function setNewFiles(arFiles) {
     let index = 0;

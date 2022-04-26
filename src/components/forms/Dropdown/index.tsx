@@ -13,9 +13,9 @@ export default function Dropdown(props) {
   const [options, setOptions] = useState<Array<IOption>>([]);
 
   useEffect(() => {
-    const options = Utils.getOptionList(props, getPConnect().getDataObject());
-    options.unshift({key: 'Select', value: 'Select...'});
-    setOptions(options);
+    const optionsList = Utils.getOptionList(props, getPConnect().getDataObject());
+    optionsList.unshift({key: 'Select', value: 'Select...'});
+    setOptions(optionsList);
   }, [datasource]);
 
   let readOnlyProp = {};

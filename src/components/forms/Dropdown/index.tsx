@@ -50,7 +50,7 @@ export default function Dropdown(props) {
         onBlur={handleChange}
         error={status === "error"}
         label={label}
-        value={value === '' ? 'Select' : value}
+        value={(value === '' && !readOnly) ? 'Select' : value}
         select
         InputProps={ readOnlyProp }
       >

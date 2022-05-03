@@ -138,7 +138,7 @@ Note that the examples above are for the default configuration. If you change th
 <br>
 
 
-> **NOTE**: These setup tips are abstracted from the React SDK Guide that is available in the React SDK download available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk)
+> **NOTE**: These setup tips are abstracted from the React SDK Guide that is available in the React SDK download available at [https://community.pega.com/media/react-sdk-86-guide](https://community.pega.com/media/react-sdk-86-guide)
 
 <br>
 

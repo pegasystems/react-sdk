@@ -4,9 +4,9 @@
 
 The **React SDK** provides Pega customers with the ability to build DX components that connect Pega’s ConstellationJS Engine APIs with a design system other than Pega Cosmos.
 
-The React SDK differs from out-of-the-box Cosmos React because if provides and demonstrates the use of a React design system that is not the Pega **Cosmos React** design system.
+The React SDK differs from out-of-the-box Cosmos React because it provides and demonstrates the use of a React design system that is not the Pega **Cosmos React** design system. The alternative design system used in this React SDK is **Material UI** (https://mui.com/).
 
-The React SDK is the initial GA release.  It is built on the new and modernized UI technology stack (the Constellation JavaScript Engine and Constellation JavaScript API).  Many additional SDK features are planned for 1H 2022 to expand the scope of supported use cases.
+The React SDK is built on a new and modernized UI technology stack (the Constellation JavaScript Engine and Constellation JavaScript API).  Many additional SDK features are planned for 2022 to expand the scope of supported use cases.
 
 <br>
 
@@ -14,12 +14,17 @@ The React SDK is the initial GA release.  It is built on the new and modernized 
 
 ## Pega Infinity Server and Constellation-enabled Application
 
-The React SDK assumes that you have access to a Pega Infinity server (8.6.1 GA) running an application that is configured to run using the Constellation UI service. The sample application can be found in the React SDK download associated with this repo that will be available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk)
+This **8.6 version** of the React SDK assumes that you have access to a Pega Infinity server (**8.6.1+ GA**) running an application that is configured to run using the Constellation UI service.
 
-We provide a sample application - **MediaCo** - to licensed Pega Infinity customers that is configured as a Constellation application.
+The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download.
 
-Please refer to the **React SDK Guide** provided in the Marketplace download for steps to prepare your Infinity server and node environment for steps in the next section.
+The **React SDK** has been tested with:
+- node 14.18.*
+- npm 6.14.*
 
+Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
+
+**Before** installing and running the SDK code, please refer to the **React SDK Guide** provided in the Marketplace download for steps to prepare your Infinity server and node environment so you can proceed with the steps in the next section.
 
 <br>
 
@@ -36,7 +41,7 @@ See the React SDK Guide available at Pega Marketplace for complete instructions.
     $ cd <kit location>
 
     (This next step is strongly recommended if you have a node_modules directory installed from an earlier version of the kit)
-    $ rm node_modules
+    $ rm -rf node_modules
 
     $ npm install
     ```
@@ -48,17 +53,21 @@ See the React SDK Guide available at Pega Marketplace for complete instructions.
 
 ### **Configure** the React SDK
 
-2. Edit **sdk-config.js** and, if necessary, update the values that will be used
-    * The **authConfig** section contains values for the information you obtained earlier from OAuth: the Client ID, endpoints, etc.<br><br>
-      * **Note:** it is **required** that you configure a value for **authConfig.mashupClientSecret**.
-      * Navigate to Records / Security / OAuth 2.0 Client Registration landing page and open the `SDK-OAuth` record
+See the **React SDK Guide** in the Marketplace download for more complete documentation about the configuration of the React SDK via the **sdk-config.json** file.
+
+2. Edit **sdk-config.json** and, if necessary, update the values that will be used
+    * The **authConfig** section contains values for the information you obtained earlier from OAuth: the Client ID, endpoints, etc.
+    The default **sdk-config.json** file is set up to use the **MediaCoOauth** and **MediaCoOauthNoLogin** records that are included with the React SDK Marketplace download.
+    <br><br>
+      * **Note:** it is **required** that you configure a value for **authConfig.mashupClientSecret**. The **/embedded** use _**will not work**_ until the correct `mashupClientSecret` is provided.
+      * Navigate to Records / Security / OAuth 2.0 Client Registration landing page and open the `MediaCoOauthNoLogin` record
       * Click the **Regenerate Client Secret** button, download the Client Credentials (as the ClientID and Secret values will be needed) and save the record.
       * Then, use the generated **Client Secret** value as the value for**authConfig.mashupClientSecret**. (The ClientID value should remain unchanged.)
       <br><br>
     * The **serverConfig** section contains values related to the Pega Infinity server and SDK Content Server.
     <br><br>
 
-3. Obtain the necessary Constellation files (ex: bootstrap-shell, lib_asset, constellation-core) that need to be installed to enable the SDK to connect to the Constellation UI Service. Licensed and authorized Pega clients can access these files from https://community.pega.com/ or from a Pega representative. Instructions for installing these files can be found in **constellation/__Install-constellation-files.md**
+3. Obtain the necessary Constellation files (ex: bootstrap-shell, lib_asset, constellation-core) that need to be installed to enable the SDK to connect to the Constellation UI Service. These are available in the React SDK download available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). Instructions for installing these files can be found in **constellation/__Install-constellation-files.md**
 
 
 ### **Run** the application
@@ -103,7 +112,13 @@ See the React SDK Guide available at Pega Marketplace for complete instructions.
 
 ### **Access** the sample application from your browser
 
-6. **Embedded** (formerly known as Mashup)
+**NOTE**: It is _**strongly recommended**_ that you confirm
+that the **MediaCo** sample application is working for **both** the **/portal**
+and **/embedded** usage before you try to get the SDK working for your
+own application. This will validate the SDK installation with a known good
+application.
+
+6. **Embedded**
 
     6.1 Access **http://localhost:3502/embedded** or **https://localhost:3502/embedded** (if run start-*-https was used)
 
@@ -123,7 +138,13 @@ Note that the examples above are for the default configuration. If you change th
 <br>
 
 
-> **NOTE**: These setup tips are abstracted from the React SDK Guide that is available to licensed Pega Infinity clients at https://community.pega.com/
+> **NOTE**: These setup tips are abstracted from the React SDK Guide that is available in the React SDK download available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk)
+
+<br>
+
+### Check Node/NPM versions
+
+Currently, the SDK supports **Node 14**. It has been tested with node  v14.18.*. It may not be stable with node v16+. Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
 
 <br>
 
@@ -173,22 +194,23 @@ Typically, you can resolve this error by indicating to your browser that you are
 
 ### Verify/update OAuth 2.0 Client Registration Infinity records
 
-The MediaCo sample application (available to Pega licensed users) includes OAuth Client Registration records that it uses for authentication in your Infinity server (available in Security | OAuth 2.0 Client Registration): **MediaCoOauthNoLogin** (for the Embedded use case) and **MediaCoOauth** (for the Portal use case).
+The React SDK sample application is preconfigured to use **MediaCoOauthNoLogin** (for the Embedded use case) and **MediaCoOauth** (for the Portal use case) Client Registration records that are included in the React SDK download available at https://community.pega.com/marketplace/components/react-sdk.
 
 You may use these records. If you want to create your own OAuth 2.0 Client Registration record, please refer to the **How to create OAuth2 registration in Infinity** section found below.
 
-* For the **Embedded** use case, you will use the OAuth 2.0 Client Registration record’s **Client ID** and **Client secret** as the values for **mashupClientId** and **mashupClientSecret** in the SDK’s **sdk-config.js** file.
+* For the **Embedded** use case, you will use the OAuth 2.0 Client Registration record’s **Client ID** and **Client secret** as the values for **mashupClientId** and **mashupClientSecret** in the SDK’s **sdk-config.json** file.
 
-* For the **Portal** use case, you will use the OAuth 2.0 Client Registration record’s **Client ID** as the value of **portalClientId** in the SDK’s **sdk-config.js** file.
+* For the **Portal** use case, you will use the OAuth 2.0 Client Registration record’s **Client ID** as the value of **portalClientId** in the SDK’s **sdk-config.json** file.
 
 
 To ensure that the application is redirected to the proper page after authentication succeeds, you may need to update the OAuth 2.0 Client Registration record’s **List of redirect URIs** shown in the record’s **Supported grant types** section.
 
-The MediaCoOauth and MediaCoOauthNoLogin records that are included with the MediaCo sample application include the necessary redirect URIs for the default configuration:
+The `MediaCoOauth` and `MediaCoOauthNoLogin` records that are included with the React SDK download from Marketplace include the necessary redirect URIs for the default configuration:
+
+*	http://localhost:3502/mashup/auth.html and https://localhost:3502/mashup/auth.html for the Embedded use case
 
 * http://localhost:3502/auth.html and https://localhost:3502/auth.html for the Portal use case
 
-*	http://localhost:3502/mashup/auth.html and https://localhost:3502/mashup/auth.html for the Embedded use case
 
 If you configure your installation to have the React SDK static content served from a different **host:port** than the default, you should add new Redirect URIs to the list:
 
@@ -212,7 +234,8 @@ If you configure your installation to have the React SDK static content served f
 
 ### How to create an OAuth 2.0 Client Registration record in Infinity
 
-If the `MediaCo` app was imported to your Infinity server, a `MediaCoOAuth` OAuth 2.0 Client Registration record will have been imported as well. That record's clientId is currently referenced within sdk-config.json.  However, you can create your own OAuth 2.0 Client Registration record using the following procedure:
+When preparing your Infinity server for use with the React SDK, the `MediaCoOauth` and `MediaCoOauthNoLogin` OAuth 2.0 Client Registration records will have been imported. Each record's Client Id is currently referenced within sdk-config.json. However, you can create your own OAuth 2.0 Client Registration record using the following procedure:
+
    * Create a new "Security/OAuth 2.0 Client Registration" record for your app
    * You might name it the same name as your applicaion
    * Specify "Public" for the type of client (as browser apps are not able to prevent any "Client secret" from being compromised)

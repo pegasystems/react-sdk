@@ -15,7 +15,7 @@ The React SDK is built on a new and modernized UI technology stack (the Constell
 
 ## Pega Infinity Server and Constellation-enabled Application
 
-The React SDK assumes that you have access to a Pega Infinity server (8.7.0 GA) running an application that is configured to run using the Constellation UI service.
+This **8.7 version** of the React SDK assumes that you have access to a Pega Infinity server (**8.7.0+ GA**) running an application that is configured to run using the Constellation UI service.
 
 The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download.
 
@@ -44,7 +44,7 @@ See the React SDK Guide available at Pega Marketplace for complete instructions.
     $ cd <kit location>
 
     (This next step is strongly recommended if you have a node_modules directory installed from an earlier version of the kit)
-    $ rm node_modules
+    $ rm -rf node_modules
 
     $ npm install
     ```
@@ -152,7 +152,7 @@ Note that the examples above are for the default configuration. If you change th
 ## Some setup and troubleshooting tips
 <br>
 
-> **NOTE**: These setup tips are abstracted from the React SDK Guide that is available in the React SDK download available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk)
+> **NOTE**: These setup tips are abstracted from the React SDK Guide that is available in the React SDK download available at [https://community.pega.com/media/react-sdk-87-guide](https://community.pega.com/media/react-sdk-87-guide)
 
 <br>
 

@@ -13,7 +13,7 @@ interface IOption {
 
 export default function AutoComplete(props) {
 
-  const {getPConnect, label, required, placeholder, value='', validatemessage, datasource=[], onChange, readOnly} = props;
+  const {getPConnect, label, required, placeholder, value='', validatemessage, datasource=[], onChange, readOnly, testId} = props;
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [theDatasource, setDatasource] = useState(null);
@@ -66,6 +66,7 @@ export default function AutoComplete(props) {
             // eslint-disable-next-line no-restricted-globals
             error={status === "error"}
             label={label}
+            data-test-id={testId}
           />
         )}
       />

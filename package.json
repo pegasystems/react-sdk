@@ -22,8 +22,9 @@
     "_comment_1": "Commands below should only be called by commands above",
     "build-dev-only": "webpack --mode=development && npm run copy-index && npm run copy-configs",
     "build-prod-only": "webpack --mode=production && npm run copy-index && npm run copy-configs",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "copy-index": "shx cp dist/index.html dist/simpleportal.html && shx cp dist/index.html dist/portal.html && shx cp dist/index.html dist/fullportal.html && shx cp dist/index.html dist/embedded.html"
+    "copy-index": "shx cp dist/index.html dist/simpleportal.html && shx cp dist/index.html dist/portal.html && shx cp dist/index.html dist/fullportal.html && shx cp dist/index.html dist/embedded.html",
+    "test": "playwright test --headed --project=chromium",
+    "test-report": "playwright show-report"
   },
   "dependencies": {
     "@date-io/dayjs": "^1.3.13",
@@ -48,6 +49,7 @@
     "@pega/configs": "^0.3.2",
     "@pega/eslint-config": "^0.3.2",
     "@pega/prettier-config": "^0.3.2",
+    "@playwright/test": "^1.21.1",
     "@types/lodash.isequal": "^4.5.5",
     "@types/react": "^16.13.1",
     "@types/react-dom": "^17.0.9",

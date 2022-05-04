@@ -2,7 +2,7 @@ import React from "react";
 import { TextField } from "@material-ui/core";
 
 export default function TextArea(props) {
-  const {label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly} = props;
+  const {label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly, testId} = props;
 
 
   let readOnlyProp = { };
@@ -12,6 +12,12 @@ export default function TextArea(props) {
     //  since we want to preserve the minRows, maxRows info.
     readOnlyProp = { readOnly : true };
   }
+
+  let testProp = {};
+
+  testProp = {
+     "data-test-id": testId
+  };
 
 
   return (
@@ -31,7 +37,7 @@ export default function TextArea(props) {
         error={status === "error"}
         label={label}
         value={value}
-        InputProps={ readOnlyProp }
+        InputProps={ { ...readOnlyProp, inputProps: { ...testProp }} }
       />
     )
 }

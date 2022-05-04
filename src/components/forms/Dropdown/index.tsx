@@ -13,7 +13,9 @@ export default function Dropdown(props) {
   const [options, setOptions] = useState<Array<IOption>>([]);
 
   useEffect(() => {
-    setOptions(Utils.getOptionList(props, getPConnect().getDataObject()));
+    const optionsList = Utils.getOptionList(props, getPConnect().getDataObject());
+    optionsList.unshift({key: 'Select', value: 'Select...'});
+    setOptions(optionsList);
   }, [datasource]);
 
   let readOnlyProp = {};
@@ -23,7 +25,11 @@ export default function Dropdown(props) {
   }
 
   const handleChange = evt => {
-    onChange({value: evt.target.value});
+    if (evt.target.value === 'Select') {
+      onChange({value: ''});
+    } else {
+      onChange({value: evt.target.value});
+    }
   }
 
   // Material UI shows a warning if the component is rendered before options are set.
@@ -44,7 +50,7 @@ export default function Dropdown(props) {
         onBlur={handleChange}
         error={status === "error"}
         label={label}
-        value={value}
+        value={(value === '' && !readOnly) ? 'Select' : value}
         select
         InputProps={ readOnlyProp }
       >

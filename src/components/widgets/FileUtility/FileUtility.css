@@ -89,9 +89,6 @@
 }
 
 .psdk-add-link-action {
-  background-color: #3f51b5 !important;
-  color: white !important;
-  padding: 6px 14px !important;
   text-transform: unset !important;
   font-size: 14px;
 }

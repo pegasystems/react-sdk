@@ -128,8 +128,6 @@ const connectRedux = (component, c11nEnv) => {
           }
         }
 
-        // eslint-disable-next-line no-console
-        // console.log(` >>> ${theCompName}: returning true`);
         return true;
       }
     }

@@ -25,6 +25,7 @@ export default function FileUtility(props) {
   const headerSvgIcon$ = Utils.getImageSrc('paper-clip', PCore.getAssetLoader().getStaticServerUrl());
   const closeSvgIcon = Utils.getImageSrc("times", PCore.getAssetLoader().getStaticServerUrl());
   const configProps: any = thePConn.resolveConfigProps(thePConn.getConfigProps());
+
   const header = configProps.label;
   const fileTemp = {
     showfileModal: false,
@@ -44,10 +45,11 @@ export default function FileUtility(props) {
   const [linkData, setLinkData] = useState(linkTemp);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const [link, setLink] = useState({title: '', url: ''});
+  const [link, setLink] = useState({title: '', url: '', disable: true});
   const [inProgress, setProgress] = useState(false);
   const [showViewAllModal, setViewAll] = useState(false);
   const [vaItems, setFullAttachments] = useState([]);
+
   function addAttachments(attsFromResp: Array<any> = []) {
      attsFromResp = attsFromResp.map((respAtt) => {
        const updatedAtt = {
@@ -220,6 +222,26 @@ export default function FileUtility(props) {
     }
   }
 
+  useEffect(() => {
+    getAttachments();
+  }, []);
+
+
+  useEffect(() => {
+    PCore.getPubSubUtils().subscribe(
+      PCore.getEvents().getCaseEvent().CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW,
+      getAttachments,
+      "caseAttachmentsUpdateFromCaseview"
+    );
+
+    return () => {
+      PCore.getPubSubUtils().unsubscribe(
+        PCore.getEvents().getCaseEvent().CASE_ATTACHMENTS_UPDATED_FROM_CASEVIEW,
+        "caseAttachmentsUpdateFromCaseview"
+      );
+    };
+  }, []);
+
   function setNewFiles(arFiles) {
     let index = 0;
     for (const file of arFiles) {
@@ -259,9 +281,7 @@ export default function FileUtility(props) {
     });
   }
 
-  useEffect(() => {
-    getAttachments();
-  }, [""]);
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -350,14 +370,18 @@ export default function FileUtility(props) {
   const fieldlinkOnChange = (event) => {
     const title = event.target.value;
     setLink((current) => {
-      return {...current, title}
+      const updatedData = {...current, title};
+      updatedData.disable = !(updatedData.title && updatedData.url);
+      return updatedData;
     });
   }
 
   function fieldurlOnChange(event) {
     const url = event.target.value;
     setLink((current) => {
-      return {...current, url}
+      const updatedData = {...current, url}
+      updatedData.disable = !(updatedData.title && updatedData.url);
+      return updatedData;
     });
   }
 
@@ -402,7 +426,7 @@ export default function FileUtility(props) {
       return {...current, linksList: localList, attachedLinks: attachedListTemp}
     });
     // clear values
-    setLink({title: '', url: ''});
+    setLink({title: '', url: '', disable: true});
   }
 
   function removeLinksFromList(item: any) {
@@ -439,7 +463,7 @@ export default function FileUtility(props) {
         });
         getAttachments();
       })
-      .catch();
+      .catch(setProgress(false));
     }
   }
 
@@ -503,7 +527,7 @@ export default function FileUtility(props) {
       {linkData.showLinkModal && (
         <div className="psdk-dialog-background">
           <div className="psdk-modal-file-top">
-            <h3>Add local files</h3>
+            <h3>Add links</h3>
             <div className="psdk-modal-body">
               <div className="psdk-modal-links-row">
                   <div className="psdk-links-two-column">
@@ -515,7 +539,7 @@ export default function FileUtility(props) {
                     </div>
                   </div>
                   <div className="psdk-modal-link-add">
-                    <Button className="psdk-add-link-action" component="span" onClick={addLink}>Add Link</Button>
+                    <Button className="psdk-add-link-action" color="primary" variant="contained" component="span" onClick={addLink} disabled={link.disable}>Add Link</Button>
                   </div>
                 </div>
                 {linkData.linksList.length > 0 && (<div style={{marginTop: '1rem'}}>

@@ -179,7 +179,7 @@ export default function CaseView(props) {
           <Card className={classes.root} >
             <CardHeader className={classes.caseViewHeader}
               title={<Typography variant="h6" component="div">{header}</Typography>}
-              subheader={<Typography variant="body1" component="div">{subheader}</Typography>}
+              subheader={<Typography variant="body1" component="div" id="caseId">{subheader}</Typography>}
               avatar={
                 <Avatar className={classes.caseViewIconBox} variant="square">
                   <img src={svgCase} className={classes.caseViewIconImage}/>

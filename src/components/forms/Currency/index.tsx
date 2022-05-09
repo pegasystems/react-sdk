@@ -20,6 +20,12 @@ export default function Currency(props) {
     readOnlyProp = { readOnly: true };
   }
 
+  let testProp = {};
+
+  testProp = {
+     "data-test-id": testId
+  };
+
   const [currValue, setCurrValue] = useState();
 
   useEffect( () => {
@@ -65,7 +71,6 @@ export default function Currency(props) {
         outputFormat="number"
         textAlign="left"
 
-        InputProps={ readOnlyProp }
-        data-test-id={testId}
+        InputProps={ { ...readOnlyProp, inputProps: { ...testProp } } }
       />
     )}

@@ -149,6 +149,25 @@ Note that the examples above are for the default configuration. If you change th
 
 ---
 
+## Testing the application
+<br>
+
+We can test both /portal & /embedded scenarios by running following commands on the terminal:
+
+* **/portal test:**
+   * npm run test -- portal
+* **/embedded test:**
+   * npm run test -- embedded
+
+
+> **NOTE**: These tests above will test the sample **MediaCo** application.
+
+<br>
+
+
+---
+
+
 ## Some setup and troubleshooting tips
 <br>
 

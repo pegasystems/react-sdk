@@ -1,14 +1,22 @@
 // require('lighthouse/lighthouse-core/config/lr-desktop-config.js');
 
 const config = {
-  baseUrl: "http://localhost:3502/portal",
+  baseUrl: 'http://localhost:3502/portal',
   apps: {
     mediaCo: {
       rep: {
-        username: "rep@mediaco",
-        password: "pega",
+        username: 'rep@mediaco',
+        password: 'pega'
       },
-    },
+      manager: {
+        username: 'manager@mediaco',
+        password: 'pega'
+      },
+      tech: {
+        username: 'tech@mediaco',
+        password: 'pega'
+      }
+    }
   },
   testsetting: {
     // Enable network throttling(Default is false)
@@ -29,8 +37,8 @@ const config = {
     width: 1920,
     height: 1080,
     headless: true,
-    devtools: false,
-  },
+    devtools: false
+  }
 };
 
 // eslint-disable-next-line no-undef

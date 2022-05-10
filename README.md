@@ -24,7 +24,7 @@ The **React SDK** has been tested with:
 
 Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
 
-**Before** installing and running the SDK code, please refer to the **React SDK Guide** provided in the Marketplace download for steps to prepare your Infinity server and node environment so you can proceed with the steps in the next section.
+**Before** installing and running the SDK code, refer to the **React SDK Guide** provided in the Marketplace download for steps to prepare your Infinity server and node environment so you can proceed with the steps in the next section.
 
 <br>
 
@@ -46,9 +46,9 @@ See the React SDK Guide available at Pega Marketplace for complete instructions.
     $ npm install
     ```
 
-   At this time, you will note that there are 3 “high security vulnerabilities” reported by Node related to the “trim” package. Research into these reported issues indicate that these flags represent more of a possible slowdown than a security exploit problem. (See https://github.com/mdx-js/mdx/discussions/1864) We are following this and will provide an update this issue is resolved. Since these issues are related to linting of Markdown files, if you are concerned about these reports, you can remove the eslint-plugin-mdx and @pega/configs devDependencies and use the SDK without linting. These issues have no impact on the SDK's runtime.
+   At this time, you will note that there are 3 “high security vulnerabilities” reported by Node related to the “trim” package. Research into these reported issues indicates that these flags represent more of a possible slowdown than a security exploit problem. (See https://github.com/mdx-js/mdx/discussions/1864) We are following this and will provide an update if this issue is resolved. Since these issues are related to linting of Markdown files, if you are concerned about these reports, you can remove the eslint-plugin-mdx and @pega/configs devDependencies and use the SDK without linting. These issues have no impact on the SDK's runtime.
 
-   Also, if you run npm install after it has already been run once, you may see a number of warnings related to npm peer dependencies that are related to various lint packages. You can ignore these warnings as they do not affect the linting and are not associated with the runtime behavior.
+   Also, if you run npm install after it has already been run once, you may see several warnings related to npm peer dependencies that are related to various lint packages. You can ignore these warnings as they do not affect the linting and are not associated with the runtime behavior.
 
 
 ### **Configure** the React SDK
@@ -61,7 +61,7 @@ See the **React SDK Guide** in the Marketplace download for more complete docume
     <br><br>
       * **Note:** it is **required** that you configure a value for **authConfig.mashupClientSecret**. The **/embedded** use _**will not work**_ until the correct `mashupClientSecret` is provided.
       * Navigate to Records / Security / OAuth 2.0 Client Registration landing page and open the `MediaCoOauthNoLogin` record
-      * Click the **Regenerate Client Secret** button, download the Client Credentials (as the ClientID and Secret values will be needed) and save the record.
+      * Click the **Regenerate Client Secret** button, download the Client Credentials (as the ClientID and Secret values will be needed), and save the record.
       * Then, use the generated **Client Secret** value as the value for**authConfig.mashupClientSecret**. (The ClientID value should remain unchanged.)
       <br><br>
     * The **serverConfig** section contains values related to the Pega Infinity server and SDK Content Server.
@@ -75,7 +75,7 @@ See the **React SDK Guide** in the Marketplace download for more complete docume
 4. **Development build and start (1 terminal)**
 
    Note that development mode uses **webpack-dev-server**.
-   that is configured as a “live reload” server. This means that, when running one of the start-dev commands, **saving** a file in your editor will trigger a **re-compile** and **reload** of the page. This page reload may result in your application popping a new login window. If this occurs, please login and your code changes will be available for further testing and development.
+   that is configured as a “live reload” server. This means that, when running one of the start-dev commands, **saving** a file in your editor will trigger a **re-compile** and **reload** of the page. This page reload may result in your application popping a new login window. If this occurs, login and your code changes will be available for further testing and development.
 
     4.1 Full development clean and install of npm modules, and build; then start the server
    ```
@@ -126,7 +126,7 @@ application.
 
     7.1 Access **http://localhost:3502/portal** or **https://localhost:3502/portal** (if run start-*-https was used)
 
-    **If you see a blank page**, please check your JavaScript console to see if you have encountered a net::ERR_CERT_INVALID error. If you encounter this error, please see the troubleshooting section below: **Runtime Error: net::ERR_CERT_INVALID**. Due to browser interactions during login, it can be easier to find and fix this error using the Portal URL.
+    **If you see a blank page**, check your JavaScript console to see if you have encountered a net::ERR_CERT_INVALID error. If you encounter this error, see the troubleshooting section below: **Runtime Error: net::ERR_CERT_INVALID**. Due to browser interactions during login, it can be easier to find and fix this error using the Portal URL.
 
 Note that the examples above are for the default configuration. If you change the configuration to use a different host and/or port, adapt these URLs to your host:port as necessary.
 
@@ -152,7 +152,7 @@ Currently, the SDK supports **Node 14**. It has been tested with node  v14.18.*.
 
 The **APIHeadersAllowed** record on your Infinity server (found in Security | Cross Origin Resource Sharing) may need to be updated to allow the React SDK calls to Pega REST APIs and DX APIs to interact with Infinity.
 
-For the **APIHeadersAllowed** CORS record, please confirm of update the record as follows:
+For the **APIHeadersAllowed** CORS record, confirm or update the record as follows:
 
 * **Allowed methods**
   * **All 5 methods** should be checked:
@@ -172,7 +172,7 @@ For the **APIHeadersAllowed** CORS record, please confirm of update the record a
 
 ### Runtime Error: net::ERR_CERT_INVALID
 
-Browsers are becoming much less tolerant with local, self-signed certificates or when no local, self-signed certificate exists. If you don’t have a trusted self-signed certificate and launch your application, you may see a blank screen accompanied by an error similar to this in your JS console:
+Browsers are less tolerant of local, self-signed certificates or when no local, self-signed certificate exists. If you don’t have a trusted self-signed certificate and launch your application, you may see a blank screen accompanied by an error similar to this in your JS console:
 
 POST https://localhost:1080/prweb/PRRestService/oauth2/v1/token **net::ERR_CERT_INVALID**
 
@@ -196,7 +196,7 @@ Typically, you can resolve this error by indicating to your browser that you are
 
 The React SDK sample application is preconfigured to use **MediaCoOauthNoLogin** (for the Embedded use case) and **MediaCoOauth** (for the Portal use case) Client Registration records that are included in the React SDK download available at https://community.pega.com/marketplace/components/react-sdk.
 
-You may use these records. If you want to create your own OAuth 2.0 Client Registration record, please refer to the **How to create OAuth2 registration in Infinity** section found below.
+You may use these records. If you want to create your own OAuth 2.0 Client Registration record, refer to the **How to create OAuth2 registration in Infinity** section found below.
 
 * For the **Embedded** use case, you will use the OAuth 2.0 Client Registration record’s **Client ID** and **Client secret** as the values for **mashupClientId** and **mashupClientSecret** in the SDK’s **sdk-config.json** file.
 
@@ -237,12 +237,12 @@ If you configure your installation to have the React SDK static content served f
 When preparing your Infinity server for use with the React SDK, the `MediaCoOauth` and `MediaCoOauthNoLogin` OAuth 2.0 Client Registration records will have been imported. Each record's Client Id is currently referenced within sdk-config.json. However, you can create your own OAuth 2.0 Client Registration record using the following procedure:
 
    * Create a new "Security/OAuth 2.0 Client Registration" record for your app
-   * You might name it the same name as your applicaion
+   * You might name it the same name as your application
    * Specify "Public" for the type of client (as browser apps are not able to prevent any "Client secret" from being compromised)
    * Select "Authorization Code" for the Grant type
    * Add a RedirectURI value based on the url used to access the deployed React SDK (e.g., http://localhost:3502/auth.html)
    * Enable the "Enable proof code for pkce" option
-   * Set the "Access token lifetime" for how long you want the logged in session to last.  Pega does not presently support the ability to referesh the token (for Public clients), so the user will have to reauthenticate again after this interval.
+   * Set the "Access token lifetime" for how long you want the logged-in session to last.  Pega does not presently support the ability to refresh the token (for Public clients), so the user will have to reauthenticate again after this interval.
    * Enter the appropriate values within **sdk-config.json**
 
 <br>
@@ -289,7 +289,7 @@ subjectAltName = @alt_names
 DNS.1   = localhost
    ```
 
-Step 3: Create a Certificate Signing Request (will be prompted for a pass phrase for new key)
+Step 3: Create a Certificate Signing Request (will be prompted for a passphrase for the new key)
 
    ```
    $ openssl req -new -sha256 -out private.csr -in private.key -config ssl.conf
@@ -333,7 +333,7 @@ This project is licensed under the terms of the **Apache 2** license.
 
 We welcome contributions to the React SDK project.
 
-Please refer to our [guidelines for contributors](./docs/CONTRIBUTING.md) if you are interested in helping.
+Refer to our [guidelines for contributors](./docs/CONTRIBUTING.md) if you are interested in helping.
 
 <br>
 

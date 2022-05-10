@@ -187,6 +187,15 @@ You can test both **Portal** and **Embedded** scenarios by executing the followi
 
    <br>
 
+5. **Getting the test report**:
+
+   To get the test report of last run:
+
+   ```
+   npx playwright show-report
+   ```
+
+
 > **NOTE**: These tests execute the sample **MediaCo** application.
 
 <br>

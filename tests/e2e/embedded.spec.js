@@ -13,7 +13,7 @@ test.describe('E2E test', () => {
 
     const firstNameInput = page.locator('input[data-test-id="BC910F8BDF70F29374F496F05BE0330C"]');
     await firstNameInput.click();
-    await firstNameInput.type('Vishal');
+    await firstNameInput.type('John');
 
     const middleNameInput = page.locator('input[data-test-id="D3691D297D95C48EF1A2B7D6523EF3F0"]');
     await middleNameInput.click();
@@ -21,7 +21,7 @@ test.describe('E2E test', () => {
 
     const lastNameInput = page.locator('input[data-test-id="77587239BF4C54EA493C7033E1DBF636"]');
     await lastNameInput.click();
-    await lastNameInput.type('Sharma');
+    await lastNameInput.type('Doe');
 
     const suffix = page.locator('div[data-test-id="56E6DDD1CB6CEC596B433440DFB21C17"]');
     await suffix.locator('button[title="Open"]').click();
@@ -29,7 +29,7 @@ test.describe('E2E test', () => {
 
     const emailInput = page.locator('input[data-test-id="CE8AE9DA5B7CD6C3DF2929543A9AF92D"]');
     await emailInput.click();
-    await emailInput.type('vishal.sharma@in.pega.com');
+    await emailInput.type('john@doe.com');
 
     await page.locator('button:has-text("next")').click();
 
@@ -64,7 +64,7 @@ test.describe('E2E test', () => {
     await page.locator('text=United States+1 >> nth=0').click();
     const phoneInput = phone.locator('input');
     await phoneInput.click();
-    await phoneInput.type('6173749600');
+    await phoneInput.type('6175551212');
 
     await page.locator('button:has-text("next")').click();
 

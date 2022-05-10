@@ -152,18 +152,44 @@ Note that the examples above are for the default configuration. If you change th
 ## Testing the application
 <br>
 
-We can test both /portal & /embedded scenarios by running following commands on the terminal:
+You can test both **Portal** and **Embedded** scenarios by executing the following commands in the terminal:
 
-* **/portal test:**
-   * npm run test -- portal
-* **/embedded test:**
-   * npm run test -- embedded
+1. ```
+   $ npm run build:dev:ci
+   ```
 
+2. ```
+   $ npm run start-dev (and leave it running)
+   ```
 
-> **NOTE**: These tests above will test the sample **MediaCo** application.
+3. Open a different terminal window or tab (since start-dev is still running)
+
+4.  **Executing the tests**:
+
+    4.1 Execute the Portal test-
+      ```
+      $ npm run test -- portal
+      ```
+
+      or <br>
+
+    4.2 Execute the Embedded test:
+      ```
+      $ npm run test -- embedded
+      ```
+
+      or <br>
+
+    4.3 Execute both tests simultaneously-
+      ```
+      $ npm run test
+      ```
+
+   <br>
+
+> **NOTE**: These tests execute the sample **MediaCo** application.
 
 <br>
-
 
 ---
 

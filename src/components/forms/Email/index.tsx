@@ -8,11 +8,17 @@ import TextInput from "../TextInput";
 
 
 export default function Email(props) {
-  const {label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly} = props;
+  const {label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly, testId} = props;
 
   if (readOnly) {
     return ( <TextInput {...props} /> );
   }
+
+  let testProp = {};
+
+  testProp = {
+     "data-test-id": testId
+  };
 
 
   return (
@@ -36,6 +42,7 @@ export default function Email(props) {
               <MailOutlineIcon />
             </InputAdornment>
           ),
+          inputProps: { ...testProp }
         }}
       />
     )

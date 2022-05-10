@@ -3,7 +3,7 @@ import { TextField } from "@material-ui/core";
 import TextInput from "../TextInput";
 
 export default function Integer(props) {
-  const {label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly} = props;
+  const {label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly, testId} = props;
 
   // console.log(`Integer: label: ${label} value: ${value}`);
 
@@ -11,6 +11,12 @@ export default function Integer(props) {
   if (readOnly) {
     return ( <TextInput {...props} /> );
   }
+
+  let testProp = {};
+
+  testProp = {
+     "data-test-id": testId
+  };
 
   function intOnChange(event) {
     // console.log(`Integer intOnChange inValue: ${event.target.value}`);
@@ -47,7 +53,7 @@ export default function Integer(props) {
       value={value}
 
       type='text'
-      inputProps={  { inputMode: 'numeric', pattern: '[0-9]*'} }
+      inputProps={  { inputMode: 'numeric', pattern: '[0-9]*', ...testProp} }
     />
   )
 }

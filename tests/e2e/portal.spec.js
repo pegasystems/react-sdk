@@ -25,9 +25,6 @@ test.describe('E2E test', () => {
     const worklist = page.locator('h6:has-text("My Worklist")');
     await expect(worklist).toBeVisible();
 
-    const listOfFollowedItems = page.locator('h6:has-text("List of followed items")');
-    await expect(listOfFollowedItems).toBeVisible();
-
     const newServiceCase = page.locator('div[role="button"]:has-text("New Service")');
     await newServiceCase.click();
 
@@ -131,9 +128,6 @@ test.describe('E2E test', () => {
     const worklist = page.locator('h6:has-text("My Worklist")');
     await expect(worklist).toBeVisible();
 
-    const listOfFollowedItems = page.locator('h6:has-text("List of followed items")');
-    await expect(listOfFollowedItems).toBeVisible();
-
     const caseButton = page.locator(`button:has-text('${caseID}')`);
 
     await caseButton.click();
@@ -163,9 +157,6 @@ test.describe('E2E test', () => {
 
     const worklist = page.locator('h6:has-text("My Worklist")');
     await expect(worklist).toBeVisible();
-
-    const listOfFollowedItems = page.locator('h6:has-text("List of followed items")');
-    await expect(listOfFollowedItems).toBeVisible();
 
     const caseButton = page.locator(`button:has-text('${caseID}')`);
     await caseButton.click();

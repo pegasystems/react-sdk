@@ -30,7 +30,7 @@ import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-
+import { Radio } from '@material-ui/core';
 
 declare const PCore: any;
 
@@ -70,7 +70,7 @@ export default function ListView(props) {
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-
+  console.log('props ListView', props);
   const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -317,7 +317,7 @@ export default function ListView(props) {
     let bCallSetRowsColumns = true;
 
     const workListData = PCore.getDataApiUtils().getData(referenceList, {});
-
+    console.log('workListData', workListData);
     workListData.then( (workListJSON: Object) => {
 
       // don't update these fields until we return from promise
@@ -327,7 +327,7 @@ export default function ListView(props) {
       const columnFields = componentConfig.presets[0].children[0].children;
 
       const tableDataResults = workListJSON["data"].data;
-
+      console.log('tableDataResults', tableDataResults);
       const myColumns = getHeaderCells(columnFields, fields);
 
       fields = updateFields(fields, myColumns);
@@ -825,7 +825,8 @@ export default function ListView(props) {
 
   }
 
-
+  console.log('arColumns', arColumns);
+  console.log('bInForm', bInForm);
   return (
     <>
     { arColumns && arColumns.length > 0 &&
@@ -916,6 +917,7 @@ export default function ListView(props) {
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell></TableCell>
                 {arColumns.map((column) => {
                   return (
                     <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>
@@ -942,8 +944,12 @@ export default function ListView(props) {
                   .map((row) => {
                 return (
                   <TableRow key={row.pxRefObjectInsName} onClick={() => { _rowClick(row)}}>
+                    <TableCell>
+                      <Radio></Radio>
+                    </TableCell>
                     {arColumns.map((column) => {
                       const value = row[column.id];
+                      console.log('column', column);
                       return (
                         <TableCell className={classes.cell} key={column.id} align={column.align}>
                           {column.format && typeof value === 'number' ? column.format(value) : value}

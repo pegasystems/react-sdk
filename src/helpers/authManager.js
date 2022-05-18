@@ -110,11 +110,9 @@ const initOAuth = (bInit) => {
         ? `${window.location.origin}/auth.html`
         : `${window.location.origin}${window.location.pathname}`,
     authService: sdkConfigAuth.authService,
+    appAlias: sdkConfigAuth.appAlias || '',
     useLocking: true
   };
-  if( sdkConfigServer.appAlias ) {
-    authConfig.appAlias = sdkConfigServer.appAlias;
-  }
   if( 'silentTimeout' in sdkConfigAuth ) {
     authConfig.silentTimeout = sdkConfigAuth.silentTimeout;
   }
@@ -132,6 +130,7 @@ const initOAuth = (bInit) => {
     try {
         const oSI = JSON.parse(sSI);
         if( oSI.authorizeUri !== authConfig.authorizeUri ||
+            oSI.appAlias !== authConfig.appAlias ||
             oSI.clientId !== authConfig.clientId ||
             oSI.userIdentifier !== authConfig.userIdentifier ||
             oSI.password !== authConfig.password) {

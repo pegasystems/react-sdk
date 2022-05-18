@@ -2,7 +2,8 @@
   "root": true,
   "extends": ["@pega"],
   "parserOptions": {
-    "project": "tsconfig.json"
+    "project": "tsconfig.json",
+    "ecmaVersion": 13
   },
   "settings": {
     "import/resolver": {

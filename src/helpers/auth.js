@@ -24,28 +24,28 @@ class PegaAuth {
       this.config = peConfig ? obj : null;
   }
 
-  updateConfig() {
+  #updateConfig() {
       const sSI = JSON.stringify(this.config);
       window.sessionStorage.setItem(this.ssKeyConfig, this.bEncodeSI ? window.btoa(sSI) : sSI);
   }
 
   // For PKCE the authorize includes a code_challenge & code_challenge_method as well
-  async buildAuthorizeUrl(state) {
+  async #buildAuthorizeUrl(state) {
       const {clientId, redirectUri, authorizeUri, authService, sessionIndex, appAlias, useLocking,
           userIdentifier, password} = this.config;
 
       // Generate random string of 64 chars for verifier.  RFC 7636 says from 43-128 chars
       let buf = new Uint8Array(64);
       window.crypto.getRandomValues(buf);
-      this.config.codeVerifier = this.base64UrlSafeEncode(buf);
+      this.config.codeVerifier = this.#base64UrlSafeEncode(buf);
       // Persist codeVerifier in session storage so it survives the redirects that are to follow
-      this.updateConfig();
+      this.#updateConfig();
 
       if( !state ) {
           // Calc random state variable
           buf = new Uint8Array(32);
           window.crypto.getRandomValues(buf);
-          state = this.base64UrlSafeEncode(buf);
+          state = this.#base64UrlSafeEncode(buf);
       }
 
       // Trim alias to include just the real alias piece
@@ -59,7 +59,7 @@ class PegaAuth {
           (userIdentifier ? `&UserIdentifier=${encodeURIComponent(userIdentifier)}` : '') +
           (userIdentifier && password ? `&Password=${encodeURIComponent(window.atob(password))}` : '');
 
-      return this.getCodeChallenge(this.config.codeVerifier).then( cc => {
+      return this.#getCodeChallenge(this.config.codeVerifier).then( cc => {
         // Now includes new enable_psyncId=true and session_index params
         return `${authorizeUri}?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&scope=openid${addtlScope}&state=${state}&code_challenge=${cc}&code_challenge_method=S256${moreAuthArgs}`;
       });
@@ -79,7 +79,7 @@ class PegaAuth {
 
       return new Promise( (resolve, reject) => {
 
-          this.buildAuthorizeUrl(state).then((url) => {
+          this.#buildAuthorizeUrl(state).then((url) => {
               let myWindow = null; // popup or iframe
               let elIframe = null;
               const iframeTimeout = this.config.silentTimeout !== undefined ? this.config.silentTimeout : 5000;
@@ -140,7 +140,7 @@ class PegaAuth {
                       // remove password from config
                       if( this.config.password ) {
                           delete this.config.password;
-                          this.updateConfig();
+                          this.#updateConfig();
                       }
                       elIframe.parentNode.removeChild(elIframe);
                       elIframe = null;
@@ -197,7 +197,7 @@ class PegaAuth {
   loginRedirect() {
       // eslint-disable-next-line no-restricted-globals
       const state = btoa(location.origin);
-      this.buildAuthorizeUrl(state).then((url) => {
+      this.#buildAuthorizeUrl(state).then((url) => {
           // eslint-disable-next-line no-restricted-globals
           location.href = url;
       });
@@ -251,7 +251,7 @@ class PegaAuth {
               bUpdateConfig = true;
           }
           if( bUpdateConfig ) {
-              this.updateConfig();
+              this.#updateConfig();
           }
           return token;
       })
@@ -343,37 +343,37 @@ class PegaAuth {
       // Also clobber any sessionIndex
       if( this.config.sessionIndex ) {
         delete this.config.sessionIndex;
-        this.updateConfig();
+        this.#updateConfig();
       }
   }
   /* eslint-enable camelcase */
 
   // eslint-disable-next-line class-methods-use-this
-  sha256Hash(str) {
+  #sha256Hash(str) {
       return window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
   }
 
   // Base64 encode
   // eslint-disable-next-line class-methods-use-this
-  encode64(buff) {
+  #encode64(buff) {
       return window.btoa(new Uint8Array(buff).reduce((s, b) => s + String.fromCharCode(b), ''));
   }
 
   /*
    * Base64 url safe encoding of an array
    */
-  base64UrlSafeEncode(buf) {
-      const s = this.encode64(buf).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+  #base64UrlSafeEncode(buf) {
+      const s = this.#encode64(buf).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
       return s;
   }
 
   /* Calc code verifier if necessary
    */
   /* eslint-disable camelcase */
-  getCodeChallenge(code_verifier) {
-      return this.sha256Hash(code_verifier).then (
+  #getCodeChallenge(code_verifier) {
+      return this.#sha256Hash(code_verifier).then (
           (hashed) => {
-            return this.base64UrlSafeEncode(hashed)
+            return this.#base64UrlSafeEncode(hashed)
           }
       ).catch(
           (error) => {

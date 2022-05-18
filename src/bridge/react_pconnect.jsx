@@ -47,7 +47,8 @@ import URLComponent from '../components/forms/URL';
 import View from '../components/View';
 import ViewContainer from '../components/ViewContainer';
 import ModalViewContainer from '../components/ModalViewContainer';
-
+import SimpleTableSelect from '../components/templates/SimpleTableSelect';
+import PromotedFilters from '../components/templates/PromotedFilters';
 
 const connectRedux = (component, c11nEnv) => {
 
@@ -263,6 +264,14 @@ const getComponent = (c11nEnv, declarative) => {
 
       case 'SimpleTable':
         component = SimpleTable;
+        break;
+
+      case 'SimpleTableSelect':
+        component = SimpleTableSelect;
+        break;
+
+      case 'PromotedFilters':
+        component = PromotedFilters;
         break;
 
       case "Stages":

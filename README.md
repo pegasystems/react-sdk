@@ -149,6 +149,60 @@ Note that the examples above are for the default configuration. If you change th
 
 ---
 
+## Testing the application
+<br>
+
+You can test both **Portal** and **Embedded** scenarios by executing the following commands in the terminal:
+
+1. ```
+   $ npm run build:dev:ci
+   ```
+
+2. ```
+   $ npm run start-dev (and leave it running)
+   ```
+
+3. Open a different terminal window or tab (since start-dev is still running)
+
+4.  **Executing the tests**:
+
+    4.1 Execute the Portal test-
+      ```
+      $ npm run test -- portal
+      ```
+
+      or <br>
+
+    4.2 Execute the Embedded test:
+      ```
+      $ npm run test -- embedded
+      ```
+
+      or <br>
+
+    4.3 Execute both tests simultaneously-
+      ```
+      $ npm run test
+      ```
+
+   <br>
+
+5. **Getting the test report**:
+
+   To get the test report of last run:
+
+   ```
+   npx playwright show-report
+   ```
+
+
+> **NOTE**: These tests execute the sample **MediaCo** application.
+
+<br>
+
+---
+
+
 ## Some setup and troubleshooting tips
 <br>
 

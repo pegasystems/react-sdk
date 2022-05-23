@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Utils } from '../../../helpers/utils';
@@ -70,7 +70,6 @@ export default function ListView(props) {
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  console.log('props ListView', props);
   const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {

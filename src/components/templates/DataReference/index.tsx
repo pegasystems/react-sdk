@@ -1,8 +1,7 @@
 import React, { useMemo, useState } from "react";
-import PropTypes, { any } from "prop-types";
-import { Grid } from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
+import PropTypes from "prop-types";;
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
+
 declare const PCore: any;
 export default function DataReference(props) {
   const {

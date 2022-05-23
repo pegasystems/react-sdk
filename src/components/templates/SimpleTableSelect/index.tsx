@@ -41,14 +41,6 @@ export default function SimpleTableSelect(props) {
     contextPageReference = pageReference.concat('.').concat(referenceProp);
   }
 
-  console.log('props', props);
-  console.log('selectionMode', selectionMode);
-  console.log('referenceProp', referenceProp);
-  console.log('isMultiSelectMode', isMultiSelectMode);
-  console.log('pConn.getFieldMetadata(`@P .${referenceProp}`)', pConn.getFieldMetadata(`@P .${referenceProp}`));
-  console.log('contextPageReference', contextPageReference);
-  console.log('pconn', pConn);
-  console.log('pConn.getCurrentPageFieldMetadata(contextPageReference);', pConn.getCurrentPageFieldMetadata(contextPageReference));
   const { datasource: { parameters: fieldParameters = {} } = {}, pageClass } = isMultiSelectMode
     ? pConn.getFieldMetadata(`@P .${referenceProp}`)
     : pConn.getCurrentPageFieldMetadata(contextPageReference);

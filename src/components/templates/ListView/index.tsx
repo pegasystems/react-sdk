@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Utils } from '../../../helpers/utils';
@@ -52,7 +52,7 @@ const filterByColumns: Array<any> = [];
 
 export default function ListView(props) {
   const { getPConnect, bInForm } = props;
-  const { globalSearch, presets, referenceList, rowClickAction} = props;
+  const { globalSearch, presets, referenceList, rowClickAction, payload} = props;
   const thePConn = getPConnect();
 
   const componentConfig = thePConn.getComponentConfig();
@@ -316,8 +316,7 @@ export default function ListView(props) {
 
     let bCallSetRowsColumns = true;
 
-    const workListData = PCore.getDataApiUtils().getData(referenceList, {});
-    console.log('workListData', workListData);
+    const workListData = PCore.getDataApiUtils().getData(referenceList, payload ? payload : {});
     workListData.then( (workListJSON: Object) => {
 
       // don't update these fields until we return from promise
@@ -327,7 +326,7 @@ export default function ListView(props) {
       const columnFields = componentConfig.presets[0].children[0].children;
 
       const tableDataResults = workListJSON["data"].data;
-      console.log('tableDataResults', tableDataResults);
+
       const myColumns = getHeaderCells(columnFields, fields);
 
       fields = updateFields(fields, myColumns);

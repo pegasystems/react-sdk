@@ -1,23 +1,11 @@
-import { useCallback, useMemo, useState, createElement, Fragment, useEffect } from 'react';
+import { useCallback, useMemo, useState, createElement, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { Grid } from "@material-ui/core";
 import createPConnectComponent from "../../../bridge/react_pconnect";
 import ListView from '../ListView';
 import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
+import './PromotedFilters.css';
 
-const useStyles = makeStyles(() => ({
-  colStyles: {
-    display: "grid",
-    // gap: "1rem",
-    // alignContent: "baseline",
-    cols: 'repeat(3, minmax(0, 1fr))',
-    colGap: 2,
-    rowGap: 2,
-    alignItems: 'start'
-  },
-}));
 declare const PCore;
 const localeCategory = 'SimpleTable';
 const SUPPORTED_TYPES_IN_PROMOTED_FILTERS = [
@@ -66,13 +54,12 @@ function isValidInput(input) {
 }
 
 export default function PromotedFilters(props) {
-  const classes = useStyles();
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const { getPConnect, viewName, filters, listViewProps, pageClass } = props;
   const [initTable, setInitTable] = useState(false);
   const [payload, setPayload] = useState({});
   const filtersProperties = {};
-  console.log('listViewProps', listViewProps);
+
   filters.forEach((filter) => {
     filtersProperties[PCore.getAnnotationUtils().getPropertyName(filter.config.value)] = '';
   });
@@ -87,6 +74,23 @@ export default function PromotedFilters(props) {
       data: filtersWithClassID
     });
   }, []);
+
+  function formatPromotedFilters(promotedFilters) {
+    return Object.entries(promotedFilters).reduce((acc, [field, value]) => {
+      if (value) {
+        acc[field] = {
+          lhs: {
+            field
+          },
+          comparator: "EQ",
+          rhs: {
+            value
+          }
+        };
+      }
+      return acc;
+    }, {});
+  }
 
   const getFilterData = useCallback(
     (e) => {
@@ -115,24 +119,6 @@ export default function PromotedFilters(props) {
     [transientItemID]
   );
 
-  function formatPromotedFilters(promotedFilters) {
-    return Object.entries(promotedFilters).reduce((acc, [field, value]) => {
-      if (value) {
-        acc[field] = {
-          lhs: {
-            field
-          },
-          comparator: "EQ",
-          rhs: {
-            value
-          }
-        };
-      }
-      return acc;
-    }, {});
-  }
-
-
   const clearFilterData = useCallback(() => {
     PCore.getContainerUtils().clearTransientData(transientItemID);
     setInitTable(false);
@@ -142,7 +128,9 @@ export default function PromotedFilters(props) {
   return (
     <Fragment>
       <div>{listViewProps.title}</div>
-      <Filters filters={filters} transientItemID={transientItemID} localeReference={listViewProps.localeReference}/>
+      <div className="psdk-grid-filter">
+        <Filters filters={filters} transientItemID={transientItemID} localeReference={listViewProps.localeReference}/>
+      </div>
       <div>
         <Button key='1' type='button' onClick={clearFilterData} data-testid='clear' variant='contained' color='primary'>
             {localizedVal('Clear', localeCategory)}

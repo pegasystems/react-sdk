@@ -70,6 +70,7 @@ export default function PromotedFilters(props) {
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const { getPConnect, viewName, filters, listViewProps, pageClass } = props;
   const [initTable, setInitTable] = useState(false);
+  const [payload, setPayload] = useState({});
   const filtersProperties = {};
   console.log('listViewProps', listViewProps);
   filters.forEach((filter) => {
@@ -94,23 +95,43 @@ export default function PromotedFilters(props) {
       const changes = PCore.getFormUtils().getChanges(transientItemID);
       const formValues = {};
       Object.keys(changes).forEach((key) => {
-        // getChanges is returning context_data and messages as well.
         if (key !== 'context_data') {
           formValues[key] = changes[key];
         }
       });
-
+      const promotedFilters = formatPromotedFilters(formValues);
       if (PCore.getFormUtils().isFormValid(transientItemID) && isValidInput(formValues)) {
         setInitTable(true);
+        const Query: any = {
+          dataViewParameters: {}
+        };
 
-        PCore.getPubSubUtils().publish(PCore.getEvents().getTransientEvent().UPDATE_PROMOTED_FILTERS, {
-          payload: formValues,
-          viewName
-        });
+        if (Object.keys(promotedFilters).length > 0) {
+          Query.query = { filter: { filterConditions: promotedFilters } };
+        }
+        setPayload(Query);
       }
     },
     [transientItemID]
   );
+
+  function formatPromotedFilters(promotedFilters) {
+    return Object.entries(promotedFilters).reduce((acc, [field, value]) => {
+      if (value) {
+        acc[field] = {
+          lhs: {
+            field
+          },
+          comparator: "EQ",
+          rhs: {
+            value
+          }
+        };
+      }
+      return acc;
+    }, {});
+  }
+
 
   const clearFilterData = useCallback(() => {
     PCore.getContainerUtils().clearTransientData(transientItemID);
@@ -118,7 +139,6 @@ export default function PromotedFilters(props) {
     getPConnect()?.getListActions?.()?.setSelectedRows([]); // Clear the selection (if any made by user)
   }, [transientItemID]);
 
-  console.log('transientItemID', transientItemID)
   return (
     <Fragment>
       <div>{listViewProps.title}</div>
@@ -131,12 +151,12 @@ export default function PromotedFilters(props) {
             {localizedVal('Search', localeCategory)}
         </Button>
       </div>
-      <ListView {...listViewProps} title=''
+      {initTable && <ListView {...listViewProps} title='' payload={payload}
          isSearchable
          tableDisplay={{
            show: initTable
          }}
-       />
+       />}
     </Fragment>
   );
 }

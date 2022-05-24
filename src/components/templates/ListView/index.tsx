@@ -32,6 +32,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { Radio } from '@material-ui/core';
 
+const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
 declare const PCore: any;
 
 let myRows: Array<any>;
@@ -52,9 +53,9 @@ const filterByColumns: Array<any> = [];
 
 export default function ListView(props) {
   const { getPConnect, bInForm } = props;
-  const { globalSearch, presets, referenceList, rowClickAction, payload} = props;
+  const { globalSearch, presets, referenceList, rowClickAction, payload, selectionMode} = props;
   const thePConn = getPConnect();
-
+  console.log('props listview', props);
   const componentConfig = thePConn.getComponentConfig();
   const resolvedConfigProps = thePConn.getConfigProps();
 
@@ -827,6 +828,7 @@ export default function ListView(props) {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
    const value = event.target.value;
+   getPConnect()?.getListActions?.()?.setSelectedRows([{'pyGUID': value}]);
    setSelectedValue(value);
   };
   console.log('arColumns', arColumns);
@@ -920,7 +922,7 @@ export default function ListView(props) {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell></TableCell>
+                {selectionMode === SELECTION_MODE.SINGLE && <TableCell></TableCell>}
                 {arColumns.map((column) => {
                   return (
                     <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>
@@ -947,9 +949,9 @@ export default function ListView(props) {
                   .map((row) => {
                 return (
                   <TableRow key={row.pxRefObjectInsName} onClick={() => { _rowClick(row)}}>
-                    <TableCell>
+                    {selectionMode === SELECTION_MODE.SINGLE && <TableCell>
                       <Radio onChange={handleChange} value={row.pyGUID} name="radio-buttons" inputProps={{ 'aria-label': 'A' }} checked={selectedValue === row.pyGUID}></Radio>
-                    </TableCell>
+                    </TableCell>}
                     {arColumns.map((column) => {
                       const value = row[column.id];
                       console.log('column', column);

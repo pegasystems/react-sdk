@@ -55,7 +55,6 @@ export default function ListView(props) {
   const { getPConnect, bInForm } = props;
   const { globalSearch, presets, referenceList, rowClickAction, payload, selectionMode} = props;
   const thePConn = getPConnect();
-  console.log('props listview', props);
   const componentConfig = thePConn.getComponentConfig();
   const resolvedConfigProps = thePConn.getConfigProps();
 
@@ -831,7 +830,7 @@ export default function ListView(props) {
    getPConnect()?.getListActions?.()?.setSelectedRows([{'pyGUID': value}]);
    setSelectedValue(value);
   };
-  console.log('arColumns', arColumns);
+
   return (
     <>
     { arColumns && arColumns.length > 0 &&
@@ -954,7 +953,6 @@ export default function ListView(props) {
                     </TableCell>}
                     {arColumns.map((column) => {
                       const value = row[column.id];
-                      console.log('column', column);
                       return (
                         <TableCell className={classes.cell} key={column.id} align={column.align}>
                           {column.format && typeof value === 'number' ? column.format(value) : value}

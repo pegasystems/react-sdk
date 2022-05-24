@@ -33,7 +33,7 @@ export default function DataReference(props) {
     allowAndPersistChangesInReviewMode && (displayAs === 'autocomplete' || displayAs === 'dropdown');
   let propName;
   const isDisplayModeEnabled = ['LABELS_LEFT', 'STACKED_LARGE_VAL'].includes(displayMode);
-  console.log('firstChildMeta', firstChildMeta);
+
   if (firstChildMeta?.type !== 'Region') {
     const firstChildPConnect = getPConnect().getChildren()[0].getPConnect;
     /* remove refresh When condition from those old view so that it will not be used for runtime */

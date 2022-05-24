@@ -70,6 +70,8 @@ export default function ListView(props) {
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
+  const [selectedValue, setSelectedValue] = useState("");
+
   const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -228,7 +230,7 @@ export default function ListView(props) {
       theColumns.forEach((col) => {
         row[col.id] = data[col.id];
       });
-
+      row['pyGUID'] = data['pyGUID'];
       // for (const field of theColumns) {
       //   row[field.id] = data[field.id];
       // }
@@ -823,8 +825,11 @@ export default function ListView(props) {
 
   }
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+   const value = event.target.value;
+   setSelectedValue(value);
+  };
   console.log('arColumns', arColumns);
-  console.log('bInForm', bInForm);
   return (
     <>
     { arColumns && arColumns.length > 0 &&
@@ -943,7 +948,7 @@ export default function ListView(props) {
                 return (
                   <TableRow key={row.pxRefObjectInsName} onClick={() => { _rowClick(row)}}>
                     <TableCell>
-                      <Radio></Radio>
+                      <Radio onChange={handleChange} value={row.pyGUID} name="radio-buttons" inputProps={{ 'aria-label': 'A' }} checked={selectedValue === row.pyGUID}></Radio>
                     </TableCell>
                     {arColumns.map((column) => {
                       const value = row[column.id];

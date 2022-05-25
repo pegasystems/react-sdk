@@ -52,11 +52,30 @@ export default function DetailsFields(props) {
     const thePConn = field.getPConnect();
     const theCompType = thePConn.getComponentName().toLowerCase();
     const { label, value } = thePConn.getConfigProps();
-    fieldComponents.push( {
-      'type': theCompType,
-      'value': value,
-      'label': label
-    } );
+    if (theCompType === 'view') {
+      const children = thePConn.getChildren();
+      for (const child of children) {
+        const theChildPConn = child.getPConnect();
+        const theChildrenOfChild = theChildPConn.getChildren();
+        for (const childrenOfChild of theChildrenOfChild) {
+          const pconChild = childrenOfChild.getPConnect();
+          const childCompType = pconChild.getComponentName().toLowerCase();
+          const { label, value } = pconChild.getConfigProps();
+          fieldComponents.push({
+            'type': childCompType,
+            'value': value,
+            'label': label
+          });
+        }
+      }
+    } else {
+      fieldComponents.push({
+        'type': theCompType,
+        'value': value,
+        'label': label
+      });
+    }
+
   }
 
 

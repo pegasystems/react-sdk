@@ -317,7 +317,7 @@ export default function ListView(props) {
 
     let bCallSetRowsColumns = true;
 
-    const workListData = PCore.getDataApiUtils().getData(referenceList, payload ? payload : {});
+    const workListData = PCore.getDataApiUtils().getData(referenceList, payload);
     workListData.then( (workListJSON: Object) => {
 
       // don't update these fields until we return from promise

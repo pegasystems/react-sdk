@@ -45,9 +45,11 @@ export default function SimpleTableSelect(props) {
     ? pConn.getFieldMetadata(`@P .${referenceProp}`)
     : pConn.getCurrentPageFieldMetadata(contextPageReference);
 
-  const compositeKeys: any = [];
+  const compositeKeys: Array<any> = [];
   Object.values(fieldParameters).forEach((param: any) => {
-    if (isSelfReferencedProperty(param, referenceProp)) compositeKeys.push(param.substring(param.lastIndexOf('.') + 1));
+    if (isSelfReferencedProperty(param, referenceProp)) {
+     compositeKeys.push(param.substring(param.lastIndexOf('.') + 1));
+    }
   });
 
   // setting default row height for select table
@@ -80,7 +82,7 @@ export default function SimpleTableSelect(props) {
     toggleFieldVisibility: false,
     basicMode: true,
     additionalTableConfig,
-    // compositeKeys,
+    compositeKeys,
     viewName,
     parameters
   };

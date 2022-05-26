@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from "react";
-import PropTypes from "prop-types";;
-const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
+import React, { useMemo } from "react";
+import PropTypes from "prop-types";
 
+const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
 declare const PCore: any;
 export default function DataReference(props) {
   const {
@@ -14,13 +14,14 @@ export default function DataReference(props) {
     referenceType,
     selectionMode,
     displayAs,
-    ruleClass,
+   // ruleClass,
     parameters,
     hideLabel
   } = props;
   let childrenToRender = children;
   const pConn = getPConnect();
-  const [dropDownDataSource, setDropDownDataSource] = useState(null);
+  const dropDownDataSource = null;
+  // const [dropDownDataSource, setDropDownDataSource] = useState(null);
   const propsToUse = { label, showLabel, ...pConn.getInheritedProps() };
   if (propsToUse.showLabel === false) {
     propsToUse.label = '';
@@ -40,18 +41,18 @@ export default function DataReference(props) {
     if (firstChildMeta.config?.readOnly) {
       delete firstChildMeta.config.readOnly;
     }
-    // if (firstChildMeta?.type === 'Dropdown') {
-    //   firstChildMeta.config.datasource.source = rawViewMetadata.config?.parameters
-    //     ? dropDownDataSource
-    //     : '@DATASOURCE '.concat(refList).concat('.pxResults');
-    // } else if (firstChildMeta?.type === 'AutoComplete') {
-    //   firstChildMeta.config.datasource = refList;
+    if (firstChildMeta?.type === 'Dropdown') {
+      firstChildMeta.config.datasource.source = rawViewMetadata.config?.parameters
+        ? dropDownDataSource
+        : '@DATASOURCE '.concat(refList).concat('.pxResults');
+    } else if (firstChildMeta?.type === 'AutoComplete') {
+      firstChildMeta.config.datasource = refList;
 
-    //   /* Insert the parameters to the component only if present */
-    //   if (rawViewMetadata.config?.parameters) {
-    //     firstChildMeta.config.parameters = parameters;
-    //   }
-    // }
+      /* Insert the parameters to the component only if present */
+      if (rawViewMetadata.config?.parameters) {
+        firstChildMeta.config.parameters = parameters;
+      }
+    }
     // set displayMode conditionally
     if (!canBeChangedInReviewMode) {
       firstChildMeta.config.displayMode = displayMode;
@@ -60,7 +61,6 @@ export default function DataReference(props) {
       propName = PCore.getAnnotationUtils().getPropertyName(firstChildMeta.config.selectionList);
     } else {
       propName = PCore.getAnnotationUtils().getPropertyName(firstChildMeta.config.value);
-      console.log('propName', propName);
     }
 
     const handleSelection = (event) => {
@@ -200,7 +200,7 @@ export default function DataReference(props) {
       childrenToRender = [recreatedFirstChild];
     }
   }
-  console.log('childrenToRender', childrenToRender);
+
   return childrenToRender.length === 1 ? (
     childrenToRender[0] ?? null
   ) : (
@@ -221,7 +221,7 @@ DataReference.defaultProps = {
   referenceType: '',
   selectionMode: '',
   displayAs: '',
-  ruleClass: '',
+  // ruleClass: '',
   parameters: undefined,
   hideLabel: false
 };
@@ -236,7 +236,7 @@ DataReference.propTypes = {
   referenceType: PropTypes.string,
   selectionMode: PropTypes.string,
   displayAs: PropTypes.string,
-  ruleClass: PropTypes.string,
+  // ruleClass: PropTypes.string,
   parameters: PropTypes.arrayOf(PropTypes.string), // need to fix
   hideLabel: PropTypes.bool
 };

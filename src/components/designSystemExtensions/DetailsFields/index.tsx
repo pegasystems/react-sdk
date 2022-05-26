@@ -60,11 +60,11 @@ export default function DetailsFields(props) {
         for (const childrenOfChild of theChildrenOfChild) {
           const pconChild = childrenOfChild.getPConnect();
           const childCompType = pconChild.getComponentName().toLowerCase();
-          const { label, value } = pconChild.getConfigProps();
+          const childConfigProps = pconChild.getConfigProps();
           fieldComponents.push({
             'type': childCompType,
-            'value': value,
-            'label': label
+            'value': childConfigProps?.value,
+            'label': childConfigProps?.label
           });
         }
       }

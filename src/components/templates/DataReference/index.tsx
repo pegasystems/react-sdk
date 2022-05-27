@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import PropTypes from "prop-types";
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
 declare const PCore: any;
@@ -14,7 +14,7 @@ export default function DataReference(props) {
     referenceType,
     selectionMode,
     displayAs,
-   // ruleClass,
+    // ruleClass,
     parameters,
     hideLabel
   } = props;
@@ -30,13 +30,13 @@ export default function DataReference(props) {
   const viewName = rawViewMetadata.name;
   const [firstChildMeta] = rawViewMetadata.children;
   const refList = rawViewMetadata.config.referenceList;
-  const canBeChangedInReviewMode =
-    allowAndPersistChangesInReviewMode && (displayAs === 'autocomplete' || displayAs === 'dropdown');
+  const canBeChangedInReviewMode = allowAndPersistChangesInReviewMode && (displayAs === 'autocomplete' || displayAs === 'dropdown');
   let propName;
   const isDisplayModeEnabled = ['LABELS_LEFT', 'STACKED_LARGE_VAL'].includes(displayMode);
+  let firstChildPConnect;
 
   if (firstChildMeta?.type !== 'Region') {
-    const firstChildPConnect = getPConnect().getChildren()[0].getPConnect;
+    firstChildPConnect = getPConnect().getChildren()[0].getPConnect;
     /* remove refresh When condition from those old view so that it will not be used for runtime */
     if (firstChildMeta.config?.readOnly) {
       delete firstChildMeta.config.readOnly;
@@ -62,72 +62,80 @@ export default function DataReference(props) {
     } else {
       propName = PCore.getAnnotationUtils().getPropertyName(firstChildMeta.config.value);
     }
+  }
 
-    const handleSelection = (event) => {
-      const caseKey = pConn.getCaseInfo().getKey();
-      const refreshOptions = { autoDetectRefresh: true };
-      if (canBeChangedInReviewMode && pConn.getValue('__currentPageTabViewName')) {
-        getPConnect()
-          .getActionsApi()
-          .refreshCaseView(caseKey, pConn.getValue('__currentPageTabViewName'), null, refreshOptions);
-        PCore.getDeferLoadManager().refreshActiveComponents(pConn.getContextName());
-      } else {
-        const pgRef = pConn.getPageReference().replace('caseInfo.content', '');
-        getPConnect().getActionsApi().refreshCaseView(caseKey, viewName, pgRef, refreshOptions);
-      }
+  const handleSelection = event => {
+    const caseKey = pConn.getCaseInfo().getKey();
+    const refreshOptions = { autoDetectRefresh: true };
+    if (canBeChangedInReviewMode && pConn.getValue('__currentPageTabViewName')) {
+      getPConnect()
+        .getActionsApi()
+        .refreshCaseView(caseKey, pConn.getValue('__currentPageTabViewName'), null, refreshOptions);
+      PCore.getDeferLoadManager().refreshActiveComponents(pConn.getContextName());
+    } else {
+      const pgRef = pConn.getPageReference().replace('caseInfo.content', '');
+      getPConnect().getActionsApi().refreshCaseView(caseKey, viewName, pgRef, refreshOptions);
+    }
 
-      // AutoComplete sets value on event.id whereas Dropdown sets it on event.target.value
-      const propValue = event?.id || event?.target.value;
-      if (propValue && canBeChangedInReviewMode && isDisplayModeEnabled) {
-        PCore.getDataApiUtils()
-          .getCaseEditLock(caseKey)
-          .then((caseResponse) => {
-            const pageTokens = pConn.getPageReference().replace('caseInfo.content', '').split('.');
-            let curr = {};
-            const commitData = curr;
+    // AutoComplete sets value on event.id whereas Dropdown sets it on event.target.value
+    const propValue = event?.id || event?.target.value;
+    if (propValue && canBeChangedInReviewMode && isDisplayModeEnabled) {
+      PCore.getDataApiUtils()
+        .getCaseEditLock(caseKey)
+        .then(caseResponse => {
+          const pageTokens = pConn.getPageReference().replace('caseInfo.content', '').split('.');
+          let curr = {};
+          const commitData = curr;
 
-            pageTokens.forEach((el) => {
-              if (el !== '') {
-                curr[el] = {};
-                curr = curr[el];
-              }
-            });
-
-            // expecting format like {Customer: {pyID:"C-100"}}
-            const propArr = propName.split('.');
-            propArr.forEach((element, idx) => {
-              if (idx + 1 === propArr.length) {
-                curr[element] = propValue;
-              } else {
-                curr[element] = {};
-                curr = curr[element];
-              }
-            });
-
-            PCore.getDataApiUtils()
-              .updateCaseEditFieldsData(
-                caseKey,
-                { [caseKey]: commitData },
-                caseResponse.headers.etag,
-                pConn.getContextName()
-              )
-              .then((response) => {
-                PCore.getContainerUtils().updateChildContainersEtag(pConn.getContextName(), response.headers.etag);
-              });
+          pageTokens.forEach(el => {
+            if (el !== '') {
+              curr[el] = {};
+              curr = curr[el];
+            }
           });
-      }
-    };
 
-    // Re-create first child with overridden props
-    // Memoized child in order to stop unmount and remount of the child component when data reference
-    // rerenders without any actual change
-    const recreatedFirstChild = useMemo(() => {
-      const { type, config } = firstChildMeta;
+          // expecting format like {Customer: {pyID:"C-100"}}
+          const propArr = propName.split('.');
+          propArr.forEach((element, idx) => {
+            if (idx + 1 === propArr.length) {
+              curr[element] = propValue;
+            } else {
+              curr[element] = {};
+              curr = curr[element];
+            }
+          });
 
+          PCore.getDataApiUtils()
+            .updateCaseEditFieldsData(
+              caseKey,
+              { [caseKey]: commitData },
+              caseResponse.headers.etag,
+              pConn.getContextName()
+            )
+            .then(response => {
+              PCore.getContainerUtils().updateChildContainersEtag(
+                pConn.getContextName(),
+                response.headers.etag
+              );
+            });
+        });
+    }
+  };
+
+  // Re-create first child with overridden props
+  // Memoized child in order to stop unmount and remount of the child component when data reference
+  // rerenders without any actual change
+  const recreatedFirstChild = useMemo(() => {
+    const { type, config } = firstChildMeta;
+    if (firstChildMeta?.type !== 'Region') {
       pConn.clearErrorMessages({
         property: propName
       });
-      if (!canBeChangedInReviewMode && isDisplayModeEnabled && selectionMode === SELECTION_MODE.SINGLE) {
+      if (
+        !canBeChangedInReviewMode &&
+        isDisplayModeEnabled &&
+        selectionMode === SELECTION_MODE.SINGLE
+      ) {
         return null;
         // return (
         //   <SingleReferenceReadonly
@@ -161,7 +169,11 @@ export default function DataReference(props) {
       }
 
       // In the case of a datasource with parameters you cannot load the dropdown before the parameters
-      if (type === 'Dropdown' && rawViewMetadata.config?.parameters && dropDownDataSource === null) {
+      if (
+        type === 'Dropdown' &&
+        rawViewMetadata.config?.parameters &&
+        dropDownDataSource === null
+      ) {
         return null;
       }
 
@@ -179,20 +191,24 @@ export default function DataReference(props) {
           localeReference: rawViewMetadata.config.localeReference,
           ...(selectionMode === SELECTION_MODE.SINGLE ? { referenceType } : ''),
           dataRelationshipContext:
-            rawViewMetadata.config.contextClass && rawViewMetadata.config.name ? rawViewMetadata.config.name : null,
+            rawViewMetadata.config.contextClass && rawViewMetadata.config.name
+              ? rawViewMetadata.config.name
+              : null,
           hideLabel,
           onRecordChange: handleSelection
         }
       });
-    }, [
-      firstChildMeta.config?.datasource?.source,
-      parameters,
-      dropDownDataSource,
-      propsToUse.required,
-      propsToUse.disabled
-    ]);
+    }
+  }, [
+    firstChildMeta.config?.datasource?.source,
+    parameters,
+    dropDownDataSource,
+    propsToUse.required,
+    propsToUse.disabled
+  ]);
 
-    // Only include the views region for rendering when it has content
+  // Only include the views region for rendering when it has content
+  if (firstChildMeta?.type !== 'Region') {
     const viewsRegion = rawViewMetadata.children[1];
     if (viewsRegion?.name === 'Views' && viewsRegion.children.length) {
       childrenToRender = [recreatedFirstChild, ...children.slice(1)];
@@ -205,12 +221,11 @@ export default function DataReference(props) {
     childrenToRender[0] ?? null
   ) : (
     <div>
-      {childrenToRender.map((child, i) => (
-        <React.Fragment key={i}>{child}</React.Fragment>
+      {childrenToRender.map(child => (
+        <React.Fragment>{child}</React.Fragment>
       ))}
     </div>
   );
-
 }
 
 DataReference.defaultProps = {

@@ -25,13 +25,19 @@ const useStyles = makeStyles((/* theme */) => ({
 export default function Percentage(props) {
   const classes = useStyles();
 
-  const {label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly} = props;
+  const {label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly, testId} = props;
 
   // console.log(`Percentage: label: ${label} value: ${value}`);
 
   if (readOnly) {
     return ( <TextInput {...props} /> );
   }
+
+  let testProp = {};
+
+  testProp = {
+     "data-test-id": testId
+  };
 
 
   return (
@@ -52,7 +58,7 @@ export default function Percentage(props) {
       value={value}
 
       type='number'
-
+      inputProps={ { ...testProp } }
     />
   )
 }

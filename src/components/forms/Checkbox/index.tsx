@@ -4,7 +4,7 @@ import handleEvent from '../../../helpers/event-utils';
 
 
 export default function CheckboxComponent(props) {
-  const {getPConnect, value=false, readOnly} = props;
+  const {getPConnect, value=false, readOnly, testId} = props;
 
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();
@@ -45,6 +45,7 @@ export default function CheckboxComponent(props) {
         onBlur={handleBlur}
         label={caption}
         labelPlacement="end"
+        data-test-id={testId}
         />
     </FormGroup>
 

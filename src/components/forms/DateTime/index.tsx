@@ -3,7 +3,7 @@ import { KeyboardDateTimePicker } from '@material-ui/pickers';
 import TextInput from "../TextInput";
 
 export default function DateTime(props) {
-  const {label, required, disabled, value='', validatemessage, status, onChange, readOnly} = props;
+  const {label, required, disabled, value='', validatemessage, status, onChange, readOnly, testId} = props;
 
   if (readOnly) {
     return ( <TextInput {...props} /> );
@@ -37,6 +37,7 @@ export default function DateTime(props) {
         label={label}
         value={value || null}
         onChange={handleChange}
+        data-test-id={testId}
       />
     );
 }

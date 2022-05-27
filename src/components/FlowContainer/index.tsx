@@ -457,7 +457,10 @@ export default function FlowContainer(props) {
   const caseId = thePConn.getCaseSummary().content.pyID;
   const urgency = getPConnect().getCaseSummary().assignments ? getPConnect().getCaseSummary().assignments[0].urgency : "";
   const operatorInitials = Utils.getInitials(PCore.getEnvironmentInfo().getOperatorName());
-  const instructionText = thePConn.getCaseSummary().assignments[0].instructions;
+  let instructionText = thePConn.getCaseSummary()?.assignments?.[0]?.instructions;
+  if (instructionText === undefined) {
+    instructionText = "";
+  }
 
   return (
     <div style={{ textAlign: "left" }} id={buildName} className="psdk-flow-container-top">

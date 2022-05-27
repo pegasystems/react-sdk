@@ -30,8 +30,9 @@ import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import { Radio } from '@material-ui/core';
 
-
+const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
 declare const PCore: any;
 
 let myRows: Array<any>;
@@ -52,9 +53,8 @@ const filterByColumns: Array<any> = [];
 
 export default function ListView(props) {
   const { getPConnect, bInForm } = props;
-  const { globalSearch, presets, referenceList, rowClickAction} = props;
+  const { globalSearch, presets, referenceList, rowClickAction, payload, selectionMode} = props;
   const thePConn = getPConnect();
-
   const componentConfig = thePConn.getComponentConfig();
   const resolvedConfigProps = thePConn.getConfigProps();
 
@@ -70,6 +70,7 @@ export default function ListView(props) {
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
+  const [selectedValue, setSelectedValue] = useState("");
 
   const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -229,7 +230,7 @@ export default function ListView(props) {
       theColumns.forEach((col) => {
         row[col.id] = data[col.id];
       });
-
+      row['pyGUID'] = data['pyGUID'];
       // for (const field of theColumns) {
       //   row[field.id] = data[field.id];
       // }
@@ -316,8 +317,7 @@ export default function ListView(props) {
 
     let bCallSetRowsColumns = true;
 
-    const workListData = PCore.getDataApiUtils().getData(referenceList, {});
-
+    const workListData = PCore.getDataApiUtils().getData(referenceList, payload);
     workListData.then( (workListJSON: Object) => {
 
       // don't update these fields until we return from promise
@@ -825,6 +825,11 @@ export default function ListView(props) {
 
   }
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+   const value = event.target.value;
+   getPConnect()?.getListActions?.()?.setSelectedRows([{'pyGUID': value}]);
+   setSelectedValue(value);
+  };
 
   return (
     <>
@@ -916,6 +921,7 @@ export default function ListView(props) {
           <Table>
             <TableHead>
               <TableRow>
+                {selectionMode === SELECTION_MODE.SINGLE && <TableCell></TableCell>}
                 {arColumns.map((column) => {
                   return (
                     <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>
@@ -942,6 +948,9 @@ export default function ListView(props) {
                   .map((row) => {
                 return (
                   <TableRow key={row.pxRefObjectInsName} onClick={() => { _rowClick(row)}}>
+                    {selectionMode === SELECTION_MODE.SINGLE && <TableCell>
+                      <Radio onChange={handleChange} value={row.pyGUID} name="radio-buttons" inputProps={{ 'aria-label': 'A' }} checked={selectedValue === row.pyGUID}></Radio>
+                    </TableCell>}
                     {arColumns.map((column) => {
                       const value = row[column.id];
                       return (

@@ -31,6 +31,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { Radio } from '@material-ui/core';
+import './ListView.css';
 
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
 declare const PCore: any;
@@ -358,7 +359,7 @@ export default function ListView(props) {
       bCallSetRowsColumns = false;
     }
 
-  }, []);
+  }, [payload]);
 
 
   function searchFilter(value: string, rows: Array<any>) {
@@ -943,7 +944,7 @@ export default function ListView(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-            {stableSort(arRows, getComparator(order, orderBy))
+            {arRows && arRows.length > 0 && stableSort(arRows, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
                 return (
@@ -964,10 +965,11 @@ export default function ListView(props) {
               })}
             </TableBody>
           </Table>
+          {arRows && arRows.length === 0 && <div className="no-records">No records found.</div>}
           </TableContainer>
           }
         </>
-              <TablePagination
+        {arRows && arRows.length > 0 &&  <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
               count={arRows.length}
@@ -975,7 +977,7 @@ export default function ListView(props) {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            />}
       </Paper>
     }
     <Menu

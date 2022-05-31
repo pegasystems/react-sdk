@@ -111,7 +111,8 @@ const initOAuth = (bInit) => {
         : `${window.location.origin}${window.location.pathname}`,
     authService: sdkConfigAuth.authService,
     appAlias: sdkConfigAuth.appAlias || '',
-    useLocking: true
+    useLocking: true,
+    iframeLoginUI: true
   };
   if( 'silentTimeout' in sdkConfigAuth ) {
     authConfig.silentTimeout = sdkConfigAuth.silentTimeout;

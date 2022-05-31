@@ -82,8 +82,9 @@ class PegaAuth {
           this.#buildAuthorizeUrl(state).then((url) => {
               let myWindow = null; // popup or iframe
               let elIframe = null;
+              let elCloseBtn = null
               const iframeTimeout = this.config.silentTimeout !== undefined ? this.config.silentTimeout : 5000;
-              let bWinIframe = iframeTimeout > 0 && ((!!this.config.userIdentifier && !!this.config.password) || this.config.authService !== "pega");
+              let bWinIframe = iframeTimeout > 0 && ((!!this.config.userIdentifier && !!this.config.password) || this.config.iframeLoginUI || this.config.authService !== "pega");
               let tmrAuthComplete = null;
               let checkWindowClosed = null;
               const myWinOnLoad = () => {
@@ -121,16 +122,76 @@ class PegaAuth {
                       console.log("authjs(login): Exception trying to add onload handler to opened window;")
                   }
               };
+
+              // eslint-disable-next-line prefer-const
+              let fnCloseIframe = () => {
+                elIframe.parentNode.removeChild(elIframe);
+                elCloseBtn.parentNode.removeChild(elCloseBtn);
+                // eslint-disable-next-line no-multi-assign
+                elIframe = elCloseBtn = null;
+                bWinIframe = false;
+            }
+            // eslint-disable-next-line prefer-const
+            let fnCloseAndReject = () => {
+                fnCloseIframe();
+                // eslint-disable-next-line prefer-promise-reject-errors
+                reject("closed");
+            }
               // If there is a userIdentifier and password specified or an external SSO auth service,
               //  we can try to use this silently in an iFrame first
               if( bWinIframe ) {
+                  const nFrameZLevel = 99999;
                   elIframe = document.createElement('iframe');
-                  elIframe.setAttribute('id', `pe${this.config.clientId}`);
-                  elIframe.setAttribute('style','position:absolute;display:none');
+                  // elIframe.setAttribute('id', `pe${this.config.clientId}`);
+                  // eslint-disable-next-line prefer-template
+                  elIframe.id = 'pe'+this.config.clientId;
+                  const loginBoxWidth=500;
+                  const loginBoxHeight=700;
+                  const oStyle = elIframe.style;
+                  oStyle.position = 'absolute';
+                  oStyle.display = 'none';
+                  oStyle.zIndex = nFrameZLevel;
+                  oStyle.top=`${Math.round(Math.max(window.innerHeight-loginBoxHeight,0)/2)}px`;
+                  oStyle.left=`${Math.round(Math.max(window.innerWidth-loginBoxWidth,0)/2)}px`;
+                  oStyle.width='500px';
+                  oStyle.height='700px';
+                  // Add Iframe to top of document DOM to have it load
+                  document.body.insertBefore(elIframe,document.body.firstChild);
+                  // elIframe.setAttribute('style','position:absolute;display:none');
                   // Add Iframe to DOM to have it load
                   document.getElementsByTagName('body')[0].appendChild(elIframe);
                   elIframe.addEventListener("load", myWinOnLoad, true);
                   elIframe.setAttribute('src', url);
+
+                  const svgCloseBtn =
+                  `<?xml version="1.0" encoding="UTF-8"?>
+                  <svg width="34px" height="34px" viewBox="0 0 34 34" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <title>Dismiss - Black</title>
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <g transform="translate(1.000000, 1.000000)">
+                        <circle fill="#252C32" cx="16" cy="16" r="16"></circle>
+                        <g transform="translate(9.109375, 9.214844)" fill="#FFFFFF" fill-rule="nonzero">
+                          <path d="M12.7265625,0 L0,12.6210938 L1.0546875,13.5703125 L13.78125,1.0546875 L12.7265625,0 Z M13.7460938,12.5507812 L1.01953125,0 L0,1.01953125 L12.7617188,13.6054688 L13.7460938,12.5507812 Z"></path>
+                        </g>
+                      </g>
+                    </g>
+                  </svg>`;
+                  const bCloseWithinFrame = false;
+                  elCloseBtn = document.createElement('img');
+                  elCloseBtn.onclick = fnCloseAndReject;
+                  // eslint-disable-next-line prefer-template
+                  elCloseBtn.src = 'data:image/svg+xml;base64,' + window.btoa(svgCloseBtn);
+                  const oBtnStyle = elCloseBtn.style;
+                  oBtnStyle.cursor = 'pointer';
+                  // If svg doesn't set width and height might want to set oBtStyle width and height to something like '2em'
+                  oBtnStyle.position = 'absolute';
+                  oBtnStyle.display = 'none';
+                  oBtnStyle.zIndex = nFrameZLevel+1;
+                  const nTopOffset = bCloseWithinFrame ? 5 : -10;
+                  const nRightOffset = bCloseWithinFrame ? -34 : -20;
+                  oBtnStyle.top = `${Math.round(Math.max(window.innerHeight-loginBoxHeight,0)/2)+nTopOffset}px`;
+                  oBtnStyle.left = `${Math.round(Math.max(window.innerWidth-loginBoxWidth,0)/2)+loginBoxWidth+nRightOffset}px`;
+                  document.body.insertBefore(elCloseBtn,document.body.firstChild);
                   // If the password was wrong, then the login screen will be in the iframe
                   // ..and with Pega without realization of US-372314 it may replace the top (main portal) window
                   // For now set a timer and if the timer expires, remove the iFrame and use same url within
@@ -142,11 +203,20 @@ class PegaAuth {
                           delete this.config.password;
                           this.#updateConfig();
                       }
-                      elIframe.parentNode.removeChild(elIframe);
-                      elIframe = null;
-                      // Now try to do regular popup open
-                      bWinIframe = false;
-                      fnOpenPopup();
+
+                      if( this.config.iframeLoginUI ) {
+                        elIframe.style.display="block";
+                        elCloseBtn.style.display="block";
+                    } else {
+                        fnCloseIframe();
+                        fnOpenPopup();
+                    }
+
+                    //   elIframe.parentNode.removeChild(elIframe);
+                    //   elIframe = null;
+                    //   // Now try to do regular popup open
+                    //   bWinIframe = false;
+                    //   fnOpenPopup();
                   }, iframeTimeout);
               } else {
                   fnOpenPopup();
@@ -159,8 +229,9 @@ class PegaAuth {
                   this.getToken(code).then(token => {
                       if( bWinIframe ) {
                           clearTimeout(tmrAuthComplete);
-                          elIframe.parentNode.removeChild(elIframe);
-                          elIframe = null;
+                          // elIframe.parentNode.removeChild(elIframe);
+                          // elIframe = null;
+                          fnCloseIframe();
                       } else {
                           clearInterval(checkWindowClosed);
                           myWindow.close();

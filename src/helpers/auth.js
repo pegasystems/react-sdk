@@ -123,26 +123,23 @@ class PegaAuth {
                   }
               };
 
-              // eslint-disable-next-line prefer-const
-              let fnCloseIframe = () => {
+              const fnCloseIframe = () => {
                 elIframe.parentNode.removeChild(elIframe);
                 elCloseBtn.parentNode.removeChild(elCloseBtn);
                 // eslint-disable-next-line no-multi-assign
                 elIframe = elCloseBtn = null;
                 bWinIframe = false;
-            }
-            // eslint-disable-next-line prefer-const
-            let fnCloseAndReject = () => {
+              };
+              const fnCloseAndReject = () => {
                 fnCloseIframe();
                 // eslint-disable-next-line prefer-promise-reject-errors
                 reject("closed");
-            }
+              };
               // If there is a userIdentifier and password specified or an external SSO auth service,
               //  we can try to use this silently in an iFrame first
               if( bWinIframe ) {
                   const nFrameZLevel = 99999;
                   elIframe = document.createElement('iframe');
-                  // elIframe.setAttribute('id', `pe${this.config.clientId}`);
                   // eslint-disable-next-line prefer-template
                   elIframe.id = 'pe'+this.config.clientId;
                   const loginBoxWidth=500;
@@ -157,7 +154,6 @@ class PegaAuth {
                   oStyle.height='700px';
                   // Add Iframe to top of document DOM to have it load
                   document.body.insertBefore(elIframe,document.body.firstChild);
-                  // elIframe.setAttribute('style','position:absolute;display:none');
                   // Add Iframe to DOM to have it load
                   document.getElementsByTagName('body')[0].appendChild(elIframe);
                   elIframe.addEventListener("load", myWinOnLoad, true);
@@ -211,12 +207,6 @@ class PegaAuth {
                         fnCloseIframe();
                         fnOpenPopup();
                     }
-
-                    //   elIframe.parentNode.removeChild(elIframe);
-                    //   elIframe = null;
-                    //   // Now try to do regular popup open
-                    //   bWinIframe = false;
-                    //   fnOpenPopup();
                   }, iframeTimeout);
               } else {
                   fnOpenPopup();
@@ -229,8 +219,6 @@ class PegaAuth {
                   this.getToken(code).then(token => {
                       if( bWinIframe ) {
                           clearTimeout(tmrAuthComplete);
-                          // elIframe.parentNode.removeChild(elIframe);
-                          // elIframe = null;
                           fnCloseIframe();
                       } else {
                           clearInterval(checkWindowClosed);

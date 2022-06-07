@@ -14,8 +14,12 @@ const AppSelector = () => {
       <div>
         <Switch>
           <Route exact path="/" component={EmbeddedTopLevel} />
+          <Route path="/index.html" component={EmbeddedTopLevel} />
           <Route path="/embedded" component={EmbeddedTopLevel} />
+          <Route path="/embedded.html" component={EmbeddedTopLevel} />
           <Route path="/portal" component={FullPortal} />
+          <Route path="/portal.html" component={FullPortal} />
+          <Route path="*" component={EmbeddedTopLevel} />
         </Switch>
     </div>
   )

@@ -9,7 +9,7 @@ import { SdkConfigAccess } from './config_access';
 import PegaAuth from './auth';
 
 // eslint-disable-next-line import/no-mutable-exports
-export let gbLoggedIn = sessionStorage.getItem('accessToken') !== null;
+export let gbLoggedIn = sessionStorage.getItem('rsdk_AH') !== null;
 // eslint-disable-next-line import/no-mutable-exports
 export let gbLoginInProgress = sessionStorage.getItem("rsdk_loggingIn") !== null;
 // other sessionStorage items: rsdk_appName
@@ -19,6 +19,8 @@ let authMgr = null;
 // Since this variable is loaded in a separate instance in the popup scenario, use storage to coordinate across the two
 let usePopupForRestOfSession = sessionStorage.getItem("rsdk_popup") === "1";
 let gbC11NBootstrapInProgress = false;
+// Some non Pega OAuth 2.0 Authentication in use (Basic or Custom for service package)
+let gbCustomAuth = false;
 
 /*
  * Set to use popup experience for rest of session
@@ -57,7 +59,7 @@ const isLoginExpired = () => {
  */
 const clearAuthMgr = (bFullReauth=false) => {
   // Remove any local storage for the user
-  sessionStorage.removeItem('accessToken');
+  sessionStorage.removeItem('rsdk_AH');
   if( !bFullReauth ) {
     sessionStorage.removeItem("rsdk_CI");
   }
@@ -255,9 +257,12 @@ const getAuthMgr = ( bInit ) => {
   /* Ends here */
 };
 
+export const authGetAuthHeader = () => {
+  return sessionStorage.getItem("rsdk_AH");
+}
 
 export const updateLoginStatus = () => {
-  const sAuthHdr = sessionStorage.getItem('accessToken');
+  const sAuthHdr = authGetAuthHeader();
   gbLoggedIn = sAuthHdr && sAuthHdr.length > 0;
   const elBtnLogin = document.getElementById('btnLogin');
   if (elBtnLogin) {
@@ -287,13 +292,11 @@ const fireTokenAvailable = (token, bLoadC11N=true) => {
     // This is used on page reload to load the token from sessionStorage and carry on
     token = getCurrentTokens();
     if( !token ) {
-      token = {access_token: sessionStorage.getItem('accessToken')};
+      return;
     }
   }
 
-  // accessToken being redundantly set in c11nboot as part of handling SdkLoggedIn event
-  // TODO: Prehaps remove from
-  sessionStorage.setItem('accessToken', token.access_token);
+  sessionStorage.setItem('rsdk_AH', `${token.token_type} ${token.access_token}`);
   updateLoginStatus();
 
   // gbLoggedIn is getting updated in updateLoginStatus
@@ -355,6 +358,8 @@ export const login = (bFullReauth=false) => {
     console.error(`Trying login before SdkConfigAccessReady!`);
     return;
   }
+
+  if( gbCustomAuth ) return;
 
   gbLoginInProgress = true;
   // Needed so a redirect to login screen and back will know we are still in process of logging in
@@ -421,6 +426,9 @@ export const loginIfNecessary = (appName, isEmbedded=false, deferLogin=false) =>
     sessionStorage.setItem("rsdk_appName", appName);
   }
   setIsEmbedded(isEmbedded);
+  // If custom auth no need to do any OAuth logic
+  if( gbCustomAuth ) return;
+
   if( window.location.href.indexOf("?code") !== -1 ) {
     // initialize authMgr
     initOAuth(false);
@@ -455,11 +463,6 @@ export const authTokenUpdated = (tokenInfo ) => {
   sessionStorage.setItem("rsdk_TI", JSON.stringify(tokenInfo));
 };
 
-export const authGetAccessToken = () => {
-  const tokens = getCurrentTokens();
-  return tokens.access_token;
-};
-
 export const logout = () => {
   return new Promise((resolve) => {
     const fnClearAndResolve = () => {
@@ -480,6 +483,10 @@ export const logout = () => {
       }
       resolve();
     };
+    if( gbCustomAuth ) {
+      fnClearAndResolve();
+      return;
+    }
     const tokenInfo = getCurrentTokens();
     if( tokenInfo && tokenInfo.access_token ) {
         if( window.PCore ) {
@@ -528,3 +535,15 @@ export const authFullReauth = () => {
     document.dispatchEvent(event);
   }
 };
+
+// Set the custom authorization header for the SDK (and Constellation JS Engine) to
+// utilize for every DX API request
+export const sdkSetAuthHeader = (authHeader) => {
+  // set this within session storage so it survives a browser reload
+  if( authHeader ) {
+    sessionStorage.setItem("rsdk_AH", authHeader);
+  } else {
+    sessionStorage.removeItem("rsdk_AH");
+  }
+  gbCustomAuth = true;
+}

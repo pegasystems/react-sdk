@@ -227,7 +227,7 @@ export default function ListView(props) {
   function getUsingData(arTableData, theColumns): Array<any>  {
     if (selectionMode === SELECTION_MODE.SINGLE) {
       const record = arTableData?.length > 0 ? arTableData[0] : '';
-      if (typeof(record) === "object" && !('pyGUIDs' in record)) {
+      if (typeof(record) === "object" && !('pyGUID' in record)) {
         // eslint-disable-next-line no-console
         console.error('pyGUID values are mandatory to select the required row from the list');
       }

@@ -19,7 +19,7 @@ const AppSelector = () => {
       <div>
         <Switch>
           <Route exact path={`${baseURL}`} component={EmbeddedTopLevel} />
-          <Route path={ `${baseURL}index.html` } component={EmbeddedTopLevel} />
+          <Route path={`${baseURL}index.html`} component={EmbeddedTopLevel} />
           <Route path={`${baseURL}embedded`} component={EmbeddedTopLevel} />
           <Route path={`${baseURL}embedded.html`} component={EmbeddedTopLevel} />
           <Route path={`${baseURL}portal`} component={FullPortal} />

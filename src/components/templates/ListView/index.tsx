@@ -31,6 +31,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { Radio } from '@material-ui/core';
+import './ListView.css';
 
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
 declare const PCore: any;
@@ -224,6 +225,13 @@ export default function ListView(props) {
   }
 
   function getUsingData(arTableData, theColumns): Array<any>  {
+    if (selectionMode === SELECTION_MODE.SINGLE) {
+      const record = arTableData?.length > 0 ? arTableData[0] : '';
+      if (typeof(record) === "object" && !('pyGUID' in record)) {
+        // eslint-disable-next-line no-console
+        console.error('pyGUID values are mandatory to select the required row from the list');
+      }
+    }
     const arReturn = arTableData?.map((data: any) => {
       const row: any = {};
 
@@ -313,40 +321,45 @@ export default function ListView(props) {
     return myColList;
   }
 
-  useEffect( ()=> {
+  function fetchAllData() {
+    const context = getPConnect().getContextName();
+    return PCore.getDataPageUtils().getDataAsync(
+      referenceList,
+      context,
+      payload && payload.dataViewParameters,
+      null,
+      payload && payload.query
+    );
+  }
 
+  async function fetchDataFromServer() {
     let bCallSetRowsColumns = true;
+    const workListJSON = await fetchAllData();
 
-    const workListData = PCore.getDataApiUtils().getData(referenceList, payload);
-    workListData.then( (workListJSON: Object) => {
+    // don't update these fields until we return from promise
+    let fields = presets[0].children[0].children;
 
-      // don't update these fields until we return from promise
-      let fields = presets[0].children[0].children;
+    // this is an unresovled version of this.fields$, need unresolved, so can get the property reference
+    const columnFields = componentConfig.presets[0].children[0].children;
 
-      // this is an unresovled version of this.fields$, need unresolved, so can get the property reference
-      const columnFields = componentConfig.presets[0].children[0].children;
+    const tableDataResults = workListJSON['data'];
 
-      const tableDataResults = workListJSON["data"].data;
+    const myColumns = getHeaderCells(columnFields, fields);
 
-      const myColumns = getHeaderCells(columnFields, fields);
+    fields = updateFields(fields, myColumns);
 
-      fields = updateFields(fields, myColumns);
+    const usingDataResults = getUsingData(tableDataResults, myColumns);
 
-      const usingDataResults = getUsingData(tableDataResults, myColumns);
+    // store globally, so can be searched, filtered, etc.
+    myRows = updateData(usingDataResults, fields);
+    myDisplayColmnnList = getMyColumnList(myColumns);
 
-      // store globally, so can be searched, filtered, etc.
-      myRows = updateData(usingDataResults, fields);
-      myDisplayColmnnList = getMyColumnList(myColumns);
-
-      // At this point, if we have data ready to render and haven't been asked
-      //  to NOT call setRows and setColumns, call them
-      if (bCallSetRowsColumns) {
-        setRows(myRows);
-        setColumns(myColumns);
-      }
-
-
-    });
+    // At this point, if we have data ready to render and haven't been asked
+    //  to NOT call setRows and setColumns, call them
+    if (bCallSetRowsColumns) {
+      setRows(myRows);
+      setColumns(myColumns);
+    }
 
     return () => {
       // Inspired by https://juliangaramendy.dev/blog/use-promise-subscription
@@ -357,8 +370,11 @@ export default function ListView(props) {
       //  we can avoid calling the useState setters which would otherwise show a warning
       bCallSetRowsColumns = false;
     }
+  }
 
-  }, []);
+  useEffect( ()=> {
+    fetchDataFromServer();
+  }, [payload]);
 
 
   function searchFilter(value: string, rows: Array<any>) {
@@ -943,7 +959,7 @@ export default function ListView(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-            {stableSort(arRows, getComparator(order, orderBy))
+            {arRows && arRows.length > 0 && stableSort(arRows, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
                 return (
@@ -964,10 +980,11 @@ export default function ListView(props) {
               })}
             </TableBody>
           </Table>
+          {arRows && arRows.length === 0 && <div className="no-records">No records found.</div>}
           </TableContainer>
           }
         </>
-              <TablePagination
+        {arRows && arRows.length > 0 &&  <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
               count={arRows.length}
@@ -975,7 +992,7 @@ export default function ListView(props) {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            />}
       </Paper>
     }
     <Menu

@@ -112,7 +112,6 @@ const initOAuth = (bInit) => {
     authService: sdkConfigAuth.authService,
     appAlias: sdkConfigAuth.appAlias || '',
     useLocking: true,
-    // iframeLoginUI: sdkConfigAuth.iframeLoginUI
   };
   if( 'silentTimeout' in sdkConfigAuth ) {
     authConfig.silentTimeout = sdkConfigAuth.silentTimeout;
@@ -121,8 +120,8 @@ const initOAuth = (bInit) => {
     authConfig.userIdentifier = sdkConfigAuth.mashupUserIdentifier;
     authConfig.password = sdkConfigAuth.mashupPassword;
   }
-  if( sdkConfigAuth.iframeLoginUI ){
-    authConfig.iframeLoginUI = true;
+  if( 'iframeLoginUI' in sdkConfigAuth ){
+    authConfig.iframeLoginUI = sdkConfigAuth.iframeLoginUI;
   }
 
   // Check if sessionStorage exists (and if so if for same authorize endpoint).  Otherwise, assume

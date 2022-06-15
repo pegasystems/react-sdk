@@ -8,10 +8,11 @@ import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles
 import StoreContext from "../../../bridge/Context/StoreContext";
 import createPConnectComponent from "../../../bridge/react_pconnect";
 
-import { gbLoggedIn, loginIfNecessary } from '../../../helpers/authManager';
+import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '../../../helpers/authManager';
 
 import EmbeddedSwatch from '../EmbeddedSwatch';
 import { compareSdkPCoreVersions } from '../../../helpers/versionHelpers';
+import { SdkConfigAccess } from '../../../helpers/config_access';
 
 
 // declare var gbLoggedIn: boolean;
@@ -506,6 +507,25 @@ export default function EmbeddedTopLevel() {
   }
 
   document.addEventListener("SdkConfigAccessReady", () => {
+    const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
+
+    if( !sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === "Basic" ) {
+      // Service package to use custom auth with Basic
+      const sB64 = window.btoa(`${sdkConfigAuth.mashupUserIdentifier}:${window.atob(sdkConfigAuth.mashupPassword)}`);
+      sdkSetAuthHeader( `Basic ${sB64}`);
+    }
+
+    if( !sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === "BasicTO" ) {
+      const now = new Date();
+      const expTime = new Date( now.getTime() + 5*60*1000);
+      let sISOTime = `${expTime.toISOString().split(".")[0]}Z`;
+      const regex = /[-:]/g;
+      sISOTime = sISOTime.replace(regex,"");
+      // Service package to use custom auth with Basic
+      const sB64 = window.btoa(`${sdkConfigAuth.mashupUserIdentifier}:${window.atob(sdkConfigAuth.mashupPassword)}:${sISOTime}`);
+      sdkSetAuthHeader( `Basic ${sB64}`);
+    }
+
     // Login and indicate this is an embedded scenario
     loginIfNecessary("embedded", true);
 

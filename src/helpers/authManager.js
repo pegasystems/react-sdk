@@ -120,6 +120,9 @@ const initOAuth = (bInit) => {
     authConfig.userIdentifier = sdkConfigAuth.mashupUserIdentifier;
     authConfig.password = sdkConfigAuth.mashupPassword;
   }
+  if( 'iframeLoginUI' in sdkConfigAuth ){
+    authConfig.iframeLoginUI = sdkConfigAuth.iframeLoginUI.toString().toLowerCase() === 'true';
+  }
 
   // Check if sessionStorage exists (and if so if for same authorize endpoint).  Otherwise, assume
   //  sessionStorage is out of date (user just edited endpoints).  Else, logout required to clear

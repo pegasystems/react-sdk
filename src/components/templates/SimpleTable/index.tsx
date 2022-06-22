@@ -12,6 +12,7 @@ import { buildFieldsForTable } from './helpers';
 
 
 export default function SimpleTable(props) {
+  console.log('SimpleTable props', props);
   const {
     getPConnect,
     referenceList = [], // if referenceList not in configProps$, default to empy list

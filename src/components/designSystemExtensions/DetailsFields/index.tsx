@@ -1,4 +1,4 @@
-import React from "react";
+import React, {createElement} from "react";
 import PropTypes from "prop-types";
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 // import { green } from "@material-ui/core/colors";
 
 import { format } from '../../../helpers/formatters/';
-
+import createPConnectComponent from '../../../bridge/react_pconnect'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,29 +45,46 @@ export default function DetailsFields(props) {
   // const componentName = "DetailsFields";
   const { fields } = props;
   const classes = useStyles();
-
+  let viewComponent;
   const fieldComponents: Array<any> = [];
-
+  console.log('DetailsFields props', props);
+  let i = 0;
   for (const field of fields) {
     const thePConn = field.getPConnect();
     const theCompType = thePConn.getComponentName().toLowerCase();
     const { label, value } = thePConn.getConfigProps();
+    console.log('theCompType', theCompType);
     if (theCompType === 'view') {
-      const children = thePConn.getChildren();
-      for (const child of children) {
-        const theChildPConn = child.getPConnect();
-        const theChildrenOfChild = theChildPConn.getChildren();
-        for (const childrenOfChild of theChildrenOfChild) {
-          const pconChild = childrenOfChild.getPConnect();
-          const childCompType = pconChild.getComponentName().toLowerCase();
-          const childConfigProps = pconChild.getConfigProps();
-          fieldComponents.push({
-            'type': childCompType,
-            'value': childConfigProps?.value,
-            'label': childConfigProps?.label
-          });
-        }
-      }
+      thePConn.setInheritedProp("displayMode", "LABELS_LEFT");
+      thePConn.setInheritedProp("readOnly", true);
+      console.log('thePConn.getChildren(', field.getPConnect().getChildren());
+      viewComponent = thePConn.getChildren()?.map((configObject, index) =>
+      createElement(createPConnectComponent(), {...configObject, key: index.toString()})
+    );
+      // const children = thePConn.getChildren();
+      // console.log('thePConn', thePConn);
+      // console.log('children', children);
+      // if (children) {
+      //   for (const child of children) {
+      //     console.log('child', child);
+      //     const theChildPConn = child.getPConnect();
+      //     const theChildrenOfChild = theChildPConn.getChildren();
+      //     console.log('theChildrenOfChild', theChildrenOfChild);
+      //     if (theChildrenOfChild) {
+      //       for (const childrenOfChild of theChildrenOfChild) {
+      //         const pconChild = childrenOfChild.getPConnect();
+      //         const childCompType = pconChild.getComponentName().toLowerCase();
+      //         const childConfigProps = pconChild.getConfigProps();
+      //         console.log('childConfigProps?.label', childConfigProps?.label);
+      //         fieldComponents.push({
+      //           'type': childCompType,
+      //           'value': childConfigProps?.value,
+      //           'label': childConfigProps?.label
+      //         });
+      //       }
+      //     }
+      //   }
+      // }
     } else {
       fieldComponents.push({
         'type': theCompType,
@@ -78,6 +95,7 @@ export default function DetailsFields(props) {
 
   }
 
+  console.log('fieldComponents', fieldComponents);
 
   function getGridItemLabel(field: any, keyVal: string) {
     const dispValue = field.label;
@@ -123,6 +141,7 @@ export default function DetailsFields(props) {
 
   function getGridItems() {
     const gridItems: Array<any> = fieldComponents.map( (field, index) => {
+      // console.log('field', field);
       return [ getGridItemLabel(field, `${index}-label`),
         getGridItemValue(field, `${index}-value`)
      ];
@@ -135,6 +154,7 @@ export default function DetailsFields(props) {
   return (
       <Grid container spacing={1}>
         {getGridItems()}
+        {viewComponent}
       </Grid>
     );
 }

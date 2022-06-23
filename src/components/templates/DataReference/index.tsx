@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
@@ -20,8 +20,7 @@ export default function DataReference(props) {
   } = props;
   let childrenToRender = children;
   const pConn = getPConnect();
-  const dropDownDataSource = null;
-  // const [dropDownDataSource, setDropDownDataSource] = useState(null);
+  const [dropDownDataSource, setDropDownDataSource] = useState(null);
   const propsToUse = { label, showLabel, ...pConn.getInheritedProps() };
   if (propsToUse.showLabel === false) {
     propsToUse.label = '';
@@ -34,6 +33,43 @@ export default function DataReference(props) {
   let propName;
   const isDisplayModeEnabled = ['LABELS_LEFT', 'STACKED_LARGE_VAL'].includes(displayMode);
   let firstChildPConnect;
+
+  /* Only for dropdown when it has param use data api to get the data back and add it to datasource */
+  useEffect(() => {
+    if (
+      firstChildMeta?.type === "Dropdown" &&
+      rawViewMetadata.config?.parameters
+    ) {
+      const { value, key, text } = firstChildMeta.config.datasource.fields;
+      PCore.getDataApiUtils()
+        .getData(refList, {
+          dataViewParameters: parameters
+        })
+        .then((res) => {
+          if (res.data.data !== null) {
+            const ddDataSource = res.data.data
+              .map((listItem) => ({
+                key: listItem[key.split(" .", 2)[1]],
+                text: listItem[text.split(" .", 2)[1]],
+                value: listItem[value.split(" .", 2)[1]]
+              }))
+              .filter((item) => item.key);
+            // Filtering out undefined entries that will break preview
+            setDropDownDataSource(ddDataSource);
+          } else {
+            const ddDataSource: any = []
+            setDropDownDataSource(ddDataSource);
+          }
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.error(err?.stack);
+          return Promise.resolve({
+            data: { data: [] }
+          });
+        });
+    }
+  }, [firstChildMeta, rawViewMetadata, parameters]);
 
   if (firstChildMeta?.type !== 'Region') {
     firstChildPConnect = getPConnect().getChildren()[0].getPConnect;

@@ -496,7 +496,7 @@ export default function EmbeddedTopLevel() {
             </div>
           </div>
           <div className={classes.resolutionPartAccompanimentRight}>
-            <img src="../assets/img/cablechat.png" className={classes.pegaPartAccompanimentImage} />
+            <img src="assets/img/cablechat.png" className={classes.pegaPartAccompanimentImage} />
             <br />
             <button className={classes.resolutionButton}>Chat Now</button>
           </div>
@@ -545,7 +545,7 @@ export default function EmbeddedTopLevel() {
                     We need to gather a little information about you.
                 </div>
                 <div>
-                    <img src="./assets/img/cableinfo.png" className={classes.pegaPartAccompanimentImage} />
+                    <img src="assets/img/cableinfo.png" className={classes.pegaPartAccompanimentImage} />
                 </div>
 
             </div>

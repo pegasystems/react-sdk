@@ -9,7 +9,7 @@ import { SdkConfigAccess } from './config_access';
 import PegaAuth from './auth';
 
 // eslint-disable-next-line import/no-mutable-exports
-export let gbLoggedIn = sessionStorage.getItem('accessToken') !== null;
+export let gbLoggedIn = sessionStorage.getItem('rsdk_AH') !== null;
 // eslint-disable-next-line import/no-mutable-exports
 export let gbLoginInProgress = sessionStorage.getItem("rsdk_loggingIn") !== null;
 // other sessionStorage items: rsdk_appName
@@ -19,6 +19,8 @@ let authMgr = null;
 // Since this variable is loaded in a separate instance in the popup scenario, use storage to coordinate across the two
 let usePopupForRestOfSession = sessionStorage.getItem("rsdk_popup") === "1";
 let gbC11NBootstrapInProgress = false;
+// Some non Pega OAuth 2.0 Authentication in use (Basic or Custom for service package)
+let gbCustomAuth = false;
 
 /*
  * Set to use popup experience for rest of session
@@ -57,7 +59,9 @@ const isLoginExpired = () => {
  */
 const clearAuthMgr = (bFullReauth=false) => {
   // Remove any local storage for the user
-  sessionStorage.removeItem('accessToken');
+  if( !gbCustomAuth ) {
+    sessionStorage.removeItem('rsdk_AH');
+  }
   if( !bFullReauth ) {
     sessionStorage.removeItem("rsdk_CI");
   }
@@ -113,6 +117,11 @@ const initOAuth = (bInit) => {
     appAlias: sdkConfigAuth.appAlias || '',
     useLocking: true
   };
+  // If no clientId is specified assume not OAuth but custom auth
+  if( !authConfig.clientId ) {
+    gbCustomAuth = true;
+    return;
+  }
   if( 'silentTimeout' in sdkConfigAuth ) {
     authConfig.silentTimeout = sdkConfigAuth.silentTimeout;
   }
@@ -171,15 +180,19 @@ const getAuthMgr = ( bInit ) => {
   });
 };
 
+export const authGetAuthHeader = () => {
+  return sessionStorage.getItem("rsdk_AH");
+}
+
 /**
  * Initiate the process to get the Constellation bootstrap shell loaded and initialized
  * @param {Object} authConfig
  * @param {Object} tokenInfo
  * @param {Function} authTokenUpdated - callback invoked when Constellation JS Engine silently updates
  *      an expired access_token
- * @param {Function} authFullReauth - callback invoked when a full reauth is needed
+ * @param {Function} fnReauth - callback invoked when a full or custom reauth is needed
  */
- const constellationInit = (authConfig, tokenInfo, authTokenUpdated, authFullReauth) => {
+ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) => {
   const constellationBootConfig = {};
   const sdkConfigServer = SdkConfigAccess.getSdkConfigServer();
 
@@ -196,24 +209,29 @@ const getAuthMgr = ( bInit ) => {
     constellationBootConfig.appAlias = sdkConfigServer.appAlias;
   }
 
-  // Pass in auth info to Constellation
-  constellationBootConfig.authInfo = {
-    authType: "OAuth2.0",
-    tokenInfo,
-    // Set whether we want constellation to try to do a full re-Auth or not ()
-    // true doesn't seem to be working in SDK scenario so always passing false for now
-    popupReauth: false /* !authIsEmbedded() */,
-    client_id: authConfig.clientId,
-    authentication_service: authConfig.authService,
-    redirect_uri: authConfig.redirectUri,
-    endPoints: {
-        authorize: authConfig.authorizeUri,
-        token: authConfig.tokenUri,
-        revoke: authConfig.revokeUri
-    },
-    // TODO: setup callback so we can update own storage
-    onTokenRetrieval: authTokenUpdated
+  if( tokenInfo ) {
+    // Pass in auth info to Constellation
+    constellationBootConfig.authInfo = {
+      authType: "OAuth2.0",
+      tokenInfo,
+      // Set whether we want constellation to try to do a full re-Auth or not ()
+      // true doesn't seem to be working in SDK scenario so always passing false for now
+      popupReauth: false /* !authIsEmbedded() */,
+      client_id: authConfig.clientId,
+      authentication_service: authConfig.authService,
+      redirect_uri: authConfig.redirectUri,
+      endPoints: {
+          authorize: authConfig.authorizeUri,
+          token: authConfig.tokenUri,
+          revoke: authConfig.revokeUri
+      },
+      // TODO: setup callback so we can update own storage
+      onTokenRetrieval: authTokenUpdated
+    }
+  } else {
+    constellationBootConfig.authorizationHeader = authGetAuthHeader();
   }
+
 
   // Turn off dynamic load components (should be able to do it here instead of after load?)
   constellationBootConfig.dynamicLoadComponents = false;
@@ -241,8 +259,13 @@ const getAuthMgr = ( bInit ) => {
       gbC11NBootstrapInProgress = false;
 
       // Setup listener for the reauth event
-      // eslint-disable-next-line no-undef
-      PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_FULL_REAUTH, authFullReauth, "authFullReauth");
+      if( tokenInfo ) {
+        // eslint-disable-next-line no-undef
+        PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_FULL_REAUTH, fnReauth, "authFullReauth");
+      } else {
+        // eslint-disable-next-line no-undef
+        PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_REAUTH, fnReauth, "doReauth");
+      }
 
       const event = new CustomEvent('ConstellationReady', {});
       document.dispatchEvent(event);
@@ -252,15 +275,14 @@ const getAuthMgr = ( bInit ) => {
       // eslint-disable-next-line no-console
       console.error(`Constellation JS Engine bootstrap failed. ${e}`);
       gbC11NBootstrapInProgress = false;
-      authFullReauth();
+      fnReauth();
     })
   });
   /* Ends here */
 };
 
-
 export const updateLoginStatus = () => {
-  const sAuthHdr = sessionStorage.getItem('accessToken');
+  const sAuthHdr = authGetAuthHeader();
   gbLoggedIn = sAuthHdr && sAuthHdr.length > 0;
   const elBtnLogin = document.getElementById('btnLogin');
   if (elBtnLogin) {
@@ -290,13 +312,11 @@ const fireTokenAvailable = (token, bLoadC11N=true) => {
     // This is used on page reload to load the token from sessionStorage and carry on
     token = getCurrentTokens();
     if( !token ) {
-      token = {access_token: sessionStorage.getItem('accessToken')};
+      return;
     }
   }
 
-  // accessToken being redundantly set in c11nboot as part of handling SdkLoggedIn event
-  // TODO: Prehaps remove from
-  sessionStorage.setItem('accessToken', token.access_token);
+  sessionStorage.setItem('rsdk_AH', `${token.token_type} ${token.access_token}`);
   updateLoginStatus();
 
   // gbLoggedIn is getting updated in updateLoginStatus
@@ -358,6 +378,8 @@ export const login = (bFullReauth=false) => {
     console.error(`Trying login before SdkConfigAccessReady!`);
     return;
   }
+
+  if( gbCustomAuth ) return;
 
   gbLoginInProgress = true;
   // Needed so a redirect to login screen and back will know we are still in process of logging in
@@ -424,6 +446,15 @@ export const loginIfNecessary = (appName, isEmbedded=false, deferLogin=false) =>
     sessionStorage.setItem("rsdk_appName", appName);
   }
   setIsEmbedded(isEmbedded);
+  // If custom auth no need to do any OAuth logic
+  if( gbCustomAuth ) {
+    if( !window.PCore ) {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      constellationInit( null, null, null, authCustomReauth );
+    }
+    return;
+  }
+
   if( window.location.href.indexOf("?code") !== -1 ) {
     // initialize authMgr
     initOAuth(false);
@@ -458,11 +489,6 @@ export const authTokenUpdated = (tokenInfo ) => {
   sessionStorage.setItem("rsdk_TI", JSON.stringify(tokenInfo));
 };
 
-export const authGetAccessToken = () => {
-  const tokens = getCurrentTokens();
-  return tokens.access_token;
-};
-
 export const logout = () => {
   return new Promise((resolve) => {
     const fnClearAndResolve = () => {
@@ -483,6 +509,10 @@ export const logout = () => {
       }
       resolve();
     };
+    if( gbCustomAuth ) {
+      fnClearAndResolve();
+      return;
+    }
     const tokenInfo = getCurrentTokens();
     if( tokenInfo && tokenInfo.access_token ) {
         if( window.PCore ) {
@@ -530,4 +560,24 @@ export const authFullReauth = () => {
     const event = new CustomEvent('SdkFullReauth', { detail: authUpdateTokens });
     document.dispatchEvent(event);
   }
+};
+
+// Set the custom authorization header for the SDK (and Constellation JS Engine) to
+// utilize for every DX API request
+export const sdkSetAuthHeader = (authHeader) => {
+  // set this within session storage so it survives a browser reload
+  if( authHeader ) {
+    sessionStorage.setItem("rsdk_AH", authHeader);
+  } else {
+    sessionStorage.removeItem("rsdk_AH");
+  }
+  gbCustomAuth = true;
+}
+
+// Initiate a custom re-authorization.
+export const authCustomReauth = () => {
+  // Fire the SdkCustomReauth event to indicate a new authHeader needed (PCore.getAuthUtils.setAuthHeader? method
+  //  should be used to communicate the new token to Constellation JS Engine.
+  const event = new CustomEvent('SdkCustomReauth', { detail: sdkSetAuthHeader });
+  document.dispatchEvent(event);
 };

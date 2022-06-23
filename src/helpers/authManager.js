@@ -568,6 +568,9 @@ export const sdkSetAuthHeader = (authHeader) => {
   // set this within session storage so it survives a browser reload
   if( authHeader ) {
     sessionStorage.setItem("rsdk_AH", authHeader);
+    if( window.PCore ) {
+      window.PCore.getAuthUtils().setAuthorizationHeader(authHeader);
+    }
   } else {
     sessionStorage.removeItem("rsdk_AH");
   }

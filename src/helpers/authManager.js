@@ -568,7 +568,8 @@ export const sdkSetAuthHeader = (authHeader) => {
   // set this within session storage so it survives a browser reload
   if( authHeader ) {
     sessionStorage.setItem("rsdk_AH", authHeader);
-    if( window.PCore ) {
+    // setAuthorizationHeader method not available til 8.8 so do safety check
+    if( window.PCore?.getAuthUtils().setAuthorizationHeader ) {
       window.PCore.getAuthUtils().setAuthorizationHeader(authHeader);
     }
   } else {

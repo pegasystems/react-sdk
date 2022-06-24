@@ -53,15 +53,21 @@ module.exports = (env, argv) => {
           to: './'
         },
         {
-          from: './constellation/bootstrap-shell.*',
-          to: './'
-        },
-        {
-          from: './constellation/lib_asset.json',
+          from: './node_modules/@pega/constellationjs/dist/bootstrap-shell.js',
           to: './constellation'
         },
         {
-          from: './constellation/constellation-core.*.*',
+          from: './node_modules/@pega/constellationjs/dist/bootstrap-shell.*.*',
+          to() {
+            return Promise.resolve("constellation/[name].[ext]");
+          }
+        },
+        {
+          from: './node_modules/@pega/constellationjs/dist/lib_asset.json',
+          to: './constellation'
+        },
+        {
+          from: './node_modules/@pega/constellationjs/dist/constellation-core.*.*',
           to() {
             return Promise.resolve('constellation/prerequisite/[name].[ext]');
           }

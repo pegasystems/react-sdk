@@ -1,6 +1,6 @@
 // Helper singleton class to assist with loading and accessing
 //  the SDK Config JSON
-import {authGetAccessToken} from './authManager';
+import {authGetAuthHeader} from './authManager';
 class ConfigAccess {
 
   static sdkConfig = {};
@@ -111,7 +111,7 @@ class ConfigAccess {
         method: 'GET',
         headers: {
           'Content-Type' : 'application/json',
-          'Authorization' : `Bearer ${authGetAccessToken()}`
+          'Authorization' : authGetAuthHeader()
         },
       })
       .then( response => response.json())

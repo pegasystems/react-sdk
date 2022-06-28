@@ -401,8 +401,12 @@ export const login = (bFullReauth=false) => {
       // Don't have token til after the redirect
       return Promise.resolve(undefined);
     } else {
+      // Construct path to redirect uri
+      let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
+      const nLastPathSep = sRedirectUri.lastIndexOf("/");
+      sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
       // Set redirectUri to static auth.html
-      updateRedirectUri(aMgr, `${window.location.origin}/auth.html`)
+      updateRedirectUri(aMgr, sRedirectUri);
       return new Promise( (resolve, reject) => {
         aMgr.login().then(token => {
             processTokenOnLogin(token);

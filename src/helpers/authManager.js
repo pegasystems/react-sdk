@@ -105,13 +105,18 @@ const initOAuth = (bInit) => {
     sdkConfigAuth.authService = "pega";
   }
 
+  // Construct path to redirect uri
+  let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
+  const nLastPathSep = sRedirectUri.lastIndexOf("/");
+  sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
+
   const authConfig = {
     clientId: bIsEmbedded ? sdkConfigAuth.mashupClientId : sdkConfigAuth.portalClientId,
     authorizeUri: sdkConfigAuth.authorize,
     tokenUri: sdkConfigAuth.token,
     revokeUri: sdkConfigAuth.revoke,
     redirectUri: bIsEmbedded || usePopupForRestOfSession
-        ? `${window.location.origin}/auth.html`
+        ? sRedirectUri
         : `${window.location.origin}${window.location.pathname}`,
     authService: sdkConfigAuth.authService,
     appAlias: sdkConfigAuth.appAlias || '',

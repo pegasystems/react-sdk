@@ -1,3 +1,10 @@
+## Release SDK-R.87.3
+* Added support for Infinity 8.7.2
+* Added use of npm dependency to get necessary ConstellationJS Engine files (see package.json @pega/constellationjs dependency)
+* Added support for DataReference component
+* Added playwright smoke tests that can be run against the MediaCo sample app
+* Improvements to auth code and to make it easier to deploy the SDK on a different web server (ex: Tomcat)
+
 ## Release SDK-R.87.2
 * This release provides support for Infinity 8.7.0 **and** 8.7.1
 * Added Attachment form component

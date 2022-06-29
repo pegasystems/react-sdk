@@ -963,7 +963,7 @@ export default function ListView(props) {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => {
                 return (
-                  <TableRow key={row.pxRefObjectInsName} onClick={() => { _rowClick(row)}}>
+                  <TableRow key={row.pyGUID } onClick={() => { _rowClick(row)}}>
                     {selectionMode === SELECTION_MODE.SINGLE && <TableCell>
                       <Radio onChange={handleChange} value={row.pyGUID} name="radio-buttons" inputProps={{ 'aria-label': 'A' }} checked={selectedValue === row.pyGUID}></Radio>
                     </TableCell>}

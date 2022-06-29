@@ -105,13 +105,18 @@ const initOAuth = (bInit) => {
     sdkConfigAuth.authService = "pega";
   }
 
+  // Construct path to redirect uri
+  let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
+  const nLastPathSep = sRedirectUri.lastIndexOf("/");
+  sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
+
   const authConfig = {
     clientId: bIsEmbedded ? sdkConfigAuth.mashupClientId : sdkConfigAuth.portalClientId,
     authorizeUri: sdkConfigAuth.authorize,
     tokenUri: sdkConfigAuth.token,
     revokeUri: sdkConfigAuth.revoke,
     redirectUri: bIsEmbedded || usePopupForRestOfSession
-        ? `${window.location.origin}/auth.html`
+        ? sRedirectUri
         : `${window.location.origin}${window.location.pathname}`,
     authService: sdkConfigAuth.authService,
     appAlias: sdkConfigAuth.appAlias || '',
@@ -200,8 +205,11 @@ export const authGetAuthHeader = () => {
   constellationBootConfig.customRendering = true;
   constellationBootConfig.restServerUrl = sdkConfigServer.infinityRestServerUrl;
   // NOTE: Needs a trailing slash! So add one if not provided
-  constellationBootConfig.staticContentServerUrl = `${sdkConfigServer.sdkContentServerUrl}/constellation/`;
-  if (constellationBootConfig.staticContentServerUrl.slice(-1) !== '/') {
+  if( !sdkConfigServer.sdkContentServerUrl.endsWith('/') ) {
+    sdkConfigServer.sdkContentServerUrl = `${sdkConfigServer.sdkContentServerUrl}/`;
+  }
+  constellationBootConfig.staticContentServerUrl = `${sdkConfigServer.sdkContentServerUrl}constellation/`;
+  if( !constellationBootConfig.staticContentServerUrl.endsWith('/') ) {
     constellationBootConfig.staticContentServerUrl = `${constellationBootConfig.staticContentServerUrl}/`;
   }
   // If appAlias specified, use it
@@ -396,8 +404,12 @@ export const login = (bFullReauth=false) => {
       // Don't have token til after the redirect
       return Promise.resolve(undefined);
     } else {
+      // Construct path to redirect uri
+      let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
+      const nLastPathSep = sRedirectUri.lastIndexOf("/");
+      sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
       // Set redirectUri to static auth.html
-      updateRedirectUri(aMgr, `${window.location.origin}/auth.html`)
+      updateRedirectUri(aMgr, sRedirectUri);
       return new Promise( (resolve, reject) => {
         aMgr.login().then(token => {
             processTokenOnLogin(token);

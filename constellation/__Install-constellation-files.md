@@ -2,23 +2,22 @@
 
 The **React SDK** provides Pega customers with a bridge from the Pega **Constellation JavaScript Engine** (part of the Pega Infinity&trade; product) to the React bridge and components in this repository.
 
-However, the code is this repository does **not** include the necessary Constellation JS Engine code itself. That code is provided to authorized and licensed Pega clients via the Pega Marketplace or a Pega representative.
+However, the code is this repository does **not** include the necessary Constellation JS Engine code itself. That code is obtained via an npm dependency in this project's **package.json** file.
 
-The Constellation files that are obtained will include the following which need to be **copied into the constellation directory**:
+In your project's **package.json** dependencies, specify the package name **and**
+the **tag** of the version of the ConstellationJS files that your project needs.
 
-* **bootstrap-shell.js** (minified, compressed version) 
-* **<span style="display: inline">bootstrap-shell.js.br</span>** (Brotli compressed version) 
-* **bootstrap-shell.js.gz** (GZip compressed version)
-
+For example:
 <br>
 
-* **lib_asset.json** (indicates which constellation-core file to use; the hash in the specified constellation-core file must match the hash of the *constellation-core.*.* files)
+* **"@pega/constellationjs": "SDK-8.6.3"** <br>
+will get the ConstellationJS files associated with Pega Infinity version
+8.6.3
 
+* **"@pega/constellationjs": "SDK-8.6.4"** <br>
+will get the ConstellationJS files associated with Pega Infinity version
+8.6.4
 <br>
 
-* **constellation-core.xxxx.js** (compressed, minified version where xxxx is a hash)
-* **<span style="display: inline">constellation-core.xxxx.js.br</span>** (Brotli compressed version) 
-* **constellation-core.xxxx.js.gz** (Gzip compressed version) 
-* **constellation-core.xxxx.LICENSE-txt** (reference to license for these files)
-
-The webpack build process will move these files into the correct destination directory.
+The webpack build process will move the necessary files from the dependency's **node_modules/@pega/constellationjs**
+directory into the **dist/constellation** and **dist/constellaton/prequisite** directories.

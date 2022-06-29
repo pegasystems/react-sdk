@@ -205,8 +205,11 @@ export const authGetAuthHeader = () => {
   constellationBootConfig.customRendering = true;
   constellationBootConfig.restServerUrl = sdkConfigServer.infinityRestServerUrl;
   // NOTE: Needs a trailing slash! So add one if not provided
-  constellationBootConfig.staticContentServerUrl = `${sdkConfigServer.sdkContentServerUrl}/constellation/`;
-  if (constellationBootConfig.staticContentServerUrl.slice(-1) !== '/') {
+  if( !sdkConfigServer.sdkContentServerUrl.endsWith('/') ) {
+    sdkConfigServer.sdkContentServerUrl = `${sdkConfigServer.sdkContentServerUrl}/`;
+  }
+  constellationBootConfig.staticContentServerUrl = `${sdkConfigServer.sdkContentServerUrl}constellation/`;
+  if( !constellationBootConfig.staticContentServerUrl.endsWith('/') ) {
     constellationBootConfig.staticContentServerUrl = `${constellationBootConfig.staticContentServerUrl}/`;
   }
   // If appAlias specified, use it

@@ -26,7 +26,7 @@ const SUPPORTED_TYPES_IN_PROMOTED_FILTERS = [
 ];
 
 function Filters({ filters, transientItemID, localeReference }) {
-  return filters.map((filter) => {
+  return filters.map((filter, index) => {
     const filterClone = { ...filter };
     // convert any field which is not supported to TextInput and delete the placeholder as it may contain placeholder specific to original type.
     if (!SUPPORTED_TYPES_IN_PROMOTED_FILTERS.includes(filterClone.type)) {
@@ -45,7 +45,8 @@ function Filters({ filters, transientItemID, localeReference }) {
       }
     });
 
-    return createElement(createPConnectComponent(), c11nEnv);
+    // eslint-disable-next-line react/no-array-index-key
+    return <React.Fragment key={index}>{createElement(createPConnectComponent(), c11nEnv)}</React.Fragment>;
   });
 }
 

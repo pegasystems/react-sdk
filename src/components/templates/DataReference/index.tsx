@@ -1,9 +1,11 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import SingleReferenceReadonly from '../SingleReferenceReadonly';
 
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
 declare const PCore: any;
 export default function DataReference(props) {
+  console.log('props', props);
   const {
     children,
     getPConnect,
@@ -14,7 +16,7 @@ export default function DataReference(props) {
     referenceType,
     selectionMode,
     displayAs,
-    // ruleClass,
+    ruleClass,
     parameters,
     hideLabel
   } = props;
@@ -26,6 +28,7 @@ export default function DataReference(props) {
     propsToUse.label = '';
   }
   const rawViewMetadata = pConn.getRawMetadata();
+  console.log('rawViewMetadata', rawViewMetadata);
   const viewName = rawViewMetadata.name;
   const [firstChildMeta] = rawViewMetadata.children;
   const refList = rawViewMetadata.config.referenceList;
@@ -167,28 +170,26 @@ export default function DataReference(props) {
       pConn.clearErrorMessages({
         property: propName
       });
-      if (
-        !canBeChangedInReviewMode &&
-        isDisplayModeEnabled &&
-        selectionMode === SELECTION_MODE.SINGLE
-      ) {
-        return null;
-        // return (
-        //   <SingleReferenceReadonly
-        //     config={config}
-        //     getPConnect={firstChildPConnect}
-        //     label={propsToUse.label}
-        //     type={type}
-        //     displayAs={displayAs}
-        //     displayMode={displayMode}
-        //     ruleClass={ruleClass}
-        //     referenceType={referenceType}
-        //     hideLabel={hideLabel}
-        //     dataRelationshipContext={
-        //       rawViewMetadata.config.contextClass && rawViewMetadata.config.name ? rawViewMetadata.config.name : null
-        //     }
-        //   />
-        // );
+      if (!canBeChangedInReviewMode && isDisplayModeEnabled && selectionMode === SELECTION_MODE.SINGLE) {
+        console.log('In SingleRef');
+        // return null;
+        return (
+          // <SingleReferenceReadonly getPConnect={firstChildPConnect} label={propsToUse.label}></SingleReferenceReadonly>
+          <SingleReferenceReadonly
+            config={config}
+            getPConnect={firstChildPConnect}
+            label={propsToUse.label}
+            type={type}
+            displayAs={displayAs}
+            displayMode={displayMode}
+            ruleClass={ruleClass}
+            referenceType={referenceType}
+            hideLabel={hideLabel}
+            dataRelationshipContext={
+              rawViewMetadata.config.contextClass && rawViewMetadata.config.name ? rawViewMetadata.config.name : null
+            }
+          />
+        );
       }
 
       if (isDisplayModeEnabled && selectionMode === SELECTION_MODE.MULTI) {
@@ -272,7 +273,7 @@ DataReference.defaultProps = {
   referenceType: '',
   selectionMode: '',
   displayAs: '',
-  // ruleClass: '',
+  ruleClass: '',
   parameters: undefined,
   hideLabel: false
 };
@@ -287,7 +288,7 @@ DataReference.propTypes = {
   referenceType: PropTypes.string,
   selectionMode: PropTypes.string,
   displayAs: PropTypes.string,
-  // ruleClass: PropTypes.string,
+  ruleClass: PropTypes.string,
   parameters: PropTypes.arrayOf(PropTypes.string), // need to fix
   hideLabel: PropTypes.bool
 };

@@ -157,6 +157,8 @@ class PegaAuth {
                   // Add Iframe to DOM to have it load
                   document.getElementsByTagName('body')[0].appendChild(elIframe);
                   elIframe.addEventListener("load", myWinOnLoad, true);
+                  // Disallow iframe content attempts to navigate main window
+                  elIframe.setAttribute("sandbox","allow-scripts allow-forms allow-same-origin");
                   elIframe.setAttribute('src', url);
 
                   const svgCloseBtn =

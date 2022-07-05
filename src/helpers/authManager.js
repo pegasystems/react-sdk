@@ -271,8 +271,13 @@ export const authGetAuthHeader = () => {
         // eslint-disable-next-line no-undef
         PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_FULL_REAUTH, fnReauth, "authFullReauth");
       } else {
+        // customReauth event introduced with 8.8
         // eslint-disable-next-line no-undef
-        PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_REAUTH, fnReauth, "doReauth");
+        const sEvent = PCore.getConstants().PUB_SUB_EVENTS.EVENT_CUSTOM_REAUTH;
+        if( sEvent ) {
+          // eslint-disable-next-line no-undef
+          PCore.getPubSubUtils().subscribe(sEvent, fnReauth, "doReauth");
+        }
       }
 
       const event = new CustomEvent('ConstellationReady', {});

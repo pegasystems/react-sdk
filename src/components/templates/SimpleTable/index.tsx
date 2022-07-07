@@ -187,9 +187,9 @@ export default function SimpleTable(props) {
 
   return (
     <React.Fragment>
-      <Typography variant='body1' style={{whiteSpace: 'pre-line'}}>
+      {!requestedReadOnlyMode && <Typography variant='body1' style={{whiteSpace: 'pre-line'}}>
         {tempPreamble}
-      </Typography>
+      </Typography>}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

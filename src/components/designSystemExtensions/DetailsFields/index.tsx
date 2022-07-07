@@ -1,12 +1,11 @@
-import React from "react";
+import React, {createElement} from "react";
 import PropTypes from "prop-types";
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 // import { green } from "@material-ui/core/colors";
-
+import createPConnectComponent from '../../../bridge/react_pconnect';
 import { format } from '../../../helpers/formatters/';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,39 +44,24 @@ export default function DetailsFields(props) {
   // const componentName = "DetailsFields";
   const { fields } = props;
   const classes = useStyles();
-
   const fieldComponents: Array<any> = [];
 
-  for (const field of fields) {
+  fields?.forEach((field, index) => {
     const thePConn = field.getPConnect();
     const theCompType = thePConn.getComponentName().toLowerCase();
     const { label, value } = thePConn.getConfigProps();
-    if (theCompType === 'view') {
-      const children = thePConn.getChildren();
-      for (const child of children) {
-        const theChildPConn = child.getPConnect();
-        const theChildrenOfChild = theChildPConn.getChildren();
-        for (const childrenOfChild of theChildrenOfChild) {
-          const pconChild = childrenOfChild.getPConnect();
-          const childCompType = pconChild.getComponentName().toLowerCase();
-          const childConfigProps = pconChild.getConfigProps();
-          fieldComponents.push({
-            'type': childCompType,
-            'value': childConfigProps?.value,
-            'label': childConfigProps?.label
-          });
-        }
-      }
+    if (theCompType === 'reference') {
+      const configObj = thePConn?.getReferencedView();
+      configObj.config.readOnly = true;
+      configObj.config.displayMode = "LABELS_LEFT";
+      const propToUse = { ...thePConn.getInheritedProps()};
+      configObj.config.label = propToUse?.label;
+      // eslint-disable-next-line react/no-array-index-key
+      fieldComponents.push({'type': theCompType, 'value': <React.Fragment key={index}>{createElement(createPConnectComponent(), thePConn.getReferencedViewPConnect())}</React.Fragment>});
     } else {
-      fieldComponents.push({
-        'type': theCompType,
-        'value': value,
-        'label': label
-      });
+      fieldComponents.push({'type': theCompType, 'value': value, 'label': label});
     }
-
-  }
-
+  });
 
   function getGridItemLabel(field: any, keyVal: string) {
     const dispValue = field.label;
@@ -123,19 +107,25 @@ export default function DetailsFields(props) {
 
   function getGridItems() {
     const gridItems: Array<any> = fieldComponents.map( (field, index) => {
-      return [ getGridItemLabel(field, `${index}-label`),
-        getGridItemValue(field, `${index}-value`)
-     ];
-    })
-
+      if (field?.type === "reference") {
+        return field?.value;
+      } else {
+        return (
+          // eslint-disable-next-line react/no-array-index-key
+          <Grid container spacing={1} style={{padding: "4px 0px"}} key={index}>
+            {getGridItemLabel(field, `${index}-label`)}
+            {getGridItemValue(field, `${index}-value`)}
+          </Grid>
+        );
+      }
+    });
     return gridItems;
   }
 
-
   return (
-      <Grid container spacing={1}>
+      <React.Fragment>
         {getGridItems()}
-      </Grid>
+      </React.Fragment>
     );
 }
 

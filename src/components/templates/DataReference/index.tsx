@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import SingleReferenceReadonly from '../SingleReferenceReadonly';
 
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
 declare const PCore: any;
@@ -14,7 +15,7 @@ export default function DataReference(props) {
     referenceType,
     selectionMode,
     displayAs,
-    // ruleClass,
+    ruleClass,
     parameters,
     hideLabel
   } = props;
@@ -167,28 +168,23 @@ export default function DataReference(props) {
       pConn.clearErrorMessages({
         property: propName
       });
-      if (
-        !canBeChangedInReviewMode &&
-        isDisplayModeEnabled &&
-        selectionMode === SELECTION_MODE.SINGLE
-      ) {
-        return null;
-        // return (
-        //   <SingleReferenceReadonly
-        //     config={config}
-        //     getPConnect={firstChildPConnect}
-        //     label={propsToUse.label}
-        //     type={type}
-        //     displayAs={displayAs}
-        //     displayMode={displayMode}
-        //     ruleClass={ruleClass}
-        //     referenceType={referenceType}
-        //     hideLabel={hideLabel}
-        //     dataRelationshipContext={
-        //       rawViewMetadata.config.contextClass && rawViewMetadata.config.name ? rawViewMetadata.config.name : null
-        //     }
-        //   />
-        // );
+      if (!canBeChangedInReviewMode && isDisplayModeEnabled && selectionMode === SELECTION_MODE.SINGLE) {
+        return (
+          <SingleReferenceReadonly
+            config={config}
+            getPConnect={firstChildPConnect}
+            label={propsToUse.label}
+            type={type}
+            displayAs={displayAs}
+            displayMode={displayMode}
+            ruleClass={ruleClass}
+            referenceType={referenceType}
+            hideLabel={hideLabel}
+            dataRelationshipContext={
+              rawViewMetadata.config.contextClass && rawViewMetadata.config.name ? rawViewMetadata.config.name : null
+            }
+          />
+        );
       }
 
       if (isDisplayModeEnabled && selectionMode === SELECTION_MODE.MULTI) {
@@ -272,7 +268,7 @@ DataReference.defaultProps = {
   referenceType: '',
   selectionMode: '',
   displayAs: '',
-  // ruleClass: '',
+  ruleClass: '',
   parameters: undefined,
   hideLabel: false
 };
@@ -287,7 +283,7 @@ DataReference.propTypes = {
   referenceType: PropTypes.string,
   selectionMode: PropTypes.string,
   displayAs: PropTypes.string,
-  // ruleClass: PropTypes.string,
+  ruleClass: PropTypes.string,
   parameters: PropTypes.arrayOf(PropTypes.string), // need to fix
   hideLabel: PropTypes.bool
 };

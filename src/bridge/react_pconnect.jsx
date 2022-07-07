@@ -49,6 +49,8 @@ import ViewContainer from '../components/ViewContainer';
 import ModalViewContainer from '../components/ModalViewContainer';
 import SimpleTableSelect from '../components/templates/SimpleTableSelect';
 import PromotedFilters from '../components/templates/PromotedFilters';
+import DataReference from '../components/templates/DataReference';
+import SemanticLink from '../components/forms/SemanticLink';
 
 const connectRedux = (component, c11nEnv) => {
 
@@ -270,6 +272,10 @@ const getComponent = (c11nEnv, declarative) => {
         component = SimpleTableSelect;
         break;
 
+      case 'DataReference':
+        component = DataReference;
+        break;
+
       case 'PromotedFilters':
         component = PromotedFilters;
         break;
@@ -309,6 +315,10 @@ const getComponent = (c11nEnv, declarative) => {
 
       case "ViewContainer":
         component = ViewContainer;
+        break;
+
+      case "SemanticLink":
+        component = SemanticLink;
         break;
 
       default:

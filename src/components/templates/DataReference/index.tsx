@@ -5,7 +5,6 @@ import SingleReferenceReadonly from '../SingleReferenceReadonly';
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
 declare const PCore: any;
 export default function DataReference(props) {
-  console.log('props', props);
   const {
     children,
     getPConnect,
@@ -28,7 +27,6 @@ export default function DataReference(props) {
     propsToUse.label = '';
   }
   const rawViewMetadata = pConn.getRawMetadata();
-  console.log('rawViewMetadata', rawViewMetadata);
   const viewName = rawViewMetadata.name;
   const [firstChildMeta] = rawViewMetadata.children;
   const refList = rawViewMetadata.config.referenceList;
@@ -171,10 +169,7 @@ export default function DataReference(props) {
         property: propName
       });
       if (!canBeChangedInReviewMode && isDisplayModeEnabled && selectionMode === SELECTION_MODE.SINGLE) {
-        console.log('In SingleRef');
-        // return null;
         return (
-          // <SingleReferenceReadonly getPConnect={firstChildPConnect} label={propsToUse.label}></SingleReferenceReadonly>
           <SingleReferenceReadonly
             config={config}
             getPConnect={firstChildPConnect}

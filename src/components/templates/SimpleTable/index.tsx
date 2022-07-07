@@ -190,7 +190,7 @@ export default function SimpleTable(props) {
       {!requestedReadOnlyMode && <Typography variant='body1' style={{whiteSpace: 'pre-line'}}>
         {tempPreamble}
       </Typography>}
-      <TableContainer component={Paper} style={{margin: '4px 15px', width: 'auto'}}>
+      <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>

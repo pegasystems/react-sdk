@@ -45,13 +45,14 @@ export default function SemanticLink(props) {
 
 
   if (displayMode === "LABELS_LEFT" || (displayMode === null && label !== undefined)) {
+    const value = text ||  "---";
     return (
       <Grid container spacing={1} style={{padding: "4px 0px"}}>
         <Grid item xs={6}>
           <Typography variant="body2" component="span" className={`${classes.fieldLabel} ${classes.fieldMargin}`}>{label}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography variant="body2" component="span" className={classes.fieldValue}>{text ? text : "---"}</Typography>
+          <Typography variant="body2" component="span" className={classes.fieldValue}>{value}</Typography>
         </Grid>
       </Grid>
     );

@@ -46,7 +46,7 @@ export default function DetailsFields(props) {
   const classes = useStyles();
   const fieldComponents: Array<any> = [];
 
-  for (const field of fields) {
+  fields?.forEach((field, index) => {
     const thePConn = field.getPConnect();
     const theCompType = thePConn.getComponentName().toLowerCase();
     const { label, value } = thePConn.getConfigProps();
@@ -56,11 +56,12 @@ export default function DetailsFields(props) {
       configObj.config.displayMode = "LABELS_LEFT";
       const propToUse = { ...thePConn.getInheritedProps()};
       configObj.config.label = propToUse?.label;
-      fieldComponents.push({'type': theCompType, 'value': createElement(createPConnectComponent(), thePConn.getReferencedViewPConnect())});
+      // eslint-disable-next-line react/no-array-index-key
+      fieldComponents.push({'type': theCompType, 'value': <React.Fragment key={index}>{createElement(createPConnectComponent(), thePConn.getReferencedViewPConnect())}</React.Fragment>});
     } else {
       fieldComponents.push({'type': theCompType, 'value': value, 'label': label});
     }
-  }
+  });
 
   function getGridItemLabel(field: any, keyVal: string) {
     const dispValue = field.label;
@@ -110,7 +111,8 @@ export default function DetailsFields(props) {
         return field?.value;
       } else {
         return (
-          <Grid container spacing={1} style={{padding: "4px 0px"}}>
+          // eslint-disable-next-line react/no-array-index-key
+          <Grid container spacing={1} style={{padding: "4px 0px"}} key={index}>
             {getGridItemLabel(field, `${index}-label`)}
             {getGridItemValue(field, `${index}-value`)}
           </Grid>

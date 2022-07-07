@@ -4,6 +4,8 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
+/* although this is called the SemanticLink component, we are not yet displaying as a
+SemanticLink in SDK and only showing the value as a read only text field. */
 
 const useStyles = makeStyles((theme) => ({
   root: {

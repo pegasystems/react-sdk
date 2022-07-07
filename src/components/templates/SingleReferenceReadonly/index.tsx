@@ -13,7 +13,6 @@ export default function SingleReferenceReadonly(props) {
     dataRelationshipContext,
     config
   } = props;
-  console.log('props SingleReferenceReadonly', props);
   const editableComponents = ["AutoComplete", "SimpleTableSelect", "Dropdown"];
 
   if (editableComponents.includes(type)) {

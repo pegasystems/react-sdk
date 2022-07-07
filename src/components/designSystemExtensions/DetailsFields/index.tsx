@@ -4,9 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 // import { green } from "@material-ui/core/colors";
-
+import createPConnectComponent from '../../../bridge/react_pconnect';
 import { format } from '../../../helpers/formatters/';
-import createPConnectComponent from '../../../bridge/react_pconnect'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,57 +44,23 @@ export default function DetailsFields(props) {
   // const componentName = "DetailsFields";
   const { fields } = props;
   const classes = useStyles();
-  let viewComponent;
   const fieldComponents: Array<any> = [];
-  console.log('DetailsFields props', props);
-  let i = 0;
+
   for (const field of fields) {
     const thePConn = field.getPConnect();
     const theCompType = thePConn.getComponentName().toLowerCase();
     const { label, value } = thePConn.getConfigProps();
-    console.log('theCompType', theCompType);
-    if (theCompType === 'view') {
-      thePConn.setInheritedProp("displayMode", "LABELS_LEFT");
-      thePConn.setInheritedProp("readOnly", true);
-      console.log('thePConn.getChildren(', field.getPConnect().getChildren());
-      viewComponent = thePConn.getChildren()?.map((configObject, index) =>
-      createElement(createPConnectComponent(), {...configObject, key: index.toString()})
-    );
-      // const children = thePConn.getChildren();
-      // console.log('thePConn', thePConn);
-      // console.log('children', children);
-      // if (children) {
-      //   for (const child of children) {
-      //     console.log('child', child);
-      //     const theChildPConn = child.getPConnect();
-      //     const theChildrenOfChild = theChildPConn.getChildren();
-      //     console.log('theChildrenOfChild', theChildrenOfChild);
-      //     if (theChildrenOfChild) {
-      //       for (const childrenOfChild of theChildrenOfChild) {
-      //         const pconChild = childrenOfChild.getPConnect();
-      //         const childCompType = pconChild.getComponentName().toLowerCase();
-      //         const childConfigProps = pconChild.getConfigProps();
-      //         console.log('childConfigProps?.label', childConfigProps?.label);
-      //         fieldComponents.push({
-      //           'type': childCompType,
-      //           'value': childConfigProps?.value,
-      //           'label': childConfigProps?.label
-      //         });
-      //       }
-      //     }
-      //   }
-      // }
+    if (theCompType === 'reference') {
+      const configObj = thePConn?.getReferencedView();
+      configObj.config.readOnly = true;
+      configObj.config.displayMode = "LABELS_LEFT";
+      const propToUse = { ...thePConn.getInheritedProps()};
+      configObj.config.label = propToUse?.label;
+      fieldComponents.push({'type': theCompType, 'value': createElement(createPConnectComponent(), thePConn.getReferencedViewPConnect())});
     } else {
-      fieldComponents.push({
-        'type': theCompType,
-        'value': value,
-        'label': label
-      });
+      fieldComponents.push({'type': theCompType, 'value': value, 'label': label});
     }
-
   }
-
-  console.log('fieldComponents', fieldComponents);
 
   function getGridItemLabel(field: any, keyVal: string) {
     const dispValue = field.label;
@@ -141,21 +106,24 @@ export default function DetailsFields(props) {
 
   function getGridItems() {
     const gridItems: Array<any> = fieldComponents.map( (field, index) => {
-      // console.log('field', field);
-      return [ getGridItemLabel(field, `${index}-label`),
-        getGridItemValue(field, `${index}-value`)
-     ];
-    })
-
+      if (field?.type === "reference") {
+        return field?.value;
+      } else {
+        return (
+          <Grid container spacing={1} style={{padding: "4px 0px"}}>
+            {getGridItemLabel(field, `${index}-label`)}
+            {getGridItemValue(field, `${index}-value`)}
+          </Grid>
+        );
+      }
+    });
     return gridItems;
   }
 
-
   return (
-      <Grid container spacing={1}>
+      <React.Fragment>
         {getGridItems()}
-        {viewComponent}
-      </Grid>
+      </React.Fragment>
     );
 }
 

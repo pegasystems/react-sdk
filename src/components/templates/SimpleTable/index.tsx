@@ -12,7 +12,6 @@ import { buildFieldsForTable } from './helpers';
 
 
 export default function SimpleTable(props) {
-  console.log('SimpleTable props', props);
   const {
     getPConnect,
     referenceList = [], // if referenceList not in configProps$, default to empy list
@@ -188,10 +187,10 @@ export default function SimpleTable(props) {
 
   return (
     <React.Fragment>
-      <Typography variant='body1' style={{whiteSpace: 'pre-line'}}>
+      {!requestedReadOnlyMode && <Typography variant='body1' style={{whiteSpace: 'pre-line'}}>
         {tempPreamble}
-      </Typography>
-      <TableContainer component={Paper}>
+      </Typography>}
+      <TableContainer component={Paper} style={{margin: '4px 15px', width: 'auto'}}>
         <Table>
           <TableHead>
             <TableRow>

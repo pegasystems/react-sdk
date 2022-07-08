@@ -6,7 +6,7 @@ The **React SDK** provides Pega customers with the ability to build DX component
 
 The React SDK differs from out-of-the-box Cosmos React because it provides and demonstrates the use of a React design system that is not the Pega **Cosmos React** design system. The alternative design system used in this React SDK is **Material UI** (https://mui.com/).
 
-The React SDK is built on a new and modernized UI technology stack (the Constellation JavaScript Engine and Constellation JavaScript API).  Many additional SDK features are planned for 1H 2022 to expand the scope of supported use cases.
+The React SDK is built on a new and modernized UI technology stack (the Constellation JavaScript Engine and Constellation JavaScript API). Many additional SDK features are planned for 1H 2022 to expand the scope of supported use cases.
 
 
 <br>
@@ -17,7 +17,7 @@ The React SDK is built on a new and modernized UI technology stack (the Constell
 
 This **8.7 version** of the React SDK assumes that you have access to a Pega Infinity server (**8.7.0+ GA**) running an application that is configured to run using the Constellation UI service.
 
-The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download.
+The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download. For more information about the MediaCo sample application, see [MediaCo sample application](https://docs.pega.com/dx-sdks/mediaco-sample-application).
 
 The **React SDK** has been tested with:
 - node 14.18.*
@@ -25,7 +25,7 @@ The **React SDK** has been tested with:
 
 Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
 
-**Before** installing and running the SDK code, please refer to the **React SDK Guide** provided in the Marketplace download for steps to prepare your Infinity server and node environment so you can proceed with the steps in the next section.
+**Before** installing and running the SDK code, refer to the **React SDK Guide** provided in the Marketplace download for steps to prepare your Infinity server and node environment so you can proceed with the steps in the next section.
 
 
 
@@ -51,7 +51,7 @@ See the React SDK Guide available at Pega Marketplace for complete instructions.
 
    At this time, you will note that there are 3 “high-security vulnerabilities” reported by Node related to the “trim” package. Research into these reported issues indicates that these flags represent more of a possible slowdown than a security-exploit problem. (See https://github.com/mdx-js/mdx/discussions/1864) We are following this and will provide an update this issue is resolved. Since these issues are related to linting of Markdown files, if you are concerned about these reports, you can remove the eslint-plugin-mdx and @pega/configs devDependencies and use the SDK without linting. These issues have no impact on the SDK's runtime.
 
-   Also, if you run npm install after it has already been run once, you may see several warnings related to npm peer dependencies that are related to various lint packages. You can ignore these warnings as they affect the linting and are not associated with the runtime behavior.
+Also, if you run ```npm install``` after it has already been run once, you may see several warnings related to npm peer dependencies that are related to various lint packages. You can ignore these warnings as they affect the linting and are not associated with the runtime behavior.
 
 
 ### **Configure** the React SDK
@@ -78,10 +78,10 @@ file.
     * The **serverConfig** section contains values related to the Pega Infinity server and SDK Content Server.
       * **infinityRestServerUrl** indicates where the SDK expects to find the Infinity REST server. The default configuration is set to **https://localhost:1080/prweb**. You will need to change this if you are using a different path to access your Infinity server.
       * **appAlias** is the application alias that operatorIDs logging into this instance of the React SDK content server will use. (E.g., "MediaCo").
-      When specified, this value will be used to further constrain the REST URL that the Constellation JavaScript Engine uses when making REST calls to Infinity. It is **_strongly recommended_** that the appAlias value be set before putting an application into production.  If this is not specified, the server will always utilize the _default_ access group specified within the `Application access` area for the current Operator when invoking any DX API REST calls.  Hence, not specifying the appAlias will result in application access issues for all applications other than the operator's designated default application.
+      When specified, this value will be used to further constrain the REST URL that the Constellation JavaScript Engine uses when making REST calls to Infinity. It is **_strongly recommended_** that the appAlias value be set before putting an application into production. If this is not specified, the server will always utilize the _default_ access group specified within the `Application access` area for the current Operator when invoking any DX API REST calls. Hence, not specifying the appAlias will result in application access issues for all applications other than the operator's designated default application.
     <br><br>
 
-3. Edit the **package.json** file's dependency for **[@pega/constellationjs](https://www.npmjs.com/package/@pega/constellationjs)** with the **tag name** that is appropriate for the Pega Infinity version that your application is running. For example, Infinity 8.6.3 uses the tag "**SDK-8.6.3**", Infinity 8.6.4 uses the tag "**SDK-8.6.4**", etc. You must **always** use the appropriate Constellation files that match your Infinity deployment. Please check your Infinity version and choose the correct version.
+3. Edit the **package.json** file's dependency for **[@pega/constellationjs](https://www.npmjs.com/package/@pega/constellationjs)** with the **tag name** that is appropriate for the Pega Infinity version that your application is running. For example, Infinity 8.6.3 uses the tag "**SDK-8.6.3**", Infinity 8.6.4 uses the tag "**SDK-8.6.4**", etc. You must **always** use the appropriate Constellation files that match your Infinity deployment.
 <br><br>
 
 
@@ -90,7 +90,7 @@ file.
 4. **Development build and start (1 terminal)**
 
    Note that development mode uses **webpack-dev-server**.
-   that is configured as a “live reload” server. This means that, when running one of the start-dev commands, **saving** a file in your editor will trigger a **re-compile** and **reload** of the page. This page reload may result in your application popping a new login window. If this occurs, please log in and your code changes will be available for further testing and development.
+   that is configured as a “live reload” server. This means that, when running one of the start-dev commands, **saving** a file in your editor will trigger a **re-compile** and **reload** of the page. This page reload may result in your application popping a new login window. If this occurs, log in and your code changes will be available for further testing and development.
 
     4.1 Full development clean and install of npm modules, and build; then start the server
    ```
@@ -136,13 +136,13 @@ application.
 
 6. **Embedded**
 
-    6.1 Access **http://localhost:3502/embedded** or **https://localhost:3502/embedded** (if run start-*-https was used)
+    6.1 Access **http://localhost:3502/embedded** or **https://localhost:3502/embedded** (if ```run start-*-https``` is used)
 
 7.  **Portal**
 
-    7.1 Access **http://localhost:3502/portal** or **https://localhost:3502/portal** (if run start-*-https was used)
+    7.1 Access **http://localhost:3502/portal** or **https://localhost:3502/portal** (if ```run start-*-https``` is used)
 
-    **If you see a blank page**, please check your JavaScript console to see if you have encountered a net::ERR_CERT_INVALID error. If you encounter this error, please see the troubleshooting section below: **Runtime Error: net::ERR_CERT_INVALID**. Due to browser interactions during login, it can be easier to find and fix this error using the Portal URL.
+    **If you see a blank page**, check your JavaScript console to see if you have encountered a net::ERR_CERT_INVALID error. If you encounter this error, see the troubleshooting section below: **Runtime Error: net::ERR_CERT_INVALID**. Due to browser interactions during login, it can be easier to find and fix this error using the Portal URL.
 
 Note that the examples above are for the default configuration. If you change the configuration to use a different host and/or port, adapt these URLs to your host:port as necessary.
 
@@ -207,19 +207,19 @@ You can test both **Portal** and **Embedded** scenarios by executing the followi
 ## Some setup and troubleshooting tips
 <br>
 
-> **NOTE**: These setup tips are abstracted from the React SDK Guide that is available in the React SDK download available at [https://community.pega.com/media/react-sdk-87-guide](https://community.pega.com/media/react-sdk-87-guide)
+> **NOTE**: These setup tips are abstracted from the React SDK Guide that is available to licensed Pega Infinity clients at [https://community.pega.com/media/react-sdk-87-guide](https://community.pega.com/media/react-sdk-87-guide). For more information about troubleshooting, see [Troubleshooting the DX SDKs](https://docs.pega.com/dx-sdks/troubleshooting-dx-sdks).
 
 <br>
 
 ### Check Node/NPM versions
-Currently, the SDK supports **Node 14**. It has been tested with node  v14.18.*. It may not be stable with node v16+. Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
+Currently, the SDK supports **Node 14**. It has been tested with node v14.18.*. It may not be stable with node v16+. Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
 
 
 ### Verify/update Cross Origin Resource Sharing (CORS) Infinity record
 
 The **APIHeadersAllowed** record on your Infinity server (found in Security | Cross Origin Resource Sharing) may need to be updated to allow the React SDK calls to Pega REST APIs and DX APIs to interact with Infinity.
 
-For the **APIHeadersAllowed** CORS record, please confirm or update the record as follows:
+For the **APIHeadersAllowed** CORS record, confirm or update the record as follows:
 
 * **Allowed methods**
   * **All 5 methods** should be checked:
@@ -263,7 +263,7 @@ Typically, you can resolve this error by indicating to your browser that you are
 
 The **React SDK** sample application is preconfigured to use the **MediaCo_ReactSDK** Client Registration record that is included in the React SDK download available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). This Client Registration record is used for the **Embedded** and **Portal** use cases.
 
-You may use this existing registration record. If you want to create your own OAuth 2.0 Client Registration record, please refer to the **How to create OAuth2 registration in Infinity** section found below.
+You may use this existing registration record. If you want to create your own OAuth 2.0 Client Registration record, refer to the **How to create OAuth2 registration in Infinity** section found below.
 
 * For the **Embedded** use case, you will use the OAuth 2.0 Client Registration record’s **Client ID** as the value for **mashupClientId** in the SDK’s **sdk-config.json** file.
 
@@ -300,7 +300,7 @@ If you configure your installation to have the React SDK static content served f
 
 ### How to create an OAuth 2.0 Client Registration record in Infinity
 
-When preparing your Infinity server for use with the `React SDK`, a `MediaCo_ReactSDK` OAuth 2.0 Client Registration record will have been imported. That record's Client Id is currently referenced within sdk-config.json.  However, you can create your own OAuth 2.0 Client Registration record using the following procedure:
+When preparing your Infinity server for use with the `React SDK`, a `MediaCo_ReactSDK` OAuth 2.0 Client Registration record will have been imported. That record's Client Id is currently referenced within sdk-config.json. However, you can create your own OAuth 2.0 Client Registration record using the following procedure:
    * Create a new "Security/OAuth 2.0 Client Registration" record for your app
    * You might name it the same name as your application
    * Specify "Public" for the type of client
@@ -318,7 +318,7 @@ When preparing your Infinity server for use with the `React SDK`, a `MediaCo_Rea
 ### Setting up a secure self-signed certificate for localhost
 
 
-The following steps will enable setting up a secure self-signed certificate for localhost (adapted from the procedure outlined here: https://gist.github.com/pgilad/63ddb94e0691eebd502deee207ff62bd).  At the end of the process two files are expected within the root project directory: private.pem and private.key
+The following steps will enable setting up a secure self-signed certificate for localhost (adapted from the procedure outlined here: https://gist.github.com/pgilad/63ddb94e0691eebd502deee207ff62bd). At the end of the process two files are expected within the root project directory: private.pem and private.key
 
 Step 1: Create a private key
    ```
@@ -326,7 +326,7 @@ Step 1: Create a private key
    ```
 
 
-Step 2: Create a Certificate configuration text file named ssl.conf within the root project directory.   Use the following (or adjusted content to reflect your location and desired organization):
+Step 2: Create a Certificate configuration text file named ssl.conf within the root project directory. Use the following (or adjusted content to reflect your location and desired organization):
    ```
 [ req ]
 default_bits       = 4096
@@ -376,7 +376,7 @@ Step 6: Create a pem file from crt
    ```
    $ openssl x509 -in private.crt -out private.pem -outform PEM
    ```
-Step 7: Run webpack server with arguments to use the keys (assumes private.pem and private.key are in root project directory).  May need to close prior open instances of browser (if previously accessed prior insecure localhost)
+Step 7: Run webpack server with arguments to use the keys (assumes private.pem and private.key are in root project directory). You may need to close prior open instances of browser (if previously accessed prior insecure localhost)
 
    ```
    $ npm run localhostsecure
@@ -399,7 +399,7 @@ This project is licensed under the terms of the **Apache 2** license.
 
 We welcome contributions to the React SDK project.
 
-Please refer to our [guidelines for contributors](./docs/CONTRIBUTING.md) if you are interested in helping.
+Refer to our [guidelines for contributors](./docs/CONTRIBUTING.md) if you are interested in contributing to the project.
 
 <br>
 
@@ -408,4 +408,7 @@ Please refer to our [guidelines for contributors](./docs/CONTRIBUTING.md) if you
 
 ## Additional Resources
 
-* __Material UI__: https://v4.mui.com/
+* [Material UI](https://v4.mui.com/)
+* [DX SDK Documentation](https://docs.pega.com/dx-sdks/dx-sdks)
+* [Troubleshooting the DX SDKs](https://docs.pega.com/dx-sdks/troubleshooting-dx-sdks)
+* [MediaCo sample application](https://docs.pega.com/dx-sdks/mediaco-sample-application)

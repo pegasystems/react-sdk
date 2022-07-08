@@ -51,7 +51,7 @@ See the React SDK Guide available at Pega Marketplace for complete instructions.
 
    At this time, you will note that there are 3 “high-security vulnerabilities” reported by Node related to the “trim” package. Research into these reported issues indicates that these flags represent more of a possible slowdown than a security-exploit problem. (See https://github.com/mdx-js/mdx/discussions/1864) We are following this and will provide an update this issue is resolved. Since these issues are related to linting of Markdown files, if you are concerned about these reports, you can remove the eslint-plugin-mdx and @pega/configs devDependencies and use the SDK without linting. These issues have no impact on the SDK's runtime.
 
-Also, if you ```run npm install``` after it has already been run once, you may see several warnings related to npm peer dependencies that are related to various lint packages. You can ignore these warnings as they affect the linting and are not associated with the runtime behavior.
+Also, if you run ```npm install``` after it has already been run once, you may see several warnings related to npm peer dependencies that are related to various lint packages. You can ignore these warnings as they affect the linting and are not associated with the runtime behavior.
 
 
 ### **Configure** the React SDK
@@ -81,7 +81,7 @@ file.
       When specified, this value will be used to further constrain the REST URL that the Constellation JavaScript Engine uses when making REST calls to Infinity. It is **_strongly recommended_** that the appAlias value be set before putting an application into production. If this is not specified, the server will always utilize the _default_ access group specified within the `Application access` area for the current Operator when invoking any DX API REST calls. Hence, not specifying the appAlias will result in application access issues for all applications other than the operator's designated default application.
     <br><br>
 
-3. Edit the **package.json** file's dependency for **[@pega/constellationjs](https://www.npmjs.com/package/@pega/constellationjs)** with the **tag name** that is appropriate for the Pega Infinity version that your application is running. For example, Infinity 8.6.3 uses the tag "**SDK-8.6.3**", Infinity 8.6.4 uses the tag "**SDK-8.6.4**", etc. You must **always** use the appropriate Constellation files that match your Infinity deployment. 
+3. Edit the **package.json** file's dependency for **[@pega/constellationjs](https://www.npmjs.com/package/@pega/constellationjs)** with the **tag name** that is appropriate for the Pega Infinity version that your application is running. For example, Infinity 8.6.3 uses the tag "**SDK-8.6.3**", Infinity 8.6.4 uses the tag "**SDK-8.6.4**", etc. You must **always** use the appropriate Constellation files that match your Infinity deployment.
 <br><br>
 
 

@@ -207,7 +207,7 @@ To ensure that the application is redirected to the proper page after authentica
 
 The `MediaCoOauth` and `MediaCoOauthNoLogin` records that are included with the React SDK download from Marketplace include the necessary redirect URIs for the default configuration:
 
-*	http://localhost:3502/embedded and https://localhost:3502/embedded for the Embedded use case
+*	http://localhost:3502/auth.html and https://localhost:3502/auth.html for the Embedded use case
 
 * http://localhost:3502/portal and https://localhost:3502/portal for the Portal use case
 
@@ -220,9 +220,9 @@ If you configure your installation to have the React SDK static content served f
 
   * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/portal (for the portal use case)
 
-  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/embedded
+  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html
 
-  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/embedded
+  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html
 
   * Note that entries are needed for either **http** or **https** depending on how you access your React SDK server
 

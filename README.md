@@ -274,7 +274,7 @@ To ensure that the application is redirected to the proper page after authentica
 
 The **MediaCo_ReactSDK** record includes the necessary redirect URIs for the default configuration:
 
-* http://localhost:3502/embedded and https://localhost:3502/embedded for all Embedded use cases as well as for any full reAuthentication challenges for non-embedded use cases
+* http://localhost:3502/auth.html and https://localhost:3502/auth.html for all Embedded use cases as well as for any full reAuthentication challenges for non-embedded use cases
 
 * http://localhost:3502/portal and https://localhost:3502/portal for initial authentication for the Portal use case
 
@@ -282,9 +282,9 @@ If you configure your installation to have the React SDK static content served f
 
 * In the **Supported grant types** section add the following URLS to the list of redirect URLs by clicking on the + sign. (Note that the default port is 3502.)
 
-  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/embedded (for the embedded use case as well as for any full re-authentication scenarios for any sample page)
+  * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html (for the embedded use case as well as for any full re-authentication scenarios for any sample page)
 
-  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/embedded (for the embedded use case as well as for any full re-authentication scenarios for any sample page)
+  * https://\<**host name or IP address of React SDK server**>:<**port you’re using**>/auth.html (for the embedded use case as well as for any full re-authentication scenarios for any sample page)
 
   * http://\<**host name or IP address of React SDK server**>:<**port you’re using**>/portal (for initial authentication for the portal use case)
 

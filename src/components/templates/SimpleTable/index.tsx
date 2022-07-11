@@ -7,17 +7,24 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
+import { makeStyles } from '@material-ui/core/styles';
 import { buildFieldsForTable } from './helpers';
 
+const useStyles = makeStyles((/* theme */) => ({
+  label: {
+    margin: "8px 16px"
+  },
+}));
 
 export default function SimpleTable(props) {
+  const classes = useStyles();
   const {
     getPConnect,
     referenceList = [], // if referenceList not in configProps$, default to empy list
     children,
     renderMode,
-    presets
+    presets,
+    label
   } = props;
 
   const resolvedFields = children?.[0]?.children || presets?.[0].children?.[0].children;
@@ -192,6 +199,7 @@ export default function SimpleTable(props) {
         {tempPreamble}
       </Typography>}
       <TableContainer component={Paper} style={{margin: "4px 0px"}}>
+        {label && <h3 className={classes.label}>{label}</h3>}
         <Table>
           <TableHead>
             <TableRow>

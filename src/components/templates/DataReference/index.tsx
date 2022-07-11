@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import SingleReferenceReadonly from '../SingleReferenceReadonly';
+import MultiReferenceReadonly from '../MultiReferenceReadonly';
 
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
 declare const PCore: any;
@@ -188,16 +189,14 @@ export default function DataReference(props) {
       }
 
       if (isDisplayModeEnabled && selectionMode === SELECTION_MODE.MULTI) {
-        return null;
-        // return (
-        //   <MultiReferenceReadonly
-        //     config={config}
-        //     getPConnect={firstChildPConnect}
-        //     displayAs={displayAs}
-        //     label={propsToUse.label}
-        //     hideLabel={hideLabel}
-        //   />
-        // );
+        return (
+          <MultiReferenceReadonly
+            config={config}
+            getPConnect={firstChildPConnect}
+            label={propsToUse.label}
+            hideLabel={hideLabel}
+          />
+        );
       }
 
       // In the case of a datasource with parameters you cannot load the dropdown before the parameters

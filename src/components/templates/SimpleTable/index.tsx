@@ -7,18 +7,27 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
+import { makeStyles } from '@material-ui/core/styles';
 import { buildFieldsForTable } from './helpers';
 
+const useStyles = makeStyles((/* theme */) => ({
+  label: {
+    margin: "8px 16px"
+  },
+}));
 
 export default function SimpleTable(props) {
+  const classes = useStyles();
   const {
     getPConnect,
     referenceList = [], // if referenceList not in configProps$, default to empy list
-    children: [{ children: resolvedFields }], // destructure children into an array var: "resolvedFields"
-    renderMode
+    children,
+    renderMode,
+    presets,
+    label
   } = props;
 
+  const resolvedFields = children?.[0]?.children || presets?.[0].children?.[0].children;
   // NOTE: props has each child.config with datasource and value undefined
   //  but getRawMetadata() has each child.config with datasource and value showing their unresolved values (ex: "@P thePropName")
   //  We need to use the prop name as the "glue" to tie the table dataSource, displayColumns and data together.
@@ -31,10 +40,9 @@ export default function SimpleTable(props) {
   //    config.value (ex: "@P .DeclarantChoice") or
   //    config.datasource (ex: "@ASSOCIATED .DeclarantChoice")
   //  Neither of these appear in the resolved props
-  const {
-    children: [{ children: rawFields }]
-  } = rawMetadata.config;
 
+  const rawConfig = rawMetadata?.config;
+  const rawFields =  rawConfig?.children?.[0]?.children || rawConfig?.presets?.[0].children?.[0]?.children;
   // At this point, fields has resolvedFields and rawFields we can use
 
   // console.log("SimpleTable resolvedFields:");
@@ -190,7 +198,8 @@ export default function SimpleTable(props) {
       {!requestedReadOnlyMode && <Typography variant='body1' style={{whiteSpace: 'pre-line'}}>
         {tempPreamble}
       </Typography>}
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} style={{margin: "4px 0px"}}>
+        {label && <h3 className={classes.label}>{label}</h3>}
         <Table>
           <TableHead>
             <TableRow>

@@ -46,7 +46,7 @@ export default function SemanticLink(props) {
   const classes = useStyles();
 
 
-  if (displayMode === "LABELS_LEFT" || (displayMode === null && label !== undefined)) {
+  if (displayMode === "LABELS_LEFT" || (!displayMode && label !== undefined)) {
     const value = text ||  "---";
     return (
       <Grid container spacing={1} style={{padding: "4px 0px"}}>

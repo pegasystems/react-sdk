@@ -80,7 +80,7 @@ export default function AutoComplete(props) {
         results?.forEach(element => {
           const obj = {
             key: element.pyGUID,
-            value: element[displayColumn.primary]
+            value: element[displayColumn.primary]?.toString()
           };
           optionsData.push(obj);
         });

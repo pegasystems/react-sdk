@@ -85,19 +85,23 @@ const initOAuth = (bInit) => {
 
   const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
   const sdkConfigServer = SdkConfigAccess.getSdkConfigServer();
-  const pegaUrl = sdkConfigServer.infinityRestServerUrl;
+  var pegaUrl = sdkConfigServer.infinityRestServerUrl;
   const bIsEmbedded = authIsEmbedded();
 
   // Construct default OAuth endpoints (if not explicitly specified)
   if (pegaUrl) {
+    // Cope with trailing slash being present
+    if (!pegaUrl.endsWith('/')) {
+      pegaUrl += '/';
+    }
     if (!sdkConfigAuth.authorize) {
-      sdkConfigAuth.authorize = `${pegaUrl}/PRRestService/oauth2/v1/authorize`;
+      sdkConfigAuth.authorize = `${pegaUrl}PRRestService/oauth2/v1/authorize`;
     }
     if (!sdkConfigAuth.token) {
-      sdkConfigAuth.token = `${pegaUrl}/PRRestService/oauth2/v1/token`;
+      sdkConfigAuth.token = `${pegaUrl}PRRestService/oauth2/v1/token`;
     }
     if (!sdkConfigAuth.revoke) {
-      sdkConfigAuth.revoke = `${pegaUrl}/PRRestService/oauth2/v1/revoke`;
+      sdkConfigAuth.revoke = `${pegaUrl}PRRestService/oauth2/v1/revoke`;
     }
   }
   // Auth service alias

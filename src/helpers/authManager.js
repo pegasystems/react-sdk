@@ -85,7 +85,7 @@ const initOAuth = (bInit) => {
 
   const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
   const sdkConfigServer = SdkConfigAccess.getSdkConfigServer();
-  var pegaUrl = sdkConfigServer.infinityRestServerUrl;
+  let pegaUrl = sdkConfigServer.infinityRestServerUrl;
   const bIsEmbedded = authIsEmbedded();
 
   // Construct default OAuth endpoints (if not explicitly specified)

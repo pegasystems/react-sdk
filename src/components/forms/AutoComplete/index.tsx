@@ -78,10 +78,10 @@ export default function AutoComplete(props) {
         const results = workListJSON['data'].data;
         const displayColumn = getDisplayFieldsMetaData(columns);
         results?.forEach(element => {
-          const value = element[displayColumn.primary]?.toString();
+          const val = element[displayColumn.primary]?.toString();
           const obj = {
-            key: element.pyGUID || value,
-            value
+            key: element.pyGUID || val,
+            value: val
           };
           optionsData.push(obj);
         });

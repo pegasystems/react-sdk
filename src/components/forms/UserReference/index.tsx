@@ -4,8 +4,8 @@ import { Typography } from '@material-ui/core';
 import AutoComplete from '../AutoComplete';
 import Dropdown from '../Dropdown';
 import { getUserId, isUserNameAvailable } from './UserReferenceUtils';
-declare const PCore: any;
 
+declare const PCore: any;
 const DROPDOWN_LIST = 'Drop-down list';
 const SEARCH_BOX = 'Search box';
 
@@ -60,7 +60,8 @@ const UserReference = props => {
           setDropDownDataSource(ddDataSource);
         })
         .catch(err => {
-          console.log(err);
+          // eslint-disable-next-line no-console
+          console.error(err);
         });
     }
   }, [displayAs, readOnly, showAsFormattedText, value]);

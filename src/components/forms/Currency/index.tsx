@@ -71,6 +71,6 @@ export default function Currency(props) {
         outputFormat="number"
         textAlign="left"
 
-        InputProps={ { ...readOnlyProp, inputProps: { ...testProp } } }
+        InputProps={ { ...readOnlyProp, inputProps: { ...testProp, value: currValue } } }
       />
     )}

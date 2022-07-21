@@ -179,7 +179,7 @@ const getAuthMgr = ( bInit ) => {
 
 export const authGetAuthHeader = () => {
   return sessionStorage.getItem("rsdk_AH");
-}
+};
 
 /**
  * Initiate the process to get the Constellation bootstrap shell loaded and initialized
@@ -374,7 +374,7 @@ const updateRedirectUri = (aMgr, sRedirectUri) => {
   authConfig.redirectUri = sRedirectUri;
   sessionStorage.setItem("rsdk_CI", JSON.stringify(authConfig));
   aMgr.reloadConfig();
-}
+};
 
 
 // TODO: Cope with 401 and refresh token if possible (or just hope that it succeeds during login)
@@ -405,7 +405,7 @@ const updateRedirectUri = (aMgr, sRedirectUri) => {
     return Promise.resolve(userInfo);
   });
 
-}
+};
 
 export const login = (bFullReauth=false) => {
 

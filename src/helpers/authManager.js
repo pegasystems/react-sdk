@@ -1,7 +1,7 @@
 // This file wraps various calls related to logging in, logging out, etc.
 //  that use the auth.html/auth.js to do the work of logging in via OAuth 2.0.
 
-import { SdkConfigAccess, getSdkConfig } from './config_access';
+import { SdkConfigAccess } from './config_access';
 import PegaAuth from './auth';
 
 // eslint-disable-next-line import/no-mutable-exports
@@ -469,7 +469,7 @@ export const loginIfNecessary = (appName, isEmbedded=false, deferLogin=false) =>
     updateLoginStatus();
     if( gbLoggedIn ) {
       fireTokenAvailable(getCurrentTokens());
-      //getUserInfo();
+      // getUserInfo();
     } else {
       return login();
     }

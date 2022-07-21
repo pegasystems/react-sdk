@@ -12,7 +12,7 @@ import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '../../../helpers
 
 import EmbeddedSwatch from '../EmbeddedSwatch';
 import { compareSdkPCoreVersions } from '../../../helpers/versionHelpers';
-import { SdkConfigAccess } from '../../../helpers/config_access';
+import { getSdkConfig } from '../../../helpers/config_access';
 
 
 // declare var gbLoggedIn: boolean;
@@ -506,8 +506,8 @@ export default function EmbeddedTopLevel() {
 
   }
 
-  document.addEventListener("SdkConfigAccessReady", () => {
-    const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
+  getSdkConfig().then( sdkConfig => {
+    const sdkConfigAuth = sdkConfig.authConfig;
 
     if( !sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === "Basic" ) {
       // Service package to use custom auth with Basic

@@ -1,6 +1,12 @@
 // Helper singleton class to assist with loading and accessing
 //  the SDK Config JSON
 import {authGetAuthHeader} from './authManager';
+
+// Create a singleton for this class (with async loading of config file) and export it
+let SdkConfigAccess = null;
+let SdkConfigAccessCreateInProgress = false;
+
+
 class ConfigAccess {
 
   static sdkConfig = {};
@@ -33,14 +39,16 @@ class ConfigAccess {
       }).catch(err => {
         console.error( err );
       });
-
   }
 
   /**
    *
    * @returns the sdk-config JSON object
    */
-  getSdkConfig = () => {
+  getSdkConfig = async () => {
+    if( Object.keys(ConfigAccess.sdkConfig).length === 0 ) {
+      await getSdkConfig();
+    }
     return ConfigAccess.sdkConfig;
   }
 
@@ -50,7 +58,10 @@ class ConfigAccess {
    * @returns the authConfig block in the SDK Config object
    */
   getSdkConfigAuth = () => {
-    return this.getSdkConfig().authConfig;
+    if( SdkConfigAccess === null ) {
+      const config = this.getSdkConfig();
+    }
+    return SdkConfigAccess.sdkConfig.authConfig;
   }
 
   /**
@@ -58,7 +69,10 @@ class ConfigAccess {
    * @returns the serverConfig bloc from the sdk-config.json file
    */
   getSdkConfigServer = () => {
-    return this.getSdkConfig().serverConfig;
+    if( SdkConfigAccess === null ) {
+      const config = this.getSdkConfig();
+    }
+    return SdkConfigAccess.sdkConfig.serverConfig;
   }
 
 
@@ -154,16 +168,14 @@ class ConfigAccess {
 
 // Implement Factory function to allow async load
 //  See https://stackoverflow.com/questions/49905178/asynchronous-operations-in-constructor/49906064#49906064 for inspiration
-function createSdkConfigAccess() {
+async function createSdkConfigAccess() {
   // Note that our initialize function returns a promise...
-  let theConfigAccess = new ConfigAccess();
-  return theConfigAccess.initialize();
+  let singleton = new ConfigAccess();
+  await singleton.initialize();
+  return singleton;
 }
 
-
-// Create a singleton for this class (with async loading of config file) and export it
-let SdkConfigAccess = null;
-
+/*
 createSdkConfigAccess().then( theConfigJson => {
   // assign the JSON to our exported object...
   SdkConfigAccess = theConfigJson;
@@ -175,5 +187,44 @@ createSdkConfigAccess().then( theConfigJson => {
 }).catch(err => {
   console.error( `createSdkConfigAccess error: ${err}` );
 });
+*/
 
-export { SdkConfigAccess }
+// Acquire SdkConfigAccess structure
+async function getSdkConfig() {
+  return new Promise( (resolve) => {
+    let idNextCheck = null;
+    if( SdkConfigAccess === null && !SdkConfigAccessCreateInProgress ) {
+      SdkConfigAccessCreateInProgress = true;
+      createSdkConfigAccess().then( theConfigAccess => {
+        SdkConfigAccess = theConfigAccess;
+        SdkConfigAccessCreateInProgress = false;
+        // console.log(`SdkConfigAccess: ${JSON.stringify(SdkConfigAccess)}`);
+        // Create and dispatch the SdkConfigAccessReady event
+        var event = new CustomEvent("SdkConfigAccessReady", { });
+        document.dispatchEvent(event);
+        return resolve( SdkConfigAccess.sdkConfig );
+      });
+    } else {
+      const fnCheckForConfig = () => {
+        if( SdkConfigAccess ) {
+          if( idNextCheck ) {
+            clearInterval(idNextCheck);
+          }
+          return resolve( SdkConfigAccess.sdkConfig );
+        }
+        idNextCheck = setInterval(fnCheckForConfig, 500);
+      };
+      if( SdkConfigAccess !== null ) {
+        return resolve( SdkConfigAccess.sdkConfig );
+      } else {
+        idNextCheck = setInterval(fnCheckForConfig, 500);
+      }
+    }
+  });
+}
+
+if( true ) {
+  let ignore = getSdkConfig();
+}
+
+export {SdkConfigAccess, getSdkConfig};

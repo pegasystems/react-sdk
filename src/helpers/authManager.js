@@ -435,7 +435,7 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
   });
 };
 
-// TODO: Cope with 401 and refresh token if possible (or just hope that it succeds during login)
+// TODO: Cope with 401 and refresh token if possible (or just hope that it succeeds during login)
 // TODO: Save results in session storage to avoid calls on window reload
 /**
  * Retrieve UserInfo for current authentication service

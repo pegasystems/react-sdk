@@ -175,20 +175,6 @@ async function createSdkConfigAccess() {
   return singleton;
 }
 
-/*
-createSdkConfigAccess().then( theConfigJson => {
-  // assign the JSON to our exported object...
-  SdkConfigAccess = theConfigJson;
-  // console.log(`SdkConfigAccess: ${JSON.stringify(SdkConfigAccess)}`);
-  // Create and dispatch the SdkConfigAccessReady event
-  var event = new CustomEvent("SdkConfigAccessReady", { });
-  document.dispatchEvent(event);
-
-}).catch(err => {
-  console.error( `createSdkConfigAccess error: ${err}` );
-});
-*/
-
 // Acquire SdkConfigAccess structure
 async function getSdkConfig() {
   return new Promise( (resolve) => {
@@ -200,7 +186,7 @@ async function getSdkConfig() {
         SdkConfigAccessCreateInProgress = false;
         // console.log(`SdkConfigAccess: ${JSON.stringify(SdkConfigAccess)}`);
         // Create and dispatch the SdkConfigAccessReady event
-        var event = new CustomEvent("SdkConfigAccessReady", { });
+        const event = new CustomEvent("SdkConfigAccessReady", { });
         document.dispatchEvent(event);
         return resolve( SdkConfigAccess.sdkConfig );
       });

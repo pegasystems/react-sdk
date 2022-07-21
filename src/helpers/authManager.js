@@ -62,6 +62,7 @@ const clearAuthMgr = (bFullReauth=false) => {
     sessionStorage.removeItem("rsdk_CI");
   }
   sessionStorage.removeItem("rsdk_TI");
+  sessionStorage.removeItem("rsdk_UI");
   sessionStorage.removeItem("rsdk_loggingIn");
   gbLoggedIn = false;
   gbLoginInProgress = false;
@@ -99,7 +100,8 @@ const initOAuth = (bInit) => {
       sdkConfigAuth.revoke = `${pegaUrl}PRRestService/oauth2/v1/revoke`;
     }
     if (!sdkConfigAuth.userinfo) {
-      sdkConfigAuth.userinfo = `${pegaUrl}PRRestService/oauthclients/v1/userinfo/JSON`;
+      const appAliasSeg = sdkConfigServer.appAlias ? `app/${sdkConfigServer.appAlias}/` : '';
+      sdkConfigAuth.userinfo = `${pegaUrl}${appAliasSeg}api/oauthclients/v1/userinfo/JSON`;
     }
   }
   // Auth service alias
@@ -122,7 +124,7 @@ const initOAuth = (bInit) => {
         ? sRedirectUri
         : `${window.location.origin}${window.location.pathname}`,
     authService: sdkConfigAuth.authService,
-    appAlias: sdkConfigAuth.appAlias || '',
+    appAlias: sdkConfigServer.appAlias || '',
     useLocking: true
   };
   // If no clientId is specified assume not OAuth but custom auth
@@ -375,6 +377,36 @@ const updateRedirectUri = (aMgr, sRedirectUri) => {
 }
 
 
+// TODO: Cope with 401 and refresh token if possible (or just hope that it succeeds during login)
+// TODO: Save results in session storage to avoid calls on window reload
+/**
+ * Retrieve UserInfo for current authentication service
+ */
+ export const getUserInfo = (bUseSS=true) => {
+  const ssUserInfo = sessionStorage.getItem("rsdk_UI");
+  let userInfo = null;
+  if( bUseSS && ssUserInfo ) {
+    try {
+      userInfo = JSON.parse(ssUserInfo);
+      return Promise.resolve(userInfo);
+    } catch(e) {
+      // do nothing
+    }
+  }
+  const aMgr = getAuthMgr(false);
+  const tokenInfo = getCurrentTokens();
+  return aMgr.getUserInfo(tokenInfo.access_token).then( data => {
+    userInfo = data;
+    if( userInfo ) {
+      sessionStorage.setItem("rsdk_UI", JSON.stringify(userInfo));
+    } else {
+      sessionStorage.removeItem("rsdk_UI");
+    }
+    return Promise.resolve(userInfo);
+  });
+
+}
+
 export const login = (bFullReauth=false) => {
 
   if( gbCustomAuth ) return;
@@ -404,7 +436,7 @@ export const login = (bFullReauth=false) => {
     return new Promise( (resolve, reject) => {
       aMgr.login().then(token => {
           processTokenOnLogin(token);
-          // aMgr.getUserInfo(token.access_token);
+          // getUserInfo();
           resolve(token.access_token);
       }).catch( (e) => {
           gbLoginInProgress = false;
@@ -412,7 +444,7 @@ export const login = (bFullReauth=false) => {
           // eslint-disable-next-line no-console
           console.log(e);
           reject(e);
-      })
+      });
     });
   }
 };
@@ -427,24 +459,13 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
   aMgr.getToken(code).then(token => {
     if( token && token.access_token ) {
         processTokenOnLogin(token, false);
-        // aMgr.getUserInfo(token.access_token);
+        // getUserInfo();
         if( fnLoggedInCB ) {
             fnLoggedInCB( token.access_token );
         }
     }
   });
 };
-
-// TODO: Cope with 401 and refresh token if possible (or just hope that it succeeds during login)
-// TODO: Save results in session storage to avoid calls on window reload
-/**
- * Retrieve UserInfo for current authentication service
- */
- export const getUserInfo = () => {
-  const aMgr = getAuthMgr(false);
-  const tokenInfo = getCurrentTokens();
-  return aMgr.getUserInfo(tokenInfo.access_token);
-}
 
 /**
  * Silent or visible login based on login status

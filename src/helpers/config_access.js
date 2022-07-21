@@ -28,12 +28,11 @@ class ConfigAccess {
     return fetch('./sdk-config.json')
       .then( response => response.json())
       .then( (data) => {
-        ConfigAccess.sdkConfig = data;
+        this.sdkConfig = data;
         // console.log(`ConfigAccess.sdkConfig: ${JSON.stringify(ConfigAccess.sdkConfig)}`);
         this.isConfigLoaded = true;
-        this.sdkConfig = data;
         // Compute the SDK Content Server Url one we have the sdk-config.json data
-        ConfigAccess.selectSdkContentServerUrl();
+        this.selectSdkContentServerUrl();
         // Note that we return the promise so the results are then-able
         return this;
       }).catch(err => {
@@ -46,10 +45,10 @@ class ConfigAccess {
    * @returns the sdk-config JSON object
    */
   getSdkConfig = async () => {
-    if( Object.keys(ConfigAccess.sdkConfig).length === 0 ) {
+    if( Object.keys(this.sdkConfig).length === 0 ) {
       await getSdkConfig();
     }
-    return ConfigAccess.sdkConfig;
+    return this.sdkConfig;
   }
 
 
@@ -82,7 +81,7 @@ class ConfigAccess {
      */
   setSdkConfigServer = (key, value) => {
 
-    ConfigAccess.sdkConfig.serverConfig[key] = value;
+    SdkConfigAccess.sdkConfig.serverConfig[key] = value;
 
   }
 
@@ -90,16 +89,16 @@ class ConfigAccess {
    * If ConfigAccess.sdkConfig.serverConfig.sdkContentServerUrl is set, leave it and the specified URL will be used.
    * If not set, set SdkConfigAccess.serverConfig.sdkContentServerUrl to window.location.origin
   */
-  static selectSdkContentServerUrl = () => {
-    if ((ConfigAccess.sdkConfig.serverConfig.sdkContentServerUrl !== "") &&
-        (ConfigAccess.sdkConfig.serverConfig.sdkContentServerUrl !== undefined)) {
+  selectSdkContentServerUrl = () => {
+    if ((this.sdkConfig.serverConfig.sdkContentServerUrl !== "") &&
+        (this.sdkConfig.serverConfig.sdkContentServerUrl !== undefined)) {
       // use the specified Url as is
     } else {
       // Default to window.location.origin
-      ConfigAccess.sdkConfig.serverConfig.sdkContentServerUrl = window.location.origin;
+      this.sdkConfig.serverConfig.sdkContentServerUrl = window.location.origin;
     }
 
-    console.log(`Using sdkContentServerUrl: ${ConfigAccess.sdkConfig.serverConfig.sdkContentServerUrl}`);
+    console.log(`Using sdkContentServerUrl: ${this.sdkConfig.serverConfig.sdkContentServerUrl}`);
   }
 
   /**
@@ -108,16 +107,16 @@ class ConfigAccess {
    */
    async selectPortal() {
 
-    if ((ConfigAccess.sdkConfig.serverConfig.appPortal !== "") &&
-        (ConfigAccess.sdkConfig.serverConfig.appPortal !== undefined) ) {
+    if ((this.sdkConfig.serverConfig.appPortal !== "") &&
+        (this.sdkConfig.serverConfig.appPortal !== undefined) ) {
           // use the specified portal
-          console.log(`Using appPortal: ${ConfigAccess.sdkConfig.serverConfig.appPortal}`);
+          console.log(`Using appPortal: ${this.sdkConfig.serverConfig.appPortal}`);
           return;
     }
 
     const userAccessGroup = PCore.getEnvironmentInfo().getAccessGroup();
     const dataPageName = "D_OperatorAccessGroups";
-    const serverUrl = SdkConfigAccess.getSdkConfigServer().infinityRestServerUrl;
+    const serverUrl = this.getSdkConfigServer().infinityRestServerUrl;
 
 
     await fetch ( serverUrl + "/api/v1/data/" + dataPageName,
@@ -137,7 +136,7 @@ class ConfigAccess {
           if (ag.pyAccessGroup === userAccessGroup) {
             // Found operator's current access group. Use its portal
             SdkConfigAccess.setSdkConfigServer("appPortal", ag.pyPortal);
-            console.log(`Using appPortal: ${ConfigAccess.sdkConfig.serverConfig.appPortal}`);
+            console.log(`Using appPortal: ${this.sdkConfig.serverConfig.appPortal}`);
             break;
           }
         }

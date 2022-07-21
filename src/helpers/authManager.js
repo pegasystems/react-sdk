@@ -1,9 +1,5 @@
 // This file wraps various calls related to logging in, logging out, etc.
-//  that use the auth.html/auth.js to do the work of logging in.
-
-// Migrating code from "early availability" index.html here so we can
-//  better leverage info read in from sdk-config.json
-//  For now, export all of the vars/functions so they can be used as needed.
+//  that use the auth.html/auth.js to do the work of logging in via OAuth 2.0.
 
 import { SdkConfigAccess } from './config_access';
 import PegaAuth from './auth';
@@ -82,7 +78,6 @@ export const authIsEmbedded = () => {
  * bInit - governs whether to create new sessionStorage or load existing one
  */
 const initOAuth = (bInit) => {
-
   const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
   const sdkConfigServer = SdkConfigAccess.getSdkConfigServer();
   let pegaUrl = sdkConfigServer.infinityRestServerUrl;
@@ -103,6 +98,9 @@ const initOAuth = (bInit) => {
     if (!sdkConfigAuth.revoke) {
       sdkConfigAuth.revoke = `${pegaUrl}PRRestService/oauth2/v1/revoke`;
     }
+    if (!sdkConfigAuth.userinfo) {
+      sdkConfigAuth.userinfo = `${pegaUrl}PRRestService/oauthclients/v1/userinfo/JSON`;
+    }
   }
   // Auth service alias
   if( !sdkConfigAuth.authService) {
@@ -119,6 +117,7 @@ const initOAuth = (bInit) => {
     authorizeUri: sdkConfigAuth.authorize,
     tokenUri: sdkConfigAuth.token,
     revokeUri: sdkConfigAuth.revoke,
+    userinfoUri: sdkConfigAuth.userinfo,
     redirectUri: bIsEmbedded || usePopupForRestOfSession
         ? sRedirectUri
         : `${window.location.origin}${window.location.pathname}`,
@@ -169,24 +168,11 @@ const initOAuth = (bInit) => {
   authMgr = new PegaAuth('rsdk_CI');
 };
 
-// TODO: See if we still need such a solution to keep trying for stuff to be loaded
-// Was needed when we were trying to invoke this as source file loaded (before SdkConfigAccessReady event)
 const getAuthMgr = ( bInit ) => {
-  return new Promise( (resolve) => {
-    let idNextCheck = null;
-    const fnCheckForAuthMgr = () => {
-      if( PegaAuth && !authMgr ) {
-        initOAuth( bInit );
-      }
-      if(authMgr) {
-        if( idNextCheck ) {
-          clearInterval(idNextCheck);
-        }
-        return resolve(authMgr);
-      }
-    }
-    idNextCheck = setInterval(fnCheckForAuthMgr, 500);
-  });
+  if( !authMgr ) {
+    initOAuth( bInit );
+  }
+  return authMgr;
 };
 
 export const authGetAuthHeader = () => {
@@ -201,7 +187,7 @@ export const authGetAuthHeader = () => {
  *      an expired access_token
  * @param {Function} fnReauth - callback invoked when a full or custom reauth is needed
  */
- const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) => {
+const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) => {
   const constellationBootConfig = {};
   const sdkConfigServer = SdkConfigAccess.getSdkConfigServer();
 
@@ -390,11 +376,6 @@ const updateRedirectUri = (aMgr, sRedirectUri) => {
 
 
 export const login = (bFullReauth=false) => {
-  if (!SdkConfigAccess) {
-    // eslint-disable-next-line no-console
-    console.error(`Trying login before SdkConfigAccessReady!`);
-    return;
-  }
 
   if( gbCustomAuth ) return;
 
@@ -402,37 +383,38 @@ export const login = (bFullReauth=false) => {
   // Needed so a redirect to login screen and back will know we are still in process of logging in
   sessionStorage.setItem("rsdk_loggingIn", `${Date.now()}`);
 
-  getAuthMgr(!bFullReauth).then( (aMgr) => {
-    const bPortalLogin = !authIsEmbedded();
+  const aMgr = getAuthMgr(!bFullReauth);
 
-    // If portal will redirect to main page, otherwise will authorize in a popup window
-    if (bPortalLogin && !bFullReauth) {
-      // update redirect uri to be the root
-      updateRedirectUri(aMgr, `${window.location.origin}${window.location.pathname}`);
-      aMgr.loginRedirect();
-      // Don't have token til after the redirect
-      return Promise.resolve(undefined);
-    } else {
-      // Construct path to redirect uri
-      let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
-      const nLastPathSep = sRedirectUri.lastIndexOf("/");
-      sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
-      // Set redirectUri to static auth.html
-      updateRedirectUri(aMgr, sRedirectUri);
-      return new Promise( (resolve, reject) => {
-        aMgr.login().then(token => {
-            processTokenOnLogin(token);
-            resolve(token.access_token);
-        }).catch( (e) => {
-            gbLoginInProgress = false;
-            sessionStorage.removeItem("rsdk_loggingIn");
-            // eslint-disable-next-line no-console
-            console.log(e);
-            reject(e);
-        })
-      });
-    }
-  });
+  const bPortalLogin = !authIsEmbedded();
+
+  // If portal will redirect to main page, otherwise will authorize in a popup window
+  if (bPortalLogin && !bFullReauth) {
+    // update redirect uri to be the root
+    updateRedirectUri(aMgr, `${window.location.origin}${window.location.pathname}`);
+    aMgr.loginRedirect();
+    // Don't have token til after the redirect
+    return Promise.resolve(undefined);
+  } else {
+    // Construct path to redirect uri
+    let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
+    const nLastPathSep = sRedirectUri.lastIndexOf("/");
+    sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
+    // Set redirectUri to static auth.html
+    updateRedirectUri(aMgr, sRedirectUri);
+    return new Promise( (resolve, reject) => {
+      aMgr.login().then(token => {
+          processTokenOnLogin(token);
+          // aMgr.getUserInfo(token.access_token);
+          resolve(token.access_token);
+      }).catch( (e) => {
+          gbLoginInProgress = false;
+          sessionStorage.removeItem("rsdk_loggingIn");
+          // eslint-disable-next-line no-console
+          console.log(e);
+          reject(e);
+      })
+    });
+  }
 };
 
 export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
@@ -441,18 +423,16 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
   const urlParams = new URLSearchParams(aHrefParts.length>1 ? `?${aHrefParts[1]}` : '');
   const code = urlParams.get("code");
 
-  getAuthMgr(false).then( aMgr => {
-    aMgr.getToken(code).then(token => {
-      if( token && token.access_token ) {
-          processTokenOnLogin(token, false);
-          if( fnLoggedInCB ) {
-              fnLoggedInCB( token.access_token );
-          }
-      }
-    });
-
+  const aMgr = getAuthMgr(false);
+  aMgr.getToken(code).then(token => {
+    if( token && token.access_token ) {
+        processTokenOnLogin(token, false);
+        // aMgr.getUserInfo(token.access_token);
+        if( fnLoggedInCB ) {
+            fnLoggedInCB( token.access_token );
+        }
+    }
   });
-
 };
 
 /**
@@ -489,6 +469,7 @@ export const loginIfNecessary = (appName, isEmbedded=false, deferLogin=false) =>
     updateLoginStatus();
     if( gbLoggedIn ) {
       fireTokenAvailable(getCurrentTokens());
+      // getUserInfo();
     } else {
       return login();
     }
@@ -544,14 +525,12 @@ export const logout = () => {
                 console.log("Error:",err?.message);
             });
         } else {
-          getAuthMgr(false).then( aMgr => {
-            aMgr.revokeTokens(tokenInfo.access_token, tokenInfo.refresh_token).then(() => {
-              // Go to finally
-            })
-            .finally(() => {
-              fnClearAndResolve();
-            });
-
+          const aMgr = getAuthMgr(false);
+          aMgr.revokeTokens(tokenInfo.access_token, tokenInfo.refresh_token).then(() => {
+            // Go to finally
+          })
+          .finally(() => {
+            fnClearAndResolve();
           });
         }
     } else {
@@ -559,6 +538,15 @@ export const logout = () => {
     }
   });
 };
+
+// Retrieve UserInfo for current authentication service
+// TODO: Cope with 401 and refresh token if possible (or just hope that it succeds during login)
+// TODO: Save results in session storage to avoid calls on window reload
+export const getUserInfo = () => {
+  const aMgr = getAuthMgr(false);
+  const tokenInfo = getCurrentTokens();
+  return aMgr.getUserInfo(tokenInfo.access_token);
+}
 
 // Callback routine for custom event to ask for updated tokens
 export const authUpdateTokens = (token) => {

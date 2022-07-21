@@ -435,6 +435,17 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
   });
 };
 
+// TODO: Cope with 401 and refresh token if possible (or just hope that it succeds during login)
+// TODO: Save results in session storage to avoid calls on window reload
+/**
+ * Retrieve UserInfo for current authentication service
+ */
+ export const getUserInfo = () => {
+  const aMgr = getAuthMgr(false);
+  const tokenInfo = getCurrentTokens();
+  return aMgr.getUserInfo(tokenInfo.access_token);
+}
+
 /**
  * Silent or visible login based on login status
  */
@@ -538,15 +549,6 @@ export const logout = () => {
     }
   });
 };
-
-// Retrieve UserInfo for current authentication service
-// TODO: Cope with 401 and refresh token if possible (or just hope that it succeds during login)
-// TODO: Save results in session storage to avoid calls on window reload
-export const getUserInfo = () => {
-  const aMgr = getAuthMgr(false);
-  const tokenInfo = getCurrentTokens();
-  return aMgr.getUserInfo(tokenInfo.access_token);
-}
 
 // Callback routine for custom event to ask for updated tokens
 export const authUpdateTokens = (token) => {

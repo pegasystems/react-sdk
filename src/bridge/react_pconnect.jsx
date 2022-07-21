@@ -51,6 +51,7 @@ import SimpleTableSelect from '../components/templates/SimpleTableSelect';
 import PromotedFilters from '../components/templates/PromotedFilters';
 import DataReference from '../components/templates/DataReference';
 import SemanticLink from '../components/forms/SemanticLink';
+import UserReference from '../components/forms/UserReference';
 
 const connectRedux = (component, c11nEnv) => {
 
@@ -274,6 +275,10 @@ const getComponent = (c11nEnv, declarative) => {
 
       case 'DataReference':
         component = DataReference;
+        break;
+
+      case "UserReference":
+        component = UserReference;
         break;
 
       case 'PromotedFilters':

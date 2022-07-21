@@ -1,9 +1,5 @@
 // This file wraps various calls related to logging in, logging out, etc.
-//  that use the auth.html/auth.js to do the work of logging in.
-
-// Migrating code from "early availability" index.html here so we can
-//  better leverage info read in from sdk-config.json
-//  For now, export all of the vars/functions so they can be used as needed.
+//  that use the auth.html/auth.js to do the work of logging in via OAuth 2.0.
 
 import { SdkConfigAccess, getSdkConfig } from './config_access';
 import PegaAuth from './auth';

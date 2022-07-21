@@ -25,7 +25,7 @@ export class Utils {
         const listType = configProps.listType;
         let arReturn: Array<any> = [];
 
-        if (listType !== null) {
+        if (listType) {
             switch (listType.toLowerCase()) {
                 case "associated":
                   // data source should be an array

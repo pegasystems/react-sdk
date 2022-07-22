@@ -410,7 +410,7 @@ class PegaAuth {
 
   // For userinfo endpoint to return meaningful data, endpoint must include appAlias (if specified) and authorize must
   //  specify profile and optionally email scope to get such info returned
-  async getUserInfo(access_token) {
+  async getUserinfo(access_token) {
     if( !this.config || !this.config.userinfoUri ) {
           // Must have a config structure and userInfo to proceed
           return {};

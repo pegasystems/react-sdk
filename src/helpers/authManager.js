@@ -395,7 +395,7 @@ const updateRedirectUri = (aMgr, sRedirectUri) => {
   }
   const aMgr = getAuthMgr(false);
   const tokenInfo = getCurrentTokens();
-  return aMgr.getUserInfo(tokenInfo.access_token).then( data => {
+  return aMgr.getUserinfo(tokenInfo.access_token).then( data => {
     userInfo = data;
     if( userInfo ) {
       sessionStorage.setItem("rsdk_UI", JSON.stringify(userInfo));
@@ -466,17 +466,6 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
     }
   });
 };
-
-// TODO: Cope with 401 and refresh token if possible (or just hope that it succeeds during login)
-// TODO: Save results in session storage to avoid calls on window reload
-/**
- * Retrieve UserInfo for current authentication service
- */
- export const getUserInfo = () => {
-  const aMgr = getAuthMgr(false);
-  const tokenInfo = getCurrentTokens();
-  return aMgr.getUserInfo(tokenInfo.access_token);
-}
 
 /**
  * Silent or visible login based on login status
@@ -619,7 +608,7 @@ export const sdkSetAuthHeader = (authHeader) => {
     sessionStorage.removeItem("rsdk_AH");
   }
   gbCustomAuth = true;
-}
+};
 
 // Initiate a custom re-authorization.
 export const authCustomReauth = () => {

@@ -86,8 +86,8 @@ class ConfigAccess {
   }
 
   /**
-   * If ConfigAccess.sdkConfig.serverConfig.sdkContentServerUrl is set, leave it and the specified URL will be used.
-   * If not set, set SdkConfigAccess.serverConfig.sdkContentServerUrl to window.location.origin
+   * If this.sdkConfig.serverConfig.sdkContentServerUrl is set, leave it and the specified URL will be used.
+   * If not set, set this.serverConfig.sdkContentServerUrl to window.location.origin
   */
   selectSdkContentServerUrl = () => {
     if ((this.sdkConfig.serverConfig.sdkContentServerUrl !== "") &&
@@ -102,8 +102,8 @@ class ConfigAccess {
   }
 
   /**
-   * If ConfigAccess.sdkConfig.serverConfig.appPortal is set, leave it and the specified portal will be used.
-   * If not set, set SdkConfigAccess.serverConfig.appPortal to default portal of currently logged in user
+   * If this.sdkConfig.serverConfig.appPortal is set, leave it and the specified portal will be used.
+   * If not set, set this.sdkConfig.serverConfig.appPortal to default portal of currently logged in user
    */
    async selectPortal() {
 
@@ -172,7 +172,7 @@ async function createSdkConfigAccess() {
   let singleton = new ConfigAccess();
   await singleton.initialize();
   return singleton;
-}
+};
 
 // Acquire SdkConfigAccess structure
 async function getSdkConfig() {
@@ -210,6 +210,6 @@ async function getSdkConfig() {
 
 if( true ) {
   let ignore = getSdkConfig();
-}
+};
 
 export {SdkConfigAccess, getSdkConfig};

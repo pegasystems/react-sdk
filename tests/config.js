@@ -16,6 +16,12 @@ const config = {
         username: 'tech@mediaco',
         password: 'pega'
       }
+    },
+    digv2: {
+      user: {
+        username: 'user.digv2',
+        password: 'pega'
+      }
     }
   },
   testsetting: {

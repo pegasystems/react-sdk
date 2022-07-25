@@ -16,7 +16,7 @@
   },
   "serverConfig": {
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
-    "infinityRestServerUrl": "https://localhost:1080/prweb",
+    "infinityRestServerUrl": "https://lab0641.lab.pega.com/prweb",
 
     "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
     "appAlias": "",

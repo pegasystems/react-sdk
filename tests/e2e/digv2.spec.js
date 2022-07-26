@@ -38,7 +38,7 @@ test.describe('E2E test', () => {
 
     await page.locator('button:has-text("submit")').click();
 
-    /** Display category tests */
+    /** Display subcategory tests */
 
     /** Autocomplete display type test */
     let selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');
@@ -120,7 +120,7 @@ test.describe('E2E test', () => {
 
     /** Options subcategory tests */
 
-    /** SingleRecord display type test */
+    /** SingleRecord options type test */
     selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');
     await selectedSubCategory.click();
     await page.locator('li:has-text("Options")').click();

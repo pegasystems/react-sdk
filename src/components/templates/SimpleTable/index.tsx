@@ -222,6 +222,7 @@ export default function SimpleTable(props) {
             })}
           </TableBody>
         </Table>
+        {rowData && rowData.length === 0 && <div className="no-records">No records found.</div>}
       </TableContainer>
 
     </React.Fragment>

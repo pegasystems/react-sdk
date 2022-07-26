@@ -31,6 +31,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { Radio } from '@material-ui/core';
+import Checkbox from '@material-ui/core/Checkbox';
 import './ListView.css';
 
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
@@ -225,7 +226,7 @@ export default function ListView(props) {
   }
 
   function getUsingData(arTableData, theColumns): Array<any>  {
-    if (selectionMode === SELECTION_MODE.SINGLE) {
+    if (selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) {
       const record = arTableData?.length > 0 ? arTableData[0] : '';
       if (typeof(record) === "object" && !('pyGUID' in record)) {
         // eslint-disable-next-line no-console
@@ -847,6 +848,12 @@ export default function ListView(props) {
    setSelectedValue(value);
   };
 
+  const onCheckboxClick = (event) => {
+    const value = event?.target?.value;
+    const checked = event?.target?.checked;
+    getPConnect()?.getListActions()?.setSelectedRows([{'pyGUID': value, $selected: checked}]);
+  };
+
   return (
     <>
     { arColumns && arColumns.length > 0 &&
@@ -937,7 +944,7 @@ export default function ListView(props) {
           <Table>
             <TableHead>
               <TableRow>
-                {selectionMode === SELECTION_MODE.SINGLE && <TableCell></TableCell>}
+                {selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI && <TableCell></TableCell>}
                 {arColumns.map((column) => {
                   return (
                     <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>
@@ -966,6 +973,9 @@ export default function ListView(props) {
                   <TableRow key={row.pyGUID } onClick={() => { _rowClick(row)}}>
                     {selectionMode === SELECTION_MODE.SINGLE && <TableCell>
                       <Radio onChange={handleChange} value={row.pyGUID} name="radio-buttons" inputProps={{ 'aria-label': 'A' }} checked={selectedValue === row.pyGUID}></Radio>
+                    </TableCell>}
+                    {selectionMode === SELECTION_MODE.MULTI && <TableCell>
+                      <Checkbox onChange={onCheckboxClick} value={row.pyGUID}></Checkbox>
                     </TableCell>}
                     {arColumns.map((column) => {
                       const value = row[column.id];

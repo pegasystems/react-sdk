@@ -146,6 +146,33 @@ test.describe('E2E test', () => {
 
     await page.locator('button:has-text("Previous")').click();
 
+    /** ListOfRecords options type test */
+    selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');
+    await selectedSubCategory.click();
+    await page.locator('li:has-text("Options")').click();
+
+    selectedTestName = page.locator('div[data-test-id="6f64b45d01d11d8efd1693dfcb63b735"]');
+    await selectedTestName.click();
+    await page.locator('li:has-text("ListOfRecords")').click();
+
+    selectedProduct = page.locator('tr:has-text("Luxury Product")');
+    const selectedProductTestRow = selectedProduct.locator('input[type="checkbox"]');
+    await selectedProductTestRow.click();
+
+    selectedProduct = page.locator('tr:has-text("Green Item")');
+    const selectedProductTestSecondRow = selectedProduct.locator('input[type="checkbox"]');
+    await selectedProductTestSecondRow.click();
+
+    await page.locator('button:has-text("Next")').click();
+
+    details = page.locator('div[id="OneColumnTab"]');
+
+    /** Testing the values present on Details section */
+    await expect(details.locator('tr:has-text("Luxury Product")')).toBeVisible();
+    await expect(details.locator('tr:has-text("Green Item")')).toBeVisible();
+
+    await page.locator('button:has-text("Previous")').click();
+
     /** Mode subcategory tests */
 
     /** SingleSelect mode type test */

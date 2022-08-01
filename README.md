@@ -55,7 +55,7 @@ Also, if you run ```npm install``` after it has already been run once, you may s
 
 See the **React SDK Guide** in the Marketplace download for more complete documentation about the configuration of the React SDK via the **sdk-config.json** file.
 
-2. Edit **sdk-config.json** and, if necessary, update the values that will be used
+2. Edit **sdk-config.json** and, if necessary, update the values that will be used. For more information about the attributes in the **sdk-config.json** file, see [Configuring the sdk-config.json file](https://docs.pega.com/dx-sdks/configuring-sdk-configjson-file).
     * The **authConfig** section contains values for the information you obtained earlier from OAuth: the Client ID, endpoints, etc.
     The default **sdk-config.json** file is set up to use the **MediaCoOauth** and **MediaCoOauthNoLogin** records that are included with the React SDK Marketplace download.
     <br><br>

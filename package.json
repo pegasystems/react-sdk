@@ -23,8 +23,8 @@
     "build-dev-only": "webpack --mode=development && npm run copy-index && npm run copy-configs",
     "build-prod-only": "webpack --mode=production && npm run copy-index && npm run copy-configs",
     "copy-index": "shx cp dist/index.html dist/simpleportal.html && shx cp dist/index.html dist/portal.html && shx cp dist/index.html dist/fullportal.html && shx cp dist/index.html dist/embedded.html",
-    "test": "node playwright-message.js && playwright test --project=chromium portalMode embeddedMode",
-    "test:headed": "playwright test --headed --project=chromium portalMode embeddedMode",
+    "test": "node playwright-message.js && playwright test --project=chromium MediaCo/portal MediaCo/embedded",
+    "test:headed": "playwright test --headed --project=chromium MediaCo/portal MediaCo/embedded",
     "test-report": "playwright show-report"
   },
   "dependencies": {

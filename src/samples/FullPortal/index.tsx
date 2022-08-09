@@ -133,7 +133,7 @@ export default function FullPortal() {
   }
 
 
-  document.addEventListener("ConstellationReady", () => {
+  document.addEventListener("SdkConstellationReady", () => {
     // start the portal
     startPortal();
   });
@@ -148,7 +148,7 @@ export default function FullPortal() {
   return (
     <div>
       {/* <h4>React SDK: /portal</h4> */}
-      <div id="pega-here"></div>
+      <div id="pega-root"></div>
     </div>)
 
 }

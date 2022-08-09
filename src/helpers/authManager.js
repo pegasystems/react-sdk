@@ -272,7 +272,8 @@ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) =>
         }
       }
 
-      const event = new CustomEvent('ConstellationReady', {});
+      // Fire SdkConstellationReady event so bridge and app route can do expected post PCore initializations
+      const event = new CustomEvent('SdkConstellationReady', {});
       document.dispatchEvent(event);
     })
     .catch( e => {
@@ -518,7 +519,7 @@ export const authIsMainRedirect = () => {
   return !authIsEmbedded() && !usePopupForRestOfSession;
 };
 
-// Passsive update where just session storage is updated so can be used on a window refresh
+// Passive update where just session storage is updated so can be used on a window refresh
 export const authTokenUpdated = (tokenInfo ) => {
   sessionStorage.setItem("rsdk_TI", JSON.stringify(tokenInfo));
 };
@@ -527,20 +528,10 @@ export const logout = () => {
   return new Promise((resolve) => {
     const fnClearAndResolve = () => {
       clearAuthMgr();
-      // VRS: Perhaps the DOM manipulations are better done elsewhere or by introducing a SDKLoggedOut
-      //  event which might be fired here and an app page might do the below at that point
-      // Remove the <div id="pega-root"> that was created (if it exists)
-      //  with the original <div id="pega-here">
-      const thePegaRoot = document.getElementById('pega-root');
-      if (thePegaRoot) {
-        const thePegaHere = document.createElement('div');
-        thePegaHere.setAttribute('id', 'pega-here');
-        thePegaRoot.replaceWith(thePegaHere);
-        const theLogoutMsgDiv = document.createElement('div');
-        theLogoutMsgDiv.setAttribute('style', 'margin: 5px;');
-        theLogoutMsgDiv.innerHTML = `You are logged out. Refresh the page to log in again.`;
-        thePegaHere.appendChild(theLogoutMsgDiv);
-      }
+
+      const event = new Event('SdkLoggedOut');
+      document.dispatchEvent(event);
+
       resolve();
     };
     if( gbCustomAuth ) {
@@ -612,8 +603,8 @@ export const sdkSetAuthHeader = (authHeader) => {
 
 // Initiate a custom re-authorization.
 export const authCustomReauth = () => {
-  // Fire the SdkCustomReauth event to indicate a new authHeader needed (PCore.getAuthUtils.setAuthHeader? method
-  //  should be used to communicate the new token to Constellation JS Engine.
+  // Fire the SdkCustomReauth event to indicate a new authHeader is needed. Event listener should invoke sdkSetAuthHeader
+  //  to communicate the new token to sdk (and Constellation JS Engine)
   const event = new CustomEvent('SdkCustomReauth', { detail: sdkSetAuthHeader });
   document.dispatchEvent(event);
 };

@@ -165,11 +165,11 @@ test.describe('E2E test', () => {
 
     await page.locator('button:has-text("Next")').click();
 
-    details = page.locator('div[id="OneColumnTab"]');
+    assignment = page.locator('div[id="Assignment"]');
 
-    /** Testing the values present on Details section */
-    await expect(details.locator('tr:has-text("Luxury Product")')).toBeVisible();
-    await expect(details.locator('tr:has-text("Green Item")')).toBeVisible();
+    /** Testing the values present on Confirm screen */
+    await expect(assignment.locator('tr:has-text("Luxury Product")')).toBeVisible();
+    await expect(assignment.locator('tr:has-text("Green Item")')).toBeVisible();
 
     await page.locator('button:has-text("Previous")').click();
 

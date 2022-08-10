@@ -526,7 +526,7 @@ export default function EmbeddedTopLevel() {
       sdkSetAuthHeader( `Basic ${sB64}`);
     }
 
-    // Login and indicate this is an embedded scenario
+    // Login if needed, without doing an initial main window redirect
     loginIfNecessary("embedded", true);
 
   });

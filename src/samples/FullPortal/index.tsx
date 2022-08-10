@@ -140,7 +140,7 @@ export default function FullPortal() {
 
   document.addEventListener("SdkConfigAccessReady", () => {
 
-    // Login and indicate not an embedded scenario
+    // Login if needed, and fine to do an initial main window redirect
     loginIfNecessary("portal",false);
 
   });

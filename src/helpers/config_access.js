@@ -107,6 +107,10 @@ class ConfigAccess {
    */
    async selectPortal() {
 
+    if( SdkConfigAccess === null ) {
+      const config = this.getSdkConfig();
+    }
+
     if ((this.sdkConfig.serverConfig.appPortal !== "") &&
         (this.sdkConfig.serverConfig.appPortal !== undefined) ) {
           // use the specified portal
@@ -117,9 +121,12 @@ class ConfigAccess {
     const userAccessGroup = PCore.getEnvironmentInfo().getAccessGroup();
     const dataPageName = "D_OperatorAccessGroups";
     const serverUrl = this.getSdkConfigServer().infinityRestServerUrl;
+    const appAlias = this.sdkConfig.serverConfig.appAlias;
+    const appAliasPath = appAlias ? `/app/${appAlias}` : '';
 
+//    await fetch ( `${serverUrl}${appAliasPath}/api/application/v2/data_views/${dataPageName}`,
 
-    await fetch ( serverUrl + "/api/v1/data/" + dataPageName,
+    await fetch ( `${serverUrl}${appAliasPath}/api/v1/data/${dataPageName}`,
       {
         method: 'GET',
         headers: {

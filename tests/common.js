@@ -9,6 +9,12 @@ const Login = async (username, password, page) => {
   await page.locator('#submit_row .loginButton').click();
 };
 
+const getAttributes = async (element) => {
+  const attributes = await element.evaluate(async (ele) => ele.getAttributeNames());
+  return attributes;
+}
+
 module.exports = {
-  Login
+  Login,
+  getAttributes
 };

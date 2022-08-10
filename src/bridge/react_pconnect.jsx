@@ -518,8 +518,8 @@ const createPConnectComponent = (declarative=false) => {
 };
 
 
-// Move these into ConstellationReady so PCore is available
-document.addEventListener("ConstellationReady", () => {
+// Move these into SdkConstellationReady so PCore is available
+document.addEventListener("SdkConstellationReady", () => {
 
   // eslint-disable-next-line no-undef
   PCore.registerComponentCreator((c11nEnv, additionalProps = {}) => {

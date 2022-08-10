@@ -133,14 +133,14 @@ export default function FullPortal() {
   }
 
 
-  document.addEventListener("ConstellationReady", () => {
+  document.addEventListener("SdkConstellationReady", () => {
     // start the portal
     startPortal();
   });
 
   document.addEventListener("SdkConfigAccessReady", () => {
 
-    // Login and indicate not an embedded scenario
+    // Login if needed, and fine to do an initial main window redirect
     loginIfNecessary("portal",false);
 
   });
@@ -148,7 +148,7 @@ export default function FullPortal() {
   return (
     <div>
       {/* <h4>React SDK: /portal</h4> */}
-      <div id="pega-here"></div>
+      <div id="pega-root"></div>
     </div>)
 
 }

@@ -31,12 +31,12 @@ const forcePopupForReauths = ( bForce ) => {
   }
 };
 
-const setIsEmbedded = (bEmbedded ) => {
-  if( bEmbedded ) {
+const setNoInitialRedirect = (bNoInitialRedirect ) => {
+  if( bNoInitialRedirect ) {
     forcePopupForReauths(true);
-    sessionStorage.setItem("rsdk_embedded", "1");
+    sessionStorage.setItem("rsdk_noRedirect", "1");
   } else {
-    sessionStorage.removeItem("rsdk_embedded");
+    sessionStorage.removeItem("rsdk_noRedirect");
   }
 };
 
@@ -70,8 +70,8 @@ const clearAuthMgr = (bFullReauth=false) => {
   // Not removing the authMgr structure itself...as it can be leveraged on next login
 };
 
-export const authIsEmbedded = () => {
-  return sessionStorage.getItem("rsdk_embedded") === "1";
+export const authNoRedirect = () => {
+  return sessionStorage.getItem("rsdk_noRedirect") === "1";
 };
 
 /**
@@ -82,7 +82,7 @@ const initOAuth = (bInit) => {
   const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
   const sdkConfigServer = SdkConfigAccess.getSdkConfigServer();
   let pegaUrl = sdkConfigServer.infinityRestServerUrl;
-  const bIsEmbedded = authIsEmbedded();
+  const bNoInitialRedirect = authNoRedirect();
 
   // Construct default OAuth endpoints (if not explicitly specified)
   if (pegaUrl) {
@@ -115,12 +115,12 @@ const initOAuth = (bInit) => {
   sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
 
   const authConfig = {
-    clientId: bIsEmbedded ? sdkConfigAuth.mashupClientId : sdkConfigAuth.portalClientId,
+    clientId: bNoInitialRedirect ? sdkConfigAuth.mashupClientId : sdkConfigAuth.portalClientId,
     authorizeUri: sdkConfigAuth.authorize,
     tokenUri: sdkConfigAuth.token,
     revokeUri: sdkConfigAuth.revoke,
     userinfoUri: sdkConfigAuth.userinfo,
-    redirectUri: bIsEmbedded || usePopupForRestOfSession
+    redirectUri: bNoInitialRedirect || usePopupForRestOfSession
         ? sRedirectUri
         : `${window.location.origin}${window.location.pathname}`,
     authService: sdkConfigAuth.authService,
@@ -135,7 +135,7 @@ const initOAuth = (bInit) => {
   if( 'silentTimeout' in sdkConfigAuth ) {
     authConfig.silentTimeout = sdkConfigAuth.silentTimeout;
   }
-  if( bIsEmbedded ) {
+  if( bNoInitialRedirect ) {
     authConfig.userIdentifier = sdkConfigAuth.mashupUserIdentifier;
     authConfig.password = sdkConfigAuth.mashupPassword;
   }
@@ -216,7 +216,7 @@ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) =>
       tokenInfo,
       // Set whether we want constellation to try to do a full re-Auth or not ()
       // true doesn't seem to be working in SDK scenario so always passing false for now
-      popupReauth: false /* !authIsEmbedded() */,
+      popupReauth: false /* !authNoRedirect() */,
       client_id: authConfig.clientId,
       authentication_service: authConfig.authService,
       redirect_uri: authConfig.redirectUri,
@@ -272,7 +272,8 @@ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) =>
         }
       }
 
-      const event = new CustomEvent('ConstellationReady', {});
+      // Fire SdkConstellationReady event so bridge and app route can do expected post PCore initializations
+      const event = new CustomEvent('SdkConstellationReady', {});
       document.dispatchEvent(event);
     })
     .catch( e => {
@@ -417,10 +418,10 @@ export const login = (bFullReauth=false) => {
 
   const aMgr = getAuthMgr(!bFullReauth);
 
-  const bPortalLogin = !authIsEmbedded();
+  const bMainRedirect = !authNoRedirect();
 
-  // If portal will redirect to main page, otherwise will authorize in a popup window
-  if (bPortalLogin && !bFullReauth) {
+  // If initial main redirect is OK, redirect to main page, otherwise will authorize in a popup window
+  if (bMainRedirect && !bFullReauth) {
     // update redirect uri to be the root
     updateRedirectUri(aMgr, `${window.location.origin}${window.location.pathname}`);
     aMgr.loginRedirect();
@@ -469,16 +470,20 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
 
 /**
  * Silent or visible login based on login status
+ *  @param {string} appName - unique name for application route (will be used to clear an session storage for another route)
+ *  @param {boolean} noMainRedirect - avoid the initial main window redirect that happens in scenarios where it is OK to transition
+ *   away from the main page
+ *  @param {boolean} deferLogin - defer logging in (if not already authenticated)
  */
-export const loginIfNecessary = (appName, isEmbedded=false, deferLogin=false) => {
-  // If embedded status of page changed...clearAuthMgr
-  const currEmbedded = authIsEmbedded();
+export const loginIfNecessary = (appName, noMainRedirect=false, deferLogin=false) => {
+  // If no initial redirect status of page changed...clearAuthMgr
+  const currNoMainRedirect = authNoRedirect();
   const currAppName = sessionStorage.getItem("rsdk_appName");
-  if( appName !== currAppName || isEmbedded !== currEmbedded) {
+  if( appName !== currAppName || noMainRedirect !== currNoMainRedirect) {
     clearAuthMgr();
     sessionStorage.setItem("rsdk_appName", appName);
   }
-  setIsEmbedded(isEmbedded);
+  setNoInitialRedirect(noMainRedirect);
   // If custom auth no need to do any OAuth logic
   if( gbCustomAuth ) {
     if( !window.PCore ) {
@@ -515,10 +520,10 @@ export const getHomeUrl = () => {
 
 export const authIsMainRedirect = () => {
   // Even with main redirect, we want to use it only for the first login (so it doesn't wipe out any state or the reload)
-  return !authIsEmbedded() && !usePopupForRestOfSession;
+  return !authNoRedirect() && !usePopupForRestOfSession;
 };
 
-// Passsive update where just session storage is updated so can be used on a window refresh
+// Passive update where just session storage is updated so can be used on a window refresh
 export const authTokenUpdated = (tokenInfo ) => {
   sessionStorage.setItem("rsdk_TI", JSON.stringify(tokenInfo));
 };
@@ -527,20 +532,10 @@ export const logout = () => {
   return new Promise((resolve) => {
     const fnClearAndResolve = () => {
       clearAuthMgr();
-      // VRS: Perhaps the DOM manipulations are better done elsewhere or by introducing a SDKLoggedOut
-      //  event which might be fired here and an app page might do the below at that point
-      // Remove the <div id="pega-root"> that was created (if it exists)
-      //  with the original <div id="pega-here">
-      const thePegaRoot = document.getElementById('pega-root');
-      if (thePegaRoot) {
-        const thePegaHere = document.createElement('div');
-        thePegaHere.setAttribute('id', 'pega-here');
-        thePegaRoot.replaceWith(thePegaHere);
-        const theLogoutMsgDiv = document.createElement('div');
-        theLogoutMsgDiv.setAttribute('style', 'margin: 5px;');
-        theLogoutMsgDiv.innerHTML = `You are logged out. Refresh the page to log in again.`;
-        thePegaHere.appendChild(theLogoutMsgDiv);
-      }
+
+      const event = new Event('SdkLoggedOut');
+      document.dispatchEvent(event);
+
       resolve();
     };
     if( gbCustomAuth ) {
@@ -577,8 +572,7 @@ export const authUpdateTokens = (token) => {
 };
 
 
-// Initiate a full OAuth re-authorization.  Assume for embedded we want to do an external reauth and for
-//  non-Embedded we want to have constellation drive the re-auth UI experience
+// Initiate a full OAuth re-authorization (any refresh token has also expired).
 export const authFullReauth = () => {
   const bHandleHere = true; // Other alternative is to raise an event and have someone else handle it
 
@@ -612,8 +606,8 @@ export const sdkSetAuthHeader = (authHeader) => {
 
 // Initiate a custom re-authorization.
 export const authCustomReauth = () => {
-  // Fire the SdkCustomReauth event to indicate a new authHeader needed (PCore.getAuthUtils.setAuthHeader? method
-  //  should be used to communicate the new token to Constellation JS Engine.
+  // Fire the SdkCustomReauth event to indicate a new authHeader is needed. Event listener should invoke sdkSetAuthHeader
+  //  to communicate the new token to sdk (and Constellation JS Engine)
   const event = new CustomEvent('SdkCustomReauth', { detail: sdkSetAuthHeader });
   document.dispatchEvent(event);
 };

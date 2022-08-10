@@ -526,12 +526,12 @@ export default function EmbeddedTopLevel() {
       sdkSetAuthHeader( `Basic ${sB64}`);
     }
 
-    // Login and indicate this is an embedded scenario
+    // Login if needed, without doing an initial main window redirect
     loginIfNecessary("embedded", true);
 
   });
 
-  document.addEventListener("ConstellationReady", () => {
+  document.addEventListener("SdkConstellationReady", () => {
     // start the portal
     startMashup();
   });
@@ -556,7 +556,7 @@ export default function EmbeddedTopLevel() {
       <div className={classes.pegaPartInfo} id="pega-part-of-page">
             <div className={classes.pegaPartPega}>
                 {/* <root-container .pConn="${this.pConn}" ?displayOnlyFA="${true}" ?isMashup="${true}"></root-container> */}
-                <div id="pega-here"></div>
+                <div id="pega-root"></div>
                 <br />
                 <div className={classes.pegaPartText}> * - required fields</div>
             </div>

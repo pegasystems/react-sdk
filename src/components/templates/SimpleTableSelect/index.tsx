@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from "react";
 import ListView from '../ListView';
-// import SimpleTableManual from '../SimpleTable/SimpleTableManual';
+import SimpleTable from '../SimpleTable';
 
 import PromotedFilters from '../PromotedFilters';
 
@@ -28,8 +28,7 @@ export default function SimpleTableSelect(props) {
   const isMultiSelectMode = selectionMode === MULTI;
 
   if (isMultiSelectMode && renderMode === 'ReadOnly') {
-    // return <SimpleTableManual {...props} showLabel={propsToUse.showLabel} />;
-    return <div>This is SimpleTableManual</div>;
+    return <SimpleTable {...props} showLabel={propsToUse.showLabel} />;
   }
 
   const pageReference = pConn.getPageReference();

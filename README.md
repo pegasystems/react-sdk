@@ -197,7 +197,7 @@ You can test both **Portal** and **Embedded** scenarios by executing the followi
    ```
 
 
-> **NOTE**: These tests execute the sample **MediaCo** application.
+> **NOTE**: These tests execute the sample **MediaCo** application. For more information, see [Testing the MediaCo sample application](https://docs.pega.com/dx-sdks/testing-mediaco-sample-application).
 
 <br>
 

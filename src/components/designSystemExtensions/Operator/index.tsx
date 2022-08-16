@@ -160,15 +160,15 @@ export default function Operator(props) {
   // End of popover-related
 
   return <React.Fragment>
-      <a href='#'>
-        <TextField
+      <TextField
         defaultValue={caseOpName}
         label={caseOpLabel}
         onClick={showOperatorDetails}
         InputProps={{
-          readOnly: true
-        }} />
-      </a>
+          readOnly: true,
+          inputProps: {style: {cursor: 'pointer'}}
+        }}
+      />
       <br />
       {Utils.generateDateTime(caseTime, "DateTime-Since")}
 

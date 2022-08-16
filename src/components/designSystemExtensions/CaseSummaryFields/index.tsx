@@ -64,7 +64,8 @@ export default function CaseSummaryFields(props) {
                   value={field.config.value}
                   label={field.config.label}
                   InputProps={{
-                    readOnly: true
+                    readOnly: true,
+                    inputProps: {style: {cursor: 'pointer'}}
                   }}
               />
           </a>;
@@ -78,7 +79,8 @@ export default function CaseSummaryFields(props) {
                   value={field.config.value}
                   label={field.config.label}
                   InputProps={{
-                    readOnly: true
+                    readOnly: true,
+                    inputProps: {style: {cursor: 'pointer'}}
                   }}
               />
           </a>;

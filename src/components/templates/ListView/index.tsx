@@ -853,7 +853,8 @@ export default function ListView(props) {
     const checked = event?.target?.checked;
     getPConnect()?.getListActions()?.setSelectedRows([{'pyGUID': value, $selected: checked}]);
   };
-
+  console.log('selectionMode', selectionMode);
+  console.log('listView', props);
   return (
     <>
     { arColumns && arColumns.length > 0 &&
@@ -944,7 +945,7 @@ export default function ListView(props) {
           <Table>
             <TableHead>
               <TableRow>
-                {selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI && <TableCell></TableCell>}
+                {(selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) && <TableCell></TableCell>}
                 {arColumns.map((column) => {
                   return (
                     <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>

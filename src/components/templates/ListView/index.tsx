@@ -853,8 +853,7 @@ export default function ListView(props) {
     const checked = event?.target?.checked;
     getPConnect()?.getListActions()?.setSelectedRows([{'pyGUID': value, $selected: checked}]);
   };
-  console.log('selectionMode', selectionMode);
-  console.log('listView', props);
+
   return (
     <>
     { arColumns && arColumns.length > 0 &&

@@ -9,12 +9,15 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import { buildFieldsForTable } from './helpers';
+import FieldGroupTemplate from '../FieldGroupTemplate';
 
 const useStyles = makeStyles((/* theme */) => ({
   label: {
     margin: "8px 16px"
   },
 }));
+
+declare const PCore: any;
 
 export default function SimpleTable(props) {
   const classes = useStyles();
@@ -24,8 +27,20 @@ export default function SimpleTable(props) {
     children,
     renderMode,
     presets,
-    label
+    label,
+    multiRecordDisplayAs
   } = props;
+
+  let { contextClass } = props;
+  if(!contextClass){
+    let listName = getPConnect().getComponentConfig().referenceList;
+    listName = PCore.getAnnotationUtils().getPropertyName(listName);
+    contextClass = getPConnect().getFieldMetadata(listName)?.pageClass;
+  }
+  if(multiRecordDisplayAs === "fieldGroup") {
+    const fieldGroupProps = {...props, contextClass};
+    return <FieldGroupTemplate {...fieldGroupProps}/>
+  }
 
   const resolvedFields = children?.[0]?.children || presets?.[0].children?.[0].children;
   // NOTE: props has each child.config with datasource and value undefined

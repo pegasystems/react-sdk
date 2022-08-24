@@ -944,7 +944,7 @@ export default function ListView(props) {
           <Table>
             <TableHead>
               <TableRow>
-                {selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI && <TableCell></TableCell>}
+                {(selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) && <TableCell></TableCell>}
                 {arColumns.map((column) => {
                   return (
                     <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>

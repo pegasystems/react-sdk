@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,12 +9,13 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import { buildFieldsForTable } from './helpers';
+import { getDataPage } from '../../../helpers/data_page';
 import FieldGroupTemplate from '../FieldGroupTemplate';
 
 const useStyles = makeStyles((/* theme */) => ({
   label: {
-    margin: "8px 16px"
-  },
+    margin: '8px 16px'
+  }
 }));
 
 declare const PCore: any;
@@ -28,8 +29,19 @@ export default function SimpleTable(props) {
     renderMode,
     presets,
     label,
+    dataPageName,
     multiRecordDisplayAs
   } = props;
+
+  const [rowData, setRowData] = useState([]);
+
+  // Getting current context
+  const context = getPConnect().getContextName();
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    generateRowsData();
+  }, []);
 
   let { contextClass } = props;
   if(!contextClass){
@@ -57,7 +69,8 @@ export default function SimpleTable(props) {
   //  Neither of these appear in the resolved props
 
   const rawConfig = rawMetadata?.config;
-  const rawFields =  rawConfig?.children?.[0]?.children || rawConfig?.presets?.[0].children?.[0]?.children;
+  const rawFields =
+    rawConfig?.children?.[0]?.children || rawConfig?.presets?.[0].children?.[0]?.children;
   // At this point, fields has resolvedFields and rawFields we can use
 
   // console.log("SimpleTable resolvedFields:");
@@ -96,7 +109,7 @@ export default function SimpleTable(props) {
 
   // end of from Nebula
 
-  const displayedColumns = fieldDefs.map( (field) => {
+  const displayedColumns = fieldDefs.map(field => {
     return field.name ? field.name : field.cellRenderer;
   });
 
@@ -107,25 +120,21 @@ export default function SimpleTable(props) {
   //  from from the fieldDefs. This "name" is the value that
   //  we'll share to connect things together in the table.
 
-  let processedFields = [];
-
-  processedFields = resolvedFields.map( (field, i) => {
-    field.config["name"] = displayedColumns[i];  // .config["value"].replace(/ ./g,"_");   // replace space dot with underscore
+  const processedFields = resolvedFields.map((field, i) => {
+    field.config['name'] = displayedColumns[i]; // .config["value"].replace(/ ./g,"_");   // replace space dot with underscore
     return field;
-  })
+  });
 
   // console.log("SimpleTable processedFields:");
   // console.log(processedFields);
 
-
   // return the value that should be shown as the contents for the given row data
   //  of the given row field
-  function getRowValue( inRowData: Object, inColKey: string, inRowField: any  ): any {
-
+  function getRowValue(inRowData: Object, inColKey: string, inRowField: any): any {
     // See what data (if any) we have to display
     const refKeys: Array<string> = inColKey.split('.');
     let valBuilder = inRowData;
-    for ( const key of refKeys) {
+    for (const key of refKeys) {
       valBuilder = valBuilder[key];
     }
 
@@ -133,22 +142,21 @@ export default function SimpleTable(props) {
       // Show the requested data as a readOnly entry in the table.
       return valBuilder;
     } else {
-      const thePlaceholder = inRowField?.config?.placeholder ? inRowField.config.placeholder : "";
-      const theEditComponent = inRowField.type ? inRowField.type : "not specified";
+      const thePlaceholder = inRowField?.config?.placeholder ? inRowField.config.placeholder : '';
+      const theEditComponent = inRowField.type ? inRowField.type : 'not specified';
       // For, display (readonly), the initial value (if there is one - otherwise, try placeholder)
       //  and which component should be used for editing
-      return `${ (valBuilder !== "") ? valBuilder: thePlaceholder} (edit with ${theEditComponent})`;
+      return `${valBuilder !== '' ? valBuilder : thePlaceholder} (edit with ${theEditComponent})`;
     }
   }
 
-
   // return the field from the incoming fields array that has "name" of
   //  requested field
-  function getFieldFromFieldArray ( inFieldName: string, inFieldArray: Array<any>) : Object {
+  function getFieldFromFieldArray(inFieldName: string, inFieldArray: Array<any>): Object {
     let objRet = {};
 
     for (const field of inFieldArray) {
-      if ( field?.config?.name === inFieldName) {
+      if (field?.config?.name === inFieldName) {
         objRet = field;
         break;
       }
@@ -157,28 +165,31 @@ export default function SimpleTable(props) {
     return objRet;
   }
 
+  const formatRowsData = data => {
+    return data.map(item => {
+      return displayedColumns.reduce((dataForRow, colKey) => {
+        const theProcessedField = getFieldFromFieldArray(colKey, processedFields);
+        dataForRow[colKey] = getRowValue(item, colKey, theProcessedField);
 
-  // The referenceList prop has the JSON data for each row to be displayed
-  //  in the table. So, iterate over referenceList to create the dataRows that
-  //  we're using as the table's dataSource
+        return dataForRow;
+      }, {});
+    });
+  };
 
-  // re-initialize rowData each time we re-build it
-  const rowData: Array<Object> = [];
-
-  for (const row of referenceList) {
-    const dataForRow: Object = {};
-
-    for ( const col of displayedColumns ) {
-      const colKey: string = col;
-
-      const theProcessedField = getFieldFromFieldArray(colKey, processedFields);
-
-      const theVal = getRowValue(row, colKey, theProcessedField);
-
-      dataForRow[colKey] = theVal;
+  function generateRowsData() {
+    // if dataPageName property value exists then make a datapage fetch call and get the list of data.
+    if (dataPageName) {
+      getDataPage(dataPageName, context).then(listData => {
+        const data = formatRowsData(listData);
+        setRowData(data);
+      });
+    } else {
+      // The referenceList prop has the JSON data for each row to be displayed
+      //  in the table. So, iterate over referenceList to create the dataRows that
+      //  we're using as the table's dataSource
+      const data = formatRowsData(referenceList);
+      setRowData(data);
     }
-
-    rowData.push(dataForRow);
   }
 
   // These are the data structures referred to in the html file.
@@ -205,41 +216,49 @@ export default function SimpleTable(props) {
 
   // Using string literal to force the line break
   const tempPreamble = `SimpleTable component not complete in the React SDK. This is a work in progress...
-    ${ requestedReadOnlyMode ? 'Table is readOnly' : 'You have requested an editable table which is not yet supported. Displaying in a modified readOnly mode.' }`;
-
+    ${
+      requestedReadOnlyMode
+        ? 'Table is readOnly'
+        : 'You have requested an editable table which is not yet supported. Displaying in a modified readOnly mode.'
+    }`;
 
   return (
     <React.Fragment>
-      {!requestedReadOnlyMode && <Typography variant='body1' style={{whiteSpace: 'pre-line'}}>
-        {tempPreamble}
-      </Typography>}
-      <TableContainer component={Paper} style={{margin: "4px 0px"}}>
+      {!requestedReadOnlyMode && (
+        <Typography variant='body1' style={{ whiteSpace: 'pre-line' }}>
+          {tempPreamble}
+        </Typography>
+      )}
+      <TableContainer component={Paper} style={{ margin: '4px 0px' }}>
         {label && <h3 className={classes.label}>{label}</h3>}
         <Table>
           <TableHead>
             <TableRow>
               {processedFields.map((field: any, index) => {
-                return <TableCell key={`head-${displayedColumns[index]}`}>{field.config.label}</TableCell>
+                return (
+                  <TableCell key={`head-${displayedColumns[index]}`}>
+                    {field.config.label}
+                  </TableCell>
+                );
               })}
             </TableRow>
           </TableHead>
           <TableBody>
             {rowData.map((row, index) => {
               const theKey = `row-${index}`;
-              return <TableRow key={theKey}>
-                {displayedColumns.map((colKey) => {
-                  const theColKey = `data-${index}-${colKey}`;
-                  return <TableCell key={theColKey}>
-                    {row[colKey]}
-                  </TableCell>
-                })}
-              </TableRow>
+              return (
+                <TableRow key={theKey}>
+                  {displayedColumns.map(colKey => {
+                    const theColKey = `data-${index}-${colKey}`;
+                    return <TableCell key={theColKey}>{row[colKey]}</TableCell>;
+                  })}
+                </TableRow>
+              );
             })}
           </TableBody>
         </Table>
-        {rowData && rowData.length === 0 && <div className="no-records">No records found.</div>}
+        {rowData && rowData.length === 0 && <div className='no-records'>No records found.</div>}
       </TableContainer>
-
     </React.Fragment>
   );
 }

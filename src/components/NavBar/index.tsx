@@ -294,7 +294,7 @@ export default function NavBar(props) {
           {bShowCaseTypes ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
       </List>
-      <Collapse in={bShowCaseTypes && open} timeout="auto" unmountOnExit>
+      <Collapse in={bShowCaseTypes && open} timeout="auto" unmountOnExit className='scrollable'>
         <List component="div" disablePadding>
           {
             caseTypes.map(caseType => (
@@ -330,7 +330,7 @@ export default function NavBar(props) {
         }
       </List>
       <Divider />
-      <List>
+      <List className='marginTopAuto'>
         <>
           <ListItem onClick={navPanelOperatorButtonClick}>
             <ListItemIcon>

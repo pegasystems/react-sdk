@@ -11,7 +11,7 @@
     .psdk-nav-logo {
         /* override vertical-align coming in from Bootstrap "reboot" */
         vertical-align: baseline;
-        
+
         width: 3.5rem;
         margin-left: 0.5rem;
         margin-right: 0.5rem;
@@ -62,7 +62,7 @@
         white-space: nowrap;
         transition: width var(--transition-medium) var(--natural-ease);
         will-change: width;
-        
+
     }
 
     .psdk-appshell-nav:hover {
@@ -149,7 +149,7 @@
         min-width: 2.5rem;
         min-height: 2.5rem;
         max-width: 2.5rem;
-        max-height: 2.5rem; 
+        max-height: 2.5rem;
         border-radius: 50%;
         justify-content: center;
         align-items: center;
@@ -159,4 +159,12 @@
         color: white;
         font-weight: normal;
         font-size: 1rem;
+    }
+
+    .marginTopAuto {
+        margin-top: auto !important;
+    }
+
+    .scrollable {
+        overflow-y: scroll !important;
     }

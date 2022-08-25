@@ -39,19 +39,21 @@ export default function SimpleTable(props) {
   const context = getPConnect().getContextName();
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    generateRowsData();
+    if (multiRecordDisplayAs === 'table') {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      generateRowsData();
+    }
   }, []);
 
   let { contextClass } = props;
-  if(!contextClass){
+  if (!contextClass) {
     let listName = getPConnect().getComponentConfig().referenceList;
     listName = PCore.getAnnotationUtils().getPropertyName(listName);
     contextClass = getPConnect().getFieldMetadata(listName)?.pageClass;
   }
-  if(multiRecordDisplayAs === "fieldGroup") {
-    const fieldGroupProps = {...props, contextClass};
-    return <FieldGroupTemplate {...fieldGroupProps}/>
+  if (multiRecordDisplayAs === 'fieldGroup') {
+    const fieldGroupProps = { ...props, contextClass };
+    return <FieldGroupTemplate {...fieldGroupProps} />;
   }
 
   const resolvedFields = children?.[0]?.children || presets?.[0].children?.[0].children;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Typography } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,16 +11,29 @@ import { makeStyles } from '@material-ui/core/styles';
 import { buildFieldsForTable } from './helpers';
 import { getDataPage } from '../../../helpers/data_page';
 import FieldGroupTemplate from '../FieldGroupTemplate';
+import Link from '@material-ui/core/Link';
+import { getReferenceList, buildView } from '../../../helpers/field-group-utils';
+import { TextField } from "@material-ui/core";
+import { Utils } from '../../../helpers/utils';
+
 
 const useStyles = makeStyles((/* theme */) => ({
   label: {
     margin: '8px 16px'
-  }
+  },
+  header: {
+    background: "#f5f5f5"
+  },
+  tableCell: {
+    borderRight: "1px solid lightgray",
+    padding: "8px"
+  },
 }));
 
 declare const PCore: any;
 
 export default function SimpleTable(props) {
+  console.log('SimpleTable props', props);
   const classes = useStyles();
   const {
     getPConnect,
@@ -32,16 +45,21 @@ export default function SimpleTable(props) {
     dataPageName,
     multiRecordDisplayAs
   } = props;
-
+  const pConn = getPConnect();
   const [rowData, setRowData] = useState([]);
 
   // Getting current context
   const context = getPConnect().getContextName();
-
+  const resolvedList = getReferenceList(pConn);
+  const pageReference = `${pConn.getPageReference()}${resolvedList}`;
+  pConn.setReferenceList(resolvedList);
+  const menuIconOverride$ = Utils.getImageSrc('trash', PCore.getAssetLoader().getStaticServerUrl());
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    generateRowsData();
-  }, []);
+    if(multiRecordDisplayAs !== "fieldGroup") {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      generateRowsData();
+    }
+  }, [referenceList]);
 
   let { contextClass } = props;
   if(!contextClass){
@@ -87,15 +105,7 @@ export default function SimpleTable(props) {
 
   const requestedReadOnlyMode = renderMode === 'ReadOnly';
   let readOnlyMode = renderMode === 'ReadOnly';
-
-  // TEMPORARILY show all tables as read only
-  if (!readOnlyMode) {
-    // eslint-disable-next-line no-console
-    console.warn(
-      `SimpleTable: currently not editable. Displaying requested editable table as READ ONLY!`
-    );
-    readOnlyMode = true;
-  }
+  const editableMode = renderMode === 'Editable';
 
   // Nebula has other handling for isReadOnlyMode but has Cosmos-specific code
   //  so ignoring that for now...
@@ -143,10 +153,9 @@ export default function SimpleTable(props) {
       return valBuilder;
     } else {
       const thePlaceholder = inRowField?.config?.placeholder ? inRowField.config.placeholder : '';
-      const theEditComponent = inRowField.type ? inRowField.type : 'not specified';
       // For, display (readonly), the initial value (if there is one - otherwise, try placeholder)
       //  and which component should be used for editing
-      return `${valBuilder !== '' ? valBuilder : thePlaceholder} (edit with ${theEditComponent})`;
+      return valBuilder;
     }
   }
 
@@ -187,7 +196,17 @@ export default function SimpleTable(props) {
       // The referenceList prop has the JSON data for each row to be displayed
       //  in the table. So, iterate over referenceList to create the dataRows that
       //  we're using as the table's dataSource
-      const data = formatRowsData(referenceList);
+      let data: any = [];
+      for (const row of referenceList) {
+        const dataForRow: Object = {};
+        for ( const col of displayedColumns ) {
+          const colKey: string = col;
+          const theProcessedField = getFieldFromFieldArray(colKey, processedFields);
+          const theVal = getRowValue(row, colKey, theProcessedField);
+          dataForRow[colKey] = theVal ? theVal : "";
+        }
+        data.push(dataForRow);
+      }
       setRowData(data);
     }
   }
@@ -214,30 +233,32 @@ export default function SimpleTable(props) {
   // console.log(`SimpleTable rowData (${rowData.length} row(s)):`);
   // console.log(JSON.stringify(rowData));
 
-  // Using string literal to force the line break
-  const tempPreamble = `SimpleTable component not complete in the React SDK. This is a work in progress...
-    ${
-      requestedReadOnlyMode
-        ? 'Table is readOnly'
-        : 'You have requested an editable table which is not yet supported. Displaying in a modified readOnly mode.'
-    }`;
+  function handleInputChange(event, index) {
+    const { name, value } = event.target;
+    const list: any = [...rowData];
+    list[index][name] = value;
+    setRowData(list);
+  }
+
+  const addRecord = () => {
+    pConn.getListActions().insert({ classID: contextClass }, referenceList.length, pageReference);
+  };
+
+  const deleteRecord = index => {
+    pConn.getListActions().deleteEntry(index, pageReference);
+  };
 
   return (
     <React.Fragment>
-      {!requestedReadOnlyMode && (
-        <Typography variant='body1' style={{ whiteSpace: 'pre-line' }}>
-          {tempPreamble}
-        </Typography>
-      )}
       <TableContainer component={Paper} style={{ margin: '4px 0px' }}>
         {label && <h3 className={classes.label}>{label}</h3>}
         <Table>
-          <TableHead>
+          <TableHead className={classes.header}>
             <TableRow>
-              {processedFields.map((field: any, index) => {
+              {fieldDefs.map((field: any, index) => {
                 return (
-                  <TableCell key={`head-${displayedColumns[index]}`}>
-                    {field.config.label}
+                  <TableCell key={`head-${displayedColumns[index]}`} className={classes.tableCell}>
+                    {field.label}
                   </TableCell>
                 );
               })}
@@ -250,7 +271,19 @@ export default function SimpleTable(props) {
                 <TableRow key={theKey}>
                   {displayedColumns.map(colKey => {
                     const theColKey = `data-${index}-${colKey}`;
-                    return <TableCell key={theColKey}>{row[colKey]}</TableCell>;
+                    return <TableCell key={theColKey} className={classes.tableCell}>
+                      {editableMode ? (
+                        colKey == 'DeleteIcon' ?
+                        <button type='button' className='psdk-utility-button' onClick={() => deleteRecord(index)}>
+                          <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$}></img>
+                        </button>
+                        :
+                        <TextField name={colKey} onChange={(e) => handleInputChange(e, index)} fullWidth
+                          variant="outlined" value={row[colKey] ? row[colKey]: ''} placeholder="" InputProps={{
+                          inputProps: {style: {height: '18px', padding: '8px'}}}}
+                        />
+                      ) : (row[colKey])}
+                    </TableCell>;
                   })}
                 </TableRow>
               );
@@ -259,6 +292,13 @@ export default function SimpleTable(props) {
         </Table>
         {rowData && rowData.length === 0 && <div className='no-records'>No records found.</div>}
       </TableContainer>
+      {editableMode && (
+        <div className="add-button">
+          <Link style={{ cursor: 'pointer' }} onClick={addRecord}>
+            + Add
+          </Link>
+        </div>
+      )}
     </React.Fragment>
   );
 }

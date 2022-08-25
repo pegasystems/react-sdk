@@ -12,7 +12,7 @@ import { buildFieldsForTable } from './helpers';
 import { getDataPage } from '../../../helpers/data_page';
 import FieldGroupTemplate from '../FieldGroupTemplate';
 import Link from '@material-ui/core/Link';
-import { getReferenceList, buildView } from '../../../helpers/field-group-utils';
+import { getReferenceList } from '../../../helpers/field-group-utils';
 import { TextField } from "@material-ui/core";
 import { Utils } from '../../../helpers/utils';
 
@@ -33,7 +33,6 @@ const useStyles = makeStyles((/* theme */) => ({
 declare const PCore: any;
 
 export default function SimpleTable(props) {
-  console.log('SimpleTable props', props);
   const classes = useStyles();
   const {
     getPConnect,
@@ -43,8 +42,7 @@ export default function SimpleTable(props) {
     presets,
     label,
     dataPageName,
-    multiRecordDisplayAs,
-    lookForChildInConfig
+    multiRecordDisplayAs
   } = props;
   const pConn = getPConnect();
   const [rowData, setRowData] = useState([]);
@@ -249,6 +247,14 @@ export default function SimpleTable(props) {
     pConn.getListActions().deleteEntry(index, pageReference);
   };
 
+  function blurEvent(event, index) {
+    const { name, value } = event.target;
+    const payload = {
+      [name]: value
+    };
+    pConn.getListActions().update(payload, index);
+  }
+
   return (
     <React.Fragment>
       <TableContainer component={Paper} style={{ margin: '4px 0px' }}>
@@ -279,7 +285,7 @@ export default function SimpleTable(props) {
                           <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$}></img>
                         </button>
                         :
-                        <TextField name={colKey} onChange={(e) => handleInputChange(e, index)} fullWidth
+                        <TextField name={colKey} onChange={(e) => handleInputChange(e, index)} onBlur={(e) => blurEvent(e, index)} fullWidth
                           variant="outlined" value={row[colKey] ? row[colKey]: ''} placeholder="" InputProps={{
                           inputProps: {style: {height: '18px', padding: '8px'}}}}
                         />

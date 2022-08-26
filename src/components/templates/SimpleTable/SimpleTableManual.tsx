@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { Typography } from '@material-ui/core';
+/* eslint-disable no-nested-ternary */
+import React, { useEffect, useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -102,8 +102,7 @@ export default function SimpleTable(props) {
   //   getPConnect()
   // );
 
-  const requestedReadOnlyMode = renderMode === 'ReadOnly';
-  let readOnlyMode = renderMode === 'ReadOnly';
+  const readOnlyMode = renderMode === 'ReadOnly';
   const editableMode = renderMode === 'Editable';
 
   // Nebula has other handling for isReadOnlyMode but has Cosmos-specific code
@@ -129,55 +128,30 @@ export default function SimpleTable(props) {
   //  from from the fieldDefs. This "name" is the value that
   //  we'll share to connect things together in the table.
 
-  const processedFields = resolvedFields.map((field, i) => {
-    field.config['name'] = displayedColumns[i]; // .config["value"].replace(/ ./g,"_");   // replace space dot with underscore
-    return field;
-  });
+  // const processedFields = resolvedFields.map((field, i) => {
+  //   field.config['name'] = displayedColumns[i]; // .config["value"].replace(/ ./g,"_");   // replace space dot with underscore
+  //   return field;
+  // });
 
   // console.log("SimpleTable processedFields:");
   // console.log(processedFields);
 
   // return the value that should be shown as the contents for the given row data
   //  of the given row field
-  function getRowValue(inRowData: Object, inColKey: string, inRowField: any): any {
+  function getRowValue(inRowData: Object, inColKey: string): any {
     // See what data (if any) we have to display
     const refKeys: Array<string> = inColKey.split('.');
     let valBuilder = inRowData;
     for (const key of refKeys) {
       valBuilder = valBuilder[key];
     }
-
-    if (requestedReadOnlyMode || inRowField?.config?.readOnly) {
-      // Show the requested data as a readOnly entry in the table.
-      return valBuilder;
-    } else {
-      const thePlaceholder = inRowField?.config?.placeholder ? inRowField.config.placeholder : '';
-      // For, display (readonly), the initial value (if there is one - otherwise, try placeholder)
-      //  and which component should be used for editing
-      return valBuilder;
-    }
-  }
-
-  // return the field from the incoming fields array that has "name" of
-  //  requested field
-  function getFieldFromFieldArray(inFieldName: string, inFieldArray: Array<any>): Object {
-    let objRet = {};
-
-    for (const field of inFieldArray) {
-      if (field?.config?.name === inFieldName) {
-        objRet = field;
-        break;
-      }
-    }
-
-    return objRet;
+    return valBuilder;
   }
 
   const formatRowsData = data => {
     return data.map(item => {
       return displayedColumns.reduce((dataForRow, colKey) => {
-        const theProcessedField = getFieldFromFieldArray(colKey, processedFields);
-        dataForRow[colKey] = getRowValue(item, colKey, theProcessedField);
+        dataForRow[colKey] = getRowValue(item, colKey);
 
         return dataForRow;
       }, {});
@@ -195,14 +169,13 @@ export default function SimpleTable(props) {
       // The referenceList prop has the JSON data for each row to be displayed
       //  in the table. So, iterate over referenceList to create the dataRows that
       //  we're using as the table's dataSource
-      let data: any = [];
+      const data: any = [];
       for (const row of referenceList) {
         const dataForRow: Object = {};
         for ( const col of displayedColumns ) {
           const colKey: string = col;
-          const theProcessedField = getFieldFromFieldArray(colKey, processedFields);
-          const theVal = getRowValue(row, colKey, theProcessedField);
-          dataForRow[colKey] = theVal ? theVal : "";
+          const theVal = getRowValue(row, colKey);
+          dataForRow[colKey] = theVal || "";
         }
         data.push(dataForRow);
       }
@@ -279,8 +252,8 @@ export default function SimpleTable(props) {
                   {displayedColumns.map(colKey => {
                     const theColKey = `data-${index}-${colKey}`;
                     return <TableCell key={theColKey} className={classes.tableCell}>
-                      {editableMode ? (
-                        colKey == 'DeleteIcon' ?
+                      {editableMode ?
+                      (colKey === 'DeleteIcon' ?
                         <button type='button' className='psdk-utility-button' onClick={() => deleteRecord(index)}>
                           <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$}></img>
                         </button>
@@ -300,7 +273,7 @@ export default function SimpleTable(props) {
         {rowData && rowData.length === 0 && <div className='no-records'>No records found.</div>}
       </TableContainer>
       {editableMode && (
-        <div className="add-button">
+        <div style={{fontSize: '1rem'}}>
           <Link style={{ cursor: 'pointer' }} onClick={addRecord}>
             + Add
           </Link>

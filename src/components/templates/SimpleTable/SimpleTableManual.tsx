@@ -15,7 +15,8 @@ import Link from '@material-ui/core/Link';
 import { getReferenceList } from '../../../helpers/field-group-utils';
 import { TextField } from "@material-ui/core";
 import { Utils } from '../../../helpers/utils';
-
+import { createElement } from 'react';
+import createPConnectComponent from '../../../../src/bridge/react_pconnect';
 
 const useStyles = makeStyles((/* theme */) => ({
   label: {
@@ -46,7 +47,7 @@ export default function SimpleTable(props) {
   } = props;
   const pConn = getPConnect();
   const [rowData, setRowData] = useState([]);
-
+  console.log('SimpleTableManual', props);
   // Getting current context
   const context = getPConnect().getContextName();
   const resolvedList = getReferenceList(pConn);
@@ -228,7 +229,133 @@ export default function SimpleTable(props) {
     pConn.getListActions().update(payload, index);
   }
 
+  // const buildView = (pConn, index, viewConfigPath) => {
+  //   const context = pConn.getContextName();
+  //   const referenceList = getReferenceList(pConn);
+
+  //   const isDatapage = referenceList.startsWith('D_');
+  //   const pageReference = isDatapage
+  //     ? `${referenceList}[${index}]`
+  //     : `${pConn.getPageReference()}${referenceList.substring(
+  //         referenceList.lastIndexOf('.')
+  //       )}[${index}]`;
+  //   const meta = viewConfigPath
+  //     ? pConn.getRawMetadata().children[0].children[0]
+  //     : pConn.getRawMetadata().children[0];
+  //   const config = {
+  //     meta,
+  //     options: {
+  //       context,
+  //       pageReference,
+  //       referenceList,
+  //       hasForm: true
+  //     }
+  //   };
+  //   // eslint-disable-next-line no-undef
+  //   const view = PCore.createPConnect(config);
+  //   return createElement(createPConnectComponent(), view);
+  // };
+  // function Filters({ filters, transientItemID, localeReference }) {
+  //   return filters.map((filter, index) => {
+  //     const filterClone = { ...filter };
+  //     // convert any field which is not supported to TextInput and delete the placeholder as it may contain placeholder specific to original type.
+  //     if (!SUPPORTED_TYPES_IN_PROMOTED_FILTERS.includes(filterClone.type)) {
+  //       filterClone.type = 'TextInput';
+  //       delete filterClone.config.placeholder;
+  //     }
+  //     filterClone.config.contextName = transientItemID;
+  //     filterClone.config.readOnly = false;
+  //     filterClone.config.context = transientItemID;
+  //     filterClone.config.localeReference = localeReference;
+  //     const c11nEnv = PCore.createPConnect({
+  //       meta: filterClone,
+  //       options: {
+  //         hasForm: true,
+  //         contextName: transientItemID
+  //       }
+  //     });
+
+  //     // eslint-disable-next-line react/no-array-index-key
+  //     return <React.Fragment key={index}>{createElement(createPConnectComponent(), c11nEnv)}</React.Fragment>;
+  //   });
+  // }
+  const elementData: any = [];
+  referenceList.forEach((element, index) => {
+    const data: any = [];
+    const child = children[0].children;
+    child.forEach(item => {
+      const context = pConn.getContextName();
+      const referenceList = getReferenceList(pConn);
+      const isDatapage = referenceList.startsWith('D_');
+      const pageReference = isDatapage ? `${referenceList}[${index}]` : `${pConn.getPageReference()}${referenceList.substring(referenceList.lastIndexOf('.'))}[${index}]`;
+      const config = {
+        meta: item,
+        options: {
+          context,
+          pageReference,
+          referenceList,
+          hasForm: true
+        }
+      };
+      // eslint-disable-next-line no-undef
+      const view = PCore.createPConnect(config);
+      data.push(createElement(createPConnectComponent(), view));
+    });
+    elementData.push(data);
+  });
+  console.log('elementData', elementData);
   return (
+    // <React.Fragment>
+    //   <TableContainer component={Paper} style={{ margin: '4px 0px' }}>
+    //     {label && <h3 className={classes.label}>{label}</h3>}
+    //     <Table>
+    //       <TableHead className={classes.header}>
+    //         <TableRow>
+    //           {fieldDefs.map((field: any, index) => {
+    //             return (
+    //               <TableCell key={`head-${displayedColumns[index]}`} className={classes.tableCell}>
+    //                 {field.label}
+    //               </TableCell>
+    //             );
+    //           })}
+    //         </TableRow>
+    //       </TableHead>
+    //       <TableBody>
+    //         {rowData.map((row, index) => {
+    //           const theKey = `row-${index}`;
+    //           return (
+    //             <TableRow key={theKey}>
+    //               {displayedColumns.map(colKey => {
+    //                 const theColKey = `data-${index}-${colKey}`;
+    //                 return <TableCell key={theColKey} className={classes.tableCell}>
+    //                   {editableMode ?
+    //                   (colKey === 'DeleteIcon' ?
+    //                     <button type='button' className='psdk-utility-button' onClick={() => deleteRecord(index)}>
+    //                       <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$}></img>
+    //                     </button>
+    //                     :
+    //                     <TextField name={colKey} onChange={(e) => handleInputChange(e, index)} onBlur={(e) => blurEvent(e, index)} fullWidth
+    //                       variant="outlined" value={row[colKey] ? row[colKey]: ''} placeholder="" InputProps={{
+    //                       inputProps: {style: {height: '18px', padding: '8px'}}}}
+    //                     />
+    //                   ) : (row[colKey])}
+    //                 </TableCell>;
+    //               })}
+    //             </TableRow>
+    //           );
+    //         })}
+    //       </TableBody>
+    //     </Table>
+    //     {rowData && rowData.length === 0 && <div className='no-records'>No records found.</div>}
+    //   </TableContainer>
+    //   {editableMode && (
+    //     <div style={{fontSize: '1rem'}}>
+    //       <Link style={{ cursor: 'pointer' }} onClick={addRecord}>
+    //         + Add
+    //       </Link>
+    //     </div>
+    //   )}
+    // </React.Fragment>
     <React.Fragment>
       <TableContainer component={Paper} style={{ margin: '4px 0px' }}>
         {label && <h3 className={classes.label}>{label}</h3>}
@@ -245,28 +372,23 @@ export default function SimpleTable(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rowData.map((row, index) => {
+            {elementData.map((row, index) => {
               const theKey = `row-${index}`;
               return (
                 <TableRow key={theKey}>
-                  {displayedColumns.map(colKey => {
-                    const theColKey = `data-${index}-${colKey}`;
+                  {row.map((item, childIndex) => {
+                    const theColKey = `data-${index}-${childIndex}`;
                     return <TableCell key={theColKey} className={classes.tableCell}>
-                      {editableMode ?
-                      (colKey === 'DeleteIcon' ?
-                        <button type='button' className='psdk-utility-button' onClick={() => deleteRecord(index)}>
-                          <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$}></img>
-                        </button>
-                        :
-                        <TextField name={colKey} onChange={(e) => handleInputChange(e, index)} onBlur={(e) => blurEvent(e, index)} fullWidth
-                          variant="outlined" value={row[colKey] ? row[colKey]: ''} placeholder="" InputProps={{
-                          inputProps: {style: {height: '18px', padding: '8px'}}}}
-                        />
-                      ) : (row[colKey])}
-                    </TableCell>;
+                      {item}
+                    </TableCell>
                   })}
+                  <TableCell>
+                    <button type='button' className='psdk-utility-button' onClick={() => deleteRecord(index)}>
+                      <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$}></img>
+                    </button>
+                  </TableCell>
                 </TableRow>
-              );
+              )
             })}
           </TableBody>
         </Table>

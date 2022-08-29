@@ -255,7 +255,9 @@ export default function SimpleTable(props) {
                 <TableRow key={theKey}>
                   {displayedColumns.map(colKey => {
                     const theColKey = `data-${index}-${colKey}`;
-                    return <TableCell key={theColKey} className={classes.tableCell}>{row[colKey]}</TableCell>;
+                    return <TableCell key={theColKey} className={classes.tableCell}>
+                      {typeof row[colKey] === 'boolean' && false ? 'False' : typeof row[colKey] === 'boolean' && true ? 'True' : row[colKey]}
+                    </TableCell>;
                   })}
                 </TableRow>
               );

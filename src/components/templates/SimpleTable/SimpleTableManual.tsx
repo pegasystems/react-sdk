@@ -40,7 +40,9 @@ export default function SimpleTable(props) {
     presets,
     label,
     dataPageName,
-    contextClass
+    contextClass,
+    hideAddRow,
+    hideDeleteRow
   } = props;
   const pConn = getPConnect();
   const [rowData, setRowData] = useState([]);
@@ -72,7 +74,8 @@ export default function SimpleTable(props) {
 
   const readOnlyMode = renderMode === 'ReadOnly';
   const editableMode = renderMode === 'Editable';
-
+  const showAddRowButton = !readOnlyMode && !hideAddRow;
+  const showDeleteButton = !readOnlyMode && !hideDeleteRow;
   useEffect(() => {
     if (editableMode) {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -92,7 +95,7 @@ export default function SimpleTable(props) {
   //  Nebula does). It will also have the "label", and "meta" contains the original,
   //  unchanged config info. For now, much of the info here is carried over from
   //  Nebula and we may not end up using it all.
-  const fieldDefs = buildFieldsForTable(rawFields, resolvedFields, readOnlyMode);
+  const fieldDefs = buildFieldsForTable(rawFields, resolvedFields, showDeleteButton);
 
   const displayedColumns = fieldDefs.map(field => {
     return field.name ? field.name : field.cellRenderer;
@@ -241,11 +244,11 @@ export default function SimpleTable(props) {
                       {item}
                     </TableCell>
                   })}
-                  <TableCell>
+                  {showDeleteButton && <TableCell>
                     <button type='button' className='psdk-utility-button' onClick={() => deleteRecord(index)}>
                       <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$}></img>
                     </button>
-                  </TableCell>
+                  </TableCell>}
                 </TableRow>
               )
             })}
@@ -267,7 +270,7 @@ export default function SimpleTable(props) {
         {readOnlyMode && rowData && rowData.length === 0 && <div className='no-records'>No records found.</div>}
         {editableMode && referenceList && referenceList.length === 0 && <div className='no-records'>No records found.</div>}
       </TableContainer>
-      {editableMode && (
+      {showAddRowButton && (
         <div style={{fontSize: '1rem'}}>
           <Link style={{ cursor: 'pointer' }} onClick={addRecord}>
             + Add

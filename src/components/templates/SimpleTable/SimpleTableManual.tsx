@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -10,10 +9,8 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import { buildFieldsForTable } from './helpers';
 import { getDataPage } from '../../../helpers/data_page';
-import FieldGroupTemplate from '../FieldGroupTemplate';
 import Link from '@material-ui/core/Link';
 import { getReferenceList } from '../../../helpers/field-group-utils';
-import { TextField } from "@material-ui/core";
 import { Utils } from '../../../helpers/utils';
 import { createElement } from 'react';
 import createPConnectComponent from '../../../../src/bridge/react_pconnect';
@@ -43,23 +40,18 @@ export default function SimpleTable(props) {
     presets,
     label,
     dataPageName,
-    multiRecordDisplayAs,
     contextClass
   } = props;
   const pConn = getPConnect();
   const [rowData, setRowData] = useState([]);
-  console.log('SimpleTableManual', props);
+  const [elements, setElementsData] = useState([]);
+
   // Getting current context
   const context = getPConnect().getContextName();
   const resolvedList = getReferenceList(pConn);
   const pageReference = `${pConn.getPageReference()}${resolvedList}`;
   pConn.setReferenceList(resolvedList);
   const menuIconOverride$ = Utils.getImageSrc('trash', PCore.getAssetLoader().getStaticServerUrl());
-  useEffect(() => {
-      // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      generateRowsData();
-      console.log('Hello');
-  }, [referenceList]);
 
   const resolvedFields = children?.[0]?.children || presets?.[0].children?.[0].children;
   // NOTE: props has each child.config with datasource and value undefined
@@ -77,23 +69,20 @@ export default function SimpleTable(props) {
 
   const rawConfig = rawMetadata?.config;
   const rawFields = rawConfig?.children?.[0]?.children || rawConfig?.presets?.[0].children?.[0]?.children;
-  console.log('rawFields', rawFields);
-  // At this point, fields has resolvedFields and rawFields we can use
-
-  // console.log("SimpleTable resolvedFields:");
-  // console.log( resolvedFields );
-  // console.log("SimpleTable rawFields:");
-  // console.log( rawFields );
-
-  // start of from Nebula
-  // get context name and referenceList which will be used to prepare config of PConnect
-
-  // const { contextName, referenceListStr, pageReferenceForRows } = getContext(
-  //   getPConnect()
-  // );
 
   const readOnlyMode = renderMode === 'ReadOnly';
   const editableMode = renderMode === 'Editable';
+
+  useEffect(() => {
+    if (editableMode) {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      buildElementsForTable();
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      generateRowsData();
+    }
+  }, [referenceList.length]);
+
 
   // Nebula has other handling for isReadOnlyMode but has Cosmos-specific code
   //  so ignoring that for now...
@@ -104,8 +93,6 @@ export default function SimpleTable(props) {
   //  unchanged config info. For now, much of the info here is carried over from
   //  Nebula and we may not end up using it all.
   const fieldDefs = buildFieldsForTable(rawFields, resolvedFields, readOnlyMode);
-  console.log('fieldDefs', fieldDefs);
-  // end of from Nebula
 
   const displayedColumns = fieldDefs.map(field => {
     return field.name ? field.name : field.cellRenderer;
@@ -142,7 +129,6 @@ export default function SimpleTable(props) {
     return data.map(item => {
       return displayedColumns.reduce((dataForRow, colKey) => {
         dataForRow[colKey] = getRowValue(item, colKey);
-
         return dataForRow;
       }, {});
     });
@@ -195,13 +181,6 @@ export default function SimpleTable(props) {
   // console.log(`SimpleTable rowData (${rowData.length} row(s)):`);
   // console.log(JSON.stringify(rowData));
 
-  function handleInputChange(event, index) {
-    const { name, value } = event.target;
-    const list: any = [...rowData];
-    list[index][name] = value;
-    setRowData(list);
-  }
-
   const addRecord = () => {
     pConn.getListActions().insert({ classID: contextClass }, referenceList.length, pageReference);
   };
@@ -210,90 +189,32 @@ export default function SimpleTable(props) {
     pConn.getListActions().deleteEntry(index, pageReference);
   };
 
-  function blurEvent(event, index) {
-    const { name, value } = event.target;
-    const payload = {
-      [name]: value
-    };
-    pConn.getListActions().update(payload, index);
+  function buildElementsForTable() {
+    const eleData: any = []
+    referenceList.forEach((element, index) => {
+      const data: any = [];
+      rawFields.forEach(item => {
+        const referenceListData = getReferenceList(pConn);
+        const isDatapage = referenceListData.startsWith('D_');
+        const pageReferenceValue = isDatapage ? `${referenceListData}[${index}]` : `${pConn.getPageReference()}${referenceListData.substring(referenceListData.lastIndexOf('.'))}[${index}]`;
+        const config = {
+          meta: item,
+          options: {
+            context,
+            pageReference: pageReferenceValue,
+            referenceList: referenceListData,
+            hasForm: true
+          }
+        };
+        const view = PCore.createPConnect(config);
+        data.push(createElement(createPConnectComponent(), view));
+      });
+      eleData.push(data);
+    });
+    setElementsData(eleData);
   }
 
-  const elementData: any = [];
-  referenceList.forEach((element, index) => {
-    const data: any = [];
-    rawFields.forEach(item => {
-      const context = pConn.getContextName();
-      const referenceList = getReferenceList(pConn);
-      const isDatapage = referenceList.startsWith('D_');
-      const pageReference = isDatapage ? `${referenceList}[${index}]` : `${pConn.getPageReference()}${referenceList.substring(referenceList.lastIndexOf('.'))}[${index}]`;
-      const config = {
-        meta: item,
-        options: {
-          context,
-          pageReference,
-          referenceList,
-          hasForm: true
-        }
-      };
-      // eslint-disable-next-line no-undef
-      const view = PCore.createPConnect(config);
-      data.push(createElement(createPConnectComponent(), view));
-    });
-    elementData.push(data);
-  });
-  console.log('elementData', elementData);
   return (
-    // <React.Fragment>
-    //   <TableContainer component={Paper} style={{ margin: '4px 0px' }}>
-    //     {label && <h3 className={classes.label}>{label}</h3>}
-    //     <Table>
-    //       <TableHead className={classes.header}>
-    //         <TableRow>
-    //           {fieldDefs.map((field: any, index) => {
-    //             return (
-    //               <TableCell key={`head-${displayedColumns[index]}`} className={classes.tableCell}>
-    //                 {field.label}
-    //               </TableCell>
-    //             );
-    //           })}
-    //         </TableRow>
-    //       </TableHead>
-    //       <TableBody>
-    //         {rowData.map((row, index) => {
-    //           const theKey = `row-${index}`;
-    //           return (
-    //             <TableRow key={theKey}>
-    //               {displayedColumns.map(colKey => {
-    //                 const theColKey = `data-${index}-${colKey}`;
-    //                 return <TableCell key={theColKey} className={classes.tableCell}>
-    //                   {editableMode ?
-    //                   (colKey === 'DeleteIcon' ?
-    //                     <button type='button' className='psdk-utility-button' onClick={() => deleteRecord(index)}>
-    //                       <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$}></img>
-    //                     </button>
-    //                     :
-    //                     <TextField name={colKey} onChange={(e) => handleInputChange(e, index)} onBlur={(e) => blurEvent(e, index)} fullWidth
-    //                       variant="outlined" value={row[colKey] ? row[colKey]: ''} placeholder="" InputProps={{
-    //                       inputProps: {style: {height: '18px', padding: '8px'}}}}
-    //                     />
-    //                   ) : (row[colKey])}
-    //                 </TableCell>;
-    //               })}
-    //             </TableRow>
-    //           );
-    //         })}
-    //       </TableBody>
-    //     </Table>
-    //     {rowData && rowData.length === 0 && <div className='no-records'>No records found.</div>}
-    //   </TableContainer>
-    //   {editableMode && (
-    //     <div style={{fontSize: '1rem'}}>
-    //       <Link style={{ cursor: 'pointer' }} onClick={addRecord}>
-    //         + Add
-    //       </Link>
-    //     </div>
-    //   )}
-    // </React.Fragment>
     <React.Fragment>
       <TableContainer component={Paper} style={{ margin: '4px 0px' }}>
         {label && <h3 className={classes.label}>{label}</h3>}
@@ -310,7 +231,7 @@ export default function SimpleTable(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {elementData.map((row, index) => {
+            {editableMode && elements.map((row: any, index) => {
               const theKey = `row-${index}`;
               return (
                 <TableRow key={theKey}>
@@ -328,9 +249,21 @@ export default function SimpleTable(props) {
                 </TableRow>
               )
             })}
+            {readOnlyMode && rowData.map((row, index) => {
+              const theKey = `row-${index}`;
+              return (
+                <TableRow key={theKey}>
+                  {displayedColumns.map(colKey => {
+                    const theColKey = `data-${index}-${colKey}`;
+                    return <TableCell key={theColKey} className={classes.tableCell}>{row[colKey]}</TableCell>;
+                  })}
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
-        {rowData && rowData.length === 0 && <div className='no-records'>No records found.</div>}
+        {readOnlyMode && rowData && rowData.length === 0 && <div className='no-records'>No records found.</div>}
+        {editableMode && referenceList && referenceList.length === 0 && <div className='no-records'>No records found.</div>}
       </TableContainer>
       {editableMode && (
         <div style={{fontSize: '1rem'}}>

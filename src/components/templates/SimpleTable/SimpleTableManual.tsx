@@ -43,7 +43,8 @@ export default function SimpleTable(props) {
     presets,
     label,
     dataPageName,
-    multiRecordDisplayAs
+    multiRecordDisplayAs,
+    contextClass
   } = props;
   const pConn = getPConnect();
   const [rowData, setRowData] = useState([]);
@@ -55,22 +56,10 @@ export default function SimpleTable(props) {
   pConn.setReferenceList(resolvedList);
   const menuIconOverride$ = Utils.getImageSrc('trash', PCore.getAssetLoader().getStaticServerUrl());
   useEffect(() => {
-    if(multiRecordDisplayAs !== "fieldGroup") {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       generateRowsData();
-    }
+      console.log('Hello');
   }, [referenceList]);
-
-  let { contextClass } = props;
-  if(!contextClass){
-    let listName = getPConnect().getComponentConfig().referenceList;
-    listName = PCore.getAnnotationUtils().getPropertyName(listName);
-    contextClass = getPConnect().getFieldMetadata(listName)?.pageClass;
-  }
-  if(multiRecordDisplayAs === "fieldGroup") {
-    const fieldGroupProps = {...props, contextClass};
-    return <FieldGroupTemplate {...fieldGroupProps}/>
-  }
 
   const resolvedFields = children?.[0]?.children || presets?.[0].children?.[0].children;
   // NOTE: props has each child.config with datasource and value undefined
@@ -87,8 +76,8 @@ export default function SimpleTable(props) {
   //  Neither of these appear in the resolved props
 
   const rawConfig = rawMetadata?.config;
-  const rawFields =
-    rawConfig?.children?.[0]?.children || rawConfig?.presets?.[0].children?.[0]?.children;
+  const rawFields = rawConfig?.children?.[0]?.children || rawConfig?.presets?.[0].children?.[0]?.children;
+  console.log('rawFields', rawFields);
   // At this point, fields has resolvedFields and rawFields we can use
 
   // console.log("SimpleTable resolvedFields:");
@@ -115,7 +104,7 @@ export default function SimpleTable(props) {
   //  unchanged config info. For now, much of the info here is carried over from
   //  Nebula and we may not end up using it all.
   const fieldDefs = buildFieldsForTable(rawFields, resolvedFields, readOnlyMode);
-
+  console.log('fieldDefs', fieldDefs);
   // end of from Nebula
 
   const displayedColumns = fieldDefs.map(field => {
@@ -229,61 +218,10 @@ export default function SimpleTable(props) {
     pConn.getListActions().update(payload, index);
   }
 
-  // const buildView = (pConn, index, viewConfigPath) => {
-  //   const context = pConn.getContextName();
-  //   const referenceList = getReferenceList(pConn);
-
-  //   const isDatapage = referenceList.startsWith('D_');
-  //   const pageReference = isDatapage
-  //     ? `${referenceList}[${index}]`
-  //     : `${pConn.getPageReference()}${referenceList.substring(
-  //         referenceList.lastIndexOf('.')
-  //       )}[${index}]`;
-  //   const meta = viewConfigPath
-  //     ? pConn.getRawMetadata().children[0].children[0]
-  //     : pConn.getRawMetadata().children[0];
-  //   const config = {
-  //     meta,
-  //     options: {
-  //       context,
-  //       pageReference,
-  //       referenceList,
-  //       hasForm: true
-  //     }
-  //   };
-  //   // eslint-disable-next-line no-undef
-  //   const view = PCore.createPConnect(config);
-  //   return createElement(createPConnectComponent(), view);
-  // };
-  // function Filters({ filters, transientItemID, localeReference }) {
-  //   return filters.map((filter, index) => {
-  //     const filterClone = { ...filter };
-  //     // convert any field which is not supported to TextInput and delete the placeholder as it may contain placeholder specific to original type.
-  //     if (!SUPPORTED_TYPES_IN_PROMOTED_FILTERS.includes(filterClone.type)) {
-  //       filterClone.type = 'TextInput';
-  //       delete filterClone.config.placeholder;
-  //     }
-  //     filterClone.config.contextName = transientItemID;
-  //     filterClone.config.readOnly = false;
-  //     filterClone.config.context = transientItemID;
-  //     filterClone.config.localeReference = localeReference;
-  //     const c11nEnv = PCore.createPConnect({
-  //       meta: filterClone,
-  //       options: {
-  //         hasForm: true,
-  //         contextName: transientItemID
-  //       }
-  //     });
-
-  //     // eslint-disable-next-line react/no-array-index-key
-  //     return <React.Fragment key={index}>{createElement(createPConnectComponent(), c11nEnv)}</React.Fragment>;
-  //   });
-  // }
   const elementData: any = [];
   referenceList.forEach((element, index) => {
     const data: any = [];
-    const child = children[0].children;
-    child.forEach(item => {
+    rawFields.forEach(item => {
       const context = pConn.getContextName();
       const referenceList = getReferenceList(pConn);
       const isDatapage = referenceList.startsWith('D_');

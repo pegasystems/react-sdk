@@ -1,9 +1,13 @@
 import React from "react";
 import { KeyboardDateTimePicker } from '@material-ui/pickers';
 import TextInput from "../TextInput";
+import handleEvent from '../../../helpers/event-utils';
 
 export default function DateTime(props) {
-  const {label, required, disabled, value='', validatemessage, status, onChange, readOnly, testId} = props;
+  const {getPConnect, label, required, disabled, value='', validatemessage, status, onChange, readOnly, testId} = props;
+  const pConn = getPConnect();
+  const actions = pConn.getActionsApi();
+  const propName = pConn.getStateProps().value;
 
   if (readOnly) {
     return ( <TextInput {...props} /> );
@@ -12,6 +16,11 @@ export default function DateTime(props) {
   const handleChange = (date) => {
     const changeValue = date && date.isValid() ? date.toISOString() : null;
     onChange({value: changeValue});
+  }
+
+  const handleAccept = (date) => {
+    const changeValue = date && date.isValid() ? date.toISOString() : null;
+    handleEvent( actions, "changeNblur", propName, changeValue);
   }
 
   //
@@ -37,6 +46,7 @@ export default function DateTime(props) {
         label={label}
         value={value || null}
         onChange={handleChange}
+        onAccept={handleAccept}
         data-test-id={testId}
       />
     );

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -30,7 +31,7 @@ const useStyles = makeStyles((/* theme */) => ({
 
 declare const PCore: any;
 
-export default function SimpleTable(props) {
+export default function SimpleTableManual(props) {
   const classes = useStyles();
   const {
     getPConnect,
@@ -259,7 +260,7 @@ export default function SimpleTable(props) {
                   {displayedColumns.map(colKey => {
                     const theColKey = `data-${index}-${colKey}`;
                     return <TableCell key={theColKey} className={classes.tableCell}>
-                      {typeof row[colKey] === 'boolean' && false ? 'False' : typeof row[colKey] === 'boolean' && true ? 'True' : row[colKey]}
+                      {typeof row[colKey] === 'boolean' && !row[colKey] ? 'False' : typeof row[colKey] === 'boolean' && row[colKey] ? 'True' : row[colKey]}
                     </TableCell>;
                   })}
                 </TableRow>

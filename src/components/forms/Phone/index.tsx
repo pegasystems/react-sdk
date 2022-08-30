@@ -2,7 +2,7 @@ import React from "react";
 import MuiPhoneNumber from 'material-ui-phone-number';
 
 export default function Phone(props) {
-  const {label, required, disabled, value='', validatemessage, status, onChange, readOnly, testId} = props;
+  const {label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly, testId} = props;
 
   let testProp = {};
 
@@ -40,6 +40,12 @@ export default function Phone(props) {
     onChange({value: phoneValue});
   }
 
+  const handleBlur = (event) => {
+    const phoneValue = event?.target?.value
+    event.target.value = `+${phoneValue && phoneValue.replace(/\D+/g, '')}`;
+    onBlur(event);
+  }
+
   return (
       <MuiPhoneNumber
         fullWidth
@@ -51,6 +57,7 @@ export default function Phone(props) {
         required={required}
         disabled={disabled}
         onChange={handleChange}
+        onBlur={handleBlur}
         error={status === "error"}
         label={label}
         value={value}

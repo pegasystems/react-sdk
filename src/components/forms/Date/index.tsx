@@ -1,9 +1,13 @@
 import React from "react";
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import TextInput from "../TextInput";
+import handleEvent from '../../../helpers/event-utils';
 
 export default function Date(props) {
-  const {label, required, disabled, value='', validatemessage, status, onChange, readOnly, testId} = props;
+  const {getPConnect, label, required, disabled, value='', validatemessage, status, onChange, onBlur, readOnly, testId} = props;
+  const pConn = getPConnect();
+  const actions = pConn.getActionsApi();
+  const propName = pConn.getStateProps().value;
 
   if (readOnly) {
     // const theReadOnlyComp = <TextInput props />
@@ -16,9 +20,14 @@ export default function Date(props) {
      "data-test-id": testId
   };
 
-  const handleChange = date => {
+  const handleChange = (date) => {
     const changeValue = date && date.isValid() ? date.toISOString() : null;
     onChange({value: changeValue});
+  }
+
+  const handleAccept = (date) => {
+    const changeValue = date && date.isValid() ? date.toISOString() : null;
+    handleEvent( actions, "changeNblur", propName, changeValue);
   }
 
   return (
@@ -39,6 +48,8 @@ export default function Date(props) {
         label={label}
         value={value || null}
         onChange={handleChange}
+        onBlur={onBlur}
+        onAccept={handleAccept}
         InputProps={ { ...testProp } }
       />
     );

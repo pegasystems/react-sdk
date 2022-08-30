@@ -18,7 +18,7 @@ import createPConnectComponent from '../../../../src/bridge/react_pconnect';
 
 const useStyles = makeStyles((/* theme */) => ({
   label: {
-    margin: '8px 16px'
+    margin: '8px'
   },
   header: {
     background: "#f5f5f5"
@@ -39,16 +39,17 @@ export default function SimpleTableManual(props) {
     children,
     renderMode,
     presets,
-    label,
+    label: labelProp,
     dataPageName,
     contextClass,
     hideAddRow,
-    hideDeleteRow
+    hideDeleteRow,
+    propertyLabel
   } = props;
   const pConn = getPConnect();
   const [rowData, setRowData] = useState([]);
   const [elements, setElementsData] = useState([]);
-
+  const label = labelProp || propertyLabel;
   // Getting current context
   const context = getPConnect().getContextName();
   const resolvedList = getReferenceList(pConn);

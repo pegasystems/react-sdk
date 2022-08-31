@@ -335,6 +335,10 @@ export class Utils {
         return icon;
       }
 
+
+      static getLastChar(text){
+        return text.charAt(text.length - 1);
+      }
 }
 
 export default Utils;

@@ -57,7 +57,6 @@ export default function SimpleTableManual(props) {
     hideAddRow,
     hideDeleteRow,
     propertyLabel,
-    rowClickAction
   } = props;
   const pConn = getPConnect();
   const [rowData, setRowData] = useState([]);

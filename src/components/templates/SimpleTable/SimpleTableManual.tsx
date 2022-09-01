@@ -15,18 +15,30 @@ import { getReferenceList } from '../../../helpers/field-group-utils';
 import { Utils } from '../../../helpers/utils';
 import { createElement } from 'react';
 import createPConnectComponent from '../../../../src/bridge/react_pconnect';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 const useStyles = makeStyles((/* theme */) => ({
   label: {
     margin: '8px'
   },
   header: {
-    background: "#f5f5f5"
+    background: '#f5f5f5'
   },
   tableCell: {
-    borderRight: "1px solid lightgray",
-    padding: "8px"
+    borderRight: '1px solid lightgray',
+    padding: '8px'
   },
+  visuallyHidden: {
+    border: 0,
+    clip: 'rect(0 0 0 0)',
+    height: 1,
+    margin: -1,
+    overflow: 'hidden',
+    padding: 0,
+    position: 'absolute',
+    top: 20,
+    width: 1
+  }
 }));
 
 declare const PCore: any;
@@ -44,11 +56,14 @@ export default function SimpleTableManual(props) {
     contextClass,
     hideAddRow,
     hideDeleteRow,
-    propertyLabel
+    propertyLabel,
+    rowClickAction
   } = props;
   const pConn = getPConnect();
   const [rowData, setRowData] = useState([]);
   const [elements, setElementsData] = useState([]);
+  const [order, setOrder] = useState<Order>('asc');
+  const [orderBy, setOrderBy] = useState<keyof any>('');
   const label = labelProp || propertyLabel;
   // Getting current context
   const context = getPConnect().getContextName();
@@ -72,7 +87,8 @@ export default function SimpleTableManual(props) {
   //  Neither of these appear in the resolved props
 
   const rawConfig = rawMetadata?.config;
-  const rawFields = rawConfig?.children?.[0]?.children || rawConfig?.presets?.[0].children?.[0]?.children;
+  const rawFields =
+    rawConfig?.children?.[0]?.children || rawConfig?.presets?.[0].children?.[0]?.children;
 
   const readOnlyMode = renderMode === 'ReadOnly';
   const editableMode = renderMode === 'Editable';
@@ -87,7 +103,6 @@ export default function SimpleTableManual(props) {
       generateRowsData();
     }
   }, [referenceList.length]);
-
 
   // Nebula has other handling for isReadOnlyMode but has Cosmos-specific code
   //  so ignoring that for now...
@@ -153,10 +168,10 @@ export default function SimpleTableManual(props) {
       const data: any = [];
       for (const row of referenceList) {
         const dataForRow: Object = {};
-        for ( const col of displayedColumns ) {
+        for (const col of displayedColumns) {
           const colKey: string = col;
           const theVal = getRowValue(row, colKey);
-          dataForRow[colKey] = theVal || "";
+          dataForRow[colKey] = theVal || '';
         }
         data.push(dataForRow);
       }
@@ -195,13 +210,17 @@ export default function SimpleTableManual(props) {
   };
 
   function buildElementsForTable() {
-    const eleData: any = []
+    const eleData: any = [];
     referenceList.forEach((element, index) => {
       const data: any = [];
       rawFields.forEach(item => {
         const referenceListData = getReferenceList(pConn);
         const isDatapage = referenceListData.startsWith('D_');
-        const pageReferenceValue = isDatapage ? `${referenceListData}[${index}]` : `${pConn.getPageReference()}${referenceListData.substring(referenceListData.lastIndexOf('.'))}[${index}]`;
+        const pageReferenceValue = isDatapage
+          ? `${referenceListData}[${index}]`
+          : `${pConn.getPageReference()}${referenceListData.substring(
+              referenceListData.lastIndexOf('.')
+            )}[${index}]`;
         const config = {
           meta: item,
           options: {
@@ -219,6 +238,53 @@ export default function SimpleTableManual(props) {
     setElementsData(eleData);
   }
 
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof any) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
+  const createSortHandler = (property: keyof any) => (event: React.MouseEvent<unknown>) => {
+    handleRequestSort(event, property);
+  };
+
+  function descendingComparator<T>(a: T, b: T, orderedBy: keyof T) {
+    if (b[orderedBy] < a[orderedBy]) {
+      return -1;
+    }
+    if (b[orderedBy] > a[orderedBy]) {
+      return 1;
+    }
+    return 0;
+  }
+
+  type Order = 'asc' | 'desc';
+
+  function getComparator<Key extends keyof any>(
+    theOrder: Order,
+    orderedBy: Key
+    // eslint-disable-next-line no-unused-vars
+  ): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
+    return theOrder === 'desc'
+      ? (a, b) => descendingComparator(a, b, orderedBy)
+      : (a, b) => -descendingComparator(a, b, orderedBy);
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  function stableSort<T>(array: Array<T>, comparator: (a: T, b: T) => number) {
+
+    const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
+    stabilizedThis.sort((a, b) => {
+      // eslint-disable-next-line @typescript-eslint/no-shadow, no-shadow
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+
+    return stabilizedThis.map(el => el[0]);
+  }
+
+
   return (
     <React.Fragment>
       <TableContainer component={Paper} style={{ margin: '4px 0px' }}>
@@ -229,51 +295,89 @@ export default function SimpleTableManual(props) {
               {fieldDefs.map((field: any, index) => {
                 return (
                   <TableCell key={`head-${displayedColumns[index]}`} className={classes.tableCell}>
-                    {field.label}
+                    {readOnlyMode ? (
+                      <TableSortLabel
+                        active={orderBy === displayedColumns[index]}
+                        direction={orderBy === displayedColumns[index] ? order : 'asc'}
+                        onClick={createSortHandler(displayedColumns[index])}
+                      >
+                        {field.label}
+                        {orderBy === displayedColumns[index] ? (
+                          <span className={classes.visuallyHidden}>
+                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                          </span>
+                        ) : null}
+                      </TableSortLabel>
+                    ) : (
+                      field.label
+                    )}
                   </TableCell>
                 );
               })}
             </TableRow>
           </TableHead>
           <TableBody>
-            {editableMode && elements.map((row: any, index) => {
-              const theKey = `row-${index}`;
-              return (
-                <TableRow key={theKey}>
-                  {row.map((item, childIndex) => {
-                    const theColKey = `data-${index}-${childIndex}`;
-                    return <TableCell key={theColKey} className={classes.tableCell}>
-                      {item}
-                    </TableCell>
-                  })}
-                  {showDeleteButton && <TableCell>
-                    <button type='button' className='psdk-utility-button' onClick={() => deleteRecord(index)}>
-                      <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$}></img>
-                    </button>
-                  </TableCell>}
-                </TableRow>
-              )
-            })}
-            {readOnlyMode && rowData.map((row, index) => {
-              const theKey = `row-${index}`;
-              return (
-                <TableRow key={theKey}>
-                  {displayedColumns.map(colKey => {
-                    const theColKey = `data-${index}-${colKey}`;
-                    return <TableCell key={theColKey} className={classes.tableCell}>
-                      {typeof row[colKey] === 'boolean' && !row[colKey] ? 'False' : typeof row[colKey] === 'boolean' && row[colKey] ? 'True' : row[colKey]}
-                    </TableCell>;
-                  })}
-                </TableRow>
-              );
-            })}
+            {editableMode &&
+              elements.map((row: any, index) => {
+                const theKey = `row-${index}`;
+                return (
+                  <TableRow key={theKey}>
+                    {row.map((item, childIndex) => {
+                      const theColKey = `data-${index}-${childIndex}`;
+                      return (
+                        <TableCell key={theColKey} className={classes.tableCell}>
+                          {item}
+                        </TableCell>
+                      );
+                    })}
+                    {showDeleteButton && (
+                      <TableCell>
+                        <button
+                          type='button'
+                          className='psdk-utility-button'
+                          onClick={() => deleteRecord(index)}
+                        >
+                          <img
+                            className='psdk-utility-card-action-svg-icon'
+                            src={menuIconOverride$}
+                          ></img>
+                        </button>
+                      </TableCell>
+                    )}
+                  </TableRow>
+                );
+              })}
+            {readOnlyMode &&
+              rowData &&
+              rowData.length > 0 &&
+              stableSort(rowData, getComparator(order, orderBy))
+                .slice(0)
+                .map(row => {
+                  return (
+                    <TableRow
+                      key={row[1]}
+                    >
+                      {displayedColumns.map(colKey => {
+                        return (
+                          <TableCell key={colKey} className={classes.tableCell}>
+                            {row[colKey]}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
           </TableBody>
         </Table>
-        {readOnlyMode && rowData && rowData.length === 0 && <div className='no-records'>No records found.</div>}
-        {editableMode && referenceList && referenceList.length === 0 && <div className='no-records'>No records found.</div>}
+        {readOnlyMode && rowData && rowData.length === 0 && (
+          <div className='no-records'>No records found.</div>
+        )}
+        {editableMode && referenceList && referenceList.length === 0 && (
+          <div className='no-records'>No records found.</div>
+        )}
       </TableContainer>
       {showAddRowButton && (
-        <div style={{fontSize: '1rem'}}>
+        <div style={{ fontSize: '1rem' }}>
           <Link style={{ cursor: 'pointer' }} onClick={addRecord}>
             + Add
           </Link>

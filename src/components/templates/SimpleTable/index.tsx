@@ -5,7 +5,7 @@ import SimpleTableManual from './SimpleTableManual';
 declare const PCore: any;
 
 export default function SimpleTable(props) {
-  const { getPConnect, multiRecordDisplayAs } = props;
+  const { getPConnect, multiRecordDisplayAs, allowTableEdit } = props;
 
   let { contextClass } = props;
   if (!contextClass) {
@@ -17,6 +17,12 @@ export default function SimpleTable(props) {
     const fieldGroupProps = { ...props, contextClass };
     return <FieldGroupTemplate {...fieldGroupProps} />;
   } else {
-    return <SimpleTableManual {...props} />;
+    const simpleTableManualProps = {...props, contextClass};
+    if (allowTableEdit === false) {
+      simpleTableManualProps.hideAddRow = true;
+      simpleTableManualProps.hideDeleteRow = true;
+      simpleTableManualProps.disableDragDrop = true;
+    }
+    return <SimpleTableManual {...simpleTableManualProps} />;
   }
 }

@@ -137,7 +137,7 @@ export const buildMetaForListView = (
   };
 };
 
-export const buildFieldsForTable = (configFields, fields, bReadOnly) => {
+export const buildFieldsForTable = (configFields, fields, showDeleteButton) => {
   const fieldDefs = configFields.map((field, index) => {
     return {
       type: "text",
@@ -158,7 +158,7 @@ export const buildFieldsForTable = (configFields, fields, bReadOnly) => {
   });
 
   // ONLY add DELETE_ICON to fields when the table is requested as EDITABLE
-  if (!bReadOnly) {
+  if (showDeleteButton) {
     fieldDefs.push({
       type: "text",
       id: fieldDefs.length,

@@ -1,6 +1,5 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,36 +7,55 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
 import { buildFieldsForTable } from './helpers';
 import { getDataPage } from '../../../helpers/data_page';
+import Link from '@material-ui/core/Link';
+import { getReferenceList } from '../../../helpers/field-group-utils';
+import { Utils } from '../../../helpers/utils';
+import { createElement } from 'react';
+import createPConnectComponent from '../../../../src/bridge/react_pconnect';
 
 const useStyles = makeStyles((/* theme */) => ({
   label: {
-    margin: '8px 16px'
-  }
+    margin: '8px'
+  },
+  header: {
+    background: "#f5f5f5"
+  },
+  tableCell: {
+    borderRight: "1px solid lightgray",
+    padding: "8px"
+  },
 }));
+
+declare const PCore: any;
 
 export default function SimpleTableManual(props) {
   const classes = useStyles();
   const {
     getPConnect,
-    label,
-    dataPageName,
     referenceList = [], // if referenceList not in configProps$, default to empy list
     children,
+    renderMode,
     presets,
-    renderMode
+    label: labelProp,
+    dataPageName,
+    contextClass,
+    hideAddRow,
+    hideDeleteRow,
+    propertyLabel
   } = props;
-
+  const pConn = getPConnect();
   const [rowData, setRowData] = useState([]);
-
+  const [elements, setElementsData] = useState([]);
+  const label = labelProp || propertyLabel;
   // Getting current context
   const context = getPConnect().getContextName();
-
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    generateRowsData();
-  }, []);
+  const resolvedList = getReferenceList(pConn);
+  const pageReference = `${pConn.getPageReference()}${resolvedList}`;
+  pConn.setReferenceList(resolvedList);
+  const menuIconOverride$ = Utils.getImageSrc('trash', PCore.getAssetLoader().getStaticServerUrl());
 
   const resolvedFields = children?.[0]?.children || presets?.[0].children?.[0].children;
   // NOTE: props has each child.config with datasource and value undefined
@@ -54,33 +72,22 @@ export default function SimpleTableManual(props) {
   //  Neither of these appear in the resolved props
 
   const rawConfig = rawMetadata?.config;
-  const rawFields =
-    rawConfig?.children?.[0]?.children || rawConfig?.presets?.[0].children?.[0]?.children;
-  // At this point, fields has resolvedFields and rawFields we can use
+  const rawFields = rawConfig?.children?.[0]?.children || rawConfig?.presets?.[0].children?.[0]?.children;
 
-  // console.log("SimpleTable resolvedFields:");
-  // console.log( resolvedFields );
-  // console.log("SimpleTable rawFields:");
-  // console.log( rawFields );
+  const readOnlyMode = renderMode === 'ReadOnly';
+  const editableMode = renderMode === 'Editable';
+  const showAddRowButton = !readOnlyMode && !hideAddRow;
+  const showDeleteButton = !readOnlyMode && !hideDeleteRow;
+  useEffect(() => {
+    if (editableMode) {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      buildElementsForTable();
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      generateRowsData();
+    }
+  }, [referenceList.length]);
 
-  // start of from Nebula
-  // get context name and referenceList which will be used to prepare config of PConnect
-
-  // const { contextName, referenceListStr, pageReferenceForRows } = getContext(
-  //   getPConnect()
-  // );
-
-  const requestedReadOnlyMode = renderMode === 'ReadOnly';
-  let readOnlyMode = renderMode === 'ReadOnly';
-
-  // TEMPORARILY show all tables as read only
-  if (!readOnlyMode) {
-    // eslint-disable-next-line no-console
-    console.warn(
-      `SimpleTable: currently not editable. Displaying requested editable table as READ ONLY!`
-    );
-    readOnlyMode = true;
-  }
 
   // Nebula has other handling for isReadOnlyMode but has Cosmos-specific code
   //  so ignoring that for now...
@@ -90,9 +97,7 @@ export default function SimpleTableManual(props) {
   //  Nebula does). It will also have the "label", and "meta" contains the original,
   //  unchanged config info. For now, much of the info here is carried over from
   //  Nebula and we may not end up using it all.
-  const fieldDefs = buildFieldsForTable(rawFields, resolvedFields, readOnlyMode);
-
-  // end of from Nebula
+  const fieldDefs = buildFieldsForTable(rawFields, resolvedFields, showDeleteButton);
 
   const displayedColumns = fieldDefs.map(field => {
     return field.name ? field.name : field.cellRenderer;
@@ -105,57 +110,30 @@ export default function SimpleTableManual(props) {
   //  from from the fieldDefs. This "name" is the value that
   //  we'll share to connect things together in the table.
 
-  const processedFields = resolvedFields.map((field, i) => {
-    field.config['name'] = displayedColumns[i]; // .config["value"].replace(/ ./g,"_");   // replace space dot with underscore
-    return field;
-  });
+  // const processedFields = resolvedFields.map((field, i) => {
+  //   field.config['name'] = displayedColumns[i]; // .config["value"].replace(/ ./g,"_");   // replace space dot with underscore
+  //   return field;
+  // });
 
   // console.log("SimpleTable processedFields:");
   // console.log(processedFields);
 
   // return the value that should be shown as the contents for the given row data
   //  of the given row field
-  function getRowValue(inRowData: Object, inColKey: string, inRowField: any): any {
+  function getRowValue(inRowData: Object, inColKey: string): any {
     // See what data (if any) we have to display
     const refKeys: Array<string> = inColKey.split('.');
     let valBuilder = inRowData;
     for (const key of refKeys) {
       valBuilder = valBuilder[key];
     }
-
-    if (requestedReadOnlyMode || inRowField?.config?.readOnly) {
-      // Show the requested data as a readOnly entry in the table.
-      return valBuilder;
-    } else {
-      const thePlaceholder = inRowField?.config?.placeholder ? inRowField.config.placeholder : '';
-      const theEditComponent = inRowField.type ? inRowField.type : 'not specified';
-      // For, display (readonly), the initial value (if there is one - otherwise, try placeholder)
-      //  and which component should be used for editing
-      return `${valBuilder !== '' ? valBuilder : thePlaceholder} (edit with ${theEditComponent})`;
-    }
-  }
-
-  // return the field from the incoming fields array that has "name" of
-  //  requested field
-  function getFieldFromFieldArray(inFieldName: string, inFieldArray: Array<any>): Object {
-    let objRet = {};
-
-    for (const field of inFieldArray) {
-      if (field?.config?.name === inFieldName) {
-        objRet = field;
-        break;
-      }
-    }
-
-    return objRet;
+    return valBuilder;
   }
 
   const formatRowsData = data => {
     return data.map(item => {
       return displayedColumns.reduce((dataForRow, colKey) => {
-        const theProcessedField = getFieldFromFieldArray(colKey, processedFields);
-        dataForRow[colKey] = getRowValue(item, colKey, theProcessedField);
-
+        dataForRow[colKey] = getRowValue(item, colKey);
         return dataForRow;
       }, {});
     });
@@ -172,7 +150,16 @@ export default function SimpleTableManual(props) {
       // The referenceList prop has the JSON data for each row to be displayed
       //  in the table. So, iterate over referenceList to create the dataRows that
       //  we're using as the table's dataSource
-      const data = formatRowsData(referenceList);
+      const data: any = [];
+      for (const row of referenceList) {
+        const dataForRow: Object = {};
+        for ( const col of displayedColumns ) {
+          const colKey: string = col;
+          const theVal = getRowValue(row, colKey);
+          dataForRow[colKey] = theVal || "";
+        }
+        data.push(dataForRow);
+      }
       setRowData(data);
     }
   }
@@ -199,51 +186,99 @@ export default function SimpleTableManual(props) {
   // console.log(`SimpleTable rowData (${rowData.length} row(s)):`);
   // console.log(JSON.stringify(rowData));
 
-  // Using string literal to force the line break
-  const tempPreamble = `SimpleTable component not complete in the React SDK. This is a work in progress...
-    ${
-      requestedReadOnlyMode
-        ? 'Table is readOnly'
-        : 'You have requested an editable table which is not yet supported. Displaying in a modified readOnly mode.'
-    }`;
+  const addRecord = () => {
+    pConn.getListActions().insert({ classID: contextClass }, referenceList.length, pageReference);
+  };
+
+  const deleteRecord = index => {
+    pConn.getListActions().deleteEntry(index, pageReference);
+  };
+
+  function buildElementsForTable() {
+    const eleData: any = []
+    referenceList.forEach((element, index) => {
+      const data: any = [];
+      rawFields.forEach(item => {
+        const referenceListData = getReferenceList(pConn);
+        const isDatapage = referenceListData.startsWith('D_');
+        const pageReferenceValue = isDatapage ? `${referenceListData}[${index}]` : `${pConn.getPageReference()}${referenceListData.substring(referenceListData.lastIndexOf('.'))}[${index}]`;
+        const config = {
+          meta: item,
+          options: {
+            context,
+            pageReference: pageReferenceValue,
+            referenceList: referenceListData,
+            hasForm: true
+          }
+        };
+        const view = PCore.createPConnect(config);
+        data.push(createElement(createPConnectComponent(), view));
+      });
+      eleData.push(data);
+    });
+    setElementsData(eleData);
+  }
 
   return (
     <React.Fragment>
-      {!requestedReadOnlyMode && (
-        <Typography variant='body1' style={{ whiteSpace: 'pre-line' }}>
-          {tempPreamble}
-        </Typography>
-      )}
       <TableContainer component={Paper} style={{ margin: '4px 0px' }}>
         {label && <h3 className={classes.label}>{label}</h3>}
         <Table>
-          <TableHead>
+          <TableHead className={classes.header}>
             <TableRow>
-              {processedFields.map((field: any, index) => {
+              {fieldDefs.map((field: any, index) => {
                 return (
-                  <TableCell key={`head-${displayedColumns[index]}`}>
-                    {field.config.label}
+                  <TableCell key={`head-${displayedColumns[index]}`} className={classes.tableCell}>
+                    {field.label}
                   </TableCell>
                 );
               })}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rowData.map((row, index) => {
+            {editableMode && elements.map((row: any, index) => {
+              const theKey = `row-${index}`;
+              return (
+                <TableRow key={theKey}>
+                  {row.map((item, childIndex) => {
+                    const theColKey = `data-${index}-${childIndex}`;
+                    return <TableCell key={theColKey} className={classes.tableCell}>
+                      {item}
+                    </TableCell>
+                  })}
+                  {showDeleteButton && <TableCell>
+                    <button type='button' className='psdk-utility-button' onClick={() => deleteRecord(index)}>
+                      <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$}></img>
+                    </button>
+                  </TableCell>}
+                </TableRow>
+              )
+            })}
+            {readOnlyMode && rowData.map((row, index) => {
               const theKey = `row-${index}`;
               return (
                 <TableRow key={theKey}>
                   {displayedColumns.map(colKey => {
                     const theColKey = `data-${index}-${colKey}`;
-                    return <TableCell key={theColKey}>{row[colKey]}</TableCell>;
+                    return <TableCell key={theColKey} className={classes.tableCell}>
+                      {typeof row[colKey] === 'boolean' && !row[colKey] ? 'False' : typeof row[colKey] === 'boolean' && row[colKey] ? 'True' : row[colKey]}
+                    </TableCell>;
                   })}
                 </TableRow>
               );
             })}
           </TableBody>
         </Table>
-        {rowData && rowData.length === 0 && <div className='no-records'>No records found.</div>}
+        {readOnlyMode && rowData && rowData.length === 0 && <div className='no-records'>No records found.</div>}
+        {editableMode && referenceList && referenceList.length === 0 && <div className='no-records'>No records found.</div>}
       </TableContainer>
+      {showAddRowButton && (
+        <div style={{fontSize: '1rem'}}>
+          <Link style={{ cursor: 'pointer' }} onClick={addRecord}>
+            + Add
+          </Link>
+        </div>
+      )}
     </React.Fragment>
   );
 }

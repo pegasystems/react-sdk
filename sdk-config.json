@@ -25,6 +25,6 @@
     "sdkContentServerUrl": "",
 
     "appPortal_comment": "If specified, the given appPortal will be loaded. If left blank, the operator's default Portal is used. Ignored for Embedded use",
-    "appPortal": "WebPortal"
+    "appPortal": ""
   }
 }

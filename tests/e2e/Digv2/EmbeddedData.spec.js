@@ -106,6 +106,78 @@ test.describe('E2E test', () => {
     await selectedOption.click();
     await page.locator('li:has-text("ListOfRecords")').click();
 
+    /** Table subcategory tests */
+
+    selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');
+    await selectedSubCategory.click();
+    await page.locator('li:has-text("Table")').click();
+
+    /** Editable mode type tests */
+    selectedTestName = page.locator('div[data-test-id="6f64b45d01d11d8efd1693dfcb63b735"]');
+    await selectedTestName.click();
+    await page.locator('li:has-text("Editable")').click();
+
+    noRecordsMsg = page.locator('div[id="no-records"]');
+    await expect(noRecordsMsg.locator('text="No records found."')).toBeVisible();
+
+    /** Creating row by clicking on `+Add` button */
+    await page.locator('a:has-text("+ Add")').click();
+
+     /** Entering values in the first Row */
+     await page.locator('input[data-test-id="202003240938510823869"]').type("Main St");
+     await page.locator('input[data-test-id="202003240938510831291"]').type("Cambridge");
+     await page.locator('input[data-test-id="202003240938510831411"]').type("MA");
+     await page.locator('input[data-test-id="202003240938510832734"]').type("02142");
+
+     let phone = page.locator('div[data-test-id="1f8261d17452a959e013666c5df45e07"]');
+     await phone.locator('button').click();
+     /** Selecting the country code */
+     await page.locator('text=United States+1 >> nth=0').click();
+     await phone.locator('input').type('6175551212');
+
+     /** Creating second row by clicking on `+Add` button */
+    await page.locator('a:has-text("+ Add")').click();
+
+    /** Entering values in the second Row */
+    await page.locator('input[data-test-id="202003240938510823869"] >> nth=1').type("Global St");
+    await page.locator('input[data-test-id="202003240938510831291"] >> nth=1').type("California");
+    await page.locator('input[data-test-id="202003240938510831411"] >> nth=1').type("AK");
+    await page.locator('input[data-test-id="202003240938510832734"] >> nth=1').type("03142");
+
+    phone = page.locator('div[data-test-id="1f8261d17452a959e013666c5df45e07"] >> nth=1');
+    await phone.locator('button').click();
+    /** Selecting the country code */
+    await page.locator('text=United States+1 >> nth=0').click();
+    await phone.locator('input').type('6175451212');
+
+    await page.locator('button:has-text("Next")').click();
+
+    assignment = page.locator('div[id="Assignment"]');
+
+    /** Testing the values present on Confirm screen */
+    await expect(assignment.locator('input[value="Global St"]')).toBeVisible();
+    await expect(assignment.locator('td:has-text("California")')).toBeVisible();
+    await expect(assignment.locator('td:has-text("AK")')).toBeVisible();
+    await expect(assignment.locator('td:has-text("03142")')).toBeVisible();
+    await expect(assignment.locator('td:has-text("+16175451212")')).toBeVisible();
+
+    await page.locator('button:has-text("Previous")').click();
+
+    await page.locator('button[id="delete-button"] >> nth=0').click();
+
+    await page.locator('button:has-text("Next")').click();
+
+    /** Testing the deleted row values which should n't be present */
+    await expect(assignment.locator('input[value="Main St"] >> nth=1')).toBeHidden();
+    await expect(assignment.locator('input[value="Cambridge"] >> nth=1')).toBeHidden();
+    await expect(assignment.locator('input[value="MA"] >> nth=1')).toBeHidden();
+    await expect(assignment.locator('input[value="02142"] >> nth=1')).toBeHidden();
+    await expect(assignment.locator('td:has-text("+16175551212") >> nth=1')).toBeHidden();
+
+    await page.locator('button:has-text("Previous")').click();
+
+    await page.locator('button[id="delete-button"] >> nth=0').click();
+
     /** FieldGroup subcategory tests */
 
     selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');
@@ -123,7 +195,7 @@ test.describe('E2E test', () => {
     await page.locator('input[data-test-id="202003240938510831411"]').type("MA");
     await page.locator('input[data-test-id="202003240938510832734"]').type("02142");
 
-    let phone = page.locator('div[data-test-id="1f8261d17452a959e013666c5df45e07"]');
+    phone = page.locator('div[data-test-id="1f8261d17452a959e013666c5df45e07"]');
     await phone.locator('button').click();
     /** Selecting the country code */
     await page.locator('text=United States+1 >> nth=0').click();

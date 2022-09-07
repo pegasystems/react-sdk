@@ -334,6 +334,7 @@ export default function SimpleTableManual(props) {
                         <button
                           type='button'
                           className='psdk-utility-button'
+                          id='delete-button'
                           onClick={() => deleteRecord(index)}
                         >
                           <img
@@ -369,10 +370,10 @@ export default function SimpleTableManual(props) {
           </TableBody>
         </Table>
         {readOnlyMode && rowData && rowData.length === 0 && (
-          <div className='no-records'>No records found.</div>
+          <div className='no-records' id='no-records'>No records found.</div>
         )}
         {editableMode && referenceList && referenceList.length === 0 && (
-          <div className='no-records'>No records found.</div>
+          <div className='no-records' id='no-records'>No records found.</div>
         )}
       </TableContainer>
       {showAddRowButton && (

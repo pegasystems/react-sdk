@@ -27,11 +27,45 @@ test.describe('E2E test', () => {
     const worklist = page.locator('h6:has-text("My Worklist")');
     await expect(worklist).toBeVisible();
 
+    /** Creating a Query case-type which will be referred by Complex Fields case type */
+    let queryCase = page.locator('div[role="button"]:has-text("Query")');
+    await queryCase.click();
+
+    let modal =  page.locator('div[role="dialog"]');
+
+    /** Value to be typed in the Name input */
+    const name = "John Doe";
+
+    await modal.locator('input').type(name);
+    await modal.locator('button:has-text("submit")').click();
+
+    /** Storing case-id of the newly created Query case-type(s), will be used later */
+    const caseID = [];
+    caseID.push(await page.locator('div[id="caseId"]').textContent());
+
+    await page.locator('svg[id="chevron-right-icon"]').click();
+
+    /** Creating another Query case-type which will be used for ListOfRecords mode */
+    queryCase = page.locator('div[role="button"]:has-text("Query")');
+    await queryCase.click();
+
+    modal = page.locator('div[role="dialog"]');
+
+    await modal.locator('input').type(name);
+    await modal.locator('button:has-text("submit")').click();
+
+    /** Wait until modal closes */
+    await expect(modal).not.toBeVisible();
+
+    caseID.push(await page.locator('div[id="caseId"]').textContent());
+
+    await page.locator('svg[id="chevron-right-icon"]').click();
+
     /** Creating a Complex Fields case-type */
     let complexFieldsCase = page.locator('div[role="button"]:has-text("Complex Fields")');
     await complexFieldsCase.click();
 
-    /** Selecting Embedded Data from the Category dropdown */
+    /** Selecting CaseReference from the Category dropdown */
     const selectedCategory = page.locator('div[data-test-id="76729937a5eb6b0fd88c42581161facd"]');
     await selectedCategory.click();
     await page.locator('li:has-text("CaseReference")').click();
@@ -60,18 +94,20 @@ test.describe('E2E test', () => {
 
     await page.locator('button:has-text("Previous")').click();
 
+    /** Text field type tests */
     await selectedTestName.click();
     await page.locator('li:has-text("Text")').click();
 
     await page.locator('div[role="button"] >> nth=-1').click();
-    await page.locator('li >> text="John" >> nth=0').click();
+    await page.locator(`li >> text="${name}" >> nth=0`).click();
 
     await page.locator('button:has-text("Next")').click();
 
-    await expect(page.locator('text="John"')).toBeVisible();
+    await expect(page.locator(`text="${name}"`)).toBeVisible();
 
     await page.locator('button:has-text("Previous")').click();
 
+    /** Dropdown-DP field type tests */
     await selectedTestName.click();
     await page.locator('li:has-text("Dropdown-DP")').click();
 
@@ -87,39 +123,35 @@ test.describe('E2E test', () => {
 
     /** Mode tests */
 
-
     await selectedSubCategory.click();
     await page.locator('li:has-text("Mode")').click();
 
+    /** SingleRecord mode type tests */
     await selectedTestName.click();
     await page.locator('li:has-text("SingleRecord")').click();
 
-    const selectedRow = await page.locator('tr:has-text("Q-2004")');
-    await selectedRow.locator('td >> span >> span >> nth=0').click();
-
-    //await page.locator('td:has-text("Q-2004")').click();
+    const selectedRow = await page.locator(`tr:has-text("${caseID[0]}")`);
+    await selectedRow.locator('td >> span >> nth=0').click();
 
     await page.locator('button:has-text("Next")').click();
 
-    await expect(page.locator('td >> text="Q-2004"')).toBeVisible();
-
-    //await page.pause();
+    await expect(page.locator(`td >> text="${caseID[0]}"`)).toBeVisible();
 
     await page.locator('button:has-text("Previous")').click();
 
+    /** ListOfRecords mode type tests */
     await selectedTestName.click();
     await page.locator('li:has-text("ListOfRecords")').click();
 
-    const selectedRow1 = await page.locator('tr:has-text("Q-2004")');
-    await selectedRow1.locator('td >> span >> span >> nth=0').click();
-    // const selectedRow2 = await page.locator('tr:has-text("Q-2005")');
-    // await selectedRow2.locator('td >> span >> span >> nth=0').click();
+    const selectedRow1 = await page.locator(`tr:has-text("${caseID[0]}")`);
+    await selectedRow1.locator('td >> input >> nth=0').click();
+    const selectedRow2 = await page.locator(`tr:has-text("${caseID[1]}")`);
+    await selectedRow2.locator('td >> input >> nth=0').click();
 
     await page.locator('button:has-text("Next")').click();
 
-    await expect(page.locator('td >> text="Q-2004"')).toBeVisible();
-    await expect(page.locator('td >> text="Q-2005"')).toBeVisible();
-
+    await expect(page.locator(`td >> text="${caseID[0]}"`)).toBeVisible();
+    await expect(page.locator(`td >> text="${caseID[1]}"`)).toBeVisible();
 
 
     /** Submitting the case */

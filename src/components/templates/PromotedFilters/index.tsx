@@ -100,7 +100,7 @@ export default function PromotedFilters(props) {
       const changes = PCore.getFormUtils().getChanges(transientItemID);
       const formValues = {};
       Object.keys(changes).forEach((key) => {
-        if (key !== 'context_data') {
+        if (!['context_data', 'pageInstructions'].includes(key)) {
           formValues[key] = changes[key];
         }
       });

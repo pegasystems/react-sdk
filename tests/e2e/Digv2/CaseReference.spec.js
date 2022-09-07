@@ -72,8 +72,6 @@ test.describe('E2E test', () => {
 
     await page.locator('button:has-text("submit")').click();
 
-    /** Fields tests */
-
     /** Field sub category tests */
 
     let selectedSubCategory = page.locator('div[data-test-id="c2adefb64c594c6b634b3be9a40f6c83"]');
@@ -99,6 +97,7 @@ test.describe('E2E test', () => {
     await page.locator('li:has-text("Text")').click();
 
     await page.locator('div[role="button"] >> nth=-1').click();
+
     await page.locator(`li >> text="${name}" >> nth=0`).click();
 
     await page.locator('button:has-text("Next")').click();
@@ -111,7 +110,6 @@ test.describe('E2E test', () => {
     await selectedTestName.click();
     await page.locator('li:has-text("Dropdown-DP")').click();
 
-
     await page.locator('div[data-test-id="311f2f128456b3bf37c7568da9ac1898"]').click();
     await page.locator('li:has-text("Dropdown")').click();
 
@@ -122,7 +120,6 @@ test.describe('E2E test', () => {
     await page.locator('button:has-text("Previous")').click();
 
     /** Mode tests */
-
     await selectedSubCategory.click();
     await page.locator('li:has-text("Mode")').click();
 
@@ -152,7 +149,6 @@ test.describe('E2E test', () => {
 
     await expect(page.locator(`td >> text="${caseID[0]}"`)).toBeVisible();
     await expect(page.locator(`td >> text="${caseID[1]}"`)).toBeVisible();
-
 
     /** Submitting the case */
     await page.locator('button:has-text("submit")').click();

@@ -175,9 +175,7 @@ const initOAuth = (bInit) => {
 const getAuthMgr = ( bInit ) => {
   return new Promise( (resolve) => {
     let idNextCheck = null;
-    let nCount = 0;
     const fnCheckForAuthMgr = () => {
-      nCount++;
       if( PegaAuth && !authMgr ) {
         initOAuth( bInit );
       }
@@ -185,7 +183,6 @@ const getAuthMgr = ( bInit ) => {
         if( idNextCheck ) {
           clearInterval(idNextCheck);
         }
-        //console.log(`fnCheckForAuthMgr count: ${nCount}`);
         return resolve(authMgr);
       }
     }

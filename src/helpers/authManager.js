@@ -1,7 +1,7 @@
 // This file wraps various calls related to logging in, logging out, etc.
 //  that use the auth.html/auth.js to do the work of logging in via OAuth 2.0.
 
-import { SdkConfigAccess } from './config_access';
+import { getSdkConfig, SdkConfigAccess } from './config_access';
 import PegaAuth from './auth';
 
 // eslint-disable-next-line import/no-mutable-exports
@@ -79,105 +79,122 @@ export const authNoRedirect = () => {
  * bInit - governs whether to create new sessionStorage or load existing one
  */
 const initOAuth = (bInit) => {
-  const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
-  const sdkConfigServer = SdkConfigAccess.getSdkConfigServer();
-  let pegaUrl = sdkConfigServer.infinityRestServerUrl;
-  const bNoInitialRedirect = authNoRedirect();
+  return getSdkConfig().then( sdkConfig => {
+    const sdkConfigAuth = sdkConfig.authConfig;
+    const sdkConfigServer = sdkConfig.serverConfig;
+    let pegaUrl = sdkConfigServer.infinityRestServerUrl;
+    const bNoInitialRedirect = authNoRedirect();
 
-  // Construct default OAuth endpoints (if not explicitly specified)
-  if (pegaUrl) {
-    // Cope with trailing slash being present
-    if (!pegaUrl.endsWith('/')) {
-      pegaUrl += '/';
+    // Construct default OAuth endpoints (if not explicitly specified)
+    if (pegaUrl) {
+      // Cope with trailing slash being present
+      if (!pegaUrl.endsWith('/')) {
+        pegaUrl += '/';
+      }
+      if (!sdkConfigAuth.authorize) {
+        sdkConfigAuth.authorize = `${pegaUrl}PRRestService/oauth2/v1/authorize`;
+      }
+      if (!sdkConfigAuth.token) {
+        sdkConfigAuth.token = `${pegaUrl}PRRestService/oauth2/v1/token`;
+      }
+      if (!sdkConfigAuth.revoke) {
+        sdkConfigAuth.revoke = `${pegaUrl}PRRestService/oauth2/v1/revoke`;
+      }
+      if (!sdkConfigAuth.userinfo) {
+        const appAliasSeg = sdkConfigServer.appAlias ? `app/${sdkConfigServer.appAlias}/` : '';
+        sdkConfigAuth.userinfo = `${pegaUrl}${appAliasSeg}api/oauthclients/v1/userinfo/JSON`;
+      }
     }
-    if (!sdkConfigAuth.authorize) {
-      sdkConfigAuth.authorize = `${pegaUrl}PRRestService/oauth2/v1/authorize`;
+    // Auth service alias
+    if( !sdkConfigAuth.authService) {
+      sdkConfigAuth.authService = "pega";
     }
-    if (!sdkConfigAuth.token) {
-      sdkConfigAuth.token = `${pegaUrl}PRRestService/oauth2/v1/token`;
-    }
-    if (!sdkConfigAuth.revoke) {
-      sdkConfigAuth.revoke = `${pegaUrl}PRRestService/oauth2/v1/revoke`;
-    }
-    if (!sdkConfigAuth.userinfo) {
-      const appAliasSeg = sdkConfigServer.appAlias ? `app/${sdkConfigServer.appAlias}/` : '';
-      sdkConfigAuth.userinfo = `${pegaUrl}${appAliasSeg}api/oauthclients/v1/userinfo/JSON`;
-    }
-  }
-  // Auth service alias
-  if( !sdkConfigAuth.authService) {
-    sdkConfigAuth.authService = "pega";
-  }
 
-  // Construct path to redirect uri
-  let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
-  const nLastPathSep = sRedirectUri.lastIndexOf("/");
-  sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
+    // Construct path to redirect uri
+    let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
+    const nLastPathSep = sRedirectUri.lastIndexOf("/");
+    sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
 
-  const authConfig = {
-    clientId: bNoInitialRedirect ? sdkConfigAuth.mashupClientId : sdkConfigAuth.portalClientId,
-    authorizeUri: sdkConfigAuth.authorize,
-    tokenUri: sdkConfigAuth.token,
-    revokeUri: sdkConfigAuth.revoke,
-    userinfoUri: sdkConfigAuth.userinfo,
-    redirectUri: bNoInitialRedirect || usePopupForRestOfSession
-        ? sRedirectUri
-        : `${window.location.origin}${window.location.pathname}`,
-    authService: sdkConfigAuth.authService,
-    appAlias: sdkConfigServer.appAlias || '',
-    useLocking: true
-  };
-  // If no clientId is specified assume not OAuth but custom auth
-  if( !authConfig.clientId ) {
-    gbCustomAuth = true;
-    return;
-  }
-  if( 'silentTimeout' in sdkConfigAuth ) {
-    authConfig.silentTimeout = sdkConfigAuth.silentTimeout;
-  }
-  if( bNoInitialRedirect ) {
-    authConfig.userIdentifier = sdkConfigAuth.mashupUserIdentifier;
-    authConfig.password = sdkConfigAuth.mashupPassword;
-  }
-  if( 'iframeLoginUI' in sdkConfigAuth ){
-    authConfig.iframeLoginUI = sdkConfigAuth.iframeLoginUI.toString().toLowerCase() === 'true';
-  }
-
-  // Check if sessionStorage exists (and if so if for same authorize endpoint).  Otherwise, assume
-  //  sessionStorage is out of date (user just edited endpoints).  Else, logout required to clear
-  //  sessionStorage and get other endpoints updates.
-  // Doing this as sessionIndex might have been added to this storage structure
-  let sSI = sessionStorage.getItem("rsdk_CI");
-  if( sSI ) {
-    try {
-        const oSI = JSON.parse(sSI);
-        if( oSI.authorizeUri !== authConfig.authorizeUri ||
-            oSI.appAlias !== authConfig.appAlias ||
-            oSI.clientId !== authConfig.clientId ||
-            oSI.userIdentifier !== authConfig.userIdentifier ||
-            oSI.password !== authConfig.password) {
-            clearAuthMgr();
-            sSI = null;
-        }
-    } catch(e) {
-      // do nothing
+    const authConfig = {
+      clientId: bNoInitialRedirect ? sdkConfigAuth.mashupClientId : sdkConfigAuth.portalClientId,
+      authorizeUri: sdkConfigAuth.authorize,
+      tokenUri: sdkConfigAuth.token,
+      revokeUri: sdkConfigAuth.revoke,
+      userinfoUri: sdkConfigAuth.userinfo,
+      redirectUri: bNoInitialRedirect || usePopupForRestOfSession
+          ? sRedirectUri
+          : `${window.location.origin}${window.location.pathname}`,
+      authService: sdkConfigAuth.authService,
+      appAlias: sdkConfigServer.appAlias || '',
+      useLocking: true
+    };
+    // If no clientId is specified assume not OAuth but custom auth
+    if( !authConfig.clientId ) {
+      gbCustomAuth = true;
+      return;
     }
-  }
+    if( 'silentTimeout' in sdkConfigAuth ) {
+      authConfig.silentTimeout = sdkConfigAuth.silentTimeout;
+    }
+    if( bNoInitialRedirect ) {
+      authConfig.userIdentifier = sdkConfigAuth.mashupUserIdentifier;
+      authConfig.password = sdkConfigAuth.mashupPassword;
+    }
+    if( 'iframeLoginUI' in sdkConfigAuth ){
+      authConfig.iframeLoginUI = sdkConfigAuth.iframeLoginUI.toString().toLowerCase() === 'true';
+    }
 
-  if( !sSI || bInit ) {
-    sessionStorage.setItem('rsdk_CI', JSON.stringify(authConfig));
-  }
-  authMgr = new PegaAuth('rsdk_CI');
+    // Check if sessionStorage exists (and if so if for same authorize endpoint).  Otherwise, assume
+    //  sessionStorage is out of date (user just edited endpoints).  Else, logout required to clear
+    //  sessionStorage and get other endpoints updates.
+    // Doing this as sessionIndex might have been added to this storage structure
+    let sSI = sessionStorage.getItem("rsdk_CI");
+    if( sSI ) {
+      try {
+          const oSI = JSON.parse(sSI);
+          if( oSI.authorizeUri !== authConfig.authorizeUri ||
+              oSI.appAlias !== authConfig.appAlias ||
+              oSI.clientId !== authConfig.clientId ||
+              oSI.userIdentifier !== authConfig.userIdentifier ||
+              oSI.password !== authConfig.password) {
+              clearAuthMgr();
+              sSI = null;
+          }
+      } catch(e) {
+        // do nothing
+      }
+    }
+
+    if( !sSI || bInit ) {
+      sessionStorage.setItem('rsdk_CI', JSON.stringify(authConfig));
+    }
+    authMgr = new PegaAuth('rsdk_CI');
+  });
 };
 
 const getAuthMgr = ( bInit ) => {
-  if( !authMgr ) {
-    initOAuth( bInit );
-  }
-  return authMgr;
+  return new Promise( (resolve) => {
+    let idNextCheck = null;
+    let nCount = 0;
+    const fnCheckForAuthMgr = () => {
+      nCount++;
+      if( PegaAuth && !authMgr ) {
+        initOAuth( bInit );
+      }
+      if(authMgr) {
+        if( idNextCheck ) {
+          clearInterval(idNextCheck);
+        }
+        //console.log(`fnCheckForAuthMgr count: ${nCount}`);
+        return resolve(authMgr);
+      }
+    }
+    fnCheckForAuthMgr();
+    idNextCheck = setInterval(fnCheckForAuthMgr, 10);
+  });
 };
 
-export const authGetAuthHeader = () => {
+export const sdkGetAuthHeader = () => {
   return sessionStorage.getItem("rsdk_AH");
 };
 
@@ -229,7 +246,7 @@ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) =>
       onTokenRetrieval: authTokenUpdated
     }
   } else {
-    constellationBootConfig.authorizationHeader = authGetAuthHeader();
+    constellationBootConfig.authorizationHeader = sdkGetAuthHeader();
   }
 
 
@@ -288,7 +305,7 @@ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) =>
 };
 
 export const updateLoginStatus = () => {
-  const sAuthHdr = authGetAuthHeader();
+  const sAuthHdr = sdkGetAuthHeader();
   gbLoggedIn = sAuthHdr && sAuthHdr.length > 0;
   const elBtnLogin = document.getElementById('btnLogin');
   if (elBtnLogin) {
@@ -394,16 +411,17 @@ const updateRedirectUri = (aMgr, sRedirectUri) => {
       // do nothing
     }
   }
-  const aMgr = getAuthMgr(false);
-  const tokenInfo = getCurrentTokens();
-  return aMgr.getUserinfo(tokenInfo.access_token).then( data => {
-    userInfo = data;
-    if( userInfo ) {
-      sessionStorage.setItem("rsdk_UI", JSON.stringify(userInfo));
-    } else {
-      sessionStorage.removeItem("rsdk_UI");
-    }
-    return Promise.resolve(userInfo);
+  getAuthMgr(false).then( (aMgr) => {
+    const tokenInfo = getCurrentTokens();
+    return aMgr.getUserinfo(tokenInfo.access_token).then( data => {
+      userInfo = data;
+      if( userInfo ) {
+        sessionStorage.setItem("rsdk_UI", JSON.stringify(userInfo));
+      } else {
+        sessionStorage.removeItem("rsdk_UI");
+      }
+      return Promise.resolve(userInfo);
+    });
   });
 
 };
@@ -416,38 +434,39 @@ export const login = (bFullReauth=false) => {
   // Needed so a redirect to login screen and back will know we are still in process of logging in
   sessionStorage.setItem("rsdk_loggingIn", `${Date.now()}`);
 
-  const aMgr = getAuthMgr(!bFullReauth);
+  getAuthMgr(!bFullReauth).then( (aMgr) => {
+    const bMainRedirect = !authNoRedirect();
 
-  const bMainRedirect = !authNoRedirect();
-
-  // If initial main redirect is OK, redirect to main page, otherwise will authorize in a popup window
-  if (bMainRedirect && !bFullReauth) {
-    // update redirect uri to be the root
-    updateRedirectUri(aMgr, `${window.location.origin}${window.location.pathname}`);
-    aMgr.loginRedirect();
-    // Don't have token til after the redirect
-    return Promise.resolve(undefined);
-  } else {
-    // Construct path to redirect uri
-    let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
-    const nLastPathSep = sRedirectUri.lastIndexOf("/");
-    sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
-    // Set redirectUri to static auth.html
-    updateRedirectUri(aMgr, sRedirectUri);
-    return new Promise( (resolve, reject) => {
-      aMgr.login().then(token => {
-          processTokenOnLogin(token);
-          // getUserInfo();
-          resolve(token.access_token);
-      }).catch( (e) => {
-          gbLoginInProgress = false;
-          sessionStorage.removeItem("rsdk_loggingIn");
-          // eslint-disable-next-line no-console
-          console.log(e);
-          reject(e);
+    // If initial main redirect is OK, redirect to main page, otherwise will authorize in a popup window
+    if (bMainRedirect && !bFullReauth) {
+      // update redirect uri to be the root
+      updateRedirectUri(aMgr, `${window.location.origin}${window.location.pathname}`);
+      aMgr.loginRedirect();
+      // Don't have token til after the redirect
+      return Promise.resolve(undefined);
+    } else {
+      // Construct path to redirect uri
+      let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
+      const nLastPathSep = sRedirectUri.lastIndexOf("/");
+      sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
+      // Set redirectUri to static auth.html
+      updateRedirectUri(aMgr, sRedirectUri);
+      return new Promise( (resolve, reject) => {
+        aMgr.login().then(token => {
+            processTokenOnLogin(token);
+            // getUserInfo();
+            resolve(token.access_token);
+        }).catch( (e) => {
+            gbLoginInProgress = false;
+            sessionStorage.removeItem("rsdk_loggingIn");
+            // eslint-disable-next-line no-console
+            console.log(e);
+            reject(e);
+        });
       });
-    });
-  }
+    }
+  });
+
 };
 
 export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
@@ -456,15 +475,16 @@ export const authRedirectCallback = ( href, fnLoggedInCB=null ) => {
   const urlParams = new URLSearchParams(aHrefParts.length>1 ? `?${aHrefParts[1]}` : '');
   const code = urlParams.get("code");
 
-  const aMgr = getAuthMgr(false);
-  aMgr.getToken(code).then(token => {
-    if( token && token.access_token ) {
-        processTokenOnLogin(token, false);
-        // getUserInfo();
-        if( fnLoggedInCB ) {
-            fnLoggedInCB( token.access_token );
-        }
-    }
+  getAuthMgr(false).then( (aMgr) => {
+    aMgr.getToken(code).then(token => {
+      if( token && token.access_token ) {
+          processTokenOnLogin(token, false);
+          // getUserInfo();
+          if( fnLoggedInCB ) {
+              fnLoggedInCB( token.access_token );
+          }
+      }
+    });
   });
 };
 
@@ -496,20 +516,23 @@ export const loginIfNecessary = (appName, noMainRedirect=false, deferLogin=false
   if( window.location.href.indexOf("?code") !== -1 ) {
     // initialize authMgr
     initOAuth(false);
-    authRedirectCallback(window.location.href, ()=> {
-      window.location.href = window.location.pathname;
+    return getAuthMgr(false).then(() => {
+      authRedirectCallback(window.location.href, ()=> {
+        window.location.href = window.location.pathname;
+      });
     });
-    return;
   }
   if( !deferLogin && (!gbLoginInProgress || isLoginExpired()) ) {
     initOAuth(false);
-    updateLoginStatus();
-    if( gbLoggedIn ) {
-      fireTokenAvailable(getCurrentTokens());
-      // getUserInfo();
-    } else {
-      return login();
-    }
+    return getAuthMgr(false).then(() => {
+      updateLoginStatus();
+      if( gbLoggedIn ) {
+        fireTokenAvailable(getCurrentTokens());
+        // getUserInfo();
+      } else {
+        return login();
+      }
+    });
   }
 };
 
@@ -539,6 +562,7 @@ export const logout = () => {
       resolve();
     };
     if( gbCustomAuth ) {
+      sessionStorage.removeItem("rsdk_AH");
       fnClearAndResolve();
       return;
     }
@@ -552,12 +576,14 @@ export const logout = () => {
                 console.log("Error:",err?.message);
             });
         } else {
-          const aMgr = getAuthMgr(false);
-          aMgr.revokeTokens(tokenInfo.access_token, tokenInfo.refresh_token).then(() => {
-            // Go to finally
-          })
-          .finally(() => {
-            fnClearAndResolve();
+          getAuthMgr(false).then( (aMgr) => {
+            aMgr.revokeTokens(tokenInfo.access_token, tokenInfo.refresh_token)
+            .then(() => {
+              // Go to finally
+            })
+            .finally(() => {
+              fnClearAndResolve();
+            });
           });
         }
     } else {

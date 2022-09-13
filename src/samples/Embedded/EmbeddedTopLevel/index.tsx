@@ -165,27 +165,6 @@ export default function EmbeddedTopLevel() {
   const [bShowResolutionScreen, setShowResolutionScreen] = useState(false);
   const [bShowAppName, setShowAppName] = useState(false);
 
-  // One time (initialization) subscriptions and related unsubscribe
-  useEffect(() => {
-
-    // Subscriptions can't be done until onPCoreReady.
-    //  So we subscribe there. But unsubscribe when this
-    //  component is unmounted (in function returned from this effect)
-
-    return function cleanupSubscriptions() {
-
-      PCore?.getPubSubUtils().unsubscribe(
-        PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
-        "cancelAssignment"
-      );
-
-      PCore?.getPubSubUtils().unsubscribe(
-        "assignmentFinished",
-        "assignmentFinished"
-      );
-
-    }
-  }, []);
 
   useEffect( () => {
     // Update visibility of UI when bShowTriplePlayOptions changes
@@ -405,6 +384,60 @@ export default function EmbeddedTopLevel() {
   }
 
 
+  // One time (initialization) subscriptions and related unsubscribe
+  useEffect(() => {
+
+    getSdkConfig().then( sdkConfig => {
+      const sdkConfigAuth = sdkConfig.authConfig;
+
+      if( !sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === "Basic" ) {
+        // Service package to use custom auth with Basic
+        const sB64 = window.btoa(`${sdkConfigAuth.mashupUserIdentifier}:${window.atob(sdkConfigAuth.mashupPassword)}`);
+        sdkSetAuthHeader( `Basic ${sB64}`);
+      }
+
+      if( !sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === "BasicTO" ) {
+        const now = new Date();
+        const expTime = new Date( now.getTime() + 5*60*1000);
+        let sISOTime = `${expTime.toISOString().split(".")[0]}Z`;
+        const regex = /[-:]/g;
+        sISOTime = sISOTime.replace(regex,"");
+        // Service package to use custom auth with Basic
+        const sB64 = window.btoa(`${sdkConfigAuth.mashupUserIdentifier}:${window.atob(sdkConfigAuth.mashupPassword)}:${sISOTime}`);
+        sdkSetAuthHeader( `Basic ${sB64}`);
+      }
+
+      // Login if needed, without doing an initial main window redirect
+      loginIfNecessary("embedded", true);
+
+    });
+
+    document.addEventListener("SdkConstellationReady", () => {
+      // start the portal
+      startMashup();
+    });
+
+
+    // Subscriptions can't be done until onPCoreReady.
+    //  So we subscribe there. But unsubscribe when this
+    //  component is unmounted (in function returned from this effect)
+
+    return function cleanupSubscriptions() {
+
+      PCore?.getPubSubUtils().unsubscribe(
+        PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
+        "cancelAssignment"
+      );
+
+      PCore?.getPubSubUtils().unsubscribe(
+        "assignmentFinished",
+        "assignmentFinished"
+      );
+
+    }
+  }, []);
+
+
   function onShopNow(optionClicked: string) {
 
     const sLevel = optionClicked;
@@ -505,36 +538,6 @@ export default function EmbeddedTopLevel() {
     )
 
   }
-
-  getSdkConfig().then( sdkConfig => {
-    const sdkConfigAuth = sdkConfig.authConfig;
-
-    if( !sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === "Basic" ) {
-      // Service package to use custom auth with Basic
-      const sB64 = window.btoa(`${sdkConfigAuth.mashupUserIdentifier}:${window.atob(sdkConfigAuth.mashupPassword)}`);
-      sdkSetAuthHeader( `Basic ${sB64}`);
-    }
-
-    if( !sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === "BasicTO" ) {
-      const now = new Date();
-      const expTime = new Date( now.getTime() + 5*60*1000);
-      let sISOTime = `${expTime.toISOString().split(".")[0]}Z`;
-      const regex = /[-:]/g;
-      sISOTime = sISOTime.replace(regex,"");
-      // Service package to use custom auth with Basic
-      const sB64 = window.btoa(`${sdkConfigAuth.mashupUserIdentifier}:${window.atob(sdkConfigAuth.mashupPassword)}:${sISOTime}`);
-      sdkSetAuthHeader( `Basic ${sB64}`);
-    }
-
-    // Login if needed, without doing an initial main window redirect
-    loginIfNecessary("embedded", true);
-
-  });
-
-  document.addEventListener("SdkConstellationReady", () => {
-    // start the portal
-    startMashup();
-  });
 
 
   return (

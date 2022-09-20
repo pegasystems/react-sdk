@@ -304,14 +304,6 @@ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) =>
 export const updateLoginStatus = () => {
   const sAuthHdr = sdkGetAuthHeader();
   gbLoggedIn = sAuthHdr && sAuthHdr.length > 0;
-  const elBtnLogin = document.getElementById('btnLogin');
-  if (elBtnLogin) {
-    elBtnLogin.disabled = gbLoggedIn;
-  }
-  const elBtnLogout = document.getElementById('btnLogout');
-  if (elBtnLogout) {
-    elBtnLogout.disabled = !gbLoggedIn;
-  }
 };
 
 const getCurrentTokens = () => {
@@ -393,7 +385,6 @@ const updateRedirectUri = (aMgr, sRedirectUri) => {
 
 
 // TODO: Cope with 401 and refresh token if possible (or just hope that it succeeds during login)
-// TODO: Save results in session storage to avoid calls on window reload
 /**
  * Retrieve UserInfo for current authentication service
  */

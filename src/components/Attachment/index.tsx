@@ -162,12 +162,13 @@ export default function Attachment(props) {
         pConn.getContextName()
       )
       .then((fileRes) => {
-        pConn.attachmentsInfo = {
+        const reqObj = {
           type: "File",
           attachmentFieldName: valueRef,
           category: categoryName,
           ID: fileRes.ID
         };
+        pConn.attachmentsInfo = PCore.getPCoreVersion()?.includes('8.8') ? [reqObj] : reqObj;
 
         const fieldName = pConn.getStateProps().value;
         const context = pConn.getContextName();

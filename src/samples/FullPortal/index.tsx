@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import ReactDOM from "react-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -132,18 +132,17 @@ export default function FullPortal() {
     })
   }
 
+  // One time (initialization)
+  useEffect(() => {
 
-  document.addEventListener("SdkConstellationReady", () => {
-    // start the portal
-    startPortal();
-  });
+    // Login if needed, without doing an initial main window redirect
+    loginIfNecessary("portal", false);
 
-  document.addEventListener("SdkConfigAccessReady", () => {
-
-    // Login if needed, and fine to do an initial main window redirect
-    loginIfNecessary("portal",false);
-
-  });
+    document.addEventListener("SdkConstellationReady", () => {
+      // start the portal
+      startPortal();
+    });
+  }, []);
 
   return (
     <div>

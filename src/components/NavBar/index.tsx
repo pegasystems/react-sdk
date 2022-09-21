@@ -279,7 +279,7 @@ export default function NavBar(props) {
           </List>
           ) : (
             <div className={classes.appListDiv} onClick={handleDrawerOpen} >
-              <ChevronRightIcon className={classes.appListIcon} fontSize="large" />
+              <ChevronRightIcon className={classes.appListIcon} id="chevron-right-icon" fontSize="large" />
             </div>
           )
       }

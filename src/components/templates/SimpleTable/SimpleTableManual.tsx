@@ -360,7 +360,8 @@ export default function SimpleTableManual(props) {
                       {displayedColumns.map(colKey => {
                         return (
                           <TableCell key={colKey} className={classes.tableCell}>
-                            {row[colKey]}
+                            {typeof row[colKey] === 'boolean' && !row[colKey] ? 'False' : typeof row[colKey] === 'boolean' &&
+                            row[colKey] ? 'True' : row[colKey]}
                           </TableCell>
                         );
                       })}

@@ -105,8 +105,10 @@ export default function CaseView(props) {
   // populate vertTabInfo and deferLoadInfo
   theTabsRegionChildren.forEach((tabComp, index) => {
     const theTabCompConfig = tabComp.getPConnect().getConfigProps();
-    vertTabInfo.push({name: theTabCompConfig.label, id: index});
-    deferLoadInfo.push( { type: "DeferLoad", config: theTabCompConfig } );
+    if (theTabCompConfig.visibility==true){
+      vertTabInfo.push({name: theTabCompConfig.label, id: index});
+      deferLoadInfo.push( { type: "DeferLoad", config: theTabCompConfig } );
+    }
   });
 
 

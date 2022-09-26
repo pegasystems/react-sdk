@@ -25,6 +25,7 @@ import WideNarrowForm from "../templates/WideNarrowForm";
 import WideNarrowPage from "../templates/WideNarrowPage";
 import WideNarrowDetails from "../templates/WideNarrowDetails";
 import DataReference from '../templates/DataReference';
+import OneColumnPage from '../templates/OneColumnPage';
 //
 // WARNING:  It is not expected that this file should be modified.  It is part of infrastructure code that works with
 // Redux and creation/update of Redux containers and PConnect.  Modifying this code could have undesireable results and
@@ -125,6 +126,10 @@ export default function View(props) {
       case "SubTabs":
         ViewTemplate = SubTabs;
         break;
+
+      case "OneColumnPage":
+        ViewTemplate = OneColumnPage;
+        break
 
       case "TwoColumn":
         ViewTemplate = TwoColumn;

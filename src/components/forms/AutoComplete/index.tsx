@@ -12,6 +12,29 @@ interface IOption {
   value: string;
 }
 
+const preProcessColumns = (columnList) => {
+  return columnList.map(col => {
+    const tempColObj = { ...col };
+    tempColObj.value = col.value && col.value.startsWith('.') ? col.value.substring(1) : col.value;
+    return tempColObj;
+  });
+};
+
+const getDisplayFieldsMetaData = (columnList) => {
+  const displayColumns = columnList.filter(col => col.display === 'true');
+  const metaDataObj: any = { key: '', primary: '', secondary: [] };
+  const keyCol = columnList.filter(col => col.key === 'true');
+  metaDataObj.key = keyCol.length > 0 ? keyCol[0].value : 'auto';
+  for (let index = 0; index < displayColumns.length; index += 1) {
+    if (displayColumns[index].primary === 'true') {
+      metaDataObj.primary = displayColumns[index].value;
+    } else {
+      metaDataObj.secondary.push(displayColumns[index].value);
+    }
+  }
+  return metaDataObj;
+};
+
 export default function AutoComplete(props) {
   const {
     getPConnect,
@@ -33,33 +56,10 @@ export default function AutoComplete(props) {
   const [theDatasource, setDatasource] = useState(null);
   let selectedValue: any = '';
 
-  const preProcessColumns = (columnList) => {
-    return columnList.map(col => {
-      const tempColObj = { ...col };
-      tempColObj.value = col.value && col.value.startsWith('.') ? col.value.substring(1) : col.value;
-      return tempColObj;
-    });
-  };
-
   if (!isDeepEqual(datasource, theDatasource)) {
     // inbound datasource is different, so update theDatasource (to trigger useEffect)
     setDatasource(datasource);
   }
-
-  const getDisplayFieldsMetaData = (columnList) => {
-    const displayColumns = columnList.filter(col => col.display === 'true');
-    const metaDataObj: any = { key: '', primary: '', secondary: [] };
-    const keyCol = columnList.filter(col => col.key === 'true');
-    metaDataObj.key = keyCol.length > 0 ? keyCol[0].value : 'auto';
-    for (let index = 0; index < displayColumns.length; index += 1) {
-      if (displayColumns[index].primary === 'true') {
-        metaDataObj.primary = displayColumns[index].value;
-      } else {
-        metaDataObj.secondary.push(displayColumns[index].value);
-      }
-    }
-    return metaDataObj;
-  };
 
   // convert associated to datapage listtype and transform props
   // Process deferDatasource when datapage name is present. WHhen tableType is promptList / localList

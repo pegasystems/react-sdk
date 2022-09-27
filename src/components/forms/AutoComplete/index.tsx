@@ -20,18 +20,28 @@ export default function AutoComplete(props) {
     placeholder,
     value = '',
     validatemessage,
-    datasource = [],
     onChange,
     readOnly,
     testId,
-    listType,
-    displayMode
+    displayMode,
+    deferDatasource,
+    datasourceMetadata
   } = props;
-  let { columns = [] } = props;
+  let { listType, datasource = [], parameters, columns = [] } = props;
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [theDatasource, setDatasource] = useState(null);
   let selectedValue: any = '';
+
+  const flattenParameters = (parameters={}) => {
+    const flatParams = {};
+    Object.keys(parameters).forEach(key => {
+      const {name, value} = parameters[key];
+      flatParams[name] = value;
+    });
+
+    return flatParams;
+  }
 
   const preProcessColumns = (columnList) => {
     return columnList.map(col => {
@@ -40,8 +50,6 @@ export default function AutoComplete(props) {
       return tempColObj;
     });
   };
-
-  columns = preProcessColumns(columns);
 
   if (!isDeepEqual(datasource, theDatasource)) {
     // inbound datasource is different, so update theDatasource (to trigger useEffect)
@@ -62,6 +70,36 @@ export default function AutoComplete(props) {
     }
     return metaDataObj;
   };
+
+  // convert associated to datapage listtype and transform props
+  // Process deferDatasource when datapage name is present. WHhen tableType is promptList / localList
+  if (deferDatasource && datasourceMetadata?.datasource?.name) {
+    listType = "datapage";
+    datasource = datasourceMetadata.datasource.name;
+    parameters = flattenParameters(datasourceMetadata.datasource.parameters);
+    const displayProp =
+    datasourceMetadata.datasource.propertyForDisplayText.startsWith("@P")
+        ? datasourceMetadata.datasource.propertyForDisplayText.substring(3)
+        : datasourceMetadata.datasource.propertyForDisplayText;
+    const valueProp = datasourceMetadata.datasource.propertyForValue.startsWith("@P")
+      ? datasourceMetadata.datasource.propertyForValue.substring(3)
+      : datasourceMetadata.datasource.propertyForValue;
+    columns = [
+      {
+        key: "true",
+        setProperty: "Associated property",
+        value: valueProp
+      },
+      {
+        display: "true",
+        primary: "true",
+        useForSearch: true,
+        value: displayProp
+      }
+    ];
+  }
+
+  columns = preProcessColumns(columns);
 
   useEffect(() => {
     if (listType === 'associated') {

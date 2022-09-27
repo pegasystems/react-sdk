@@ -27,21 +27,11 @@ export default function AutoComplete(props) {
     deferDatasource,
     datasourceMetadata
   } = props;
-  let { listType, datasource = [], parameters, columns = [] } = props;
+  let { listType, datasource = [], columns = [] } = props;
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [theDatasource, setDatasource] = useState(null);
   let selectedValue: any = '';
-
-  const flattenParameters = (parameters={}) => {
-    const flatParams = {};
-    Object.keys(parameters).forEach(key => {
-      const {name, value} = parameters[key];
-      flatParams[name] = value;
-    });
-
-    return flatParams;
-  }
 
   const preProcessColumns = (columnList) => {
     return columnList.map(col => {
@@ -76,7 +66,6 @@ export default function AutoComplete(props) {
   if (deferDatasource && datasourceMetadata?.datasource?.name) {
     listType = "datapage";
     datasource = datasourceMetadata.datasource.name;
-    parameters = flattenParameters(datasourceMetadata.datasource.parameters);
     const displayProp =
     datasourceMetadata.datasource.propertyForDisplayText.startsWith("@P")
         ? datasourceMetadata.datasource.propertyForDisplayText.substring(3)

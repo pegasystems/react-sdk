@@ -12,6 +12,29 @@ interface IOption {
   value: string;
 }
 
+const preProcessColumns = (columnList) => {
+  return columnList.map(col => {
+    const tempColObj = { ...col };
+    tempColObj.value = col.value && col.value.startsWith('.') ? col.value.substring(1) : col.value;
+    return tempColObj;
+  });
+};
+
+const getDisplayFieldsMetaData = (columnList) => {
+  const displayColumns = columnList.filter(col => col.display === 'true');
+  const metaDataObj: any = { key: '', primary: '', secondary: [] };
+  const keyCol = columnList.filter(col => col.key === 'true');
+  metaDataObj.key = keyCol.length > 0 ? keyCol[0].value : 'auto';
+  for (let index = 0; index < displayColumns.length; index += 1) {
+    if (displayColumns[index].primary === 'true') {
+      metaDataObj.primary = displayColumns[index].value;
+    } else {
+      metaDataObj.secondary.push(displayColumns[index].value);
+    }
+  }
+  return metaDataObj;
+};
+
 export default function AutoComplete(props) {
   const {
     getPConnect,
@@ -20,48 +43,52 @@ export default function AutoComplete(props) {
     placeholder,
     value = '',
     validatemessage,
-    datasource = [],
     onChange,
     readOnly,
     testId,
-    listType,
-    displayMode
+    displayMode,
+    deferDatasource,
+    datasourceMetadata
   } = props;
-  let { columns = [] } = props;
+  let { listType, datasource = [], columns = [] } = props;
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [theDatasource, setDatasource] = useState(null);
   let selectedValue: any = '';
-
-  const preProcessColumns = (columnList) => {
-    return columnList.map(col => {
-      const tempColObj = { ...col };
-      tempColObj.value = col.value && col.value.startsWith('.') ? col.value.substring(1) : col.value;
-      return tempColObj;
-    });
-  };
-
-  columns = preProcessColumns(columns);
 
   if (!isDeepEqual(datasource, theDatasource)) {
     // inbound datasource is different, so update theDatasource (to trigger useEffect)
     setDatasource(datasource);
   }
 
-  const getDisplayFieldsMetaData = (columnList) => {
-    const displayColumns = columnList.filter(col => col.display === 'true');
-    const metaDataObj: any = { key: '', primary: '', secondary: [] };
-    const keyCol = columnList.filter(col => col.key === 'true');
-    metaDataObj.key = keyCol.length > 0 ? keyCol[0].value : 'auto';
-    for (let index = 0; index < displayColumns.length; index += 1) {
-      if (displayColumns[index].primary === 'true') {
-        metaDataObj.primary = displayColumns[index].value;
-      } else {
-        metaDataObj.secondary.push(displayColumns[index].value);
+  // convert associated to datapage listtype and transform props
+  // Process deferDatasource when datapage name is present. WHhen tableType is promptList / localList
+  if (deferDatasource && datasourceMetadata?.datasource?.name) {
+    listType = "datapage";
+    datasource = datasourceMetadata.datasource.name;
+    const displayProp =
+    datasourceMetadata.datasource.propertyForDisplayText.startsWith("@P")
+        ? datasourceMetadata.datasource.propertyForDisplayText.substring(3)
+        : datasourceMetadata.datasource.propertyForDisplayText;
+    const valueProp = datasourceMetadata.datasource.propertyForValue.startsWith("@P")
+      ? datasourceMetadata.datasource.propertyForValue.substring(3)
+      : datasourceMetadata.datasource.propertyForValue;
+    columns = [
+      {
+        key: "true",
+        setProperty: "Associated property",
+        value: valueProp
+      },
+      {
+        display: "true",
+        primary: "true",
+        useForSearch: true,
+        value: displayProp
       }
-    }
-    return metaDataObj;
-  };
+    ];
+  }
+
+  columns = preProcessColumns(columns);
 
   useEffect(() => {
     if (listType === 'associated') {

@@ -21,27 +21,47 @@ const useStyles = makeStyles((/* theme */) => ({
     display: 'grid',
     gap: '1rem',
     gridTemplateColumns: 'repeat(7, 1fr);'
+  },
+  inlineStyles: {
+    display: 'grid',
+    gap: '1rem',
+    alignContent: 'baseline',
+    marginTop: '1rem'
   }
 }));
 
 export default function InlineDashboard(props) {
   const classes = useStyles();
 
-  const { children, title } = props;
+  const { children, title, filterPosition } = props;
 
+  const direction = filterPosition === 'inline-start' ? 'row-reverse' : 'row';
   return (
     <>
       <Typography variant='h4' className={classes.headerStyles}>
         {title}
       </Typography>
-      <Grid container spacing={2} direction='column-reverse' className={classes.containerStyles}>
-        <Grid item xs={12} className={classes.colStyles}>
-          {children[0]}
+
+      {filterPosition === 'block-start' && (
+        <Grid container spacing={2} direction='column-reverse' className={classes.containerStyles}>
+          <Grid item xs={12} className={classes.colStyles}>
+            {children[0]}
+          </Grid>
+          <Grid item xs={12} className={classes.filterContainerStyles}>
+            {children[1]}
+          </Grid>
         </Grid>
-        <Grid item xs={12} className={classes.filterContainerStyles}>
-          {children[1]}
+      )}
+      {filterPosition !== 'block-start' && (
+        <Grid container spacing={2} direction={direction} className={classes.containerStyles}>
+          <Grid item xs={9}>
+            {children[0]}
+          </Grid>
+          <Grid item xs={3} className={classes.inlineStyles}>
+            {children[1]}
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </>
   );
 }

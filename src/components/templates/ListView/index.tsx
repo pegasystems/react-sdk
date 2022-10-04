@@ -58,11 +58,14 @@ const filterByColumns: Array<any> = [];
 
 export default function ListView(props) {
   const { getPConnect, bInForm } = props;
-  const { globalSearch, presets, referenceList, rowClickAction, selectionMode } = props;
+  const { globalSearch, presets, referenceList, rowClickAction, selectionMode, referenceType } = props;
 
   const thePConn = getPConnect();
   const componentConfig = thePConn.getComponentConfig();
   const resolvedConfigProps = thePConn.getConfigProps();
+
+  /** pyGUID is used for Data classes and pyID is for Work classes */
+  const rowID = referenceType === 'Case' ? 'pyID' : 'pyGUID';
 
   const [arRows, setRows] = useState<Array<any>>([]);
   const [arColumns, setColumns] = useState<Array<any>>([]);
@@ -243,9 +246,9 @@ export default function ListView(props) {
   function getUsingData(arTableData, theColumns): Array<any> {
     if (selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) {
       const record = arTableData?.length > 0 ? arTableData[0] : '';
-      if (typeof record === 'object' && !('pyGUID' in record)) {
+      if (typeof record === 'object' && !('pyGUID' in record) && !('pyID' in record)) {
         // eslint-disable-next-line no-console
-        console.error('pyGUID values are mandatory to select the required row from the list');
+        console.error('pyGUID or pyID values are mandatory to select the required row from the list');
       }
     }
     const arReturn = arTableData?.map((data: any) => {
@@ -254,7 +257,7 @@ export default function ListView(props) {
       theColumns.forEach(col => {
         row[col.id] = data[col.id];
       });
-      row['pyGUID'] = data['pyGUID'];
+      row[rowID] = data[rowID];
       // for (const field of theColumns) {
       //   row[field.id] = data[field.id];
       // }
@@ -990,7 +993,7 @@ export default function ListView(props) {
     const value = event.target.value;
     getPConnect()
       ?.getListActions?.()
-      ?.setSelectedRows([{ pyGUID: value }]);
+      ?.setSelectedRows([{ [rowID]: value }]);
     setSelectedValue(value);
   };
 
@@ -999,7 +1002,7 @@ export default function ListView(props) {
     const checked = event?.target?.checked;
     getPConnect()
       ?.getListActions()
-      ?.setSelectedRows([{ pyGUID: value, $selected: checked }]);
+      ?.setSelectedRows([{ [rowID]: value, $selected: checked }]);
   };
 
   return (
@@ -1150,7 +1153,7 @@ export default function ListView(props) {
                         .map(row => {
                           return (
                             <TableRow
-                              key={row.pyGUID}
+                              key={row[rowID]}
                               onClick={() => {
                                 _rowClick(row);
                               }}
@@ -1159,10 +1162,10 @@ export default function ListView(props) {
                                 <TableCell>
                                   <Radio
                                     onChange={handleChange}
-                                    value={row.pyGUID}
+                                    value={row[rowID]}
                                     name='radio-buttons'
                                     inputProps={{ 'aria-label': 'A' }}
-                                    checked={selectedValue === row.pyGUID}
+                                    checked={selectedValue === row[rowID]}
                                   ></Radio>
                                 </TableCell>
                               )}
@@ -1170,7 +1173,7 @@ export default function ListView(props) {
                                 <TableCell>
                                   <Checkbox
                                     onChange={onCheckboxClick}
-                                    value={row.pyGUID}
+                                    value={row[rowID]}
                                   ></Checkbox>
                                 </TableCell>
                               )}

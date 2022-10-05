@@ -151,7 +151,10 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.css$/,
-          include: path.resolve(__dirname, 'src'),
+          include: [
+            path.resolve(__dirname, 'src'),
+            path.resolve(__dirname, 'node_modules/react-datepicker'),
+          ],
           use: ['style-loader', 'css-loader']
         },
         {

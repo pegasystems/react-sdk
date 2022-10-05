@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+/* eslint-disable no-plusplus */
+/* eslint-disable guard-for-in */
+/* eslint-disable @typescript-eslint/no-use-before-define */
+import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Utils } from '../../../helpers/utils';
 import Table from '@material-ui/core/Table';
@@ -40,9 +43,9 @@ declare const PCore: any;
 let myRows: Array<any>;
 let myDisplayColmnnList: Array<any>;
 
-let menuColumnId = "";
-let menuColumnType = "";
-let menuColumnLabel = "";
+let menuColumnId = '';
+let menuColumnType = '';
+let menuColumnLabel = '';
 
 let sortColumnId: any;
 
@@ -55,7 +58,8 @@ const filterByColumns: Array<any> = [];
 
 export default function ListView(props) {
   const { getPConnect, bInForm } = props;
-  const { globalSearch, presets, referenceList, rowClickAction, payload, selectionMode, referenceType} = props;
+  const { globalSearch, presets, referenceList, rowClickAction, selectionMode, referenceType } = props;
+
   const thePConn = getPConnect();
   const componentConfig = thePConn.getComponentConfig();
   const resolvedConfigProps = thePConn.getConfigProps();
@@ -73,57 +77,66 @@ export default function ListView(props) {
   const [open, setOpen] = useState(false);
 
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
+
+  // This basically will hold the list of all current filters
+  const filters = useRef({});
+
+  // Will contain the list of columns specific for an instance
+  let columnList: any = useRef([]);
+  let payload: any;
+  // Will be sent in the payload
+  let selectParam: Array<any> = [];
 
   const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-    },
-    paper: {
-      width: '100%',
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(2),
-    },
-    search: {
-      padding: "5px 5px",
-    },
-    table: {
-      minWidth: 750,
-    },
-    tableInForm: {
-      minWidth: 750,
-      maxHeight: 550,
-      overflow: "auto"
-    },
-    moreIcon: {
-      verticalAlign: "bottom"
-    },
-    filteredIcon: {
-      verticalAlign: "bottom"
-    },
-    cell: {
-      whiteSpace: "nowrap"
-    },
-    visuallyHidden: {
-      border: 0,
-      clip: 'rect(0 0 0 0)',
-      height: 1,
-      margin: -1,
-      overflow: 'hidden',
-      padding: 0,
-      position: 'absolute',
-      top: 20,
-      width: 1,
-    },
-    title: {
-      marginTop: theme.spacing(1),
-      marginLeft: theme.spacing(1),
-    }
-  }),
-);
+    createStyles({
+      root: {
+        width: '100%'
+      },
+      paper: {
+        width: '100%',
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2)
+      },
+      search: {
+        padding: '5px 5px'
+      },
+      table: {
+        minWidth: 750
+      },
+      tableInForm: {
+        minWidth: 750,
+        maxHeight: 550,
+        overflow: 'auto'
+      },
+      moreIcon: {
+        verticalAlign: 'bottom'
+      },
+      filteredIcon: {
+        verticalAlign: 'bottom'
+      },
+      cell: {
+        whiteSpace: 'nowrap'
+      },
+      visuallyHidden: {
+        border: 0,
+        clip: 'rect(0 0 0 0)',
+        height: 1,
+        margin: -1,
+        overflow: 'hidden',
+        padding: 0,
+        position: 'absolute',
+        top: 20,
+        width: 1
+      },
+      title: {
+        marginTop: theme.spacing(1),
+        marginLeft: theme.spacing(1)
+      }
+    })
+  );
 
   const classes = useStyles();
 
@@ -152,8 +165,8 @@ export default function ListView(props) {
 
   function getComparator<Key extends keyof any>(
     theOrder: Order,
-    orderedBy: Key,
-  // eslint-disable-next-line no-unused-vars
+    orderedBy: Key
+    // eslint-disable-next-line no-unused-vars
   ): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
     return theOrder === 'desc'
       ? (a, b) => descendingComparator(a, b, orderedBy)
@@ -169,9 +182,8 @@ export default function ListView(props) {
       if (order !== 0) return order;
       return a[1] - b[1];
     });
-    return stabilizedThis.map((el) => el[0]);
+    return stabilizedThis.map(el => el[0]);
   }
-
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -199,39 +211,42 @@ export default function ListView(props) {
   // }
 
   function getHeaderCells(colFields, fields) {
-    const arReturn = colFields.map(( field: any, colIndex) => {
-      let theField = field.config.value.substring(field.config.value.indexOf(" ")+1);
-      if (theField.indexOf(".") === 0) {
+    const arReturn = colFields.map((field: any, colIndex) => {
+      let theField = field.config.value.substring(field.config.value.indexOf(' ') + 1);
+      if (theField.indexOf('.') === 0) {
         theField = theField.substring(1);
       }
 
       const headerRow: any = {};
       headerRow.id = theField;
       headerRow.type = field.type;
-      headerRow.numeric = (field.type === "Decimal" || field.type === "Integer" ||
-        field.type === "Percentage" || field.type === "Currency") || false;
+      headerRow.numeric =
+        field.type === 'Decimal' ||
+        field.type === 'Integer' ||
+        field.type === 'Percentage' ||
+        field.type === 'Currency' ||
+        false;
       headerRow.disablePadding = false;
       headerRow.label = fields[colIndex].config.label;
 
       return headerRow;
     });
     return arReturn;
-
   }
 
-  function updateFields(arFields, theColumns) : Array<any> {
+  function updateFields(arFields, theColumns): Array<any> {
     const arReturn = arFields;
     arFields.forEach((field, index) => {
       arReturn[index].config.name = theColumns[index].id;
-    })
+    });
 
     return arReturn;
   }
 
-  function getUsingData(arTableData, theColumns): Array<any>  {
+  function getUsingData(arTableData, theColumns): Array<any> {
     if (selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) {
       const record = arTableData?.length > 0 ? arTableData[0] : '';
-      if (typeof(record) === "object" && !('pyGUID' in record) && !('pyID' in record)) {
+      if (typeof record === 'object' && !('pyGUID' in record) && !('pyID' in record)) {
         // eslint-disable-next-line no-console
         console.error('pyGUID or pyID values are mandatory to select the required row from the list');
       }
@@ -239,7 +254,7 @@ export default function ListView(props) {
     const arReturn = arTableData?.map((data: any) => {
       const row: any = {};
 
-      theColumns.forEach((col) => {
+      theColumns.forEach(col => {
         row[col.id] = data[col.id];
       });
       row[rowID] = data[rowID];
@@ -256,42 +271,41 @@ export default function ListView(props) {
         row['pzInsKey'] = data['pzInsKey'];
       }
 
-
       return row;
     });
 
     return arReturn;
   }
 
-  function updateData( listData:Array<any>, fieldData:Array<any>): Array<any> {
-    const returnList : Array<any> = new Array<any>();
-    listData?.forEach((row) => {
-       // copy
+  function updateData(listData: Array<any>, fieldData: Array<any>): Array<any> {
+    const returnList: Array<any> = new Array<any>();
+    listData?.forEach(row => {
+      // copy
       const rowData = JSON.parse(JSON.stringify(row));
 
-      fieldData.forEach((field) => {
-        const config = field.config
+      fieldData.forEach(field => {
+        const config = field.config;
         let fieldName;
         let formattedDate;
         let myFormat;
 
         switch (field.type) {
-          case "Date" :
+          case 'Date':
             fieldName = config.name;
             myFormat = config.formatter;
             if (!myFormat) {
-              myFormat = "Date";
+              myFormat = 'Date';
             }
             formattedDate = Utils.generateDate(rowData[fieldName], myFormat);
 
             rowData[fieldName] = formattedDate;
             break;
 
-          case "DateTime" :
+          case 'DateTime':
             fieldName = config.name;
             myFormat = config.formatter;
             if (!myFormat) {
-              myFormat = "DateTime-Long";
+              myFormat = 'DateTime-Long';
             }
             formattedDate = Utils.generateDateTime(rowData[fieldName], myFormat);
 
@@ -301,7 +315,6 @@ export default function ListView(props) {
           default:
             break;
         }
-
       });
 
       returnList.push(rowData);
@@ -310,13 +323,12 @@ export default function ListView(props) {
     return returnList;
   }
 
-
   function getMyColumnList(arCols: Array<any>): Array<string> {
     const myColList: Array<string> = [];
 
-    arCols.forEach((col) => {
+    arCols.forEach(col => {
       myColList.push(col.id);
-    })
+    });
 
     // for (const col of arCols) {
     //   myColList.push(col.id);
@@ -324,6 +336,145 @@ export default function ListView(props) {
 
     return myColList;
   }
+
+  /** Will return field from a filter expression */
+  function getFieldFromFilter(filter, dateRange = false) {
+    let fieldValue;
+    if (dateRange) {
+      fieldValue = filter?.AND[0]?.condition.lhs.field;
+    } else {
+      fieldValue = filter?.condition.lhs.field;
+    }
+    return fieldValue;
+  }
+
+  // Will be triggered when EVENT_DASHBOARD_FILTER_CHANGE fires
+  function processFilterChange(data) {
+    const { filterId, filterExpression } = data;
+    payload = {
+      query: {
+        filter: {},
+        select: []
+      }
+    };
+
+    filters.current[filterId] = filterExpression;
+    // eslint-disable-next-line no-unneeded-ternary
+    let isDateRange = data.filterExpression?.AND ? true : false;
+    // Will be AND by default but making it dynamic in case we support dynamic relational ops in future
+    const relationalOp = 'AND';
+
+    let field = getFieldFromFilter(filterExpression, isDateRange);
+    selectParam = [];
+    // Constructing the select parameters list( will be sent in payload)
+    columnList.forEach(col => {
+      selectParam.push({
+        field: col
+      });
+    });
+
+    // Checking if the triggered filter is applicable for this list
+    if (data.filterExpression !== null && !(columnList.length && columnList.includes(field))) {
+      return;
+    }
+    // This is a flag which will be used to reset payload in case we don't find any valid filters
+    let validFilter = false;
+
+    let index = 1;
+    // Iterating over the current filters list to create filter data which will be POSTed
+    for (const filterExp in filters.current) {
+      const filter = filters.current[filterExp];
+      // If the filter is null then we can skip this iteration
+      if (filter === null) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      // Checking if the filter is of type- Date Range
+      // eslint-disable-next-line no-unneeded-ternary
+      isDateRange = filter?.AND ? true : false;
+      field = getFieldFromFilter(filter, isDateRange);
+
+      if (!(columnList.length && columnList.includes(field))) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+      // If we reach here that implies we've at least one valid filter, hence setting the flag
+      validFilter = true;
+      /** Below are the 2 cases for- Text & Date-Range filter types where we'll construct filter data which will be sent in the payload
+       * In Nebula, through Repeating Structures they might be using several APIs to do it, we're doing it here
+      */
+      if (isDateRange) {
+        const dateRelationalOp = filter?.AND ? 'AND' : 'OR';
+        payload.query.filter.filterConditions = {
+          ...payload.query.filter.filterConditions,
+          [`T${index++}`]: { ...filter[relationalOp][0].condition },
+          [`T${index++}`]: { ...filter[relationalOp][1].condition }
+        };
+        if (payload.query.filter.logic) {
+          payload.query.filter.logic = `${payload.query.filter.logic} ${relationalOp} (T${
+            index - 2
+          } ${dateRelationalOp} T${index - 1})`;
+        } else {
+          payload.query.filter.logic = `(T${index - 2} ${relationalOp} T${index - 1})`;
+        }
+
+        payload.query.select = selectParam;
+      } else {
+        payload.query.filter.filterConditions = {
+          ...payload.query.filter.filterConditions,
+          [`T${index++}`]: { ...filter.condition, ignoreCase: true }
+        };
+
+        if (payload.query.filter.logic) {
+          payload.query.filter.logic = `${payload.query.filter.logic} ${relationalOp} T${
+            index - 1
+          }`;
+        } else {
+          payload.query.filter.logic = `T${index - 1}`;
+        }
+
+        payload.query.select = selectParam;
+      }
+    }
+
+    // Reset the payload if we end up with no valid filters for the list
+    if (!validFilter) {
+      payload = undefined;
+    }
+
+    fetchDataFromServer();
+  }
+
+  // Will be triggered when EVENT_DASHBOARD_FILTER_CLEAR_ALL fires
+  function processFilterClear() {
+    payload = undefined;
+    fetchDataFromServer();
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      PCore.getPubSubUtils().subscribe(
+        PCore.getConstants().PUB_SUB_EVENTS.EVENT_DASHBOARD_FILTER_CHANGE,
+        data => {
+          processFilterChange(data);
+        },
+        `dashboard-component-${'id'}`,
+        false,
+        getPConnect().getContextName()
+      );
+      PCore.getPubSubUtils().subscribe(
+        PCore.getConstants().PUB_SUB_EVENTS.EVENT_DASHBOARD_FILTER_CLEAR_ALL,
+        () => {
+          filters.current = {};
+          processFilterClear();
+        },
+        `dashboard-component-${'id'}`,
+        false,
+        getPConnect().getContextName()
+      );
+    }, 0);
+  }, []);
 
   function fetchAllData() {
     const context = getPConnect().getContextName();
@@ -350,6 +501,22 @@ export default function ListView(props) {
 
     const myColumns = getHeaderCells(columnFields, fields);
 
+    const selectParams: any = [];
+
+    myColumns.forEach(column => {
+      selectParams.push({
+        field: column.id
+      });
+    });
+
+    const colList: any = [];
+
+    selectParams.forEach(col => {
+      colList.push(col.field);
+    });
+
+    columnList = colList;
+
     fields = updateFields(fields, myColumns);
 
     const usingDataResults = getUsingData(tableDataResults, myColumns);
@@ -373,13 +540,12 @@ export default function ListView(props) {
       //  So, if this cleanup code gets run before the promise .then is called,
       //  we can avoid calling the useState setters which would otherwise show a warning
       bCallSetRowsColumns = false;
-    }
+    };
   }
 
-  useEffect( ()=> {
+  useEffect(() => {
     fetchDataFromServer();
-  }, [payload]);
-
+  }, []);
 
   function searchFilter(value: string, rows: Array<any>) {
     function filterArray(el: any): boolean {
@@ -389,7 +555,7 @@ export default function ListView(props) {
         if (myDisplayColmnnList.includes(key)) {
           let myVal = el[key];
           if (myVal !== null) {
-            if (typeof(myVal) !== "string") {
+            if (typeof myVal !== 'string') {
               myVal = myVal.toString();
             }
             if (myVal.toLowerCase().indexOf(value.toLowerCase()) >= 0) {
@@ -397,7 +563,6 @@ export default function ListView(props) {
             }
           }
         }
-
       }
 
       return bReturn;
@@ -406,7 +571,6 @@ export default function ListView(props) {
     rows = rows.filter(filterArray);
 
     return rows;
-
   }
 
   function _onSearch(event: any) {
@@ -415,9 +579,7 @@ export default function ListView(props) {
     const filteredRows = searchFilter(searchValue, myRows.slice());
 
     setRows(filteredRows);
-
   }
-
 
   function showToast(message: string) {
     const theMessage = `Assignment: ${message}`;
@@ -427,55 +589,49 @@ export default function ListView(props) {
     setShowSnackbar(true);
   }
 
-
   function openAssignment(row) {
     const { pxRefObjectClass, pzInsKey } = row;
     const sTarget = thePConn.getContainerName();
 
-    const options = { "containerName" : sTarget};
+    const options = { containerName: sTarget };
 
-    thePConn.getActionsApi().openAssignment(pzInsKey, pxRefObjectClass, options)
+    thePConn
+      .getActionsApi()
+      .openAssignment(pzInsKey, pxRefObjectClass, options)
       .then(() => {
         // console.log("openAssignment successful");
       })
       .catch(() => {
-        showToast( `openAssignment failed!`);
+        showToast(`openAssignment failed!`);
       });
   }
 
-
   function _rowClick(row: any) {
-
     // eslint-disable-next-line sonarjs/no-small-switch
     switch (rowClickAction) {
-      case "openAssignment" :
+      case 'openAssignment':
         openAssignment(row);
         break;
 
       default:
         break;
-
     }
   }
-
-
 
   function openWork(row) {
-    const {pxRefObjectClass, pxRefObjectKey} = row;
+    const { pxRefObjectClass, pxRefObjectKey } = row;
 
-    if (pxRefObjectClass !== "" && pxRefObjectKey !== "") {
-      thePConn.getActionsApi().openWorkByHandle( pxRefObjectKey, pxRefObjectClass);
+    if (pxRefObjectClass !== '' && pxRefObjectKey !== '') {
+      thePConn.getActionsApi().openWorkByHandle(pxRefObjectKey, pxRefObjectClass);
     }
   }
-
 
   function handleSnackbarClose(event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
     if (reason === 'clickaway') {
       return;
     }
     setShowSnackbar(false);
-  };
-
+  }
 
   function _menuClick(event, columnId: string, columnType: string, label: string) {
     menuColumnId = columnId;
@@ -491,18 +647,16 @@ export default function ListView(props) {
 
   const [filterBy, setFilterBy] = useState<string>();
   const [containsDateOrTime, setContainsDateOrTime] = useState<boolean>(false);
-  const [filterType, setFilterType] = useState<string>("string");
+  const [filterType, setFilterType] = useState<string>('string');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  const [displayDialogFilterName, setDisplayDialogFilterName] = useState<string>("");
-  const [displayDialogContainsFilter, setDisplayDialogContainsFilter] = useState<string>("contains");
-  const [displayDialogContainsValue, setDisplayDialogContainsValue] = useState<string>("");
-  const [displayDialogDateFilter, setDisplayDialogDateFilter] = useState<string>("notequal");
-  const [displayDialogDateValue, setDisplayDialogDateValue] = useState<string>("");
-
-
+  const [displayDialogFilterName, setDisplayDialogFilterName] = useState<string>('');
+  const [displayDialogContainsFilter, setDisplayDialogContainsFilter] =
+    useState<string>('contains');
+  const [displayDialogContainsValue, setDisplayDialogContainsValue] = useState<string>('');
+  const [displayDialogDateFilter, setDisplayDialogDateFilter] = useState<string>('notequal');
+  const [displayDialogDateValue, setDisplayDialogDateValue] = useState<string>('');
 
   function _filterMenu() {
-
     setAnchorEl(null);
 
     let bFound = false;
@@ -510,15 +664,18 @@ export default function ListView(props) {
     for (const filterObj of filterByColumns) {
       if (filterObj.ref === menuColumnId) {
         setFilterBy(menuColumnLabel);
-        if (filterObj.type === "Date" || filterObj.type === "DateTime" || filterObj.type === "Time" ) {
+        if (
+          filterObj.type === 'Date' ||
+          filterObj.type === 'DateTime' ||
+          filterObj.type === 'Time'
+        ) {
           setContainsDateOrTime(true);
           setFilterType(filterObj.type);
           setDisplayDialogDateFilter(filterObj.containsFilter);
           setDisplayDialogDateValue(filterObj.containsFilterValue);
-        }
-        else {
+        } else {
           setContainsDateOrTime(false);
-          setFilterType("string");
+          setFilterType('string');
           setDisplayDialogContainsFilter(filterObj.containsFilter);
           setDisplayDialogContainsValue(filterObj.containsFilterValue);
         }
@@ -530,24 +687,21 @@ export default function ListView(props) {
     if (!bFound) {
       setFilterBy(menuColumnLabel);
       setDisplayDialogFilterName(menuColumnId);
-      setDisplayDialogContainsValue("");
+      setDisplayDialogContainsValue('');
 
       switch (menuColumnType) {
-        case "Date" :
-        case "DateTime" :
-        case "Time" :
+        case 'Date':
+        case 'DateTime':
+        case 'Time':
           setContainsDateOrTime(true);
           setFilterType(menuColumnType);
           break;
         default:
           setContainsDateOrTime(false);
-          setFilterType("string");
+          setFilterType('string');
           break;
       }
     }
-
-
-
 
     // open dialog
     setOpen(true);
@@ -558,15 +712,13 @@ export default function ListView(props) {
   }
 
   function _closeDialog() {
-
     setOpen(false);
   }
 
-
   function _showFilteredIcon(columnId) {
     for (const filterObj of filterByColumns) {
-      if (filterObj["ref"] === columnId) {
-        if (filterObj["containsFilterValue"] !== "") {
+      if (filterObj['ref'] === columnId) {
+        if (filterObj['containsFilterValue'] !== '') {
           return true;
         }
         return false;
@@ -577,18 +729,16 @@ export default function ListView(props) {
   }
 
   function updateFilterWithInfo() {
-
     let bFound = false;
     for (const filterObj of filterByColumns) {
-      if (filterObj["ref"] === menuColumnId) {
-        filterObj["type"] = filterType;
+      if (filterObj['ref'] === menuColumnId) {
+        filterObj['type'] = filterType;
         if (containsDateOrTime) {
-          filterObj["containsFilter"] = displayDialogDateFilter;
-          filterObj["containsFilterValue"] = displayDialogDateValue
-        }
-        else {
-          filterObj["containsFilter"] = displayDialogContainsFilter;
-          filterObj["containsFilterValue"] = displayDialogContainsValue;
+          filterObj['containsFilter'] = displayDialogDateFilter;
+          filterObj['containsFilterValue'] = displayDialogDateValue;
+        } else {
+          filterObj['containsFilter'] = displayDialogContainsFilter;
+          filterObj['containsFilterValue'] = displayDialogContainsValue;
         }
         bFound = true;
         break;
@@ -599,40 +749,46 @@ export default function ListView(props) {
       // add in
       const filterObj: any = {};
       filterObj.ref = menuColumnId;
-      filterObj["type"] = filterType;
+      filterObj['type'] = filterType;
       if (containsDateOrTime) {
-        filterObj["containsFilter"] = displayDialogDateFilter;
-        filterObj["containsFilterValue"] = displayDialogDateValue
-      }
-      else {
-        filterObj["containsFilter"] = displayDialogContainsFilter;
-        filterObj["containsFilterValue"] = displayDialogContainsValue;
+        filterObj['containsFilter'] = displayDialogDateFilter;
+        filterObj['containsFilterValue'] = displayDialogDateValue;
+      } else {
+        filterObj['containsFilter'] = displayDialogContainsFilter;
+        filterObj['containsFilterValue'] = displayDialogContainsValue;
       }
 
       filterByColumns.push(filterObj);
-
     }
-
   }
-
 
   function filterData(item: any) {
     let bKeep = true;
     for (const filterObj of filterByColumns) {
-      if (filterObj.containsFilterValue !== ""  || filterObj.containsFilter === 'null' || filterObj.containsFilter === 'notnull') {
-        let value : any;
+      if (
+        filterObj.containsFilterValue !== '' ||
+        filterObj.containsFilter === 'null' ||
+        filterObj.containsFilter === 'notnull'
+      ) {
+        let value: any;
         let filterValue: any;
 
         switch (filterObj.type) {
-          case "Date":
-          case "DateTime":
-          case "Time":
-            value = (item[filterObj.ref] !== null ?? item[filterObj.ref] !== "") ? Utils.getSeconds(item[filterObj.ref]) : null;
-            filterValue = (filterObj.containsFilterValue !== null && filterObj.containsFilterValue !== "") ? Utils.getSeconds(filterObj.containsFilterValue) : null;
+          case 'Date':
+          case 'DateTime':
+          case 'Time':
+            value =
+              item[filterObj.ref] !== null ?? item[filterObj.ref] !== ''
+                ? Utils.getSeconds(item[filterObj.ref])
+                : null;
+            filterValue =
+              filterObj.containsFilterValue !== null && filterObj.containsFilterValue !== ''
+                ? Utils.getSeconds(filterObj.containsFilterValue)
+                : null;
 
             // eslint-disable-next-line sonarjs/no-nested-switch
-            switch(filterObj.containsFilter) {
-              case "notequal":
+            switch (filterObj.containsFilter) {
+              case 'notequal':
                 // becasue filterValue is in minutes, need to have a range of less than 60 secons
 
                 if (value !== null && filterValue !== null) {
@@ -641,32 +797,32 @@ export default function ListView(props) {
                   filterValue /= 1000;
 
                   const diff = value - filterValue;
-                  if  (diff >= 0 && diff < 60) {
+                  if (diff >= 0 && diff < 60) {
                     bKeep = false;
                   }
                 }
 
                 break;
 
-              case "after":
+              case 'after':
                 if (value < filterValue) {
                   bKeep = false;
                 }
                 break;
 
-              case "before":
+              case 'before':
                 if (value > filterValue) {
                   bKeep = false;
                 }
                 break;
 
-              case "null":
+              case 'null':
                 if (value !== null) {
                   bKeep = false;
                 }
                 break;
 
-              case "notnull":
+              case 'notnull':
                 if (value === null) {
                   bKeep = false;
                 }
@@ -683,19 +839,19 @@ export default function ListView(props) {
 
             // eslint-disable-next-line sonarjs/no-nested-switch
             switch (filterObj.containsFilter) {
-              case "contains":
+              case 'contains':
                 if (value.indexOf(filterValue) < 0) {
                   bKeep = false;
                 }
                 break;
 
-              case "equals":
+              case 'equals':
                 if (value !== filterValue) {
                   bKeep = false;
                 }
                 break;
 
-              case "startswith":
+              case 'startswith':
                 if (value.indexOf(filterValue) !== 0) {
                   bKeep = false;
                 }
@@ -707,7 +863,6 @@ export default function ListView(props) {
 
             break;
         }
-
       }
 
       // if don't keep stop filtering
@@ -719,15 +874,12 @@ export default function ListView(props) {
     return bKeep;
   }
 
-
   function filterSortGroupBy() {
-
     // get original data set
     let theData = myRows.slice();
 
     // last filter config data is global
-    theData = theData.filter( filterData );
-
+    theData = theData.filter(filterData);
 
     // move data to array and then sort
     setRows(theData);
@@ -739,7 +891,6 @@ export default function ListView(props) {
 
     // this.repeatList$.data = [];
     // this.repeatList$.data.push( ...reGroupData);
-
 
     // if (this.searchFilter && this.searchFilter != "") {
     //   this.repeatList$.filter = this.searchFilter;
@@ -755,11 +906,9 @@ export default function ListView(props) {
     // }
   }
 
-
   function _dialogContainsFilter(event) {
     // dialogContainsFilter = event.target.value;
     setDisplayDialogContainsFilter(event.target.value);
-
   }
 
   function _dialogContainsValue(event) {
@@ -770,14 +919,11 @@ export default function ListView(props) {
   function _dialogDateFilter(event) {
     // dialogDateFilter = event.target.value;
     setDisplayDialogDateFilter(event.target.value);
-
   }
 
   function _dialogDateValue(event) {
-   setDisplayDialogDateValue(event.target.value);
-
+    setDisplayDialogDateValue(event.target.value);
   }
-
 
   function _submitFilter() {
     updateFilterWithInfo();
@@ -790,14 +936,14 @@ export default function ListView(props) {
     let bReturn = false;
     const { pxRefObjectClass, pzInsKey, pxRefObjectKey } = row;
     switch (name) {
-      case "pxTaskLabel":
-        if (pxRefObjectClass !== "" && pzInsKey !== "") {
+      case 'pxTaskLabel':
+        if (pxRefObjectClass !== '' && pzInsKey !== '') {
           bReturn = true;
         }
         break;
 
-      case "pxRefObjectInsName":
-        if (pxRefObjectClass !== "" && pxRefObjectKey !== "") {
+      case 'pxRefObjectInsName':
+        if (pxRefObjectClass !== '' && pxRefObjectKey !== '') {
           bReturn = true;
         }
         break;
@@ -810,13 +956,12 @@ export default function ListView(props) {
   }
 
   function _listViewClick(name, row) {
-
-    switch(name) {
-      case "pxTaskLabel":
+    switch (name) {
+      case 'pxTaskLabel':
         openAssignment(row);
         break;
 
-      case "pxRefObjectInsName":
+      case 'pxRefObjectInsName':
         openWork(row);
         break;
 
@@ -826,7 +971,7 @@ export default function ListView(props) {
   }
 
   function _listTitle() {
-    const defaultTitle = "List";
+    const defaultTitle = 'List';
     let title = resolvedConfigProps.title ? resolvedConfigProps.title : defaultTitle;
     const inheritedProps = resolvedConfigProps?.inheritedProps;
 
@@ -834,7 +979,7 @@ export default function ListView(props) {
     //  but only look in inheritedProps if they exist
     if (title === defaultTitle && inheritedProps) {
       for (const inheritedProp of inheritedProps) {
-        if (inheritedProp?.prop === "label") {
+        if (inheritedProp?.prop === 'label') {
           title = inheritedProp?.value;
           break;
         }
@@ -842,283 +987,340 @@ export default function ListView(props) {
     }
 
     return title;
-
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-   const value = event.target.value;
-   getPConnect()?.getListActions?.()?.setSelectedRows([{[rowID]: value}]);
-   setSelectedValue(value);
+    const value = event.target.value;
+    getPConnect()
+      ?.getListActions?.()
+      ?.setSelectedRows([{ [rowID]: value }]);
+    setSelectedValue(value);
   };
 
-  const onCheckboxClick = (event) => {
+  const onCheckboxClick = event => {
     const value = event?.target?.value;
     const checked = event?.target?.checked;
-    getPConnect()?.getListActions()?.setSelectedRows([{[rowID]: value, $selected: checked}]);
+    getPConnect()
+      ?.getListActions()
+      ?.setSelectedRows([{ [rowID]: value, $selected: checked }]);
   };
 
   return (
     <>
-    { arColumns && arColumns.length > 0 &&
-      <Paper className={classes.paper}>
-        <Typography className={classes.title} variant="h6" color="textPrimary" gutterBottom>
-          { _listTitle() }
-        </Typography>
-         {globalSearch &&
-            <Grid container spacing={1} alignItems="flex-end" className={classes.search}>
-               <Grid item>
-                 <SearcIcon/>
-               </Grid>
-               <Grid item>
+      {arColumns && arColumns.length > 0 && (
+        <Paper className={classes.paper}>
+          <Typography className={classes.title} variant='h6' color='textPrimary' gutterBottom>
+            {_listTitle()}
+          </Typography>
+          {globalSearch && (
+            <Grid container spacing={1} alignItems='flex-end' className={classes.search}>
+              <Grid item>
+                <SearcIcon />
+              </Grid>
+              <Grid item>
                 <TextField
-                  label="Search"
+                  label='Search'
                   fullWidth
-                  variant="outlined"
-                  placeholder=""
-                  size="small"
-                  onChange={_onSearch}/>
-               </Grid>
+                  variant='outlined'
+                  placeholder=''
+                  size='small'
+                  onChange={_onSearch}
+                />
+              </Grid>
             </Grid>
-         }
+          )}
           <>
-          {bInForm ?
-          <TableContainer className={classes.tableInForm}>
-          <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {arColumns.map((column) => {
-                return (
-                  <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>
-                    <TableSortLabel
-                      active={orderBy === column.id}
-                      direction={orderBy === column.id ? order : 'asc'}
-                      onClick={createSortHandler(column.id)}
-                    >
-                    {column.label}
-                      { _showFilteredIcon(column.id) &&
-                      <FilterListIcon className={classes.filteredIcon}/>
-                      }
-                      {orderBy === column.id ? (
-                        <span className={classes.visuallyHidden}>
-                          {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                        </span>
-                        ) : null}
-
-                    </TableSortLabel>
-                    <MoreIcon className={classes.moreIcon} onClick={ (event) => { _menuClick(event, column.id, column.type, column.label)}}/>
-
-
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-          {stableSort(arRows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow key={row.pxRefObjectInsName} onClick={() => { _rowClick(row)}}>
-                      {arColumns.map((column) => {
-                        const value = row[column.id];
+            {bInForm ? (
+              <TableContainer className={classes.tableInForm}>
+                <Table stickyHeader aria-label='sticky table'>
+                  <TableHead>
+                    <TableRow>
+                      {arColumns.map(column => {
                         return (
-                          <TableCell key={column.id} align={column.align} className={classes.cell}>
-                            { _showButton(column.id, row) ?
-                              <Link component="button" onClick={() => { _listViewClick(column.id, row)}}>
-                                {column.format && typeof value === 'number' ? column.format(value) : value}
-                              </Link>
-                              :
-                              <>
-                              {column.format && typeof value === 'number' ? column.format(value) : value}
-                              </>
-                            }
-
+                          <TableCell
+                            className={classes.cell}
+                            key={column.id}
+                            sortDirection={orderBy === column.id ? order : false}
+                          >
+                            <TableSortLabel
+                              active={orderBy === column.id}
+                              direction={orderBy === column.id ? order : 'asc'}
+                              onClick={createSortHandler(column.id)}
+                            >
+                              {column.label}
+                              {_showFilteredIcon(column.id) && (
+                                <FilterListIcon className={classes.filteredIcon} />
+                              )}
+                              {orderBy === column.id ? (
+                                <span className={classes.visuallyHidden}>
+                                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                </span>
+                              ) : null}
+                            </TableSortLabel>
+                            <MoreIcon
+                              className={classes.moreIcon}
+                              onClick={event => {
+                                _menuClick(event, column.id, column.type, column.label);
+                              }}
+                            />
                           </TableCell>
                         );
                       })}
                     </TableRow>
-                  );
-            })}
-          </TableBody>
-        </Table>
-        </TableContainer>
-          :
-          <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                {(selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) && <TableCell></TableCell>}
-                {arColumns.map((column) => {
-                  return (
-                    <TableCell className={classes.cell} key={column.id} sortDirection={orderBy === column.id ? order : false}>
-                      <TableSortLabel
-                        active={orderBy === column.id}
-                        direction={orderBy === column.id ? order : 'asc'}
-                        onClick={createSortHandler(column.id)}
-                      >
-                      {column.label}
-                        {orderBy === column.id ? (
-                          <span className={classes.visuallyHidden}>
-                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                          </span>
-                          ) : null}
-                      </TableSortLabel>
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-            {arRows && arRows.length > 0 && stableSort(arRows, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => {
-                return (
-                  <TableRow key={row[rowID] } onClick={() => { _rowClick(row)}}>
-                    {selectionMode === SELECTION_MODE.SINGLE && <TableCell>
-                      <Radio onChange={handleChange} value={row[rowID]} name="radio-buttons" inputProps={{ 'aria-label': 'A' }} checked={selectedValue === row[rowID]}></Radio>
-                    </TableCell>}
-                    {selectionMode === SELECTION_MODE.MULTI && <TableCell>
-                      <Checkbox onChange={onCheckboxClick} value={row[rowID]}></Checkbox>
-                    </TableCell>}
-                    {arColumns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell className={classes.cell} key={column.id} align={column.align}>
-                          {column.format && typeof value === 'number' ? column.format(value) : value}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-          {arRows && arRows.length === 0 && <div className="no-records">No records found.</div>}
-          </TableContainer>
-          }
-        </>
-        {arRows && arRows.length > 0 &&  <TablePagination
+                  </TableHead>
+                  <TableBody>
+                    {stableSort(arRows, getComparator(order, orderBy))
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map(row => {
+                        return (
+                          <TableRow
+                            key={row.pxRefObjectInsName || row.pyID}
+                            onClick={() => {
+                              _rowClick(row);
+                            }}
+                          >
+                            {arColumns.map(column => {
+                              const value = row[column.id];
+                              return (
+                                <TableCell
+                                  key={column.id}
+                                  align={column.align}
+                                  className={classes.cell}
+                                >
+                                  {_showButton(column.id, row) ? (
+                                    <Link
+                                      component='button'
+                                      onClick={() => {
+                                        _listViewClick(column.id, row);
+                                      }}
+                                    >
+                                      {column.format && typeof value === 'number'
+                                        ? column.format(value)
+                                        : value}
+                                    </Link>
+                                  ) : (
+                                    <>
+                                      {column.format && typeof value === 'number'
+                                        ? column.format(value)
+                                        : value}
+                                    </>
+                                  )}
+                                </TableCell>
+                              );
+                            })}
+                          </TableRow>
+                        );
+                      })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            ) : (
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {(selectionMode === SELECTION_MODE.SINGLE ||
+                        selectionMode === SELECTION_MODE.MULTI) && <TableCell></TableCell>}
+                      {arColumns.map(column => {
+                        return (
+                          <TableCell
+                            className={classes.cell}
+                            key={column.id}
+                            sortDirection={orderBy === column.id ? order : false}
+                          >
+                            <TableSortLabel
+                              active={orderBy === column.id}
+                              direction={orderBy === column.id ? order : 'asc'}
+                              onClick={createSortHandler(column.id)}
+                            >
+                              {column.label}
+                              {orderBy === column.id ? (
+                                <span className={classes.visuallyHidden}>
+                                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                                </span>
+                              ) : null}
+                            </TableSortLabel>
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {arRows &&
+                      arRows.length > 0 &&
+                      stableSort(arRows, getComparator(order, orderBy))
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map(row => {
+                          return (
+                            <TableRow
+                              key={row[rowID]}
+                              onClick={() => {
+                                _rowClick(row);
+                              }}
+                            >
+                              {selectionMode === SELECTION_MODE.SINGLE && (
+                                <TableCell>
+                                  <Radio
+                                    onChange={handleChange}
+                                    value={row[rowID]}
+                                    name='radio-buttons'
+                                    inputProps={{ 'aria-label': 'A' }}
+                                    checked={selectedValue === row[rowID]}
+                                  ></Radio>
+                                </TableCell>
+                              )}
+                              {selectionMode === SELECTION_MODE.MULTI && (
+                                <TableCell>
+                                  <Checkbox
+                                    onChange={onCheckboxClick}
+                                    value={row[rowID]}
+                                  ></Checkbox>
+                                </TableCell>
+                              )}
+                              {arColumns.map(column => {
+                                const value = row[column.id];
+                                return (
+                                  <TableCell
+                                    className={classes.cell}
+                                    key={column.id}
+                                    align={column.align}
+                                  >
+                                    {column.format && typeof value === 'number'
+                                      ? column.format(value)
+                                      : value}
+                                  </TableCell>
+                                );
+                              })}
+                            </TableRow>
+                          );
+                        })}
+                  </TableBody>
+                </Table>
+                {arRows && arRows.length === 0 && (
+                  <div className='no-records'>No records found.</div>
+                )}
+              </TableContainer>
+            )}
+          </>
+          {arRows && arRows.length > 0 && (
+            <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
-              component="div"
+              component='div'
               count={arRows.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-            />}
-      </Paper>
-    }
-    <Menu
-      id="simple-menu"
-      anchorEl={anchorEl}
-      keepMounted
-      open={Boolean(anchorEl)}
-      onClose={_menuClose}
-    >
-      <MenuItem onClick={ _filterMenu}><FilterListIcon/> Filter</MenuItem>
-      <MenuItem onClick={ _groupMenu}><SubjectIcon/> Group</MenuItem>
-    </Menu>
-    <Dialog open={open} onClose={_closeDialog} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Filter: {filterBy}</DialogTitle>
+            />
+          )}
+        </Paper>
+      )}
+      <Menu
+        id='simple-menu'
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={_menuClose}
+      >
+        <MenuItem onClick={_filterMenu}>
+          <FilterListIcon /> Filter
+        </MenuItem>
+        <MenuItem onClick={_groupMenu}>
+          <SubjectIcon /> Group
+        </MenuItem>
+      </Menu>
+      <Dialog open={open} onClose={_closeDialog} aria-labelledby='form-dialog-title'>
+        <DialogTitle id='form-dialog-title'>Filter: {filterBy}</DialogTitle>
         <DialogContent>
-          { containsDateOrTime ?
-          <>
-            <Select
-              value={displayDialogDateFilter}
-              onChange={ _dialogDateFilter}
-              fullWidth
+          {containsDateOrTime ? (
+            <>
+              <Select value={displayDialogDateFilter} onChange={_dialogDateFilter} fullWidth>
+                <MenuItem value='notequal'>is not equal to</MenuItem>
+                <MenuItem value='after'>after</MenuItem>
+                <MenuItem value='before'>before</MenuItem>
+                <MenuItem value='null'>is null</MenuItem>
+                <MenuItem value='notnull'>is not null</MenuItem>
+              </Select>
+              {filterType === 'Date' && (
+                <TextField
+                  autoFocus
+                  margin='dense'
+                  id='containsFilter'
+                  type='date'
+                  fullWidth
+                  value={displayDialogDateValue}
+                  onChange={_dialogDateValue}
+                />
+              )}
+              {filterType === 'DateTime' && (
+                <TextField
+                  autoFocus
+                  margin='dense'
+                  id='containsFilter'
+                  type='datetime-local'
+                  fullWidth
+                  value={displayDialogDateValue}
+                  onChange={_dialogDateValue}
+                />
+              )}
+              {filterType === 'Time' && (
+                <TextField
+                  autoFocus
+                  margin='dense'
+                  id='containsFilter'
+                  type='time'
+                  fullWidth
+                  value={displayDialogDateValue}
+                  onChange={_dialogDateValue}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              <Select
+                fullWidth
+                onChange={_dialogContainsFilter}
+                value={displayDialogContainsFilter}
               >
-              <MenuItem value="notequal">is not equal to</MenuItem>
-              <MenuItem value="after">after</MenuItem>
-              <MenuItem value="before">before</MenuItem>
-              <MenuItem value="null">is null</MenuItem>
-              <MenuItem value="notnull">is not null</MenuItem>
-            </Select>
-            { filterType === "Date" &&
-                <TextField
-                autoFocus
-                margin="dense"
-                id="containsFilter"
-                type="date"
-                fullWidth
-                value={displayDialogDateValue}
-                onChange={ _dialogDateValue}
-                />
-            }
-            { filterType === "DateTime" &&
-                <TextField
-                autoFocus
-                margin="dense"
-                id="containsFilter"
-                type="datetime-local"
-                fullWidth
-                value={displayDialogDateValue}
-                onChange={ _dialogDateValue}
-                />
-            }
-            { filterType === "Time" &&
+                <MenuItem value='contains'>Contains</MenuItem>
+                <MenuItem value='equals'>Equals</MenuItem>
+                <MenuItem value='startswith'>Starts with</MenuItem>
+              </Select>
               <TextField
-              autoFocus
-              margin="dense"
-              id="containsFilter"
-              type="time"
-              fullWidth
-              value={displayDialogDateValue}
-              onChange={ _dialogDateValue}
+                autoFocus
+                margin='dense'
+                id='containsFilter'
+                type='text'
+                fullWidth
+                value={displayDialogContainsValue}
+                onChange={_dialogContainsValue}
               />
-            }
-          </>
-          :
-          <>
-            <Select
-              fullWidth
-              onChange={ _dialogContainsFilter}
-              value={displayDialogContainsFilter}
-            >
-            <MenuItem value="contains">Contains</MenuItem>
-            <MenuItem value="equals">Equals</MenuItem>
-            <MenuItem value="startswith">Starts with</MenuItem>
-          </Select>
-          <TextField
-          autoFocus
-          margin="dense"
-          id="containsFilter"
-          type="text"
-          fullWidth
-          value={displayDialogContainsValue}
-          onChange={ _dialogContainsValue}
-          />
-        </>
-          }
-
+            </>
+          )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={_closeDialog} color="secondary">
+          <Button onClick={_closeDialog} color='secondary'>
             Cancel
           </Button>
-          <Button onClick={_submitFilter} color="primary">
+          <Button onClick={_submitFilter} color='primary'>
             Submit
           </Button>
         </DialogActions>
-    </Dialog>
+      </Dialog>
 
-    <Snackbar
-      open={showSnackbar}
-      autoHideDuration={3000}
-      onClose={handleSnackbarClose}
-      message={snackbarMessage}
-      action={
-        <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose}>
-          <CloseIcon fontSize="small" />
-        </IconButton>
-      }
-    />
-
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+        action={
+          <IconButton size='small' aria-label='close' color='inherit' onClick={handleSnackbarClose}>
+            <CloseIcon fontSize='small' />
+          </IconButton>
+        }
+      />
     </>
-
-
   );
-
 }
 
 ListView.defaultProps = {
@@ -1126,6 +1328,6 @@ ListView.defaultProps = {
 };
 
 ListView.propTypes = {
-  getPConnect: PropTypes.func.isRequired,
+  getPConnect: PropTypes.func.isRequired
   // parameters: PropTypes.objectOf(PropTypes.any)
 };

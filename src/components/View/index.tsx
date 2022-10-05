@@ -26,6 +26,7 @@ import WideNarrowPage from "../templates/WideNarrowPage";
 import WideNarrowDetails from "../templates/WideNarrowDetails";
 import DataReference from '../templates/DataReference';
 import OneColumnPage from '../templates/OneColumnPage';
+import InlineDashboardPage from '../templates/InlineDashboardPage';
 //
 // WARNING:  It is not expected that this file should be modified.  It is part of infrastructure code that works with
 // Redux and creation/update of Redux containers and PConnect.  Modifying this code could have undesireable results and
@@ -129,7 +130,7 @@ export default function View(props) {
 
       case "OneColumnPage":
         ViewTemplate = OneColumnPage;
-        break
+        break;
 
       case "TwoColumn":
         ViewTemplate = TwoColumn;
@@ -149,6 +150,10 @@ export default function View(props) {
 
       case "WideNarrowDetails":
         ViewTemplate= WideNarrowDetails;
+        break;
+
+      case "InlineDashboardPage":
+        ViewTemplate= InlineDashboardPage;
         break;
 
       case "DataReference":

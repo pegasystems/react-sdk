@@ -64,6 +64,11 @@ class ConfigAccess {
     if( oServerConfig.infinityRestServerUrl.endsWith('/') ) {
       oServerConfig.infinityRestServerUrl = oServerConfig.infinityRestServerUrl.slice(0, -1)
     }
+
+    // Specify our own internal list of well known portals to exclude (if one not specified)
+    if( !oServerConfig.excludePortals ) {
+      oServerConfig.excludePortals = ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"];
+    }
   }
 
   /**
@@ -121,19 +126,21 @@ class ConfigAccess {
       await getSdkConfig();
     }
 
-    if ((this.sdkConfig.serverConfig.appPortal !== "") &&
-        (this.sdkConfig.serverConfig.appPortal !== undefined) ) {
+    const serverConfig = this.sdkConfig.serverConfig;
+
+    if ((serverConfig.appPortal !== "") &&
+        (serverConfig.appPortal !== undefined) ) {
           // use the specified portal
-          console.log(`Using appPortal: ${this.sdkConfig.serverConfig.appPortal}`);
+          console.log(`Using appPortal: ${serverConfig.appPortal}`);
           return;
     }
 
     const userAccessGroup = PCore.getEnvironmentInfo().getAccessGroup();
     const dataPageName = "D_OperatorAccessGroups";
-    const serverUrl = this.sdkConfig.serverConfig.infinityRestServerUrl;
-    const appAlias = this.sdkConfig.serverConfig.appAlias;
+    const serverUrl = serverConfig.infinityRestServerUrl;
+    const appAlias = serverConfig.appAlias;
     const appAliasPath = appAlias ? `/app/${appAlias}` : '';
-    const arExcludedPortals = ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "WebPortal", "pyCaseWorker", "pyCaseManager7"];
+    const arExcludedPortals = serverConfig["excludePortals"];
 
     await fetch ( `${serverUrl}${appAliasPath}/api/v1/data/${dataPageName}`,
       {
@@ -147,18 +154,30 @@ class ConfigAccess {
       .then( async (agData) => {
 
         let arAccessGroups = agData.pxResults;
+        let selectedPortal = null;
 
-        arAccessGroups.forEach( ag => {
+        for (let ag of arAccessGroups) {
           if (ag.pyAccessGroup === userAccessGroup) {
-            ag.pyUserPortals.forEach(portal => {
-              if( !arExcludedPortals.includes(portal.pyPortalLayout) ) {
-                // Found operator's current access group. Use its portal
-                this.setSdkConfigServer("appPortal", portal.pyPortalLayout);
-                console.log(`Using appPortal: ${this.sdkConfig.serverConfig.appPortal}`);
+            // Check if default portal works
+            if( !arExcludedPortals.includes(ag.pyPortal) ) {
+              selectedPortal = ag.pyPortal;
+            } else {
+              // Find first portal that is not excluded (might work)
+              for (let portal of ag.pyUserPortals ) {
+                if( !arExcludedPortals.includes(portal.pyPortalLayout) ) {
+                  selectedPortal = portal.pyPortalLayout;
+                  break;
+                }
               }
-            });
+            }
+            break;
           }
-        });
+        }
+        if( selectedPortal ) {
+          // Found operator's current access group. Use its portal
+          this.setSdkConfigServer("appPortal", selectedPortal);
+          console.log(`Using appPortal: ${serverConfig.appPortal}`);
+        }
       })
       .catch( e => {
         if( e ) {

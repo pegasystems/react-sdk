@@ -133,6 +133,7 @@ class ConfigAccess {
     const serverUrl = this.sdkConfig.serverConfig.infinityRestServerUrl;
     const appAlias = this.sdkConfig.serverConfig.appAlias;
     const appAliasPath = appAlias ? `/app/${appAlias}` : '';
+    const arExcludedPortals = ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "WebPortal", "pyCaseWorker", "pyCaseManager7"];
 
     await fetch ( `${serverUrl}${appAliasPath}/api/v1/data/${dataPageName}`,
       {
@@ -140,21 +141,24 @@ class ConfigAccess {
         headers: {
           'Content-Type' : 'application/json',
           'Authorization' : sdkGetAuthHeader()
-        },
+        }
       })
       .then( response => response.json())
       .then( async (agData) => {
 
         let arAccessGroups = agData.pxResults;
 
-        for (let ag of arAccessGroups) {
+        arAccessGroups.forEach( ag => {
           if (ag.pyAccessGroup === userAccessGroup) {
-            // Found operator's current access group. Use its portal
-            this.setSdkConfigServer("appPortal", ag.pyPortal);
-            console.log(`Using appPortal: ${this.sdkConfig.serverConfig.appPortal}`);
-            break;
+            ag.pyUserPortals.forEach(portal => {
+              if( !arExcludedPortals.includes(portal.pyPortalLayout) ) {
+                // Found operator's current access group. Use its portal
+                this.setSdkConfigServer("appPortal", portal.pyPortalLayout);
+                console.log(`Using appPortal: ${this.sdkConfig.serverConfig.appPortal}`);
+              }
+            });
           }
-        }
+        });
       })
       .catch( e => {
         if( e ) {

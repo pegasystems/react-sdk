@@ -1,5 +1,7 @@
-declare const PCore;
 import { Utils } from '../../../helpers/utils';
+
+declare const PCore;
+
 export const TABLE_CELL = "SdkRenderer";
 export const DELETE_ICON = "DeleteIcon";
 
@@ -229,7 +231,7 @@ export const createPConnect = (contextName, referenceList, pageReference) => {
 };
 
 export const filterData = (filterByColumns) => {
-  return function(item) {
+  return function filteringData(item) {
     let bKeep = true;
     for (const filterObj of filterByColumns) {
       if (
@@ -280,7 +282,7 @@ export const filterData = (filterByColumns) => {
                     filterValue /= 1000;
 
                     const diff = value - filterValue;
-                    if (diff != 0) {
+                    if (diff !== 0) {
                       bKeep = false;
                     }
                   }

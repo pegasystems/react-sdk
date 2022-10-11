@@ -319,10 +319,10 @@ export default function SimpleTableManual(props) {
     return stabilizedThis.map(el => el[0]);
   }
 
-  function _menuClick(event, columnId: string, columnType: string, label: string) {
+  function _menuClick(event, columnId: string, columnType: string, labelValue: string) {
     menuColumnId = columnId;
     menuColumnType = columnType;
-    menuColumnLabel = label;
+    menuColumnLabel = labelValue;
 
     setAnchorEl(event.currentTarget);
   }
@@ -403,13 +403,6 @@ export default function SimpleTableManual(props) {
     setDisplayDialogDateValue(event.target.value);
   }
 
-  function _submitFilter() {
-    updateFilterWithInfo();
-    filterSortGroupBy();
-
-    setOpen(false);
-  }
-
   function filterSortGroupBy() {
     // get original data set
     let theData: any = myRows.slice();
@@ -453,6 +446,13 @@ export default function SimpleTableManual(props) {
 
       filterByColumns.push(filterObj);
     }
+  }
+
+  function _submitFilter() {
+    updateFilterWithInfo();
+    filterSortGroupBy();
+
+    setOpen(false);
   }
 
   function _showFilteredIcon(columnId) {

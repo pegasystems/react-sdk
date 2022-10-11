@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Radio, RadioGroup, FormControl, FormControlLabel, FormLabel } from '@material-ui/core';
-import TextInput from "../TextInput";
 import { makeStyles } from '@material-ui/core/styles';
 
 import Utils from "../../../helpers/utils";
@@ -48,17 +47,12 @@ export default function RadioButtons(props) {
     thePConn.getValidationApi().validate(event.target.value);
   }
 
-  if (readOnly) {
-    // const theReadOnlyComp = <TextInput props />
-    return ( <TextInput {...props} /> );
-  }
-
   return (
     <FormControl className={classes.root}>
       <FormLabel component="legend">{label}</FormLabel>
         <RadioGroup value={theSelectedButton} onChange={handleChange} onBlur={handleBlur}>
           { theOptions.map( (theOption) => {
-              return <FormControlLabel value={theOption.key} key={theOption.key} label={theOption.value} control={<Radio key={theOption.key} color="primary" />} />
+              return <FormControlLabel value={theOption.key} key={theOption.key} label={theOption.value} control={<Radio key={theOption.key} color="primary" disabled={readOnly} />} />
             })
           }
         </RadioGroup>

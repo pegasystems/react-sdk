@@ -107,6 +107,7 @@ export default function CaseView(props) {
     const theTabCompConfig = tabComp.getPConnect().getConfigProps();
     // eslint-disable-next-line prefer-const
     let {label, inheritedProps} = theTabCompConfig;
+    // For some tabs, "label" property is not avaialable in theTabCompConfig, so will get them from inheritedProps
     if(!label){
       inheritedProps.forEach((inheritedProp) => {
         if(inheritedProp.prop === 'label'){
@@ -114,6 +115,7 @@ export default function CaseView(props) {
         }
       });
     }
+    // We'll display the tabs when either visibility property doesn't exist or is true(if exists)
     if(theTabCompConfig.visibility === undefined || theTabCompConfig.visibility === true){
       vertTabInfo.push({name: label, id: index});
       deferLoadInfo.push( { type: "DeferLoad", config: theTabCompConfig } );

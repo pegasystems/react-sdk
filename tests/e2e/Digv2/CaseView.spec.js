@@ -37,6 +37,9 @@ test.describe('E2E test', () => {
     const complexFieldsCase = page.locator('div[role="button"]:has-text("Complex Fields")');
     await complexFieldsCase.click();
 
+    /** Wait until newly created case loads */
+    await expect(page.locator('div[id="CaseSummary"]')).toBeVisible();
+
     /** Getting the handle of tabs from the DOM */
     const detailsTab = page.locator('button[role="tab"] >> span:has-text("Details")');
     const caseHistoryTab = page.locator('button[role="tab"] >> span:has-text("Case History")');

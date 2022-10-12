@@ -49,9 +49,9 @@ export default function DeferLoad(props) {
   //  Then, need to trigger update when the Tab config.name changes
   //  OR when the tab is the same but the assignment within that tab changes
   if (isComponentMounted) {
-    if (loadData.config.name !== currentLoadedTabConfigName) {
+    if (loadData?.config.name !== currentLoadedTabConfigName) {
       // console.log(`DeferLoad: currentLoadedTabConfig about to change from ${currentLoadedTabConfigName} to ${loadData.config.name}`);
-      setCurrentLoadedTabConfigName(loadData.config.name);
+      setCurrentLoadedTabConfigName(loadData?.config.name);
     } else if (theRequestedAssignment !== currentLoadedAssignment)  {
       // console.log(`DeferLoad: currentLoadedAssignment about to change from ${currentLoadedAssignment} to ${theRequestedAssignment}`);
       setCurrentLoadedAssignment(theRequestedAssignment);

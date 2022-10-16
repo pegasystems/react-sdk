@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState, createElement } from 'react';
 import PropTypes from 'prop-types';
+import * as isEqual from 'fast-deep-equal';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import createPConnectComponent from '../../bridge/react_pconnect';
 import Assignment from '../Assignment';
-import CancelAlert from './CancelAlert';
-import * as isEqual from 'fast-deep-equal';
+import CancelAlert from '../forms/CancelAlert';
 
 declare const PCore;
 
@@ -74,7 +74,6 @@ const ModalViewContainer = props => {
   const pConn = getPConnect();
   const {
     CONTAINER_TYPE: { MULTIPLE },
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     PUB_SUB_EVENTS: { EVENT_SHOW_CANCEL_ALERT }
   } = PCore.getConstants();
   const { subscribe, unsubscribe } = PCore.getPubSubUtils();
@@ -82,12 +81,9 @@ const ModalViewContainer = props => {
   const [bShowCancelAlert, setShowCancelAlert] = useState(false);
   const [oCaseInfo, setOCaseInfo] = useState({});
   const [createdView, setCreatedView] = useState<any>(null);
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-  const [templateName, setTemplateName] = useState('');
   const [title, setTitle] = useState('');
   const [arNewChildrenAsReact, setArNewChildrenAsReact] = useState<Array<any>>([]);
   const [itemKey, setItemKey] = useState('');
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const [cancelPConn, setCancelPConn] = useState(null);
 
   function showAlert(payload) {
@@ -221,11 +217,8 @@ const ModalViewContainer = props => {
         // changes from angularPconnect except for first draw
         if (newComp && caseInfo && compareCaseInfoIsDifferent(caseInfo)) {
           setCreatedView(configObject);
-          const newConfigProps = newComp.getConfigProps();
-          setTemplateName('template' in newConfigProps ? newConfigProps['template'] : '');
 
-          // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-          const { actionName, isMinimizable } = latestItem;
+          const { actionName } = latestItem;
           const theNewCaseInfo = newComp.getCaseInfo();
           const caseName = theNewCaseInfo.getName();
           const ID = theNewCaseInfo.getID();

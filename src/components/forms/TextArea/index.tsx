@@ -13,8 +13,10 @@ export default function TextArea(props) {
     onBlur,
     readOnly,
     testId,
-    fieldMetadata
+    fieldMetadata,
+    helperText
   } = props;
+  const helperTextToDisplay = validatemessage || helperText;
 
   const maxLength = fieldMetadata?.maxLength;
 
@@ -39,7 +41,7 @@ export default function TextArea(props) {
       maxRows={5}
       fullWidth
       variant={readOnly ? 'standard' : 'outlined'}
-      helperText={validatemessage}
+      helperText={helperTextToDisplay}
       placeholder=''
       size='small'
       required={required}

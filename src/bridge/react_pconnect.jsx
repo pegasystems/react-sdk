@@ -361,7 +361,8 @@ const getComponent = (c11nEnv, declarative) => {
  */
  const createPConnectComponent = (declarative=false) => {
   /**
-     * Add TypeScript hinting info via JSdoc syntax...
+   * Add TypeScript hinting info via JSdoc syntax...
+   * @extends {React.Components<Props, State>}
    * createPConnectComponent - Class to create/initialize a PConnect (c11nEnv) object
    * to pre-process meta data of each componnet.
    * - Wraps each child in a component with PConnect

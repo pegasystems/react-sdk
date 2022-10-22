@@ -142,9 +142,8 @@ class ConfigAccess {
     const appAlias = serverConfig.appAlias;
     const appAliasPath = appAlias ? `/app/${appAlias}` : '';
     const arExcludedPortals = serverConfig["excludePortals"];
-    const badAPIServicePkgAuthType = "BadAPIServicePackageAuthType";
 
-    // Using v1 API here as data_views is not able to access same data page currently.  Should move to avoid having this logic to find
+    // Using v1 API here as v2 data_views is not able to access same data page currently.  Should move to avoid having this logic to find
     //  a default portal or constellation portal and rather have Constellation JS Engine API just load the default portal
     await fetch ( `${serverUrl}${appAliasPath}/api/v1/data/${dataPageName}`,
       {
@@ -158,7 +157,8 @@ class ConfigAccess {
         if( response.ok && response.status === 200) {
           return response.json();
         } else {
-          if( response.status === 401 && response.type==="cors" ) {
+          if( response.status === 401 ) {
+            // Might be either a real token expiration or revoke, but more likely that the "api" service package is misconfigured
             throw( new Error(`Attempt to access ${dataPageName} failed.  The "api" service package is likely not configured to use "OAuth 2.0"`));
           };
           throw( new Error(`HTTP Error: ${response.status}`));

@@ -353,8 +353,17 @@ const getComponent = (c11nEnv, declarative) => {
 };
 
 
-const createPConnectComponent = (declarative=false) => {
+/**
+ *
+ * @param {*} declarative
+ * @returns {React.FunctionComponent<Props, State>}
+ * return type of React.FunctionComponent inspired by:
+ * https://stackoverflow.com/questions/64890278/argument-of-type-function-is-not-assignable-to-parameter-of-type-componenttyp
+ */
+ const createPConnectComponent = (declarative=false) => {
   /**
+   * Add TypeScript hinting info via JSdoc syntax...
+   * @extends {React.FunctionComponent<Props, State>}
    * createPConnectComponent - Class to create/initialize a PConnect (c11nEnv) object
    * to pre-process meta data of each componnet.
    * - Wraps each child in a component with PConnect

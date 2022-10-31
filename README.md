@@ -1,5 +1,18 @@
 <p align="center"><img width=60% src="docs/media/ReactSDK-Logo.png">
 
+<table style="font-size: 14pt;">
+   <tr>
+   <th>Deprecation Notice</th>
+   </tr>
+   <tr><td>Enhancement and support for this version (<strong>release/8.6</strong>)
+      of the React SDK has ended with the release of Pega Infinity 8.8 in
+      October 2022.
+      <br>The <strong>main</strong> branch supports Pega Infinity 8.7 and 8.8.
+   </td></tr>
+   <tr><td></td></tr>
+</table>
+
+
 # React SDK
 
 The **React SDK** provides Pega customers with the ability to build DX components that connect Pega’s ConstellationJS Engine APIs with a design system other than Pega Cosmos.
@@ -67,7 +80,7 @@ See the **React SDK Guide** in the Marketplace download for more complete docume
     * The **serverConfig** section contains values related to the Pega Infinity server and SDK Content Server.
     <br><br>
 
-3. Edit the **package.json** file's dependency for **[@pega/constellationjs](https://www.npmjs.com/package/@pega/constellationjs)** with the **tag name** that is appropriate for the Pega Infinity version that your application is running. For example, Infinity 8.6.3 uses the tag "**SDK-8.6.3**", Infinity 8.6.4 uses the tag "**SDK-8.6.4**", etc. You must **always** use the appropriate Constellation files that match your Infinity deployment. 
+3. Edit the **package.json** file's dependency for **[@pega/constellationjs](https://www.npmjs.com/package/@pega/constellationjs)** with the **tag name** that is appropriate for the Pega Infinity version that your application is running. For example, Infinity 8.6.3 uses the tag "**SDK-8.6.3**", Infinity 8.6.4 uses the tag "**SDK-8.6.4**", etc. You must **always** use the appropriate Constellation files that match your Infinity deployment.
 <br><br>
 
 ### **Run** the application

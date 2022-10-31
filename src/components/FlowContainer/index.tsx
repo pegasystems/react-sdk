@@ -28,10 +28,10 @@ declare const PCore;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    paddingRight: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+    paddingTop: theme.spacing(1.5),
+    paddingBottom: theme.spacing(1.5),
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),

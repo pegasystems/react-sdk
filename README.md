@@ -7,7 +7,7 @@
    <tr><td>Enhancement and support for this version (<strong>release/8.6</strong>)
       of the React SDK has ended with the release of Pega Infinity 8.8 in
       October 2022.
-      <br>The <strong>main</strong> branch supports Pega Infinity 8.7 and 8.8
+      <br>The <strong>main</strong> branch supports Pega Infinity 8.7 and 8.8.
    </td></tr>
    <tr><td></td></tr>
 </table>

@@ -20,18 +20,9 @@ const useStyles = makeStyles((theme) => ({
     // borderLeft: "6px solid",
     // borderLeftColor: green[300]
   },
-  fieldMargin: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
   fieldLabel: {
-    fontWeight: 400,
+    display: 'block',
+    fontWeight: 600,
     color: theme.palette.text.secondary
   },
   fieldValue: {
@@ -67,7 +58,7 @@ export default function DetailsFields(props) {
     const dispValue = field.label;
 
     return <Grid item xs={6} key={keyVal}>
-      <Typography variant="body2" component="span" className={`${classes.fieldLabel} ${classes.fieldMargin}`}>{dispValue}</Typography>
+      <Typography variant="body2" component="span" className={`${classes.fieldLabel}`}>{dispValue}</Typography>
     </Grid>
   }
 

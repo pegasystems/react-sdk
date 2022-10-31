@@ -181,7 +181,7 @@ export default function View(props) {
       //   </FieldGroup>
       // );
       RenderedTemplate = (
-        <div data-name="RenderedTemplate" data-template-type={template} /* name */ id="label" style={{ marginBlockStart: "1rem", gridColumn: "1 / 3" }}>
+        <div data-name="RenderedTemplate" data-template-type={template} /* name */ id="label" style={{ marginBlockStart: "1rem" }} className="grid-column">
           {RenderedTemplate}
         </div>
       );

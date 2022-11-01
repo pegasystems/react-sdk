@@ -1,6 +1,7 @@
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import TextInput from '../TextInput';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 // NOTE: that we had to change the name from URL to URLComponent
 //  Otherwise, we were getting all kinds of weird errors when we
@@ -16,9 +17,17 @@ export default function URLComponent(props) {
     onChange,
     onBlur,
     readOnly,
-    helperText
+    helperText,
+    displayMode
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
+
+  if(displayMode === 'LABELS_LEFT'){
+    const field = {
+      [label]: value
+    };
+    return <FieldValueList item={field}/>
+  }
 
   if (readOnly) {
     return <TextInput {...props} />;

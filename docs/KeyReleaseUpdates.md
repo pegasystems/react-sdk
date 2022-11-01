@@ -5,6 +5,7 @@
 * Added playwright smoke tests that can be run against the MediaCo sample app
 * Improvements to auth code and to make it easier to deploy the SDK on a different web server (ex: Tomcat)
 * Support for "save for later" button to local action in modal dialog
+* Added support for SubTabs & DetailsSubTabs templates.
 
 ## Release SDK-R.87.2
 * This release provides support for Infinity 8.7.0 **and** 8.7.1

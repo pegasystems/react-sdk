@@ -1,10 +1,9 @@
-import React, { useState, useEffect, createElement } from "react";
-import PropTypes from "prop-types";
-import { Box, Card, CircularProgress } from "@material-ui/core";
+import React, { useState, useEffect, createElement } from 'react';
+import PropTypes from 'prop-types';
+import { Box, Card, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-
-import createPConnectComponent from "../../bridge/react_pconnect";
+import createPConnectComponent from '../../bridge/react_pconnect';
 
 declare const PCore;
 
@@ -14,8 +13,7 @@ declare const PCore;
 // is totally at your own risk.
 //
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     paddingRight: theme.spacing(1),
     paddingLeft: theme.spacing(1),
@@ -24,166 +22,146 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
+    marginBottom: theme.spacing(1)
+  }
 }));
 
 export default function DeferLoad(props) {
+  const { getPConnect, name, deferLoadId, isTab } = props;
+  const [content, setContent] = useState<any>(null);
+  const [isLoading, setLoading] = useState(true);
+
   const classes = useStyles();
 
-  const { getPConnect, loadData } = props;
-  const thePConn = getPConnect();
+  const pConnect = getPConnect();
+  const constants = PCore.getConstants();
+  const { CASE, PAGE, DATA } = constants.RESOURCE_TYPES;
+  const loadViewCaseID =
+    pConnect.getValue(constants.PZINSKEY) || pConnect.getValue(constants.CASE_INFO.CASE_INFO_ID);
+  let containerName;
+  let containerItemData;
+  const targetName = pConnect.getTarget();
+  if (targetName) {
+    containerName = PCore.getContainerUtils().getActiveContainerItemName(targetName);
 
-  let loadedPConn: any;
-  let isComponentMounted = true;
-
-  const [bShowDefer, setShowDefer] = useState(false);
-  const [componentName, setComponentName] = useState("");
-  const [createdPConnect, setCreatedPConnect] = useState({});
-  const [currentLoadedTabConfigName, setCurrentLoadedTabConfigName] = useState(loadData.config.name);
-  const [currentLoadedAssignment, setCurrentLoadedAssignment] = useState("");
-
-  const theRequestedAssignment = thePConn.getValue( PCore.getConstants().CASE_INFO.ASSIGNMENT_LABEL);
-
-  // Only need to check for updates when the component is mounted.
-  //  Then, need to trigger update when the Tab config.name changes
-  //  OR when the tab is the same but the assignment within that tab changes
-  if (isComponentMounted) {
-    if (loadData?.config.name !== currentLoadedTabConfigName) {
-      // console.log(`DeferLoad: currentLoadedTabConfig about to change from ${currentLoadedTabConfigName} to ${loadData.config.name}`);
-      setCurrentLoadedTabConfigName(loadData?.config.name);
-    } else if (theRequestedAssignment !== currentLoadedAssignment)  {
-      // console.log(`DeferLoad: currentLoadedAssignment about to change from ${currentLoadedAssignment} to ${theRequestedAssignment}`);
-      setCurrentLoadedAssignment(theRequestedAssignment);
-    }
+    containerItemData = PCore.getContainerUtils().getContainerItemData(targetName, containerName);
   }
 
+  const { resourceType = CASE } = containerItemData || {
+    resourceType: loadViewCaseID ? CASE : PAGE
+  };
+  const isContainerPreview = /preview_[0-9]*/g.test(pConnect.getContextName());
 
-  function loadActiveTab(data: any = []) {
-    const { isModalAction } = data;
+  const getViewOptions = () => ({
+    viewContext: resourceType,
+    pageClass: loadViewCaseID ? '' : pConnect.getDataObject().pyPortal.classID,
+    container: isContainerPreview ? 'preview' : null,
+    containerName: isContainerPreview ? 'preview' : null,
+    updateData: isContainerPreview
+  });
 
-    if (loadData && loadData["config"] && !isModalAction) {
-      const name = loadData["config"].name;
-      const actionsAPI = thePConn.getActionsApi();
-      const baseContext = thePConn.getContextName();
-      const basePageReference = thePConn.getPageReference();
-      const loadView = actionsAPI.loadView.bind(actionsAPI);
+  const onResponse = data => {
+    setLoading(false);
+    if (deferLoadId) {
+      PCore.getDeferLoadManager().start(
+        name,
+        getPConnect().getCaseInfo().getKey(),
+        getPConnect().getPageReference().replace('caseInfo.content', ''),
+        getPConnect().getContextName(),
+        deferLoadId
+      );
+    }
 
-      if (isComponentMounted) {
-        setShowDefer(false);
+    if (data && !(data.type && data.type === 'error')) {
+      const config = {
+        meta: data,
+        options: {
+          context: pConnect.getContextName(),
+          pageReference: pConnect.getPageReference()
+        }
+      };
+      const configObject = PCore.createPConnect(config);
+      configObject.getPConnect().setInheritedProp('displayMode', 'LABELS_LEFT');
+      setContent(createElement(createPConnectComponent(), configObject));
+      if (deferLoadId) {
+        PCore.getDeferLoadManager().stop(deferLoadId, getPConnect().getContextName());
       }
+    }
+  };
 
-      // Latest version in React uses value for CASE_INFO.CASE_INFO_ID is it exists
-      //  and prefers that over PZINSKEY
-      loadView(encodeURI(
-        thePConn.getValue( PCore.getConstants().CASE_INFO.CASE_INFO_ID ) ||
-        thePConn.getValue( PCore.getConstants().PZINSKEY)
-        ), name)
-        .then((theData) => {
+  useEffect(() => {
+    if (resourceType === DATA) {
+      // Rendering defer loaded tabs in data context
+      if (containerName) {
+        const dataContext = PCore.getStoreValue('.dataContext', 'dataInfo', containerName);
+        const dataContextParameters = PCore.getStoreValue(
+          '.dataContextParameters',
+          'dataInfo',
+          containerName
+        );
 
-          // Don't bother with any of this if the component has been unmounted
-          if (isComponentMounted) {
-
-            const config = {
-              meta: theData,
-              options: {
-                context: baseContext,
-                pageReference: basePageReference
-              }
-            };
-
-            const configObject = PCore.createPConnect(config);
-
-            // Add key to PConnect props to keep React happy
-            configObject["key"] = theData.config.name;
-
-            setShowDefer(true);
-            setCreatedPConnect(configObject);
-
-            // eslint-disable-next-line sonarjs/no-all-duplicated-branches
-            if (loadData["config"].label === "Details") {
-              // for now, prevent details from being drawn
-              // setComponentName("Details");
-
-              loadedPConn = configObject.getPConnect();
-              setComponentName(loadedPConn.getComponentName());
-
-            }
-            // eslint-disable-next-line sonarjs/no-duplicated-branches
-            else {
-              loadedPConn = configObject.getPConnect();
-              setComponentName(loadedPConn.getComponentName());
-            }
-          }
-
+        getPConnect()
+          .getActionsApi()
+          .showData(name, dataContext, dataContextParameters, {
+            skipSemanticUrl: true,
+            isDeferLoaded: true
+          })
+          .then(data => {
+            onResponse(data);
+          });
+      } else {
+        // eslint-disable-next-line no-console
+        console.error('Cannot load the defer loaded view without container information');
+      }
+    } else if (resourceType === PAGE) {
+      // Rendering defer loaded tabs in case/ page context
+      getPConnect()
+        .getActionsApi()
+        .loadView(encodeURI(loadViewCaseID), name, getViewOptions())
+        .then(data => {
+          onResponse(data);
+        });
+    } else {
+      getPConnect()
+        .getActionsApi()
+        .refreshCaseView(encodeURI(loadViewCaseID), name)
+        .then(data => {
+          onResponse(data.root);
         });
     }
+  }, [name, getPConnect]);
+  /* TODO Cosmos need to handle for now added a wrapper div with pos relative */
+  let deferLoadContent;
+  if (isLoading) {
+    deferLoadContent = (
+      <div style={{ position: 'relative', height: '100px' }}>
+        <Box textAlign='center'>
+          <CircularProgress />
+        </Box>
+      </div>
+    );
+  } else {
+    deferLoadContent = !isTab ? (
+      <div className={classes.root}>
+        <React.Fragment>{content}</React.Fragment>
+      </div>
+    ) : (
+      <Card id='DeferLoad' className={classes.root}>
+        <React.Fragment>{content}</React.Fragment>
+      </Card>
+    );
   }
 
-
-  // useEffect to only update the active tab when the requested tab name changes
-  //  OR the Assignment within a Tab changes (ex: navigating from one "Customer" to "Address")
-  useEffect(() => {
-
-     loadActiveTab();
-
-    return () => {
-      // Inspired by https://juliangaramendy.dev/blog/use-promise-subscription
-      // The useEffect closure lets us have access to isComponentMounted
-      //  So, if this cleanup code gets run before the tab is loaded, we
-      //  can indicate that the component has been unmounted and avoid
-      //  any calls to setState functions in the code. (That would show warnings)
-      isComponentMounted = false;
-    }
-  }, [currentLoadedTabConfigName, currentLoadedAssignment]);
-
-
-  function getDeferLoadRender(): any {
-    const arComponent: Array<any> = [];
-
-    switch (componentName) {
-      case "View": {
-        const theViewAsReact = createElement(createPConnectComponent(), createdPConnect);
-        arComponent.push(theViewAsReact);
-        break;
-      }
-
-      case "reference":
-      case "Reference": {
-        const theReferenceAsReact = createElement(createPConnectComponent(), createdPConnect);
-        arComponent.push(theReferenceAsReact);
-        break;
-      }
-
-      case "":
-        // Until loadActiveTab has loaded the View, it's normal for componentName to be blank.
-        //  This means there's nothing to show yet.
-        // console.log(`DeferLoad: componentName is blank`);
-        break;
-
-      default:
-        // Report that we encountered and unexpected DeferLoad component
-        // eslint-disable-next-line no-console
-        console.log(`DeferLoad: skipping unhandled componentName: ${componentName}`);
-        break;
-    }
-
-    return <Card id="DeferLoad" className={classes.root}>
-      { bShowDefer ?
-          <React.Fragment>{arComponent}</React.Fragment>
-          :
-          <Box textAlign="center"><CircularProgress /></Box>
-      }
-    </Card>;
-
-  }
-
-  return getDeferLoadRender();
-
-
+  return deferLoadContent;
 }
+
+DeferLoad.defaultProps = {
+  isChildDeferLoad: false
+};
 
 DeferLoad.propTypes = {
   getPConnect: PropTypes.func.isRequired,
-  loadData: PropTypes.object.isRequired
+  name: PropTypes.string.isRequired,
+  isChildDeferLoad: PropTypes.bool,
+  isTab: PropTypes.bool
 };

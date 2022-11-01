@@ -1,6 +1,7 @@
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import TextInput from '../TextInput';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 export default function Decimal(props) {
   const {
@@ -13,9 +14,17 @@ export default function Decimal(props) {
     onChange,
     onBlur,
     readOnly,
-    helperText
+    helperText,
+    displayMode
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
+
+  if(displayMode === 'LABELS_LEFT'){
+    const field = {
+      [label]: value
+    };
+    return <FieldValueList item={field}/>
+  }
 
   if (readOnly) {
     return <TextInput {...props} />;

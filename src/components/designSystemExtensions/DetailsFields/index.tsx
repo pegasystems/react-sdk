@@ -78,8 +78,8 @@ export default function DetailsFields(props) {
         break;
     }
 
-    // Finally, if the value is an empty string, we want to display it as "---"
-    if (formattedVal === "") {
+    // Finally, if the value is undefined or an empty string, we want to display it as "---"
+    if (formattedVal === undefined || formattedVal === "") {
       formattedVal = "---";
     }
 

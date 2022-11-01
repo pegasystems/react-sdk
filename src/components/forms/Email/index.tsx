@@ -2,6 +2,7 @@ import React from 'react';
 import { TextField, InputAdornment } from '@material-ui/core';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import TextInput from '../TextInput';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 export default function Email(props) {
   const {
@@ -15,13 +16,23 @@ export default function Email(props) {
     onBlur,
     readOnly,
     testId,
-    helperText
+    helperText,
+    displayMode
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
+
+  if(displayMode === 'LABELS_LEFT'){
+    const field = {
+      [label]: value
+    };
+    return <FieldValueList item={field}/>
+  }
 
   if (readOnly) {
     return <TextInput {...props} />;
   }
+
+
 
   let testProp = {};
 

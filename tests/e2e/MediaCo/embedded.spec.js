@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 
 const { test } = require('@playwright/test');
+const common = require('../../common');
 
 test.beforeEach(async ({ page }) => {
   await page.goto('http://localhost:3502/embedded');
@@ -73,7 +74,8 @@ test.describe('E2E test', () => {
     );
     const dataServiceBeginDateInput = dataServiceBeginDate.locator('input');
     await dataServiceBeginDateInput.click();
-    await dataServiceBeginDateInput.type('10252022');
+    const futureDate = common.getNextDay();
+    await dataServiceBeginDateInput.type(futureDate);
 
     await page.locator('button:has-text("next")').click();
 

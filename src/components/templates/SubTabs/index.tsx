@@ -1,42 +1,65 @@
-import React from "react";
-import { Card, CardContent, CardHeader, Typography } from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
-// import { green } from "@material-ui/core/colors";
+import React, { Fragment, useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { Tab, Tabs } from "@material-ui/core";
+import { TabContext, TabPanel } from '@material-ui/lab';
+import { getTransientTabs, getVisibleTabs, tabClick } from '../tabUtils';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-    // borderLeft: "6px solid",
-    // borderLeftColor: green[300]
-  },
-}));
+export default function SubTabs(props) {
+  const { children } = props;
 
-export default function SubTabs() {
-  const componentName = "SubTabs";
-  // const { children } = props;
-  const classes = useStyles();
+  const defaultTabIndex = 0;
+  const deferLoadedTabs = children[0];
+  const availableTabs = getVisibleTabs(deferLoadedTabs, "tabsSubs");
+  const [currentTabId, setCurrentTabId] = useState(defaultTabIndex.toString());
+
+  const [tabItems, setTabitem] = useState<Array<any>>([]);
+  useEffect(() => {
+    const tempTabItems = getTransientTabs(
+      availableTabs,
+      currentTabId,
+      tabItems
+    );
+    setTabitem(tempTabItems);
+  }, [currentTabId]);
+
+
+  const handleTabClick = (id, index: string) => {
+    setCurrentTabId(index);
+    tabClick(index, availableTabs, currentTabId, setCurrentTabId, tabItems);
+  };
 
   return (
-      <Card className={classes.root}>
-        <CardHeader title={<Typography variant="h6" component="div">{componentName} - <em>unsupported</em></Typography>} />
-        <CardContent>
-          <Typography>{componentName} content</Typography>
-        </CardContent>
-      </Card>
-    );
+    <Fragment>
+      <TabContext value={currentTabId.toString()}>
+      <Tabs
+        onChange={handleTabClick}
+        value={currentTabId}
+        variant="scrollable"
+        >
+      {tabItems.map((tab:any) =>
+        <Tab
+        key={tab.id}
+        label={tab.name}
+        value={tab.id}
+        />
+  )}
+    </Tabs>
+
+      {
+        tabItems.map((tab:any) => (
+          <TabPanel key={tab.id} value={tab.id} tabIndex={+tab.id}>
+            <div>{tab.content ? tab.content : "No content exists"}</div>
+          </TabPanel>
+        ))}
+      </TabContext>
+    </Fragment>
+  );
 }
 
 SubTabs.defaultProps = {
-  // children: []
+   children: []
 }
 
 SubTabs.propTypes = {
-  // children: PropTypes.arrayOf(PropTypes.node)
+   children: PropTypes.arrayOf(PropTypes.node)
 };

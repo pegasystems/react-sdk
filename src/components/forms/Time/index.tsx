@@ -3,6 +3,7 @@ import { KeyboardTimePicker } from '@material-ui/pickers';
 import TextInput from '../TextInput';
 import dayjs from 'dayjs';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 export default function Time(props) {
   const {
@@ -14,9 +15,17 @@ export default function Time(props) {
     status,
     onChange,
     readOnly,
-    helperText
+    helperText,
+    displayMode
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
+
+  if(displayMode === 'LABELS_LEFT'){
+    const field = {
+      [label]: value
+    };
+    return <FieldValueList item={field}/>
+  }
 
   if (readOnly) {
     return <TextInput {...props} />;

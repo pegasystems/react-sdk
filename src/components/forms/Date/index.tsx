@@ -2,6 +2,7 @@ import React from 'react';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import TextInput from '../TextInput';
 import handleEvent from '../../../helpers/event-utils';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 export default function Date(props) {
   const {
@@ -16,12 +17,20 @@ export default function Date(props) {
     onBlur,
     readOnly,
     testId,
-    helperText
+    helperText,
+    displayMode
   } = props;
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
   const propName = pConn.getStateProps().value;
   const helperTextToDisplay = validatemessage || helperText;
+
+  if(displayMode === 'LABELS_LEFT'){
+    const field = {
+      [label]: value
+    };
+    return <FieldValueList item={field}/>
+  }
 
   if (readOnly) {
     // const theReadOnlyComp = <TextInput props />

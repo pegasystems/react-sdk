@@ -1,6 +1,7 @@
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import TextInput from '../TextInput';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 export default function Integer(props) {
   const {
@@ -14,11 +15,19 @@ export default function Integer(props) {
     onBlur,
     readOnly,
     testId,
-    helperText
+    helperText,
+    displayMode
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
 
   // console.log(`Integer: label: ${label} value: ${value}`);
+
+  if(displayMode === 'LABELS_LEFT'){
+    const field = {
+      [label]: value
+    };
+    return <FieldValueList item={field}/>
+  }
 
   if (readOnly) {
     return <TextInput {...props} />;

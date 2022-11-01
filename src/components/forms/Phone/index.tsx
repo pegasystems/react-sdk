@@ -1,5 +1,6 @@
 import React from 'react';
 import MuiPhoneNumber from 'material-ui-phone-number';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 export default function Phone(props) {
   const {
@@ -13,7 +14,8 @@ export default function Phone(props) {
     onBlur,
     readOnly,
     testId,
-    helperText
+    helperText,
+    displayMode
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
 
@@ -22,6 +24,13 @@ export default function Phone(props) {
   testProp = {
     'data-test-id': testId
   };
+
+  if(displayMode === 'LABELS_LEFT'){
+    const field = {
+      [label]: value
+    };
+    return <FieldValueList item={field}/>
+  }
 
   if (readOnly) {
     const disableDropdown = true;
@@ -46,6 +55,7 @@ export default function Phone(props) {
       </div>
     );
   }
+
 
   const handleChange = inputVal => {
     let phoneValue = inputVal && inputVal.replace(/\D+/g, '');

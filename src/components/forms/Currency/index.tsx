@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 // import { TextField } from "@material-ui/core";
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 import handleEvent from '../../../helpers/event-utils';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 // Using control from: https://github.com/unicef/material-ui-currency-textfield
 
@@ -17,7 +18,8 @@ export default function Currency(props) {
     /* onChange, onBlur, */
     readOnly,
     testId,
-    helperText
+    helperText,
+    displayMode
   } = props;
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
@@ -44,6 +46,13 @@ export default function Currency(props) {
     // const testVal = value;
     setCurrValue(value.toString());
   }, [value]);
+
+  if(displayMode === 'LABELS_LEFT'){
+    const field = {
+      [label]: value
+    };
+    return <FieldValueList item={field}/>
+  }
 
   function currOnChange(event, inValue) {
     // console.log(`Currency currOnChange inValue: ${inValue}`);

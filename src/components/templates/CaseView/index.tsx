@@ -100,7 +100,7 @@ export default function CaseView(props) {
   const vertTabInfo: Array<Object> = [];
 
   // deferLoadInfo is sent to DeferLoad component (currently selected entry)
-  const deferLoadInfo: Array<Object> = [];
+  const deferLoadInfo: Array<any> = [];
 
   // populate vertTabInfo and deferLoadInfo
   theTabsRegionChildren.forEach((tabComp, index) => {
@@ -210,7 +210,7 @@ export default function CaseView(props) {
         <Grid item xs={6}>
           {theStagesRegion}
           {theTodoRegion}
-          { deferLoadInfo.length > 0 && <DeferLoad getPConnect={getPConnect} loadData={deferLoadInfo[activeVertTab] } />}
+          { deferLoadInfo.length > 0 && <DeferLoad getPConnect={getPConnect} name={deferLoadInfo[activeVertTab].config.name } isTab />}
         </Grid>
 
         <Grid item xs={3}>

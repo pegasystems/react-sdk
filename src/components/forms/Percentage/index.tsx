@@ -3,6 +3,7 @@ import { TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import TextInput from '../TextInput';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 // Inspired by https://stackoverflow.com/questions/50823182/material-ui-remove-up-down-arrow-dials-from-textview
 const useStyles = makeStyles((/* theme */) => ({
@@ -35,11 +36,19 @@ export default function Percentage(props) {
     onBlur,
     readOnly,
     testId,
-    helperText
+    helperText,
+    displayMode
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
 
   // console.log(`Percentage: label: ${label} value: ${value}`);
+
+  if(displayMode === 'LABELS_LEFT'){
+    const field = {
+      [label]: value
+    };
+    return <FieldValueList item={field}/>
+  }
 
   if (readOnly) {
     return <TextInput {...props} />;

@@ -53,7 +53,7 @@ const useStyles = makeStyles((/* theme */) => ({
   },
   moreIcon: {
     verticalAlign: 'bottom'
-  },
+  }
 }));
 
 declare const PCore: any;
@@ -73,11 +73,12 @@ export default function SimpleTableManual(props) {
     renderMode,
     presets,
     label: labelProp,
+    showLabel,
     dataPageName,
     contextClass,
     hideAddRow,
     hideDeleteRow,
-    propertyLabel,
+    propertyLabel
   } = props;
   const pConn = getPConnect();
   const [rowData, setRowData] = useState([]);
@@ -98,6 +99,10 @@ export default function SimpleTableManual(props) {
   const [displayDialogDateValue, setDisplayDialogDateValue] = useState<string>('');
 
   const label = labelProp || propertyLabel;
+  const propsToUse = { label, showLabel, ...getPConnect().getInheritedProps() };
+  if (propsToUse.showLabel === false) {
+    propsToUse.label = '';
+  }
   // Getting current context
   const context = getPConnect().getContextName();
   const resolvedList = getReferenceList(pConn);
@@ -307,7 +312,6 @@ export default function SimpleTableManual(props) {
 
   // eslint-disable-next-line no-unused-vars
   function stableSort<T>(array: Array<T>, comparator: (a: T, b: T) => number) {
-
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
     stabilizedThis.sort((a, b) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow, no-shadow
@@ -340,7 +344,10 @@ export default function SimpleTableManual(props) {
       if (filterObj.ref === menuColumnId) {
         setFilterBy(menuColumnLabel);
         if (
-          filterObj.type === 'Date' || filterObj.type === 'DateTime' || filterObj.type === 'Time') {
+          filterObj.type === 'Date' ||
+          filterObj.type === 'DateTime' ||
+          filterObj.type === 'Time'
+        ) {
           setContainsDateOrTime(true);
           setFilterType(filterObj.type);
           setDisplayDialogDateFilter(filterObj.containsFilter);
@@ -379,9 +386,7 @@ export default function SimpleTableManual(props) {
     setOpen(true);
   }
 
-  function _groupMenu() {
-
-  }
+  function _groupMenu() {}
 
   function _closeDialog() {
     setOpen(false);
@@ -468,10 +473,24 @@ export default function SimpleTableManual(props) {
     return false;
   }
 
+  function results() {
+    const len = editableMode ? elements.length : rowData.length;
+
+    return len ? (
+      <span style={{ fontSize: '0.9em', opacity: '0.7' }}>
+        {len} result{len > 1 ? 's' : ''}
+      </span>
+    ) : null;
+  }
+
   return (
     <React.Fragment>
       <TableContainer component={Paper} style={{ margin: '4px 0px' }}>
-        {label && <h3 className={classes.label}>{label}</h3>}
+        {propsToUse.label && (
+          <h3 className={classes.label}>
+            {propsToUse.label} {results()}
+          </h3>
+        )}
         <Table>
           <TableHead className={classes.header}>
             <TableRow>
@@ -487,7 +506,7 @@ export default function SimpleTableManual(props) {
                         >
                           {field.label}
                           {_showFilteredIcon(field.name) && (
-                                <FilterListIcon className={classes.moreIcon} />
+                            <FilterListIcon className={classes.moreIcon} />
                           )}
                           {orderBy === displayedColumns[index] ? (
                             <span className={classes.visuallyHidden}>
@@ -495,13 +514,14 @@ export default function SimpleTableManual(props) {
                             </span>
                           ) : null}
                         </TableSortLabel>
-                        <MoreIcon id="menu-icon"
+                        <MoreIcon
+                          id='menu-icon'
                           className={classes.moreIcon}
                           onClick={event => {
                             _menuClick(event, field.name, field.meta.type, field.label);
                           }}
                         />
-                     </div>
+                      </div>
                     ) : (
                       field.label
                     )}
@@ -549,14 +569,15 @@ export default function SimpleTableManual(props) {
                 .slice(0)
                 .map(row => {
                   return (
-                    <TableRow
-                      key={row[1]}
-                    >
+                    <TableRow key={row[1]}>
                       {displayedColumns.map(colKey => {
                         return (
                           <TableCell key={colKey} className={classes.tableCell}>
-                            {typeof row[colKey] === 'boolean' && !row[colKey] ? 'False' : typeof row[colKey] === 'boolean' &&
-                            row[colKey] ? 'True' : row[colKey]}
+                            {typeof row[colKey] === 'boolean' && !row[colKey]
+                              ? 'False'
+                              : typeof row[colKey] === 'boolean' && row[colKey]
+                              ? 'True'
+                              : row[colKey]}
                           </TableCell>
                         );
                       })}
@@ -566,10 +587,14 @@ export default function SimpleTableManual(props) {
           </TableBody>
         </Table>
         {readOnlyMode && rowData && rowData.length === 0 && (
-          <div className='no-records' id='no-records'>No records found.</div>
+          <div className='no-records' id='no-records'>
+            No records found.
+          </div>
         )}
         {editableMode && referenceList && referenceList.length === 0 && (
-          <div className='no-records' id='no-records'>No records found.</div>
+          <div className='no-records' id='no-records'>
+            No records found.
+          </div>
         )}
       </TableContainer>
       {showAddRowButton && (
@@ -643,7 +668,7 @@ export default function SimpleTableManual(props) {
           ) : (
             <>
               <Select
-                id="filter"
+                id='filter'
                 fullWidth
                 onChange={_dialogContainsFilter}
                 value={displayDialogContainsFilter}

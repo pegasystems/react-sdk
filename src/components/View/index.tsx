@@ -10,7 +10,7 @@ import CaseView from '../templates/CaseView';
 import DefaultForm from '../templates/DefaultForm';
 import Details from '../templates/Details';
 import DetailsTwoColumn from '../templates/DetailsTwoColumn';
-import DetailsThreeColumn from  '../templates/DetailsThreeColumn';
+import DetailsThreeColumn from '../templates/DetailsThreeColumn';
 import ListPage from '../templates/ListPage';
 import ListView from '../templates/ListView';
 import NarrowWidePage from '../templates/NarrowWidePage';
@@ -41,16 +41,14 @@ const FORMTEMPLATES = ['OneColumn', 'TwoColumn', 'DefaultForm', 'WideNarrow', 'N
 
 export default function View(props) {
   const { children, template, getPConnect, mode } = props;
-  let { label, showLabel = true } = props;
+  let { label, showLabel = false } = props;
 
   // Get the inherited props from the parent to determine label settings. For 8.6, this is only for embedded data form views
   // Putting this logic here instead of copy/paste in every Form template index.js
 
-  ({ label = '', showLabel = true } = {
-    label,
-    showLabel,
-    ...getPConnect().getInheritedProps()
-  });
+  const inheritedProps = getPConnect().getInheritedProps();
+  label = inheritedProps.label || label;
+  showLabel = inheritedProps.showLabel || showLabel;
 
   const isEmbeddedDataView = mode === 'editable'; // would be better to check the reference child for `context` attribute if possible
   if (isEmbeddedDataView && showLabel === undefined) {
@@ -85,11 +83,11 @@ export default function View(props) {
         ViewTemplate = DetailsTwoColumn;
         break;
 
-      case "DetailsThreeColumn":
+      case 'DetailsThreeColumn':
         ViewTemplate = DetailsThreeColumn;
         break;
 
-      case "ListPage":
+      case 'ListPage':
         ViewTemplate = ListPage;
         break;
 
@@ -198,7 +196,7 @@ export default function View(props) {
 
     return (
       <div className='grid-column'>
-        {showLabel && template !== 'SubTabs' && (
+        {showLabel && template !== 'SubTabs' && template !== 'SimpleTable' && (
           <div className='template-title-container'>
             <span>{label}</span>
           </div>

@@ -8,6 +8,10 @@ import download from "downloadjs";
 
 declare const PCore: any;
 
+function getCurrentAttachmentsList(context) {
+  return PCore.getStoreValue('.attachmentsList', 'context_data', context) || [];
+}
+
 export default function Attachment(props) {
   const {value, getPConnect, label} = props;
   /* this is a temporary fix because required is supposed to be passed as a boolean and NOT as a string */
@@ -162,14 +166,33 @@ export default function Attachment(props) {
         pConn.getContextName()
       )
       .then((fileRes) => {
-        const reqObj = {
-          type: "File",
-          attachmentFieldName: valueRef,
-          category: categoryName,
-          ID: fileRes.ID
-        };
-        pConn.attachmentsInfo = PCore.getPCoreVersion()?.includes('8.7') ? reqObj : [reqObj];
-
+        let reqObj;
+        if (PCore.getPCoreVersion()?.includes('8.7')) {
+          reqObj = {
+            type: "File",
+            attachmentFieldName: valueRef,
+            category: categoryName,
+            ID: fileRes.ID
+          };
+          pConn.attachmentsInfo = reqObj;
+        } else {
+          reqObj = {
+            type: "File",
+            label: valueRef,
+            category: categoryName,
+            handle: fileRes.ID,
+            ID: fileRes.clientFileID
+          };
+          PCore.getStateUtils().updateState(
+            pConn.getContextName(),
+            'attachmentsList',
+            [reqObj],
+            {
+              pageReference: 'context_data',
+              isArrayDeepMerge: false
+            }
+          );
+        }
         const fieldName = pConn.getStateProps().value;
         const context = pConn.getContextName();
 
@@ -212,32 +235,70 @@ export default function Attachment(props) {
 
   function _removeFileFromList(item: any, list) {
     const arFileList = file.props ? file.props.arFileList$ : list;
-    if (item !== null) {
-      for (const fileIndex in arFileList) {
-        if (arFileList[fileIndex].id === item.id) {
-          // remove the file from the list and redraw
-          arFileList.splice(parseInt(fileIndex, 10), 1);
-           // call delete attachment
-            if (value && value.pxResults[0]) {
-              pConn.attachmentsInfo = {
-                type: "File",
-                attachmentFieldName: valueRef,
-                delete: true
-              };
-            } else {
-              pConn.attachmentsInfo = null;
-            }
-            setFile((current) => {
-              return {
-                ...current,
-                props: {
-                  ...current.props,
-                  arFileList
-                },
-              };
-            });
-        }
+    const fileIndex = arFileList.findIndex(element => element?.id === item?.id);
+    if (PCore.getPCoreVersion()?.includes('8.7')) {
+      if (value && value.pxResults[0]) {
+        pConn.attachmentsInfo = {
+          type: "File",
+          attachmentFieldName: valueRef,
+          delete: true
+        };
       }
+      if (fileIndex > -1) { arFileList.splice(parseInt(fileIndex, 10), 1) };
+      setFile((current) => {
+        return {
+          ...current,
+          props: {
+            ...current.props,
+            arFileList
+          },
+        };
+      });
+    } else {
+      const attachmentsList = [];
+      const currentAttachmentList = getCurrentAttachmentsList(pConn.getContextName()).filter(
+        (f) => f.label !== valueRef
+      );
+      if (value && value.pxResults && +value.pyCount > 0) {
+        const deletedFile = {
+          type: "File",
+          label: valueRef,
+          delete: true,
+          responseProps: {
+            pzInsKey: arFileList[fileIndex].id
+          },
+        };
+        // updating the redux store to help form-handler in passing the data to delete the file from server
+        PCore.getStateUtils().updateState(
+          pConn.getContextName(),
+          'attachmentsList',
+          [...currentAttachmentList, deletedFile],
+          {
+            pageReference: 'context_data',
+            isArrayDeepMerge: false
+          }
+        );
+      } else {
+        PCore.getStateUtils().updateState(
+          pConn.getContextName(),
+          'attachmentsList',
+          [...currentAttachmentList, ...attachmentsList],
+          {
+            pageReference: 'context_data',
+            isArrayDeepMerge: false
+          }
+        );
+      }
+      if (fileIndex > -1) { arFileList.splice(parseInt(fileIndex, 10), 1) };
+      setFile((current) => {
+        return {
+          ...current,
+          props: {
+            ...current.props,
+            arFileList
+          },
+        };
+      });
     }
   }
 

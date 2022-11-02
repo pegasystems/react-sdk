@@ -59,7 +59,7 @@ const filterByColumns: Array<any> = [];
 
 export default function ListView(props) {
   const { getPConnect, bInForm } = props;
-  const { globalSearch, presets, referenceList, rowClickAction, selectionMode, referenceType } = props;
+  const { globalSearch, presets, referenceList, rowClickAction, selectionMode, referenceType, payload } = props;
 
   const thePConn = getPConnect();
   const componentConfig = thePConn.getComponentConfig();
@@ -87,8 +87,8 @@ export default function ListView(props) {
 
   // Will contain the list of columns specific for an instance
   let columnList: any = useRef([]);
-  let payload: any;
-  // Will be sent in the payload
+  let dashboardFilterPayload: any ;
+  // Will be sent in the dashboardFilterPayload
   let selectParam: Array<any> = [];
 
   const useStyles = makeStyles((theme: Theme) =>
@@ -352,7 +352,7 @@ export default function ListView(props) {
   // Will be triggered when EVENT_DASHBOARD_FILTER_CHANGE fires
   function processFilterChange(data) {
     const { filterId, filterExpression } = data;
-    payload = {
+    dashboardFilterPayload = {
       query: {
         filter: {},
         select: []
@@ -367,7 +367,7 @@ export default function ListView(props) {
 
     let field = getFieldFromFilter(filterExpression, isDateRange);
     selectParam = [];
-    // Constructing the select parameters list( will be sent in payload)
+    // Constructing the select parameters list( will be sent in dashboardFilterPayload)
     columnList.forEach(col => {
       selectParam.push({
         field: col
@@ -378,7 +378,7 @@ export default function ListView(props) {
     if (data.filterExpression !== null && !(columnList.length && columnList.includes(field))) {
       return;
     }
-    // This is a flag which will be used to reset payload in case we don't find any valid filters
+    // This is a flag which will be used to reset dashboardFilterPayload in case we don't find any valid filters
     let validFilter = false;
 
     let index = 1;
@@ -402,46 +402,46 @@ export default function ListView(props) {
       }
       // If we reach here that implies we've at least one valid filter, hence setting the flag
       validFilter = true;
-      /** Below are the 2 cases for- Text & Date-Range filter types where we'll construct filter data which will be sent in the payload
+      /** Below are the 2 cases for- Text & Date-Range filter types where we'll construct filter data which will be sent in the dashboardFilterPayload
        * In Nebula, through Repeating Structures they might be using several APIs to do it, we're doing it here
       */
       if (isDateRange) {
         const dateRelationalOp = filter?.AND ? 'AND' : 'OR';
-        payload.query.filter.filterConditions = {
-          ...payload.query.filter.filterConditions,
+        dashboardFilterPayload.query.filter.filterConditions = {
+          ...dashboardFilterPayload.query.filter.filterConditions,
           [`T${index++}`]: { ...filter[relationalOp][0].condition },
           [`T${index++}`]: { ...filter[relationalOp][1].condition }
         };
-        if (payload.query.filter.logic) {
-          payload.query.filter.logic = `${payload.query.filter.logic} ${relationalOp} (T${
+        if (dashboardFilterPayload.query.filter.logic) {
+          dashboardFilterPayload.query.filter.logic = `${dashboardFilterPayload.query.filter.logic} ${relationalOp} (T${
             index - 2
           } ${dateRelationalOp} T${index - 1})`;
         } else {
-          payload.query.filter.logic = `(T${index - 2} ${relationalOp} T${index - 1})`;
+          dashboardFilterPayload.query.filter.logic = `(T${index - 2} ${relationalOp} T${index - 1})`;
         }
 
-        payload.query.select = selectParam;
+        dashboardFilterPayload.query.select = selectParam;
       } else {
-        payload.query.filter.filterConditions = {
-          ...payload.query.filter.filterConditions,
+        dashboardFilterPayload.query.filter.filterConditions = {
+          ...dashboardFilterPayload.query.filter.filterConditions,
           [`T${index++}`]: { ...filter.condition, ignoreCase: true }
         };
 
-        if (payload.query.filter.logic) {
-          payload.query.filter.logic = `${payload.query.filter.logic} ${relationalOp} T${
+        if (dashboardFilterPayload.query.filter.logic) {
+          dashboardFilterPayload.query.filter.logic = `${dashboardFilterPayload.query.filter.logic} ${relationalOp} T${
             index - 1
           }`;
         } else {
-          payload.query.filter.logic = `T${index - 1}`;
+          dashboardFilterPayload.query.filter.logic = `T${index - 1}`;
         }
 
-        payload.query.select = selectParam;
+        dashboardFilterPayload.query.select = selectParam;
       }
     }
 
-    // Reset the payload if we end up with no valid filters for the list
+    // Reset the dashboardFilterPayload if we end up with no valid filters for the list
     if (!validFilter) {
-      payload = undefined;
+      dashboardFilterPayload = undefined;
     }
 
     fetchDataFromServer();
@@ -449,7 +449,7 @@ export default function ListView(props) {
 
   // Will be triggered when EVENT_DASHBOARD_FILTER_CLEAR_ALL fires
   function processFilterClear() {
-    payload = undefined;
+    dashboardFilterPayload = undefined;
     fetchDataFromServer();
   }
 
@@ -484,7 +484,7 @@ export default function ListView(props) {
       context,
       payload && payload.dataViewParameters,
       null,
-      payload && payload.query
+      payload ? payload.query : dashboardFilterPayload && dashboardFilterPayload.query
     );
   }
 

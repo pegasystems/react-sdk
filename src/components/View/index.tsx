@@ -10,6 +10,7 @@ import CaseView from '../templates/CaseView';
 import DefaultForm from '../templates/DefaultForm';
 import Details from '../templates/Details';
 import DetailsTwoColumn from '../templates/DetailsTwoColumn';
+import DetailsThreeColumn from  '../templates/DetailsThreeColumn';
 import ListPage from '../templates/ListPage';
 import ListView from '../templates/ListView';
 import NarrowWidePage from '../templates/NarrowWidePage';
@@ -84,7 +85,11 @@ export default function View(props) {
         ViewTemplate = DetailsTwoColumn;
         break;
 
-      case 'ListPage':
+      case "DetailsThreeColumn":
+        ViewTemplate = DetailsThreeColumn;
+        break;
+
+      case "ListPage":
         ViewTemplate = ListPage;
         break;
 

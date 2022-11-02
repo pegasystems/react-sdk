@@ -25,6 +25,9 @@
     "sdkContentServerUrl": "",
 
     "appPortal_comment": "If specified, the given appPortal will be loaded. If left blank, the operator's default Portal is used. Ignored for Embedded use",
-    "appPortal": ""
+    "appPortal": "",
+
+    "excludePortals_comment": "Array of specific portals to avoid attempting to load with SDK",
+    "excludePortals" : ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"]
   }
 }

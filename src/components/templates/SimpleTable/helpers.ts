@@ -1,3 +1,5 @@
+import { Utils } from '../../../helpers/utils';
+
 declare const PCore;
 
 export const TABLE_CELL = "SdkRenderer";
@@ -227,3 +229,132 @@ export const createPConnect = (contextName, referenceList, pageReference) => {
 
   return getPConnect();
 };
+
+export const filterData = (filterByColumns) => {
+  return function filteringData(item) {
+    let bKeep = true;
+    for (const filterObj of filterByColumns) {
+      if (
+        filterObj.containsFilterValue !== '' ||
+        filterObj.containsFilter === 'null' ||
+        filterObj.containsFilter === 'notnull'
+      ) {
+        let value: any;
+        let filterValue: any;
+
+        switch (filterObj.type) {
+          case 'Date':
+          case 'DateTime':
+          case 'Time':
+            value =
+              item[filterObj.ref] !== null ?? item[filterObj.ref] !== ''
+                ? Utils.getSeconds(item[filterObj.ref])
+                : null;
+            filterValue =
+              filterObj.containsFilterValue !== null && filterObj.containsFilterValue !== ''
+                ? Utils.getSeconds(filterObj.containsFilterValue)
+                : null;
+
+            // eslint-disable-next-line sonarjs/no-nested-switch
+            switch (filterObj.containsFilter) {
+              case 'notequal':
+                // becasue filterValue is in minutes, need to have a range of less than 60 secons
+
+                if (value !== null && filterValue !== null) {
+                  // get rid of milliseconds
+                  value /= 1000;
+                  filterValue /= 1000;
+
+                  const diff = value - filterValue;
+                  if (diff >= 0 && diff < 60) {
+                    bKeep = false;
+                  }
+                }
+
+                break;
+
+              case 'equal':
+                  // becasue filterValue is in minutes, need to have a range of less than 60 secons
+
+                  if (value !== null && filterValue !== null) {
+                    // get rid of milliseconds
+                    value /= 1000;
+                    filterValue /= 1000;
+
+                    const diff = value - filterValue;
+                    if (diff !== 0) {
+                      bKeep = false;
+                    }
+                  }
+
+              break;
+
+              case 'after':
+                if (value < filterValue) {
+                  bKeep = false;
+                }
+                break;
+
+              case 'before':
+                if (value > filterValue) {
+                  bKeep = false;
+                }
+                break;
+
+              case 'null':
+                if (value !== null) {
+                  bKeep = false;
+                }
+                break;
+
+              case 'notnull':
+                if (value === null) {
+                  bKeep = false;
+                }
+                break;
+
+              default:
+                break;
+            }
+            break;
+
+          default:
+            value = item[filterObj.ref].toLowerCase();
+            filterValue = filterObj.containsFilterValue.toLowerCase();
+
+            // eslint-disable-next-line sonarjs/no-nested-switch
+            switch (filterObj.containsFilter) {
+              case 'contains':
+                if (value.indexOf(filterValue) < 0) {
+                  bKeep = false;
+                }
+                break;
+
+              case 'equals':
+                if (value !== filterValue) {
+                  bKeep = false;
+                }
+                break;
+
+              case 'startswith':
+                if (value.indexOf(filterValue) !== 0) {
+                  bKeep = false;
+                }
+                break;
+
+              default:
+                break;
+            }
+
+            break;
+        }
+      }
+
+      // if don't keep stop filtering
+      if (!bKeep) {
+        break;
+      }
+    }
+    return bKeep;
+  }
+}

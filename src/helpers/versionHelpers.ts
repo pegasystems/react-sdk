@@ -11,14 +11,9 @@ export const sdkVersion = "8.7";
 
 export function compareSdkPCoreVersions() {
 
-  const theConstellationVersion = PCore.getPCoreVersion();
+  // const theConstellationVersion = PCore.getPCoreVersion();
 
-  if (theConstellationVersion.includes(sdkVersion)) {
-    // eslint-disable-next-line no-console
-    console.log(`sdkVersion: ${sdkVersion} matches PCore version: ${PCore.getPCoreVersion()}`);
-  } else {
-    // eslint-disable-next-line no-console
-    console.error(`sdkVersion: ${sdkVersion} does NOT match PCore version: ${PCore.getPCoreVersion()}`);
-  }
+  // eslint-disable-next-line no-console
+  console.warn(`Using Constellation version ${PCore.getPCoreVersion()}. Ensure this is the same version as your Infinity server.`);
 
 }

@@ -11,21 +11,27 @@ const getAttributes = async element => {
   return attributes;
 };
 
-const getNextDay = () => {
+const getFormattedDate = date => {
+  if (!date) {
+    return date;
+  }
+  const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}${(date.getDate()
+  ).toString().padStart(2, '0')}${date.getFullYear()}`;
+  return formattedDate;
+};
+
+const getFutureDate = () => {
   const today = new Date();
-  const theLocale = Intl.DateTimeFormat().resolvedOptions().locale;
-  // add 10 day to today
-  const futureDate = new Date(today.setDate(today.getDate() + 10));
+  // const theLocale = Intl.DateTimeFormat().resolvedOptions().locale;
+  // add 2 days to today
+  const futureDate = new Date(today.setDate(today.getDate() + 2));
   // Need to get leading zeroes on single digit months and 4 digit year
-  return futureDate.toLocaleDateString(theLocale, {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  });
+  const formattedFuturedate = getFormattedDate(futureDate);
+  return formattedFuturedate;
 };
 
 module.exports = {
   Login,
   getAttributes,
-  getNextDay
+  getFutureDate
 };

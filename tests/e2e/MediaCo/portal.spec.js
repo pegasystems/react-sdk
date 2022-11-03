@@ -53,7 +53,7 @@ test.describe('E2E test', () => {
     const serviceDate = page.locator('div[data-test-id="E0BA356AE552ACD4326D51E61F4279AC"]');
     const serviceDateInput = serviceDate.locator('input');
     await serviceDateInput.click();
-    const futureDate = common.getNextDay();
+    const futureDate = common.getFutureDate();
     await serviceDateInput.type(futureDate);
 
     await page.locator('button:has-text("submit")').click();

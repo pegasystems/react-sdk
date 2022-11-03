@@ -11,6 +11,16 @@ import CancelAlert from '../forms/CancelAlert';
 
 declare const PCore;
 
+// Utility to determine if a JSON object is empty
+function isEmptyObject(inObj: Object): Boolean {
+  let key: String;
+  // eslint-disable-next-line guard-for-in
+  for (key in inObj) {
+    return false;
+  }
+  return true;
+}
+
 function buildName(pConnect, name = '') {
   const context = pConnect.getContextName();
   return `${context}/${name}`;
@@ -76,8 +86,9 @@ const ModalViewContainer = props => {
     CONTAINER_TYPE: { MULTIPLE },
     PUB_SUB_EVENTS: { EVENT_SHOW_CANCEL_ALERT }
   } = PCore.getConstants();
-  const { subscribe, unsubscribe } = PCore.getPubSubUtils();
+  const { subscribe } = PCore.getPubSubUtils();
   const [bShowModal, setShowModal] = useState(false);
+  const [bSubscribed, setSubscribed] = useState(false);
   const [bShowCancelAlert, setShowCancelAlert] = useState(false);
   const [oCaseInfo, setOCaseInfo] = useState({});
   const [createdView, setCreatedView] = useState<any>(null);
@@ -130,22 +141,6 @@ const ModalViewContainer = props => {
   };
 
   useEffect(() => {
-    subscribe(
-      EVENT_SHOW_CANCEL_ALERT,
-      showAlert,
-      EVENT_SHOW_CANCEL_ALERT /* Unique string for subscription */
-    );
-
-    // Unsubscribe on component unmount
-    return () => {
-      unsubscribe(
-        EVENT_SHOW_CANCEL_ALERT,
-        EVENT_SHOW_CANCEL_ALERT /* Should be same unique string passed during subscription */
-      );
-    };
-  }, []);
-
-  useEffect(() => {
     // Establish the necessary containers
     const containerMgr = pConn.getContainerManager();
     containerMgr.initializeContainers({ type: MULTIPLE });
@@ -170,90 +165,107 @@ const ModalViewContainer = props => {
 
       // console.log(`ModalViewContainer: key: ${key} latestItem: ${JSON.stringify(latestItem)}`);
 
-      if (
-        currentOrder.length > 0 &&
-        currentItems[key] &&
-        currentItems[key].view &&
-        Object.keys(currentItems[key].view).length > 0
-      ) {
-        const currentItem = currentItems[key];
-        const rootView = currentItem.view;
-        const { context } = rootView.config;
-        const config = { meta: rootView };
-        config['options'] = {
-          context: currentItem.context,
-          hasForm: true,
-          pageReference: context || pConn.getPageReference()
-        };
+      if (currentOrder.length > 0) {
+        if (
+          currentItems[key] &&
+          currentItems[key].view &&
+          Object.keys(currentItems[key].view).length > 0
+        ) {
+          const currentItem = currentItems[key];
+          const rootView = currentItem.view;
+          const { context } = rootView.config;
+          const config = { meta: rootView };
+          config['options'] = {
+            context: currentItem.context,
+            hasForm: true,
+            pageReference: context || pConn.getPageReference()
+          };
 
-        const configObject = PCore.createPConnect(config);
-
-        // THIS is where the ViewContainer creates a View
-        //    The config has meta.config.type = "view"
-        const newComp = configObject.getPConnect();
-        // const newCompName = newComp.getComponentName();
-        const caseInfo =
-          newComp && newComp.getDataObject() && newComp.getDataObject().caseInfo
-            ? newComp.getDataObject().caseInfo
-            : null;
-
-        // console.log(`ModalViewContainer just created newComp: ${newCompName}`);
-
-        // The metadata for pyDetails changed such that the "template": "CaseView"
-        //  is no longer a child of the created View but is in the created View's
-        //  config. So, we DON'T want to replace this.pConn$ since the created
-        //  component is a View (and not a ViewContainer). We now look for the
-        //  "template" type directly in the created component (newComp) and NOT
-        //  as a child of the newly created component.
-        // console.log(`---> ModalViewContainer created new ${newCompName}`);
-
-        // Use the newly created component (View) info but DO NOT replace
-        //  this ModalViewContainer's pConn$, etc.
-        //  Note that we're now using the newly created View's PConnect in the
-        //  ViewContainer HTML template to guide what's rendered similar to what
-        //  the React return of React.Fragment does
-
-        // right now need to check caseInfo for changes, to trigger redraw, not getting
-        // changes from angularPconnect except for first draw
-        if (newComp && caseInfo && compareCaseInfoIsDifferent(caseInfo)) {
-          setCreatedView(configObject);
-
-          const { actionName } = latestItem;
-          const theNewCaseInfo = newComp.getCaseInfo();
-          const caseName = theNewCaseInfo.getName();
-          const ID = theNewCaseInfo.getID();
-
-          setTitle(actionName || `New ${caseName} (${ID})`);
-
-          let arChildrenAsReact: Array<any> = [];
-
-          if (newComp.getComponentName() === 'reference') {
-            // Reference component doesn't have children. It can build the View we want.
-            //  The Reference component getPConnect is in configObject
-
-            arChildrenAsReact.push(
-              createElement(createPConnectComponent(), {
-                ...configObject,
-                key: `${caseName}-${ID}`
-              })
+          if (!bSubscribed) {
+            setSubscribed(true);
+            subscribe(
+              EVENT_SHOW_CANCEL_ALERT,
+              showAlert,
+              EVENT_SHOW_CANCEL_ALERT /* Unique string for subscription */
             );
-          } else {
-            // This is the 8.6 implementation. Leaving it in for reference for now.
-            // And create a similar array of the children as React components
-            //  passed to Assignment component when rendered
-            arChildrenAsReact = newComp.getChildren().map(child => {
-              // Use Case Summary ID as the React element's key
-              const caseSummaryID = child.getPConnect().getCaseSummary().ID;
-              return createElement(createPConnectComponent(), { ...child, key: caseSummaryID });
-            });
           }
 
-          if (arChildrenAsReact.length > 0) setArNewChildrenAsReact(arChildrenAsReact);
+          const configObject = PCore.createPConnect(config);
 
-          setShowModal(true);
+          // THIS is where the ViewContainer creates a View
+          //    The config has meta.config.type = "view"
+          const newComp = configObject.getPConnect();
+          // const newCompName = newComp.getComponentName();
+          const caseInfo =
+            newComp && newComp.getDataObject() && newComp.getDataObject().caseInfo
+              ? newComp.getDataObject().caseInfo
+              : null;
 
-          // save off itemKey to be used for finishAssignment, etc.
-          setItemKey(key);
+          // console.log(`ModalViewContainer just created newComp: ${newCompName}`);
+
+          // The metadata for pyDetails changed such that the "template": "CaseView"
+          //  is no longer a child of the created View but is in the created View's
+          //  config. So, we DON'T want to replace this.pConn$ since the created
+          //  component is a View (and not a ViewContainer). We now look for the
+          //  "template" type directly in the created component (newComp) and NOT
+          //  as a child of the newly created component.
+          // console.log(`---> ModalViewContainer created new ${newCompName}`);
+
+          // Use the newly created component (View) info but DO NOT replace
+          //  this ModalViewContainer's pConn$, etc.
+          //  Note that we're now using the newly created View's PConnect in the
+          //  ViewContainer HTML template to guide what's rendered similar to what
+          //  the React return of React.Fragment does
+
+          // right now need to check caseInfo for changes, to trigger redraw, not getting
+          // changes from angularPconnect except for first draw
+          if (newComp && caseInfo && compareCaseInfoIsDifferent(caseInfo)) {
+            setCreatedView(configObject);
+
+            const { actionName } = latestItem;
+            const theNewCaseInfo = newComp.getCaseInfo();
+            const caseName = theNewCaseInfo.getName();
+            const ID = theNewCaseInfo.getID();
+
+            setTitle(actionName || `New ${caseName} (${ID})`);
+
+            let arChildrenAsReact: Array<any> = [];
+
+            if (newComp.getComponentName() === 'reference') {
+              // Reference component doesn't have children. It can build the View we want.
+              //  The Reference component getPConnect is in configObject
+
+              arChildrenAsReact.push(
+                createElement(createPConnectComponent(), {
+                  ...configObject,
+                  key: `${caseName}-${ID}`
+                })
+              );
+            } else {
+              // This is the 8.6 implementation. Leaving it in for reference for now.
+              // And create a similar array of the children as React components
+              //  passed to Assignment component when rendered
+              arChildrenAsReact = newComp.getChildren().map(child => {
+                // Use Case Summary ID as the React element's key
+                const caseSummaryID = child.getPConnect().getCaseSummary().ID;
+                return createElement(createPConnectComponent(), { ...child, key: caseSummaryID });
+              });
+            }
+
+            if (arChildrenAsReact.length > 0) setArNewChildrenAsReact(arChildrenAsReact);
+
+            setShowModal(true);
+
+            // save off itemKey to be used for finishAssignment, etc.
+            setItemKey(key);
+          }
+        }
+      } else {
+        if (bShowModal) {
+          setShowModal(false);
+        }
+        if (!isEmptyObject(oCaseInfo)) {
+          setOCaseInfo({});
         }
       }
     }

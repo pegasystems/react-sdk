@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 // import { FieldGroup } from "@pega/cosmos-react-core";
 // import { LazyMap as LazyComponentMap } from "../../components_map";
-import { getAllFields} from '../templates/utils';
+import { getAllFields } from '../templates/utils';
 
 // Need to import any templates that we might render
 import CaseSummary from '../templates/CaseSummary';
@@ -10,52 +10,47 @@ import CaseView from '../templates/CaseView';
 import DefaultForm from '../templates/DefaultForm';
 import Details from '../templates/Details';
 import DetailsTwoColumn from '../templates/DetailsTwoColumn';
+import DetailsThreeColumn from '../templates/DetailsThreeColumn';
 import ListPage from '../templates/ListPage';
 import ListView from '../templates/ListView';
-import NarrowWidePage from "../templates/NarrowWidePage";
-import NarrowWideForm from "../templates/NarrowWideForm";
-import NarrowWideDetails from "../templates/NarrowWideDetails";
-import OneColumn from "../templates/OneColumn";
+import NarrowWidePage from '../templates/NarrowWidePage';
+import NarrowWideForm from '../templates/NarrowWideForm';
+import NarrowWideDetails from '../templates/NarrowWideDetails';
+import OneColumn from '../templates/OneColumn';
 import OneColumnTab from '../templates/OneColumnTab';
 import SimpleTable from '../templates/SimpleTable';
 import SubTabs from '../templates/SubTabs';
 import TwoColumn from '../templates/TwoColumn';
 import TwoColumnPage from '../templates/TwoColumnPage';
-import WideNarrowForm from "../templates/WideNarrowForm";
-import WideNarrowPage from "../templates/WideNarrowPage";
-import WideNarrowDetails from "../templates/WideNarrowDetails";
+import WideNarrowForm from '../templates/WideNarrowForm';
+import WideNarrowPage from '../templates/WideNarrowPage';
+import WideNarrowDetails from '../templates/WideNarrowDetails';
 import DataReference from '../templates/DataReference';
 import OneColumnPage from '../templates/OneColumnPage';
 import InlineDashboardPage from '../templates/InlineDashboardPage';
+import DetailsSubTabs from '../templates/Details/SubTabs';
+
+import './View.css';
 //
 // WARNING:  It is not expected that this file should be modified.  It is part of infrastructure code that works with
 // Redux and creation/update of Redux containers and PConnect.  Modifying this code could have undesireable results and
 // is totally at your own risk.
 //
 
-
-const FORMTEMPLATES = [
-  "OneColumn",
-  "TwoColumn",
-  "DefaultForm",
-  "WideNarrow",
-  "NarrowWide"
-];
-
+const FORMTEMPLATES = ['OneColumn', 'TwoColumn', 'DefaultForm', 'WideNarrow', 'NarrowWide'];
 
 export default function View(props) {
   const { children, template, getPConnect, mode } = props;
-  let { label = "label", showLabel = true } = props;
+  let { label, showLabel = false } = props;
 
   // Get the inherited props from the parent to determine label settings. For 8.6, this is only for embedded data form views
   // Putting this logic here instead of copy/paste in every Form template index.js
-  ({ label = "label", showLabel = true } = {
-    label,
-    showLabel,
-    ...getPConnect().getInheritedProps()
-  });
 
-  const isEmbeddedDataView = mode === "editable"; // would be better to check the reference child for `context` attribute if possible
+  const inheritedProps = getPConnect().getInheritedProps();
+  label = inheritedProps.label || label;
+  showLabel = inheritedProps.showLabel || showLabel;
+
+  const isEmbeddedDataView = mode === 'editable'; // would be better to check the reference child for `context` attribute if possible
   if (isEmbeddedDataView && showLabel === undefined) {
     showLabel = true;
   }
@@ -64,59 +59,62 @@ export default function View(props) {
   // it will be loaded, otherwise fall back to single column
   //  JA - React SDK not using LazyComponentMap yet
   if (template /* && LazyComponentMap[template] */) {
-
     // const ViewTemplate = LazyComponentMap[template];
     let ViewTemplate: any;
 
-    switch(template) {
-      case "CaseSummary":
+    switch (template) {
+      case 'CaseSummary':
         ViewTemplate = CaseSummary;
         break;
 
-      case "CaseView":
+      case 'CaseView':
         ViewTemplate = CaseView;
         break;
 
-      case "DefaultForm":
+      case 'DefaultForm':
         ViewTemplate = DefaultForm;
         break;
 
-      case "Details":
+      case 'Details':
         ViewTemplate = Details;
         break;
 
-      case "DetailsTwoColumn":
+      case 'DetailsTwoColumn':
         ViewTemplate = DetailsTwoColumn;
         break;
 
-      case "ListPage":
+      case 'DetailsThreeColumn':
+        ViewTemplate = DetailsThreeColumn;
+        break;
+
+      case 'ListPage':
         ViewTemplate = ListPage;
         break;
 
-      case "ListView": {
+      case 'ListView': {
         ViewTemplate = ListView;
         const bInForm = true;
-        props = { ...props, bInForm};
+        props = { ...props, bInForm };
         break;
       }
 
-      case "NarrowWideForm":
-        ViewTemplate= NarrowWideForm;
+      case 'NarrowWideForm':
+        ViewTemplate = NarrowWideForm;
         break;
 
-      case "NarrowWidePage":
-        ViewTemplate= NarrowWidePage;
+      case 'NarrowWidePage':
+        ViewTemplate = NarrowWidePage;
         break;
 
-      case "NarrowWideDetails":
-        ViewTemplate= NarrowWideDetails;
+      case 'NarrowWideDetails':
+        ViewTemplate = NarrowWideDetails;
         break;
 
-      case "OneColumn":
+      case 'OneColumn':
         ViewTemplate = OneColumn;
         break;
 
-      case "OneColumnTab":
+      case 'OneColumnTab':
         ViewTemplate = OneColumnTab;
         break;
 
@@ -124,40 +122,44 @@ export default function View(props) {
         ViewTemplate = SimpleTable;
         break;
 
-      case "SubTabs":
+      case 'SubTabs':
         ViewTemplate = SubTabs;
         break;
 
-      case "OneColumnPage":
+      case 'DetailsSubTabs':
+        ViewTemplate = DetailsSubTabs;
+        break;
+
+      case 'OneColumnPage':
         ViewTemplate = OneColumnPage;
         break;
 
-      case "TwoColumn":
+      case 'TwoColumn':
         ViewTemplate = TwoColumn;
         break;
 
-      case "TwoColumnPage":
+      case 'TwoColumnPage':
         ViewTemplate = TwoColumnPage;
         break;
 
-      case "WideNarrowForm":
-        ViewTemplate= WideNarrowForm;
+      case 'WideNarrowForm':
+        ViewTemplate = WideNarrowForm;
         break;
 
-      case "WideNarrowPage":
-        ViewTemplate= WideNarrowPage;
+      case 'WideNarrowPage':
+        ViewTemplate = WideNarrowPage;
         break;
 
-      case "WideNarrowDetails":
-        ViewTemplate= WideNarrowDetails;
+      case 'WideNarrowDetails':
+        ViewTemplate = WideNarrowDetails;
         break;
 
-      case "InlineDashboardPage":
-        ViewTemplate= InlineDashboardPage;
+      case 'InlineDashboardPage':
+        ViewTemplate = InlineDashboardPage;
         break;
 
-      case "DataReference":
-        ViewTemplate= DataReference;
+      case 'DataReference':
+        ViewTemplate = DataReference;
         break;
 
       default:
@@ -173,7 +175,6 @@ export default function View(props) {
     let RenderedTemplate = <ViewTemplate {...props}>{children}</ViewTemplate>;
 
     if (FORMTEMPLATES.includes(template) && showLabel) {
-
       // Original:
       // RenderedTemplate = (
       //   <FieldGroup name={label} style={{ marginBlockStart: "1rem" }}>
@@ -181,23 +182,37 @@ export default function View(props) {
       //   </FieldGroup>
       // );
       RenderedTemplate = (
-        <div data-name="RenderedTemplate" data-template-type={template} /* name */ id="label" style={{ marginBlockStart: "1rem", gridColumn: "1 / 3" }}>
+        <div
+          data-name='RenderedTemplate'
+          data-template-type={template}
+          /* name */ id='label'
+          style={{ marginBlockStart: '1rem' }}
+          className='grid-column'
+        >
           {RenderedTemplate}
         </div>
       );
-
     }
 
-    return RenderedTemplate;
+    return (
+      <div className='grid-column'>
+        {showLabel && template !== 'SubTabs' && template !== 'SimpleTable' && (
+          <div className='template-title-container'>
+            <span>{label}</span>
+          </div>
+        )}
+        {RenderedTemplate}
+      </div>
+    );
   }
 
   // debugging/investigation help
   // console.log(`View about to render React.Fragment for children: ${children}`);
 
   if (children) {
-    return <>{children}</>
+    return <>{children}</>;
   } else {
-    return <div id="View">View has no children.</div>
+    return <div id='View'>View has no children.</div>;
   }
 }
 
@@ -229,24 +244,23 @@ View.additionalProps = (state, getPConnect) => {
   let allFields = {};
 
   switch (template) {
-    case "CaseSummary":
+    case 'CaseSummary':
       allFields = getAllFields(thePConn);
       // eslint-disable-next-line no-case-declarations
       const unresFields = {
         primaryFields: allFields[0],
         secondaryFields: allFields[1]
-      }
-      propObj = thePConn.resolveConfigProps( unresFields );
+      };
+      propObj = thePConn.resolveConfigProps(unresFields);
       break;
 
-    case "Details":
+    case 'Details':
       allFields = getAllFields(thePConn);
-      propObj = { fields: allFields[0] }
+      propObj = { fields: allFields[0] };
       break;
 
     default:
       break;
-
   }
 
   return propObj;

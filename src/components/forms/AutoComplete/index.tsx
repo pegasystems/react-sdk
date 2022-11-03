@@ -12,7 +12,7 @@ interface IOption {
   value: string;
 }
 
-const preProcessColumns = (columnList) => {
+const preProcessColumns = columnList => {
   return columnList.map(col => {
     const tempColObj = { ...col };
     tempColObj.value = col.value && col.value.startsWith('.') ? col.value.substring(1) : col.value;
@@ -20,7 +20,7 @@ const preProcessColumns = (columnList) => {
   });
 };
 
-const getDisplayFieldsMetaData = (columnList) => {
+const getDisplayFieldsMetaData = columnList => {
   const displayColumns = columnList.filter(col => col.display === 'true');
   const metaDataObj: any = { key: '', primary: '', secondary: [] };
   const keyCol = columnList.filter(col => col.key === 'true');
@@ -48,13 +48,16 @@ export default function AutoComplete(props) {
     testId,
     displayMode,
     deferDatasource,
-    datasourceMetadata
+    datasourceMetadata,
+    status,
+    helperText
   } = props;
   let { listType, datasource = [], columns = [] } = props;
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [theDatasource, setDatasource] = useState(null);
   let selectedValue: any = '';
+  const helperTextToDisplay = validatemessage || helperText;
 
   if (!isDeepEqual(datasource, theDatasource)) {
     // inbound datasource is different, so update theDatasource (to trigger useEffect)
@@ -64,24 +67,23 @@ export default function AutoComplete(props) {
   // convert associated to datapage listtype and transform props
   // Process deferDatasource when datapage name is present. WHhen tableType is promptList / localList
   if (deferDatasource && datasourceMetadata?.datasource?.name) {
-    listType = "datapage";
+    listType = 'datapage';
     datasource = datasourceMetadata.datasource.name;
-    const displayProp =
-    datasourceMetadata.datasource.propertyForDisplayText.startsWith("@P")
-        ? datasourceMetadata.datasource.propertyForDisplayText.substring(3)
-        : datasourceMetadata.datasource.propertyForDisplayText;
-    const valueProp = datasourceMetadata.datasource.propertyForValue.startsWith("@P")
+    const displayProp = datasourceMetadata.datasource.propertyForDisplayText.startsWith('@P')
+      ? datasourceMetadata.datasource.propertyForDisplayText.substring(3)
+      : datasourceMetadata.datasource.propertyForDisplayText;
+    const valueProp = datasourceMetadata.datasource.propertyForValue.startsWith('@P')
       ? datasourceMetadata.datasource.propertyForValue.substring(3)
       : datasourceMetadata.datasource.propertyForValue;
     columns = [
       {
-        key: "true",
-        setProperty: "Associated property",
+        key: 'true',
+        setProperty: 'Associated property',
         value: valueProp
       },
       {
-        display: "true",
-        primary: "true",
+        display: 'true',
+        primary: 'true',
         useForSearch: true,
         value: displayProp
       }
@@ -159,11 +161,10 @@ export default function AutoComplete(props) {
           {...params}
           fullWidth
           variant='outlined'
-          helperText={validatemessage}
+          helperText={helperTextToDisplay}
           placeholder={placeholder}
           size='small'
           required={required}
-          // eslint-disable-next-line no-restricted-globals
           error={status === 'error'}
           label={label}
           data-test-id={testId}

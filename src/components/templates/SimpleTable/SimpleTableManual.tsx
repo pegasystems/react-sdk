@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import { buildFieldsForTable } from './helpers';
+import { buildFieldsForTable, filterData } from './helpers';
 import { getDataPage } from '../../../helpers/data_page';
 import Link from '@material-ui/core/Link';
 import { getReferenceList } from '../../../helpers/field-group-utils';
@@ -16,6 +16,18 @@ import { Utils } from '../../../helpers/utils';
 import { createElement } from 'react';
 import createPConnectComponent from '../../../../src/bridge/react_pconnect';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import SubjectIcon from '@material-ui/icons/Subject';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((/* theme */) => ({
   label: {
@@ -38,11 +50,20 @@ const useStyles = makeStyles((/* theme */) => ({
     position: 'absolute',
     top: 20,
     width: 1
+  },
+  moreIcon: {
+    verticalAlign: 'bottom'
   }
 }));
 
 declare const PCore: any;
 
+let menuColumnId = '';
+let menuColumnType = '';
+let menuColumnLabel = '';
+
+const filterByColumns: Array<any> = [];
+let myRows: Array<any>;
 export default function SimpleTableManual(props) {
   const classes = useStyles();
   const {
@@ -52,18 +73,36 @@ export default function SimpleTableManual(props) {
     renderMode,
     presets,
     label: labelProp,
+    showLabel,
     dataPageName,
     contextClass,
     hideAddRow,
     hideDeleteRow,
-    propertyLabel,
+    propertyLabel
   } = props;
   const pConn = getPConnect();
   const [rowData, setRowData] = useState([]);
   const [elements, setElementsData] = useState([]);
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof any>('');
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [open, setOpen] = useState(false);
+  const [filterBy, setFilterBy] = useState<string>();
+  const [containsDateOrTime, setContainsDateOrTime] = useState<boolean>(false);
+  const [filterType, setFilterType] = useState<string>('string');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  const [displayDialogFilterName, setDisplayDialogFilterName] = useState<string>('');
+  const [displayDialogContainsFilter, setDisplayDialogContainsFilter] =
+    useState<string>('contains');
+  const [displayDialogContainsValue, setDisplayDialogContainsValue] = useState<string>('');
+  const [displayDialogDateFilter, setDisplayDialogDateFilter] = useState<string>('notequal');
+  const [displayDialogDateValue, setDisplayDialogDateValue] = useState<string>('');
+
   const label = labelProp || propertyLabel;
+  const propsToUse = { label, showLabel, ...getPConnect().getInheritedProps() };
+  if (propsToUse.showLabel === false) {
+    propsToUse.label = '';
+  }
   // Getting current context
   const context = getPConnect().getContextName();
   const resolvedList = getReferenceList(pConn);
@@ -158,6 +197,7 @@ export default function SimpleTableManual(props) {
     if (dataPageName) {
       getDataPage(dataPageName, context).then(listData => {
         const data = formatRowsData(listData);
+        myRows = data;
         setRowData(data);
       });
     } else {
@@ -173,6 +213,7 @@ export default function SimpleTableManual(props) {
           dataForRow[colKey] = theVal || '';
         }
         data.push(dataForRow);
+        myRows = data;
       }
       setRowData(data);
     }
@@ -271,7 +312,6 @@ export default function SimpleTableManual(props) {
 
   // eslint-disable-next-line no-unused-vars
   function stableSort<T>(array: Array<T>, comparator: (a: T, b: T) => number) {
-
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
     stabilizedThis.sort((a, b) => {
       // eslint-disable-next-line @typescript-eslint/no-shadow, no-shadow
@@ -283,11 +323,174 @@ export default function SimpleTableManual(props) {
     return stabilizedThis.map(el => el[0]);
   }
 
+  function _menuClick(event, columnId: string, columnType: string, labelValue: string) {
+    menuColumnId = columnId;
+    menuColumnType = columnType;
+    menuColumnLabel = labelValue;
+
+    setAnchorEl(event.currentTarget);
+  }
+
+  function _menuClose() {
+    setAnchorEl(null);
+  }
+
+  function _filterMenu() {
+    setAnchorEl(null);
+
+    let bFound = false;
+
+    for (const filterObj of filterByColumns) {
+      if (filterObj.ref === menuColumnId) {
+        setFilterBy(menuColumnLabel);
+        if (
+          filterObj.type === 'Date' ||
+          filterObj.type === 'DateTime' ||
+          filterObj.type === 'Time'
+        ) {
+          setContainsDateOrTime(true);
+          setFilterType(filterObj.type);
+          setDisplayDialogDateFilter(filterObj.containsFilter);
+          setDisplayDialogDateValue(filterObj.containsFilterValue);
+        } else {
+          setContainsDateOrTime(false);
+          setFilterType('string');
+          setDisplayDialogContainsFilter(filterObj.containsFilter);
+          setDisplayDialogContainsValue(filterObj.containsFilterValue);
+        }
+        bFound = true;
+        break;
+      }
+    }
+
+    if (!bFound) {
+      setFilterBy(menuColumnLabel);
+      setDisplayDialogFilterName(menuColumnId);
+      setDisplayDialogContainsValue('');
+
+      switch (menuColumnType) {
+        case 'Date':
+        case 'DateTime':
+        case 'Time':
+          setContainsDateOrTime(true);
+          setFilterType(menuColumnType);
+          break;
+        default:
+          setContainsDateOrTime(false);
+          setFilterType('string');
+          break;
+      }
+    }
+
+    // open dialog
+    setOpen(true);
+  }
+
+  function _groupMenu() {}
+
+  function _closeDialog() {
+    setOpen(false);
+  }
+
+  function _dialogContainsFilter(event) {
+    setDisplayDialogContainsFilter(event.target.value);
+  }
+
+  function _dialogContainsValue(event) {
+    setDisplayDialogContainsValue(event.target.value);
+  }
+
+  function _dialogDateFilter(event) {
+    setDisplayDialogDateFilter(event.target.value);
+  }
+
+  function _dialogDateValue(event) {
+    setDisplayDialogDateValue(event.target.value);
+  }
+
+  function filterSortGroupBy() {
+    // get original data set
+    let theData: any = myRows.slice();
+
+    // last filter config data is global
+    theData = theData.filter(filterData(filterByColumns));
+
+    // move data to array and then sort
+    setRowData(theData);
+  }
+
+  function updateFilterWithInfo() {
+    let bFound = false;
+    for (const filterObj of filterByColumns) {
+      if (filterObj['ref'] === menuColumnId) {
+        filterObj['type'] = filterType;
+        if (containsDateOrTime) {
+          filterObj['containsFilter'] = displayDialogDateFilter;
+          filterObj['containsFilterValue'] = displayDialogDateValue;
+        } else {
+          filterObj['containsFilter'] = displayDialogContainsFilter;
+          filterObj['containsFilterValue'] = displayDialogContainsValue;
+        }
+        bFound = true;
+        break;
+      }
+    }
+
+    if (!bFound) {
+      // add in
+      const filterObj: any = {};
+      filterObj.ref = menuColumnId;
+      filterObj['type'] = filterType;
+      if (containsDateOrTime) {
+        filterObj['containsFilter'] = displayDialogDateFilter;
+        filterObj['containsFilterValue'] = displayDialogDateValue;
+      } else {
+        filterObj['containsFilter'] = displayDialogContainsFilter;
+        filterObj['containsFilterValue'] = displayDialogContainsValue;
+      }
+
+      filterByColumns.push(filterObj);
+    }
+  }
+
+  function _submitFilter() {
+    updateFilterWithInfo();
+    filterSortGroupBy();
+
+    setOpen(false);
+  }
+
+  function _showFilteredIcon(columnId) {
+    for (const filterObj of filterByColumns) {
+      if (filterObj['ref'] === columnId) {
+        if (filterObj['containsFilterValue'] !== '') {
+          return true;
+        }
+        return false;
+      }
+    }
+
+    return false;
+  }
+
+  function results() {
+    const len = editableMode ? elements.length : rowData.length;
+
+    return len ? (
+      <span style={{ fontSize: '0.9em', opacity: '0.7' }}>
+        {len} result{len > 1 ? 's' : ''}
+      </span>
+    ) : null;
+  }
 
   return (
     <React.Fragment>
       <TableContainer component={Paper} style={{ margin: '4px 0px' }}>
-        {label && <h3 className={classes.label}>{label}</h3>}
+        {propsToUse.label && (
+          <h3 className={classes.label}>
+            {propsToUse.label} {results()}
+          </h3>
+        )}
         <Table>
           <TableHead className={classes.header}>
             <TableRow>
@@ -295,18 +498,30 @@ export default function SimpleTableManual(props) {
                 return (
                   <TableCell key={`head-${displayedColumns[index]}`} className={classes.tableCell}>
                     {readOnlyMode ? (
-                      <TableSortLabel
-                        active={orderBy === displayedColumns[index]}
-                        direction={orderBy === displayedColumns[index] ? order : 'asc'}
-                        onClick={createSortHandler(displayedColumns[index])}
-                      >
-                        {field.label}
-                        {orderBy === displayedColumns[index] ? (
-                          <span className={classes.visuallyHidden}>
-                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                          </span>
-                        ) : null}
-                      </TableSortLabel>
+                      <div>
+                        <TableSortLabel
+                          active={orderBy === displayedColumns[index]}
+                          direction={orderBy === displayedColumns[index] ? order : 'asc'}
+                          onClick={createSortHandler(displayedColumns[index])}
+                        >
+                          {field.label}
+                          {_showFilteredIcon(field.name) && (
+                            <FilterListIcon className={classes.moreIcon} />
+                          )}
+                          {orderBy === displayedColumns[index] ? (
+                            <span className={classes.visuallyHidden}>
+                              {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                            </span>
+                          ) : null}
+                        </TableSortLabel>
+                        <MoreIcon
+                          id='menu-icon'
+                          className={classes.moreIcon}
+                          onClick={event => {
+                            _menuClick(event, field.name, field.meta.type, field.label);
+                          }}
+                        />
+                      </div>
                     ) : (
                       field.label
                     )}
@@ -354,14 +569,15 @@ export default function SimpleTableManual(props) {
                 .slice(0)
                 .map(row => {
                   return (
-                    <TableRow
-                      key={row[1]}
-                    >
+                    <TableRow key={row[1]}>
                       {displayedColumns.map(colKey => {
                         return (
                           <TableCell key={colKey} className={classes.tableCell}>
-                            {typeof row[colKey] === 'boolean' && !row[colKey] ? 'False' : typeof row[colKey] === 'boolean' &&
-                            row[colKey] ? 'True' : row[colKey]}
+                            {typeof row[colKey] === 'boolean' && !row[colKey]
+                              ? 'False'
+                              : typeof row[colKey] === 'boolean' && row[colKey]
+                              ? 'True'
+                              : row[colKey]}
                           </TableCell>
                         );
                       })}
@@ -371,10 +587,14 @@ export default function SimpleTableManual(props) {
           </TableBody>
         </Table>
         {readOnlyMode && rowData && rowData.length === 0 && (
-          <div className='no-records' id='no-records'>No records found.</div>
+          <div className='no-records' id='no-records'>
+            No records found.
+          </div>
         )}
         {editableMode && referenceList && referenceList.length === 0 && (
-          <div className='no-records' id='no-records'>No records found.</div>
+          <div className='no-records' id='no-records'>
+            No records found.
+          </div>
         )}
       </TableContainer>
       {showAddRowButton && (
@@ -384,6 +604,100 @@ export default function SimpleTableManual(props) {
           </Link>
         </div>
       )}
+      <Menu
+        id='simple-menu'
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={_menuClose}
+      >
+        <MenuItem onClick={_filterMenu}>
+          <FilterListIcon /> Filter
+        </MenuItem>
+        <MenuItem onClick={_groupMenu}>
+          <SubjectIcon /> Group
+        </MenuItem>
+      </Menu>
+      <Dialog open={open} onClose={_closeDialog} aria-labelledby='form-dialog-title'>
+        <DialogTitle id='form-dialog-title'>Filter: {filterBy}</DialogTitle>
+        <DialogContent>
+          {containsDateOrTime ? (
+            <>
+              <Select value={displayDialogDateFilter} onChange={_dialogDateFilter} fullWidth>
+                <MenuItem value='notequal'>is not equal to</MenuItem>
+                <MenuItem value='equal'>is equal to</MenuItem>
+                <MenuItem value='after'>after</MenuItem>
+                <MenuItem value='before'>before</MenuItem>
+                <MenuItem value='null'>is null</MenuItem>
+                <MenuItem value='notnull'>is not null</MenuItem>
+              </Select>
+              {filterType === 'Date' && (
+                <TextField
+                  autoFocus
+                  margin='dense'
+                  id='containsFilter'
+                  type='date'
+                  fullWidth
+                  value={displayDialogDateValue}
+                  onChange={_dialogDateValue}
+                />
+              )}
+              {filterType === 'DateTime' && (
+                <TextField
+                  autoFocus
+                  margin='dense'
+                  id='containsFilter'
+                  type='datetime-local'
+                  fullWidth
+                  value={displayDialogDateValue}
+                  onChange={_dialogDateValue}
+                />
+              )}
+              {filterType === 'Time' && (
+                <TextField
+                  autoFocus
+                  margin='dense'
+                  id='containsFilter'
+                  type='time'
+                  fullWidth
+                  value={displayDialogDateValue}
+                  onChange={_dialogDateValue}
+                />
+              )}
+            </>
+          ) : (
+            <>
+              <Select
+                id='filter'
+                fullWidth
+                onChange={_dialogContainsFilter}
+                value={displayDialogContainsFilter}
+              >
+                <MenuItem value='contains'>Contains</MenuItem>
+                <MenuItem value='equals'>Equals</MenuItem>
+                <MenuItem value='startswith'>Starts with</MenuItem>
+              </Select>
+              <TextField
+                autoFocus
+                margin='dense'
+                id='containsFilter'
+                type='text'
+                fullWidth
+                value={displayDialogContainsValue}
+                onChange={_dialogContainsValue}
+              />
+            </>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={_closeDialog} color='secondary'>
+            Cancel
+          </Button>
+          <Button onClick={_submitFilter} color='primary'>
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
     </React.Fragment>
   );
 }

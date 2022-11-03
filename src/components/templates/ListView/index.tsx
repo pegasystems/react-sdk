@@ -35,6 +35,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { Radio } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
+import { filterData } from '../../templates/SimpleTable/helpers';
 import './ListView.css';
 
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
@@ -58,7 +59,7 @@ const filterByColumns: Array<any> = [];
 
 export default function ListView(props) {
   const { getPConnect, bInForm } = props;
-  const { globalSearch, presets, referenceList, rowClickAction, selectionMode, referenceType } = props;
+  const { globalSearch, presets, referenceList, rowClickAction, selectionMode, referenceType, payload } = props;
 
   const thePConn = getPConnect();
   const componentConfig = thePConn.getComponentConfig();
@@ -86,8 +87,8 @@ export default function ListView(props) {
 
   // Will contain the list of columns specific for an instance
   let columnList: any = useRef([]);
-  let payload: any;
-  // Will be sent in the payload
+  let dashboardFilterPayload: any ;
+  // Will be sent in the dashboardFilterPayload
   let selectParam: Array<any> = [];
 
   const useStyles = makeStyles((theme: Theme) =>
@@ -351,7 +352,7 @@ export default function ListView(props) {
   // Will be triggered when EVENT_DASHBOARD_FILTER_CHANGE fires
   function processFilterChange(data) {
     const { filterId, filterExpression } = data;
-    payload = {
+    dashboardFilterPayload = {
       query: {
         filter: {},
         select: []
@@ -366,7 +367,7 @@ export default function ListView(props) {
 
     let field = getFieldFromFilter(filterExpression, isDateRange);
     selectParam = [];
-    // Constructing the select parameters list( will be sent in payload)
+    // Constructing the select parameters list( will be sent in dashboardFilterPayload)
     columnList.forEach(col => {
       selectParam.push({
         field: col
@@ -377,7 +378,7 @@ export default function ListView(props) {
     if (data.filterExpression !== null && !(columnList.length && columnList.includes(field))) {
       return;
     }
-    // This is a flag which will be used to reset payload in case we don't find any valid filters
+    // This is a flag which will be used to reset dashboardFilterPayload in case we don't find any valid filters
     let validFilter = false;
 
     let index = 1;
@@ -401,46 +402,46 @@ export default function ListView(props) {
       }
       // If we reach here that implies we've at least one valid filter, hence setting the flag
       validFilter = true;
-      /** Below are the 2 cases for- Text & Date-Range filter types where we'll construct filter data which will be sent in the payload
+      /** Below are the 2 cases for- Text & Date-Range filter types where we'll construct filter data which will be sent in the dashboardFilterPayload
        * In Nebula, through Repeating Structures they might be using several APIs to do it, we're doing it here
       */
       if (isDateRange) {
         const dateRelationalOp = filter?.AND ? 'AND' : 'OR';
-        payload.query.filter.filterConditions = {
-          ...payload.query.filter.filterConditions,
+        dashboardFilterPayload.query.filter.filterConditions = {
+          ...dashboardFilterPayload.query.filter.filterConditions,
           [`T${index++}`]: { ...filter[relationalOp][0].condition },
           [`T${index++}`]: { ...filter[relationalOp][1].condition }
         };
-        if (payload.query.filter.logic) {
-          payload.query.filter.logic = `${payload.query.filter.logic} ${relationalOp} (T${
+        if (dashboardFilterPayload.query.filter.logic) {
+          dashboardFilterPayload.query.filter.logic = `${dashboardFilterPayload.query.filter.logic} ${relationalOp} (T${
             index - 2
           } ${dateRelationalOp} T${index - 1})`;
         } else {
-          payload.query.filter.logic = `(T${index - 2} ${relationalOp} T${index - 1})`;
+          dashboardFilterPayload.query.filter.logic = `(T${index - 2} ${relationalOp} T${index - 1})`;
         }
 
-        payload.query.select = selectParam;
+        dashboardFilterPayload.query.select = selectParam;
       } else {
-        payload.query.filter.filterConditions = {
-          ...payload.query.filter.filterConditions,
+        dashboardFilterPayload.query.filter.filterConditions = {
+          ...dashboardFilterPayload.query.filter.filterConditions,
           [`T${index++}`]: { ...filter.condition, ignoreCase: true }
         };
 
-        if (payload.query.filter.logic) {
-          payload.query.filter.logic = `${payload.query.filter.logic} ${relationalOp} T${
+        if (dashboardFilterPayload.query.filter.logic) {
+          dashboardFilterPayload.query.filter.logic = `${dashboardFilterPayload.query.filter.logic} ${relationalOp} T${
             index - 1
           }`;
         } else {
-          payload.query.filter.logic = `T${index - 1}`;
+          dashboardFilterPayload.query.filter.logic = `T${index - 1}`;
         }
 
-        payload.query.select = selectParam;
+        dashboardFilterPayload.query.select = selectParam;
       }
     }
 
-    // Reset the payload if we end up with no valid filters for the list
+    // Reset the dashboardFilterPayload if we end up with no valid filters for the list
     if (!validFilter) {
-      payload = undefined;
+      dashboardFilterPayload = undefined;
     }
 
     fetchDataFromServer();
@@ -448,7 +449,7 @@ export default function ListView(props) {
 
   // Will be triggered when EVENT_DASHBOARD_FILTER_CLEAR_ALL fires
   function processFilterClear() {
-    payload = undefined;
+    dashboardFilterPayload = undefined;
     fetchDataFromServer();
   }
 
@@ -483,7 +484,7 @@ export default function ListView(props) {
       context,
       payload && payload.dataViewParameters,
       null,
-      payload && payload.query
+      payload ? payload.query : dashboardFilterPayload && dashboardFilterPayload.query
     );
   }
 
@@ -762,124 +763,12 @@ export default function ListView(props) {
     }
   }
 
-  function filterData(item: any) {
-    let bKeep = true;
-    for (const filterObj of filterByColumns) {
-      if (
-        filterObj.containsFilterValue !== '' ||
-        filterObj.containsFilter === 'null' ||
-        filterObj.containsFilter === 'notnull'
-      ) {
-        let value: any;
-        let filterValue: any;
-
-        switch (filterObj.type) {
-          case 'Date':
-          case 'DateTime':
-          case 'Time':
-            value =
-              item[filterObj.ref] !== null ?? item[filterObj.ref] !== ''
-                ? Utils.getSeconds(item[filterObj.ref])
-                : null;
-            filterValue =
-              filterObj.containsFilterValue !== null && filterObj.containsFilterValue !== ''
-                ? Utils.getSeconds(filterObj.containsFilterValue)
-                : null;
-
-            // eslint-disable-next-line sonarjs/no-nested-switch
-            switch (filterObj.containsFilter) {
-              case 'notequal':
-                // becasue filterValue is in minutes, need to have a range of less than 60 secons
-
-                if (value !== null && filterValue !== null) {
-                  // get rid of milliseconds
-                  value /= 1000;
-                  filterValue /= 1000;
-
-                  const diff = value - filterValue;
-                  if (diff >= 0 && diff < 60) {
-                    bKeep = false;
-                  }
-                }
-
-                break;
-
-              case 'after':
-                if (value < filterValue) {
-                  bKeep = false;
-                }
-                break;
-
-              case 'before':
-                if (value > filterValue) {
-                  bKeep = false;
-                }
-                break;
-
-              case 'null':
-                if (value !== null) {
-                  bKeep = false;
-                }
-                break;
-
-              case 'notnull':
-                if (value === null) {
-                  bKeep = false;
-                }
-                break;
-
-              default:
-                break;
-            }
-            break;
-
-          default:
-            value = item[filterObj.ref].toLowerCase();
-            filterValue = filterObj.containsFilterValue.toLowerCase();
-
-            // eslint-disable-next-line sonarjs/no-nested-switch
-            switch (filterObj.containsFilter) {
-              case 'contains':
-                if (value.indexOf(filterValue) < 0) {
-                  bKeep = false;
-                }
-                break;
-
-              case 'equals':
-                if (value !== filterValue) {
-                  bKeep = false;
-                }
-                break;
-
-              case 'startswith':
-                if (value.indexOf(filterValue) !== 0) {
-                  bKeep = false;
-                }
-                break;
-
-              default:
-                break;
-            }
-
-            break;
-        }
-      }
-
-      // if don't keep stop filtering
-      if (!bKeep) {
-        break;
-      }
-    }
-
-    return bKeep;
-  }
-
   function filterSortGroupBy() {
     // get original data set
     let theData = myRows.slice();
 
     // last filter config data is global
-    theData = theData.filter(filterData);
+    theData = theData.filter(filterData(filterByColumns));
 
     // move data to array and then sort
     setRows(theData);

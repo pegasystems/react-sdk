@@ -64,6 +64,12 @@ class ConfigAccess {
     if( oServerConfig.infinityRestServerUrl.endsWith('/') ) {
       oServerConfig.infinityRestServerUrl = oServerConfig.infinityRestServerUrl.slice(0, -1)
     }
+
+    // Specify our own internal list of well known portals to exclude (if one not specified)
+    if( !oServerConfig.excludePortals ) {
+      oServerConfig.excludePortals = ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"];
+      console.warn(`No exludePortals entry found within serverConfig section of sdk-config.json.  Using the following default list: ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"]`);
+    }
   }
 
   /**
@@ -121,45 +127,75 @@ class ConfigAccess {
       await getSdkConfig();
     }
 
-    if ((this.sdkConfig.serverConfig.appPortal !== "") &&
-        (this.sdkConfig.serverConfig.appPortal !== undefined) ) {
+    const serverConfig = this.sdkConfig.serverConfig;
+
+    if ((serverConfig.appPortal !== "") &&
+        (serverConfig.appPortal !== undefined) ) {
           // use the specified portal
-          console.log(`Using appPortal: ${this.sdkConfig.serverConfig.appPortal}`);
+          console.log(`Using appPortal: ${serverConfig.appPortal}`);
           return;
     }
 
     const userAccessGroup = PCore.getEnvironmentInfo().getAccessGroup();
     const dataPageName = "D_OperatorAccessGroups";
-    const serverUrl = this.sdkConfig.serverConfig.infinityRestServerUrl;
-    const appAlias = this.sdkConfig.serverConfig.appAlias;
+    const serverUrl = serverConfig.infinityRestServerUrl;
+    const appAlias = serverConfig.appAlias;
     const appAliasPath = appAlias ? `/app/${appAlias}` : '';
+    const arExcludedPortals = serverConfig["excludePortals"];
 
+    // Using v1 API here as v2 data_views is not able to access same data page currently.  Should move to avoid having this logic to find
+    //  a default portal or constellation portal and rather have Constellation JS Engine API just load the default portal
     await fetch ( `${serverUrl}${appAliasPath}/api/v1/data/${dataPageName}`,
       {
         method: 'GET',
         headers: {
           'Content-Type' : 'application/json',
           'Authorization' : sdkGetAuthHeader()
-        },
+        }
       })
-      .then( response => response.json())
+      .then( response => {
+        if( response.ok && response.status === 200) {
+          return response.json();
+        } else {
+          if( response.status === 401 ) {
+            // Might be either a real token expiration or revoke, but more likely that the "api" service package is misconfigured
+            throw( new Error(`Attempt to access ${dataPageName} failed.  The "api" service package is likely not configured to use "OAuth 2.0"`));
+          };
+          throw( new Error(`HTTP Error: ${response.status}`));
+        }
+      })
       .then( async (agData) => {
 
         let arAccessGroups = agData.pxResults;
+        let selectedPortal = null;
 
         for (let ag of arAccessGroups) {
           if (ag.pyAccessGroup === userAccessGroup) {
-            // Found operator's current access group. Use its portal
-            this.setSdkConfigServer("appPortal", ag.pyPortal);
-            console.log(`Using appPortal: ${this.sdkConfig.serverConfig.appPortal}`);
+            // Check if default portal works
+            if( !arExcludedPortals.includes(ag.pyPortal) ) {
+              selectedPortal = ag.pyPortal;
+            } else {
+              console.error(`Default portal for current operator (${ag.pyPortal}) is not compatible with SDK.\nConsider using a different operator, adjusting the default portal for this operator, or using "appPortal" setting within sdk-config.json to specify a specific portal to load.`);
+              // Find first portal that is not excluded (might work)
+              for (let portal of ag.pyUserPortals ) {
+                if( !arExcludedPortals.includes(portal.pyPortalLayout) ) {
+                  selectedPortal = portal.pyPortalLayout;
+                  break;
+                }
+              }
+            }
             break;
           }
         }
+        if( selectedPortal ) {
+          // Found operator's current access group. Use its portal
+          this.setSdkConfigServer("appPortal", selectedPortal);
+          console.log(`Using appPortal: ${serverConfig.appPortal}`);
+        }
       })
       .catch( e => {
-        if( e ) {
-          // check specific error if 401, and wiped out if so stored token is stale.  Fetcch new tokens.
-        }
+        console.error(e.message);
+        // check specific error if 401, and wiped out if so stored token is stale.  Fetch new tokens.
       });
 
   }

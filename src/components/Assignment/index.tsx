@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 declare const PCore: any;
 
 export default function Assignment(props) {
-  const { getPConnect, children, itemKey } = props;
+  const { getPConnect, children, itemKey, isCreateStage } = props;
   const thePConn = getPConnect();
 
   const [bHasNavigation, setHasNavigation] = useState(false);
@@ -25,6 +25,7 @@ export default function Assignment(props) {
   const finishAssignment = actionsAPI.finishAssignment.bind(actionsAPI);
   const navigateToStep = actionsAPI.navigateToStep.bind(actionsAPI);
   const cancelAssignment = actionsAPI.cancelAssignment.bind(actionsAPI);
+  const cancelCreateStageAssignment = actionsAPI.cancelCreateStageAssignment.bind(actionsAPI);
   // const showPage = actionsAPI.showPage.bind(actionsAPI);
 
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -122,11 +123,6 @@ export default function Assignment(props) {
 
     if (sButtonType === "secondary") {
 
-      const dispatchInfo = {
-        context: itemKey,
-        semanticURL: ""
-      };
-
       switch (sAction) {
         case "navigateToStep": {
           const navigatePromise = navigateToStep( "previous", itemKey );
@@ -142,17 +138,30 @@ export default function Assignment(props) {
         }
 
         case "cancelAssignment": {
-          const cancelPromise = cancelAssignment(dispatchInfo.context);
+          // check if create stage (modal)
+          const { PUB_SUB_EVENTS } = PCore.getConstants();
+          const { publish } = PCore.getPubSubUtils();
+          if (isCreateStage) {
+            const cancelPromise = cancelCreateStageAssignment(itemKey);
 
-          cancelPromise
-            .then(() => {
-
-              PCore.getPubSubUtils().publish(
-                PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL);
+            cancelPromise
+              .then(data => {
+                publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
               })
-            .catch(() => {
-              showToast( `Cancel failed!`);
-             });
+              .catch(() => {
+                showToast(`Cancel failed!`);
+              });
+          } else {
+            const cancelPromise = cancelAssignment(itemKey);
+
+            cancelPromise
+              .then(data => {
+                publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
+              })
+              .catch(() => {
+                showToast(`Cancel failed!`);
+              });
+          }
           break;
         }
 
@@ -257,11 +266,13 @@ Assignment.propTypes = {
   children: PropTypes.node.isRequired,
   getPConnect: PropTypes.func.isRequired,
   itemKey: PropTypes.string,
+  isCreateStage: PropTypes.bool
   // actionButtons: PropTypes.object
   // buildName: PropTypes.string
 };
 
 Assignment.defaultProps = {
   itemKey: null,
+  isCreateStage: false
   // buildName: null
 };

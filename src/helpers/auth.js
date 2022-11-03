@@ -38,6 +38,10 @@ class PegaAuth {
       let buf = new Uint8Array(64);
       window.crypto.getRandomValues(buf);
       this.config.codeVerifier = this.#base64UrlSafeEncode(buf);
+      // If sessionIndex exists then increment attempts count (we will stop sending session_index after two failures)
+      if( sessionIndex ) {
+        this.config.sessionIndexAttempts += 1;
+      }
       // Persist codeVerifier in session storage so it survives the redirects that are to follow
       this.#updateConfig();
 
@@ -54,7 +58,7 @@ class PegaAuth {
       // Add explicit creds if specified to try to avoid login popup
       const moreAuthArgs =
           (authService ? `&authentication_service=${encodeURIComponent(authService)}` : "") +
-          (sessionIndex ? `&session_index=${sessionIndex}` : "") +
+          (sessionIndex && this.config.sessionIndexAttempts < 3 ? `&session_index=${sessionIndex}` : "") +
           (useLocking ? `&enable_psyncId=true` : '') +
           (userIdentifier ? `&UserIdentifier=${encodeURIComponent(userIdentifier)}` : '') +
           (userIdentifier && password ? `&Password=${encodeURIComponent(window.atob(password))}` : '');
@@ -300,20 +304,18 @@ class PegaAuth {
           // .expires_in contains the # of seconds before access token expires
           // add property to keep track of current time when the token expires
           token.eA = Date.now() + (token.expires_in * 1000);
-          let bUpdateConfig = false;
           if( this.config.codeVerifier ) {
               delete this.config.codeVerifier;
-              bUpdateConfig = true;
           }
           // If there is a session_index then move this to the peConfig structure (as used on authorize)
           if( token.session_index ) {
               this.config.sessionIndex = token.session_index;
-              // Also update the session storage to contain this update
-              bUpdateConfig = true;
           }
-          if( bUpdateConfig ) {
-              this.#updateConfig();
+          // If we got a token and have a session index, then reset the sessionIndexAttempts
+          if( this.config.sessionIndex ) {
+            this.config.sessionIndexAttempts = 0;
           }
+          this.#updateConfig();
           return token;
       })
       .catch(e => {

@@ -6,6 +6,7 @@ const config = require('../../config');
 const common = require('../../common');
 
 test.beforeEach(async ({ page }) => {
+  await page.setViewportSize({ width: 1720, height: 1080 });
   await page.goto('http://localhost:3502/portal');
 });
 
@@ -160,6 +161,50 @@ test.describe('E2E test', () => {
     await expect(assignment.locator('td:has-text("AK")')).toBeVisible();
     await expect(assignment.locator('td:has-text("03142")')).toBeVisible();
     await expect(assignment.locator('td:has-text("+16175451212")')).toBeVisible();
+
+    /** Testing the filter functionality in simple table */
+    await assignment.locator('svg[id="menu-icon"] >> nth=0').click();
+    await page.locator('li:has-text("Filter")').click();
+    let modal =  page.locator('div[role="dialog"]');
+
+    await modal.locator('input[type="text"]').type("main");
+
+    await modal.locator('button:has-text("Submit")').click();
+
+    await expect(assignment.locator('td:has-text("main")')).toBeVisible();
+
+    await assignment.locator('svg[id="menu-icon"] >> nth=1').click();
+
+    await page.locator('li:has-text("Filter")').click();
+
+    modal =  page.locator('div[role="dialog"]');
+
+    await modal.locator('div[id="filter"]').click()
+    await page.locator('li:has-text("Equals")').click();
+    await modal.locator('input[type="text"]').type("Cambridge");
+
+    await modal.locator('button:has-text("Submit")').click();
+
+    await assignment.locator('svg[id="menu-icon"] >> nth=3').click();
+
+    await page.locator('li:has-text("Filter")').click();
+
+    await modal.locator('div[id="filter"]').click()
+    await page.locator('li:has-text("Starts with")').click();
+    await modal.locator('input[type="text"]').type("0212");
+
+    await modal.locator('button:has-text("Submit")').click();
+
+    await expect(noRecordsMsg.locator('text="No records found."')).toBeVisible();
+
+    await assignment.locator('svg[id="menu-icon"] >> nth=3').click();
+
+    await page.locator('li:has-text("Filter")').click();
+
+    await modal.locator('input[type="text"]').fill("");
+    await modal.locator('button:has-text("Submit")').click();
+
+    await expect(assignment.locator('td:has-text("main")')).toBeVisible();
 
     await page.locator('button:has-text("Previous")').click();
 

@@ -100,13 +100,26 @@ export default function CaseView(props) {
   const vertTabInfo: Array<Object> = [];
 
   // deferLoadInfo is sent to DeferLoad component (currently selected entry)
-  const deferLoadInfo: Array<Object> = [];
+  const deferLoadInfo: Array<any> = [];
 
   // populate vertTabInfo and deferLoadInfo
   theTabsRegionChildren.forEach((tabComp, index) => {
     const theTabCompConfig = tabComp.getPConnect().getConfigProps();
-    vertTabInfo.push({name: theTabCompConfig.label, id: index});
-    deferLoadInfo.push( { type: "DeferLoad", config: theTabCompConfig } );
+    // eslint-disable-next-line prefer-const
+    let {label, inheritedProps} = theTabCompConfig;
+    // For some tabs, "label" property is not avaialable in theTabCompConfig, so will get them from inheritedProps
+    if(!label){
+      inheritedProps.forEach((inheritedProp) => {
+        if(inheritedProp.prop === 'label'){
+          label = inheritedProp.value;
+        }
+      });
+    }
+    // We'll display the tabs when either visibility property doesn't exist or is true(if exists)
+    if(theTabCompConfig.visibility === undefined || theTabCompConfig.visibility === true){
+      vertTabInfo.push({name: label, id: index});
+      deferLoadInfo.push( { type: "DeferLoad", config: theTabCompConfig } );
+    }
   });
 
 
@@ -190,14 +203,14 @@ export default function CaseView(props) {
             <Divider />
             {theSummaryRegion}
             <Divider />
-            <VerticalTabs tabconfig={vertTabInfo} />
+            { vertTabInfo.length > 1 && <VerticalTabs tabconfig={vertTabInfo} />}
           </Card>
         </Grid>
 
         <Grid item xs={6}>
           {theStagesRegion}
           {theTodoRegion}
-          <DeferLoad getPConnect={getPConnect} loadData={deferLoadInfo[activeVertTab]} />
+          { deferLoadInfo.length > 0 && <DeferLoad getPConnect={getPConnect} name={deferLoadInfo[activeVertTab].config.name } isTab />}
         </Grid>
 
         <Grid item xs={3}>

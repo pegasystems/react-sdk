@@ -473,7 +473,7 @@ export default function FileUtility(props) {
       <div className="psdk-header">
         <img className="psdk-file-utility-card-svg-icon" src={headerSvgIcon$}></img>
         <div className="header-text">{header}</div>
-        <div className="psdk-utility-count">{list.count}</div>
+        <div className="psdk-utility-count" id="attachments-count">{list.count}</div>
         <div style={{flexGrow: 1}}></div>
         <div>
           <IconButton

@@ -1,9 +1,10 @@
 /* eslint-disable no-template-curly-in-string */
 /* eslint-disable no-undef */
-
+const path = require('path');
 const { test, expect } = require('@playwright/test');
 const config = require('../../config');
 const common = require('../../common');
+const endpoints = require("../../../sdk-config.json");
 
 let caseID;
 
@@ -109,7 +110,22 @@ test.describe('E2E test', () => {
     const sendToMgr = page.locator('label[data-test-id="C3B43E79AEC2D689F0CF97BD6AFB7DC4"]');
     await sendToMgr.check();
 
+    const currentCaseID = await page.locator('div[id="current-caseID"]').textContent();
+    const filePath = path.join(__dirname, '../../../assets/img/cableinfo.png');
+    await page.setInputFiles('#upload-input', filePath);
+
+    await Promise.all([
+      page.waitForResponse(`${endpoints.serverConfig.infinityRestServerUrl}/api/application/v2/attachments/upload`)
+    ]);
+
     await page.locator('button:has-text("submit")').click();
+
+    await Promise.all([
+      page.waitForResponse(`${endpoints.serverConfig.infinityRestServerUrl}/api/application/v2/cases/${currentCaseID}/attachments`),
+    ]);
+
+    const attachmentCount = await page.locator('div[id="attachments-count"]').textContent();
+    await expect(Number(attachmentCount)).toBeGreaterThan(0);
 
     await page
       .locator('text=Thank you! The next step in this case has been routed appropriately.')

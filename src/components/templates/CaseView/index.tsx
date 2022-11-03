@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-boolean-value */
+
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Utils } from '../../../helpers/utils';
@@ -51,7 +53,7 @@ export default function CaseView(props) {
     children,
     caseInfo: { availableActions = [], availableProcesses = [], hasNewAttachments }
   } = props;
-
+  const currentCaseID = props.caseInfo.ID;
   let isComponentMounted = true;
 
   const { displayOnlyFA } = useContext(StoreContext);
@@ -189,6 +191,7 @@ export default function CaseView(props) {
       return (
         <Grid container>
           <Grid item xs={3}>
+          <div hidden={true} id="current-caseID">{currentCaseID}</div>
           <Card className={classes.root} >
             <CardHeader className={classes.caseViewHeader}
               title={<Typography variant="h6" component="div">{header}</Typography>}

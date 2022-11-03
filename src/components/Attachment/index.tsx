@@ -366,7 +366,7 @@ export default function Attachment(props) {
         <label htmlFor='upload-photo'>
           <input
             style={{ display: 'none' }}
-            id='upload-photo'
+            id='upload-input'
             name='upload-photo'
             type='file'
             required={required}

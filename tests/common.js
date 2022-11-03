@@ -1,7 +1,4 @@
 /* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/prefer-default-export */
 
 const Login = async (username, password, page) => {
   await page.locator('#txtUserID').type(username);
@@ -17,10 +14,10 @@ const getAttributes = async element => {
 const getNextDay = () => {
   const today = new Date();
   const theLocale = Intl.DateTimeFormat().resolvedOptions().locale;
-  // add 1 day to today
-  const nextDay = new Date(today.setDate(today.getDate() + 1));
+  // add 10 day to today
+  const futureDate = new Date(today.setDate(today.getDate() + 10));
   // Need to get leading zeroes on single digit months and 4 digit year
-  return nextDay.toLocaleDateString(theLocale, {
+  return futureDate.toLocaleDateString(theLocale, {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric'

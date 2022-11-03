@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-boolean-value */
+
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Utils } from '../../../helpers/utils';
@@ -51,7 +53,7 @@ export default function CaseView(props) {
     children,
     caseInfo: { availableActions = [], availableProcesses = [], hasNewAttachments }
   } = props;
-  let currentCaseID = props.caseInfo.ID;
+  const currentCaseID = props.caseInfo.ID;
   let isComponentMounted = true;
 
   const { displayOnlyFA } = useContext(StoreContext);

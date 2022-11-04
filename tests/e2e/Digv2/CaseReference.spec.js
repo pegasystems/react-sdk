@@ -62,7 +62,7 @@ test.describe('E2E test', () => {
     await page.locator('svg[id="chevron-right-icon"]').click();
 
     /** Creating a Complex Fields case-type */
-    let complexFieldsCase = page.locator('div[role="button"]:has-text("Complex Fields")');
+    const complexFieldsCase = page.locator('div[role="button"]:has-text("Complex Fields")');
     await complexFieldsCase.click();
 
     /** Selecting CaseReference from the Category dropdown */
@@ -74,12 +74,12 @@ test.describe('E2E test', () => {
 
     /** Field sub category tests */
 
-    let selectedSubCategory = page.locator('div[data-test-id="c2adefb64c594c6b634b3be9a40f6c83"]');
+    const selectedSubCategory = page.locator('div[data-test-id="c2adefb64c594c6b634b3be9a40f6c83"]');
     await selectedSubCategory.click();
     await page.locator('li:has-text("Field")').click();
 
     /** Dropdown-Local field type tests */
-    let selectedTestName = page.locator('div[data-test-id="3e9562266329f358c8fad0ce1094def9"]');
+    const selectedTestName = page.locator('div[data-test-id="3e9562266329f358c8fad0ce1094def9"]');
     await selectedTestName.click();
     await page.locator('li:has-text("Dropdown-Local")').click();
 

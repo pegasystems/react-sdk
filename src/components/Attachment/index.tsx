@@ -363,7 +363,7 @@ export default function Attachment(props) {
   let content = (
     <div className='file-div'>
         {file.inProgress && (<div className="progress-div"><CircularProgress /></div>)}
-        <label htmlFor='upload-photo'>
+        <label htmlFor='upload-input'>
           <input
             style={{ display: 'none' }}
             id='upload-input'

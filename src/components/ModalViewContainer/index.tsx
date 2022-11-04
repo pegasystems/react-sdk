@@ -12,13 +12,8 @@ import CancelAlert from '../forms/CancelAlert';
 declare const PCore;
 
 // Utility to determine if a JSON object is empty
-function isEmptyObject(inObj: Object): Boolean {
-  let key: String;
-  // eslint-disable-next-line guard-for-in
-  for (key in inObj) {
-    return false;
-  }
-  return true;
+function isEmptyObject(obj: Object): Boolean {
+  return Object.keys(obj).length === 0;
 }
 
 function buildName(pConnect, name = '') {

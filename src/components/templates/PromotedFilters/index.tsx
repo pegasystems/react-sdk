@@ -1,9 +1,9 @@
-import { useCallback, useMemo, useState, createElement, Fragment } from 'react';
+import React, { useCallback, useMemo, useState, createElement, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import createPConnectComponent from "../../../bridge/react_pconnect";
 import ListView from '../ListView';
-import React from "react";
+import Utils from '../../../helpers/utils';
 import './PromotedFilters.css';
 
 declare const PCore;
@@ -111,7 +111,7 @@ export default function PromotedFilters(props) {
           dataViewParameters: {}
         };
 
-        if (Object.keys(promotedFilters).length > 0) {
+        if (!Utils.isEmptyObject(promotedFilters)) {
           Query.query = { filter: { filterConditions: promotedFilters } };
         }
         setPayload(Query);

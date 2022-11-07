@@ -1,6 +1,7 @@
 // Helper singleton class to assist with loading and accessing
 //  the SDK Config JSON
 import {sdkGetAuthHeader} from './authManager';
+import Utils from './utils';
 
 // Create a singleton for this class (with async loading of config file) and export it
 // Note: Initialzing SdkConfigAccess to null seems to cause lots of compile issues with references
@@ -26,7 +27,7 @@ class ConfigAccess {
    * @returns Promise of config file fetch
    */
   async readSdkConfig() {
-    if( Object.keys(this.sdkConfig).length === 0 ) {
+    if(Utils.isEmptyObject(this.sdkConfig)) {
       return  fetch("./sdk-config.json")
         .then ( (response) => {
           if( response.ok ) {
@@ -77,7 +78,7 @@ class ConfigAccess {
    * @returns the sdk-config JSON object
    */
   getSdkConfig = async () => {
-    if( Object.keys(this.sdkConfig).length === 0 ) {
+    if(Utils.isEmptyObject(this.sdkConfig)) {
       await getSdkConfig();
     }
     return this.sdkConfig;
@@ -89,7 +90,7 @@ class ConfigAccess {
    * @returns the authConfig block in the SDK Config object
    */
   getSdkConfigAuth = () => {
-    if( Object.keys(this.sdkConfig).length === 0 ) {
+    if(Utils.isEmptyObject(this.sdkConfig)) {
       const config = this.getSdkConfig();
     }
     return this.sdkConfig["authConfig"];
@@ -100,7 +101,7 @@ class ConfigAccess {
    * @returns the serverConfig bloc from the sdk-config.json file
    */
   getSdkConfigServer = () => {
-    if( Object.keys(this.sdkConfig).length === 0 ) {
+    if(Utils.isEmptyObject(this.sdkConfig)) {
       const config = this.getSdkConfig();
     }
     return this.sdkConfig["serverConfig"];
@@ -123,7 +124,7 @@ class ConfigAccess {
    */
    async selectPortal() {
 
-    if( Object.keys(this.sdkConfig).length === 0 ) {
+    if(Utils.isEmptyObject(this.sdkConfig)) {
       await getSdkConfig();
     }
 

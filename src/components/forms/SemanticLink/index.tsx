@@ -49,7 +49,7 @@ export default function SemanticLink(props) {
   if (displayMode === "LABELS_LEFT" || (!displayMode && label !== undefined)) {
     const value = text ||  "---";
     return (
-      <Grid container spacing={1} style={{padding: "4px 0px"}}>
+      <Grid container spacing={1} style={{padding: "4px 0px"}}  id="semantic-link-grid">
         <Grid item xs={6}>
           <Typography variant="body2" component="span" className={`${classes.fieldLabel} ${classes.fieldMargin}`}>{label}</Typography>
         </Grid>

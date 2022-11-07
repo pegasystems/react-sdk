@@ -28,7 +28,7 @@ test.describe('E2E test', () => {
     await expect(worklist).toBeVisible();
 
     /** Creating a Complex Fields case-type */
-    let complexFieldsCase = page.locator('div[role="button"]:has-text("Complex Fields")');
+    const complexFieldsCase = page.locator('div[role="button"]:has-text("Complex Fields")');
     await complexFieldsCase.click();
 
     /** Selecting Data Reference from the Category dropdown */
@@ -211,7 +211,7 @@ test.describe('E2E test', () => {
     await selectedTestName.click();
     await page.locator('li:has-text("Readonly")').click();
 
-    selectedProduct = page.locator('div[id="label"] >> nth=0');
+    selectedProduct = page.locator('div[id="semantic-link-grid"] >> span >> text="Basic Product"');
     await expect(selectedProduct).toBeVisible();
 
     await page.locator('button:has-text("Next")').click();

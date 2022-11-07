@@ -406,7 +406,7 @@ export default function FlowContainer(props) {
           currentItems[key] &&
           currentItems[key].view &&
           type === "single" &&
-          Object.keys(currentItems[key].view).length > 0) {
+          !Utils.isEmptyObject(currentItems[key].view)) {
           const currentItem = currentItems[key];
           const rootView = currentItem.view;
           const { context } = rootView.config;

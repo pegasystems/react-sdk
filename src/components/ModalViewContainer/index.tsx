@@ -8,13 +8,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import createPConnectComponent from '../../bridge/react_pconnect';
 import Assignment from '../Assignment';
 import CancelAlert from '../forms/CancelAlert';
+import Utils from '../../helpers/utils';
 
 declare const PCore;
-
-// Utility to determine if a JSON object is empty
-function isEmptyObject(obj: Object): Boolean {
-  return Object.keys(obj).length === 0;
-}
 
 function buildName(pConnect, name = '') {
   const context = pConnect.getContextName();
@@ -164,7 +160,7 @@ const ModalViewContainer = props => {
         if (
           currentItems[key] &&
           currentItems[key].view &&
-          Object.keys(currentItems[key].view).length > 0
+          !Utils.isEmptyObject(currentItems[key].view)
         ) {
           const currentItem = currentItems[key];
           const rootView = currentItem.view;
@@ -259,7 +255,7 @@ const ModalViewContainer = props => {
         if (bShowModal) {
           setShowModal(false);
         }
-        if (!isEmptyObject(oCaseInfo)) {
+        if (!Utils.isEmptyObject(oCaseInfo)) {
           setOCaseInfo({});
         }
       }

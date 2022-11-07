@@ -7,6 +7,7 @@ import { Box, CircularProgress } from "@material-ui/core";
 import createPConnectComponent from "../../bridge/react_pconnect";
 import { LazyMap as LazyComponentMap } from "../../components_map";
 import StoreContext from "../../bridge/Context/StoreContext";
+import Utils from '../../helpers/utils';
 
 declare const PCore;
 
@@ -36,7 +37,7 @@ function getItemView(routingInfo, renderingMode) {
       if (
         items[key] &&
         items[key].view &&
-        Object.keys(items[key].view).length > 0
+        !Utils.isEmptyObject(items[key].view)
       ) {
         viewConfigs.push(items[key]);
       }

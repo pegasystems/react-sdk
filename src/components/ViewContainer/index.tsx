@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Box, CircularProgress } from "@material-ui/core";
 import createPConnectComponent from "../../bridge/react_pconnect";
 import StoreContext from "../../bridge/Context/StoreContext";
+import Utils from '../../helpers/utils';
 
 // ViewContainer can emit View
 // import View from '../View';
@@ -156,7 +157,7 @@ export default function ViewContainer(props) {
       if (
         items[key] &&
         items[key].view &&
-        Object.keys(items[key].view).length > 0
+        !Utils.isEmptyObject(items[key].view)
       ) {
         const latestItem = items[key];
         const rootView = latestItem.view;

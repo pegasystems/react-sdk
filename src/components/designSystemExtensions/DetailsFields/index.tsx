@@ -1,5 +1,6 @@
-import React, {createElement} from "react";
-import PropTypes from "prop-types";
+/* eslint-disable react/no-array-index-key */
+import React, { createElement, isValidElement } from 'react';
+import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import createPConnectComponent from '../../../bridge/react_pconnect';
 import { format } from '../../../helpers/formatters/';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     paddingRight: theme.spacing(1),
     paddingLeft: theme.spacing(1),
@@ -16,13 +17,13 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1),
     marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(1)
     // borderLeft: "6px solid",
     // borderLeftColor: green[300]
   },
   fieldLabel: {
     display: 'block',
-    fontWeight: 600,
+    fontWeight: 400,
     color: theme.palette.text.secondary
   },
   fieldValue: {
@@ -41,27 +42,38 @@ export default function DetailsFields(props) {
     const thePConn = field.getPConnect();
     const theCompType = thePConn.getComponentName().toLowerCase();
     const { label, value } = thePConn.getConfigProps();
-    if (theCompType === 'reference') {
+    // If value is "" then also we would have to get viewMetadata using getReferencedView.
+    if (theCompType === 'reference' || value === '') {
       const configObj = thePConn?.getReferencedView();
-      configObj.config.readOnly = true;
-      configObj.config.displayMode = "LABELS_LEFT";
-      const propToUse = { ...thePConn.getInheritedProps()};
-      configObj.config.label = propToUse?.label;
-      // eslint-disable-next-line react/no-array-index-key
-      fieldComponents.push({'type': theCompType, 'value': <React.Fragment key={index}>{createElement(createPConnectComponent(), thePConn.getReferencedViewPConnect())}</React.Fragment>});
+      configObj.config.readOnly = theCompType === 'reference';
+      configObj.config.displayMode = 'LABELS_LEFT';
+      const propToUse = { ...thePConn.getInheritedProps() };
+      configObj.config.label = theCompType === 'reference' ? propToUse?.label : label;
+      fieldComponents.push({
+        type: theCompType,
+        label,
+        value: (
+          <React.Fragment key={index}>
+            {createElement(createPConnectComponent(), thePConn.getReferencedViewPConnect())}
+          </React.Fragment>
+        )
+      });
     } else {
-      fieldComponents.push({'type': theCompType, 'value': value, 'label': label});
+      fieldComponents.push({ type: theCompType, value, label });
     }
   });
 
   function getGridItemLabel(field: any, keyVal: string) {
     const dispValue = field.label;
 
-    return <Grid item xs={6} key={keyVal}>
-      <Typography variant="body2" component="span" className={`${classes.fieldLabel}`}>{dispValue}</Typography>
-    </Grid>
+    return (
+      <Grid item xs={6} key={keyVal}>
+        <Typography variant='body2' component='span' className={`${classes.fieldLabel}`}>
+          {dispValue}
+        </Typography>
+      </Grid>
+    );
   }
-
 
   function formatItemValue(inField: any) {
     const { type, value } = inField;
@@ -69,7 +81,7 @@ export default function DetailsFields(props) {
 
     // eslint-disable-next-line sonarjs/no-small-switch
     switch (type) {
-      case "date":
+      case 'date':
         formattedVal = format(value, type);
         break;
 
@@ -79,31 +91,50 @@ export default function DetailsFields(props) {
     }
 
     // Finally, if the value is undefined or an empty string, we want to display it as "---"
-    if (formattedVal === undefined || formattedVal === "") {
-      formattedVal = "---";
+    if (formattedVal === undefined || formattedVal === '') {
+      formattedVal = '---';
     }
 
     return formattedVal;
   }
 
-
   function getGridItemValue(field: any, keyVal: string) {
     const formattedValue = formatItemValue(field);
 
-    return <Grid item xs={6} key={keyVal}>
-      <Typography variant="body2" component="span" className={classes.fieldValue}>{formattedValue}</Typography>
-    </Grid>
+    return (
+      <Grid item xs={6} key={keyVal}>
+        <Typography variant='body2' component='span' className={classes.fieldValue}>
+          {formattedValue}
+        </Typography>
+      </Grid>
+    );
   }
 
+  function getGridItem(field: any, keyVal: string) {
+    const formattedValue = formatItemValue(field);
+
+    return (
+      <Grid item xs={12} key={keyVal}>
+        <Typography variant='body2' component='span' className={classes.fieldValue}>
+          {formattedValue}
+        </Typography>
+      </Grid>
+    );
+  }
 
   function getGridItems() {
-    const gridItems: Array<any> = fieldComponents.map( (field, index) => {
-      if (field?.type === "reference") {
+    const gridItems: Array<any> = fieldComponents.map((field, index) => {
+      if (field?.type === 'reference') {
         return field?.value;
+      } else if (isValidElement(field?.value)) {
+        return (
+          <Grid container spacing={1} style={{ padding: '4px 0px' }} key={index}>
+            {getGridItem(field, `${index}-item`)}
+          </Grid>
+        );
       } else {
         return (
-          // eslint-disable-next-line react/no-array-index-key
-          <Grid container spacing={1} style={{padding: "4px 0px"}} key={index}>
+          <Grid container spacing={1} style={{ padding: '4px 0px' }} key={index}>
             {getGridItemLabel(field, `${index}-label`)}
             {getGridItemValue(field, `${index}-value`)}
           </Grid>
@@ -113,17 +144,13 @@ export default function DetailsFields(props) {
     return gridItems;
   }
 
-  return (
-      <React.Fragment>
-        {getGridItems()}
-      </React.Fragment>
-    );
+  return <React.Fragment>{getGridItems()}</React.Fragment>;
 }
 
 DetailsFields.defaultProps = {
   fields: []
-}
+};
 
 DetailsFields.propTypes = {
-  fields: PropTypes.arrayOf(PropTypes.any),
+  fields: PropTypes.arrayOf(PropTypes.any)
 };

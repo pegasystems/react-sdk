@@ -12,14 +12,14 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(1)
   },
   fieldMargin: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
+    // paddingRight: theme.spacing(1),
+    // paddingLeft: theme.spacing(1),
+    // paddingTop: theme.spacing(1),
+    // paddingBottom: theme.spacing(1),
+    // marginRight: theme.spacing(1),
+    // marginLeft: theme.spacing(1),
+    // marginTop: theme.spacing(1),
+    // marginBottom: theme.spacing(1)
   },
   fieldLabel: {
     fontWeight: 400,

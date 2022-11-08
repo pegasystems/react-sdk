@@ -7,26 +7,11 @@ import {
   FormLabel,
   FormHelperText
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
 import Utils from '../../../helpers/utils';
 import handleEvent from '../../../helpers/event-utils';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(2),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(2),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(2),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(2)
-  }
-}));
-
 export default function RadioButtons(props) {
-  const classes = useStyles();
   const {
     getPConnect,
     label,
@@ -35,7 +20,8 @@ export default function RadioButtons(props) {
     validatemessage,
     helperText,
     status,
-    required
+    required,
+    inline
   } = props;
   const [theSelectedButton, setSelectedButton] = useState(value);
 
@@ -63,9 +49,9 @@ export default function RadioButtons(props) {
   };
 
   return (
-    <FormControl className={classes.root} error={status === 'error'} required={required}>
+    <FormControl error={status === 'error'} required={required}>
       <FormLabel component='legend'>{label}</FormLabel>
-      <RadioGroup value={theSelectedButton} onChange={handleChange} onBlur={handleBlur}>
+      <RadioGroup value={theSelectedButton} onChange={handleChange} onBlur={handleBlur} row={inline}>
         {theOptions.map(theOption => {
           return (
             <FormControlLabel

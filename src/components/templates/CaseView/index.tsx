@@ -104,25 +104,28 @@ export default function CaseView(props) {
   // deferLoadInfo is sent to DeferLoad component (currently selected entry)
   const deferLoadInfo: Array<any> = [];
 
-  // populate vertTabInfo and deferLoadInfo
-  theTabsRegionChildren.forEach((tabComp, index) => {
-    const theTabCompConfig = tabComp.getPConnect().getConfigProps();
-    // eslint-disable-next-line prefer-const
-    let {label, inheritedProps} = theTabCompConfig;
-    // For some tabs, "label" property is not avaialable in theTabCompConfig, so will get them from inheritedProps
-    if(!label){
-      inheritedProps.forEach((inheritedProp) => {
-        if(inheritedProp.prop === 'label'){
-          label = inheritedProp.value;
-        }
-      });
-    }
-    // We'll display the tabs when either visibility property doesn't exist or is true(if exists)
-    if(theTabCompConfig.visibility === undefined || theTabCompConfig.visibility === true){
-      vertTabInfo.push({name: label, id: index});
-      deferLoadInfo.push( { type: "DeferLoad", config: theTabCompConfig } );
-    }
-  });
+  if (theTabsRegionChildren) {
+    // populate vertTabInfo and deferLoadInfo
+    theTabsRegionChildren.forEach((tabComp, index) => {
+      const theTabCompConfig = tabComp.getPConnect().getConfigProps();
+      // eslint-disable-next-line prefer-const
+      let { label, inheritedProps } = theTabCompConfig;
+      // For some tabs, "label" property is not avaialable in theTabCompConfig, so will get them from inheritedProps
+      if (!label) {
+        inheritedProps.forEach(inheritedProp => {
+          if (inheritedProp.prop === 'label') {
+            label = inheritedProp.value;
+          }
+        });
+      }
+      // We'll display the tabs when either visibility property doesn't exist or is true(if exists)
+      if (theTabCompConfig.visibility === undefined || theTabCompConfig.visibility === true) {
+        vertTabInfo.push({ name: label, id: index });
+        deferLoadInfo.push({ type: 'DeferLoad', config: theTabCompConfig });
+      }
+    });
+  }
+
 
 
   function handleVerticalTabClick(eventDetail: any) {

@@ -254,6 +254,8 @@ export default function SimpleTableManual(props) {
     referenceList.forEach((element, index) => {
       const data: any = [];
       rawFields.forEach(item => {
+        // removing label field from config to hide title in the table cell
+        item = {...item, config: {...item.config, label: ''}};
         const referenceListData = getReferenceList(pConn);
         const isDatapage = referenceListData.startsWith('D_');
         const pageReferenceValue = isDatapage

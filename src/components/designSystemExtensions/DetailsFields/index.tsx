@@ -111,12 +111,11 @@ export default function DetailsFields(props) {
   }
 
   function getGridItem(field: any, keyVal: string) {
-    const formattedValue = formatItemValue(field);
 
     return (
       <Grid item xs={12} key={keyVal}>
         <Typography variant='body2' component='span' className={classes.fieldValue}>
-          {formattedValue}
+          {field?.value}
         </Typography>
       </Grid>
     );

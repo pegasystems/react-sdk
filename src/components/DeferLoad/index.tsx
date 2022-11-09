@@ -30,11 +30,19 @@ export default function DeferLoad(props) {
   const { getPConnect, name, deferLoadId, isTab } = props;
   const [content, setContent] = useState<any>(null);
   const [isLoading, setLoading] = useState(true);
+  const [currentLoadedAssignment, setCurrentLoadedAssignment] = useState("");
 
   const classes = useStyles();
 
   const pConnect = getPConnect();
   const constants = PCore.getConstants();
+
+  const theRequestedAssignment = pConnect.getValue( PCore.getConstants().CASE_INFO.ASSIGNMENT_LABEL);
+  if (theRequestedAssignment !== currentLoadedAssignment)  {
+    // console.log(`DeferLoad: currentLoadedAssignment about to change from ${currentLoadedAssignment} to ${theRequestedAssignment}`);
+    setCurrentLoadedAssignment(theRequestedAssignment);
+  }
+
   const { CASE, PAGE, DATA } = constants.RESOURCE_TYPES;
   const loadViewCaseID =
     pConnect.getValue(constants.PZINSKEY) || pConnect.getValue(constants.CASE_INFO.CASE_INFO_ID);
@@ -129,7 +137,7 @@ export default function DeferLoad(props) {
           onResponse(data.root);
         });
     }
-  }, [name, getPConnect]);
+  }, [name, getPConnect, currentLoadedAssignment]);
   /* TODO Cosmos need to handle for now added a wrapper div with pos relative */
   let deferLoadContent;
   if (isLoading) {

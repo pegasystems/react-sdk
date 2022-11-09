@@ -137,7 +137,7 @@ export default function DeferLoad(props) {
           onResponse(data.root);
         });
     }
-  }, [name, getPConnect, theRequestedAssignment]);
+  }, [name, getPConnect, currentLoadedAssignment]);
   /* TODO Cosmos need to handle for now added a wrapper div with pos relative */
   let deferLoadContent;
   if (isLoading) {

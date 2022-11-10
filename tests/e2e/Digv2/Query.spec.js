@@ -9,7 +9,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('E2E test', () => {
-  test('should login, create case and run different test cases for User Reference', async ({
+  test('should login, create case and run different test cases for Query', async ({
     page
   }) => {
     await common.Login(
@@ -30,7 +30,7 @@ test.describe('E2E test', () => {
     const complexFieldsCase = page.locator('div[role="button"]:has-text("Complex Fields")');
     await complexFieldsCase.click();
 
-    /** Selecting Embedded Data from the Category dropdown */
+    /** Selecting Query from the Category dropdown */
     const selectedCategory = page.locator('div[data-test-id="76729937a5eb6b0fd88c42581161facd"]');
     await selectedCategory.click();
     await page.locator('li:has-text("Query")').click();

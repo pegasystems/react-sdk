@@ -487,7 +487,7 @@ export default function SimpleTableManual(props) {
 
   return (
     <React.Fragment>
-      <TableContainer component={Paper} style={{ margin: '4px 0px' }}>
+      <TableContainer component={Paper} style={{ margin: '4px 0px' }} id="simple-table-manual">
         {propsToUse.label && (
           <h3 className={classes.label}>
             {propsToUse.label} {results()}

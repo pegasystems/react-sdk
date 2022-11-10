@@ -29,7 +29,7 @@ test.describe('E2E test', () => {
     await expect(worklist).toBeVisible();
 
     /** Creating a Complex Fields case-type */
-    let complexFieldsCase = page.locator('div[role="button"]:has-text("Complex Fields")');
+    const complexFieldsCase = page.locator('div[role="button"]:has-text("Complex Fields")');
     await complexFieldsCase.click();
 
     /** Selecting Embedded Data from the Category dropdown */
@@ -81,21 +81,21 @@ test.describe('E2E test', () => {
     await page.locator('li:has-text("Readonly")').click();
 
     /** Testing the existence of 'readonly' attribute on the fields and the values which were entered by Editable mode test */
-    let street = page.locator('input[data-test-id="d61ebdd8a0c0cd57c22455e9f0918c65"]');
+    const street = page.locator('input[data-test-id="d61ebdd8a0c0cd57c22455e9f0918c65"]');
     let attributes = await common.getAttributes(street);
-    expect(attributes.includes('readonly') && await street.inputValue() == "Main St").toBeTruthy();
+    expect(attributes.includes('readonly') && await street.inputValue() === "Main St").toBeTruthy();
 
-    let city = page.locator('input[data-test-id="57d056ed0984166336b7879c2af3657f"]');
+    const city = page.locator('input[data-test-id="57d056ed0984166336b7879c2af3657f"]');
     attributes = await common.getAttributes(city)
-    expect(attributes.includes('readonly') && await city.inputValue() == "Cambridge").toBeTruthy();
+    expect(attributes.includes('readonly') && await city.inputValue() === "Cambridge").toBeTruthy();
 
-    let state = page.locator('input[data-test-id="46a2a41cc6e552044816a2d04634545d"]');
+    const state = page.locator('input[data-test-id="46a2a41cc6e552044816a2d04634545d"]');
     attributes = await common.getAttributes(state);
-    expect(attributes.includes('readonly') && await state.inputValue() == "MA").toBeTruthy();
+    expect(attributes.includes('readonly') && await state.inputValue() === "MA").toBeTruthy();
 
-    let postalCode = page.locator('input[data-test-id="25f75488c91cb6c3bab92672e479619f"]');
+    const postalCode = page.locator('input[data-test-id="25f75488c91cb6c3bab92672e479619f"]');
     attributes = await common.getAttributes(postalCode);
-    expect(attributes.includes('readonly') && await postalCode.inputValue() == "02142").toBeTruthy();
+    expect(attributes.includes('readonly') && await postalCode.inputValue() === "02142").toBeTruthy();
 
     await page.locator('button:has-text("Next")').click();
 

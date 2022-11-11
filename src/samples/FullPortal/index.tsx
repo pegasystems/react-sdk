@@ -146,7 +146,7 @@ export default function FullPortal() {
       .then( () => {
         const selPortal = SdkConfigAccess.getSdkConfigServer().appPortal;
         myLoadPortal("pega-root", selPortal, []);   // this is defined in bootstrap shell that's been loaded already
-      })
+      });
     }
   }
 

@@ -11,6 +11,7 @@ import { loginIfNecessary } from '../../helpers/authManager';
 
 declare const PCore: any;
 declare const myLoadPortal: any;
+declare const myLoadDefaultPortal: any;
 
 export default function FullPortal() {
 
@@ -125,11 +126,21 @@ export default function FullPortal() {
     // load the Portal and handle the onPCoreEntry response that establishes the
     //  top level Pega root element (likely a RootContainer)
 
-    SdkConfigAccess.selectPortal()
-    .then( () => {
-      const thePortal = SdkConfigAccess.getSdkConfigServer().appPortal;
-      myLoadPortal("pega-root", thePortal, []);   // this is defined in bootstrap shell that's been loaded already
-    })
+    const thePortal = SdkConfigAccess.getSdkConfigServer().appPortal;
+    // Note: myLoadPortal and myLoadDefaultPortal are set when bootstrapWithAuthHeader is invoked
+    if( thePortal ) {
+      myLoadPortal("pega-root", thePortal, []);
+    }
+    else if( myLoadDefaultPortal ) {
+        myLoadDefaultPortal();
+    }
+    else {
+      SdkConfigAccess.selectPortal()
+      .then( () => {
+        const thePortal = SdkConfigAccess.getSdkConfigServer().appPortal;
+        myLoadPortal("pega-root", thePortal, []);   // this is defined in bootstrap shell that's been loaded already
+      })
+    }
   }
 
   // One time (initialization)

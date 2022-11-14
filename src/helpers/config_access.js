@@ -191,7 +191,7 @@ class ConfigAccess {
         if( selectedPortal ) {
           // Found operator's current access group. Use its portal
           this.setSdkConfigServer("appPortal", selectedPortal);
-          console.log(`Using appPortal: ${serverConfig.appPortal}`);
+          console.log(`Using non-excluded portal: ${serverConfig.appPortal}`);
         }
       })
       .catch( e => {

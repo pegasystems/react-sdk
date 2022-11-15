@@ -10,7 +10,7 @@ export const getDataPage = (dataPageName, parameters, context) => {
   }
   return new Promise((resolve, reject) => {
     PCore.getDataApiUtils()
-      .getData(dataPageName, { ...dataViewParams }, context)
+      .getData(dataPageName, dataViewParams, context)
       .then(response => {
         resolve(response.data.data);
       })

@@ -263,9 +263,8 @@ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) =>
     // NOTE: once this callback is done, we lose the ability to access loadMashup.
     //  So, create a reference to it
     window.myLoadMashup = bootstrapShell.loadMashup;
-
-    // For experimentation, save a reference to loadPortal, too!
     window.myLoadPortal = bootstrapShell.loadPortal;
+    window.myLoadDefaultPortal = bootstrapShell.loadDefaultPortal;
 
     bootstrapShell.bootstrapWithAuthHeader(constellationBootConfig, 'shell').then(() => {
       // eslint-disable-next-line no-console

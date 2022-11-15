@@ -37,3 +37,6 @@ pnpm-debug.log*
 /ssl.conf
 test-results/
 playwright-report/
+
+# unit testing coverage
+/coverage

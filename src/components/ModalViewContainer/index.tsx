@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, createElement } from 'react';
 import PropTypes from 'prop-types';
-import * as isEqual from 'fast-deep-equal';
+import isEqual from 'fast-deep-equal';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';

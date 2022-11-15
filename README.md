@@ -153,6 +153,29 @@ Note that the examples above are for the default configuration. If you change th
 ## Testing the application
 <br>
 
+### **Unit Tests:**
+
+We are using jest test infrastructure as unit testing and react testing framework.
+Below are commands exposed to run the test and code coverage:
+
+```
+ $ npm run test-jest
+```
+
+This will run all test cases created using jest.
+
+```
+ $ npm run test-jest-coverage
+```
+
+This will run test cases and generates the report showing the code lines.
+report can be located under folder
+coverage/lcov-report
+
+<br>
+
+### **Automation Tests:**
+
 You can test both **Portal** and **Embedded** scenarios by executing the following commands in the terminal:
 
 1. ```

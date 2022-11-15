@@ -89,17 +89,17 @@ test.describe('E2E test', () => {
     const tvPackage = page.locator('label[data-test-id="0B3244CEB2CE9879260EB560BD7A811E"]');
     await tvPackage.click();
 
-    await page.locator('text=Premium').click();
+    await page.locator('#Assignment >> text=Premium').click();
 
     const internetPackage = page.locator('label[data-test-id="C05A1E5DECC321D9792E9A9E15184BE5"]');
     await internetPackage.click();
 
-    await page.locator('text=300 Mbps').click();
+    await page.locator('#Assignment >> text=300 Mbps').click();
 
     const phonePackage = page.locator('label[data-test-id="7CF3F86883596E49D8D7298CC5B928A2"]');
     await phonePackage.click();
 
-    await page.locator('text=International Full').click();
+    await page.locator('#Assignment >> text=International Full').click();
 
     await page.locator('button:has-text("submit")').click();
 

@@ -78,7 +78,8 @@ export default function SimpleTableManual(props) {
     contextClass,
     hideAddRow,
     hideDeleteRow,
-    propertyLabel
+    propertyLabel,
+    fieldMetadata
   } = props;
   const pConn = getPConnect();
   const [rowData, setRowData] = useState([]);
@@ -97,6 +98,8 @@ export default function SimpleTableManual(props) {
   const [displayDialogContainsValue, setDisplayDialogContainsValue] = useState<string>('');
   const [displayDialogDateFilter, setDisplayDialogDateFilter] = useState<string>('notequal');
   const [displayDialogDateValue, setDisplayDialogDateValue] = useState<string>('');
+
+  const parameters = fieldMetadata?.datasource?.parameters;
 
   const label = labelProp || propertyLabel;
   const propsToUse = { label, showLabel, ...getPConnect().getInheritedProps() };
@@ -195,7 +198,7 @@ export default function SimpleTableManual(props) {
   function generateRowsData() {
     // if dataPageName property value exists then make a datapage fetch call and get the list of data.
     if (dataPageName) {
-      getDataPage(dataPageName, context).then(listData => {
+      getDataPage(dataPageName, parameters, context).then(listData => {
         const data = formatRowsData(listData);
         myRows = data;
         setRowData(data);

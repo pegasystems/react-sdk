@@ -1,10 +1,16 @@
 declare const PCore;
 
 // eslint-disable-next-line import/prefer-default-export
-export const getDataPage = (dataPageName, context) => {
+export const getDataPage = (dataPageName, parameters, context) => {
+  let dataViewParams;
+  if(parameters){
+    dataViewParams = {
+      'dataViewParameters': parameters
+    };
+  }
   return new Promise((resolve, reject) => {
     PCore.getDataApiUtils()
-      .getData(dataPageName, null, context)
+      .getData(dataPageName, dataViewParams, context)
       .then(response => {
         resolve(response.data.data);
       })

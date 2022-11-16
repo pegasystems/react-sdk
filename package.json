@@ -55,7 +55,7 @@
     "@pega/configs": "^0.3.2",
     "@pega/eslint-config": "^0.3.2",
     "@pega/prettier-config": "^0.3.2",
-    "@playwright/test": "^1.21.1",
+    "@playwright/test": "^1.27.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^12.1.2",
     "@types/lodash.isequal": "^4.5.5",

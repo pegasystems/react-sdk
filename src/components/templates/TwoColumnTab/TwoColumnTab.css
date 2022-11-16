@@ -1,0 +1,12 @@
+.psdk-two-column {
+  display: flow-root;
+  height: 100%;
+}
+
+/* Create two equal columns that floats next to each other */
+.psdk-two-column-column {
+  width: 50%;
+  float: left;
+  padding: 0rem 0.3125rem;
+  height: 100%;
+}

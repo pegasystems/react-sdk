@@ -83,7 +83,7 @@ const FieldValueList = props => {
   function getGridItems() {
     const gridItems = fields.map(item => {
       return (
-        <Grid container spacing={1}>
+        <Grid container spacing={1} key={item.label}>
           {getGridItemLabel(item.label)}
           {getGridItemValue(item.value)}
         </Grid>

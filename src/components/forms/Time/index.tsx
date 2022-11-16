@@ -20,11 +20,11 @@ export default function Time(props) {
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
 
-  if(displayMode === 'LABELS_LEFT'){
+  if (displayMode === 'LABELS_LEFT') {
     const field = {
       [label]: value
     };
-    return <FieldValueList item={field}/>
+    return <FieldValueList item={field} />;
   }
 
   if (readOnly) {
@@ -33,7 +33,7 @@ export default function Time(props) {
 
   const handleChange = date => {
     const theValue = date && date.isValid() ? date.format('HH:mm') : null;
-    onChange({ theValue });
+    onChange({ value: theValue });
   };
 
   let timeValue: any = null;

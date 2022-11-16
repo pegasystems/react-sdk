@@ -29,6 +29,7 @@ import DataReference from '../templates/DataReference';
 import OneColumnPage from '../templates/OneColumnPage';
 import InlineDashboardPage from '../templates/InlineDashboardPage';
 import DetailsSubTabs from '../templates/Details/SubTabs';
+import TwoColumnTab from '../templates/TwoColumnTab';
 
 import './View.css';
 //
@@ -116,6 +117,10 @@ export default function View(props) {
 
       case 'OneColumnTab':
         ViewTemplate = OneColumnTab;
+        break;
+
+      case "TwoColumnTab":
+        ViewTemplate = TwoColumnTab;
         break;
 
       case 'SimpleTable':

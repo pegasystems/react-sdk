@@ -52,7 +52,7 @@
   "devDependencies": {
     "@kooneko/livereload-webpack-plugin": "^1.2.0",
     "@loadable/component": "^5.13.1",
-    "@pega/configs": "^0.3.2",
+    "@pega/configs": "^0.3.4",
     "@pega/eslint-config": "^0.3.2",
     "@pega/prettier-config": "^0.3.2",
     "@playwright/test": "^1.21.1",
@@ -72,7 +72,7 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jest": "^25.3.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-mdx": "^1.16.0",
+    "eslint-plugin-mdx": "^2.0.5",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-react-hooks": "^4.3.0",

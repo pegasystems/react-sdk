@@ -50,7 +50,8 @@ export default function ToDo(props) {
     datasource,
     getPConnect,
     headerText,
-    showTodoList
+    showTodoList,
+    myWorkList
   } = props;
 
   const bLogging = true;
@@ -60,11 +61,12 @@ export default function ToDo(props) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const[currentUserInitials, setCurrentUserInitials] = useState(Utils.getInitials(currentUser));
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarMessage, setSnackbarMessage]: any = useState("");
 
 
   const thePConn = getPConnect();
   let assignmentCount = 0;
+  const assignmentsSource = datasource?.source || myWorkList?.source;
   // let arAssignments : Array<any> = [];
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const[arAssignments, setArAssignments] = useState<Array<any>>( initAssignments() );
@@ -145,13 +147,13 @@ export default function ToDo(props) {
 
   function _showMore() {
     setBShowMore(false);
-    setArAssignments(datasource.source);
+    setArAssignments(assignmentsSource);
   }
 
 
   function _showLess() {
     setBShowMore(true);
-    setArAssignments(topThreeAssignments(datasource.source));
+    setArAssignments(topThreeAssignments(assignmentsSource));
   }
 
 
@@ -199,18 +201,17 @@ export default function ToDo(props) {
 
   function initAssignments() : Array<any> {
     if (showTodoList) {
-      if (datasource) {
-        assignmentCount = (datasource.source !== null) ? datasource.source.length : 0;
-        return topThreeAssignments(datasource.source);
-      }
-      else {
+      if (assignmentsSource) {
+        assignmentCount = (assignmentsSource !== null) ? assignmentsSource.length : 0;
+        return topThreeAssignments(assignmentsSource);
+      }else {
         // turn off todolist
         return [];
       }
     }
     else if (caseInfoID !== undefined) {
       // get caseInfoId assignment.
-        return getCaseInfoAssignment(datasource.source, caseInfoID);
+        return getCaseInfoAssignment(assignmentsSource, caseInfoID);
     }
     return [];
   }
@@ -308,6 +309,7 @@ export default function ToDo(props) {
 
 ToDo.propTypes = {
   datasource: PropTypes.instanceOf(Object),
+  myWorkList: PropTypes.instanceOf(Object),
   caseInfoID: PropTypes.string,
   // buildName: PropTypes.string,
   getPConnect: PropTypes.func.isRequired,
@@ -327,6 +329,7 @@ ToDo.propTypes = {
 ToDo.defaultProps = {
   caseInfoID: "",
   datasource: [],
+  myWorkList: {},
   // buildName: "",
   headerText: "To do",
   itemKey: "",

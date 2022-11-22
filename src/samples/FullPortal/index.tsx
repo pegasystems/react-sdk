@@ -136,7 +136,7 @@ export default function FullPortal() {
     else if( myLoadDefaultPortal ) {
       // eslint-disable-next-line no-console
       console.log(`Loading default portal`);
-      myLoadDefaultPortal();
+      myLoadDefaultPortal("pega-root", []);
     }
     else {
       // This path of selecting a portal by enumerating entries within current user's access group's portals list

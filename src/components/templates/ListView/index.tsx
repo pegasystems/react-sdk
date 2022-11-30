@@ -92,6 +92,7 @@ export default function ListView(props) {
   let selectParam: Array<any> = [];
 
   // dataview parameters coming from the ListPage
+  // This constant will also be used for parameters coming from from other components/utility fnctions in future
   const dataViewParameters = parameters;
 
   const useStyles = makeStyles((theme: Theme) =>

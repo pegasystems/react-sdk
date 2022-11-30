@@ -59,7 +59,7 @@ const filterByColumns: Array<any> = [];
 
 export default function ListView(props) {
   const { getPConnect, bInForm } = props;
-  const { globalSearch, presets, referenceList, rowClickAction, selectionMode, referenceType, payload } = props;
+  const { globalSearch, presets, referenceList, rowClickAction, selectionMode, referenceType, payload, parameters } = props;
 
   const thePConn = getPConnect();
   const componentConfig = thePConn.getComponentConfig();
@@ -90,6 +90,10 @@ export default function ListView(props) {
   let dashboardFilterPayload: any ;
   // Will be sent in the dashboardFilterPayload
   let selectParam: Array<any> = [];
+
+  // dataview parameters coming from the ListPage
+  // This constant will also be used for parameters coming from from other components/utility fnctions in future
+  const dataViewParameters = parameters;
 
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -482,7 +486,7 @@ export default function ListView(props) {
     return PCore.getDataPageUtils().getDataAsync(
       referenceList,
       context,
-      payload && payload.dataViewParameters,
+      payload ? payload.dataViewParameters : dataViewParameters,
       null,
       payload ? payload.query : dashboardFilterPayload && dashboardFilterPayload.query
     );

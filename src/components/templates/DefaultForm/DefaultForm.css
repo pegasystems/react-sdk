@@ -1,6 +1,6 @@
 .psdk-default-form-one-column {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: calc(1rem);
 }
 

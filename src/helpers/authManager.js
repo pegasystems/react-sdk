@@ -116,7 +116,7 @@ const initOAuth = (bInit) => {
     // Construct path to redirect uri
     let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
     const nLastPathSep = sRedirectUri.lastIndexOf("/");
-    sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
+    sRedirectUri = nLastPathSep !== -1 ? `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html` : `${sRedirectUri}/auth.html`;
 
     const authConfig = {
       clientId: bNoInitialRedirect ? sdkConfigAuth.mashupClientId : sdkConfigAuth.portalClientId,
@@ -145,9 +145,6 @@ const initOAuth = (bInit) => {
     }
     if( 'iframeLoginUI' in sdkConfigAuth ){
       authConfig.iframeLoginUI = sdkConfigAuth.iframeLoginUI.toString().toLowerCase() === 'true';
-    }
-    if( 'redirectUri' in sdkConfigAuth){
-      authConfig.redirectUri = sdkConfigAuth.redirectUri;
     }
 
     // Check if sessionStorage exists (and if so if for same authorize endpoint).  Otherwise, assume

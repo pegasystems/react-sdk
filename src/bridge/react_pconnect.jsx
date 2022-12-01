@@ -528,7 +528,7 @@ const getComponent = (c11nEnv, declarative) => {
 
 
 // Move these into SdkConstellationReady so PCore is available
-document.addEventListener("SdkConstellationReady", () => {
+document.addEventListener("SdkPCoreAvailable", () => {
 
   // eslint-disable-next-line no-undef
   PCore.registerComponentCreator((c11nEnv, additionalProps = {}) => {
@@ -583,6 +583,11 @@ document.addEventListener("SdkConstellationReady", () => {
       await Promise.allSettled(promises);
     }
   );
+
+  // Fire SdkConstellationReady event so app route can do expected post PCore initializations
+  const event = new CustomEvent('SdkConstellationReady', {});
+  document.dispatchEvent(event);
+
 });
 
 export default createPConnectComponent;

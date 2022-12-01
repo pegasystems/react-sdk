@@ -285,8 +285,9 @@ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) =>
         }
       }
 
-      // Fire SdkConstellationReady event so bridge and app route can do expected post PCore initializations
-      const event = new CustomEvent('SdkConstellationReady', {});
+      // Fire SdkPCoreAvailable so bridge can do expected post PCore initialization.  Bridge will then
+      //  fire SdkConstellationReady
+      const event = new CustomEvent('SdkPCoreAvailable', {});
       document.dispatchEvent(event);
     })
     .catch( e => {

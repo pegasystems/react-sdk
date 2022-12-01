@@ -100,6 +100,9 @@ const initOAuth = (bInit) => {
       if (!sdkConfigAuth.revoke) {
         sdkConfigAuth.revoke = `${pegaUrl}PRRestService/oauth2/v1/revoke`;
       }
+      if( !sdkConfigAuth.redirectUri && !(bNoInitialRedirect && usePopupForRestOfSession) ) {
+        sdkConfigAuth.redirectUri = `${window.location.origin}${window.location.pathname}`;
+      }
       if (!sdkConfigAuth.userinfo) {
         const appAliasSeg = sdkConfigServer.appAlias ? `app/${sdkConfigServer.appAlias}/` : '';
         sdkConfigAuth.userinfo = `${pegaUrl}${appAliasSeg}api/oauthclients/v1/userinfo/JSON`;
@@ -123,7 +126,7 @@ const initOAuth = (bInit) => {
       userinfoUri: sdkConfigAuth.userinfo,
       redirectUri: bNoInitialRedirect || usePopupForRestOfSession
           ? sRedirectUri
-          : `${window.location.origin}${window.location.pathname}`,
+          : sdkConfigAuth.redirectUri,
       authService: sdkConfigAuth.authService,
       appAlias: sdkConfigServer.appAlias || '',
       useLocking: true
@@ -143,7 +146,7 @@ const initOAuth = (bInit) => {
     if( 'iframeLoginUI' in sdkConfigAuth ){
       authConfig.iframeLoginUI = sdkConfigAuth.iframeLoginUI.toString().toLowerCase() === 'true';
     }
-    if( 'redirectUri' in sdkConfigAuth ){
+    if( 'redirectUri' in sdkConfigAuth){
       authConfig.redirectUri = sdkConfigAuth.redirectUri;
     }
 
@@ -440,7 +443,7 @@ export const login = (bFullReauth=false) => {
       const nLastPathSep = sRedirectUri.lastIndexOf("/");
       sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
       // Set redirectUri to static auth.html
-      updateRedirectUri(aMgr, aMgr.config.redirectUri || sRedirectUri);
+      updateRedirectUri(aMgr, sRedirectUri);
       return new Promise( (resolve, reject) => {
         aMgr.login().then(token => {
             processTokenOnLogin(token);

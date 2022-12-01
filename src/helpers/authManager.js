@@ -100,7 +100,7 @@ const initOAuth = (bInit) => {
       if (!sdkConfigAuth.revoke) {
         sdkConfigAuth.revoke = `${pegaUrl}PRRestService/oauth2/v1/revoke`;
       }
-      if( !sdkConfigAuth.redirectUri && !(bNoInitialRedirect && usePopupForRestOfSession) ) {
+      if( !sdkConfigAuth.redirectUri && !(bNoInitialRedirect || usePopupForRestOfSession) ) {
         sdkConfigAuth.redirectUri = `${window.location.origin}${window.location.pathname}`;
       }
       if (!sdkConfigAuth.userinfo) {

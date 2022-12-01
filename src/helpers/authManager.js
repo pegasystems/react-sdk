@@ -100,7 +100,7 @@ const initOAuth = (bInit) => {
       if (!sdkConfigAuth.revoke) {
         sdkConfigAuth.revoke = `${pegaUrl}PRRestService/oauth2/v1/revoke`;
       }
-      if( !sdkConfigAuth.redirectUri && !(bNoInitialRedirect || usePopupForRestOfSession) ) {
+      if( !sdkConfigAuth.redirectUri ) {
         sdkConfigAuth.redirectUri = `${window.location.origin}${window.location.pathname}`;
       }
       if (!sdkConfigAuth.userinfo) {
@@ -113,10 +113,10 @@ const initOAuth = (bInit) => {
       sdkConfigAuth.authService = "pega";
     }
 
-    // Construct path to redirect uri
-    let sRedirectUri=`${sdkConfigAuth.redirectUri}`;
-    const nLastPathSep = sRedirectUri.lastIndexOf("/");
-    sRedirectUri = nLastPathSep !== -1 ? `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html` : `${sRedirectUri}/auth.html`;
+    // Construct path to auth.html (used for case when not doing a main window redirect)
+    let sNoMainRedirectUri=sdkConfigAuth.redirectUri;
+    const nLastPathSep = sNoMainRedirectUri.lastIndexOf("/");
+    sNoMainRedirectUri = nLastPathSep !== -1 ? `${sNoMainRedirectUri.substring(0,nLastPathSep+1)}auth.html` : `${sNoMainRedirectUri}/auth.html`;
 
     const authConfig = {
       clientId: bNoInitialRedirect ? sdkConfigAuth.mashupClientId : sdkConfigAuth.portalClientId,
@@ -125,7 +125,7 @@ const initOAuth = (bInit) => {
       revokeUri: sdkConfigAuth.revoke,
       userinfoUri: sdkConfigAuth.userinfo,
       redirectUri: bNoInitialRedirect || usePopupForRestOfSession
-          ? sRedirectUri
+          ? sNoMainRedirectUri
           : sdkConfigAuth.redirectUri,
       authService: sdkConfigAuth.authService,
       appAlias: sdkConfigServer.appAlias || '',

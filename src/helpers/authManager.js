@@ -114,7 +114,7 @@ const initOAuth = (bInit) => {
     }
 
     // Construct path to redirect uri
-    let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
+    let sRedirectUri=`${sdkConfigAuth.redirectUri}`;
     const nLastPathSep = sRedirectUri.lastIndexOf("/");
     sRedirectUri = nLastPathSep !== -1 ? `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html` : `${sRedirectUri}/auth.html`;
 

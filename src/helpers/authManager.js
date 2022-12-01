@@ -143,6 +143,9 @@ const initOAuth = (bInit) => {
     if( 'iframeLoginUI' in sdkConfigAuth ){
       authConfig.iframeLoginUI = sdkConfigAuth.iframeLoginUI.toString().toLowerCase() === 'true';
     }
+    if( 'redirectUri' in sdkConfigAuth ){
+      authConfig.redirectUri = sdkConfigAuth.redirectUri;
+    }
 
     // Check if sessionStorage exists (and if so if for same authorize endpoint).  Otherwise, assume
     //  sessionStorage is out of date (user just edited endpoints).  Else, logout required to clear
@@ -437,7 +440,7 @@ export const login = (bFullReauth=false) => {
       const nLastPathSep = sRedirectUri.lastIndexOf("/");
       sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
       // Set redirectUri to static auth.html
-      updateRedirectUri(aMgr, sRedirectUri);
+      updateRedirectUri(aMgr, aMgr.config.redirectUri || sRedirectUri);
       return new Promise( (resolve, reject) => {
         aMgr.login().then(token => {
             processTokenOnLogin(token);

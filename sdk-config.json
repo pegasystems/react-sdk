@@ -2,7 +2,7 @@
   "comment_sdk_config": "This is the configuration file for the React SDK",
   "authConfig": {
     "authConfig_comment": "Optional Full paths to Infinity server OAuth endpoints (Only needed if using custom OAuth service)",
-    "authConfig_comment2": "Optional attributes are: authorize, token, revoke, redirectUri, authService, silentTimeout, iframeLoginUI, redirectUri",
+    "authConfig_comment2": "Optional attributes are: authorize, token, revoke, redirectUri, authService, silentTimeout, iframeLoginUI",
     "authService": "pega",
 
     "mashupClient_comment": "Client ID and Client secret from the OAuth 2.0 Client Registration record used for mashup use case",

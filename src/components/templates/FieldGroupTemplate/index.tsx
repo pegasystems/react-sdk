@@ -77,6 +77,6 @@ FieldGroupTemplate.propTypes = {
   getPConnect: PropTypes.func.isRequired,
   renderMode: PropTypes.string.isRequired,
   heading: PropTypes.string,
-  lookForChildInConfig: PropTypes.bool.isRequired,
+  lookForChildInConfig: PropTypes.bool,
   displayMode: PropTypes.string
 };

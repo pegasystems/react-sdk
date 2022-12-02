@@ -3,6 +3,18 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Utils from '../../../helpers/utils';
+
+function generateFields(item, fields) {
+  // eslint-disable-next-line guard-for-in
+  for (const label in item) {
+    if (Utils.isObject(item[label])) {
+      generateFields(item[label], fields);
+    } else if (label !== 'classID') {
+      fields.push({ label, value: item[label] });
+    }
+  }
+}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,12 +43,8 @@ const FieldGroup = props => {
   const classes = useStyles();
 
   const fields: any = [];
+  generateFields(props.item, fields);
 
-  for (const label in props.item) {
-    if (label !== 'classID') {
-      fields.push({ label, value: props.item[label] });
-    }
-  }
 
   function getGridItemLabel(label) {
     const dispValue = label;

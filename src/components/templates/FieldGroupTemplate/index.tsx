@@ -53,11 +53,8 @@ export default function FieldGroupTemplate(props) {
   pConn.setInheritedProp('displayMode', 'LABELS_LEFT');
   const memoisedReadOnlyList = useMemo(() => {
     return referenceList.map((item, index) => (
-      <FieldGroup
-        item={item}
-        key={item[heading]}
-        name={`${HEADING} ${index + 1}`}
-      />
+      // eslint-disable-next-line react/no-array-index-key
+      <FieldGroup item={item} key={index} name={`${HEADING} ${index + 1}`} />
     ));
   }, []);
 
@@ -77,6 +74,6 @@ FieldGroupTemplate.propTypes = {
   getPConnect: PropTypes.func.isRequired,
   renderMode: PropTypes.string.isRequired,
   heading: PropTypes.string,
-  lookForChildInConfig: PropTypes.bool.isRequired,
+  lookForChildInConfig: PropTypes.bool,
   displayMode: PropTypes.string
 };

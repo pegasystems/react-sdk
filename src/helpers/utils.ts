@@ -325,6 +325,10 @@ export class Utils {
   static isEmptyObject(obj: Object): Boolean {
     return Object.keys(obj).length === 0;
   }
+
+  static isObject(objValue) {
+    return objValue && typeof objValue === 'object' && objValue.constructor === Object;
+  }
 }
 
 export default Utils;

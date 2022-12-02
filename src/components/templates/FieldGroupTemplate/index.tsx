@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable react-hooks/rules-of-hooks */
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
@@ -53,11 +54,7 @@ export default function FieldGroupTemplate(props) {
   pConn.setInheritedProp('displayMode', 'LABELS_LEFT');
   const memoisedReadOnlyList = useMemo(() => {
     return referenceList.map((item, index) => (
-      <FieldGroup
-        item={item}
-        key={item[heading]}
-        name={`${HEADING} ${index + 1}`}
-      />
+      <FieldGroup item={item} key={index} name={`${HEADING} ${index + 1}`} />
     ));
   }, []);
 

@@ -1,5 +1,5 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
-
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -45,7 +45,6 @@ const FieldGroup = props => {
   const fields: any = [];
   generateFields(props.item, fields);
 
-
   function getGridItemLabel(label) {
     const dispValue = label;
 
@@ -86,9 +85,9 @@ const FieldGroup = props => {
   }
 
   function getGridItems() {
-    const gridItems = fields.map(item => {
+    const gridItems = fields.map((item, index) => {
       return (
-        <Grid container spacing={1}>
+        <Grid key={index} container spacing={1}>
           {getGridItemLabel(item.label)}
           {getGridItemValue(item.value)}
         </Grid>

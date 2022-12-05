@@ -1,8 +1,18 @@
 import React from 'react';
-
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Utils from '../../../helpers/utils';
+
+function generateFields(item, fields) {
+  for (const label in item) {
+    if (Utils.isObject(item[label])) {
+      generateFields(item[label], fields);
+    } else if (label !== 'classID') {
+      fields.push({ label, value: item[label] });
+    }
+  }
+}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,12 +41,7 @@ const FieldGroup = props => {
   const classes = useStyles();
 
   const fields: any = [];
-
-  for (const label in props.item) {
-    if (label !== 'classID') {
-      fields.push({ label, value: props.item[label] });
-    }
-  }
+  generateFields(props.item, fields);
 
   function getGridItemLabel(label) {
     const dispValue = label;
@@ -78,9 +83,9 @@ const FieldGroup = props => {
   }
 
   function getGridItems() {
-    const gridItems = fields.map(item => {
+    const gridItems = fields.map((item) => {
       return (
-        <Grid container spacing={1}>
+        <Grid key={`${item.label}-${item.value}`} container spacing={1}>
           {getGridItemLabel(item.label)}
           {getGridItemValue(item.value)}
         </Grid>

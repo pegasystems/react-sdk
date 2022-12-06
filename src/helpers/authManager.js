@@ -427,17 +427,17 @@ export const login = (bFullReauth=false) => {
   getAuthMgr(!bFullReauth).then( (aMgr) => {
     const bMainRedirect = !authNoRedirect();
     const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
+    let sRedirectUri=sdkConfigAuth.redirectUri;
 
     // If initial main redirect is OK, redirect to main page, otherwise will authorize in a popup window
     if (bMainRedirect && !bFullReauth) {
       // update redirect uri to be the root
-      updateRedirectUri(aMgr, sdkConfigAuth.redirectUri);
+      updateRedirectUri(aMgr, sRedirectUri);
       aMgr.loginRedirect();
       // Don't have token til after the redirect
       return Promise.resolve(undefined);
     } else {
       // Construct path to redirect uri
-      let sRedirectUri=sdkConfigAuth.redirectUri;
       const nLastPathSep = sRedirectUri.lastIndexOf("/");
       sRedirectUri = nLastPathSep !== -1 ? `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html` : `${sRedirectUri}/auth.html`;
       // Set redirectUri to static auth.html

@@ -36,7 +36,7 @@
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@material-ui/pickers": "^3.3.10",
     "@pega/constellationjs": "SDK-8.8.0",
-    "@pega/react-sdk-bridge-infra": "file:constellation/react-sdk-bridge-infra-0.24.10.tgz",
+    "@pega/react-sdk-bridge-infra": "file:constellation/react-sdk-bridge-infra-0.24.11.tgz",
     "@unicef/material-ui-currency-textfield": "^0.8.6",
     "dayjs": "^1.10.6",
     "downloadjs": "^1.4.7",

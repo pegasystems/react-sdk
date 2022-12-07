@@ -100,6 +100,9 @@ const initOAuth = (bInit) => {
       if (!sdkConfigAuth.revoke) {
         sdkConfigAuth.revoke = `${pegaUrl}PRRestService/oauth2/v1/revoke`;
       }
+      if( !sdkConfigAuth.redirectUri ) {
+        sdkConfigAuth.redirectUri = `${window.location.origin}${window.location.pathname}`;
+      }
       if (!sdkConfigAuth.userinfo) {
         const appAliasSeg = sdkConfigServer.appAlias ? `app/${sdkConfigServer.appAlias}/` : '';
         sdkConfigAuth.userinfo = `${pegaUrl}${appAliasSeg}api/oauthclients/v1/userinfo/JSON`;
@@ -110,10 +113,10 @@ const initOAuth = (bInit) => {
       sdkConfigAuth.authService = "pega";
     }
 
-    // Construct path to redirect uri
-    let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
-    const nLastPathSep = sRedirectUri.lastIndexOf("/");
-    sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
+    // Construct path to auth.html (used for case when not doing a main window redirect)
+    let sNoMainRedirectUri=sdkConfigAuth.redirectUri;
+    const nLastPathSep = sNoMainRedirectUri.lastIndexOf("/");
+    sNoMainRedirectUri = nLastPathSep !== -1 ? `${sNoMainRedirectUri.substring(0,nLastPathSep+1)}auth.html` : `${sNoMainRedirectUri}/auth.html`;
 
     const authConfig = {
       clientId: bNoInitialRedirect ? sdkConfigAuth.mashupClientId : sdkConfigAuth.portalClientId,
@@ -122,8 +125,8 @@ const initOAuth = (bInit) => {
       revokeUri: sdkConfigAuth.revoke,
       userinfoUri: sdkConfigAuth.userinfo,
       redirectUri: bNoInitialRedirect || usePopupForRestOfSession
-          ? sRedirectUri
-          : `${window.location.origin}${window.location.pathname}`,
+          ? sNoMainRedirectUri
+          : sdkConfigAuth.redirectUri,
       authService: sdkConfigAuth.authService,
       appAlias: sdkConfigServer.appAlias || '',
       useLocking: true
@@ -423,19 +426,20 @@ export const login = (bFullReauth=false) => {
 
   getAuthMgr(!bFullReauth).then( (aMgr) => {
     const bMainRedirect = !authNoRedirect();
+    const sdkConfigAuth = SdkConfigAccess.getSdkConfigAuth();
+    let sRedirectUri=sdkConfigAuth.redirectUri;
 
     // If initial main redirect is OK, redirect to main page, otherwise will authorize in a popup window
     if (bMainRedirect && !bFullReauth) {
       // update redirect uri to be the root
-      updateRedirectUri(aMgr, `${window.location.origin}${window.location.pathname}`);
+      updateRedirectUri(aMgr, sRedirectUri);
       aMgr.loginRedirect();
       // Don't have token til after the redirect
       return Promise.resolve(undefined);
     } else {
       // Construct path to redirect uri
-      let sRedirectUri=`${window.location.origin}${window.location.pathname}`;
       const nLastPathSep = sRedirectUri.lastIndexOf("/");
-      sRedirectUri = `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html`;
+      sRedirectUri = nLastPathSep !== -1 ? `${sRedirectUri.substring(0,nLastPathSep+1)}auth.html` : `${sRedirectUri}/auth.html`;
       // Set redirectUri to static auth.html
       updateRedirectUri(aMgr, sRedirectUri);
       return new Promise( (resolve, reject) => {

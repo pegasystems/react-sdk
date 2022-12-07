@@ -3,13 +3,13 @@ import ReactDOM from "react-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
-import StoreContext from "@pega/react-sdk-bridge-infra/lib/bridge/Context/StoreContext";
-import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
-import { SdkConfigAccess } from '@pega/react-sdk-bridge-infra/lib/components/helpers/config_access';
-import { compareSdkPCoreVersions } from '@pega/react-sdk-bridge-infra/lib/components/helpers/versionHelpers';
-import { loginIfNecessary } from '@pega/react-sdk-bridge-infra/lib/components/helpers/authManager';
+import StoreContext from "@pega/react-sdk-components/lib/bridge/Context/StoreContext";
+import createPConnectComponent from "@pega/react-sdk-components/lib/bridge/react_pconnect";
+import { SdkConfigAccess } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
+import { loginIfNecessary } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 
-import { getSdkComponentMap } from '@pega/react-sdk-bridge-infra/lib/bridge/helpers/sdk_component_map';
+import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../sdk-local-component-map';
 
 declare const PCore: any;

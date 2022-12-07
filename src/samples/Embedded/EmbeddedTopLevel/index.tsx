@@ -5,16 +5,16 @@ import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 
-import StoreContext from "@pega/react-sdk-bridge-infra/lib/bridge/Context/StoreContext";
-import createPConnectComponent from "@pega/react-sdk-bridge-infra/lib/bridge/react_pconnect";
+import StoreContext from "@pega/react-sdk-components/lib/bridge/Context/StoreContext";
+import createPConnectComponent from "@pega/react-sdk-components/lib/bridge/react_pconnect";
 
-import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '@pega/react-sdk-bridge-infra/lib/components/helpers/authManager';
+import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 
 import EmbeddedSwatch from '../EmbeddedSwatch';
-import { compareSdkPCoreVersions } from '@pega/react-sdk-bridge-infra/lib/components/helpers/versionHelpers';
-import { getSdkConfig } from '@pega/react-sdk-bridge-infra/lib/components/helpers/config_access';
+import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
+import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 
-import { getSdkComponentMap } from '@pega/react-sdk-bridge-infra/lib/bridge/helpers/sdk_component_map';
+import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../../sdk-local-component-map';
 
 

@@ -35,7 +35,7 @@ module.exports = (env, argv) => {
           to: './'
         },
         {
-          from: './node_modules/@pega/react-sdk-bridge-infra/lib/components/helpers/auth.js', /* New SDK packaging has moved auth.js into node_modules */
+          from: './node_modules/@pega/react-sdk-components/lib/components/helpers/auth.js', /* New SDK packaging has moved auth.js into node_modules */
           to: './'
         },
         {
@@ -158,7 +158,7 @@ module.exports = (env, argv) => {
           include: [
             path.resolve(__dirname, 'src'),
             path.resolve(__dirname, 'node_modules/react-datepicker'),
-            path.resolve(__dirname, 'node_modules/@pega/react-sdk-bridge-infra/lib'),   /* needed to resolve CSS files in new SDK packaging */
+            path.resolve(__dirname, 'node_modules/@pega/react-sdk-components/lib'),   /* needed to resolve CSS files in new SDK packaging */
           ],
           use: ['style-loader', 'css-loader']
         },

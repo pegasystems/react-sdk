@@ -118,7 +118,7 @@ test.describe('E2E test', () => {
     await selectedTestName.click();
     await page.locator('li:has-text("Editable")').click();
 
-    noRecordsMsg = page.locator('div[id="no-records"]');
+    const noRecordsMsg = page.locator('div[id="no-records"]');
     await expect(noRecordsMsg.locator('text="No records found."')).toBeVisible();
 
     /** Creating row by clicking on `+Add` button */

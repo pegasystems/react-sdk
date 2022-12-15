@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["./src/components/**/*.ts", "./src/components/**/*.tsx", "./src/components/**/*.js", "./src/components/**/*.jsx"],
+  "exclude": [
+    "./src/**/*.stories.ts",
+    "./src/**/*.stories.tsx",
+    "./src/**/*.stories.js",
+    "./src/**/*.stories.jsx"
+  ],
+  "compilerOptions": {
+    "noEmit": false,
+    "composite": true,
+    //"rootDir": "./src",
+    "outDir": "./lib"
+  },
+  "files" : [ "./sdk-local-component-map.js"]
+}

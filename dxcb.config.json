@@ -8,8 +8,8 @@
     "rulesetVersion": "01-01-01",
     "sourceOfComponents": "Server",
     "devBuild": true,
-    "clientId": "12782580023870311851",
-    "clientSecret": "5DA5548CBA6AB2D5658A8383E1FE4F9F",
+    "clientId": "",
+    "clientSecret": "",
     "accessTokenUri": "https://localhost:1080/prweb/PRRestService/oauth2/v1/token"
   },
   "component": {

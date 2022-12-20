@@ -3,3 +3,4 @@ src/helpers/config_access.js
 *.html
 *.css
 *.json
+*.md

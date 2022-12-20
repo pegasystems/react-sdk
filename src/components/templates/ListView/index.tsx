@@ -59,14 +59,17 @@ const filterByColumns: Array<any> = [];
 
 export default function ListView(props) {
   const { getPConnect, bInForm } = props;
-  const { globalSearch, presets, referenceList, rowClickAction, selectionMode, referenceType, payload, parameters } = props;
+  const { globalSearch, presets, referenceList, rowClickAction, selectionMode, referenceType, payload, parameters, compositeKeys } = props;
 
   const thePConn = getPConnect();
   const componentConfig = thePConn.getComponentConfig();
   const resolvedConfigProps = thePConn.getConfigProps();
 
-  /** pyGUID is used for Data classes and pyID is for Work classes */
-  const rowID = referenceType === 'Case' ? 'pyID' : 'pyGUID';
+  /** By default, pyGUID is used for Data classes and pyID is for Work classes as row-id/key */
+  const defRowID = referenceType === 'Case' ? 'pyID' : 'pyGUID';
+
+  /** If compositeKeys is defined, use dynamic value, else fallback to pyID or pyGUID. */
+  const rowID = compositeKeys && compositeKeys[0] ? compositeKeys[0] : defRowID;
 
   const [arRows, setRows] = useState<Array<any>>([]);
   const [arColumns, setColumns] = useState<Array<any>>([]);

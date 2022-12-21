@@ -11,7 +11,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('E2E test', () => {
-  test('should login, create case and run different test cases for Data Reference', async ({
+  test('should login, create case and run different test cases for Embedded Data', async ({
     page
   }) => {
     await common.Login(

@@ -43,11 +43,11 @@ export default function Percentage(props) {
 
   // console.log(`Percentage: label: ${label} value: ${value}`);
 
-  if(displayMode === 'LABELS_LEFT'){
+  if (displayMode === 'LABELS_LEFT') {
     const field = {
       [label]: value
     };
-    return <FieldValueList item={field}/>
+    return <FieldValueList item={field} />;
   }
 
   if (readOnly) {
@@ -71,7 +71,7 @@ export default function Percentage(props) {
       required={required}
       disabled={disabled}
       onChange={onChange}
-      onBlur={onBlur}
+      onBlur={!readOnly ? onBlur : undefined}
       error={status === 'error'}
       label={label}
       value={value}

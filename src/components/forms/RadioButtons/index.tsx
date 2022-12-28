@@ -51,7 +51,12 @@ export default function RadioButtons(props) {
   return (
     <FormControl error={status === 'error'} required={required}>
       <FormLabel component='legend'>{label}</FormLabel>
-      <RadioGroup value={theSelectedButton} onChange={handleChange} onBlur={handleBlur} row={inline}>
+      <RadioGroup
+        value={theSelectedButton}
+        onChange={handleChange}
+        onBlur={!readOnly ? handleBlur : undefined}
+        row={inline}
+      >
         {theOptions.map(theOption => {
           return (
             <FormControlLabel

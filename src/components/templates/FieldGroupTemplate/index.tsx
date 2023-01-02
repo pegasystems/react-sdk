@@ -25,6 +25,14 @@ export default function FieldGroupTemplate(props) {
   const isReadonlyMode = renderMode === 'ReadOnly' || displayMode === 'LABELS_LEFT';
   const HEADING = heading ?? 'Row';
 
+  const addRecord = () => {
+    if (PCore.getPCoreVersion()?.includes('8.7')) {
+      pConn.getListActions().insert({ classID: contextClass }, referenceList.length, pageReference);
+    } else {
+      pConn.getListActions().insert({ classID: contextClass }, referenceList.length);
+    }
+  }
+
   if (!isReadonlyMode) {
     const addFieldGroupItem = () => {
       addRecord();
@@ -55,14 +63,6 @@ export default function FieldGroupTemplate(props) {
         onDelete={deleteFieldGroupItem}
       />
     );
-  }
-
-  const addRecord = () => {
-    if (PCore.getPCoreVersion()?.includes('8.7')) {
-      pConn.getListActions().insert({ classID: contextClass }, referenceList.length, pageReference);
-    } else {
-      pConn.getListActions().insert({ classID: contextClass }, referenceList.length);
-    }
   }
 
   pConn.setInheritedProp('displayMode', 'LABELS_LEFT');

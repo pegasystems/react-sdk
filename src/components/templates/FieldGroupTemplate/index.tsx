@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import FieldGroup from '../../designSystemExtensions/FieldGroup';
 import FieldGroupList from '../../designSystemExtensions/FieldGroupList';
 import { getReferenceList, buildView } from '../../../helpers/field-group-utils';
-import { AddCircleOutlineRounded } from '@material-ui/icons';
 
 declare const PCore: any;
 

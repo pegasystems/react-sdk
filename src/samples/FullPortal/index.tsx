@@ -129,17 +129,17 @@ export default function FullPortal() {
     const thePortal = SdkConfigAccess.getSdkConfigServer().appPortal;
     const defaultPortal = PCore?.getEnvironmentInfo()?.getDefaultPortal();
     // Note: myLoadPortal and myLoadDefaultPortal are set when bootstrapWithAuthHeader is invoked
-      if( thePortal ) {
-        // eslint-disable-next-line no-console
-        console.log(`Loading specified appPortal: ${thePortal}`);
-        myLoadPortal("pega-root", thePortal, []);
-      }
-      else if( myLoadDefaultPortal && defaultPortal ) {
-        // eslint-disable-next-line no-console
-        console.log(`Loading default portal`);
-        myLoadDefaultPortal("pega-root", []);
-      }
-      else {
+    if( thePortal ) {
+      // eslint-disable-next-line no-console
+      console.log(`Loading specified appPortal: ${thePortal}`);
+      myLoadPortal("pega-root", thePortal, []);
+    }
+    else if( myLoadDefaultPortal && defaultPortal ) {
+      // eslint-disable-next-line no-console
+      console.log(`Loading default portal`);
+      myLoadDefaultPortal("pega-root", []);
+    }
+    else {
       // This path of selecting a portal by enumerating entries within current user's access group's portals list
       // relies on Traditional DX APIs and should be avoided when the Constellation bootstrap supports
       // the loadDefaultPortal API
@@ -148,8 +148,8 @@ export default function FullPortal() {
         const selPortal = SdkConfigAccess.getSdkConfigServer().appPortal;
         myLoadPortal("pega-root", selPortal, []);   // this is defined in bootstrap shell that's been loaded already
       });
-      }
     }
+  }
 
   // One time (initialization)
   useEffect(() => {

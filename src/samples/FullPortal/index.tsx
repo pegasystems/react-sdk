@@ -127,7 +127,7 @@ export default function FullPortal() {
     //  top level Pega root element (likely a RootContainer)
 
     const thePortal = SdkConfigAccess.getSdkConfigServer().appPortal;
-    const defaultPortal = PCore.getEnvironmentInfo().getDefaultPortal();
+    const defaultPortal = PCore?.getEnvironmentInfo()?.getDefaultPortal();
     // Note: myLoadPortal and myLoadDefaultPortal are set when bootstrapWithAuthHeader is invoked
       if( thePortal ) {
         // eslint-disable-next-line no-console

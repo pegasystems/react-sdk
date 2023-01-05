@@ -245,11 +245,19 @@ export default function SimpleTableManual(props) {
   // console.log(JSON.stringify(rowData));
 
   const addRecord = () => {
-    pConn.getListActions().insert({ classID: contextClass }, referenceList.length, pageReference);
+    if (PCore.getPCoreVersion()?.includes('8.7')) {
+      pConn.getListActions().insert({ classID: contextClass }, referenceList.length, pageReference);
+    } else {
+      pConn.getListActions().insert({ classID: contextClass }, referenceList.length);
+    }
   };
 
   const deleteRecord = index => {
-    pConn.getListActions().deleteEntry(index, pageReference);
+    if (PCore.getPCoreVersion()?.includes('8.7')) {
+      pConn.getListActions().deleteEntry(index, pageReference);
+    } else {
+      pConn.getListActions().deleteEntry(index);
+    }
   };
 
   function buildElementsForTable() {

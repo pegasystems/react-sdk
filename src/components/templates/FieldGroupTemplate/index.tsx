@@ -6,6 +6,8 @@ import FieldGroup from '../../designSystemExtensions/FieldGroup';
 import FieldGroupList from '../../designSystemExtensions/FieldGroupList';
 import { getReferenceList, buildView } from '../../../helpers/field-group-utils';
 
+declare const PCore: any;
+
 export default function FieldGroupTemplate(props) {
   const {
     referenceList,
@@ -17,21 +19,33 @@ export default function FieldGroupTemplate(props) {
     displayMode
   } = props;
   const pConn = getPConnect();
+  const resolvedList = getReferenceList(pConn);
+  pConn.setReferenceList(resolvedList);
+  const pageReference = `${pConn.getPageReference()}${resolvedList}`;
   const isReadonlyMode = renderMode === 'ReadOnly' || displayMode === 'LABELS_LEFT';
   const HEADING = heading ?? 'Row';
 
-  if (!isReadonlyMode) {
-    const resolvedList = getReferenceList(pConn);
-    const pageReference = `${pConn.getPageReference()}${resolvedList}`;
-    pConn.setReferenceList(resolvedList);
-    const addFieldGroupItem = () => {
+  const addRecord = () => {
+    if (PCore.getPCoreVersion()?.includes('8.7')) {
       pConn.getListActions().insert({ classID: contextClass }, referenceList.length, pageReference);
+    } else {
+      pConn.getListActions().insert({ classID: contextClass }, referenceList.length);
+    }
+  }
+
+  if (!isReadonlyMode) {
+    const addFieldGroupItem = () => {
+      addRecord();
     };
     const deleteFieldGroupItem = index => {
-      pConn.getListActions().deleteEntry(index, pageReference);
+      if (PCore.getPCoreVersion()?.includes('8.7')) {
+        pConn.getListActions().deleteEntry(index, pageReference);
+      } else {
+        pConn.getListActions().deleteEntry(index);
+      }
     };
     if (referenceList.length === 0) {
-      pConn.getListActions().insert({ classID: contextClass }, referenceList.length, pageReference);
+      addFieldGroupItem();
     }
 
     const MemoisedChildren = useMemo(() => {
@@ -50,6 +64,7 @@ export default function FieldGroupTemplate(props) {
       />
     );
   }
+
   pConn.setInheritedProp('displayMode', 'LABELS_LEFT');
   const memoisedReadOnlyList = useMemo(() => {
     return referenceList.map((item, index) => (

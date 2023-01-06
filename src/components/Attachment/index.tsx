@@ -237,7 +237,7 @@ export default function Attachment(props) {
     const arFileList = file.props ? file.props.arFileList$ : list;
     const fileIndex = arFileList.findIndex(element => element?.id === item?.id);
     if (PCore.getPCoreVersion()?.includes('8.7')) {
-      if (value && value.pxResults[0]) {
+      if (value) {
         pConn.attachmentsInfo = {
           type: "File",
           attachmentFieldName: valueRef,
@@ -363,10 +363,10 @@ export default function Attachment(props) {
   let content = (
     <div className='file-div'>
         {file.inProgress && (<div className="progress-div"><CircularProgress /></div>)}
-        <label htmlFor='upload-input'>
+        <label htmlFor={valueRef}>
           <input
             style={{ display: 'none' }}
-            id='upload-input'
+            id={valueRef}
             name='upload-photo'
             type='file'
             required={required}

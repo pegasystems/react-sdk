@@ -44,7 +44,7 @@
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@material-ui/pickers": "^3.3.10",
     "@pega/constellationjs": "SDK-8.8.0",
-    "@pega/react-sdk-components": "file:constellation/react-sdk-components-0.23.03.tgz",
+    "@pega/react-sdk-components": "file:constellation/react-sdk-components-0.23.04.tgz",
     "@types/styled-components": "^5.1.26",
     "@unicef/material-ui-currency-textfield": "^0.8.6",
     "dayjs": "^1.10.6",

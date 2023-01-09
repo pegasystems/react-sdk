@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-boolean-value */
+
 import { Button } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { buildFilePropsFromResponse, getIconFromFileType, validateMaxSize, getIconForAttachment } from './AttachmentUtils';
@@ -237,7 +239,7 @@ export default function Attachment(props) {
     const arFileList = file.props ? file.props.arFileList$ : list;
     const fileIndex = arFileList.findIndex(element => element?.id === item?.id);
     if (PCore.getPCoreVersion()?.includes('8.7')) {
-      if (value && value.pxResults[0]) {
+      if (value) {
         pConn.attachmentsInfo = {
           type: "File",
           attachmentFieldName: valueRef,
@@ -363,10 +365,11 @@ export default function Attachment(props) {
   let content = (
     <div className='file-div'>
         {file.inProgress && (<div className="progress-div"><CircularProgress /></div>)}
-        <label htmlFor='upload-input'>
+        <div hidden={true} id="attachment-ID">{valueRef}</div>
+        <label htmlFor={valueRef}>
           <input
             style={{ display: 'none' }}
-            id='upload-input'
+            id={valueRef}
             name='upload-photo'
             type='file'
             required={required}

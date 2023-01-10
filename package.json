@@ -31,10 +31,12 @@
     "authenticate": "custom-dx-components-sdk authenticate",
     "create": "custom-dx-components-sdk create",
     "publish": "custom-dx-components-sdk publish",
+    "publishAll": "custom-dx-components-sdk publishAll",
     "list": "custom-dx-components-sdk list",
     "validate-schema": "custom-dx-components-sdk validateSchema",
     "update": "custom-dx-components-sdk update",
     "delete": "custom-dx-components-sdk delete",
+    "deleteAll": "custom-dx-components-sdk deleteAll",
     "buildComponent": "custom-dx-components-sdk buildComponent"
   },
   "dependencies": {

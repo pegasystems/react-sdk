@@ -265,10 +265,10 @@ test.describe('E2E test', () => {
     assignment = page.locator('div[id="Assignment"]');
 
     /** Testing the values present on Confirm screen */
-    await expect(assignment.locator('input[value="Main St"] >> nth=1')).toBeVisible();
-    await expect(assignment.locator('input[value="Cambridge"] >> nth=1')).toBeVisible();
-    await expect(assignment.locator('input[value="MA"] >> nth=1')).toBeVisible();
-    await expect(assignment.locator('input[value="02142"] >> nth=1')).toBeVisible();
+    await expect(assignment.locator('td:has-text("Main St") >> nth=1')).toBeVisible();
+    await expect(assignment.locator('td:has-text("Cambridge") >> nth=1')).toBeVisible();
+    await expect(assignment.locator('td:has-text("MA") >> nth=1')).toBeVisible();
+    await expect(assignment.locator('td:has-text("02142") >> nth=1')).toBeVisible();
     await expect(assignment.locator('td:has-text("+16175551212") >> nth=1')).toBeVisible();
 
     await page.locator('button:has-text("Previous")').click();
@@ -279,10 +279,10 @@ test.describe('E2E test', () => {
     await page.locator('button:has-text("Next")').click();
 
     /** Testing the values corresponding to newly created row on Confirm screen - those shouldn't be there */
-    await expect(assignment.locator('input[value="Main St"] >> nth=1')).toBeHidden();
-    await expect(assignment.locator('input[value="Cambridge"] >> nth=1')).toBeHidden();
-    await expect(assignment.locator('input[value="MA"] >> nth=1')).toBeHidden();
-    await expect(assignment.locator('input[value="02142"] >> nth=1')).toBeHidden();
+    await expect(assignment.locator('td:has-text("Main St") >> nth=1')).toBeHidden();
+    await expect(assignment.locator('td:has-text("Cambridge") >> nth=1')).toBeHidden();
+    await expect(assignment.locator('td:has-text("MA") >> nth=1')).toBeHidden();
+    await expect(assignment.locator('td:has-text("02142") >> nth=1')).toBeHidden();
     await expect(assignment.locator('td:has-text("+16175551212") >> nth=1')).toBeHidden();
 
     await page.locator('button:has-text("Previous")').click();

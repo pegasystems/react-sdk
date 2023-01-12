@@ -116,7 +116,7 @@ export default function FullPortal() {
   /**
    * kick off the application's portal that we're trying to serve up
    */
-  function startPortal() {
+   function startPortal() {
 
     // NOTE: When loadMashup is complete, this will be called.
     PCore.onPCoreReady(renderObj => {
@@ -133,20 +133,20 @@ export default function FullPortal() {
         initialRender(renderObj);
 
       })
-
     });
 
     // load the Portal and handle the onPCoreEntry response that establishes the
     //  top level Pega root element (likely a RootContainer)
 
     const thePortal = SdkConfigAccess.getSdkConfigServer().appPortal;
+    const defaultPortal = PCore?.getEnvironmentInfo?.().getDefaultPortal?.();
     // Note: myLoadPortal and myLoadDefaultPortal are set when bootstrapWithAuthHeader is invoked
     if( thePortal ) {
       // eslint-disable-next-line no-console
       console.log(`Loading specified appPortal: ${thePortal}`);
       myLoadPortal("pega-root", thePortal, []);
     }
-    else if( myLoadDefaultPortal ) {
+    else if( myLoadDefaultPortal && defaultPortal ) {
       // eslint-disable-next-line no-console
       console.log(`Loading default portal`);
       myLoadDefaultPortal("pega-root", []);

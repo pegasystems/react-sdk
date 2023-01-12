@@ -37,11 +37,23 @@ test.describe('E2E test', () => {
 
     await page.locator('button:has-text("submit")').click();
 
-    /** Query as Table */
-    /** selecting ListOfReords option from dropdown  */
+    /** selecting SingleRecord option from dropdown  */
     const selectedOption = await page.locator(
       'div[data-test-id="365ab066d5dd67171317bc3fc755245a"]'
     );
+    await selectedOption.click();
+    await page.locator('li:has-text("SingleRecord")').click();
+
+    /** Testing presence of Single Record Query data */
+    const assignment = page.locator('div[id="Assignment"]');
+
+    /** Testing the values present on Confirm screen */
+    await expect(assignment.locator('span >> text="Sacramento"')).toBeVisible();
+    await expect(assignment.locator('span >> text="CA"')).toBeVisible();
+    await expect(assignment.locator('span >> text="2653"')).toBeVisible();
+
+    /** Query as Table */
+    /** selecting ListOfReords option from dropdown  */
     await selectedOption.click();
     await page.locator('li:has-text("ListOfRecords")').click();
 

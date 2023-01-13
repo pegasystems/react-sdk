@@ -5,3 +5,4 @@ src/helpers/config_access.js
 *.json
 *.md
 *.svg
+*.zip

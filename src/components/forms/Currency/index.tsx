@@ -47,11 +47,11 @@ export default function Currency(props) {
     setCurrValue(value.toString());
   }, [value]);
 
-  if(displayMode === 'LABELS_LEFT'){
+  if (displayMode === 'LABELS_LEFT') {
     const field = {
       [label]: value
     };
-    return <FieldValueList item={field}/>
+    return <FieldValueList item={field} />;
   }
 
   function currOnChange(event, inValue) {
@@ -76,7 +76,7 @@ export default function Currency(props) {
       required={required}
       disabled={disabled}
       onChange={currOnChange}
-      onBlur={currOnBlur}
+      onBlur={!readOnly ? currOnBlur : undefined}
       error={status === 'error'}
       label={label}
       value={currValue}

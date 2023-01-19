@@ -56,7 +56,7 @@ export default function CheckboxComponent(props) {
           control={theCheckbox}
           checked={checked}
           onChange={!readOnly ? handleChange : undefined}
-          onBlur={handleBlur}
+          onBlur={!readOnly ? handleBlur : undefined}
           label={caption}
           labelPlacement='end'
           data-test-id={testId}

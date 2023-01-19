@@ -25,11 +25,11 @@ export default function Date(props) {
   const propName = pConn.getStateProps().value;
   const helperTextToDisplay = validatemessage || helperText;
 
-  if(displayMode === 'LABELS_LEFT'){
+  if (displayMode === 'LABELS_LEFT') {
     const field = {
       [label]: value
     };
-    return <FieldValueList item={field}/>
+    return <FieldValueList item={field} />;
   }
 
   if (readOnly) {
@@ -71,7 +71,7 @@ export default function Date(props) {
       label={label}
       value={value || null}
       onChange={handleChange}
-      onBlur={onBlur}
+      onBlur={!readOnly ? onBlur : undefined}
       onAccept={handleAccept}
       InputProps={{ ...testProp }}
     />

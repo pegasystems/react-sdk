@@ -24,11 +24,11 @@ export default function TextInput(props) {
 
   let readOnlyProp = {}; // Note: empty if NOT ReadOnly
 
-  if(displayMode === 'LABELS_LEFT'){
+  if (displayMode === 'LABELS_LEFT') {
     const field = {
       [label]: value
     };
-    return <FieldValueList item={field}/>
+    return <FieldValueList item={field} />;
   }
 
   if (readOnly) {
@@ -51,7 +51,7 @@ export default function TextInput(props) {
       required={required}
       disabled={disabled}
       onChange={onChange}
-      onBlur={onBlur}
+      onBlur={!readOnly ? onBlur : undefined}
       error={status === 'error'}
       label={label}
       value={value}

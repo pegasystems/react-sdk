@@ -53,7 +53,6 @@ export default function AutoComplete(props) {
   } = props;
   let parameters = datasourceMetadata?.datasource?.parameters;
   const context = getPConnect().getContextName();
-  const dataPageName = datasourceMetadata?.datasource?.name;
   let { listType, datasource = [], columns = [] } = props;
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Array<IOption>>([]);
@@ -112,7 +111,7 @@ export default function AutoComplete(props) {
 
   useEffect(() => {
     if (!displayMode && listType !== 'associated') {
-      getDataPage(dataPageName, parameters, context).then((results: any) => {
+      getDataPage(datasource, parameters, context).then((results: any) => {
         const optionsData: Array<any> = [];
         const displayColumn = getDisplayFieldsMetaData(columns);
         results?.forEach(element => {

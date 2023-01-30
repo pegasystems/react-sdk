@@ -4,7 +4,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import Utils from '../../../helpers/utils';
 import TextInput from '../TextInput';
 import isDeepEqual from 'fast-deep-equal/react';
-
+import { getDataPage } from '../../../helpers/data_page';
 declare const PCore;
 
 interface IOption {
@@ -52,6 +52,9 @@ export default function AutoComplete(props) {
     status,
     helperText
   } = props;
+  let parameters = datasourceMetadata?.datasource?.parameters;
+  const context = getPConnect().getContextName();
+  const dataPageName = datasourceMetadata?.datasource?.name;
   let { listType, datasource = [], columns = [] } = props;
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Array<IOption>>([]);
@@ -64,11 +67,22 @@ export default function AutoComplete(props) {
     setDatasource(datasource);
   }
 
+  const flattenParameters = (parameters = {}) => {
+    const flatParams = {};
+    Object.keys(parameters).forEach((key) => {
+      const { name, value } = parameters[key];
+      flatParams[name] = value;
+    });
+
+    return flatParams;
+  };
+
   // convert associated to datapage listtype and transform props
   // Process deferDatasource when datapage name is present. WHhen tableType is promptList / localList
   if (deferDatasource && datasourceMetadata?.datasource?.name) {
     listType = 'datapage';
     datasource = datasourceMetadata.datasource.name;
+    parameters = flattenParameters(parameters);
     const displayProp = datasourceMetadata.datasource.propertyForDisplayText.startsWith('@P')
       ? datasourceMetadata.datasource.propertyForDisplayText.substring(3)
       : datasourceMetadata.datasource.propertyForDisplayText;
@@ -89,7 +103,6 @@ export default function AutoComplete(props) {
       }
     ];
   }
-
   columns = preProcessColumns(columns);
 
   useEffect(() => {
@@ -100,11 +113,8 @@ export default function AutoComplete(props) {
 
   useEffect(() => {
     if (!displayMode && listType !== 'associated') {
-      const workListData = PCore.getDataApiUtils().getData(datasource, {});
-
-      workListData.then((workListJSON: Object) => {
-        const optionsData: Array<IOption> = [];
-        const results = workListJSON['data'].data;
+      getDataPage(dataPageName, parameters, context).then((results: any) => {
+        const optionsData: Array<any> = [];
         const displayColumn = getDisplayFieldsMetaData(columns);
         results?.forEach(element => {
           const val = element[displayColumn.primary]?.toString();

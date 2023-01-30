@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { useEffect, useState } from 'react';
 import { TextField } from '@material-ui/core';

@@ -9,6 +9,8 @@ export default function DetailsThreeColumn(props) {
 
   for (const child of children) {
     const theChildPConn = child.props.getPConnect();
+    theChildPConn.setInheritedProp('displayMode', 'LABELS_LEFT');
+    theChildPConn.setInheritedProp('readOnly', true);
     const theChildrenOfChild = theChildPConn.getChildren();
     arFields.push(theChildrenOfChild);
   }

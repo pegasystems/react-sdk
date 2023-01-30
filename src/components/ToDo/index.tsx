@@ -28,6 +28,22 @@ import './ToDo.css';
 
 // import { useNavBar } from "../templates/AppShell";
 
+function getCaseInfoAssignment(assignmentsSource: Array<any>, caseInfoID: string) {
+  const result: Array<any> = [];
+  for (const source of assignmentsSource) {
+    if (source.ID.indexOf(caseInfoID) >= 0) {
+      const listRow = JSON.parse(JSON.stringify(source));
+      // urgency becomes priority
+      listRow['priority'] = listRow.urgency || undefined;
+      // mimic regular list
+      listRow['id'] = listRow['ID'] || undefined;
+      result.push(listRow);
+    }
+  }
+
+  return result;
+}
+
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(1),
@@ -87,30 +103,6 @@ export default function ToDo(props) {
       }
     }
     return arList3;
-  }
-
-  function getCaseInfoAssignment(arList: Array<any>, inCaseInfoID: string) {
-    const arList1: Array<any> = new Array<any>();
-    for ( const aIndex in arList) {
-      if (arList[aIndex].ID.indexOf(inCaseInfoID) >= 0) {
-
-        const listRow = JSON.parse(JSON.stringify(arList[aIndex]));
-
-        // urgency becomes priority
-        if (listRow.urgency) {
-          listRow["priority"] = listRow.urgency;
-        }
-
-        if (listRow.ID) {
-          // mimic regular list
-          listRow["id"] = listRow["ID"];
-        }
-
-        arList1.push(listRow);
-        break;
-      }
-    }
-    return arList1;
   }
 
   function getID(assignment: any) {

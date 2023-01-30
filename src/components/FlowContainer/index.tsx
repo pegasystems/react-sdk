@@ -51,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FlowContainer(props) {
   const pCoreConstants = PCore.getConstants();
+  const { TODO } = pCoreConstants;
+  const todo_headerText = "To do";
 
   const { getPConnect, routingInfo } = props;
 
@@ -67,10 +69,6 @@ export default function FlowContainer(props) {
   const [todo_caseInfoID, setCaseInfoID] = useState("");
   const [todo_showTodoList, setShowTodoList] = useState(false);
   const [todo_datasource, setTodoDatasource] = useState({});
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  const [todo_headerText, setTodoHeaderText] = useState("To do");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  const [todo_type, setTodoType] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const [todo_context, setTodoContext] = useState("");
 
@@ -287,14 +285,9 @@ export default function FlowContainer(props) {
 
 
   // From WC SDK updateSelf - so do this in useEffect that's run only when the props change...
-
   useEffect(() => {
-
-    // debugger;
-
     const localPConn = arNewChildren[0].getPConnect();
 
-    // debugger;
     setBuildName(getBuildName());
 
     // routingInfo was added as component prop in populateAdditionalProps
@@ -309,9 +302,7 @@ export default function FlowContainer(props) {
       console.error(`${thePConn.getComponentName()}: loadingInfo catch block`);
     }
 
-
     // let configProps = this.thePConn.resolveConfigProps(this.thePConn.getConfigProps());
-
 
     if (!loadingInfo) {
       // turn off spinner
@@ -319,34 +310,22 @@ export default function FlowContainer(props) {
     }
 
     const caseViewMode = thePConn.getValue("context_data.caseViewMode");
-
     const { CASE_INFO: CASE_CONSTS } = pCoreConstants;
-
-
     if (caseViewMode && caseViewMode === "review") {
-
       setTimeout(() => {
-
         // updated for 8.7 - 30-Mar-2022
-
         const todoAssignments = getToDoAssignments(thePConn);
-
         if (todoAssignments && todoAssignments.length > 0) {
           setCaseInfoID(thePConn.getValue(CASE_CONSTS.CASE_INFO_ID));
           setTodoDatasource({ source: todoAssignments });
         }
-
         setShowTodo(true);
         setShowTodoList(false);
-
-
       }, 100);
-
 
       // in React, when cancel is called, somehow the constructor for flowContainer is called which
       // does init/add of containers.  This mimics that
       initContainer();
-
     }
     else if (caseViewMode && caseViewMode === "perform") {
       // perform
@@ -497,7 +476,7 @@ export default function FlowContainer(props) {
           :
           <div>
             <ToDo getPConnect={getPConnect} caseInfoID={todo_caseInfoID} datasource={todo_datasource}
-              showTodoList={todo_showTodoList} headerText={todo_headerText} type={todo_type}
+              showTodoList={todo_showTodoList} headerText={todo_headerText} type={TODO}
               context={todo_context} itemKey={itemKey}></ToDo>
           </div>
         :

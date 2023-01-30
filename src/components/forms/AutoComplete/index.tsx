@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useEffect, useState } from 'react';
 import { TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -5,7 +6,6 @@ import Utils from '../../../helpers/utils';
 import TextInput from '../TextInput';
 import isDeepEqual from 'fast-deep-equal/react';
 import { getDataPage } from '../../../helpers/data_page';
-declare const PCore;
 
 interface IOption {
   key: string;
@@ -67,10 +67,10 @@ export default function AutoComplete(props) {
     setDatasource(datasource);
   }
 
-  const flattenParameters = (parameters = {}) => {
+  const flattenParameters = (params = {}) => {
     const flatParams = {};
-    Object.keys(parameters).forEach((key) => {
-      const { name, value } = parameters[key];
+    Object.keys(params).forEach((key) => {
+      const { name, value } = params[key];
       flatParams[name] = value;
     });
 

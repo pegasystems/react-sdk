@@ -1,5 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useEffect, useState } from 'react';
 import { TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -71,8 +69,8 @@ export default function AutoComplete(props) {
   const flattenParameters = (params = {}) => {
     const flatParams = {};
     Object.keys(params).forEach((key) => {
-      const { name, value } = params[key];
-      flatParams[name] = value;
+      const { name, value: theVal } = params[key];
+      flatParams[name] = theVal;
     });
 
     return flatParams;

@@ -185,10 +185,13 @@ export default function Attachment(props) {
             handle: fileRes.ID,
             ID: fileRes.clientFileID
           };
+          const currentAttachmentList = getCurrentAttachmentsList(pConn.getContextName()).filter(
+            (f) => f.label !== valueRef
+          );
           PCore.getStateUtils().updateState(
             pConn.getContextName(),
             'attachmentsList',
-            [reqObj],
+            [...currentAttachmentList, reqObj],
             {
               pageReference: 'context_data',
               isArrayDeepMerge: false

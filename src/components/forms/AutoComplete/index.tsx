@@ -117,7 +117,7 @@ export default function AutoComplete(props) {
         results?.forEach(element => {
           const val = element[displayColumn.primary]?.toString();
           const obj = {
-            key: element.pyGUID || val,
+            key: element[displayColumn.key] || element.pyGUID,
             value: val
           };
           optionsData.push(obj);

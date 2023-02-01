@@ -28,6 +28,10 @@ import './ToDo.css';
 
 declare const PCore: any;
 
+const isChildCase = (assignment) => {
+  return assignment.isChild;
+};
+
 function topThreeAssignments(assignmentsSource: Array<any>): Array<any> {
   return Array.isArray(assignmentsSource) ? assignmentsSource.slice(0, 3) : [];
 }
@@ -90,7 +94,7 @@ export default function ToDo(props) {
     }
   }
 
-  const getAssignmentkey = assignment => {
+  const getAssignmentId = assignment => {
     return type === CONSTS.TODO ? assignment.ID : assignment.id;
   };
 
@@ -128,7 +132,7 @@ export default function ToDo(props) {
   }
 
   function clickGo(assignment) {
-    const { id } = assignment;
+    const id = getAssignmentId(assignment);
     let { classname = '' } = assignment;
     const sTarget = thePConn.getContainerName();
     const sTargetContainerName = sTarget;
@@ -143,7 +147,7 @@ export default function ToDo(props) {
       options['isActionFromToDoList'] = true;
       options['target'] = '';
       options['context'] = null;
-      options['isChild'] = undefined;
+      options['isChild'] = isChildCase(assignment);
     } else {
       options['isActionFromToDoList'] = false;
       options['target'] = sTarget;
@@ -200,7 +204,7 @@ export default function ToDo(props) {
           <List>
             {assignments.map(assignment => (
               <ListItem
-                key={getAssignmentkey(assignment)}
+                key={getAssignmentId(assignment)}
                 dense
                 divider
                 onClick={() => clickGo(assignment)}

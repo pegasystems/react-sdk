@@ -75,7 +75,7 @@
     "@pega/dx-component-builder-sdk": "latest",
     "@pega/eslint-config": "^0.3.2",
     "@pega/prettier-config": "^0.3.2",
-    "@pega/react-sdk-overrides": "file:pega-react-sdk-overrides-0.23.5.tgz",
+    "@pega/react-sdk-overrides": "latest",
     "@playwright/test": "^1.28.0",
     "@storybook/addon-actions": "^6.5.12",
     "@storybook/addon-essentials": "^6.5.12",

@@ -40,3 +40,6 @@ playwright-report/
 
 # unit testing coverage
 /coverage
+
+# sdk configuration file
+sdk-config.json

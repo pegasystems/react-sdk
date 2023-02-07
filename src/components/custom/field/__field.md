@@ -1,4 +1,4 @@
-# The **field** directory
+# The **custom/field** directory
 
 The **src/components/custom/field** directory contains the code for the custom **field** components you want to create and use with the **React SDK**.
 

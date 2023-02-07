@@ -1,4 +1,4 @@
-# The **template** directory
+# The **custom/template** directory
 
 The **src/components/custom/template** directory contains the code for the custom **template** components you want to create and use with the **React SDK**.
 

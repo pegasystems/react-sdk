@@ -1,4 +1,4 @@
-# The **override** directory
+# The **components/override** directory
 
 The **src/components/override** directory contains the code for components for which you want to override the default implementation for use with the **React SDK**.
 

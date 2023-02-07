@@ -1,4 +1,4 @@
-# The **custom** directory
+# The **components/custom** directory
 
 The **src/components/custom** directory contains the code for custom components that you create and use with the **React SDK**.
 

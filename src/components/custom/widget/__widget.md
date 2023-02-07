@@ -1,4 +1,4 @@
-# The **widget** directory
+# The **custom/widget** directory
 
 The **src/components/custom/widget** directory contains the code for the custom **widget** components you want to create and use with the **React SDK**.
 

@@ -38,7 +38,7 @@
     "override": "dx-component-builder-sdk override",
     "publish": "dx-component-builder-sdk publish",
     "publishAll": "dx-component-builder-sdk publishAll",
-    "start": "start-storybook --port 6040 --quiet",
+    "start-storybook": "start-storybook --port 6040 --quiet",
     "update": "dx-component-builder-sdk update",
     "validate-schema": "dx-component-builder-sdk validateSchema"
   },

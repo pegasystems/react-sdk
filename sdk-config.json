@@ -9,6 +9,7 @@
     "mashupClient_comment2": "See SDK Guide for instructions on how to generate and obtain the proper values for the following entries",
     "mashupClientId": "25795373220702300272",
     "mashupUserIdentifier": "customer@mediaco",
+    "mashupClient_comment3": "Note: mashupPassword requires Base64 encoding",
     "mashupPassword": "",
 
     "portalClientId_comment": "Client ID from the OAuth 2.0 Client Registration record used for portal use case",

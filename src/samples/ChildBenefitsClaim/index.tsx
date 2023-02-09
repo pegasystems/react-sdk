@@ -1,13 +1,10 @@
-/* eslint-disable react/button-has-type */
 import React, { useState, useEffect } from 'react';
 import { render } from "react-dom";
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 
 import StoreContext from "../../bridge/Context/StoreContext";
 import createPConnectComponent from "../../bridge/react_pconnect";
 
-import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '../../helpers/authManager';
+import { loginIfNecessary, sdkSetAuthHeader } from '../../helpers/authManager';
 
 import { compareSdkPCoreVersions } from '../../helpers/versionHelpers';
 import { getSdkConfig } from '../../helpers/config_access';
@@ -22,15 +19,27 @@ declare const myLoadMashup: any;
 
 export default function ChildBenefits() {
 
-  //const classes = useStyles();
-
   const [pConn, setPConn] = useState<any>(null);
 
   const [bShowPega, setShowPega] = useState(false);
 
+
+  function createCase() {
+    setShowPega(true);
+
+    const actionsApi = pConn.getActionsApi();
+    const createWork = actionsApi.createWork.bind(actionsApi);
+
+    const actionInfo = {
+        containerName: "primary"
+      };
+
+      createWork("O0GBM6-ChildBen-Work-ChildBenefit", actionInfo);
+
+  }
+
   useEffect( () => {
-    //Check if PConn is createdy, and create case if it is
-    console.log(`ChildBenifts: PConn is ${pConn}`);
+    // Check if PConn is created, and create case if it is
     if(pConn){
       createCase();
     }
@@ -38,9 +47,6 @@ export default function ChildBenefits() {
 
   useEffect( () => {
     // Update visibility of UI when bShowPega changes
-    // eslint-disable-next-line no-console
-    console.log(`ChildBenifts: bShowPega set to ${bShowPega}`);
-
     const thePegaPartEl = document.getElementById("pega-part-of-page");
 
     if (thePegaPartEl) {
@@ -91,12 +97,10 @@ export default function ChildBenefits() {
     const thePConnObj = <PegaConnectObj {...props} />;
 
     // NOTE: For Embedded mode, we add in displayOnlyFA and isMashup to our React context
-    //  so the values are available to any component that may need it.
+    // so the values are available to any component that may need it.
     const theComp =
       <StoreContext.Provider value={{store: PCore.getStore(), displayOnlyFA: true, isMashup: true}} >
-        {/*<ThemeProvider theme={theme}>*/}
-          {thePConnObj}
-        {/*  </ThemeProvider>*/}
+        {thePConnObj}
       </StoreContext.Provider>;
 
     return theComp;
@@ -143,13 +147,11 @@ export default function ChildBenefits() {
     }
 
     const theComponent = (
-      //<ThemeProvider theme={theme}>
-        <Component
-          {...props}
-          portalTarget={portalTarget}
-          styleSheetTarget={styleSheetTarget}
-        />
-      //</ThemeProvider>
+      <Component
+        {...props}
+        portalTarget={portalTarget}
+        styleSheetTarget={styleSheetTarget}
+      />
     );
 
     // Initial render of component passed in (which should be a RootContainer)
@@ -162,24 +164,6 @@ export default function ChildBenefits() {
 
     // Initial render to show that we have a PConnect and can render in the target location
     // render( <div>EmbeddedTopLevel initialRender in {domContainerID} with PConn of {componentName}</div>, target);
-
-  }
-
-  function createCase() {
-    console.log("Creating Case");
-    setShowPega(true);
-
-    const actionsApi = pConn.getActionsApi();
-    const createWork = actionsApi.createWork.bind(actionsApi);
-    const sFlowType = "pyStartCase";
-
-    let actionInfo;
-
-      actionInfo = {
-        containerName: "primary"
-      };
-
-      createWork("O0GBM6-ChildBen-Work-ChildBenefit", actionInfo);
 
   }
 

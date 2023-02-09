@@ -17,7 +17,7 @@ import { getSdkConfig } from '../../helpers/config_access';
 declare const PCore: any;
 declare const myLoadMashup: any;
 
-export default function ChildBenefits() {
+export default function ChildBenefitsClaim() {
 
   const [pConn, setPConn] = useState<any>(null);
 
@@ -250,7 +250,6 @@ export default function ChildBenefits() {
     <div>
       <div>
         <div id="pega-part-of-page">
-        {/* <root-container .pConn="${this.pConn}" ?displayOnlyFA="${true}" ?isMashup="${true}"></root-container> */}
           <div id="pega-root"></div>
         </div>
       </div>

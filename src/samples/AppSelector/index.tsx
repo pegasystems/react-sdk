@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch, Route } from 'react-router-dom';
-import ChildBenefits from '../ChildBenefitsClaim'
+import ChildBenefitsClaim from '../../journeys/ChildBenefitsClaim'
 
 // NOTE: You should update this to be the same value that's in
 //  the src/index.html <base href="value"> to allow the React Router

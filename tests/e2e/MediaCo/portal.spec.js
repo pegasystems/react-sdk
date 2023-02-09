@@ -117,13 +117,13 @@ test.describe('E2E test', () => {
     await page.setInputFiles(`#${attachmentID}`, filePath);
 
     await Promise.all([
-      page.waitForResponse(`${endpoints.serverConfig.infinityRestServerUrl}/api/application/v2/attachments/upload`)
+      page.waitForResponse(`${endpoints.serverConfig.infinityRestServerUrl}${endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ""}/api/application/v2/attachments/upload`)
     ]);
 
     await page.locator('button:has-text("submit")').click();
 
     await Promise.all([
-      page.waitForResponse(`${endpoints.serverConfig.infinityRestServerUrl}/api/application/v2/cases/${currentCaseID}/attachments`),
+      page.waitForResponse(`${endpoints.serverConfig.infinityRestServerUrl}${endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ""}/api/application/v2/cases/${currentCaseID}/attachments`),
     ]);
 
     const attachmentCount = await page.locator('div[id="attachments-count"]').textContent();

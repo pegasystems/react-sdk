@@ -159,7 +159,7 @@ export default function Attachment(props) {
 
     const onUploadProgress = () => {};
 
-    const errorHandler = (isFetchCanceled, file) => {
+    const errorHandler = (isFetchCanceled) => {
       return (error) => {
         if (!isFetchCanceled(error)) {
           let uploadFailMsg = pConn.getLocalizedValue('Something went wrong');

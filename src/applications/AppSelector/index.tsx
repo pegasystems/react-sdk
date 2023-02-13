@@ -1,7 +1,6 @@
 import React from "react";
 import { Switch, Route } from 'react-router-dom';
-import EmbeddedTopLevel from "../Embedded/EmbeddedTopLevel";
-import FullPortal from "../FullPortal";
+import ChildBenefitsClaim from '../ChildBenefitsClaim'
 
 // NOTE: You should update this to be the same value that's in
 //  the src/index.html <base href="value"> to allow the React Router
@@ -18,13 +17,8 @@ const AppSelector = () => {
   return (
       <div>
         <Switch>
-          <Route exact path={`${baseURL}`} component={EmbeddedTopLevel} />
-          <Route path={`${baseURL}index.html`} component={EmbeddedTopLevel} />
-          <Route path={`${baseURL}embedded`} component={EmbeddedTopLevel} />
-          <Route path={`${baseURL}embedded.html`} component={EmbeddedTopLevel} />
-          <Route path={`${baseURL}portal`} component={FullPortal} />
-          <Route path={`${baseURL}portal.html`} component={FullPortal} />
-          <Route path="*" component={EmbeddedTopLevel} />
+          <Route exact path={`${baseURL}`} component={ChildBenefitsClaim} />
+          <Route exact path={`${baseURL}claim-child-benefit`} component={ChildBenefitsClaim} />
         </Switch>
     </div>
   )

@@ -41,26 +41,21 @@ export default function DetailsFields(props) {
   fields?.forEach((field, index) => {
     const thePConn = field.getPConnect();
     const theCompType = thePConn.getComponentName().toLowerCase();
-    const { label, value } = thePConn.getConfigProps();
-    // If value is "" then also we would have to get viewMetadata using getReferencedView.
-    if (theCompType === 'reference' || value === '') {
-      const configObj = thePConn?.getReferencedView();
-      configObj.config.readOnly = theCompType === 'reference';
-      configObj.config.displayMode = 'LABELS_LEFT';
-      const propToUse = { ...thePConn.getInheritedProps() };
-      configObj.config.label = theCompType === 'reference' ? propToUse?.label : label;
-      fieldComponents.push({
-        type: theCompType,
-        label,
-        value: (
-          <React.Fragment key={index}>
-            {createElement(createPConnectComponent(), thePConn.getReferencedViewPConnect())}
-          </React.Fragment>
-        )
-      });
-    } else {
-      fieldComponents.push({ type: theCompType, value, label });
-    }
+    const { label } = thePConn.getConfigProps();
+    const configObj = thePConn?.getReferencedView();
+    configObj.config.readOnly = theCompType === 'reference';
+    configObj.config.displayMode = 'LABELS_LEFT';
+    const propToUse = { ...thePConn.getInheritedProps() };
+    configObj.config.label = theCompType === 'reference' ? propToUse?.label : label;
+    fieldComponents.push({
+      type: theCompType,
+      label,
+      value: (
+        <React.Fragment key={index}>
+          {createElement(createPConnectComponent(), thePConn.getReferencedViewPConnect())}
+        </React.Fragment>
+      )
+    });
   });
 
   function getGridItemLabel(field: any, keyVal: string) {
@@ -111,7 +106,6 @@ export default function DetailsFields(props) {
   }
 
   function getGridItem(field: any, keyVal: string) {
-
     return (
       <Grid item xs={12} key={keyVal}>
         <Typography variant='body2' component='span' className={classes.fieldValue}>

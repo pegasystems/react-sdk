@@ -44,7 +44,7 @@ export default function SummaryItem(props) {
             <img className="psdk-utility-card-actions-svg-icon" src={`${imagePath$}${item.primary.icon}.svg`}></img>
           </button>
         </div>)}
-        {item.secondary.text && (<div>{item.secondary.text}</div>)}
+        {item.secondary.text && (<div style={{ color: item.secondary.error ? 'red' : undefined }}>{item.secondary.text}</div>)}
       </div>
       <div className="psdk-utility-action">
         {menuIconOverride$ && (<button type="button" className="psdk-utility-button" onClick={removeAttachment}>

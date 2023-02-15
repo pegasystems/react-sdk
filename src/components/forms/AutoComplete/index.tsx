@@ -5,6 +5,7 @@ import Utils from '../../../helpers/utils';
 import TextInput from '../TextInput';
 import isDeepEqual from 'fast-deep-equal/react';
 import { getDataPage } from '../../../helpers/data_page';
+import handleEvent from '../../../helpers/event-utils';
 
 interface IOption {
   key: string;
@@ -42,7 +43,6 @@ export default function AutoComplete(props) {
     placeholder,
     value = '',
     validatemessage,
-    onChange,
     readOnly,
     testId,
     displayMode,
@@ -59,6 +59,10 @@ export default function AutoComplete(props) {
   const [theDatasource, setDatasource] = useState(null);
   let selectedValue: any = '';
   const helperTextToDisplay = validatemessage || helperText;
+
+  const thePConn = getPConnect();
+  const actionsApi = thePConn.getActionsApi();
+  const propName = thePConn.getStateProps().value;
 
   if (!isDeepEqual(datasource, theDatasource)) {
     // inbound datasource is different, so update theDatasource (to trigger useEffect)
@@ -137,7 +141,8 @@ export default function AutoComplete(props) {
   }
 
   const handleChange = (event: object, newValue) => {
-    onChange({ value: newValue ? newValue.key : '' });
+    const val = newValue ? newValue.key : '' ;
+    handleEvent(actionsApi, 'changeNblur', propName, val);
   };
 
   const handleInputValue = (event, newInputValue) => {

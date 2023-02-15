@@ -286,7 +286,7 @@ const ModalViewContainer = props => {
         </DialogTitle>
         <DialogContent className={classes.dlgContent}>
           {bShowModal ? (
-            <Assignment getPConnect={createdView.getPConnect} itemKey={itemKey} isCreateStage>
+            <Assignment getPConnect={createdView.getPConnect} itemKey={itemKey} isInModal>
               {arNewChildrenAsReact}
             </Assignment>
           ) : (

@@ -27,7 +27,7 @@ export default function CaseViewActionsMenu(props) {
     const actionsAPI = thePConn.getActionsApi();
     const openLocalAction = actionsAPI.openLocalAction.bind(actionsAPI);
 
-    openLocalAction( data.ID, { ...data});
+    openLocalAction( data.ID, { ...data, containerName: 'modal', type: 'express'});
     // after doing the action, close the menu...
     handleClose();
 

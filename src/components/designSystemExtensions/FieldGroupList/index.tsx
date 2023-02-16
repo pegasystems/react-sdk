@@ -29,7 +29,7 @@ const FieldGroupList = props => {
                   type='button'
                   style={{ float: 'right' }}
                   className='psdk-utility-button'
-                  id={`delete-row-${Utils.getLastChar(item.name)}`}
+                  id={`delete-row-${item.id}`}
                   onClick={() => {
                     props.onDelete(item.id);
                   }}

@@ -24,26 +24,30 @@ const FieldGroupList = props => {
           {props.items.map(item => (
             <Grid item style={{ width: '100%' }}>
               <b>{item.name}</b>
-              <button
-                type='button'
-                style={{ float: 'right' }}
-                className='psdk-utility-button'
-                id={`delete-row-${Utils.getLastChar(item.name)}`}
-                onClick={() => {
-                  props.onDelete(item.id);
-                }}
-              >
-                <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$}></img>
-              </button>
+              {props.onDelete && (
+                <button
+                  type='button'
+                  style={{ float: 'right' }}
+                  className='psdk-utility-button'
+                  id={`delete-row-${Utils.getLastChar(item.name)}`}
+                  onClick={() => {
+                    props.onDelete(item.id);
+                  }}
+                >
+                  <img className='psdk-utility-card-action-svg-icon' src={menuIconOverride$}></img>
+                </button>
+              )}
               {item.children}
               <br />
-              <Divider />
+              {props.onAdd && <Divider />}
               <br />
             </Grid>
           ))}
-          <Link onClick={props.onAdd} style={{ cursor: 'pointer' }}>
-            +Add
-          </Link>
+          {props.onAdd && (
+            <Link onClick={props.onAdd} style={{ cursor: 'pointer' }}>
+              +Add
+            </Link>
+          )}
         </Grid>
       </Grid>
     </Grid>

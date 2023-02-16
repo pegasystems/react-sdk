@@ -16,7 +16,8 @@ export default function FieldGroupTemplate(props) {
     getPConnect,
     lookForChildInConfig,
     heading,
-    displayMode
+    displayMode,
+    allowTableEdit: allowAddEdit
   } = props;
   const pConn = getPConnect();
   const resolvedList = getReferenceList(pConn);
@@ -44,7 +45,7 @@ export default function FieldGroupTemplate(props) {
         pConn.getListActions().deleteEntry(index);
       }
     };
-    if (referenceList.length === 0) {
+    if (referenceList.length === 0 && allowAddEdit !== false) {
       addFieldGroupItem();
     }
 
@@ -59,8 +60,8 @@ export default function FieldGroupTemplate(props) {
     return (
       <FieldGroupList
         items={MemoisedChildren}
-        onAdd={addFieldGroupItem}
-        onDelete={deleteFieldGroupItem}
+        onAdd={allowAddEdit !== false ? addFieldGroupItem : undefined}
+        onDelete={allowAddEdit !== false ? deleteFieldGroupItem : undefined}
       />
     );
   }

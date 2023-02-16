@@ -20,8 +20,8 @@ This version of the React SDK assumes that you have access to a Pega Infinity se
 The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download. For more information about the MediaCo sample application, see [MediaCo sample application](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/mediaco-sample-application.html).
 
 The **React SDK** has been tested with:
-- node 14.18.*
-- npm 6.14.*
+- node 18.12.1/18.13.0
+- npm 8.19.2/8.19.3 
 
 Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
 
@@ -235,8 +235,8 @@ You can test both **Portal** and **Embedded** scenarios by executing the followi
 <br>
 
 ### Check Node/NPM versions
-Currently, the SDK supports **Node 14**. It has been tested with node v14.18.*. It may not be stable with node v16+. Future updates to the SDK will support more recent LTS versions of node as the Constellation architecture supports them.
-
+Currently, the SDK supports Node 18.* (LTS/Hydrogen) and has been tested with node 18.12.1/18.13.0 and npm 8.19.2/8.19.3, respectively. 
+Future updates to the SDK will support more recent LTS versions of node as Constellation supports them. 
 
 ### Verify/update Cross Origin Resource Sharing (CORS) Infinity record
 

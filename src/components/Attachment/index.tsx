@@ -133,12 +133,13 @@ export default function Attachment(props) {
       },
       primary: {
         type: att.type,
-        name: att.name,
+        name: att.error ? att.fileName : att.name,
         icon: "trash",
         click: removeFile,
       },
       secondary: {
-        text: att.meta
+        text: att.meta,
+        error: att.error
       },
       actions
     };
@@ -158,7 +159,41 @@ export default function Attachment(props) {
 
     const onUploadProgress = () => {};
 
-    const errorHandler = () => {};
+    const errorHandler = (isFetchCanceled) => {
+      return (error) => {
+        if (!isFetchCanceled(error)) {
+          let uploadFailMsg = pConn.getLocalizedValue('Something went wrong');
+          if (error.response && error.response.data && error.response.data.errorDetails) {
+            uploadFailMsg = pConn.getLocalizedValue(error.response.data.errorDetails[0].localizedValue);
+          }
+          myFiles[0].meta = uploadFailMsg;
+          myFiles[0].error = true;
+          myFiles[0].fileName = pConn.getLocalizedValue('Unable to upload file');
+          arFileList$ = myFiles.map((att) => {
+            return getNewListUtilityItemProps({
+              att,
+              downloadFile: null,
+              cancelFile: null,
+              deleteFile: null,
+              removeFile: null
+            });
+          });
+          setFile((current) => {
+            return {
+              ...current,
+              props: {
+                ...current.props,
+                arFileList$
+              },
+              inProgress: false,
+              attachmentUploaded: true,
+              showMenuIcon: false
+            };
+          });
+        }
+        throw error;
+      };
+    };
 
     PCore.getAttachmentUtils()
       .uploadAttachment(

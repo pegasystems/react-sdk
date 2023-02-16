@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 declare const PCore: any;
 
 export default function Assignment(props) {
-  const { getPConnect, children, itemKey, isCreateStage } = props;
+  const { getPConnect, children, itemKey, isInModal } = props;
   const thePConn = getPConnect();
 
   const [bHasNavigation, setHasNavigation] = useState(false);
@@ -164,7 +164,9 @@ export default function Assignment(props) {
           // check if create stage (modal)
           const { PUB_SUB_EVENTS } = PCore.getConstants();
           const { publish } = PCore.getPubSubUtils();
-          if (isCreateStage) {
+          const isAssignmentInCreateStage = thePConn.getCaseInfo().isAssignmentInCreateStage();
+          const isLocalAction = thePConn.getCaseInfo().isLocalAction() || getPConnect().getValue(PCore.getConstants().CASE_INFO.IS_LOCAL_ACTION);
+          if (isAssignmentInCreateStage && isInModal && !isLocalAction) {
             const cancelPromise = cancelCreateStageAssignment(itemKey);
 
             cancelPromise
@@ -289,13 +291,13 @@ Assignment.propTypes = {
   children: PropTypes.node.isRequired,
   getPConnect: PropTypes.func.isRequired,
   itemKey: PropTypes.string,
-  isCreateStage: PropTypes.bool
+  isInModal: PropTypes.bool
   // actionButtons: PropTypes.object
   // buildName: PropTypes.string
 };
 
 Assignment.defaultProps = {
   itemKey: null,
-  isCreateStage: false
+  isInModal: false
   // buildName: null
 };

@@ -1,15 +1,16 @@
 // from react_root.js
 import React from "react";
-import { render } from "react-dom";
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import TopLevelApp from './applications/TopLevelApp';
 
 const outletElement = document.getElementById("outlet");
 
-if(outletElement){
-  render((
+if (outletElement) {
+  const root = createRoot(outletElement);
+  root.render(
     <BrowserRouter>
       <TopLevelApp />
     </BrowserRouter>
-  ), document.getElementById("outlet"));
+  );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { render } from "react-dom";
+import { createRoot } from 'react-dom/client';
 
 import StoreContext from "../../bridge/Context/StoreContext";
 import createPConnectComponent from "../../bridge/react_pconnect";
@@ -155,11 +155,11 @@ export default function ChildBenefitsClaim() {
     );
 
     // Initial render of component passed in (which should be a RootContainer)
-    render(
+    const root = createRoot(target); // createRoot(container!) if you use TypeScript
+    root.render(
       <React.Fragment>
         {theComponent}
-      </React.Fragment>,
-      target
+      </React.Fragment>
     )
 
     // Initial render to show that we have a PConnect and can render in the target location

@@ -39,14 +39,6 @@ module.exports = (env, argv) => {
           to: 'assets/images/'
         },
         {
-          from: './node_modules/govuk-frontend/govuk/assets/images',
-          to: '/assets/images/'
-        },
-        {
-          from: './node_modules/govuk-frontend/govuk/assets/images',
-          to: path.resolve(__dirname, './assets/images2/')
-        },
-        {
           from: './node_modules/govuk-frontend/govuk/assets/fonts',
           to: 'assets/fonts/'
         },

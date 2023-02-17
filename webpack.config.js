@@ -4,12 +4,20 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const LiveReloadPlugin = require('@kooneko/livereload-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const webpack = require('webpack');
 const zlib = require('zlib');
+
+
+const handler = (percentage, message, ...args) => {
+  // e.g. Output each progress message directly to the console:
+  console.info(percentage, message, ...args);
+};
 
 module.exports = (env, argv) => {
   const pluginsToAdd = [];
   const webpackMode = argv.mode;
 
+  pluginsToAdd.push(new webpack.ProgressPlugin(handler));
   pluginsToAdd.push(new CleanWebpackPlugin());
   pluginsToAdd.push(
     new HtmlWebpackPlugin({
@@ -26,6 +34,22 @@ module.exports = (env, argv) => {
   pluginsToAdd.push(
     new CopyWebpackPlugin({
       patterns: [
+        {
+          from: './node_modules/govuk-frontend/govuk/assets/images',
+          to: 'assets/images/'
+        },
+        {
+          from: './node_modules/govuk-frontend/govuk/assets/images',
+          to: '/assets/images/'
+        },
+        {
+          from: './node_modules/govuk-frontend/govuk/assets/images',
+          to: path.resolve(__dirname, './assets/images2/')
+        },
+        {
+          from: './node_modules/govuk-frontend/govuk/assets/fonts',
+          to: 'assets/fonts/'
+        },
         {
           from: './sdk-config.json',
           to: './'
@@ -46,6 +70,14 @@ module.exports = (env, argv) => {
         },
         {
           from: './assets/img/*',
+          to: './'
+        },
+        {
+          from: './assets/images/*',
+          to: './'
+        },
+        {
+          from: './assets/fonts/*',
           to: './'
         },
         {
@@ -78,6 +110,7 @@ module.exports = (env, argv) => {
   // Enable gzip and brotli compression
   //  Exclude constellation-core and bootstrap-shell files since
   //    client receives these files in gzip and brotli format
+  if(webpackMode === 'production'){
   pluginsToAdd.push(
     new CompressionPlugin({
       filename: '[path][base].gz',
@@ -103,6 +136,7 @@ module.exports = (env, argv) => {
       minRatio: 0.8
     })
   );
+  }
 
   if (webpackMode === 'development') {
     // In development mode, add LiveReload plug
@@ -159,7 +193,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.s[a|c]ss$/,
-          use: [{ loader: 'style-loader' }, { loader: 'css-loader' }, { loader: 'sass-loader' }]
+          use: ['style-loader', 'css-loader', 'sass-loader']
         },
         { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
         {
@@ -172,7 +206,8 @@ module.exports = (env, argv) => {
           loader: 'url-loader',
           options: { limit: 10000, mimetype: 'application/font-woff' }
         },
-        { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' }
+        { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' },
+
       ]
     },
     resolve: {

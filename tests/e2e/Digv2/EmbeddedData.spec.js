@@ -274,7 +274,7 @@ test.describe('E2E test', () => {
     await page.locator('button:has-text("Previous")').click();
 
     /** Deleting the newly created row */
-    await page.locator('button[id="delete-row-2"]').click();
+    await page.locator('button[id="delete-row-1"]').click();
 
     await page.locator('button:has-text("Next")').click();
 

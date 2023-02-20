@@ -247,12 +247,8 @@ export default function ChildBenefitsClaim() {
   }, []);
 
   return (
-    <div>
-      <div>
-        <div id="pega-part-of-page">
-          <div id="pega-root"></div>
-        </div>
-      </div>
+    <div id="pega-part-of-page">
+      <div id="pega-root"></div>
     </div>
   )
 

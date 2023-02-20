@@ -51,7 +51,7 @@ export default function ChildBenefitsClaim() {
 
     if (thePegaPartEl) {
       if (bShowPega) {
-        thePegaPartEl.style.display = "flex";
+        thePegaPartEl.style.display = "block";
   } else {
         thePegaPartEl.style.display = "none";
       }

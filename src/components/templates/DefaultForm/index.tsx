@@ -13,16 +13,16 @@ export default function DefaultForm(props) {
   const numCols = NumCols || "1";
   switch (numCols) {
     case "1" :
-      divClass = "psdk-default-form-one-column";
+      divClass = 'govuk-grid-column-full';
       break;
     case "2" :
-      divClass = "psdk-default-form-two-column";
+      divClass = 'govuk-grid-column-one-half';
       break;
     case "3" :
-      divClass = "psdk-default-form-three-column";
+      divClass = 'govuk-grid-column-one-third';
       break;
     default :
-      divClass = "psdk-default-form-one-column";
+      divClass = 'govuk-grid-column-full';
       break;
   }
 

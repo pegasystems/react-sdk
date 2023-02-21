@@ -156,11 +156,11 @@ test.describe('E2E test', () => {
     assignment = page.locator('div[id="Assignment"]');
 
     /** Testing the values present on Confirm screen */
-    await expect(assignment.locator('input[value="Global St"]')).toBeVisible();
-    await expect(assignment.locator('td:has-text("California")')).toBeVisible();
-    await expect(assignment.locator('td:has-text("AK")')).toBeVisible();
-    await expect(assignment.locator('td:has-text("03142")')).toBeVisible();
-    await expect(assignment.locator('td:has-text("+16175451212")')).toBeVisible();
+    await expect(assignment.locator('td >> text="Global St"')).toBeVisible();
+    await expect(assignment.locator('td >> text="California"')).toBeVisible();
+    await expect(assignment.locator('td >> text="AK"')).toBeVisible();
+    await expect(assignment.locator('td >> text="03142"')).toBeVisible();
+    await expect(assignment.locator('td >> text="+16175451212"')).toBeVisible();
 
     /** Testing the filter functionality in simple table */
     await assignment.locator('svg[id="menu-icon"] >> nth=0').click();
@@ -250,26 +250,27 @@ test.describe('E2E test', () => {
     await page.locator('a:has-text("+Add")').click();
 
     /** Entering values into the newly created row */
-    await page.locator('input[data-test-id="202003240938510823869"] >> nth=1').type("Main St");
-    await page.locator('input[data-test-id="202003240938510831291"] >> nth=1').type("Cambridge");
-    await page.locator('input[data-test-id="202003240938510831411"] >> nth=1').type("MA");
-    await page.locator('input[data-test-id="202003240938510832734"] >> nth=1').type("02142");
+    await page.locator('input[data-test-id="202003240938510823869"] >> nth=1').type("Global St");
+    await page.locator('input[data-test-id="202003240938510831291"] >> nth=1').type("California");
+    await page.locator('input[data-test-id="202003240938510831411"] >> nth=1').type("AK");
+    await page.locator('input[data-test-id="202003240938510832734"] >> nth=1').type("03142");
 
     phone = page.locator('div[data-test-id="1f8261d17452a959e013666c5df45e07"] >> nth=1');
     await phone.locator('button').click();
     /** Selecting the country code */
     await page.locator('text=United States+1 >> nth=0').click();
-    await phone.locator('input').type('6175551212');
+    await phone.locator('input').type('6175451212');
     await page.locator('button:has-text("Next")').click();
 
     assignment = page.locator('div[id="Assignment"]');
 
     /** Testing the values present on Confirm screen */
-    await expect(assignment.locator('td:has-text("Main St") >> nth=1')).toBeVisible();
-    await expect(assignment.locator('td:has-text("Cambridge") >> nth=1')).toBeVisible();
-    await expect(assignment.locator('td:has-text("MA") >> nth=1')).toBeVisible();
-    await expect(assignment.locator('td:has-text("02142") >> nth=1')).toBeVisible();
-    await expect(assignment.locator('td:has-text("+16175551212") >> nth=1')).toBeVisible();
+    await expect(assignment.locator('td >> text="Main St"')).toBeVisible();
+    await expect(assignment.locator('td >> text="Cambridge"')).toBeVisible();
+    await expect(assignment.locator('td >> text="MA"')).toBeVisible();
+    await expect(assignment.locator('td >> text="02142"')).toBeVisible();
+    await expect(assignment.locator('td >> text="+16175551212"')).toBeVisible();
+
 
     await page.locator('button:has-text("Previous")').click();
 
@@ -279,11 +280,11 @@ test.describe('E2E test', () => {
     await page.locator('button:has-text("Next")').click();
 
     /** Testing the values corresponding to newly created row on Confirm screen - those shouldn't be there */
-    await expect(assignment.locator('td:has-text("Main St") >> nth=1')).toBeHidden();
-    await expect(assignment.locator('td:has-text("Cambridge") >> nth=1')).toBeHidden();
-    await expect(assignment.locator('td:has-text("MA") >> nth=1')).toBeHidden();
-    await expect(assignment.locator('td:has-text("02142") >> nth=1')).toBeHidden();
-    await expect(assignment.locator('td:has-text("+16175551212") >> nth=1')).toBeHidden();
+    await expect(assignment.locator('td >> text="Global St"')).toBeHidden();
+    await expect(assignment.locator('td >> text="California"')).toBeHidden();
+    await expect(assignment.locator('td >> text="AK"')).toBeHidden();
+    await expect(assignment.locator('td >> text="03142"')).toBeHidden();
+    await expect(assignment.locator('td >> text="+6175451212"')).toBeHidden();
 
     await page.locator('button:has-text("Previous")').click();
 

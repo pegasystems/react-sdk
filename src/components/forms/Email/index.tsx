@@ -30,7 +30,7 @@ export default function Email(props) {
       {...props}
       inputProps={{
         type:'email',
-        spellcheck:"false",
+        spellCheck:"false",
         /*
             TODO enable if always relevant
             autocomplete="email"

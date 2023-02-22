@@ -1,6 +1,9 @@
-import React from 'react';
-import { TextField } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import GDSTextInput from '../../BaseComponents/TextInput/TextInput';
 import FieldValueList from '../../designSystemExtensions/FieldValueList';
+
+
+declare const PCore;
 
 export default function TextInput(props) {
   const {
@@ -16,24 +19,19 @@ export default function TextInput(props) {
     testId,
     fieldMetadata,
     helperText,
-    displayMode
+    displayMode,
+    getPConnect,
+    inputProps,
   } = props;
+
   const helperTextToDisplay = validatemessage || helperText;
 
   const maxLength = fieldMetadata?.maxLength;
 
+  const [isOnlyQuestion, setIsOnlyQuestion] = useState(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1"));
+  const [displayLabel, setDisplayLabel] = useState(label);
+
   let readOnlyProp = {}; // Note: empty if NOT ReadOnly
-
-  if (displayMode === 'LABELS_LEFT') {
-    const field = {
-      [label]: value
-    };
-    return <FieldValueList item={field} />;
-  }
-
-  if (readOnly) {
-    readOnlyProp = { readOnly: true };
-  }
 
   let testProp = {};
 
@@ -41,21 +39,33 @@ export default function TextInput(props) {
     'data-test-id': testId
   };
 
+  useEffect( () => {
+    setIsOnlyQuestion(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
+  }, [])
+
+  useEffect( () => {
+    if(isOnlyQuestion){
+      setDisplayLabel(getPConnect().getDataObject()?.caseInfo.assignments[0].name);
+    } else {
+      setDisplayLabel(label);
+    }
+  }, [isOnlyQuestion])
+
+  console.log(`PROPS ${JSON.stringify(props)}`);
+
   return (
-    <TextField
-      fullWidth
-      variant={readOnly ? 'standard' : 'outlined'}
-      helperText={helperTextToDisplay}
-      placeholder=''
-      size='small'
-      required={required}
-      disabled={disabled}
-      onChange={onChange}
-      onBlur={!readOnly ? onBlur : undefined}
-      error={status === 'error'}
-      label={label}
-      value={value}
-      InputProps={{ ...readOnlyProp, inputProps: { maxLength, ...testProp } }}
+    <>
+    <GDSTextInput
+      inputProps={{
+        ...inputProps,
+        onChange,
+        onBlur,
+        value,
+      }}
+      errorText={validatemessage}
+      label={displayLabel}
+      labelIsHeading={isOnlyQuestion}
     />
+    </>
   );
 }

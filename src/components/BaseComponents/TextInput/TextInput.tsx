@@ -13,11 +13,17 @@ const ConditionalWrapper = ({ condition, wrapper, children }) => {
 
 export default function TextInput(props){
 
-  const {name, label, helpText, labelIsHeading, inputProps} = props;
+  const {name, label, errorText, helpText, labelIsHeading, inputProps} = props;
 
+  const formGroupDivClasses = `govuk-form-group ${errorText && 'govuk-form-group--error'}`;
+  const labelClasses = `govuk-label ${labelIsHeading?"govuk-label--l":""}`;
+
+  //TODO - Handle input widths
+  //TODO - Handle input types (password, email, numeric) - Or investigate if these should be separate components, or can simple be handled by inputProps
+  //TODO - Handle autocomplete settings
 
   return(
-    <div className="govuk-form-group">
+    <div className={formGroupDivClasses}>
       <ConditionalWrapper
         condition={labelIsHeading}
         wrapper={ children => {
@@ -27,13 +33,13 @@ export default function TextInput(props){
                   </h1>)}
                 }
         children={
-          <label className={`govuk-label ${labelIsHeading?"govuk-label--l":""}`}>{label}</label>
+            <label className={labelClasses}>{label}</label>
           }
       />
       {helpText && <div className="govuk-hint">{helpText}</div>}
+      {errorText  && <p className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{errorText}</p> }
       <input className="govuk-input" {...inputProps} id={name} name={name}></input>
     </div>
-
   )
 }
 
@@ -42,7 +48,8 @@ TextInput.propTypes = {
   label: PropTypes.string,
   labelIsHeading: PropTypes.bool,
   inputProps: PropTypes.object,
-  helpText: PropTypes.string
+  helpText: PropTypes.string,
+  errorText: PropTypes.string
 }
 
 TextInput.defaultProps ={

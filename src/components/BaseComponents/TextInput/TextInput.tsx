@@ -4,9 +4,6 @@ import PropTypes from 'prop-types';
 
 //TODO Refactor is required elsewhere
 const ConditionalWrapper = ({ condition, wrapper, children }) => {
-  console.log(condition);
-  console.log(wrapper(children));
-
   return condition ? wrapper(children) : children;
 }
 

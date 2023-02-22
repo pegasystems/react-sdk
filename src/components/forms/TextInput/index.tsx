@@ -28,7 +28,7 @@ export default function TextInput(props) {
 
   const maxLength = fieldMetadata?.maxLength;
 
-  const [isOnlyQuestion, setIsOnlyQuestion] = useState(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1"));
+  const [isOnlyQuestion, setIsOnlyQuestion] = useState(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
   const [displayLabel, setDisplayLabel] = useState(label);
 
   let readOnlyProp = {}; // Note: empty if NOT ReadOnly
@@ -39,19 +39,17 @@ export default function TextInput(props) {
     'data-test-id': testId
   };
 
-  useEffect( () => {
+  useEffect ( () => {
     setIsOnlyQuestion(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
   }, [])
 
-  useEffect( () => {
+  useEffect ( () => {
     if(isOnlyQuestion){
       setDisplayLabel(getPConnect().getDataObject()?.caseInfo.assignments[0].name);
     } else {
       setDisplayLabel(label);
     }
   }, [isOnlyQuestion])
-
-  console.log(`PROPS ${JSON.stringify(props)}`);
 
   return (
     <>

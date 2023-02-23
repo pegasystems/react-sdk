@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build:dev": "run-p -l lint build-dev-only",
+    "_comment_SDK_install_build_run_commands": "The following are public commands to clean, install, build, and run the SDK",
+    "build:dev": "run-p -l lint _internal-build-dev-only",
     "build:dev:ci": "npm run clean && npm run install-sdk && npm run build:dev",
-    "build:prod": "run-p -l lint build-prod-only",
+    "build:prod": "run-p -l lint _internal-build-prod-only",
     "build:prod:ci": "npm run clean && npm run install-sdk && npm run build:prod",
     "start-dev": "webpack serve",
     "start-dev-https": "webpack serve --https",
@@ -16,7 +17,7 @@
     "lint": "echo \"linting...\" && npx eslint \"src/**\"",
     "lint-errors-only": "npx eslint \"src/**\" --quiet",
 
-    "_comment_1": "The following are commands to run the integrated DX Component Builder",
+    "_comment_DXCB_commands": "The following are public commands to run the integrated DX Component Builder",
     "authenticate": "dx-component-builder-sdk authenticate",
     "buildComponent": "dx-component-builder-sdk buildComponent",
     "create": "dx-component-builder-sdk create",
@@ -32,21 +33,23 @@
     "update": "dx-component-builder-sdk update",
     "validate-schema": "dx-component-builder-sdk validateSchema",
 
-    "_comment_2": "Commands below should only be called by commands above",
-    "build-dev-only": "webpack --mode=development && npm run copy-index && npm run copy-configs",
-    "build-prod-only": "webpack --mode=production && npm run copy-index && npm run copy-configs",
-    "copy-index": "shx cp dist/index.html dist/simpleportal.html && shx cp dist/index.html dist/portal.html && shx cp dist/index.html dist/fullportal.html && shx cp dist/index.html dist/embedded.html",
+    "_comment_SDK_public_SDK_test_commands": "The following are public commands used for testing the SDK",
     "test": "node playwright-message.js && playwright test --project=chromium MediaCo/portal MediaCo/embedded",
     "test:headed": "playwright test --headed --project=chromium MediaCo/portal MediaCo/embedded",
     "test-report": "playwright show-report",
-    "test-jest": "jest --watchAll",
-    "test-jest-coverage": "jest --watchAll --coverage",
 
-    "_comment_3": "Commands related to the Component Config server that's needed at design time/authoring",
-    "_comment_4": "copy-configs and component-config-server are only used when running against Infinity 8.7.* or newer",
-    "copy-configs": "node ./copy-configs",
+    "_comment_Component_Config_Server": "The following are public commands related to the Component Config Server that's only needed at design time/authoring",
+    "_comment_Component_Config_Server_2": "The Component Config Server can only be used when running against Infinity 8.7.* or newer",
     "start-component-config-server": "http-server ./distAuthoring --port 4502 --cors -d false",
-    "start-component-config-server-https": "http-server ./distAuthoring --port 4502 --cors -d false --ssl --cert private.pem --key private.key"
+    "start-component-config-server-https": "http-server ./distAuthoring --port 4502 --cors -d false --ssl --cert private.pem --key private.key",
+
+    "_comment_internal_SDK_scripts": "The following commands are for internal use and are intended to be called only from public scripts above",
+    "_comment_internal_SDK_scripts_2": "The _internal-copy-configs script can only be used when running against Infinity 8.7.* or newer",
+    "_internal-build-dev-only": "webpack --mode=development && npm run _internal-copy-index && npm run _internal-copy-configs",
+    "_internal-build-prod-only": "webpack --mode=production && npm run _internal-copy-index && npm run _internal-copy-configs",
+    "_internal-copy-index": "shx cp dist/index.html dist/simpleportal.html && shx cp dist/index.html dist/portal.html && shx cp dist/index.html dist/fullportal.html && shx cp dist/index.html dist/embedded.html",
+    "_internal-copy-configs": "node ./copy-configs"
+
   },
   "dependencies": {
     "@date-io/dayjs": "^1.3.13",

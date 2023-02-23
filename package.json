@@ -34,7 +34,7 @@
     "validate-schema": "dx-component-builder-sdk validateSchema",
 
     "_comment_SDK_public_SDK_test_commands": "The following are public commands used for testing the SDK",
-    "test": "node playwright-message.js && playwright test --project=chromium MediaCo/portal MediaCo/embedded",
+    "test": "node ./scripts/playwright-message.js && playwright test --project=chromium MediaCo/portal MediaCo/embedded",
     "test:headed": "playwright test --headed --project=chromium MediaCo/portal MediaCo/embedded",
     "test-report": "playwright show-report",
 
@@ -48,7 +48,7 @@
     "_internal-build-dev-only": "webpack --mode=development && npm run _internal-copy-index && npm run _internal-copy-configs",
     "_internal-build-prod-only": "webpack --mode=production && npm run _internal-copy-index && npm run _internal-copy-configs",
     "_internal-copy-index": "shx cp dist/index.html dist/simpleportal.html && shx cp dist/index.html dist/portal.html && shx cp dist/index.html dist/fullportal.html && shx cp dist/index.html dist/embedded.html",
-    "_internal-copy-configs": "node ./copy-configs"
+    "_internal-copy-configs": "node ./scripts/copy-configs"
 
   },
   "dependencies": {

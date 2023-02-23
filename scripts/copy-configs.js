@@ -1,7 +1,8 @@
 const fs = require('fs');
-const fsp = fs.promises;
 const fg = require('fast-glob');
 const path = require('path');
+
+const fsp = fs.promises;
 const LOG_PRELUDE = "copy-config-ext:";
 const COMPONENTS_ROOT_SOURCE = "src/components";
 const COMPONENTS_ROOT_TARGET = "distAuthoring/components";
@@ -10,7 +11,7 @@ const CONFIG_EXT_NAME = "config-ext.json";
 
 // copy-configs.js
 //  Only useful for SDKs running against Infinity 8.7.* or newer
-//  This script is run to gather any local 
+//  This script is run to gather any local
 //  component config.json (for custom components)
 //  or config-ext.json (for alternate design system extensions to OOTB components)
 //  and copy them to COMPONENTS_ROOT_TARGET so they can be served up as
@@ -20,7 +21,7 @@ const CONFIG_EXT_NAME = "config-ext.json";
 
 function processConfigExtFiles() {
   // 1. Delete existing COMPONENTS_ROOT dir so we start fresh
-  fsp.rmdir(COMPONENTS_ROOT_TARGET, {recursive:true}).then(
+  fsp.rm(COMPONENTS_ROOT_TARGET, {recursive:true}).then(
     function() {
       console.log(`${LOG_PRELUDE} deleted ${COMPONENTS_ROOT_TARGET}`);
       // 2. Create fresh COMPONENTS_ROOT dir
@@ -29,10 +30,10 @@ function processConfigExtFiles() {
     ).catch(function(error) {
       console.log(`${LOG_PRELUDE} error deleting ${COMPONENTS_ROOT_TARGET}: ${error.message}`);
     }
-  )  
+  )
 }
 
-function createCompsRoot() {  
+function createCompsRoot() {
   fsp.mkdir(COMPONENTS_ROOT_TARGET, {recursive: true}).then(
     function() {
       console.log(`${LOG_PRELUDE} created ${COMPONENTS_ROOT_TARGET} `);

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import isDeepEqual from 'fast-deep-equal/react';
 
 import Grid from '@material-ui/core/Grid';
@@ -16,121 +16,163 @@ export default function CaseSummaryFields(props) {
   const [theFieldsToRender, setFieldsToRender] = useState([]);
   const [theFieldsAsGridItems, setFieldsAsGridItems] = useState<Array<any>>([]);
 
-
   function getFieldValue(field: any): any {
     const fieldTypeLower = field.type.toLowerCase();
 
-    if (field.config.value === null || field.config.value === "") {
+    if (field.config.value === null || field.config.value === '') {
       // Special handling for missing value
       // eslint-disable-next-line sonarjs/no-small-switch
-      switch(fieldTypeLower) {
-        case "caseoperator" :
+      switch (fieldTypeLower) {
+        case 'caseoperator':
           return <Operator caseOpConfig={field.config} />;
           break;
 
         default:
-          return <TextField
-            value="---"
-            label={field.config.label}
-            InputProps={{
-              readOnly: true
-            }} />;
+          return (
+            <TextField
+              value='---'
+              label={field.config.label}
+              InputProps={{
+                readOnly: true,
+                disableUnderline: true
+              }}
+            />
+          );
       }
     }
 
-    switch(fieldTypeLower) {
-      case "textinput" :
-        return <TextField
-          value={field.config.value}
-          label={field.config.label}
-          InputProps={{
-            readOnly: true
-          }} />;
+    switch (fieldTypeLower) {
+      case 'textinput':
+      case 'decimal':
+      case 'integer':
+      case 'dropdown':
+        return (
+          <TextField
+            value={field.config.value}
+            label={field.config.label}
+            InputProps={{
+              readOnly: true,
+              disableUnderline: true
+            }}
+          />
+        );
 
-      case "status" :
-        return <TextField
-        className="psdk-csf-status-style"
-        value={field.config.value}
-        label={field.config.label}
-        InputProps={{
-          readOnly: true
-          }} />;
+      case 'checkbox': {
+        const { caption, label, value, trueLabel, falseLabel } = field.config;
+        const fieldLabel = label || caption;
+        const fieldValue = value ? trueLabel : falseLabel;
 
-      case "phone":
-        {
-          const displayPhone = (field.config.value !== "") ? field.config.value : "---";
-          return <a href={`tel:${displayPhone}`}>
+        return (
+          <TextField
+            value={fieldValue}
+            label={fieldLabel}
+            InputProps={{
+              readOnly: true,
+              disableUnderline: true
+            }}
+          />
+        );
+      }
+
+      case 'status':
+        return (
+          <TextField
+            className='psdk-csf-status-style'
+            value={field.config.value}
+            label={field.config.label}
+            InputProps={{
+              readOnly: true,
+              disableUnderline: true
+            }}
+          />
+        );
+
+      case 'phone': {
+        const displayPhone = field.config.value !== '' ? field.config.value : '---';
+        return (
+          <a href={`tel:${displayPhone}`}>
             <TextField
-                  value={field.config.value}
-                  label={field.config.label}
-                  InputProps={{
-                    readOnly: true,
-                    inputProps: {style: {cursor: 'pointer'}}
-                  }}
-              />
-          </a>;
-        }
-
-      case "email":
-        {
-          const displayEmail = format(field.config.value, field.type);
-          return <a href={`mailto:${displayEmail}`}>
-            <TextField
-                  value={field.config.value}
-                  label={field.config.label}
-                  InputProps={{
-                    readOnly: true,
-                    inputProps: {style: {cursor: 'pointer'}}
-                  }}
-              />
-          </a>;
-
-        }
-
-      case "date":
-        return <TextField
-              value={format(field.config.value, field.type)}
+              value={field.config.value}
               label={field.config.label}
               InputProps={{
-                readOnly: true
-              }} />;
+                readOnly: true,
+                inputProps: { style: { cursor: 'pointer' }, disableUnderline: true }
+              }}
+            />
+          </a>
+        );
+      }
 
-      case "caseoperator":
+      case 'email': {
+        const displayEmail = format(field.config.value, field.type);
+        return (
+          <a href={`mailto:${displayEmail}`}>
+            <TextField
+              value={field.config.value}
+              label={field.config.label}
+              InputProps={{
+                readOnly: true,
+                disableUnderline: true,
+                inputProps: { style: { cursor: 'pointer' } }
+              }}
+            />
+          </a>
+        );
+      }
+
+      case 'date':
+      case 'datetime':
+      case 'currency':
+      case 'boolean':
+        return (
+          <TextField
+            value={format(field.config.value, field.type)}
+            label={field.config.label}
+            InputProps={{
+              readOnly: true,
+              disableUnderline: true
+            }}
+          />
+        );
+
+      case 'caseoperator':
         return <Operator caseOpConfig={field.config} />;
         break;
 
-        default:
+      default:
         return (
-        <span>{field.type.toLowerCase()} {field.config.value}</span>
+          <span>
+            {field.type.toLowerCase()} {field.config.value}
+          </span>
         );
-
     }
-
   }
-
 
   // Whenever theFieldsToRender changes, update theFieldsAsGridItems that's used during render
   useEffect(() => {
-      const arGridItems = theFieldsToRender.map((field: any) => {
-        return ( <Grid item xs={6} key={field.config.label}>{getFieldValue(field)}</Grid> );
-      });
-      setFieldsAsGridItems(arGridItems);
-    },
-    [theFieldsToRender]);
+    const arGridItems = theFieldsToRender.map((field: any) => {
+      if (!field.config.visibility) return null;
 
+      return (
+        <Grid item xs={6} key={field.config.label}>
+          {getFieldValue(field)}
+        </Grid>
+      );
+    });
+    setFieldsAsGridItems(arGridItems);
+  }, [theFieldsToRender]);
 
   const theFieldsModifiable = theFields;
 
   // Special Case: if showStatus is true, splice the status value to be 2nd in theFields
   //  if it's not already there
-  if (showStatus && theFields?.[1].type !== "status") {
-    const oStatus = { type: "status", config: { value: status, label: "Status" }};
+  if (showStatus && theFields?.[1].type !== 'status') {
+    const oStatus = { type: 'status', config: { value: status, label: 'Status' } };
 
     const count = theFieldsModifiable.length;
     if (count < 2) {
       theFieldsModifiable.push(oStatus);
-    }
-    else {
+    } else {
       theFieldsModifiable.splice(1, 0, oStatus);
     }
   }
@@ -141,12 +183,13 @@ export default function CaseSummaryFields(props) {
     setFieldsToRender(theFieldsModifiable);
   }
 
-
-  return <React.Fragment>
-    <Grid container className="psdk-case-summary-fields">
-      {theFieldsAsGridItems}
-    </Grid>
-  </React.Fragment>;
+  return (
+    <React.Fragment>
+      <Grid container className='psdk-case-summary-fields'>
+        {theFieldsAsGridItems}
+      </Grid>
+    </React.Fragment>
+  );
 }
 
 CaseSummaryFields.propTypes = {

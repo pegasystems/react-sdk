@@ -51,15 +51,21 @@ export default function TextInput(props) {
     }
   }, [isOnlyQuestion])
 
+  let extraInputProps = {onChange, onBlur, value};
+
+  //TODO Investigate more robust way to check if we should display as password
+  if(label === "Password"){
+    extraInputProps["type"]="password";
+  }
+
   return (
     <>
     <GDSTextInput
       inputProps={{
         ...inputProps,
-        onChange,
-        onBlur,
-        value,
+        ...extraInputProps
       }}
+      hintText={helperText}
       errorText={validatemessage}
       label={displayLabel}
       labelIsHeading={isOnlyQuestion}

@@ -10,7 +10,7 @@ const ConditionalWrapper = ({ condition, wrapper, children }) => {
 
 export default function TextInput(props){
 
-  const {name, label, errorText, helpText, labelIsHeading, inputProps} = props;
+  const {name, label, errorText, hintText, labelIsHeading, inputProps} = props;
 
   const formGroupDivClasses = `govuk-form-group ${errorText && 'govuk-form-group--error'}`;
   const labelClasses = `govuk-label ${labelIsHeading?"govuk-label--l":""}`;
@@ -33,7 +33,7 @@ export default function TextInput(props){
             <label className={labelClasses}>{label}</label>
           }
       />
-      {helpText && <div className="govuk-hint">{helpText}</div>}
+      {hintText && <div className="govuk-hint">{hintText}</div>}
       {errorText  && <p className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{errorText}</p> }
       <input className="govuk-input" {...inputProps} id={name} name={name}></input>
     </div>
@@ -45,7 +45,7 @@ TextInput.propTypes = {
   label: PropTypes.string,
   labelIsHeading: PropTypes.bool,
   inputProps: PropTypes.object,
-  helpText: PropTypes.string,
+  hintText: PropTypes.string,
   errorText: PropTypes.string
 }
 

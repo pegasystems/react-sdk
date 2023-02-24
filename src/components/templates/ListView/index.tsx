@@ -69,10 +69,11 @@ export default function ListView(props) {
   const defRowID = referenceType === 'Case' ? 'pyID' : 'pyGUID';
 
   /** If compositeKeys is defined, use dynamic value, else fallback to pyID or pyGUID. */
-  const rowID = compositeKeys && compositeKeys[0] ? compositeKeys[0] : defRowID;
+  const rowID = compositeKeys && compositeKeys?.length === 1 ? compositeKeys[0] : defRowID;
 
   const [arRows, setRows] = useState<Array<any>>([]);
   const [arColumns, setColumns] = useState<Array<any>>([]);
+  const [response, setResponse] = useState<Array<any>>([]);
 
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof any>('');
@@ -527,6 +528,8 @@ export default function ListView(props) {
 
     fields = updateFields(fields, myColumns);
 
+    setResponse(tableDataResults);
+
     const usingDataResults = getUsingData(tableDataResults, myColumns);
 
     // store globally, so can be searched, filtered, etc.
@@ -885,11 +888,21 @@ export default function ListView(props) {
     return title;
   }
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>, row) => {
     const value = event.target.value;
+    let reqObj = {};
+    if (compositeKeys?.length > 1) {
+      const index = response.findIndex(element => element[rowID] === value);
+      const selectedRow = response[index];
+      compositeKeys.forEach(element => {
+        reqObj[element] = selectedRow[element]
+      });
+    } else {
+      reqObj[rowID] = value;
+    }
     getPConnect()
       ?.getListActions?.()
-      ?.setSelectedRows([{ [rowID]: value }]);
+      ?.setSelectedRows([reqObj]);
     setSelectedValue(value);
   };
 
@@ -1057,7 +1070,9 @@ export default function ListView(props) {
                               {selectionMode === SELECTION_MODE.SINGLE && (
                                 <TableCell>
                                   <Radio
-                                    onChange={handleChange}
+                                    onChange={(event) => {
+                                      handleChange(event, row)
+                                    }}
                                     value={row[rowID]}
                                     name='radio-buttons'
                                     inputProps={{ 'aria-label': 'A' }}

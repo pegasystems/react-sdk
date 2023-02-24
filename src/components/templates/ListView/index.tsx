@@ -888,9 +888,9 @@ export default function ListView(props) {
     return title;
   }
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>, row) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    let reqObj = {};
+    const reqObj = {};
     if (compositeKeys?.length > 1) {
       const index = response.findIndex(element => element[rowID] === value);
       const selectedRow = response[index];
@@ -909,9 +909,21 @@ export default function ListView(props) {
   const onCheckboxClick = event => {
     const value = event?.target?.value;
     const checked = event?.target?.checked;
+    const reqObj = {};
+    if (compositeKeys?.length > 1) {
+      const index = response.findIndex(element => element[rowID] === value);
+      const selectedRow = response[index];
+      compositeKeys.forEach(element => {
+        reqObj[element] = selectedRow[element]
+      });
+      reqObj['$selected'] = checked;
+    } else {
+      reqObj[rowID] = value;
+      reqObj['$selected'] = checked;
+    }
     getPConnect()
       ?.getListActions()
-      ?.setSelectedRows([{ [rowID]: value, $selected: checked }]);
+      ?.setSelectedRows([reqObj]);
   };
 
   return (
@@ -1070,9 +1082,7 @@ export default function ListView(props) {
                               {selectionMode === SELECTION_MODE.SINGLE && (
                                 <TableCell>
                                   <Radio
-                                    onChange={(event) => {
-                                      handleChange(event, row)
-                                    }}
+                                    onChange={handleChange}
                                     value={row[rowID]}
                                     name='radio-buttons'
                                     inputProps={{ 'aria-label': 'A' }}

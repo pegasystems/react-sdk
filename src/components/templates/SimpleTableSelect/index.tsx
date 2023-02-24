@@ -98,6 +98,7 @@ export default function SimpleTableSelect(props) {
         filters={filters}
         listViewProps={listViewProps}
         pageClass={pageClass}
+        parameters={parameters}
       />
     );
   }

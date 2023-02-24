@@ -7,17 +7,20 @@ import {
   FormHelperText
 } from '@material-ui/core';
 import handleEvent from '../../../helpers/event-utils';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 export default function CheckboxComponent(props) {
   const {
     getPConnect,
+    label,
     value = false,
     readOnly,
     testId,
     required,
     status,
     helperText,
-    validatemessage
+    validatemessage,
+    displayMode
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
 
@@ -32,6 +35,13 @@ export default function CheckboxComponent(props) {
     // This update theSelectedButton which will update the UI to show the selected button correctly
     setChecked(value);
   }, [value]);
+
+  if (displayMode === 'LABELS_LEFT') {
+    const field = {
+      [label]: value
+    };
+    return <FieldValueList item={field} />;
+  }
 
   const handleChange = event => {
     handleEvent(actionsApi, 'changeNblur', propName, event.target.checked);

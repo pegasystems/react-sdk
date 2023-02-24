@@ -3,6 +3,7 @@ import { TextField } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import Utils from '../../../helpers/utils';
 import handleEvent from '../../../helpers/event-utils';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 interface IOption {
   key: string;
@@ -22,7 +23,8 @@ export default function Dropdown(props) {
     status,
     readOnly,
     testId,
-    helperText
+    helperText,
+    displayMode
   } = props;
   const [options, setOptions] = useState<Array<IOption>>([]);
   const helperTextToDisplay = validatemessage || helperText;
@@ -38,6 +40,13 @@ export default function Dropdown(props) {
   }, [datasource]);
 
   let readOnlyProp = {};
+
+  if (displayMode === 'LABELS_LEFT') {
+    const field = {
+      [label]: value
+    };
+    return <FieldValueList item={field} />;
+  }
 
   if (readOnly) {
     readOnlyProp = { readOnly: true };

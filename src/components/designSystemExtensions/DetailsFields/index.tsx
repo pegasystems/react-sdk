@@ -43,7 +43,7 @@ export default function DetailsFields(props) {
     const theCompType = thePConn.getComponentName().toLowerCase();
     const { label } = thePConn.getConfigProps();
     const configObj = thePConn?.getReferencedView();
-    configObj.config.readOnly = theCompType === 'reference';
+    configObj.config.readOnly = true;
     configObj.config.displayMode = 'LABELS_LEFT';
     const propToUse = { ...thePConn.getInheritedProps() };
     configObj.config.label = theCompType === 'reference' ? propToUse?.label : label;

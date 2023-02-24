@@ -10,6 +10,7 @@ import {
 
 import Utils from '../../../helpers/utils';
 import handleEvent from '../../../helpers/event-utils';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 export default function RadioButtons(props) {
   const {
@@ -21,7 +22,8 @@ export default function RadioButtons(props) {
     helperText,
     status,
     required,
-    inline
+    inline,
+    displayMode
   } = props;
   const [theSelectedButton, setSelectedButton] = useState(value);
 
@@ -39,6 +41,13 @@ export default function RadioButtons(props) {
     // This update theSelectedButton which will update the UI to show the selected button correctly
     setSelectedButton(value);
   }, [value]);
+
+  if (displayMode === 'LABELS_LEFT') {
+    const field = {
+      [label]: value
+    };
+    return <FieldValueList item={field} />;
+  }
 
   const handleChange = event => {
     handleEvent(actionsApi, 'changeNblur', propName, event.target.value);

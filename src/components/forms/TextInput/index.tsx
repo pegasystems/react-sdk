@@ -1,6 +1,10 @@
-import React from 'react';
-import { TextField } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import GDSTextInput from '../../BaseComponents/TextInput/TextInput';
 import FieldValueList from '../../designSystemExtensions/FieldValueList';
+
+import {useIsOnlyField, useStepName} from '../../../helpers/hooks/QuestionDisplayHooks';
+
+declare const PCore;
 
 export default function TextInput(props) {
   const {
@@ -16,24 +20,14 @@ export default function TextInput(props) {
     testId,
     fieldMetadata,
     helperText,
-    displayMode
+    displayMode,
+    getPConnect,
+    inputProps,
   } = props;
+
   const helperTextToDisplay = validatemessage || helperText;
 
   const maxLength = fieldMetadata?.maxLength;
-
-  let readOnlyProp = {}; // Note: empty if NOT ReadOnly
-
-  if (displayMode === 'LABELS_LEFT') {
-    const field = {
-      [label]: value
-    };
-    return <FieldValueList item={field} />;
-  }
-
-  if (readOnly) {
-    readOnlyProp = { readOnly: true };
-  }
 
   let testProp = {};
 
@@ -41,21 +35,28 @@ export default function TextInput(props) {
     'data-test-id': testId
   };
 
+  const isOnlyField = useIsOnlyField();
+  const stepName = useStepName(isOnlyField, getPConnect);
+
+  let extraInputProps = {onChange, onBlur, value};
+
+  //TODO Investigate more robust way to check if we should display as password
+  if(label === "Password"){
+    extraInputProps["type"]="password";
+  }
+
   return (
-    <TextField
-      fullWidth
-      variant={readOnly ? 'standard' : 'outlined'}
-      helperText={helperTextToDisplay}
-      placeholder=''
-      size='small'
-      required={required}
-      disabled={disabled}
-      onChange={onChange}
-      onBlur={!readOnly ? onBlur : undefined}
-      error={status === 'error'}
-      label={label}
-      value={value}
-      InputProps={{ ...readOnlyProp, inputProps: { maxLength, ...testProp } }}
-    />
+    <>
+      <GDSTextInput
+        inputProps={{
+          ...inputProps,
+          ...extraInputProps
+        }}
+        hintText={helperText}
+        errorText={validatemessage}
+        label={isOnlyField? stepName : label}
+        labelIsHeading={isOnlyField}
+      />
+    </>
   );
 }

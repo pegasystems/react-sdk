@@ -226,13 +226,7 @@ export default function CaseView(props) {
       )
     } else {
       // displayOnlyFA - only show the "todo" region
-      return (
-        <Grid container>
-          <Grid item xs={12}>
-            {theTodoRegion}
-          </Grid>
-        </Grid>
-      )
+      return <div className='govuk-grid-column-two-thirds'>{theTodoRegion}</div>;
     }
   }
 

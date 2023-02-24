@@ -442,50 +442,63 @@ export default function FlowContainer(props) {
   }
 
   return (
-    <div style={{ textAlign: "left" }} id={buildName} className="psdk-flow-container-top">
-      {!bHasCaseMessages ?
-        (!todo_showTodo) ?
-          (!displayOnlyFA) ?
+    <div id={buildName}>
+      {!bHasCaseMessages ? (
+        !todo_showTodo ? (
+          !displayOnlyFA ? (
             <Card className={classes.root}>
               <CardHeader
-                title={<Typography variant="h6">{containerName}</Typography>}
+                title={<Typography variant='h6'>{containerName}</Typography>}
                 subheader={`Task in ${caseId} \u2022 Priority ${urgency}`}
-                avatar={
-                  <Avatar className={classes.avatar}>
-                    {operatorInitials}
-                  </Avatar>
-                }
+                avatar={<Avatar className={classes.avatar}>{operatorInitials}</Avatar>}
               ></CardHeader>
-              { instructionText !== '' ? <Typography variant="caption">{instructionText}</Typography> : null }
+              {instructionText !== '' ? (
+                <Typography variant='caption'>{instructionText}</Typography>
+              ) : null}
               <MuiPickersUtilsProvider utils={DayjsUtils}>
                 <Assignment getPConnect={getPConnect} itemKey={itemKey}>
                   {arNewChildrenAsReact}
                 </Assignment>
               </MuiPickersUtilsProvider>
             </Card>
-            :
-            <Card className={classes.root}>
-              <Typography variant="h6">{containerName}</Typography>
-              { instructionText !== '' ? <Typography variant="caption">{instructionText}</Typography> : null }
-              <MuiPickersUtilsProvider utils={DayjsUtils}>
-                <Assignment getPConnect={getPConnect} itemKey={itemKey}>
-                  {arNewChildrenAsReact}
-                </Assignment>
-              </MuiPickersUtilsProvider>
-            </Card>
-          :
+          ) : (
+            <div className='govuk-form-group'>
+              <fieldset className='govuk-fieldset'>
+                <legend className='govuk-fieldset__legend govuk-fieldset__legend--l'>
+                  <h1 className='govuk-fieldset__heading'>{containerName}</h1>
+                </legend>
+                {instructionText !== '' ? (
+                  <div className='govuk-hint'>{instructionText}</div>
+                ) : null}
+                </fieldset>
+                <MuiPickersUtilsProvider utils={DayjsUtils}>
+                  <Assignment getPConnect={getPConnect} itemKey={itemKey}>
+                    {arNewChildrenAsReact}
+                  </Assignment>
+                </MuiPickersUtilsProvider>
+            </div>
+          )
+        ) : (
           <div>
-            <ToDo getPConnect={getPConnect} caseInfoID={todo_caseInfoID} datasource={todo_datasource}
-              showTodoList={todo_showTodoList} headerText={todo_headerText} type={TODO}
-              context={todo_context} itemKey={itemKey}></ToDo>
+            <ToDo
+              getPConnect={getPConnect}
+              caseInfoID={todo_caseInfoID}
+              datasource={todo_datasource}
+              showTodoList={todo_showTodoList}
+              headerText={todo_headerText}
+              type={TODO}
+              context={todo_context}
+              itemKey={itemKey}
+            ></ToDo>
           </div>
-        :
+        )
+      ) : (
         <div className={classes.alert}>
-          <Alert severity="success">{caseMessages}</Alert>
+          <Alert severity='success'>{caseMessages}</Alert>
         </div>
-      }
+      )}
     </div>
-  )
+  );
 }
 
 FlowContainer.defaultProps = {

@@ -19,11 +19,12 @@
 
     "_comment_DXCB_commands": "The following are public commands to run the integrated DX Component Builder",
     "authenticate": "dx-component-builder-sdk authenticate",
+    "buildAllComponents": "dx-component-builder-sdk buildAllComponents",
     "buildComponent": "dx-component-builder-sdk buildComponent",
     "create": "dx-component-builder-sdk create",
     "delete": "dx-component-builder-sdk delete",
     "deleteAll": "dx-component-builder-sdk deleteAll",
-    "generateMissingCompanions" : "dx-component-builder-sdk generateMissingCompanions",
+    "generateMissingCompanions": "dx-component-builder-sdk generateMissingCompanions",
     "list": "dx-component-builder-sdk list",
     "mapAll": "dx-component-builder-sdk mapAll",
     "override": "dx-component-builder-sdk override",

@@ -16,7 +16,9 @@ export default function FieldGroupTemplate(props) {
     getPConnect,
     lookForChildInConfig,
     heading,
-    displayMode
+    displayMode,
+    fieldHeader,
+    allowTableEdit: allowAddEdit
   } = props;
   const pConn = getPConnect();
   const resolvedList = getReferenceList(pConn);
@@ -25,13 +27,20 @@ export default function FieldGroupTemplate(props) {
   const isReadonlyMode = renderMode === 'ReadOnly' || displayMode === 'LABELS_LEFT';
   const HEADING = heading ?? 'Row';
 
+  const getDynamicHeaderProp = (item, index) => {
+    if (fieldHeader === 'propertyRef' && heading && item[heading.substring(1)]) {
+      return item[heading.substring(1)];
+    }
+    return `Row ${index + 1}`;
+  };
+
   const addRecord = () => {
     if (PCore.getPCoreVersion()?.includes('8.7')) {
       pConn.getListActions().insert({ classID: contextClass }, referenceList.length, pageReference);
     } else {
       pConn.getListActions().insert({ classID: contextClass }, referenceList.length);
     }
-  }
+  };
 
   if (!isReadonlyMode) {
     const addFieldGroupItem = () => {
@@ -44,14 +53,17 @@ export default function FieldGroupTemplate(props) {
         pConn.getListActions().deleteEntry(index);
       }
     };
-    if (referenceList.length === 0) {
+    if (referenceList.length === 0 && allowAddEdit !== false) {
       addFieldGroupItem();
     }
 
     const MemoisedChildren = useMemo(() => {
       return referenceList.map((item, index) => ({
         id: index,
-        name: `${HEADING} ${index + 1}`,
+        name:
+          fieldHeader === 'propertyRef'
+            ? getDynamicHeaderProp(item, index)
+            : `${HEADING} ${index + 1}`,
         children: buildView(pConn, index, lookForChildInConfig)
       }));
     }, [referenceList?.length]);
@@ -59,8 +71,8 @@ export default function FieldGroupTemplate(props) {
     return (
       <FieldGroupList
         items={MemoisedChildren}
-        onAdd={addFieldGroupItem}
-        onDelete={deleteFieldGroupItem}
+        onAdd={allowAddEdit !== false ? addFieldGroupItem : undefined}
+        onDelete={allowAddEdit !== false ? deleteFieldGroupItem : undefined}
       />
     );
   }

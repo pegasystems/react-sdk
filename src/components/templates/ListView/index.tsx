@@ -69,10 +69,11 @@ export default function ListView(props) {
   const defRowID = referenceType === 'Case' ? 'pyID' : 'pyGUID';
 
   /** If compositeKeys is defined, use dynamic value, else fallback to pyID or pyGUID. */
-  const rowID = compositeKeys && compositeKeys[0] ? compositeKeys[0] : defRowID;
+  const rowID = compositeKeys && compositeKeys?.length === 1 ? compositeKeys[0] : defRowID;
 
   const [arRows, setRows] = useState<Array<any>>([]);
   const [arColumns, setColumns] = useState<Array<any>>([]);
+  const [response, setResponse] = useState<Array<any>>([]);
 
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof any>('');
@@ -527,6 +528,8 @@ export default function ListView(props) {
 
     fields = updateFields(fields, myColumns);
 
+    setResponse(tableDataResults);
+
     const usingDataResults = getUsingData(tableDataResults, myColumns);
 
     // store globally, so can be searched, filtered, etc.
@@ -887,18 +890,40 @@ export default function ListView(props) {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
+    const reqObj = {};
+    if (compositeKeys?.length > 1) {
+      const index = response.findIndex(element => element[rowID] === value);
+      const selectedRow = response[index];
+      compositeKeys.forEach(element => {
+        reqObj[element] = selectedRow[element]
+      });
+    } else {
+      reqObj[rowID] = value;
+    }
     getPConnect()
       ?.getListActions?.()
-      ?.setSelectedRows([{ [rowID]: value }]);
+      ?.setSelectedRows([reqObj]);
     setSelectedValue(value);
   };
 
   const onCheckboxClick = event => {
     const value = event?.target?.value;
     const checked = event?.target?.checked;
+    const reqObj = {};
+    if (compositeKeys?.length > 1) {
+      const index = response.findIndex(element => element[rowID] === value);
+      const selectedRow = response[index];
+      compositeKeys.forEach(element => {
+        reqObj[element] = selectedRow[element]
+      });
+      reqObj['$selected'] = checked;
+    } else {
+      reqObj[rowID] = value;
+      reqObj['$selected'] = checked;
+    }
     getPConnect()
       ?.getListActions()
-      ?.setSelectedRows([{ [rowID]: value, $selected: checked }]);
+      ?.setSelectedRows([reqObj]);
   };
 
   return (

@@ -17,11 +17,11 @@ The React SDK is built on a new and modernized UI technology stack (the Constell
 
 This version of the React SDK assumes that you have access to a Pega Infinity server (**8.8.0+ GA or 8.7.0+ GA**) running an application that is configured to run using the Constellation UI service.
 
-The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download. For more information about the MediaCo sample application, see [MediaCo sample application](https://docs-previous.pega.com/constellation-sdks/mediaco-sample-application).
+The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download. For more information about the MediaCo sample application, see [MediaCo sample application](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/mediaco-sample-application.html).
 
 The **React SDK** has been tested with:
-- node 14.18.*
-- npm 6.14.*
+- node 18.12.1/18.13.0
+- npm 8.19.2/8.19.3 
 
 Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
 
@@ -33,6 +33,7 @@ Future updates to the SDK will support more recent LTS versions of node as Const
 
 ---
 # Installing and Running the Application
+The following procedures provide an overview of installing Constellation SDKs and running the application. For detailed documentation, see [Installing and configuring Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/installing-configuring-constellation-sdks.html).
 
 ### **Install** the React SDK code
 
@@ -59,7 +60,7 @@ Also, if you run ```npm install``` after it has already been run once, you may s
 See the **React SDK Guide** in the Marketplace download for more complete documentation about the configuration of the React SDK via the **sdk-config.json**
 file.
 
-2. Edit **sdk-config.json** and, if necessary, update the values that will be used. For more information about the attributes in the **sdk-config.json** file, see [Configuring the sdk-config.json file](https://docs-previous.pega.com/constellation-sdks/configuring-sdk-configjson-file).
+2. Edit **sdk-config.json** and, if necessary, update the values that will be used. For more information about the attributes in the **sdk-config.json** file, see [Configuring the sdk-config.json file](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/configuring-sdk-config-json.html).
     * The **authConfig** section contains values related to the OAuth 2.0 client
     registration record you will be using and Operator ID and login information
     related to the /embedded use. The default **sdk-config.json** file is set up to use the **MediaCo_ReactSDK** record that is included with the React SDK Marketplace download.<br><br>
@@ -220,7 +221,7 @@ You can test both **Portal** and **Embedded** scenarios by executing the followi
    ```
 
 
-> **NOTE**: These tests execute the sample **MediaCo** application. For more information, see [Testing the MediaCo sample application](https://docs-previous.pega.com/constellation-sdks/testing-mediaco-sample-application).
+> **NOTE**: These tests execute the sample **MediaCo** application. For more information, see [Testing the MediaCo sample application](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/mediaco-sample-application.html).
 
 <br>
 
@@ -230,13 +231,13 @@ You can test both **Portal** and **Embedded** scenarios by executing the followi
 ## Some setup and troubleshooting tips
 <br>
 
-> **NOTE**: These setup tips are abstracted from the React SDK Guide that is available to licensed Pega Infinity clients at [https://community.pega.com/media/react-sdk-87-guide](https://community.pega.com/media/react-sdk-87-guide). For more information about troubleshooting, see [Troubleshooting the Constellation SDKs](https://docs-previous.pega.com/constellation-sdks/troubleshooting-constellation-sdks).
+> **NOTE**: These setup tips are abstracted from the React SDK Guide that is available to licensed Pega Infinity clients at [https://community.pega.com/media/react-sdk-87-guide](https://community.pega.com/media/react-sdk-87-guide). For more information about troubleshooting, see [Troubleshooting the Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/troubleshooting-constellation-sdks.html).
 
 <br>
 
 ### Check Node/NPM versions
-Currently, the SDK supports **Node 14**. It has been tested with node v14.18.*. It may not be stable with node v16+. Future updates to the SDK will support more recent LTS versions of node as the Constellation architecture supports them.
-
+Currently, the SDK supports Node 18.* (LTS/Hydrogen) and has been tested with node 18.12.1/18.13.0 and npm 8.19.2/8.19.3, respectively. 
+Future updates to the SDK will support more recent LTS versions of node as Constellation supports them. 
 
 ### Verify/update Cross Origin Resource Sharing (CORS) Infinity record
 
@@ -432,6 +433,6 @@ Refer to our [guidelines for contributors](./docs/CONTRIBUTING.md) if you are in
 ## Additional Resources
 
 * [Material UI](https://v4.mui.com/)
-* [Constellation SDK Documentation](https://docs-previous.pega.com/constellation-sdks/constellation-sdks)
-* [Troubleshooting the Constellation SDKs](https://docs-previous.pega.com/constellation-sdks/troubleshooting-constellation-sdks)
-* [MediaCo sample application](https://docs-previous.pega.com/constellation-sdks/mediaco-sample-application)
+* [Constellation SDKs Documentation](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html)
+* [Troubleshooting Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/troubleshooting-constellation-sdks.html)
+* [MediaCo sample application](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/mediaco-sample-application.html)

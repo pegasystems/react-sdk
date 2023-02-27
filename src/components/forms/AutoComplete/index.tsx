@@ -5,6 +5,8 @@ import Utils from '../../../helpers/utils';
 import TextInput from '../TextInput';
 import isDeepEqual from 'fast-deep-equal/react';
 import { getDataPage } from '../../../helpers/data_page';
+import handleEvent from '../../../helpers/event-utils';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 interface IOption {
   key: string;
@@ -42,7 +44,6 @@ export default function AutoComplete(props) {
     placeholder,
     value = '',
     validatemessage,
-    onChange,
     readOnly,
     testId,
     displayMode,
@@ -60,6 +61,10 @@ export default function AutoComplete(props) {
   let selectedValue: any = '';
   const helperTextToDisplay = validatemessage || helperText;
 
+  const thePConn = getPConnect();
+  const actionsApi = thePConn.getActionsApi();
+  const propName = thePConn.getStateProps().value;
+
   if (!isDeepEqual(datasource, theDatasource)) {
     // inbound datasource is different, so update theDatasource (to trigger useEffect)
     setDatasource(datasource);
@@ -67,7 +72,7 @@ export default function AutoComplete(props) {
 
   const flattenParameters = (params = {}) => {
     const flatParams = {};
-    Object.keys(params).forEach((key) => {
+    Object.keys(params).forEach(key => {
       const { name, value: theVal } = params[key];
       flatParams[name] = theVal;
     });
@@ -127,6 +132,13 @@ export default function AutoComplete(props) {
     }
   }, []);
 
+  if (displayMode === 'LABELS_LEFT') {
+    const field = {
+      [label]: value
+    };
+    return <FieldValueList item={field} />;
+  }
+
   if (value) {
     const index = options?.findIndex(element => element.key === value);
     if (index > -1) {
@@ -137,7 +149,8 @@ export default function AutoComplete(props) {
   }
 
   const handleChange = (event: object, newValue) => {
-    onChange({ value: newValue ? newValue.key : '' });
+    const val = newValue ? newValue.key : '';
+    handleEvent(actionsApi, 'changeNblur', propName, val);
   };
 
   const handleInputValue = (event, newInputValue) => {

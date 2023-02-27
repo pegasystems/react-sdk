@@ -166,6 +166,7 @@ export default function Operator(props) {
         onClick={showOperatorDetails}
         InputProps={{
           readOnly: true,
+          disableUnderline: true,
           inputProps: {style: {cursor: 'pointer'}}
         }}
       />

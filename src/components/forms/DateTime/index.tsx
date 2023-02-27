@@ -3,6 +3,7 @@ import { KeyboardDateTimePicker } from '@material-ui/pickers';
 import TextInput from '../TextInput';
 import handleEvent from '../../../helpers/event-utils';
 import FieldValueList from '../../designSystemExtensions/FieldValueList';
+import { format } from '../../../helpers/formatters/';
 
 export default function DateTime(props) {
   const {
@@ -25,13 +26,16 @@ export default function DateTime(props) {
   const helperTextToDisplay = validatemessage || helperText;
 
   if(displayMode === 'LABELS_LEFT'){
+    const formattedDate = format(props.value, 'datetime');
     const field = {
-      [label]: value
+      [label]: formattedDate
     };
     return <FieldValueList item={field}/>
   }
 
   if (readOnly) {
+    const formattedDate = format(props.value, 'datetime');
+    props.value = formattedDate;
     return <TextInput {...props} />;
   }
 

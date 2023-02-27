@@ -4,9 +4,9 @@ import AppSelector from '../AppSelector';
 const TopLevelApp = () => {
 
   return (
-    <React.Fragment>
+    <>
       <AppSelector />
-    </React.Fragment>
+    </>
   );
 }
 

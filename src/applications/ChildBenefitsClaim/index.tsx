@@ -157,9 +157,9 @@ export default function ChildBenefitsClaim() {
     // Initial render of component passed in (which should be a RootContainer)
     const root = createRoot(target); // createRoot(container!) if you use TypeScript
     root.render(
-      <React.Fragment>
+      <>
         {theComponent}
-      </React.Fragment>
+      </>
     )
 
     // Initial render to show that we have a PConnect and can render in the target location

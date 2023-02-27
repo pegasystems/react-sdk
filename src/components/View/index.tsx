@@ -62,6 +62,7 @@ export default function View(props) {
   if (template /* && LazyComponentMap[template] */) {
     // const ViewTemplate = LazyComponentMap[template];
     let ViewTemplate: any;
+    console.log('template=', template);
 
     switch (template) {
       case 'CaseSummary':
@@ -192,7 +193,7 @@ export default function View(props) {
           data-template-type={template}
           /* name */ id='label'
           style={{ marginBlockStart: '1rem' }}
-          className='grid-column'
+          className='govuk-grid-column-two-thirds'
         >
           {RenderedTemplate}
         </div>
@@ -200,11 +201,9 @@ export default function View(props) {
     }
 
     return (
-      <div className='grid-column'>
+      <div className='govuk-grid-row'>
         {showLabel && template !== 'SubTabs' && template !== 'SimpleTable' && (
-          <div className='template-title-container'>
-            <span>{label}</span>
-          </div>
+          <h1 className='govuk-heading-m'>{label}</h1>
         )}
         {RenderedTemplate}
       </div>

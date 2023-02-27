@@ -15,12 +15,10 @@ const baseURL = "/";
 const AppSelector = () => {
 
   return (
-      <div>
-        <Routes>
-          <Route path={`${baseURL}`} element={<ChildBenefitsClaim />} />
-          <Route path={`${baseURL}claim-child-benefit`} element={<ChildBenefitsClaim/>} />
-        </Routes>
-    </div>
+    <Routes>
+      <Route path={`${baseURL}`} element={<ChildBenefitsClaim />} />
+      <Route path={`${baseURL}claim-child-benefit`} element={<ChildBenefitsClaim/>} />
+    </Routes>
   )
 
 };

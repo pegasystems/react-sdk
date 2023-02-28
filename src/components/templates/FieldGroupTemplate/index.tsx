@@ -80,8 +80,12 @@ export default function FieldGroupTemplate(props) {
   pConn.setInheritedProp('displayMode', 'LABELS_LEFT');
   const memoisedReadOnlyList = useMemo(() => {
     return referenceList.map((item, index) => (
-      // eslint-disable-next-line react/no-array-index-key
-      <FieldGroup item={item} key={index} name={`${HEADING} ${index + 1}`} />
+      <FieldGroup
+        key={item[heading]}
+        name={fieldHeader === 'propertyRef' ? getDynamicHeaderProp(item, index) : `${HEADING} ${index + 1}`}
+      >
+        {buildView(pConn, index, lookForChildInConfig)}
+      </FieldGroup>
     ));
   }, []);
 

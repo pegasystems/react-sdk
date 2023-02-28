@@ -1,18 +1,6 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Utils from '../../../helpers/utils';
-
-function generateFields(item, fields) {
-  for (const label in item) {
-    if (Utils.isObject(item[label])) {
-      generateFields(item[label], fields);
-    } else if (label !== 'classID') {
-      fields.push({ label, value: item[label] });
-    }
-  }
-}
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,83 +15,31 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1)
   },
-  fieldLabel: {
-    fontWeight: 400,
-    color: theme.palette.text.secondary
-  },
-  fieldValue: {
-    fontWeight: 400,
-    color: theme.palette.text.primary
+  fullWidth: {
+    width: '100%'
   }
 }));
 
 const FieldGroup = props => {
+  const { children, name } = props;
   const classes = useStyles();
 
-  const fields: any = [];
-  generateFields(props.item, fields);
-
-  function getGridItemLabel(label) {
-    const dispValue = label;
-
-    return (
-      <Grid item xs={6}>
-        <Typography
-          variant='body2'
-          component='span'
-          className={`${classes.fieldLabel} ${classes.fieldMargin}`}
-        >
-          {dispValue}
-        </Typography>
-      </Grid>
-    );
-  }
-
-  function formatItemValue(value) {
-    let formattedVal = value;
-
-    // if the value is an empty string, we want to display it as "---"
-    if (formattedVal === '') {
-      formattedVal = '---';
-    }
-
-    return formattedVal;
-  }
-
-  function getGridItemValue(value) {
-    const formattedValue = formatItemValue(value);
-
-    return (
-      <Grid item xs={6}>
-        <Typography variant='body2' component='span' className={classes.fieldValue}>
-          {formattedValue}
-        </Typography>
-      </Grid>
-    );
-  }
-
-  function getGridItems() {
-    const gridItems = fields.map((item) => {
-      return (
-        <Grid key={`${item.label}-${item.value}`} container spacing={1}>
-          {getGridItemLabel(item.label)}
-          {getGridItemValue(item.value)}
-        </Grid>
-      );
-    });
-    return gridItems;
-  }
+  const descAndChildren = (
+    <Grid container>
+      <div className={classes.fullWidth}>{children}</div>
+    </Grid>
+  );
 
   return (
     <React.Fragment>
       <Grid container spacing={4} justifyContent='space-between'>
         <Grid item style={{ width: '100%' }}>
-          {fields.length > 0 && (
+          {name && (
             <div className={classes.fieldMargin}>
               <b>{props.name}</b>
             </div>
           )}
-          {getGridItems()}
+          {descAndChildren}
         </Grid>
       </Grid>
     </React.Fragment>

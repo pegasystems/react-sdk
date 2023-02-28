@@ -13,9 +13,9 @@
 
   "server-config": {
     "server": "https://localhost:1080/prweb",
-    "user": "Admin@DXCB",
-    "password": "pega",
-    "rulesetName": "DXCB",
+    "user": "",
+    "password": "",
+    "rulesetName": "",
     "rulesetVersion": "01-01-01",
     "sourceOfComponents": "Server",
     "devBuild": true,

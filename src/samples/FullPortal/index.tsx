@@ -3,11 +3,14 @@ import ReactDOM from "react-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
-import StoreContext from "../../bridge/Context/StoreContext";
-import createPConnectComponent from "../../bridge/react_pconnect";
-import { SdkConfigAccess } from '../../helpers/config_access';
-import { compareSdkPCoreVersions } from '../../helpers/versionHelpers';
-import { loginIfNecessary } from '../../helpers/authManager';
+import StoreContext from "@pega/react-sdk-components/lib/bridge/Context/StoreContext";
+import createPConnectComponent from "@pega/react-sdk-components/lib/bridge/react_pconnect";
+import { SdkConfigAccess } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
+import { loginIfNecessary } from '@pega/react-sdk-components/lib/components/helpers/authManager';
+
+import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import localSdkComponentMap from '../../../sdk-local-component-map';
 
 declare const PCore: any;
 declare const myLoadPortal: any;
@@ -120,7 +123,16 @@ export default function FullPortal() {
       // Check that we're seeing the PCore version we expect
       compareSdkPCoreVersions();
 
-      initialRender(renderObj);
+      // Initialize the SdkComponentMap (local and pega-provided)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+      getSdkComponentMap(localSdkComponentMap).then( (theComponentMap: any) => {
+        // eslint-disable-next-line no-console
+        console.log(`SdkComponentMap initialized`);
+
+        // Don't call initialRender until SdkComponentMap is fully initialized
+        initialRender(renderObj);
+
+      })
     });
 
     // load the Portal and handle the onPCoreEntry response that establishes the
@@ -141,8 +153,8 @@ export default function FullPortal() {
     }
     else {
       // This path of selecting a portal by enumerating entries within current user's access group's portals list
-      // relies on Traditional DX APIs and should be avoided when the Constellation bootstrap supports
-      // the loadDefaultPortal API
+      //  relies on Traditional DX APIs and should be avoided when the Constellation bootstrap supports
+      //  the loadDefaultPortal API
       SdkConfigAccess.selectPortal()
       .then( () => {
         const selPortal = SdkConfigAccess.getSdkConfigServer().appPortal;

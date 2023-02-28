@@ -1,0 +1,35 @@
+{
+  "components-directory-path": "src/components",
+
+  "custom-templates-path-comment": "Optional path to override the custom templates, folder needs subdirectories. ",
+  "custom-templates-path-comment-2": "MUST have subdirectories of /field, /widget and /template ",
+  "custom-templates-path-comment-3": "Subdirectories must contain directories of components with matching names of subtypes in query",
+  "custom-templates-path": "",
+
+  "override-templates-path-comment": "Optional path to override the overriding templates, folder needs subdirectories",
+  "override-templates-path-comment-2": "MUST have subdirectories of /forms, /widgets, /templates, /infra and /designSystemExtensions",
+  "override-templates-path-comment-3": "Subdirectories must contain directories of components with matching names of subtypes in query",
+  "override-templates-path": "",
+
+  "server-config": {
+    "server": "https://localhost:1080/prweb",
+    "user": "",
+    "password": "",
+    "rulesetName": "",
+    "rulesetVersion": "01-01-01",
+    "sourceOfComponents": "Server",
+    "devBuild": true,
+    "clientId": "",
+    "clientSecret": "",
+    "accessTokenUri": "https://localhost:1080/prweb/PRRestService/oauth2/v1/token"
+  },
+  "component": {
+    "organization": "Pega",
+    "library": "DXIL",
+    "version": "",
+    "type": "",
+    "subtype": "",
+    "description": "",
+    "icon": ""
+  }
+}

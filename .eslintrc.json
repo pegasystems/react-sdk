@@ -34,6 +34,10 @@
     "@typescript-eslint/array-type": ["error", { "default": "generic" }],
     // "import/extensions": ["warn", "never"],    // Turning off for now (see below)
 
+    // Note: the "0" means to allow it. 1 = warning, 2 = error
+    //  allowing this lets index.tsx files pass linting even though they only have an export (and no JSX)
+    "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx", "*.ts", "*.tsx"] }],
+
     //
     // Initial release: turning these off; phase in to "warn" or "error" over time
     //  For "quotes" and "@typescript-eslint/quotes", see override below for .ts/.tsx files

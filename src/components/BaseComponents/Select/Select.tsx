@@ -4,28 +4,21 @@ import FormGroup from '../FormGroup/FormGroup';
 
 export default function Select(props){
 
-  const {name, children, onChange} = props;
+  const {name, onChange, value, children} = props;
 
   return(
     <FormGroup {...props}>
-      <select className="govuk-select" id={name} name={name} onChange={onChange}>
-        {children}
-      </select>
+        <select className="govuk-select" id={name} name={name} onChange={onChange} value={value}>
+          {children}
+        </select>
     </FormGroup>
   )
 }
 
 Select.propTypes = {
+  ...FormGroup.propTypes,
   name: PropTypes.string,
-  label: PropTypes.string,
-  labelIsHeading: PropTypes.bool,
-  inputProps: PropTypes.object,
-  hintText: PropTypes.string,
-  errorText: PropTypes.string,
-  children: PropTypes.array,
+  children: PropTypes.node,
   onChange: PropTypes.func,
-}
-
-Select.defaultProps ={
-  labelIsHeading: true,
+  value: PropTypes.string,
 }

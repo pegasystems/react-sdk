@@ -1,8 +1,8 @@
-import React from 'react';
+ import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function FormGroup(props){
-  const {children, errorText, hintText, labelIsHeading, label} = props;
+export default function FormGroup({labelIsHeading=true, label, errorText, hintText,  children}){
+
   const formGroupDivClasses = `govuk-form-group ${errorText && 'govuk-form-group--error'}`;
   const labelClasses = `govuk-label ${labelIsHeading?"govuk-label--l":""}`;
 
@@ -40,8 +40,4 @@ FormGroup.propTypes = {
   hintText: PropTypes.string,
   errorText: PropTypes.string,
   children: PropTypes.node,
-}
-
-FormGroup.defaultProps ={
-  labelIsHeading: true,
 }

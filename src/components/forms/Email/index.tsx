@@ -1,6 +1,4 @@
 import React from 'react';
-import { TextField, InputAdornment } from '@material-ui/core';
-import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import TextInput from '../TextInput';
 import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
@@ -21,17 +19,6 @@ export default function Email(props) {
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
 
-  if (displayMode === 'LABELS_LEFT') {
-    const field = {
-      [label]: value
-    };
-    return <FieldValueList item={field} />;
-  }
-
-  if (readOnly) {
-    return <TextInput {...props} />;
-  }
-
   let testProp = {};
 
   testProp = {
@@ -39,27 +26,15 @@ export default function Email(props) {
   };
 
   return (
-    <TextField
-      fullWidth
-      variant='outlined'
-      helperText={helperTextToDisplay}
-      placeholder=''
-      size='small'
-      required={required}
-      disabled={disabled}
-      onChange={onChange}
-      onBlur={!readOnly ? onBlur : undefined}
-      error={status === 'error'}
-      label={label}
-      value={value}
-      type='email'
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position='start'>
-            <MailOutlineIcon />
-          </InputAdornment>
-        ),
-        inputProps: { ...testProp }
+    <TextInput
+      {...props}
+      inputProps={{
+        type:'email',
+        spellCheck:"false",
+        /*
+            TODO enable if always relevant
+            autocomplete="email"
+        */
       }}
     />
   );

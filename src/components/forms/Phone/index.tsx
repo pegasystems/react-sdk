@@ -1,5 +1,5 @@
 import React from 'react';
-import MuiPhoneNumber from 'material-ui-phone-number';
+import TextInput from '../TextInput';
 import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 export default function Phone(props) {
@@ -25,34 +25,10 @@ export default function Phone(props) {
     'data-test-id': testId
   };
 
-  if (displayMode === 'LABELS_LEFT') {
-    const field = {
-      [label]: value
-    };
-    return <FieldValueList item={field} />;
-  }
-
   if (readOnly) {
     const disableDropdown = true;
     return (
-      <div>
-        <MuiPhoneNumber
-          fullWidth
-          helperText={helperTextToDisplay}
-          placeholder=''
-          size='small'
-          required={required}
-          disabled={disabled}
-          onChange={onChange}
-          error={status === 'error'}
-          label={label}
-          value={value}
-          InputProps={{
-            readOnly: true
-          }}
-          disableDropdown={disableDropdown}
-        />
-      </div>
+      <></>
     );
   }
 
@@ -69,21 +45,17 @@ export default function Phone(props) {
   };
 
   return (
-    <MuiPhoneNumber
-      fullWidth
-      variant='outlined'
-      helperText={helperTextToDisplay}
-      placeholder=''
-      size='small'
-      defaultCountry='us'
-      required={required}
-      disabled={disabled}
-      onChange={handleChange}
-      onBlur={!readOnly ? handleBlur : undefined}
-      error={status === 'error'}
-      label={label}
-      value={value}
-      InputProps={{ ...testProp }}
+
+    <TextInput
+      {...props}
+      inputProps={{
+          type:'tel',
+          /*
+            TODO enable if always relevant
+            autocomplete="tel"
+          */
+        }
+      }
     />
   );
 }

@@ -37,7 +37,7 @@ export default function TextInput(props) {
     }
   }, [isOnlyQuestion])
 
-  const extraInputProps = {onChange, onBlur, value};
+  const extraInputProps = {onChange, value};
 
   // TODO Investigate more robust way to check if we should display as password
   if(label === "Password"){

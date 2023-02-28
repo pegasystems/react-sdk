@@ -25,22 +25,21 @@ export default function Dropdown(props) {
     helperText,
     label
   } = props;
+
   const [options, setOptions] = useState<Array<IOption>>([]);
-  const helperTextToDisplay = validatemessage || helperText;
+  const isOnlyField = useIsOnlyField();
+  const stepName = useStepName(isOnlyField, getPConnect);
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps().value;
 
-  const unselectedValue = "Select...";
-
   useEffect(() => {
-    const optionsList = Utils.getOptionList(props, getPConnect().getDataObject());
+    const optionsList = [...Utils.getOptionList(props, getPConnect().getDataObject())];
+    if(value === '') {optionsList.unshift({key:placeholder, value:placeholder})};
     setOptions(optionsList);
-  }, [datasource]);
+  }, [datasource, value]);
 
-  const isOnlyField = useIsOnlyField();
-  const stepName = useStepName(isOnlyField, getPConnect);
 
   let readOnlyProp = {};
 
@@ -55,7 +54,7 @@ export default function Dropdown(props) {
   };
 
   const handleChange = evt => {
-    const selectedValue = evt.target.value === unselectedValue ? '' : evt.target.value;
+    const selectedValue = evt.target.value === placeholder ? '' : evt.target.value;
     handleEvent(actionsApi, 'changeNblur', propName, selectedValue);
   };
 
@@ -66,10 +65,10 @@ export default function Dropdown(props) {
        errorText={validatemessage}
        labelIsHeading={isOnlyField}
        onChange={handleChange}
+       value={value}
       >
-        {!value && <option value="">{placeholder}</option>}
-        {options.map((option) =>{
-            <option value={option.value} key={option.key} selected={option.value === value}>{option.value}</option>
+        {options.map((option) => {
+          return (<option key={option.key} value={option.value}>{option.value}</option>)
         })}
       </Select>
     </>

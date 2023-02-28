@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import GDSTextInput from '../../BaseComponents/TextInput/TextInput';
+import usePrefixPageTitle from '../../../helpers/hooks/usePrefixPageTitle';
 
 declare const PCore;
 
@@ -16,8 +17,11 @@ export default function TextInput(props) {
 
   // const maxLength = fieldMetadata?.maxLength;
 
+
+
   const [isOnlyQuestion, setIsOnlyQuestion] = useState(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
   const [displayLabel, setDisplayLabel] = useState(label);
+  usePrefixPageTitle(validatemessage);
 
   /* let testProp = {};
   testProp = {

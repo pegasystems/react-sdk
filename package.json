@@ -43,6 +43,7 @@
     "_comment_Component_Config_Server_2": "The Component Config Server can only be used when running against Infinity 8.7.* or newer",
     "start-component-config-server": "http-server ./distAuthoring --port 4502 --cors -d false",
     "start-component-config-server-https": "http-server ./distAuthoring --port 4502 --cors -d false --ssl --cert private.pem --key private.key",
+
     "_comment_internal_SDK_scripts": "The following commands are for internal use and are intended to be called only from public scripts above",
     "_comment_internal_SDK_scripts_2": "The _internal-copy-configs script can only be used when running against Infinity 8.7.* or newer",
     "_internal-build-dev-only": "webpack --mode=development && npm run _internal-copy-index && npm run _internal-copy-configs",

@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 
-//TODO Refactor is required elsewhere
-const ConditionalWrapper = ({ condition, wrapper, children }) => {
-  return condition ? wrapper(children) : children;
+// TODO Refactor is required elsewhere
+const ConditionalWrapper = ({ condition, wrapper, childrenToWrap }) => {
+  return condition ? wrapper(childrenToWrap) : childrenToWrap;
 }
 
 
@@ -15,9 +15,9 @@ export default function TextInput(props){
   const formGroupDivClasses = `govuk-form-group ${errorText && 'govuk-form-group--error'}`;
   const labelClasses = `govuk-label ${labelIsHeading?"govuk-label--l":""}`;
 
-  //TODO - Handle input widths
-  //TODO - Handle input types (password, email, numeric) - Or investigate if these should be separate components, or can simple be handled by inputProps
-  //TODO - Handle autocomplete settings
+  // TODO - Handle input widths
+  // TODO - Handle input types (password, email, numeric) - Or investigate if these should be separate components, or can simple be handled by inputProps
+  // TODO - Handle autocomplete settings
 
   return(
     <div className={formGroupDivClasses}>
@@ -29,7 +29,7 @@ export default function TextInput(props){
                     {children}
                   </h1>)}
                 }
-        children={
+        childrenToWrap={
             <label className={labelClasses}>{label}</label>
           }
       />

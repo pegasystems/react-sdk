@@ -9,7 +9,6 @@ export default function TextInput(props) {
     value = '',
     validatemessage,
     onChange,
-    onBlur,
     helperText,
     getPConnect,
     inputProps,

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 
 // TODO Refactor is required elsewhere
-const ConditionalWrapper = ({ condition, wrapper, children }) => {
-  return condition ? wrapper(children) : children;
+const ConditionalWrapper = ({ condition, wrapper, childrenToWrap }) => {
+  return condition ? wrapper(childrenToWrap) : childrenToWrap;
 }
 
 
@@ -29,7 +29,7 @@ export default function TextInput(props){
                     {children}
                   </h1>)}
                 }
-        children={
+        childrenToWrap={
             <label className={labelClasses}>{label}</label>
           }
       />

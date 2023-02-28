@@ -17,8 +17,6 @@ export const getReferenceList = pConn => {
     } else if (resolvePage.startsWith('D_') && !resolvePage.endsWith('.pxResults')) {
       resolvePage = `${resolvePage}.pxResults`;
     }
-  } else {
-    resolvePage = `${pConn.getPageReference().replace('caseInfo.content', '')}${resolvePage}`;
   }
   return resolvePage;
 };

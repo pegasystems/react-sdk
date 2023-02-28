@@ -1,36 +1,18 @@
 import React from 'react';
 import TextInput from '../TextInput';
-import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 export default function Phone(props) {
   const {
-    label,
-    required,
-    disabled,
-    value = '',
-    validatemessage,
-    status,
     onChange,
     onBlur,
-    readOnly,
-    testId,
-    helperText,
-    displayMode
   } = props;
-  const helperTextToDisplay = validatemessage || helperText;
 
+  /*
   let testProp = {};
-
   testProp = {
     'data-test-id': testId
   };
-
-  if (readOnly) {
-    const disableDropdown = true;
-    return (
-      <></>
-    );
-  }
+  */
 
   const handleChange = inputVal => {
     let phoneValue = inputVal && inputVal.replace(/\D+/g, '');
@@ -50,6 +32,8 @@ export default function Phone(props) {
       {...props}
       inputProps={{
           type:'tel',
+          onChange:handleChange,
+          onBlur:handleBlur,
           /*
             TODO enable if always relevant
             autocomplete="tel"

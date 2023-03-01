@@ -1,14 +1,12 @@
 import React from 'react';
 import AppSelector from '../AppSelector';
 
-import '../../../assets/css/govukfrontend.scss';
-
 const TopLevelApp = () => {
 
   return (
-    <div>
+    <>
       <AppSelector />
-    </div>
+    </>
   );
 }
 

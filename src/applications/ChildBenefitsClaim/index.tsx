@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { render } from "react-dom";
+import { createRoot } from 'react-dom/client';
 
 import StoreContext from "../../bridge/Context/StoreContext";
 import createPConnectComponent from "../../bridge/react_pconnect";
@@ -51,7 +51,7 @@ export default function ChildBenefitsClaim() {
 
     if (thePegaPartEl) {
       if (bShowPega) {
-        thePegaPartEl.style.display = "flex";
+        thePegaPartEl.style.display = "block";
   } else {
         thePegaPartEl.style.display = "none";
       }
@@ -155,11 +155,11 @@ export default function ChildBenefitsClaim() {
     );
 
     // Initial render of component passed in (which should be a RootContainer)
-    render(
-      <React.Fragment>
+    const root = createRoot(target); // createRoot(container!) if you use TypeScript
+    root.render(
+      <>
         {theComponent}
-      </React.Fragment>,
-      target
+      </>
     )
 
     // Initial render to show that we have a PConnect and can render in the target location
@@ -247,12 +247,8 @@ export default function ChildBenefitsClaim() {
   }, []);
 
   return (
-    <div>
-      <div>
-        <div id="pega-part-of-page">
-          <div id="pega-root"></div>
-        </div>
-      </div>
+    <div id="pega-part-of-page">
+      <div id="pega-root"></div>
     </div>
   )
 

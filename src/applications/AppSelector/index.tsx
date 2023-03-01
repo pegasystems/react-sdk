@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import ChildBenefitsClaim from '../ChildBenefitsClaim'
 
 // NOTE: You should update this to be the same value that's in
@@ -15,12 +15,10 @@ const baseURL = "/";
 const AppSelector = () => {
 
   return (
-      <div>
-        <Switch>
-          <Route exact path={`${baseURL}`} component={ChildBenefitsClaim} />
-          <Route exact path={`${baseURL}claim-child-benefit`} component={ChildBenefitsClaim} />
-        </Switch>
-    </div>
+    <Routes>
+      <Route path={`${baseURL}`} element={<ChildBenefitsClaim />} />
+      <Route path={`${baseURL}claim-child-benefit`} element={<ChildBenefitsClaim/>} />
+    </Routes>
   )
 
 };

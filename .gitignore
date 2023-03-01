@@ -35,8 +35,12 @@ pnpm-debug.log*
 # localhost cert files
 /private.*
 /ssl.conf
+
+# test output directories (jest, playwright)
 test-results/
-playwright-report/
+tests/coverage
+tests/playwright-report
+
 
 # unit testing coverage
 /coverage

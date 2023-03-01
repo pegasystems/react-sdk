@@ -37,7 +37,7 @@
     "_comment_SDK_public_SDK_test_commands": "The following are public commands used for testing the SDK",
     "test": "node ./scripts/playwright-message.js && playwright test --project=chromium MediaCo/portal MediaCo/embedded",
     "test:headed": "playwright test --headed --project=chromium MediaCo/portal MediaCo/embedded",
-    "test-report": "playwright show-report",
+    "test-report": "playwright show-report tests/playwright-report",
 
     "_comment_Component_Config_Server": "The following are public commands related to the Component Config Server that's only needed at design time/authoring",
     "_comment_Component_Config_Server_2": "The Component Config Server can only be used when running against Infinity 8.7.* or newer",

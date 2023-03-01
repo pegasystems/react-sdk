@@ -13,6 +13,7 @@ export default function TextInput(props) {
     helperText,
     getPConnect,
     inputProps,
+    fieldMetadata
   } = props;
 
   // const maxLength = fieldMetadata?.maxLength;
@@ -47,7 +48,7 @@ export default function TextInput(props) {
   const extraInputProps = {onChange, value};
 
   // TODO Investigate more robust way to check if we should display as password
-  if(label === "Password"){
+  if(fieldMetadata?.displayAs === "pxPassword"){
     extraInputProps["type"]="password";
   }
 

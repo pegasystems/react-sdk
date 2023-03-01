@@ -1,11 +1,14 @@
-import React from "react";
-// import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from "prop-types";
 import Grid from '@material-ui/core/Grid';
 import DetailsFields from '../../designSystemExtensions/DetailsFields';
 
 export default function Details(props) {
-  const { children } = props;
+  const { children, label, showLabel, getPConnect } = props;
   const arFields: Array<any> = [];
+
+  // Get the inherited props from the parent to determine label settings
+  const propsToUse = { label, showLabel, ...getPConnect().getInheritedProps() };
 
   for (const child of children) {
     const theChildPConn = child.props.getPConnect();
@@ -16,20 +19,28 @@ export default function Details(props) {
   }
 
   return (
-      <div id="DetailsOneColumn">
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <DetailsFields fields={arFields[0]} />
-          </Grid>
+    <div id='DetailsOneColumn'>
+      {propsToUse.showLabel && (
+        <div className='template-title-container'>
+          <span>{propsToUse.label}</span>
+        </div>
+      )}
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <DetailsFields fields={arFields[0]} />
         </Grid>
-      </div>
-    );
+      </Grid>
+    </div>
+  );
 }
 
 Details.defaultProps = {
-  // children: []
-}
+  label: undefined,
+  showLabel: true
+};
 
 Details.propTypes = {
-  // children: PropTypes.arrayOf(PropTypes.node)
+  showLabel: PropTypes.bool,
+  label: PropTypes.string,
+  getPConnect: PropTypes.func.isRequired,
 };

@@ -201,7 +201,7 @@ export default function View(props) {
 
     return (
       <div className='grid-column'>
-        {showLabel && template !== 'SubTabs' && template !== 'SimpleTable' && (
+        {showLabel && template !== 'SubTabs' && template !== 'SimpleTable' && template !== 'Details' && (
           <div className='template-title-container'>
             <span>{label}</span>
           </div>

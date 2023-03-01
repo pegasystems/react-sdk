@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 
 /***
  * A helper hook for adding 'Error:' as a prefix to the page title, to align with GDS Expectations

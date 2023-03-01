@@ -6,7 +6,7 @@ export default function FormGroup({labelIsHeading=true, label, errorText, hintTe
   const formGroupDivClasses = `govuk-form-group ${errorText && 'govuk-form-group--error'}`;
   const labelClasses = `govuk-label ${labelIsHeading?"govuk-label--l":""}`;
 
-  //TODO Refactor if required elsewhere
+  // TODO Refactor if required elsewhere
   const ConditionalWrapper = ({ condition, wrapper, childrenToWrap }) => {
     return condition ? wrapper(childrenToWrap) : childrenToWrap;
   }
@@ -16,10 +16,10 @@ export default function FormGroup({labelIsHeading=true, label, errorText, hintTe
       <div className={formGroupDivClasses}>
       <ConditionalWrapper
         condition={labelIsHeading}
-        wrapper={ label => {
+        wrapper={ child => {
                   return (
                   <h1 className="govuk-label-wrapper">
-                    {label}
+                    {child}
                   </h1>)}
                 }
         childrenToWrap={

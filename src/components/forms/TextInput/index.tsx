@@ -17,11 +17,15 @@ export default function TextInput(props) {
 
   // const maxLength = fieldMetadata?.maxLength;
 
-
-
   const [isOnlyQuestion, setIsOnlyQuestion] = useState(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
   const [displayLabel, setDisplayLabel] = useState(label);
   useAddErrorToPageTitle(validatemessage);
+
+
+  // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
+  const thePConn = getPConnect();
+  let propName = thePConn.getStateProps().value;
+  propName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
 
   /* let testProp = {};
   testProp = {
@@ -58,6 +62,7 @@ export default function TextInput(props) {
       errorText={validatemessage}
       label={displayLabel}
       labelIsHeading={isOnlyQuestion}
+      name={propName}
     />
     </>
   );

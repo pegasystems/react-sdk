@@ -24,7 +24,8 @@ export default function Dropdown(props) {
     readOnly,
     testId,
     helperText,
-    displayMode
+    displayMode,
+    onRecordChange
   } = props;
   const [options, setOptions] = useState<Array<IOption>>([]);
   const helperTextToDisplay = validatemessage || helperText;
@@ -61,6 +62,9 @@ export default function Dropdown(props) {
   const handleChange = evt => {
     const selectedValue = evt.target.value === 'Select' ? '' : evt.target.value;
     handleEvent(actionsApi, 'changeNblur', propName, selectedValue);
+    if (onRecordChange) {
+      onRecordChange(evt);
+    }
   };
 
   // Material UI shows a warning if the component is rendered before options are set.

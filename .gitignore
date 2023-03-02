@@ -36,6 +36,9 @@ pnpm-debug.log*
 /private.*
 /ssl.conf
 
+# Files generated during component compilation
+/lib
+
 # test output directories (jest, playwright)
 test-results/
 tests/coverage

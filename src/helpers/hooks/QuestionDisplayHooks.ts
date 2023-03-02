@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 
 declare const PCore;
 
-/*****
+/**
  * Helper hook for handling instances where there is only one field presented in the current view.
  * Returns a boolean indicating whether or not there is only one field to display in the current context
- */
+*/
 
 
 function useIsOnlyField(){
@@ -19,9 +19,7 @@ function useIsOnlyField(){
 }
 
 function useStepName(isOnlyField: boolean, getPConnect: Function){
-  const [stepName, setStepName] = useState(getPConnect().getDataObject()?.caseInfo.assignments[0].name);
-
-  return stepName
+  return useState(getPConnect().getDataObject()?.caseInfo.assignments[0].name);
 }
 
 

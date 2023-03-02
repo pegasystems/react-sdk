@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import GDSTextInput from '../../BaseComponents/TextInput/TextInput';
 import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 import {useIsOnlyField, useStepName} from '../../../helpers/hooks/QuestionDisplayHooks';
-
-declare const PCore;
 
 export default function TextInput(props) {
   const {
@@ -12,7 +10,6 @@ export default function TextInput(props) {
     validatemessage,
     onChange,
     helperText,
-    displayMode,
     getPConnect,
     inputProps,
     fieldMetadata,
@@ -20,10 +17,9 @@ export default function TextInput(props) {
 
   // const maxLength = fieldMetadata?.maxLength;
 
-  const [isOnlyQuestion, setIsOnlyQuestion] = useState(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
-  const [displayLabel, setDisplayLabel] = useState(label);
+  // TODO consider moving this functionality 'up' especially when we add Error summary,
+  // as it may be tidier to call this only once, rather than on every input
   useAddErrorToPageTitle(validatemessage);
-
 
   // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
   const thePConn = getPConnect();
@@ -35,7 +31,7 @@ export default function TextInput(props) {
     'data-test-id': testId
   }; */
 
-  let extraInputProps = {onChange, value};
+  const extraInputProps = {onChange, value};
 
   // TODO Investigate more robust way to check if we should display as password
   if(fieldMetadata?.displayAs === "pxPassword"){

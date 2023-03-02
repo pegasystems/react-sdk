@@ -4,6 +4,7 @@ import Utils from '../../../helpers/utils';
 import handleEvent from '../../../helpers/event-utils';
 import Select from '../../BaseComponents/Select/Select';
 import {useIsOnlyField, useStepName} from '../../../helpers/hooks/QuestionDisplayHooks';
+import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 
 interface IOption {
   key: string;
@@ -13,15 +14,10 @@ interface IOption {
 export default function Dropdown(props) {
   const {
     getPConnect,
-    required,
-    disabled,
     placeholder,
     value = '',
     datasource = [],
     validatemessage,
-    status,
-    readOnly,
-    testId,
     helperText,
     label
   } = props;
@@ -34,24 +30,21 @@ export default function Dropdown(props) {
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps().value;
 
+  // TODO consider moving this functionality 'up' especially when we add Error summary,
+  // as it may be tidier to call this only once, rather than on every input
+  useAddErrorToPageTitle(validatemessage);
+
   useEffect(() => {
     const optionsList = [...Utils.getOptionList(props, getPConnect().getDataObject())];
     if(value === '') {optionsList.unshift({key:placeholder, value:placeholder})};
     setOptions(optionsList);
   }, [datasource, value]);
 
-
-  let readOnlyProp = {};
-
-  if (readOnly) {
-    readOnlyProp = { readOnly: true };
-  }
-
-  let testProp = {};
+  /* let testProp = {};
 
   testProp = {
     'data-test-id': testId
-  };
+  }; */
 
   const handleChange = evt => {
     const selectedValue = evt.target.value === placeholder ? '' : evt.target.value;

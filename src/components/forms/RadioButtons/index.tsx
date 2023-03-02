@@ -11,7 +11,10 @@ export default function RadioButtons(props) {
 
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();
-  const propName = thePConn.getStateProps().value;
+
+  // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
+  let propName = thePConn.getStateProps().value;
+  propName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
 
   const isOnlyField = useIsOnlyField();
   const stepName = useStepName(isOnlyField, getPConnect);
@@ -28,6 +31,7 @@ export default function RadioButtons(props) {
       label={isOnlyField?stepName:label}
       legendIsHeading={isOnlyField}
       options={theOptions.map(option => {return {value:option.key, label:option.value}})}
+      displayInline={theOptions.length === 2}
     />
   );
 }

@@ -1,14 +1,16 @@
-import React from 'react';
+ import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function FormGroup({labelIsHeading=true, label, errorText, hintText,  children}){
 
-  const formGroupDivClasses = `govuk-form-group ${errorText && 'govuk-form-group--error'}`;
-  const labelClasses = `govuk-label ${labelIsHeading?"govuk-label--l":""}`;
+function makeHintId(identifier){return `${identifier}-hint`};
+function makeErrorId(identifier){return `${identifier}-error`};
 
-  // TODO add an id to hint and aria-described by to child field, if possible?
+export default function FormGroup({labelIsHeading=true, label, errorText, hintText, name, children}){
 
-  // TODO Refactor if required elsewhere - THIS IS ALSO USED IN FIELDGROUP.tsx
+  const formGroupDivClasses = `govuk-form-group ${errorText?'govuk-form-group--error':""}`.trim();
+  const labelClasses = `govuk-label ${labelIsHeading?"govuk-label--l":""}`.trim();
+
+  // TODO Refactor if required elsewhere
   const ConditionalWrapper = ({ condition, wrapper, childrenToWrap }) => {
     return condition ? wrapper(childrenToWrap) : childrenToWrap;
   }
@@ -24,13 +26,13 @@ export default function FormGroup({labelIsHeading=true, label, errorText, hintTe
                   </h1>)}
                 }
         childrenToWrap={
-          <label className={labelClasses}>{label}</label>
+          <label className={labelClasses} htmlFor={name}>{label}</label>
         }
       />
-      {hintText && <div className="govuk-hint">{hintText}</div>}
-      {errorText  && <p className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{errorText}</p> }
+      {hintText && <div id={makeHintId(name)} className="govuk-hint">{hintText}</div>}
+      {errorText  && <p id={makeErrorId(name)} className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{errorText}</p> }
       {children}
-    </div>
+  </div>
   )
 }
 
@@ -41,3 +43,5 @@ FormGroup.propTypes = {
   errorText: PropTypes.string,
   children: PropTypes.node,
 }
+
+export {makeErrorId, makeHintId};

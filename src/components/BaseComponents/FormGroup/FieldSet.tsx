@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, children}){
 
-  const formGroupDivClasses = `govuk-form-group ${errorText && 'govuk-form-group--error'}`;
-  const legendClasses = `govuk-fieldset__legend ${legendIsHeading?"govuk-fieldset__legend--l":""}`;
+  const formGroupDivClasses = `govuk-form-group ${errorText?'govuk-form-group--error':""}`.trim();
+  const legendClasses = `govuk-fieldset__legend ${legendIsHeading?"govuk-fieldset__legend--l":""}`.trim();
 
   // TODO Reconsider how to generate hintID and errorID for aria-described by
   const describedByIDs : Array<string> = [];

@@ -62,7 +62,6 @@ export default function View(props) {
   if (template /* && LazyComponentMap[template] */) {
     // const ViewTemplate = LazyComponentMap[template];
     let ViewTemplate: any;
-    console.log('template=', template);
 
     switch (template) {
       case 'CaseSummary':

@@ -467,9 +467,7 @@ export default function FlowContainer(props) {
                 <legend className='govuk-fieldset__legend govuk-fieldset__legend--l'>
                   <h1 className='govuk-fieldset__heading'>{containerName}</h1>
                 </legend>
-                {instructionText !== '' ? (
-                  <div className='govuk-hint'>{instructionText}</div>
-                ) : null}
+                {instructionText && <div className='govuk-hint'>{instructionText}</div> }
                 </fieldset>
                 <MuiPickersUtilsProvider utils={DayjsUtils}>
                   <Assignment getPConnect={getPConnect} itemKey={itemKey}>

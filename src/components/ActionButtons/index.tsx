@@ -1,26 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from '@material-ui/core/styles';
-
 import Button from '@material-ui/core/Button';
-import { Grid, Divider } from "@material-ui/core";
-
-
-
-const useStyles = makeStyles((/* theme */) => ({
-  button: {
-    padding: "0px 5px",
-  },
-  divider: {
-    marginTop: "10px",
-    marginBottom: "10px"
-  }
-}));
-
+import { Grid } from "@material-ui/core";
 
 export default function ActionButtons(props) {
   const { arMainButtons, arSecondaryButtons, onButtonPress } = props;
-  const classes = useStyles();
 
   function _onButtonPress(sAction: string, sButtonType: string) {
 
@@ -29,7 +13,6 @@ export default function ActionButtons(props) {
 
   return (
     <React.Fragment>
-      <Divider className={classes.divider}/>
       <Grid container spacing={4} justifyContent="space-between">
         <Grid item>
           <Grid container spacing={1}>

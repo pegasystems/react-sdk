@@ -4,9 +4,9 @@ import AppSelector from '../AppSelector';
 const TopLevelApp = () => {
 
   return (
-    <div>
+    <>
       <AppSelector />
-    </div>
+    </>
   );
 }
 

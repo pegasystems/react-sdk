@@ -1,61 +1,70 @@
-import React from 'react';
-import { TextField } from '@material-ui/core';
-import FieldValueList from '../../designSystemExtensions/FieldValueList';
+import React, { useEffect, useState } from 'react';
+import GDSTextInput from '../../BaseComponents/TextInput/TextInput';
+import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
+
+declare const PCore;
 
 export default function TextInput(props) {
   const {
     label,
-    required,
-    disabled,
     value = '',
     validatemessage,
-    status,
     onChange,
-    onBlur,
-    readOnly,
-    testId,
-    fieldMetadata,
     helperText,
-    displayMode
+    getPConnect,
+    inputProps,
+    fieldMetadata
   } = props;
-  const helperTextToDisplay = validatemessage || helperText;
 
-  const maxLength = fieldMetadata?.maxLength;
+  // const maxLength = fieldMetadata?.maxLength;
 
-  let readOnlyProp = {}; // Note: empty if NOT ReadOnly
+  const [isOnlyQuestion, setIsOnlyQuestion] = useState(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
+  const [displayLabel, setDisplayLabel] = useState(label);
+  useAddErrorToPageTitle(validatemessage);
 
-  if (displayMode === 'LABELS_LEFT') {
-    const field = {
-      [label]: value
-    };
-    return <FieldValueList item={field} />;
-  }
 
-  if (readOnly) {
-    readOnlyProp = { readOnly: true };
-  }
+  // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
+  const thePConn = getPConnect();
+  let propName = thePConn.getStateProps().value;
+  propName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
 
-  let testProp = {};
-
+  /* let testProp = {};
   testProp = {
     'data-test-id': testId
-  };
+  }; */
+
+  useEffect ( () => {
+    setIsOnlyQuestion(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
+  }, [])
+
+  useEffect ( () => {
+    if(isOnlyQuestion){
+      setDisplayLabel(getPConnect().getDataObject()?.caseInfo.assignments[0].name);
+    } else {
+      setDisplayLabel(label);
+    }
+  }, [isOnlyQuestion])
+
+  const extraInputProps = {onChange, value};
+
+  // TODO Investigate more robust way to check if we should display as password
+  if(fieldMetadata?.displayAs === "pxPassword"){
+    extraInputProps["type"]="password";
+  }
 
   return (
-    <TextField
-      fullWidth
-      variant={readOnly ? 'standard' : 'outlined'}
-      helperText={helperTextToDisplay}
-      placeholder=''
-      size='small'
-      required={required}
-      disabled={disabled}
-      onChange={onChange}
-      onBlur={!readOnly ? onBlur : undefined}
-      error={status === 'error'}
-      label={label}
-      value={value}
-      InputProps={{ ...readOnlyProp, inputProps: { maxLength, ...testProp } }}
+    <>
+    <GDSTextInput
+      inputProps={{
+        ...inputProps,
+        ...extraInputProps
+      }}
+      hintText={helperText}
+      errorText={validatemessage}
+      label={displayLabel}
+      labelIsHeading={isOnlyQuestion}
+      name={propName}
     />
+    </>
   );
 }

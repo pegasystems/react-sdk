@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Basic multi question select input 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <label
+    className="govuk-label"
+    htmlFor="name"
+  >
+    label
+  </label>
+  <select
+    aria-describedby=""
+    className="govuk-select"
+    id="name"
+    name="name"
+    onChange={[Function]}
+  >
+    <option
+      value="Option 1"
+    >
+      Option 1
+    </option>
+    <option
+      value="Option 2"
+    >
+      Option 2
+    </option>
+  </select>
+</div>
+`;
+
+exports[`Basic select input with hint and error text 1`] = `
+<div
+  className="govuk-form-group govuk-form-group--error"
+>
+  <h1
+    className="govuk-label-wrapper"
+  >
+    <label
+      className="govuk-label govuk-label--l"
+      htmlFor="name"
+    >
+      label
+    </label>
+  </h1>
+  <div
+    className="govuk-hint"
+    id="name-hint"
+  >
+    hintText
+  </div>
+  <p
+    className="govuk-error-message"
+    id="name-error"
+  >
+    <span
+      className="govuk-visually-hidden"
+    >
+      Error:
+    </span>
+    errorText
+  </p>
+  <select
+    aria-describedby="name-error name-hint"
+    className="govuk-select"
+    id="name"
+    name="name"
+    onChange={[Function]}
+  >
+    <option
+      value="Option 1"
+    >
+      Option 1
+    </option>
+    <option
+      value="Option 2"
+    >
+      Option 2
+    </option>
+  </select>
+</div>
+`;
+
+exports[`Basic select with pre-selected value 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <h1
+    className="govuk-label-wrapper"
+  >
+    <label
+      className="govuk-label govuk-label--l"
+      htmlFor="name"
+    >
+      label
+    </label>
+  </h1>
+  <div
+    className="govuk-hint"
+    id="name-hint"
+  >
+    hintText
+  </div>
+  <select
+    aria-describedby="name-hint"
+    className="govuk-select"
+    id="name"
+    name="name"
+    onChange={[Function]}
+    value="Option 2"
+  >
+    <option
+      value="Option 1"
+    >
+      Option 1
+    </option>
+    <option
+      value="Option 2"
+    >
+      Option 2
+    </option>
+  </select>
+</div>
+`;
+
+exports[`Basic single question select input 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <h1
+    className="govuk-label-wrapper"
+  >
+    <label
+      className="govuk-label govuk-label--l"
+      htmlFor="name"
+    >
+      label
+    </label>
+  </h1>
+  <select
+    aria-describedby=""
+    className="govuk-select"
+    id="name"
+    name="name"
+    onChange={[Function]}
+  >
+    <option
+      value="Option 1"
+    >
+      Option 1
+    </option>
+    <option
+      value="Option 2"
+    >
+      Option 2
+    </option>
+  </select>
+</div>
+`;
+
+exports[`renders correctly 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <h1
+    className="govuk-label-wrapper"
+  >
+    <label
+      className="govuk-label govuk-label--l"
+    />
+  </h1>
+  <select
+    aria-describedby=""
+    className="govuk-select"
+  />
+</div>
+`;

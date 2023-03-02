@@ -14,6 +14,13 @@ export default function TextInput(props){
 
   const formGroupDivClasses = `govuk-form-group ${errorText && 'govuk-form-group--error'}`;
   const labelClasses = `govuk-label ${labelIsHeading?"govuk-label--l":""}`;
+  const inputClasses = `govuk-input ${errorText && 'govuk-input--error'}`
+
+  // TODO Investigate if this approach can be streamlined and/or refactored for use in other components
+  const hintID = `${name}-hint`;
+  const errorID = `${name}-error`;
+  const describedByIDs = [hintText && hintID, errorText && errorID];
+
 
   // TODO - Handle input widths
   // TODO - Handle input types (password, email, numeric) - Or investigate if these should be separate components, or can simple be handled by inputProps
@@ -33,9 +40,9 @@ export default function TextInput(props){
             <label className={labelClasses}>{label}</label>
           }
       />
-      {hintText && <div className="govuk-hint">{hintText}</div>}
-      {errorText  && <p className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{errorText}</p> }
-      <input className="govuk-input" {...inputProps} id={name} name={name}></input>
+      {hintText && <div id={hintID} className="govuk-hint">{hintText}</div>}
+      {errorText  && <p id={errorID} className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{errorText}</p> }
+      <input className={inputClasses} {...inputProps} id={name} name={name} aria-describedby={describedByIDs.join(' ').trim()}></input>
     </div>
   )
 }

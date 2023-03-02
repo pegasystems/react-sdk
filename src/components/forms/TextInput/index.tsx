@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import GDSTextInput from '../../BaseComponents/TextInput/TextInput';
+import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 
 declare const PCore;
 
@@ -9,16 +10,23 @@ export default function TextInput(props) {
     value = '',
     validatemessage,
     onChange,
-    onBlur,
     helperText,
     getPConnect,
     inputProps,
+    fieldMetadata
   } = props;
 
   // const maxLength = fieldMetadata?.maxLength;
 
   const [isOnlyQuestion, setIsOnlyQuestion] = useState(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
   const [displayLabel, setDisplayLabel] = useState(label);
+  useAddErrorToPageTitle(validatemessage);
+
+
+  // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
+  const thePConn = getPConnect();
+  let propName = thePConn.getStateProps().value;
+  propName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
 
   /* let testProp = {};
   testProp = {
@@ -37,10 +45,10 @@ export default function TextInput(props) {
     }
   }, [isOnlyQuestion])
 
-  const extraInputProps = {onChange, onBlur, value};
+  const extraInputProps = {onChange, value};
 
   // TODO Investigate more robust way to check if we should display as password
-  if(label === "Password"){
+  if(fieldMetadata?.displayAs === "pxPassword"){
     extraInputProps["type"]="password";
   }
 
@@ -55,6 +63,7 @@ export default function TextInput(props) {
       errorText={validatemessage}
       label={displayLabel}
       labelIsHeading={isOnlyQuestion}
+      name={propName}
     />
     </>
   );

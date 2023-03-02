@@ -5,6 +5,8 @@ const path = require('path');
 const fsp = fs.promises;
 const LOG_PRELUDE = "copy-config-ext:";
 const COMPONENTS_ROOT_SOURCE = "src/components";
+const COMPONENTS_CUSTOM_DIR = "custom";
+const COMPONENTS_OVERRIDE_DIR = "override";
 const COMPONENTS_ROOT_TARGET = "distAuthoring/components";
 const CONFIG_NAME = "config.json";
 const CONFIG_EXT_NAME = "config-ext.json";
@@ -48,12 +50,29 @@ function createCompsRoot() {
 
 
 function gatherConfigFiles() {
-  const jsFiles = fg.sync(`${COMPONENTS_ROOT_SOURCE}/**/${CONFIG_NAME}`);
+  // Need to get config.json files from 2 places: custom components and override components
+  //  Don't want config.json from custom-constellation since they will have name collisions
+  //  with the custom component's config.json
 
-  jsFiles.forEach( file => {
+  // const COMPONENTS_CUSTOM_DIR = "custom";
+  // const COMPONENTS_OVERRIDE_DIR = "override";
+
+  // Look for an process any Custom component configs
+  const jsFilesCustom = fg.sync(`${COMPONENTS_ROOT_SOURCE}/${COMPONENTS_CUSTOM_DIR}/**/${CONFIG_NAME}`);
+
+  jsFilesCustom.forEach( file => {
     // console.log(`${LOG_PRELUDE} found file: ${file}`);
     copyConfigRelatedFile(file);
-  })
+  });
+
+  // Look for an process any override component configs
+  const jsFilesOverride = fg.sync(`${COMPONENTS_ROOT_SOURCE}/${COMPONENTS_OVERRIDE_DIR}/**/${CONFIG_NAME}`);
+
+  jsFilesOverride.forEach( file => {
+    // console.log(`${LOG_PRELUDE} found file: ${file}`);
+    copyConfigRelatedFile(file);
+  });
+
 }
 
 

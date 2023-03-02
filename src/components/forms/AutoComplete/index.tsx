@@ -50,11 +50,11 @@ export default function AutoComplete(props) {
     deferDatasource,
     datasourceMetadata,
     status,
-    helperText
+    helperText,
+    onRecordChange
   } = props;
-  let parameters = datasourceMetadata?.datasource?.parameters;
   const context = getPConnect().getContextName();
-  let { listType, datasource = [], columns = [] } = props;
+  let { listType, parameters, datasource = [], columns = [] } = props;
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [theDatasource, setDatasource] = useState(null);
@@ -85,7 +85,7 @@ export default function AutoComplete(props) {
   if (deferDatasource && datasourceMetadata?.datasource?.name) {
     listType = 'datapage';
     datasource = datasourceMetadata.datasource.name;
-    parameters = flattenParameters(parameters);
+    parameters = flattenParameters(datasourceMetadata?.datasource?.parameters);
     const displayProp = datasourceMetadata.datasource.propertyForDisplayText.startsWith('@P')
       ? datasourceMetadata.datasource.propertyForDisplayText.substring(3)
       : datasourceMetadata.datasource.propertyForDisplayText;
@@ -151,6 +151,9 @@ export default function AutoComplete(props) {
   const handleChange = (event: object, newValue) => {
     const val = newValue ? newValue.key : '';
     handleEvent(actionsApi, 'changeNblur', propName, val);
+    if (onRecordChange) {
+      onRecordChange(event);
+    }
   };
 
   const handleInputValue = (event, newInputValue) => {

@@ -32,18 +32,6 @@
     "excludePortals" : ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"]
   },
   "dxcbConfig": {
-    "components-directory-path": "src/components",
-
-    "customTemplatesPath_comment": "Optional path to override the custom templates, folder needs subdirectories.",
-    "customTemplatesPath_comment2": "MUST have subdirectories of /field, /widget and /template ",
-    "customTemplatesPath_comment3": "Subdirectories must contain directories of components with matching names of subtypes in query",
-    "customTemplatesPath": "",
-
-    "overrideTemplatesPath_comment": "Optional path to override the overriding templates, folder needs subdirectories",
-    "overrideTemplatesPath_comment2": "MUST have subdirectories of /field, /widget, /template, /infra and /designSystemExtension",
-    "overrideTemplatesPath_comment3": "Subdirectories must contain directories of components with matching names of subtypes in query",
-    "overrideTemplatesPath": "",
-
     "publishAccess": {
       "user": "YourOperatorLogin-Required",
       "password": "",
@@ -54,6 +42,7 @@
       "clientId": "",
       "clientSecret": ""
     },
+
     "componentDefaults": {
       "organization": "YourOrg-Required",
       "library": "",
@@ -63,5 +52,11 @@
       "description": "",
       "icon": ""
     }
+  },
+
+  "componentTemplates": {
+    "componentTemplates_comment": "Optional paths for location of custom or override templates.",
+    "customTemplatesPath": "",
+    "overrideTemplatesPath": ""
   }
 }

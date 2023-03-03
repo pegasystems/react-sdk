@@ -46,8 +46,8 @@
 
     "_comment_internal_SDK_scripts": "The following commands are for internal use and are intended to be called only from public scripts above",
     "_comment_internal_SDK_scripts_2": "The _internal-copy-configs script can only be used when running against Infinity 8.7.* or newer",
-    "_internal-build-dev-only": "webpack --mode=development && npm run _internal-copy-index && npm run _internal-copy-configs",
-    "_internal-build-prod-only": "webpack --mode=production && npm run _internal-copy-index && npm run _internal-copy-configs",
+    "_internal-build-dev-only": "echo \"building...\" && webpack --mode=development && npm run _internal-copy-index && npm run _internal-copy-configs",
+    "_internal-build-prod-only": "echo \"building...\" && webpack --mode=production && npm run _internal-copy-index && npm run _internal-copy-configs",
     "_internal-copy-index": "shx cp dist/index.html dist/simpleportal.html && shx cp dist/index.html dist/portal.html && shx cp dist/index.html dist/fullportal.html && shx cp dist/index.html dist/embedded.html",
     "_internal-copy-configs": "node ./scripts/copy-configs"
   },

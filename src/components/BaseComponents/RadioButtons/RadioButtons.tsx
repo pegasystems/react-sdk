@@ -13,12 +13,18 @@ export default function RadioButtons(props){
     <FieldSet {...props}>
       <div className={radioDivClasses} data-module="govuk-radios">
         {options.map( (option, index) => {
+          const itemId = `${name}-${index}`;
+          const itemHintId = `${itemId}-item-hint`;
           return (
             <div key={`${name}_${option.value}`}className="govuk-radios__item">
-              <input className="govuk-radios__input" id={`${name}-${index}`} name={name} type="radio" onChange={onChange} value={option.value} defaultChecked={option.value === value}/>
-              <label className="govuk-label govuk-radios__label" htmlFor={`${name}-${index}`}>
+              <input className="govuk-radios__input" id={itemId} name={name} type="radio" onChange={onChange} value={option.value} defaultChecked={option.value === value} aria-describedby={option.hintText?itemHintId:undefined}/>
+              <label className="govuk-label govuk-radios__label" htmlFor={itemId}>
                 {option.label}
               </label>
+              {option.hintText && <div id={itemHintId} className="govuk-hint govuk-radios__hint">
+                                    {option.hintText}
+                                  </div>
+              }
             </div>
           )
         })}
@@ -30,7 +36,6 @@ export default function RadioButtons(props){
 RadioButtons.propTypes = {
   ...FieldSet.propTypes,
   name: PropTypes.string,
-  children: PropTypes.node,
   onChange: PropTypes.func,
   value: PropTypes.string,
   displayInline: PropTypes.bool,

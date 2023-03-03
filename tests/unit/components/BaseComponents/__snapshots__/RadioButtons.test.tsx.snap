@@ -1,0 +1,311 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders basic radio button set with 2 options (displays inline), legend is not heading 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <fieldset
+    aria-describedby=""
+    className="govuk-fieldset"
+  >
+    <legend
+      className="govuk-fieldset__legend"
+    >
+      Radio Buttons 2 options
+    </legend>
+    <div
+      className="govuk-radios govuk-radios--inline"
+      data-module="govuk-radios"
+    >
+      <div
+        className="govuk-radios__item"
+      >
+        <input
+          className="govuk-radios__input"
+          defaultChecked={false}
+          id="radioButtons-0"
+          name="radioButtons"
+          type="radio"
+          value="Option 1"
+        />
+        <label
+          className="govuk-label govuk-radios__label"
+          htmlFor="radioButtons-0"
+        />
+      </div>
+      <div
+        className="govuk-radios__item"
+      >
+        <input
+          className="govuk-radios__input"
+          defaultChecked={false}
+          id="radioButtons-1"
+          name="radioButtons"
+          type="radio"
+          value="Option 2"
+        />
+        <label
+          className="govuk-label govuk-radios__label"
+          htmlFor="radioButtons-1"
+        />
+      </div>
+    </div>
+  </fieldset>
+</div>
+`;
+
+exports[`renders basic radio button set with 3 options, legend is heading 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <fieldset
+    aria-describedby=""
+    className="govuk-fieldset"
+  >
+    <legend
+      className="govuk-fieldset__legend govuk-fieldset__legend--l"
+    >
+      <h1
+        className="govuk-fieldset__heading"
+      >
+        Radio Buttons 3 options
+      </h1>
+    </legend>
+    <div
+      className="govuk-radios"
+      data-module="govuk-radios"
+    >
+      <div
+        className="govuk-radios__item"
+      >
+        <input
+          className="govuk-radios__input"
+          defaultChecked={false}
+          id="radioButtons-0"
+          name="radioButtons"
+          type="radio"
+          value="Option 1"
+        />
+        <label
+          className="govuk-label govuk-radios__label"
+          htmlFor="radioButtons-0"
+        />
+      </div>
+      <div
+        className="govuk-radios__item"
+      >
+        <input
+          className="govuk-radios__input"
+          defaultChecked={false}
+          id="radioButtons-1"
+          name="radioButtons"
+          type="radio"
+          value="Option 2"
+        />
+        <label
+          className="govuk-label govuk-radios__label"
+          htmlFor="radioButtons-1"
+        />
+      </div>
+      <div
+        className="govuk-radios__item"
+      >
+        <input
+          className="govuk-radios__input"
+          defaultChecked={false}
+          id="radioButtons-2"
+          name="radioButtons"
+          type="radio"
+          value="Option 3"
+        />
+        <label
+          className="govuk-label govuk-radios__label"
+          htmlFor="radioButtons-2"
+        />
+      </div>
+    </div>
+  </fieldset>
+</div>
+`;
+
+exports[`renders basic radio button set with 3 options, legend is heading with hint and error text 1`] = `
+<div
+  className="govuk-form-group govuk-form-group--error"
+>
+  <fieldset
+    aria-describedby="radioButtons-hint radioButtons-error"
+    className="govuk-fieldset"
+  >
+    <legend
+      className="govuk-fieldset__legend govuk-fieldset__legend--l"
+    >
+      <h1
+        className="govuk-fieldset__heading"
+      >
+        Radio Buttons 3 options
+      </h1>
+    </legend>
+    <div
+      className="govuk-hint"
+      id="radioButtons-hint"
+    >
+      Helpful text for radio buttons
+    </div>
+    <p
+      className="govuk-error-message"
+      id="radioButtons-error"
+    >
+      <span
+        className="govuk-visually-hidden"
+      >
+        Error:
+      </span>
+      Please select an option
+    </p>
+    <div
+      className="govuk-radios"
+      data-module="govuk-radios"
+    >
+      <div
+        className="govuk-radios__item"
+      >
+        <input
+          className="govuk-radios__input"
+          defaultChecked={false}
+          id="radioButtons-0"
+          name="radioButtons"
+          type="radio"
+          value="Option 1"
+        />
+        <label
+          className="govuk-label govuk-radios__label"
+          htmlFor="radioButtons-0"
+        />
+      </div>
+      <div
+        className="govuk-radios__item"
+      >
+        <input
+          className="govuk-radios__input"
+          defaultChecked={false}
+          id="radioButtons-1"
+          name="radioButtons"
+          type="radio"
+          value="Option 2"
+        />
+        <label
+          className="govuk-label govuk-radios__label"
+          htmlFor="radioButtons-1"
+        />
+      </div>
+      <div
+        className="govuk-radios__item"
+      >
+        <input
+          className="govuk-radios__input"
+          defaultChecked={false}
+          id="radioButtons-2"
+          name="radioButtons"
+          type="radio"
+          value="Option 3"
+        />
+        <label
+          className="govuk-label govuk-radios__label"
+          htmlFor="radioButtons-2"
+        />
+      </div>
+    </div>
+  </fieldset>
+</div>
+`;
+
+exports[`renders basic radio button set with 3 options, legend is not heading, options have hint text 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <fieldset
+    aria-describedby=""
+    className="govuk-fieldset"
+  >
+    <legend
+      className="govuk-fieldset__legend"
+    >
+      Radio Buttons 3 options
+    </legend>
+    <div
+      className="govuk-radios"
+      data-module="govuk-radios"
+    >
+      <div
+        className="govuk-radios__item"
+      >
+        <input
+          aria-describedby="radioButtons-0-item-hint"
+          className="govuk-radios__input"
+          defaultChecked={false}
+          id="radioButtons-0"
+          name="radioButtons"
+          type="radio"
+          value="Option 1"
+        />
+        <label
+          className="govuk-label govuk-radios__label"
+          htmlFor="radioButtons-0"
+        />
+        <div
+          className="govuk-hint govuk-radios__hint"
+          id="radioButtons-0-item-hint"
+        >
+          For example, 1,one
+        </div>
+      </div>
+      <div
+        className="govuk-radios__item"
+      >
+        <input
+          aria-describedby="radioButtons-1-item-hint"
+          className="govuk-radios__input"
+          defaultChecked={false}
+          id="radioButtons-1"
+          name="radioButtons"
+          type="radio"
+          value="Option 2"
+        />
+        <label
+          className="govuk-label govuk-radios__label"
+          htmlFor="radioButtons-1"
+        />
+        <div
+          className="govuk-hint govuk-radios__hint"
+          id="radioButtons-1-item-hint"
+        >
+          For example 2,two
+        </div>
+      </div>
+      <div
+        className="govuk-radios__item"
+      >
+        <input
+          aria-describedby="radioButtons-2-item-hint"
+          className="govuk-radios__input"
+          defaultChecked={false}
+          id="radioButtons-2"
+          name="radioButtons"
+          type="radio"
+          value="Option 3"
+        />
+        <label
+          className="govuk-label govuk-radios__label"
+          htmlFor="radioButtons-2"
+        />
+        <div
+          className="govuk-hint govuk-radios__hint"
+          id="radioButtons-2-item-hint"
+        >
+          For example 3,three
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>
+`;

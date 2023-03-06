@@ -2,12 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FieldSet from '../FormGroup/FieldSet';
 
+// TODO Consider solution to allow for a text divider and/or catch all option, as described here: https://design-system.service.gov.uk/components/radios/divider/index.html
+
 export default function RadioButtons(props){
 
-  const {name, onChange, displayInline, value, options} = props;
+  const {name, onChange, displayInline, value, useSmallRadios = false, options} = props;
 
-  // TODO Consider making 'inline' a passable property for flexibility
-  const radioDivClasses = `govuk-radios ${displayInline?"govuk-radios--inline":""}`.trim();
+  const radioDivClasses = `govuk-radios ${displayInline?"govuk-radios--inline":""} ${useSmallRadios?"gobuk-radios--small":""}`.trim();
 
   return(
     <FieldSet {...props}>
@@ -40,4 +41,5 @@ RadioButtons.propTypes = {
   value: PropTypes.string,
   displayInline: PropTypes.bool,
   options: PropTypes.arrayOf(PropTypes.shape({value:PropTypes.string, label:PropTypes.string})),
+  useSmallRadios: PropTypes.bool,
 }

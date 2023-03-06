@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import GDSTextInput from '../../BaseComponents/TextInput/TextInput';
 import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
-
-declare const PCore;
+import {useIsOnlyField, useStepName} from '../../../helpers/hooks/QuestionDisplayHooks';
 
 export default function TextInput(props) {
   const {
@@ -13,15 +12,14 @@ export default function TextInput(props) {
     helperText,
     getPConnect,
     inputProps,
-    fieldMetadata
+    fieldMetadata,
   } = props;
 
   // const maxLength = fieldMetadata?.maxLength;
 
-  const [isOnlyQuestion, setIsOnlyQuestion] = useState(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
-  const [displayLabel, setDisplayLabel] = useState(label);
+  // TODO consider moving this functionality 'up' especially when we add Error summary,
+  // as it may be tidier to call this only once, rather than on every input
   useAddErrorToPageTitle(validatemessage);
-
 
   // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
   const thePConn = getPConnect();
@@ -33,18 +31,6 @@ export default function TextInput(props) {
     'data-test-id': testId
   }; */
 
-  useEffect ( () => {
-    setIsOnlyQuestion(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
-  }, [])
-
-  useEffect ( () => {
-    if(isOnlyQuestion){
-      setDisplayLabel(getPConnect().getDataObject()?.caseInfo.assignments[0].name);
-    } else {
-      setDisplayLabel(label);
-    }
-  }, [isOnlyQuestion])
-
   const extraInputProps = {onChange, value};
 
   // TODO Investigate more robust way to check if we should display as password
@@ -52,19 +38,22 @@ export default function TextInput(props) {
     extraInputProps["type"]="password";
   }
 
+  const isOnlyField = useIsOnlyField();
+  const stepName = useStepName(isOnlyField, getPConnect);
+
   return (
     <>
-    <GDSTextInput
-      inputProps={{
-        ...inputProps,
-        ...extraInputProps
-      }}
-      hintText={helperText}
-      errorText={validatemessage}
-      label={displayLabel}
-      labelIsHeading={isOnlyQuestion}
-      name={propName}
-    />
+      <GDSTextInput
+        inputProps={{
+          ...inputProps,
+          ...extraInputProps
+        }}
+        hintText={helperText}
+        errorText={validatemessage}
+        label={isOnlyField? stepName : label}
+        labelIsHeading={isOnlyField}
+        name={propName}
+      />
     </>
   );
 }

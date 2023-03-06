@@ -28,7 +28,11 @@ export default function Dropdown(props) {
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
+
+
+  // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
   const propName = thePConn.getStateProps().value;
+  const formattedPropName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
 
   // TODO consider moving this functionality 'up' especially when we add Error summary,
   // as it may be tidier to call this only once, rather than on every input
@@ -59,6 +63,7 @@ export default function Dropdown(props) {
        labelIsHeading={isOnlyField}
        onChange={handleChange}
        value={value}
+       name={formattedPropName}
       >
         {options.map((option) => {
           return (<option key={option.key} value={option.value}>{option.value}</option>)

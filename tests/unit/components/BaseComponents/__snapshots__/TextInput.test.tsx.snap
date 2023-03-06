@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Basic multi question text input 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <label
+    className="govuk-label"
+    htmlFor="name"
+  >
+    label
+  </label>
+  <input
+    aria-describedby=""
+    className="govuk-input"
+    id="name"
+    name="name"
+  />
+</div>
+`;
+
+exports[`Basic multi question text input with error 1`] = `
+<div
+  className="govuk-form-group govuk-form-group--error"
+>
+  <label
+    className="govuk-label"
+    htmlFor="name"
+  >
+    label
+  </label>
+  <p
+    className="govuk-error-message"
+    id="name-error"
+  >
+    <span
+      className="govuk-visually-hidden"
+    >
+      Error:
+    </span>
+    Something went wrong
+  </p>
+  <input
+    aria-describedby="name-error"
+    className="govuk-input govuk-input--error"
+    id="name"
+    name="name"
+  />
+</div>
+`;
+
+exports[`Basic multi question text input with hint 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <label
+    className="govuk-label"
+    htmlFor="name"
+  >
+    label
+  </label>
+  <div
+    className="govuk-hint"
+    id="name-hint"
+  >
+    Enter some text
+  </div>
+  <input
+    aria-describedby="name-hint"
+    className="govuk-input"
+    id="name"
+    name="name"
+  />
+</div>
+`;
+
+exports[`Basic multi question text input with hint and error 1`] = `
+<div
+  className="govuk-form-group govuk-form-group--error"
+>
+  <label
+    className="govuk-label"
+    htmlFor="name"
+  >
+    label
+  </label>
+  <div
+    className="govuk-hint"
+    id="name-hint"
+  >
+    Enter some text
+  </div>
+  <p
+    className="govuk-error-message"
+    id="name-error"
+  >
+    <span
+      className="govuk-visually-hidden"
+    >
+      Error:
+    </span>
+    Something went wrong
+  </p>
+  <input
+    aria-describedby="name-error name-hint"
+    className="govuk-input govuk-input--error"
+    id="name"
+    name="name"
+  />
+</div>
+`;
+
+exports[`Basic single question password input 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <h1
+    className="govuk-label-wrapper"
+  >
+    <label
+      className="govuk-label govuk-label--l"
+      htmlFor="name"
+    >
+      label
+    </label>
+  </h1>
+  <input
+    aria-describedby=""
+    className="govuk-input"
+    id="name"
+    name="name"
+    type="password"
+  />
+</div>
+`;
+
+exports[`Basic single question text input 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <h1
+    className="govuk-label-wrapper"
+  >
+    <label
+      className="govuk-label govuk-label--l"
+      htmlFor="name"
+    >
+      label
+    </label>
+  </h1>
+  <input
+    aria-describedby=""
+    className="govuk-input"
+    id="name"
+    name="name"
+  />
+</div>
+`;
+
+exports[`renders correctly 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <h1
+    className="govuk-label-wrapper"
+  >
+    <label
+      className="govuk-label govuk-label--l"
+    />
+  </h1>
+  <input
+    aria-describedby=""
+    className="govuk-input"
+  />
+</div>
+`;

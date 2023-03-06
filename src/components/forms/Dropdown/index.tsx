@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { TextField } from '@material-ui/core';
-import MenuItem from '@material-ui/core/MenuItem';
+
 import Utils from '../../../helpers/utils';
 import handleEvent from '../../../helpers/event-utils';
+import Select from '../../BaseComponents/Select/Select';
+import {useIsOnlyField, useStepName} from '../../../helpers/hooks/QuestionDisplayHooks';
+import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 
 interface IOption {
   key: string;
@@ -12,71 +14,56 @@ interface IOption {
 export default function Dropdown(props) {
   const {
     getPConnect,
-    label,
-    required,
-    disabled,
     placeholder,
     value = '',
     datasource = [],
     validatemessage,
-    status,
-    readOnly,
-    testId,
-    helperText
+    helperText,
+    label
   } = props;
+
   const [options, setOptions] = useState<Array<IOption>>([]);
-  const helperTextToDisplay = validatemessage || helperText;
+  const isOnlyField = useIsOnlyField();
+  const stepName = useStepName(isOnlyField, getPConnect);
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps().value;
 
+  // TODO consider moving this functionality 'up' especially when we add Error summary,
+  // as it may be tidier to call this only once, rather than on every input
+  useAddErrorToPageTitle(validatemessage);
+
   useEffect(() => {
-    const optionsList = Utils.getOptionList(props, getPConnect().getDataObject());
-    optionsList.unshift({ key: 'Select', value: 'Select...' });
+    const optionsList = [...Utils.getOptionList(props, getPConnect().getDataObject())];
+    if(value === '') {optionsList.unshift({key:placeholder, value:placeholder})};
     setOptions(optionsList);
-  }, [datasource]);
+  }, [datasource, value]);
 
-  let readOnlyProp = {};
-
-  if (readOnly) {
-    readOnlyProp = { readOnly: true };
-  }
-
-  let testProp = {};
+  /* let testProp = {};
 
   testProp = {
     'data-test-id': testId
-  };
+  }; */
 
   const handleChange = evt => {
-    const selectedValue = evt.target.value === 'Select' ? '' : evt.target.value;
+    const selectedValue = evt.target.value === placeholder ? '' : evt.target.value;
     handleEvent(actionsApi, 'changeNblur', propName, selectedValue);
   };
 
-  // Material UI shows a warning if the component is rendered before options are set.
-  //  So, hold off on rendering anything until options are available...
-  return options.length === 0 ? null : (
-    <TextField
-      fullWidth
-      variant={readOnly ? 'standard' : 'outlined'}
-      helperText={helperTextToDisplay}
-      placeholder={placeholder}
-      size='small'
-      required={required}
-      disabled={disabled}
-      onChange={!readOnly ? handleChange : undefined}
-      error={status === 'error'}
-      label={label}
-      value={value === '' && !readOnly ? 'Select' : value}
-      select
-      InputProps={{ ...readOnlyProp, ...testProp }}
-    >
-      {options.map((option: any) => (
-        <MenuItem key={option.key} value={option.key}>
-          {option.value}
-        </MenuItem>
-      ))}
-    </TextField>
+  return (
+    <>
+      <Select label={isOnlyField ? stepName: label}
+       hintText={helperText}
+       errorText={validatemessage}
+       labelIsHeading={isOnlyField}
+       onChange={handleChange}
+       value={value}
+      >
+        {options.map((option) => {
+          return (<option key={option.key} value={option.value}>{option.value}</option>)
+        })}
+      </Select>
+    </>
   );
 }

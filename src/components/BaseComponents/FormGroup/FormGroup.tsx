@@ -1,11 +1,11 @@
- import React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 
 function makeHintId(identifier){return `${identifier}-hint`};
 function makeErrorId(identifier){return `${identifier}-error`};
 
-export default function FormGroup({labelIsHeading=true, label, errorText, hintText, name, children}){
+export default function FormGroup({labelIsHeading=true, label, errorText, hintText, name, children, childrenToWrap}){
 
   const formGroupDivClasses = `govuk-form-group ${errorText?'govuk-form-group--error':""}`.trim();
   const labelClasses = `govuk-label ${labelIsHeading?"govuk-label--l":""}`.trim();
@@ -25,7 +25,7 @@ export default function FormGroup({labelIsHeading=true, label, errorText, hintTe
                     {child}
                   </h1>)}
                 }
-        childrenToWrap={
+        childrenToWrap={ childrenToWrap ||
           <label className={labelClasses} htmlFor={name}>{label}</label>
         }
       />

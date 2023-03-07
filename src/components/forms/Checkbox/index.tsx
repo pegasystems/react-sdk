@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText
-} from '@material-ui/core';
+import GDSCheckboxes from '../../BaseComponents/Checkboxes/Checkboxes';
+import {useIsOnlyField, useStepName} from '../../../helpers/hooks/QuestionDisplayHooks'
 import handleEvent from '../../../helpers/event-utils';
+import Utils from '../../../helpers/utils';
+
 
 export default function CheckboxComponent(props) {
   const {
     getPConnect,
-    value = false,
-    readOnly,
+    label,
+    inputProps,
     testId,
     required,
-    status,
-    helperText,
-    validatemessage
+    errorText
   } = props;
-  const helperTextToDisplay = validatemessage || helperText;
+
 
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();
@@ -27,11 +22,20 @@ export default function CheckboxComponent(props) {
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps().value;
 
-  const [checked, setChecked] = useState(false);
-  useEffect(() => {
-    // This update theSelectedButton which will update the UI to show the selected button correctly
-    setChecked(value);
-  }, [value]);
+  const isOnlyField = useIsOnlyField();
+  const stepName = useStepName(isOnlyField, getPConnect);
+
+  // Plz remove.. just referring
+  // theOptions will be an array of JSON objects that are literally key/value pairs.
+  //  Ex: [ {key: "Basic", value: "Basic"} ]
+  const theOptions = Utils.getOptionList(theConfigProps, thePConn.getDataObject());
+  useEffect(()=>{
+    console.log('hi, option has some problem perhaps')
+    console.log(theOptions)
+  })
+
+  // Example data plugged in to pass for the checkbox items
+  const itemData = [{checked: false, label: caption, hintText: "", readOnly:false}]
 
   const handleChange = event => {
     handleEvent(actionsApi, 'changeNblur', propName, event.target.checked);
@@ -41,28 +45,20 @@ export default function CheckboxComponent(props) {
     thePConn.getValidationApi().validate(event.target.checked);
   };
 
-  let theCheckbox = <Checkbox color='primary' />;
-
-  if (readOnly) {
-    // Workaround for lack of InputProps readOnly from https://github.com/mui-org/material-ui/issues/17043
-    //  Also note that we need to turn off the onChange call in the FormControlLabel wrapper, too. See below!
-    theCheckbox = <Checkbox value={value || false} onChange={handleChange} readOnly={readOnly} />;
-  }
 
   return (
-    <FormControl required={required} error={status === 'error'}>
-      <FormGroup>
-        <FormControlLabel
-          control={theCheckbox}
-          checked={checked}
-          onChange={!readOnly ? handleChange : undefined}
-          onBlur={!readOnly ? handleBlur : undefined}
-          label={caption}
-          labelPlacement='end'
-          data-test-id={testId}
-        />
-      </FormGroup>
-      <FormHelperText>{helperTextToDisplay}</FormHelperText>
-    </FormControl>
+    <>
+      <GDSCheckboxes
+        inputProps={...inputProps}
+        label={"Declaration"}
+        items={itemData}
+        isSmall={true}
+        labelIsHeading={isOnlyField}
+        errorText={errorText}
+        required={required}
+        onChange={ handleChange}
+        onBlur={ handleBlur }
+      />
+    </>
   );
 }

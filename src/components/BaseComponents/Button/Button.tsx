@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 export default function Button(props) {
   const {
     disabled,
-    varient,
+    variant,
     onClick,
     children,
     type,
@@ -12,17 +12,19 @@ export default function Button(props) {
   } = props;
 
   let buttonAttributes = {
-    ...attributes,
+    className: `govuk-button${variant === 'secondary' ? ' govuk-button--secondary' : ''} ${
+      disabled ? ' govuk-button--disabled' : ''
+    }`,
     'data-module': 'govuk-button',
     'data-prevent-double-click': true,
-    className: `govuk-button${varient === 'secondary' ? ' govuk-button--secondary' : ''} ${disabled ? ' govuk-button--disabled' : ''}`
+    ...attributes
   };
 
   if (disabled) {
     buttonAttributes = {
-      ...buttonAttributes,
       'aria-disabled': true,
       disabled: 'disabled',
+      ...buttonAttributes
     };
   }
 
@@ -35,7 +37,7 @@ export default function Button(props) {
 Button.propTypes = {
   name: PropTypes.string,
   disabled: PropTypes.bool,
-  varient: PropTypes.string,
+  variant: PropTypes.string,
   children: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   type: PropTypes.string,
   onClick: PropTypes.func

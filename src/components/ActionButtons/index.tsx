@@ -13,7 +13,7 @@ export default function ActionButtons(props) {
     <div className='govuk-button-group govuk-!-padding-top-4'>
       {arMainButtons.map(mButton => (
         <Button
-          varient='primary'
+          variant='primary'
           onClick={() => {
             _onButtonPress(mButton.jsAction, 'primary');
           }}
@@ -23,7 +23,7 @@ export default function ActionButtons(props) {
       ))}
       {arSecondaryButtons.map(sButton => (
         <Button
-          varient='secondary'
+          variant='secondary'
           onClick={() => {
             _onButtonPress(sButton.jsAction, 'secondary');
           }}

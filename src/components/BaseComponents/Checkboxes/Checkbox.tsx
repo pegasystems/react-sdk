@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { makeItemId } from '../FormGroup/FormGroup';
+import { makeItemId, makeHintId } from '../FormGroup/FormGroup';
 
 export default function Checkbox({ item, index, name, inputProps, onChange, onBlur }) {
   const itemClasses = 'govuk-checkboxes__item';
   const checkboxItemClasses = 'govuk-checkboxes__input';
   const hintTextClasses = `govuk-hint govuk-checkboxes__hint`;
   const labelClasses = `govuk-label govuk-checkboxes__label`;
+  const describedbyIds = `${item.hintText?makeHintId(name):""}`.trim()
+  inputProps['aria-described-by'] = item.hintText ? describedbyIds : ''
+
+  // TODO - Add area-described-by
 
   return (
     <div className={itemClasses} key={makeItemId(index, name)}>
@@ -14,7 +18,7 @@ export default function Checkbox({ item, index, name, inputProps, onChange, onBl
         className={checkboxItemClasses}
         {...inputProps}
         id={makeItemId(index, name)}
-        name={makeItemId(index, name)}
+        name={name}
         type='checkbox'
         value={item.checked}
         onChange={!item.readOnly ? onChange : () => {}}

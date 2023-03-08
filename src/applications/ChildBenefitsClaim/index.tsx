@@ -34,7 +34,7 @@ export default function ChildBenefitsClaim() {
         containerName: "primary"
       };
 
-      createWork("O0GBM6-ChildBen-Work-ChildBenefit", actionInfo);
+      createWork('HMRC-ChB-Work-Claim', actionInfo);
 
   }
 

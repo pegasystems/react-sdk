@@ -19,7 +19,8 @@ function useIsOnlyField(){
 }
 
 function useStepName(isOnlyField: boolean, getPConnect: Function){
-  return useState(getPConnect().getDataObject()?.caseInfo.assignments[0].name);
+  const [stepName] = useState(getPConnect().getDataObject()?.caseInfo.assignments[0].name);
+  return stepName
 }
 
 

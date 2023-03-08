@@ -66,7 +66,7 @@ export default function Dropdown(props) {
        name={formattedPropName}
       >
         {options.map((option) => {
-          return (<option key={option.key} value={option.value}>{option.value}</option>)
+          return (<option key={option.key} value={option.key}>{option.value}</option>)
         })}
       </Select>
     </>

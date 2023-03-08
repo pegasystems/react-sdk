@@ -465,7 +465,6 @@ export default function Attachment(props) {
 
   return (
     <div className='file-upload-container'>
-      {/* <span className={"label " + (required ? 'file-label' : '')}>{label}</span> */}
       <span className={`label ${required ? 'file-label' : ''}`}>{label}</span>
       <section>{content}</section>
     </div>

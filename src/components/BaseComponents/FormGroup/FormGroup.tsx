@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 function makeHintId(identifier){return `${identifier}-hint`};
 function makeErrorId(identifier){return `${identifier}-error`};
+function makeItemId(index, identifier){return `${identifier}${index > 0 ? '-'+index : ''}`};
 
 export default function FormGroup({labelIsHeading=true, label, errorText, hintText, name, children, childrenToWrap}){
 
@@ -44,4 +45,4 @@ FormGroup.propTypes = {
   children: PropTypes.node,
 }
 
-export {makeErrorId, makeHintId};
+export {makeErrorId, makeHintId, makeItemId};

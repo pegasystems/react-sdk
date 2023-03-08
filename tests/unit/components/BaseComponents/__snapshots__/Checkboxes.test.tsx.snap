@@ -1,0 +1,220 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a group of 3 checkboxes, hint text for items 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <h1
+    className="govuk-label-wrapper"
+  >
+    <label
+      className="govuk-label govuk-label--l"
+      htmlFor="test-checkbox"
+    >
+      heading
+    </label>
+  </h1>
+  <div
+    className="govuk-checkboxes "
+  >
+    <div
+      className="govuk-checkboxes__item"
+    >
+      <input
+        className="govuk-checkboxes__input"
+        id="test-checkbox"
+        name="test-checkbox"
+        type="checkbox"
+        value={false}
+      />
+      <label
+        className="govuk-label govuk-checkboxes__label"
+      >
+        Item 1
+      </label>
+      <div
+        className="govuk-hint govuk-checkboxes__hint"
+        id="test-checkbox-item-hint"
+      >
+        testing item hint text
+      </div>
+    </div>
+    <div
+      className="govuk-checkboxes__item"
+    >
+      <input
+        className="govuk-checkboxes__input"
+        id="test-checkbox-1"
+        name="test-checkbox-1"
+        type="checkbox"
+        value={false}
+      />
+      <label
+        className="govuk-label govuk-checkboxes__label"
+      >
+        Item 2
+      </label>
+    </div>
+    <div
+      className="govuk-checkboxes__item"
+    >
+      <input
+        className="govuk-checkboxes__input"
+        id="test-checkbox-2"
+        name="test-checkbox-2"
+        type="checkbox"
+        value={false}
+      />
+      <label
+        className="govuk-label govuk-checkboxes__label"
+      >
+        Item 3
+      </label>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders a group of 3 checkboxes, hint text for label 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <h1
+    className="govuk-label-wrapper"
+  >
+    <label
+      className="govuk-label govuk-label--l"
+      htmlFor="test-checkbox"
+    >
+      heading
+    </label>
+  </h1>
+  <div
+    className="govuk-hint"
+    id="test-checkbox-hint"
+  >
+    Testing hint text
+  </div>
+  <div
+    className="govuk-checkboxes "
+  >
+    <div
+      className="govuk-checkboxes__item"
+    >
+      <input
+        className="govuk-checkboxes__input"
+        id="test-checkbox"
+        name="test-checkbox"
+        type="checkbox"
+        value={false}
+      />
+      <label
+        className="govuk-label govuk-checkboxes__label"
+      >
+        Item 1
+      </label>
+    </div>
+    <div
+      className="govuk-checkboxes__item"
+    >
+      <input
+        className="govuk-checkboxes__input"
+        id="test-checkbox-1"
+        name="test-checkbox-1"
+        type="checkbox"
+        value={false}
+      />
+      <label
+        className="govuk-label govuk-checkboxes__label"
+      >
+        Item 2
+      </label>
+    </div>
+    <div
+      className="govuk-checkboxes__item"
+    >
+      <input
+        className="govuk-checkboxes__input"
+        id="test-checkbox-2"
+        name="test-checkbox-2"
+        type="checkbox"
+        value={false}
+      />
+      <label
+        className="govuk-label govuk-checkboxes__label"
+      >
+        Item 3
+      </label>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders a group of 3 checkboxes, with legend 'heading'  1`] = `
+<div
+  className="govuk-form-group"
+>
+  <h1
+    className="govuk-label-wrapper"
+  >
+    <label
+      className="govuk-label govuk-label--l"
+      htmlFor="test-checkbox"
+    >
+      heading
+    </label>
+  </h1>
+  <div
+    className="govuk-checkboxes "
+  >
+    <div
+      className="govuk-checkboxes__item"
+    >
+      <input
+        className="govuk-checkboxes__input"
+        id="test-checkbox"
+        name="test-checkbox"
+        type="checkbox"
+        value={false}
+      />
+      <label
+        className="govuk-label govuk-checkboxes__label"
+      >
+        Item 1
+      </label>
+    </div>
+    <div
+      className="govuk-checkboxes__item"
+    >
+      <input
+        className="govuk-checkboxes__input"
+        id="test-checkbox-1"
+        name="test-checkbox-1"
+        type="checkbox"
+        value={false}
+      />
+      <label
+        className="govuk-label govuk-checkboxes__label"
+      >
+        Item 2
+      </label>
+    </div>
+    <div
+      className="govuk-checkboxes__item"
+    >
+      <input
+        className="govuk-checkboxes__input"
+        id="test-checkbox-2"
+        name="test-checkbox-2"
+        type="checkbox"
+        value={false}
+      />
+      <label
+        className="govuk-label govuk-checkboxes__label"
+      >
+        Item 3
+      </label>
+    </div>
+  </div>
+</div>
+`;

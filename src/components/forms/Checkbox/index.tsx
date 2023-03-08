@@ -12,7 +12,8 @@ export default function CheckboxComponent(props) {
     inputProps,
     testId,
     required,
-    errorText
+    errorText,
+    hintText
   } = props;
 
 
@@ -35,7 +36,7 @@ export default function CheckboxComponent(props) {
   })
 
   // Example data plugged in to pass for the checkbox items
-  const itemData = [{checked: false, label: caption, hintText: "", readOnly:false}]
+  const itemData = [{checked: false, label: caption, hintText: "item hint", readOnly:false}]
 
   const handleChange = event => {
     handleEvent(actionsApi, 'changeNblur', propName, event.target.checked);
@@ -55,6 +56,7 @@ export default function CheckboxComponent(props) {
         isSmall={true}
         labelIsHeading={isOnlyField}
         errorText={errorText}
+        hintText={"A  hint"}
         required={required}
         onChange={ handleChange}
         onBlur={ handleBlur }

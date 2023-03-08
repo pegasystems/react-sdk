@@ -8,6 +8,7 @@ import Utils from '../../../helpers/utils';
 export default function CheckboxComponent(props) {
   const {
     getPConnect,
+    name,
     label,
     inputProps,
     testId,
@@ -26,17 +27,9 @@ export default function CheckboxComponent(props) {
   const isOnlyField = useIsOnlyField();
   const stepName = useStepName(isOnlyField, getPConnect);
 
-  // Plz remove.. just referring
-  // theOptions will be an array of JSON objects that are literally key/value pairs.
-  //  Ex: [ {key: "Basic", value: "Basic"} ]
-  const theOptions = Utils.getOptionList(theConfigProps, thePConn.getDataObject());
-  useEffect(()=>{
-    console.log('hi, option has some problem perhaps')
-    console.log(theOptions)
-  })
-
-  // Example data plugged in to pass for the checkbox items
-  const itemData = [{checked: false, label: caption, hintText: "item hint", readOnly:false}]
+  // TODO - How to get the optionsList from Pega? Fetch and plug optionsList
+  // Hard coded example data plugged in to pass for the checkbox optionsList
+  const optionsList = [{checked: false, label: caption, hintText: "item hint", readOnly:false}]
 
   const handleChange = event => {
     handleEvent(actionsApi, 'changeNblur', propName, event.target.checked);
@@ -51,12 +44,13 @@ export default function CheckboxComponent(props) {
     <>
       <GDSCheckboxes
         inputProps={...inputProps}
-        label={"Declaration"}
-        items={itemData}
+        name={name}
+        label={stepName}
+        optionsList={optionsList}
         isSmall={true}
-        labelIsHeading={isOnlyField}
+        legendIsHeading={isOnlyField}
         errorText={errorText}
-        hintText={"A  hint"}
+        hintText={hintText}
         required={required}
         onChange={ handleChange}
         onBlur={ handleBlur }

@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import FormGroup, { makeItemId } from '../FormGroup/FormGroup';
+import FieldSet from '../FormGroup/FieldSet';
+import GDSCheckbox from './Checkbox'
 
 // TODO - fix data handling
 export default function Checkboxes(props) {
   const {
     name,
     label,
-    items,
+    optionsList,
     isSmall,
-    labelIsHeading,
+    legendIsHeading,
     errorText,
     hintText,
     required,
@@ -19,53 +20,34 @@ export default function Checkboxes(props) {
   } = props;
 
   const checkboxClasses = `govuk-checkboxes ${isSmall ? 'govuk-checkboxes--small' : ''}`;
-  const itemClasses = 'govuk-checkboxes__item'
-  const checkboxItemClasses = 'govuk-checkboxes__input'
-  const hintTextClasses = `govuk-hint govuk-checkboxes__hint`
-  const labelClasses = `govuk-label govuk-checkboxes__label`
-
-  // const initialiseChecked = () => {
-  //   const values = []
-  //   items.forEach(item => values.push(item.label))
-  //   return values
-  // }
-  // const [values, setValues] = useState([])
-
 
   return (
-    <FormGroup {...props}>
+    <FieldSet {...props}>
       <div className={checkboxClasses}>
-        {/* TODO - add item ids and names */}
-        {items.map((item, index) => (
-          <div className={itemClasses} key={makeItemId(index, name)}>
-            <input
-              className={checkboxItemClasses}
-              {...inputProps}
-              id={makeItemId(index, name)}
-              name={makeItemId(index, name)}
-              type='checkbox'
-              value={item.checked}
-              onChange={!item.readOnly ? onChange : ()=>{}}
-              onBlur={!item.readOnly ? onBlur : ()=>{}}
-            ></input>
-            <label className={labelClasses}>{item.label}</label>
-            {item.hintText ? <div id={makeItemId(index, `${name}-item-hint`)} className={hintTextClasses}>{item.hintText}</div>: null}
-          </div>
+        {optionsList.map((item, index) => (
+          <GDSCheckbox
+            item={item}
+            index={index}
+            name={name}
+            inputProps={...inputProps}
+            onChange={onChange}
+            onBlur={onBlur}
+          />
         ))}
       </div>
-    </FormGroup>
+    </FieldSet>
   );
 }
 
 Checkboxes.propTypes = {
-  ...FormGroup.propTypes,
   name: PropTypes.string,
   label: PropTypes.string,
   isSmall: PropTypes.bool,
-  labelIsHeading: PropTypes.bool,
-  items: PropTypes.array,
+  legendIsHeading: PropTypes.bool,
+  optionsList: PropTypes.array,
   required: PropTypes.bool,
   errorText: PropTypes.string,
+  hintText: PropTypes.string,
   inputProps: PropTypes.object,
   onChange: PropTypes.func,
   onBlur: PropTypes.func

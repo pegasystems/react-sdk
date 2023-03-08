@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import FieldSet from '../FormGroup/FieldSet';
 import GDSCheckbox from './Checkbox'
 
-// TODO - fix data handling
 export default function Checkboxes(props) {
   const {
     name,

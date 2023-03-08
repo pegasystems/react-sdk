@@ -10,8 +10,6 @@ export default function Checkbox({ item, index, name, inputProps, onChange, onBl
   const describedbyIds = `${item.hintText?makeHintId(name):""}`.trim()
   inputProps['aria-described-by'] = item.hintText ? describedbyIds : ''
 
-  // TODO - Add area-described-by
-
   return (
     <div className={itemClasses} key={makeItemId(index, name)}>
       <input

@@ -46,6 +46,3 @@ it("renders a group of 3 checkboxes, with error as expected ", () => {
   const tree = renderer.create(<Checkboxes name="test-checkbox" label="heading" optionsList={optionsList} isSmall={false} legendIsHeading={true} errorText="A testing Error." />).toJSON();
   expect(tree).toMatchSnapshot()
 });
-
-
-// TODO - Add Test cases for functionality

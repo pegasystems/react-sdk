@@ -15,7 +15,6 @@ function getCurrentAttachmentsList(context) {
 }
 
 export default function Attachment(props) {
-  console.log('Attachment props', props);
   const {value, getPConnect, label} = props;
   /* this is a temporary fix because required is supposed to be passed as a boolean and NOT as a string */
   let { required, disabled } = props;
@@ -353,7 +352,6 @@ export default function Attachment(props) {
   useEffect(() => {
     if (value && value.pxResults && +value.pyCount > 0) {
     fileTemp = buildFilePropsFromResponse(value.pxResults[0]);
-    console.log('fileTemp', fileTemp);
     if (fileTemp.responseProps) {
       if (!pConn.attachmentsInfo) {
         pConn.attachmentsInfo = {
@@ -467,7 +465,8 @@ export default function Attachment(props) {
 
   return (
     <div className='file-upload-container'>
-      <span className={"label " + (required ? 'file-label' : '')}>{label}</span>
+      {/* <span className={"label " + (required ? 'file-label' : '')}>{label}</span> */}
+      <span className={`label ${required ? 'file-label' : ''}`}>{label}</span>
       <section>{content}</section>
     </div>
   );

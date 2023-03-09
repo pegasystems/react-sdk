@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 function makeHintId(identifier){return `${identifier}-hint`};
 function makeErrorId(identifier){return `${identifier}-error`};
 
-export default function FormGroup({labelIsHeading=true, label, errorText, hintText, name, children}){
+export default function FormGroup({labelIsHeading=true, label, errorText, hintText, name, extraLabelClasses, children}){
 
   const formGroupDivClasses = `govuk-form-group ${errorText?'govuk-form-group--error':""}`.trim();
-  const labelClasses = `govuk-label ${labelIsHeading?"govuk-label--l":""}`.trim();
+  const labelClasses = `govuk-label ${labelIsHeading?"govuk-label--l":""} ${extraLabelClasses}`.trim();
 
   // TODO Refactor if required elsewhere
   const ConditionalWrapper = ({ condition, wrapper, childrenToWrap }) => {
@@ -42,6 +42,7 @@ FormGroup.propTypes = {
   hintText: PropTypes.string,
   errorText: PropTypes.string,
   children: PropTypes.node,
+  extraLabelClasses: PropTypes.string,
 }
 
 export {makeErrorId, makeHintId};

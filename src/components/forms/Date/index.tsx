@@ -1,79 +1,78 @@
-import React from 'react';
-import { KeyboardDatePicker } from '@material-ui/pickers';
-import TextInput from '../TextInput';
-import handleEvent from '../../../helpers/event-utils';
-import FieldValueList from '../../designSystemExtensions/FieldValueList';
+import React, {useState, useLayoutEffect} from 'react';
+import DateInput from '../../BaseComponents/DateInput/DateInput';
+import { useIsOnlyField, useStepName } from '../../../helpers/hooks/QuestionDisplayHooks';
+import useAddErrorToPagetitle from '../../../helpers/hooks/useAddErrorToPageTitle'
 
 export default function Date(props) {
   const {
     getPConnect,
     label,
-    required,
-    disabled,
     value = '',
     validatemessage,
-    status,
     onChange,
-    onBlur,
-    readOnly,
-    testId,
     helperText,
-    displayMode
   } = props;
-  const pConn = getPConnect();
-  const actions = pConn.getActionsApi();
+   const pConn = getPConnect();
   const propName = pConn.getStateProps().value;
-  const helperTextToDisplay = validatemessage || helperText;
 
-  if (displayMode === 'LABELS_LEFT') {
-    const field = {
-      [label]: value
-    };
-    return <FieldValueList item={field} />;
+  const isOnlyField = useIsOnlyField();
+  const stepName = useStepName(getPConnect);
+  const displayLabel = isOnlyField ? stepName : label;
+
+  // TODO consider refactoring out to a component higher in tree to avoid needing to define in each input component.
+  useAddErrorToPagetitle(validatemessage);
+
+  // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
+  const formattedPropName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
+
+  // PM - Set up state for each input field, either the value we received from pega, or emtpy
+	const [day, setDay] = useState(value ? value.split("-")[2] : '');
+	const [month, setMonth] = useState(value ? value.split("-")[1] : '');
+	const [year, setYear] = useState(value ? value.split("-")[0] : '');
+
+
+  // PM - Create ISODate string (as expected by onChange) and pass to onchange value, adding 0 padding here for day and month to comply with isostring format.
+  const handleDateChange = () => {
+    let isoDate;
+    if(year || month || day){
+      isoDate = `${year}-${month.toString().length === 1 ? `0${month}` : month}-${day.toString().length === 1 ? `0${day}` : day}`;
+    } else {
+      isoDate = '';
+    }
+    if(isoDate !== value){
+      onChange({value: isoDate});
+    }
   }
 
-  if (readOnly) {
-    // const theReadOnlyComp = <TextInput props />
-    return <TextInput {...props} />;
-  }
 
-  let testProp = {};
+  // PM - On change of any of the date fields, call handleDateChange
+  useLayoutEffect( () => {
+    handleDateChange();
+  }, [day, month, year])
 
-  testProp = {
-    'data-test-id': testId
+  // PM - Handlers for each part of date inputs, update state for each respectively
+  //      0 pad for ISOString compatibilitiy, with conditions to allow us to clear the fields
+  const handleChangeDay = dayChange => {
+    setDay(dayChange.target.value);
+  };
+  const handleChangeMonth = monthChange => {
+    setMonth(monthChange.target.value);
+  };
+  const handleChangeYear = yearChange => {
+    setYear(yearChange.target.value);
   };
 
-  const handleChange = date => {
-    const changeValue = date && date.isValid() ? date.toISOString() : null;
-    onChange({ value: changeValue });
-  };
-
-  const handleAccept = date => {
-    const changeValue = date && date.isValid() ? date.toISOString() : null;
-    handleEvent(actions, 'changeNblur', propName, changeValue);
-  };
 
   return (
-    <KeyboardDatePicker
-      disableToolbar
-      variant='inline'
-      inputVariant='outlined'
-      placeholder='mm/dd/yyyy'
-      fullWidth
-      autoOk
-      required={required}
-      disabled={disabled}
-      format='MM/DD/YYYY'
-      mask='__/__/____'
-      error={status === 'error'}
-      helperText={helperTextToDisplay}
-      size='small'
-      label={label}
-      value={value || null}
-      onChange={handleChange}
-      onBlur={!readOnly ? onBlur : undefined}
-      onAccept={handleAccept}
-      InputProps={{ ...testProp }}
+    <DateInput            label={displayLabel}
+                          legendIsHeading={isOnlyField}
+                          onChangeDay={handleChangeDay}
+                          onChangeMonth={handleChangeMonth}
+                          onChangeYear={handleChangeYear}
+                          value={{day, month, year}}
+                          name={formattedPropName}
+                          errorText={validatemessage}
+                          hintText={helperText}
     />
   );
 }

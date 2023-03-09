@@ -17,7 +17,7 @@ export default function RadioButtons(props) {
   propName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
 
   const isOnlyField = useIsOnlyField();
-  const stepName = useStepName(isOnlyField, getPConnect);
+  const stepName = useStepName(getPConnect);
 
 
   // theOptions will be an array of JSON objects that are literally key/value pairs.

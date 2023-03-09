@@ -3,9 +3,7 @@ import PropTypes from "prop-types";
 
 import AssignmentCard from '../AssignmentCard';
 import MultiStep from '../MultiStep';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import ErrorSummary from '../BaseComponents/ErrorSummary/ErrorSummary';
 
 declare const PCore: any;
 
@@ -29,8 +27,8 @@ export default function Assignment(props) {
   const cancelCreateStageAssignment = actionsAPI.cancelCreateStageAssignment.bind(actionsAPI);
   // const showPage = actionsAPI.showPage.bind(actionsAPI);
 
-  const [showSnackbar, setShowSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [errorSummary, setErrorSummary] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   function findCurrentIndicies(arStepperSteps: Array<any>, arIndicies: Array<number>, depth: number) : Array<number> {
 
@@ -101,23 +99,11 @@ export default function Assignment(props) {
 
   }, [children]);
 
-
-
-  function showToast(message: string) {
-    const theMessage = `Assignment: ${message}`;
-    // eslint-disable-next-line no-console
-    console.error(theMessage);
-    setSnackbarMessage(message);
-    setShowSnackbar(true);
+  function showErrorSummary(message: string) {
+    setErrorMessage(message);
+    // TODO Update the error summary component as per GDS for US-9419 in MVP1, then setErrorSummary(true)
+    setErrorSummary(false);
   }
-
-
-  function handleSnackbarClose(event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setShowSnackbar(false);
-  };
 
   function onSaveActionSuccess(data) {
     actionsAPI.cancelAssignment(itemKey).then(() => {
@@ -126,7 +112,7 @@ export default function Assignment(props) {
   }
 
   function buttonPress(sAction: string, sButtonType: string) {
-
+    setErrorSummary(false);
     if (sButtonType === "secondary") {
 
       switch (sAction) {
@@ -137,7 +123,7 @@ export default function Assignment(props) {
             .then(() => {
             })
             .catch(() => {
-              showToast( `Navigation failed!`);
+              showErrorSummary( `Navigation failed!`);
             });
 
           break;
@@ -154,7 +140,7 @@ export default function Assignment(props) {
             onSaveActionSuccess({ caseType, caseID, assignmentID });
           })
           .catch(() => {
-            showToast('Save failed');
+            showErrorSummary('Save failed');
           });
 
           break;
@@ -172,7 +158,7 @@ export default function Assignment(props) {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
               })
               .catch(() => {
-                showToast(`Cancel failed!`);
+                showErrorSummary(`Cancel failed!`);
               });
           } else {
             const cancelPromise = cancelAssignment(itemKey);
@@ -182,7 +168,7 @@ export default function Assignment(props) {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
               })
               .catch(() => {
-                showToast(`Cancel failed!`);
+                showErrorSummary(`Cancel failed!`);
               });
           }
           break;
@@ -203,7 +189,7 @@ export default function Assignment(props) {
               .then(() => {
               })
               .catch(() => {
-                showToast( `Submit failed!`);
+                showErrorSummary( `Submit failed!`);
               });
 
             break;
@@ -216,48 +202,38 @@ export default function Assignment(props) {
 
   }
 
-
   return (
-    <div id="Assignment">
-      { bHasNavigation ?
-          <React.Fragment>
-            <MultiStep getPConnect={getPConnect} itemKey={itemKey} actionButtons={actionButtons} onButtonPress={buttonPress}
-              bIsVertical={bIsVertical} arCurrentStepIndicies={arCurrentStepIndicies} arNavigationSteps={arNavigationSteps}>
-              {children}
-            </MultiStep>
-            <Snackbar
-              open={showSnackbar}
-              autoHideDuration={3000}
-              onClose={handleSnackbarClose}
-              message={snackbarMessage}
-              action={
-                <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose}>
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              }
-            />
-          </React.Fragment>
-        : (
-          <React.Fragment>
-            <AssignmentCard getPConnect={getPConnect} itemKey={itemKey} actionButtons={actionButtons} onButtonPress={buttonPress} >
-              {children}
-            </AssignmentCard>
-            <Snackbar
-              open={showSnackbar}
-              autoHideDuration={3000}
-              onClose={handleSnackbarClose}
-              message={snackbarMessage}
-              action={
-                <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose}>
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              }
-            />
-          </React.Fragment>
-        )
-    }
+    <div id='Assignment'>
+      {errorSummary && <ErrorSummary messages={errorMessage} />}
+      {bHasNavigation ? (
+        <React.Fragment>
+          <div>has Nav</div>
+          <MultiStep
+            getPConnect={getPConnect}
+            itemKey={itemKey}
+            actionButtons={actionButtons}
+            onButtonPress={buttonPress}
+            bIsVertical={bIsVertical}
+            arCurrentStepIndicies={arCurrentStepIndicies}
+            arNavigationSteps={arNavigationSteps}
+          >
+            {children}
+          </MultiStep>
+        </React.Fragment>
+      ) : (
+        <>
+          <AssignmentCard
+            getPConnect={getPConnect}
+            itemKey={itemKey}
+            actionButtons={actionButtons}
+            onButtonPress={buttonPress}
+          >
+            {children}
+          </AssignmentCard>
+        </>
+      )}
     </div>
-  )
+  );
 }
 
 // From WC SDK

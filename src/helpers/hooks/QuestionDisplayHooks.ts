@@ -8,12 +8,12 @@ declare const PCore;
 */
 
 
-function useIsOnlyField(){
+function useIsOnlyField(effectTrigger = null){
   const [isOnlyField, setisOnlyField] = useState(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
 
   useEffect ( () => {
     setisOnlyField(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
-  }, [])
+  }, [effectTrigger])
 
   return isOnlyField;
 }

@@ -462,19 +462,11 @@ export default function FlowContainer(props) {
               </MuiPickersUtilsProvider>
             </Card>
           ) : (
-            <div className='govuk-form-group'>
-              <fieldset className='govuk-fieldset'>
-                <legend className='govuk-fieldset__legend govuk-fieldset__legend--l'>
-                  <h1 className='govuk-fieldset__heading'>{containerName}</h1>
-                </legend>
-                {instructionText && <div className='govuk-hint'>{instructionText}</div> }
-                </fieldset>
-                <MuiPickersUtilsProvider utils={DayjsUtils}>
+            <MuiPickersUtilsProvider utils={DayjsUtils}>
                   <Assignment getPConnect={getPConnect} itemKey={itemKey}>
                     {arNewChildrenAsReact}
                   </Assignment>
-                </MuiPickersUtilsProvider>
-            </div>
+            </MuiPickersUtilsProvider>
           )
         ) : (
           <div>

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import AssignmentCard from '../AssignmentCard';
 import MultiStep from '../MultiStep';
+import { useIsOnlyField } from '../../helpers/hooks/QuestionDisplayHooks';
 import ErrorSummary from '../BaseComponents/ErrorSummary/ErrorSummary';
 
 declare const PCore: any;
@@ -29,6 +30,10 @@ export default function Assignment(props) {
 
   const [errorSummary, setErrorSummary] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+
+  const isOnlyOneField = useIsOnlyField(children);
+  const containerName = thePConn.getDataObject().caseInfo.assignments[0].name
 
   function findCurrentIndicies(arStepperSteps: Array<any>, arIndicies: Array<number>, depth: number) : Array<number> {
 
@@ -208,6 +213,7 @@ export default function Assignment(props) {
       {bHasNavigation ? (
         <React.Fragment>
           <div>has Nav</div>
+          {!isOnlyOneField && <h1 className="govuk-heading-l">{containerName}</h1>}
           <MultiStep
             getPConnect={getPConnect}
             itemKey={itemKey}
@@ -222,6 +228,7 @@ export default function Assignment(props) {
         </React.Fragment>
       ) : (
         <>
+          {!isOnlyOneField && <h1 className="govuk-heading-l">{containerName}</h1>}
           <AssignmentCard
             getPConnect={getPConnect}
             itemKey={itemKey}

@@ -12,8 +12,7 @@ const useStyles = makeStyles(theme => ({
   fieldMargin: {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
+    marginTop: theme.spacing(1)
   },
   fullWidth: {
     width: '100%'

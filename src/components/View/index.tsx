@@ -9,13 +9,10 @@ import CaseSummary from '../templates/CaseSummary';
 import CaseView from '../templates/CaseView';
 import DefaultForm from '../templates/DefaultForm';
 import Details from '../templates/Details';
-import DetailsTwoColumn from '../templates/DetailsTwoColumn';
-import DetailsThreeColumn from '../templates/DetailsThreeColumn';
 import ListPage from '../templates/ListPage';
 import ListView from '../templates/ListView';
 import NarrowWidePage from '../templates/NarrowWidePage';
 import NarrowWideForm from '../templates/NarrowWideForm';
-import NarrowWideDetails from '../templates/NarrowWideDetails';
 import OneColumn from '../templates/OneColumn';
 import OneColumnTab from '../templates/OneColumnTab';
 import SimpleTable from '../templates/SimpleTable';
@@ -24,7 +21,6 @@ import TwoColumn from '../templates/TwoColumn';
 import TwoColumnPage from '../templates/TwoColumnPage';
 import WideNarrowForm from '../templates/WideNarrowForm';
 import WideNarrowPage from '../templates/WideNarrowPage';
-import WideNarrowDetails from '../templates/WideNarrowDetails';
 import DataReference from '../templates/DataReference';
 import OneColumnPage from '../templates/OneColumnPage';
 import InlineDashboardPage from '../templates/InlineDashboardPage';
@@ -39,6 +35,15 @@ import './View.css';
 //
 
 const FORMTEMPLATES = ['OneColumn', 'TwoColumn', 'DefaultForm', 'WideNarrow', 'NarrowWide'];
+const NO_HEADER_TEMPLATES = [
+  'SubTabs',
+  'SimpleTable',
+  'Details',
+  'DetailsTwoColumn',
+  'DetailsThreeColumn',
+  'NarrowWideDetails',
+  'WideNarrowDetails'
+];
 
 export default function View(props) {
   const { children, template, getPConnect, mode } = props;
@@ -77,15 +82,15 @@ export default function View(props) {
         break;
 
       case 'Details':
+      case 'DetailsTwoColumn':
+      case 'DetailsThreeColumn':
+      case 'NarrowWideDetails':
+      case 'WideNarrowDetails':
         ViewTemplate = Details;
         break;
 
-      case 'DetailsTwoColumn':
-        ViewTemplate = DetailsTwoColumn;
-        break;
-
-      case 'DetailsThreeColumn':
-        ViewTemplate = DetailsThreeColumn;
+      case 'DetailsSubTabs':
+        ViewTemplate = DetailsSubTabs;
         break;
 
       case 'ListPage':
@@ -107,10 +112,6 @@ export default function View(props) {
         ViewTemplate = NarrowWidePage;
         break;
 
-      case 'NarrowWideDetails':
-        ViewTemplate = NarrowWideDetails;
-        break;
-
       case 'OneColumn':
         ViewTemplate = OneColumn;
         break;
@@ -119,7 +120,7 @@ export default function View(props) {
         ViewTemplate = OneColumnTab;
         break;
 
-      case "TwoColumnTab":
+      case 'TwoColumnTab':
         ViewTemplate = TwoColumnTab;
         break;
 
@@ -129,10 +130,6 @@ export default function View(props) {
 
       case 'SubTabs':
         ViewTemplate = SubTabs;
-        break;
-
-      case 'DetailsSubTabs':
-        ViewTemplate = DetailsSubTabs;
         break;
 
       case 'OneColumnPage':
@@ -153,10 +150,6 @@ export default function View(props) {
 
       case 'WideNarrowPage':
         ViewTemplate = WideNarrowPage;
-        break;
-
-      case 'WideNarrowDetails':
-        ViewTemplate = WideNarrowDetails;
         break;
 
       case 'InlineDashboardPage':
@@ -201,7 +194,7 @@ export default function View(props) {
 
     return (
       <div className='grid-column'>
-        {showLabel && template !== 'SubTabs' && template !== 'SimpleTable' && template !== 'Details' && (
+        {showLabel && !NO_HEADER_TEMPLATES.includes(template) && (
           <div className='template-title-container'>
             <span>{label}</span>
           </div>

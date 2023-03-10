@@ -1,6 +1,6 @@
 export function getLocale(locale) {
   if (locale) return locale;
-  return document.documentElement.lang;
+  return Intl.DateTimeFormat().resolvedOptions().locale;
 }
 
 export function getCurrentTimezone(timezone) {

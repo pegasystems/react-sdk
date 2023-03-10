@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 function makeHintId(identifier){return `${identifier}-hint`};
 function makeErrorId(identifier){return `${identifier}-error`};
 
-export default function FormGroup({labelIsHeading=true, label, errorText, hintText, name, extraLabelClasses, children}){
+export default function FormGroup({labelIsHeading=true, label, errorText, hintText, name, extraLabelClasses="", children}){
 
   const formGroupDivClasses = `govuk-form-group ${errorText?'govuk-form-group--error':""}`.trim();
   const labelClasses = `govuk-label ${labelIsHeading?"govuk-label--l":""} ${extraLabelClasses}`.trim();

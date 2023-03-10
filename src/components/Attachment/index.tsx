@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-boolean-value */
-
 import { Button } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import { buildFilePropsFromResponse, getIconFromFileType, validateMaxSize, getIconForAttachment } from './AttachmentUtils';

@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-boolean-value */
-
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Utils } from '../../../helpers/utils';

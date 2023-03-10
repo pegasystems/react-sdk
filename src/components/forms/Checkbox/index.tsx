@@ -22,7 +22,7 @@ export default function CheckboxComponent(props) {
   const propName = thePConn.getStateProps().value;
 
   const isOnlyField = useIsOnlyField();
-  const stepName = useStepName(isOnlyField, getPConnect);
+  const stepName = useStepName(getPConnect);
 
   // TODO - How to get the optionsList from Pega? Fetch and plug optionsList
   // Hard coded example data plugged in to pass for the checkbox optionsList

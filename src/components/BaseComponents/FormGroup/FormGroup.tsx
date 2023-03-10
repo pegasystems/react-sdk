@@ -17,12 +17,12 @@ export default function FormGroup({
   errorText,
   hintText,
   name,
-  children
+  extraLabelClasses="", children
 }) {
   const formGroupDivClasses = `govuk-form-group ${
     errorText ? 'govuk-form-group--error' : ''
   }`.trim();
-  const labelClasses = `govuk-label ${labelIsHeading ? 'govuk-label--l' : ''}`.trim();
+  const labelClasses = `govuk-label ${labelIsHeading ? 'govuk-label--l' : ''} ${extraLabelClasses}`.trim();
 
   // TODO Refactor if required elsewhere
   const ConditionalWrapper = ({ condition, wrapper, childrenToWrap }) => {
@@ -63,7 +63,8 @@ FormGroup.propTypes = {
   labelIsHeading: PropTypes.bool,
   hintText: PropTypes.string,
   errorText: PropTypes.string,
-  children: PropTypes.node
-};
+  children: PropTypes.node,
+  extraLabelClasses: PropTypes.string,
+}
 
 export { makeErrorId, makeHintId, makeItemId };

@@ -1,0 +1,503 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Basic date input component hint and error 1`] = `
+<div
+  className="govuk-form-group govuk-form-group--error"
+>
+  <fieldset
+    aria-describedby="name-hint name-error"
+    className="govuk-fieldset"
+    role="group"
+  >
+    <legend
+      className="govuk-fieldset__legend"
+    >
+      Date of birth
+    </legend>
+    <div
+      className="govuk-hint"
+      id="name-hint"
+    >
+      hintText
+    </div>
+    <p
+      className="govuk-error-message"
+      id="name-error"
+    >
+      <span
+        className="govuk-visually-hidden"
+      >
+        Error:
+      </span>
+      errorText
+    </p>
+    <div
+      className="govuk-date-input"
+      id="name"
+    >
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+            htmlFor="name"
+          >
+            Day
+          </label>
+          <input
+            className="govuk-input govuk-input--error undefined govuk-input--width-2"
+            id="name-day"
+            inputMode="numeric"
+            name="name-day"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+            htmlFor="name"
+          >
+            Month
+          </label>
+          <input
+            className="govuk-input govuk-input--error undefined govuk-input--width-2"
+            id="name-month"
+            inputMode="numeric"
+            name="name-month"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+            htmlFor="name"
+          >
+            Year
+          </label>
+        </div>
+        <input
+          className="govuk-input govuk-input--error undefined govuk-input--width-4"
+          id="name-year"
+          inputMode="numeric"
+          name="name-year"
+          type="text"
+        />
+      </div>
+    </div>
+  </fieldset>
+</div>
+`;
+
+exports[`Basic date input component prepoulated with a date 1`] = `
+<div
+  className="govuk-form-group govuk-form-group--error"
+>
+  <fieldset
+    aria-describedby="name-error"
+    className="govuk-fieldset"
+    role="group"
+  >
+    <legend
+      className="govuk-fieldset__legend govuk-fieldset__legend--l"
+    >
+      <h1
+        className="govuk-fieldset__heading"
+      >
+        Date of birth
+      </h1>
+    </legend>
+    <p
+      className="govuk-error-message"
+      id="name-error"
+    >
+      <span
+        className="govuk-visually-hidden"
+      >
+        Error:
+      </span>
+      errorText
+    </p>
+    <div
+      className="govuk-date-input"
+      id="name"
+    >
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+            htmlFor="name"
+          >
+            Day
+          </label>
+          <input
+            className="govuk-input govuk-input--error undefined govuk-input--width-2"
+            id="name-day"
+            inputMode="numeric"
+            name="name-day"
+            type="text"
+            value="10"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+            htmlFor="name"
+          >
+            Month
+          </label>
+          <input
+            className="govuk-input govuk-input--error undefined govuk-input--width-2"
+            id="name-month"
+            inputMode="numeric"
+            name="name-month"
+            type="text"
+            value="2"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+            htmlFor="name"
+          >
+            Year
+          </label>
+        </div>
+        <input
+          className="govuk-input govuk-input--error undefined govuk-input--width-4"
+          id="name-year"
+          inputMode="numeric"
+          name="name-year"
+          type="text"
+          value="1990"
+        />
+      </div>
+    </div>
+  </fieldset>
+</div>
+`;
+
+exports[`Basic date input component with legend as h1 1`] = `
+<div
+  className="govuk-form-group govuk-form-group--error"
+>
+  <fieldset
+    aria-describedby="name-hint name-error"
+    className="govuk-fieldset"
+    role="group"
+  >
+    <legend
+      className="govuk-fieldset__legend govuk-fieldset__legend--l"
+    >
+      <h1
+        className="govuk-fieldset__heading"
+      >
+        Date of birth
+      </h1>
+    </legend>
+    <div
+      className="govuk-hint"
+      id="name-hint"
+    >
+      hintText
+    </div>
+    <p
+      className="govuk-error-message"
+      id="name-error"
+    >
+      <span
+        className="govuk-visually-hidden"
+      >
+        Error:
+      </span>
+      errorText
+    </p>
+    <div
+      className="govuk-date-input"
+      id="name"
+    >
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+            htmlFor="name"
+          >
+            Day
+          </label>
+          <input
+            className="govuk-input govuk-input--error undefined govuk-input--width-2"
+            id="name-day"
+            inputMode="numeric"
+            name="name-day"
+            onChange={[Function]}
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+            htmlFor="name"
+          >
+            Month
+          </label>
+          <input
+            className="govuk-input govuk-input--error undefined govuk-input--width-2"
+            id="name-month"
+            inputMode="numeric"
+            name="name-month"
+            onChange={[Function]}
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+            htmlFor="name"
+          >
+            Year
+          </label>
+        </div>
+        <input
+          className="govuk-input govuk-input--error undefined govuk-input--width-4"
+          id="name-year"
+          inputMode="numeric"
+          name="name-year"
+          onChange={[Function]}
+          type="text"
+        />
+      </div>
+    </div>
+  </fieldset>
+</div>
+`;
+
+exports[`Basic date input componentwith error applying to whole input 1`] = `
+<div
+  className="govuk-form-group govuk-form-group--error"
+>
+  <fieldset
+    aria-describedby="name-error"
+    className="govuk-fieldset"
+    role="group"
+  >
+    <legend
+      className="govuk-fieldset__legend govuk-fieldset__legend--l"
+    >
+      <h1
+        className="govuk-fieldset__heading"
+      >
+        Date of birth
+      </h1>
+    </legend>
+    <p
+      className="govuk-error-message"
+      id="name-error"
+    >
+      <span
+        className="govuk-visually-hidden"
+      >
+        Error:
+      </span>
+      errorText
+    </p>
+    <div
+      className="govuk-date-input"
+      id="name"
+    >
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+            htmlFor="name"
+          >
+            Day
+          </label>
+          <input
+            className="govuk-input govuk-input--error undefined govuk-input--width-2"
+            id="name-day"
+            inputMode="numeric"
+            name="name-day"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+            htmlFor="name"
+          >
+            Month
+          </label>
+          <input
+            className="govuk-input govuk-input--error undefined govuk-input--width-2"
+            id="name-month"
+            inputMode="numeric"
+            name="name-month"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+            htmlFor="name"
+          >
+            Year
+          </label>
+        </div>
+        <input
+          className="govuk-input govuk-input--error undefined govuk-input--width-4"
+          id="name-year"
+          inputMode="numeric"
+          name="name-year"
+          type="text"
+        />
+      </div>
+    </div>
+  </fieldset>
+</div>
+`;
+
+exports[`renders correctly 1`] = `
+<div
+  className="govuk-form-group"
+>
+  <fieldset
+    aria-describedby=""
+    className="govuk-fieldset"
+    role="group"
+  >
+    <legend
+      className="govuk-fieldset__legend govuk-fieldset__legend--l"
+    >
+      <h1
+        className="govuk-fieldset__heading"
+      />
+    </legend>
+    <div
+      className="govuk-date-input"
+    >
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+          >
+            Day
+          </label>
+          <input
+            className="govuk-input  undefined govuk-input--width-2"
+            id="undefined-day"
+            inputMode="numeric"
+            name="undefined-day"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+          >
+            Month
+          </label>
+          <input
+            className="govuk-input  undefined govuk-input--width-2"
+            id="undefined-month"
+            inputMode="numeric"
+            name="undefined-month"
+            type="text"
+          />
+        </div>
+      </div>
+      <div
+        className="govuk-date-input__item"
+      >
+        <div
+          className="govuk-form-group"
+        >
+          <label
+            className="govuk-label  govuk-date-input__label"
+          >
+            Year
+          </label>
+        </div>
+        <input
+          className="govuk-input  undefined govuk-input--width-4"
+          id="undefined-year"
+          inputMode="numeric"
+          name="undefined-year"
+          type="text"
+        />
+      </div>
+    </div>
+  </fieldset>
+</div>
+`;

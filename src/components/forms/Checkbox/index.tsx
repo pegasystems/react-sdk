@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import GDSCheckboxes from '../../BaseComponents/Checkboxes/Checkboxes';
 import {useIsOnlyField, useStepName} from '../../../helpers/hooks/QuestionDisplayHooks'
 import handleEvent from '../../../helpers/event-utils';
-import Utils from '../../../helpers/utils';
 
 
 export default function CheckboxComponent(props) {
   const {
     getPConnect,
     name,
-    label,
     inputProps,
-    testId,
     required,
     errorText,
     hintText

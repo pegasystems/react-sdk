@@ -6,13 +6,8 @@ import GDSCheckbox from './Checkbox'
 export default function Checkboxes(props) {
   const {
     name,
-    label,
     optionsList,
     isSmall,
-    legendIsHeading,
-    errorText,
-    hintText,
-    required,
     onChange,
     onBlur,
     inputProps

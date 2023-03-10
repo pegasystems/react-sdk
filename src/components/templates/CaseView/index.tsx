@@ -192,7 +192,7 @@ export default function CaseView(props) {
       return (
         <Grid container>
           <Grid item xs={3}>
-          <div hidden={true} id="current-caseID">{currentCaseID}</div>
+          <div hidden id="current-caseID">{currentCaseID}</div>
           <Card className={classes.root} >
             <CardHeader className={classes.caseViewHeader}
               title={<Typography variant="h6" component="div">{header}</Typography>}

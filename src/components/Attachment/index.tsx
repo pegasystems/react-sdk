@@ -366,7 +366,7 @@ export default function Attachment(props) {
   let content = (
     <div className='file-div'>
         {file.inProgress && (<div className="progress-div"><CircularProgress /></div>)}
-        <div hidden={true} id="attachment-ID">{valueRef}</div>
+        <div hidden id="attachment-ID">{valueRef}</div>
         <label htmlFor={valueRef}>
           <input
             style={{ display: 'none' }}

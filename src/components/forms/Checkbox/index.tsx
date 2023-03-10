@@ -44,7 +44,7 @@ export default function CheckboxComponent(props) {
         name={name}
         label={stepName}
         optionsList={optionsList}
-        isSmall={true}
+        isSmall
         legendIsHeading={isOnlyField}
         errorText={errorText}
         hintText={hintText}

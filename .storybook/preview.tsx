@@ -7,6 +7,8 @@ import {
   WorkTheme
 } from '@pega/cosmos-react-core';
 
+import { decorator } from "../__mocks__/react_pconnect";
+
 export const decorators: DecoratorFn[] = [
   (Story, context) => {
     return (
@@ -20,7 +22,8 @@ export const decorators: DecoratorFn[] = [
         </PopoverManager>
       </Configuration>
     );
-  }
+  },
+  decorator
 ];
 
 export const parameters = {

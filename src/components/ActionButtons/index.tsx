@@ -17,6 +17,7 @@ export default function ActionButtons(props) {
           onClick={() => {
             _onButtonPress(mButton.jsAction, 'primary');
           }}
+          key={mButton.actionID}
         >
           {mButton.name}
         </Button>
@@ -27,6 +28,7 @@ export default function ActionButtons(props) {
           onClick={() => {
             _onButtonPress(sButton.jsAction, 'secondary');
           }}
+          key={sButton.actionID}
         >
           {sButton.name}
         </Button>

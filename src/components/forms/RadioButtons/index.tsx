@@ -6,7 +6,9 @@ import Utils from '../../../helpers/utils';
 export default function RadioButtons(props) {
   const {
     getPConnect,
-    label
+    label,
+    validatemessage,
+    helperText
   } = props;
 
   const thePConn = getPConnect();
@@ -32,6 +34,8 @@ export default function RadioButtons(props) {
       legendIsHeading={isOnlyField}
       options={theOptions.map(option => {return {value:option.key, label:option.value}})}
       displayInline={theOptions.length === 2}
+      hintText={helperText}
+      errorText={validatemessage}
     />
   );
 }

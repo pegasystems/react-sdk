@@ -1,36 +1,39 @@
-import React from 'react';
-import PropTypes from "prop-types";
+import React, { createElement } from 'react';
+import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
-import DetailsFields from '../../designSystemExtensions/DetailsFields';
+import createPConnectComponent from '../../../bridge/react_pconnect';
+import FieldGroup from '../../designSystemExtensions/FieldGroup';
 
 export default function Details(props) {
-  const { children, label, showLabel, getPConnect } = props;
-  const arFields: Array<any> = [];
+  const { label, showLabel, getPConnect } = props;
 
   // Get the inherited props from the parent to determine label settings
   const propsToUse = { label, showLabel, ...getPConnect().getInheritedProps() };
 
-  for (const child of children) {
-    const theChildPConn = child.props.getPConnect();
-    theChildPConn.setInheritedProp('displayMode', 'LABELS_LEFT');
-    theChildPConn.setInheritedProp('readOnly', true);
-    const theChildrenOfChild = theChildPConn.getChildren();
-    arFields.push(theChildrenOfChild);
-  }
+  // Set display mode prop and re-create the children so this part of the dom tree renders
+  // in a readonly (display) mode instead of a editable
+  getPConnect().setInheritedProp('displayMode', 'LABELS_LEFT');
+  getPConnect().setInheritedProp('readOnly', true);
+  const children = getPConnect()
+    .getChildren()
+    .map((configObject, index) =>
+      createElement(createPConnectComponent(), {
+        ...configObject,
+        // eslint-disable-next-line react/no-array-index-key
+        key: index.toString()
+      })
+    );
 
   return (
-    <div id='DetailsOneColumn'>
-      {propsToUse.showLabel && (
-        <div className='template-title-container'>
-          <span>{propsToUse.label}</span>
-        </div>
-      )}
+    <FieldGroup name={propsToUse.showLabel ? propsToUse.label : ''}>
       <Grid container spacing={1}>
-        <Grid item xs={12}>
-          <DetailsFields fields={arFields[0]} />
-        </Grid>
+        {children.map(child => (
+          <Grid item xs={12}>
+            {child}
+          </Grid>
+        ))}
       </Grid>
-    </div>
+    </FieldGroup>
   );
 }
 
@@ -42,5 +45,5 @@ Details.defaultProps = {
 Details.propTypes = {
   showLabel: PropTypes.bool,
   label: PropTypes.string,
-  getPConnect: PropTypes.func.isRequired,
+  getPConnect: PropTypes.func.isRequired
 };

@@ -1,6 +1,7 @@
 import React  from 'react';
 import GDSRadioButtons from '../../BaseComponents/RadioButtons/RadioButtons';
 import {useIsOnlyField, useStepName} from '../../../helpers/hooks/QuestionDisplayHooks'
+import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 import Utils from '../../../helpers/utils';
 
 export default function RadioButtons(props) {
@@ -21,6 +22,8 @@ export default function RadioButtons(props) {
   const isOnlyField = useIsOnlyField();
   const stepName = useStepName(isOnlyField, getPConnect);
 
+  // TODO Investigate if this can be moved to 'higher' leven in component stack to avoid repititions
+  useAddErrorToPageTitle(validatemessage);
 
   // theOptions will be an array of JSON objects that are literally key/value pairs.
   //  Ex: [ {key: "Basic", value: "Basic"} ]

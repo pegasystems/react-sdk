@@ -16,3 +16,10 @@
   position: absolute;
   left: 47%;
 }
+
+.file-label::after {
+  display: inline;
+  content: " *";
+  vertical-align: top;
+  color: rgb(217, 28, 41);
+}

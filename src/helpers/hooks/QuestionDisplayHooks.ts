@@ -8,20 +8,12 @@ declare const PCore;
 */
 
 
-function useIsOnlyField(){
+export default function useIsOnlyField(effectTrigger = null){
   const [isOnlyField, setisOnlyField] = useState(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
 
   useEffect ( () => {
     setisOnlyField(PCore.getFormUtils().getEditableFields("root/primary_1/workarea_1").length === 1);
-  }, [])
+  }, [effectTrigger])
 
   return isOnlyField;
 }
-
-function useStepName(getPConnect: Function){
-  const [stepName] = useState(getPConnect().getDataObject()?.caseInfo.assignments[0].name);
-  return stepName
-}
-
-
-export {useIsOnlyField, useStepName};

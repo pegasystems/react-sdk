@@ -1,7 +1,11 @@
 import React  from 'react';
 import GDSRadioButtons from '../../BaseComponents/RadioButtons/RadioButtons';
+<<<<<<< HEAD
 import {useIsOnlyField, useStepName} from '../../../helpers/hooks/QuestionDisplayHooks'
 import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
+=======
+import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks'
+>>>>>>> HeadingIssue
 import Utils from '../../../helpers/utils';
 
 export default function RadioButtons(props) {
@@ -20,7 +24,10 @@ export default function RadioButtons(props) {
   propName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
 
   const isOnlyField = useIsOnlyField();
+<<<<<<< HEAD
   const stepName = useStepName(getPConnect);
+=======
+>>>>>>> HeadingIssue
 
   // TODO Investigate if this can be moved to 'higher' leven in component stack to avoid repititions
   useAddErrorToPageTitle(validatemessage);
@@ -33,7 +40,7 @@ export default function RadioButtons(props) {
     <GDSRadioButtons
       {...props}
       name={propName}
-      label={isOnlyField?stepName:label}
+      label={label}
       legendIsHeading={isOnlyField}
       options={theOptions.map(option => {return {value:option.key, label:option.value}})}
       displayInline={theOptions.length === 2}

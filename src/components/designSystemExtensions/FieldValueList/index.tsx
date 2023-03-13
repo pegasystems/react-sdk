@@ -11,93 +11,75 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1)
   },
-  fieldMargin: {
-    // paddingRight: theme.spacing(1),
-    // paddingLeft: theme.spacing(1),
-    // paddingTop: theme.spacing(1),
-    // paddingBottom: theme.spacing(1),
-    // marginRight: theme.spacing(1),
-    // marginLeft: theme.spacing(1),
-    // marginTop: theme.spacing(1),
-    // marginBottom: theme.spacing(1)
-  },
   fieldLabel: {
     fontWeight: 400,
     color: theme.palette.text.secondary
   },
   fieldValue: {
-    fontWeight: 400,
     color: theme.palette.text.primary
+  },
+  noPaddingTop: {
+    paddingTop: '0 !important'
+  },
+  noPaddingBottom: {
+    paddingBottom: '0 !important'
   }
 }));
 
-const FieldValueList = props => {
-  const classes = useStyles();
+function formatItemValue(value) {
+  let formattedVal = value;
 
-  const fields: any = [];
-
-  // eslint-disable-next-line guard-for-in
-  for (const label in props.item) {
-    fields.push({ label, value: props.item[label] });
+  // if the value is undefined or an empty string, we want to display it as "---"
+  if (formattedVal === undefined || formattedVal === '') {
+    formattedVal = '---';
   }
 
-  function getGridItemLabel(label) {
-    const dispValue = label;
+  return formattedVal;
+}
 
+const FieldValueList = props => {
+  const { name, value, variant = 'inline' } = props;
+  const classes = useStyles();
+
+  function getGridItemLabel() {
     return (
-      <Grid item xs={6}>
-        <Typography
-          variant='body2'
-          component='span'
-          className={`${classes.fieldLabel} ${classes.fieldMargin}`}
-        >
-          {dispValue}
+      <Grid
+        item
+        xs={variant === 'stacked' ? 12 : 6}
+        className={variant === 'stacked' ? classes.noPaddingBottom : ''}
+      >
+        <Typography variant='body2' component='span' className={`${classes.fieldLabel}`}>
+          {name}
         </Typography>
       </Grid>
     );
   }
 
-  function formatItemValue(value) {
-    let formattedVal = value;
-
-    // if the value is undefined or an empty string, we want to display it as "---"
-    if (formattedVal === undefined || formattedVal === '') {
-      formattedVal = '---';
-    }
-
-    return formattedVal;
-  }
-
-  function getGridItemValue(value) {
+  function getGridItemValue() {
     const formattedValue = formatItemValue(value);
 
     return (
-      <Grid item xs={6}>
-        <Typography variant='body2' component='span' className={classes.fieldValue}>
+      <Grid
+        item
+        xs={variant === 'stacked' ? 12 : 6}
+        className={variant === 'stacked' ? classes.noPaddingTop : ''}
+      >
+        <Typography
+          variant={variant === 'stacked' ? 'h6' : 'body2'}
+          component='span'
+          className={classes.fieldValue}
+        >
           {formattedValue}
         </Typography>
       </Grid>
     );
   }
 
-  function getGridItems() {
-    const gridItems = fields.map(item => {
-      return (
-        <Grid container spacing={1} key={item.label}>
-          {getGridItemLabel(item.label)}
-          {getGridItemValue(item.value)}
-        </Grid>
-      );
-    });
-    return gridItems;
-  }
-
   return (
     <React.Fragment>
       <Grid container spacing={4} justifyContent='space-between'>
-        <Grid item style={{ width: '100%' }}>
-          {getGridItems()}
-        </Grid>
+        {getGridItemLabel()}
+        {getGridItemValue()}
       </Grid>
     </React.Fragment>
   );

@@ -18,19 +18,21 @@ export default function DateTime(props) {
     readOnly,
     testId,
     helperText,
-    displayMode
+    displayMode,
+    hideLabel
   } = props;
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
   const propName = pConn.getStateProps().value;
   const helperTextToDisplay = validatemessage || helperText;
 
-  if(displayMode === 'LABELS_LEFT'){
+  if (displayMode === 'LABELS_LEFT') {
     const formattedDate = format(props.value, 'datetime');
-    const field = {
-      [label]: formattedDate
-    };
-    return <FieldValueList item={field}/>
+    return <FieldValueList name={hideLabel ? '' : label} value={formattedDate} />;
+  }
+
+  if (displayMode === 'STACKED_LARGE_VAL') {
+    return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
   }
 
   if (readOnly) {

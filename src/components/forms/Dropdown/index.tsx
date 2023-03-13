@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Utils from '../../../helpers/utils';
 import handleEvent from '../../../helpers/event-utils';
 import Select from '../../BaseComponents/Select/Select';
-import {useIsOnlyField, useStepName} from '../../../helpers/hooks/QuestionDisplayHooks';
+import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 
 interface IOption {
@@ -24,7 +24,6 @@ export default function Dropdown(props) {
 
   const [options, setOptions] = useState<Array<IOption>>([]);
   const isOnlyField = useIsOnlyField();
-  const stepName = useStepName(getPConnect);
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
@@ -57,7 +56,7 @@ export default function Dropdown(props) {
 
   return (
     <>
-      <Select label={isOnlyField ? stepName: label}
+      <Select label={label}
        hintText={helperText}
        errorText={validatemessage}
        labelIsHeading={isOnlyField}

@@ -1,7 +1,7 @@
 import React from 'react';
 import GDSTextInput from '../../BaseComponents/TextInput/TextInput';
 import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
-import {useIsOnlyField, useStepName} from '../../../helpers/hooks/QuestionDisplayHooks';
+import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 
 export default function TextInput(props) {
   const {
@@ -39,7 +39,6 @@ export default function TextInput(props) {
   }
 
   const isOnlyField = useIsOnlyField();
-  const stepName = useStepName(getPConnect);
 
   return (
     <>
@@ -50,7 +49,7 @@ export default function TextInput(props) {
         }}
         hintText={helperText}
         errorText={validatemessage}
-        label={isOnlyField? stepName : label}
+        label={label}
         labelIsHeading={isOnlyField}
         name={propName}
       />

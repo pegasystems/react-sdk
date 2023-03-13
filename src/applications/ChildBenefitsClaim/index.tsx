@@ -9,6 +9,7 @@ import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '../../helpers/au
 import { compareSdkPCoreVersions } from '../../helpers/versionHelpers';
 import { getSdkConfig } from '../../helpers/config_access';
 import StartPage from './StartPage';
+import ConfirmationPage from './ConfirmationPage';
 
 // declare var gbLoggedIn: boolean;
 // declare var login: Function;
@@ -22,6 +23,7 @@ export default function ChildBenefitsClaim() {
   const [bShowPega, setShowPega] = useState(false);
   const [bShowTriplePlayOptions, setShowTriplePlayOptions] = useState(false);
   const [bShowAppName, setShowAppName] = useState(false);
+  const [bShowResolutionScreen, setShowResolutionScreen] = useState(false);
 
   function createCase() {
     setShowTriplePlayOptions(false);
@@ -42,6 +44,36 @@ export default function ChildBenefitsClaim() {
     if (pConn) {
       createCase();
     }
+  }
+
+  function assignmentFinished() {
+    setShowTriplePlayOptions(false);
+    setShowPega(false);
+    setShowResolutionScreen(true);
+  }
+
+  function cancelAssignment() {
+    setShowTriplePlayOptions(true);
+    setShowPega(false);
+    setShowResolutionScreen(false);
+  }
+
+  function establishPCoreSubscriptions() {
+    PCore.getPubSubUtils().subscribe(
+      'assignmentFinished',
+      () => {
+        assignmentFinished();
+      },
+      'assignmentFinished'
+    );
+
+    PCore.getPubSubUtils().subscribe(
+      PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
+      () => {
+        cancelAssignment();
+      },
+      'cancelAssignment'
+    );
   }
 
   useEffect(() => {
@@ -68,33 +100,6 @@ export default function ChildBenefitsClaim() {
       setShowTriplePlayOptions(true);
     }
   }, [bShowAppName]);
-
-
-  function assignmentFinished() {
-    setShowPega(false);
-  }
-
-  function cancelAssignment() {
-    setShowPega(false);
-  }
-
-  function establishPCoreSubscriptions() {
-    PCore.getPubSubUtils().subscribe(
-      'assignmentFinished',
-      () => {
-        assignmentFinished();
-      },
-      'assignmentFinished'
-    );
-
-    PCore.getPubSubUtils().subscribe(
-      PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
-      () => {
-        cancelAssignment();
-      },
-      'cancelAssignment'
-    );
-  }
 
   // from react_root.js with some modifications
   function RootComponent(props) {
@@ -242,6 +247,7 @@ export default function ChildBenefitsClaim() {
   return (
     <>
       {bShowTriplePlayOptions && <StartPage onStart={startNow} />}
+      {bShowResolutionScreen && <ConfirmationPage />}
       <div id='pega-part-of-page'>
         <div id='pega-root'></div>
       </div>

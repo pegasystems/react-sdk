@@ -20,7 +20,6 @@ export default function RadioButtons(props) {
   propName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
 
   const isOnlyField = useIsOnlyField();
-  const stepName = useStepName(getPConnect);
 
   // TODO Investigate if this can be moved to 'higher' leven in component stack to avoid repititions
   useAddErrorToPageTitle(validatemessage);

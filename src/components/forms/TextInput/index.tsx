@@ -39,7 +39,6 @@ export default function TextInput(props) {
   }
 
   const isOnlyField = useIsOnlyField();
-  const stepName = useStepName(getPConnect);
 
   return (
     <>

@@ -24,10 +24,6 @@ export default function Dropdown(props) {
 
   const [options, setOptions] = useState<Array<IOption>>([]);
   const isOnlyField = useIsOnlyField();
-<<<<<<< HEAD
-  const stepName = useStepName(getPConnect);
-=======
->>>>>>> HeadingIssue
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();

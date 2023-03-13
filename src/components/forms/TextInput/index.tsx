@@ -39,10 +39,6 @@ export default function TextInput(props) {
   }
 
   const isOnlyField = useIsOnlyField();
-<<<<<<< HEAD
-  const stepName = useStepName(getPConnect);
-=======
->>>>>>> HeadingIssue
 
   return (
     <>

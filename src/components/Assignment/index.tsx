@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import AssignmentCard from '../AssignmentCard';
 import MultiStep from '../MultiStep';
-import { useIsOnlyField } from '../../helpers/hooks/QuestionDisplayHooks';
+import useIsOnlyField from '../../helpers/hooks/QuestionDisplayHooks';
 import ErrorSummary from '../BaseComponents/ErrorSummary/ErrorSummary';
 
 declare const PCore: any;

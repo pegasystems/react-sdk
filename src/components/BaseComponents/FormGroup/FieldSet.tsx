@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, children}){
+export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, children, fieldsetElementProps}){
 
   const formGroupDivClasses = `govuk-form-group ${errorText?'govuk-form-group--error':""}`.trim();
   const legendClasses = `govuk-fieldset__legend ${legendIsHeading?"govuk-fieldset__legend--l":""}`.trim();
@@ -21,7 +21,7 @@ export default function FieldSet({legendIsHeading=true, label, name, errorText, 
 
   return (
     <div className={formGroupDivClasses}>
-      <fieldset className="govuk-fieldset" aria-describedby={describedByIDs.join(' ')}>
+      <fieldset className="govuk-fieldset" aria-describedby={describedByIDs.join(' ')} {...fieldsetElementProps}>
         <legend className={legendClasses}>
           <ConditionalWrapper
             condition={legendIsHeading}
@@ -48,4 +48,5 @@ FieldSet.propTypes = {
   hintText: PropTypes.string,
   errorText: PropTypes.string,
   children: PropTypes.node,
+  fieldsetElementProps: PropTypes.object,
 }

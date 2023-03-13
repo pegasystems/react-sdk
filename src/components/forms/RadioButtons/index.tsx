@@ -1,12 +1,15 @@
 import React  from 'react';
 import GDSRadioButtons from '../../BaseComponents/RadioButtons/RadioButtons';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks'
+import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 import Utils from '../../../helpers/utils';
 
 export default function RadioButtons(props) {
   const {
     getPConnect,
-    label
+    label,
+    validatemessage,
+    helperText
   } = props;
 
   const thePConn = getPConnect();
@@ -17,7 +20,10 @@ export default function RadioButtons(props) {
   propName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
 
   const isOnlyField = useIsOnlyField();
+  const stepName = useStepName(getPConnect);
 
+  // TODO Investigate if this can be moved to 'higher' leven in component stack to avoid repititions
+  useAddErrorToPageTitle(validatemessage);
 
   // theOptions will be an array of JSON objects that are literally key/value pairs.
   //  Ex: [ {key: "Basic", value: "Basic"} ]
@@ -31,6 +37,8 @@ export default function RadioButtons(props) {
       legendIsHeading={isOnlyField}
       options={theOptions.map(option => {return {value:option.key, label:option.value}})}
       displayInline={theOptions.length === 2}
+      hintText={helperText}
+      errorText={validatemessage}
     />
   );
 }

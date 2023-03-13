@@ -1,25 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText
-} from '@material-ui/core';
+import React from 'react';
+import GDSCheckboxes from '../../BaseComponents/Checkboxes/Checkboxes';
+import {useIsOnlyField, useStepName} from '../../../helpers/hooks/QuestionDisplayHooks'
 import handleEvent from '../../../helpers/event-utils';
+
 
 export default function CheckboxComponent(props) {
   const {
     getPConnect,
-    value = false,
-    readOnly,
-    testId,
+    name,
+    inputProps,
     required,
-    status,
-    helperText,
-    validatemessage
+    errorText,
+    hintText
   } = props;
-  const helperTextToDisplay = validatemessage || helperText;
+
 
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();
@@ -27,11 +21,12 @@ export default function CheckboxComponent(props) {
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps().value;
 
-  const [checked, setChecked] = useState(false);
-  useEffect(() => {
-    // This update theSelectedButton which will update the UI to show the selected button correctly
-    setChecked(value);
-  }, [value]);
+  const isOnlyField = useIsOnlyField();
+  const stepName = useStepName(getPConnect);
+
+  // TODO - How to get the optionsList from Pega? Fetch and plug optionsList
+  // Hard coded example data plugged in to pass for the checkbox optionsList
+  const optionsList = [{checked: false, label: caption, hintText: "item hint", readOnly:false}]
 
   const handleChange = event => {
     handleEvent(actionsApi, 'changeNblur', propName, event.target.checked);
@@ -41,28 +36,22 @@ export default function CheckboxComponent(props) {
     thePConn.getValidationApi().validate(event.target.checked);
   };
 
-  let theCheckbox = <Checkbox color='primary' />;
-
-  if (readOnly) {
-    // Workaround for lack of InputProps readOnly from https://github.com/mui-org/material-ui/issues/17043
-    //  Also note that we need to turn off the onChange call in the FormControlLabel wrapper, too. See below!
-    theCheckbox = <Checkbox value={value || false} onChange={handleChange} readOnly={readOnly} />;
-  }
 
   return (
-    <FormControl required={required} error={status === 'error'}>
-      <FormGroup>
-        <FormControlLabel
-          control={theCheckbox}
-          checked={checked}
-          onChange={!readOnly ? handleChange : undefined}
-          onBlur={!readOnly ? handleBlur : undefined}
-          label={caption}
-          labelPlacement='end'
-          data-test-id={testId}
-        />
-      </FormGroup>
-      <FormHelperText>{helperTextToDisplay}</FormHelperText>
-    </FormControl>
+    <>
+      <GDSCheckboxes
+        inputProps={...inputProps}
+        name={name}
+        label={stepName}
+        optionsList={optionsList}
+        isSmall
+        legendIsHeading={isOnlyField}
+        errorText={errorText}
+        hintText={hintText}
+        required={required}
+        onChange={ handleChange}
+        onBlur={ handleBlur }
+      />
+    </>
   );
 }

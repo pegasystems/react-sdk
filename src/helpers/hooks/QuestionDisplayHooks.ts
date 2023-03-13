@@ -17,3 +17,11 @@ export default function useIsOnlyField(effectTrigger = null){
 
   return isOnlyField;
 }
+
+function useStepName(getPConnect: Function){
+  const [stepName] = useState(getPConnect().getDataObject()?.caseInfo.assignments[0].name);
+  return stepName
+}
+
+
+export {useIsOnlyField, useStepName};

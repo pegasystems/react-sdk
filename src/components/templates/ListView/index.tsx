@@ -68,7 +68,6 @@ export default function ListView(props) {
   // List component context
   const [listContext, setListContext] = useState<any>({});
   const { meta } = listContext;
-  // const [classId, setClassId] = useState('');
   const xRayApis = PCore.getDebugger().getXRayRuntime();
   const xRayUid = xRayApis.startXRay();
 
@@ -564,7 +563,7 @@ export default function ListView(props) {
   ) => {
     const elementFound = getField(fieldDefs, itemKey);
 
-    if (itemKey && !elementFound && Array.isArray(select) && !(compositeKeys !== null && compositeKeys.length) && !select.find(sel => sel.field === itemKey)) {
+    if (itemKey && !elementFound && Array.isArray(select) && !(compositeKeys !== null && compositeKeys?.length) && !select.find(sel => sel.field === itemKey)) {
       return [...select, {
         field: itemKey
       }];

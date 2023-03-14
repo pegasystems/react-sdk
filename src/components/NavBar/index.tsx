@@ -89,6 +89,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center"
+  },
+  applicationLabel: {
+    whiteSpace: "initial"
   }
 }));
 
@@ -268,7 +271,7 @@ export default function NavBar(props) {
                   <img src={portalLogoImage} className={classes.appListLogo}/>
               </ListItemIcon>
               <ListItemText
-                primary={<Typography variant="h6">{portalApp}</Typography>}
+                primary={<Typography variant="h6" className={classes.applicationLabel}>{portalApp}</Typography>}
               />
               <ListItemSecondaryAction>
                 <IconButton edge="end" onClick={handleDrawerOpen}>

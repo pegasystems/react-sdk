@@ -17,15 +17,17 @@ export default function Email(props) {
     readOnly,
     testId,
     helperText,
-    displayMode
+    displayMode,
+    hideLabel
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
 
   if (displayMode === 'LABELS_LEFT') {
-    const field = {
-      [label]: value
-    };
-    return <FieldValueList item={field} />;
+    return <FieldValueList name={hideLabel ? '' : label} value={value} />;
+  }
+
+  if (displayMode === 'STACKED_LARGE_VAL') {
+    return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
   }
 
   if (readOnly) {

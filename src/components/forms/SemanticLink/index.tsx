@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 
 /* although this is called the SemanticLink component, we are not yet displaying as a
 SemanticLink in SDK and only showing the value as a read only text field. */
@@ -42,6 +43,7 @@ export default function SemanticLink(props) {
     text,
     displayMode,
     label,
+    hideLabel
   } = props;
   const classes = useStyles();
 
@@ -58,6 +60,10 @@ export default function SemanticLink(props) {
         </Grid>
       </Grid>
     );
+  }
+
+  if (displayMode === 'STACKED_LARGE_VAL') {
+    return <FieldValueList name={hideLabel ? '' : label} value={text} variant='stacked' />;
   }
 }
 

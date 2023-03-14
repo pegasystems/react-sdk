@@ -33,7 +33,6 @@ export default function Phone(props) {
       inputProps={{
           type:'tel',
           onChange:handleChange,
-          onBlur:handleBlur,
           /*
             TODO enable if always relevant
             autocomplete="tel"

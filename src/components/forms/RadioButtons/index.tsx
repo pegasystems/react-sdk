@@ -3,14 +3,22 @@ import GDSRadioButtons from '../../BaseComponents/RadioButtons/RadioButtons';
 import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks'
 import Utils from '../../../helpers/utils';
+import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
 export default function RadioButtons(props) {
   const {
     getPConnect,
     label,
     validatemessage,
-    helperText
+    helperText,
+    readOnly,
+    value
   } = props;
+
+  if(readOnly){
+    return <ReadOnlyDisplay label={label} value={value} />
+  }
+
 
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();

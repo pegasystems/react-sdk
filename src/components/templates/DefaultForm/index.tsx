@@ -8,6 +8,9 @@ import './DefaultForm.css';
 export default function DefaultForm(props) {
   const { getPConnect, NumCols } = props;
 
+  const inheritedProps = getPConnect().getInheritedProps();
+  const showLabel = inheritedProps.showLabel || 'false';
+
   let divClass: string;
 
   const numCols = NumCols || "1";
@@ -36,9 +39,9 @@ export default function DefaultForm(props) {
   const dfChildren = arChildren.map((kid, idx) => createElement(createPConnectComponent(), {...kid, key: idx}));
 
   return (
-    <div className={divClass}>
+    <>
       {dfChildren}
-    </div>
+    </>
   )
 }
 

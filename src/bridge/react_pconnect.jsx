@@ -52,6 +52,7 @@ import PromotedFilters from '../components/templates/PromotedFilters';
 import DataReference from '../components/templates/DataReference';
 import SemanticLink from '../components/forms/SemanticLink';
 import UserReference from '../components/forms/UserReference';
+import ChangeLink from '../components/forms/ChangeLink';
 
 const connectRedux = (component, c11nEnv) => {
 
@@ -324,6 +325,10 @@ const getComponent = (c11nEnv, declarative) => {
 
       case "SemanticLink":
         component = SemanticLink;
+        break;
+
+      case "HMRC_ODX_ChangeLink":
+        component = ChangeLink;
         break;
 
       default:

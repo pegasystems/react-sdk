@@ -2,6 +2,7 @@ import React from 'react';
 import GDSTextInput from '../../BaseComponents/TextInput/TextInput';
 import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
+import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
 export default function TextInput(props) {
   const {
@@ -13,7 +14,13 @@ export default function TextInput(props) {
     getPConnect,
     inputProps,
     fieldMetadata,
+    readOnly,
   } = props;
+
+  if(readOnly){
+    return <ReadOnlyDisplay label={label} value={value} />
+  }
+
 
   // const maxLength = fieldMetadata?.maxLength;
 

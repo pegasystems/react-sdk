@@ -5,6 +5,7 @@ import handleEvent from '../../../helpers/event-utils';
 import Select from '../../BaseComponents/Select/Select';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
+import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay'
 
 interface IOption {
   key: string;
@@ -19,8 +20,14 @@ export default function Dropdown(props) {
     datasource = [],
     validatemessage,
     helperText,
-    label
+    label,
+    readOnly,
   } = props;
+
+  if(readOnly){
+    return <ReadOnlyDisplay label={label} value={value} />
+  }
+
 
   const [options, setOptions] = useState<Array<IOption>>([]);
   const isOnlyField = useIsOnlyField();

@@ -1,7 +1,8 @@
 import React, {useState, useLayoutEffect} from 'react';
 import DateInput from '../../BaseComponents/DateInput/DateInput';
-import { useIsOnlyField, useStepName } from '../../../helpers/hooks/QuestionDisplayHooks';
+import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import useAddErrorToPagetitle from '../../../helpers/hooks/useAddErrorToPageTitle'
+import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
 export default function Date(props) {
   const {
@@ -11,13 +12,16 @@ export default function Date(props) {
     validatemessage,
     onChange,
     helperText,
+    readOnly,
   } = props;
-   const pConn = getPConnect();
+  const pConn = getPConnect();
   const propName = pConn.getStateProps().value;
 
+  if(readOnly){
+    return <ReadOnlyDisplay label={label} value={new global.Date(value).toLocaleDateString()} />
+  }
+
   const isOnlyField = useIsOnlyField();
-  const stepName = useStepName(getPConnect);
-  const displayLabel = isOnlyField ? stepName : label;
 
   // TODO consider refactoring out to a component higher in tree to avoid needing to define in each input component.
   useAddErrorToPagetitle(validatemessage);
@@ -64,7 +68,7 @@ export default function Date(props) {
 
 
   return (
-    <DateInput            label={displayLabel}
+    <DateInput            label={label}
                           legendIsHeading={isOnlyField}
                           onChangeDay={handleChangeDay}
                           onChangeMonth={handleChangeMonth}

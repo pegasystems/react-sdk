@@ -1,7 +1,7 @@
-import Boolean from "./Boolean";
-import Currency from "./Currency";
-import DateFormatter from "./Date";
-import { getCurrentTimezone, getLocale } from "./common";
+import Boolean from './Boolean';
+import Currency from './Currency';
+import DateFormatter from './Date';
+import { getCurrentTimezone, getLocale } from './common';
 
 export default {
   ...Boolean,
@@ -11,8 +11,8 @@ export default {
 
 function getDateObject(text) {
   // TODO - cleanup formatters util functions as DX APIs are returning values per ISO std now.
-  const timeStamp = text.replace(/-/g, "");
-  const isDateTime = timeStamp.indexOf("GMT") !== -1;
+  const timeStamp = text.replace(/-/g, '');
+  const isDateTime = timeStamp.indexOf('GMT') !== -1;
   const year = parseInt(timeStamp.substr(0, 4), 10);
   const month = parseInt(timeStamp.substr(4, 2), 10) - 1;
   const day = parseInt(timeStamp.substr(6, 2), 10);
@@ -44,7 +44,7 @@ function isIsoDate(str) {
 }
 
 function parseDateInISO(value) {
-  const isMilliSeconds = new RegExp("^[0-9]+$").exec(value);
+  const isMilliSeconds = new RegExp('^[0-9]+$').exec(value);
   if (isMilliSeconds) {
     const date = new Date(parseInt(value, 10));
     return date.toISOString();
@@ -62,10 +62,10 @@ export function format(value, type, options) {
   let formattedValue;
 
   switch (type?.toLowerCase()) {
-    case "currency": {
+    case 'currency': {
       const defaultOptions = {
         locale: getLocale(),
-        position: "before",
+        position: 'before',
         decPlaces: 2
       };
       const params = { ...defaultOptions, ...options };
@@ -73,23 +73,23 @@ export function format(value, type, options) {
       break;
     }
 
-    case "decimal": {
+    case 'decimal': {
       const defaultOptions = { locale: getLocale(), decPlaces: 2 };
       const params = { ...defaultOptions, ...options };
       formattedValue = Currency.Decimal(value, params);
       break;
     }
 
-    case "integer": {
+    case 'integer': {
       const defaultOptions = { locale: getLocale() };
       const params = { ...defaultOptions, ...options };
       formattedValue = Currency.Integer(value, params);
       break;
     }
 
-    case "date": {
+    case 'date': {
       const defaultOptions = {
-        format: "MMM DD, YYYY",
+        format: 'MMM DD, YYYY',
         timezone: getCurrentTimezone()
       };
       const params = { ...defaultOptions, ...options };
@@ -97,9 +97,9 @@ export function format(value, type, options) {
       break;
     }
 
-    case "datetime": {
+    case 'datetime': {
       const defaultOptions = {
-        format: "MMM DD, YYYY h:mm A",
+        format: 'MMM DD, YYYY h:mm A',
         timezone: getCurrentTimezone()
       };
       const params = { ...defaultOptions, ...options };
@@ -107,9 +107,14 @@ export function format(value, type, options) {
       break;
     }
 
-    case "boolean":
-    case "checkbox": {
+    case 'boolean':
+    case 'checkbox': {
       formattedValue = Boolean.TrueFalse(value, { allowEmpty: false });
+      break;
+    }
+
+    case 'userreference': {
+      formattedValue = value.userName;
       break;
     }
 

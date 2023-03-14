@@ -23,7 +23,7 @@ export default function Attachment(props) {
   );
   let arFileList$: Array<any> = [];
   const pConn = getPConnect();
-
+  const caseID = PCore.getStoreValue('.pyID', 'caseInfo.content', pConn.getContextName());
   let fileTemp: any = {};
 
   let categoryName = '';
@@ -34,6 +34,13 @@ export default function Attachment(props) {
   let valueRef = pConn.getStateProps().value;
   valueRef = valueRef.indexOf('.') === 0 ? valueRef.substring(1) : valueRef;
   const [file, setFile] = useState(fileTemp);
+
+  const resetAttachmentStoredState = () => {
+    PCore.getStateUtils().updateState(pConn.getContextName(), 'attachmentsList', undefined, {
+      pageReference: 'context_data',
+      isArrayDeepMerge: false
+    });
+  };
 
   const fileDownload = (data, fileName, ext) => {
     const fileData = ext ? `${fileName}.${ext}` : fileName;
@@ -345,7 +352,6 @@ export default function Attachment(props) {
   useEffect(() => {
     if (value && value.pxResults && +value.pyCount > 0) {
     fileTemp = buildFilePropsFromResponse(value.pxResults[0]);
-
     if (fileTemp.responseProps) {
       if (!pConn.attachmentsInfo) {
         pConn.attachmentsInfo = {
@@ -396,9 +402,36 @@ export default function Attachment(props) {
           };
         });
       }
+
+      if (fileTemp) {
+        const currentAttachmentList = getCurrentAttachmentsList(pConn.getContextName());
+        const index = currentAttachmentList.findIndex(element => element.props.ID === fileTemp.props.ID);
+        let tempFiles: any = [];
+        if (index < 0) {
+          tempFiles = [fileTemp];
+        }
+        PCore.getStateUtils().updateState(
+          pConn.getContextName(),
+          'attachmentsList',
+          [...currentAttachmentList, ...tempFiles],
+          {
+            pageReference: 'context_data',
+            isArrayDeepMerge: false
+          }
+        );
+      }
+
+      PCore.getPubSubUtils().subscribe(
+        PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.ASSIGNMENT_SUBMISSION,
+        resetAttachmentStoredState,
+        caseID
+      );
+      return () => {
+        PCore.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.ASSIGNMENT_SUBMISSION, caseID);
+      };
     }
   }
-  }, [""]);
+  }, []);
 
   let content = (
     <div className='file-div'>
@@ -432,7 +465,7 @@ export default function Attachment(props) {
 
   return (
     <div className='file-upload-container'>
-      <span className='label'>{label}</span>
+      <span className={`label ${required ? 'file-label' : ''}`}>{label}</span>
       <section>{content}</section>
     </div>
   );

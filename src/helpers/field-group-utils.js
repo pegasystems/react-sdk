@@ -35,9 +35,7 @@ export const buildView = (pConn, index, viewConfigPath) => {
   const isDatapage = referenceList.startsWith('D_');
   const pageReference = isDatapage
     ? `${referenceList}[${index}]`
-    : `${pConn.getPageReference()}${referenceList.substring(
-        referenceList.lastIndexOf('.')
-      )}[${index}]`;
+    : `${pConn.getPageReference()}${referenceList}[${index}]`;
   const meta = viewConfigPath
     ? pConn.getRawMetadata().children[0].children[0]
     : pConn.getRawMetadata().children[0];

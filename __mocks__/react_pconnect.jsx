@@ -22,21 +22,21 @@ const createPConnectComponent = () => {
 
   switch(compType){
     case "Details":
-      if(detailsIndex > 6){
+      if(detailsIndex >= detailsComponents.length){
         detailsIndex = 0;
       }
       component = detailsComponents[detailsIndex++];
       break;
 
     case "DetailsRegion":
-      if(detailsRegionIndex > 13){
+      if(detailsRegionIndex >= detailsRegionComponents.length){
         detailsRegionIndex = 0;
       }
       component = detailsRegionComponents[detailsRegionIndex++];
       break;
 
     default:
-      if(formIndex > 5){
+      if(formIndex >= formComponents.length){
         formIndex = 0;
       }
       component = formComponents[formIndex++];

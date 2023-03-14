@@ -11,6 +11,7 @@ module.exports = {
 
   webpackFinal: (config) => {
     config.resolve.alias['@pega/react-sdk-components/lib/bridge/react_pconnect'] = path.resolve(__dirname, '../__mocks__/react_pconnect.jsx');
+    config.resolve.alias['@pega/react-sdk-components/lib/components/designSystemExtension/DetailsFields'] = path.resolve(__dirname, '../__mocks__/DetailsFields.js');
     return config;
   },
 };

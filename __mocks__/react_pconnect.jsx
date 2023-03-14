@@ -1,24 +1,54 @@
+/* eslint-disable no-plusplus */
 import TextInput from '@pega/react-sdk-components/lib/components/field/TextInput';
 import AutoComplete from '@pega/react-sdk-components/lib/components/field/AutoComplete';
 import Email from '@pega/react-sdk-components/lib/components/field/Email';
 import Phone from '@pega/react-sdk-components/lib/components/field/Phone';
+import Operator from '@pega/react-sdk-components/lib/components/designSystemExtension/Operator';
+import Currency from '@pega/react-sdk-components/lib/components/field/Currency';
+import RadioButtons from '@pega/react-sdk-components/lib/components/field/RadioButtons';
 
-let index = 0;
+// Making TextInput the default component
+let compType = TextInput;
+let formIndex = 0;
+let detailsIndex = 0;
+let detailsRegionIndex = 0;
 
 const createPConnectComponent = () => {
-  const components = [TextInput, TextInput, TextInput, Phone, AutoComplete, Email];
+  const formComponents = [TextInput, TextInput,TextInput, Phone, AutoComplete, Email];
+  const detailsComponents = [TextInput, TextInput, Email, Phone, Currency, RadioButtons, Operator];
+  const detailsRegionComponents = [TextInput, TextInput, Email, Phone, Currency, RadioButtons, Operator, TextInput, TextInput, TextInput, TextInput, AutoComplete, RadioButtons, Operator];
 
-  if(index > 5){
-    index = 0;
+  let component;
+
+  switch(compType){
+    case "Details":
+      if(detailsIndex > 6){
+        detailsIndex = 0;
+      }
+      component = detailsComponents[detailsIndex++];
+      break;
+
+    case "DetailsRegion":
+      if(detailsRegionIndex > 13){
+        detailsRegionIndex = 0;
+      }
+      component = detailsRegionComponents[detailsRegionIndex++];
+      break;
+
+    default:
+      if(formIndex > 5){
+        formIndex = 0;
+      }
+      component = formComponents[formIndex++];
   }
-  // eslint-disable-next-line no-plusplus
-  return components[index++];
-}
 
+  return component;
+}
 export default createPConnectComponent;
 
 // The decorator to be used in ./storybook/preview to apply the mock to all stories
 
-export function decorator(story) {
+export function decorator(story, parameters) {
+  compType = parameters.parameters?.type;
   return story();
 }

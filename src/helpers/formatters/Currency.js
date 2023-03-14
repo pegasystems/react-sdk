@@ -18,7 +18,7 @@ function CurrencyFormatter(
 ) {
   const currentLocale = getLocale(locale);
   let formattedValue = value;
-  if (value !== null && value !== undefined) {
+  if (value !== null && value !== undefined && value !== '') {
     formattedValue = NumberFormatter(value, {
       locale: currentLocale,
       decPlaces

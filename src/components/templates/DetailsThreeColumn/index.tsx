@@ -5,7 +5,7 @@ import createPConnectComponent from '../../../bridge/react_pconnect';
 import FieldGroup from '../../designSystemExtensions/FieldGroup';
 
 export default function DetailsThreeColumn(props) {
-  const { label, showLabel, getPConnect } = props;
+  const { label, showLabel, getPConnect, showHighlightedData } = props;
 
   // Get the inherited props from the parent to determine label settings
   const propsToUse = { label, showLabel, ...getPConnect().getInheritedProps() };
@@ -24,8 +24,34 @@ export default function DetailsThreeColumn(props) {
       })
     );
 
+  // Set up highlighted data to pass in return if is set to show, need raw metadata to pass to createComponent
+  let highlightedDataArr = [];
+  if (showHighlightedData) {
+    const { highlightedData = [] } = getPConnect().getRawMetadata().config;
+    highlightedDataArr = highlightedData.map(field => {
+      field.config.displayMode = 'STACKED_LARGE_VAL';
+
+      // Mark as status display when using pyStatusWork
+      if (field.config.value === '@P .pyStatusWork') {
+        field.type = 'TextInput';
+        field.config.displayAsStatus = true;
+      }
+
+      return getPConnect().createComponent(field);
+    });
+  }
+
   return (
     <FieldGroup name={propsToUse.showLabel ? propsToUse.label : ''}>
+      {showHighlightedData && highlightedDataArr.length > 0 && (
+        <Grid container spacing={1} style={{ padding: '0 0 1em' }}>
+          {highlightedDataArr.map((child, i) => (
+            <Grid item xs={4} key={`hf-${i + 1}`}>
+              {child}
+            </Grid>
+          ))}
+        </Grid>
+      )}
       <Grid container spacing={1}>
         {children.map(child => (
           <Grid item xs={4}>
@@ -39,11 +65,13 @@ export default function DetailsThreeColumn(props) {
 
 DetailsThreeColumn.defaultProps = {
   label: undefined,
-  showLabel: true
+  showLabel: true,
+  showHighlightedData: false
 };
 
 DetailsThreeColumn.propTypes = {
   showLabel: PropTypes.bool,
   label: PropTypes.string,
-  getPConnect: PropTypes.func.isRequired
+  getPConnect: PropTypes.func.isRequired,
+  showHighlightedData: PropTypes.bool
 };

@@ -28,6 +28,7 @@
     "list": "dx-component-builder-sdk list",
     "mapAll": "dx-component-builder-sdk mapAll",
     "override": "dx-component-builder-sdk override",
+    "overrideAll": "dx-component-builder-sdk overrideAll",
     "publish": "dx-component-builder-sdk publish",
     "publishAll": "dx-component-builder-sdk publishAll",
     "start-storybook": "start-storybook --port 6040 --quiet",

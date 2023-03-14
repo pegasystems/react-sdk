@@ -127,6 +127,8 @@ test.describe('E2E test', () => {
     await selectedTestName.click();
     await page.locator('li:has-text("SingleRecord")').click();
 
+    await page.locator('input[id="search"]').type(caseID[0]);
+
     const selectedRow = await page.locator(`tr:has-text("${caseID[0]}")`);
     await selectedRow.locator('td >> span >> nth=0').click();
 
@@ -141,8 +143,13 @@ test.describe('E2E test', () => {
     await selectedTestName.click();
     await page.locator('li:has-text("ListOfRecords")').click();
 
+    await page.locator('input[id="search"]').type(caseID[0]);
+
     const selectedRow1 = await page.locator(`tr:has-text("${caseID[0]}")`);
     await selectedRow1.locator('td >> input >> nth=0').click();
+
+    await page.locator('input[id="search"]').fill(caseID[1]);
+
     const selectedRow2 = await page.locator(`tr:has-text("${caseID[1]}")`);
     await selectedRow2.locator('td >> input >> nth=0').click();
 

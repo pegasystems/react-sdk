@@ -1052,6 +1052,7 @@ export default function ListView(props) {
                   variant='outlined'
                   placeholder=''
                   size='small'
+                  id="search"
                   onChange={_onSearch}
                 />
               </Grid>

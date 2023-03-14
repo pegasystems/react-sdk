@@ -1,54 +1,80 @@
-import React from "react";
-// import PropTypes from "prop-types";
-// import Grid from '@material-ui/core/Grid';
-import DetailsFields from '../../designSystemExtensions/DetailsFields';
+import React, { createElement } from 'react';
+import PropTypes from 'prop-types';
+import Grid from '@material-ui/core/Grid';
+import { GridSize } from '@material-ui/core/Grid';
+import createPConnectComponent from '../../../bridge/react_pconnect';
+import FieldGroup from '../../designSystemExtensions/FieldGroup';
+
+const COLUMN_WIDTHS = [8, 4];
 
 export default function WideNarrowDetails(props) {
-  const { a, b, children } = props;
-  const arFields: Array<any> = [];
+  const { label, showLabel, getPConnect, showHighlightedData } = props;
 
-  for (const child of children) {
-    const theChildPConn = child.props.getPConnect();
-    const theChildrenOfChild = theChildPConn.getChildren();
-    arFields.push(theChildrenOfChild);
+  // Get the inherited props from the parent to determine label settings
+  const propsToUse = { label, showLabel, ...getPConnect().getInheritedProps() };
+
+  // Set display mode prop and re-create the children so this part of the dom tree renders
+  // in a readonly (display) mode instead of a editable
+  getPConnect().setInheritedProp('displayMode', 'LABELS_LEFT');
+  getPConnect().setInheritedProp('readOnly', true);
+  const children = getPConnect()
+    .getChildren()
+    .map((configObject, index) =>
+      createElement(createPConnectComponent(), {
+        ...configObject,
+        // eslint-disable-next-line react/no-array-index-key
+        key: index.toString()
+      })
+    );
+
+  // Set up highlighted data to pass in return if is set to show, need raw metadata to pass to createComponent
+  let highlightedDataArr = [];
+  if (showHighlightedData) {
+    const { highlightedData = [] } = getPConnect().getRawMetadata().config;
+    highlightedDataArr = highlightedData.map(field => {
+      field.config.displayMode = 'STACKED_LARGE_VAL';
+
+      // Mark as status display when using pyStatusWork
+      if (field.config.value === '@P .pyStatusWork') {
+        field.type = 'TextInput';
+        field.config.displayAsStatus = true;
+      }
+
+      return getPConnect().createComponent(field);
+    });
   }
-
-  if (arFields.length !== 2) {
-    // eslint-disable-next-line no-console
-    console.error(`WideNarrowDetails expects 2 children and received ${arFields.length}`);
-  }
-
 
   return (
-    <React.Fragment>
-    {children && children.length === 2 &&
-      <div className="psdk-wide-narrow-column">
-        <div className="psdk-wide-column-column">
-          <DetailsFields fields={arFields[0]} />
-        </div>
-        <div className="psdk-narrow-column-column">
-          <DetailsFields fields={arFields[1]} />
-        </div>
-      </div>
-    }
-    {a && b &&
-      <div className="psdk-wide-narrow-column">
-        <div className="psdk-wide-column-column">
-          {a}
-        </div>
-        <div className="psdk-narrow-column-column">
-          {b}
-        </div>
-      </div>
-    }
-    </React.Fragment>
-  )
-
+    <FieldGroup name={propsToUse.showLabel ? propsToUse.label : ''}>
+      {showHighlightedData && highlightedDataArr.length > 0 && (
+        <Grid container spacing={1} style={{ padding: '0 0 1em' }}>
+          {highlightedDataArr.map((child, i) => (
+            <Grid item xs={COLUMN_WIDTHS[i] as GridSize} key={`hf-${i + 1}`}>
+              {child}
+            </Grid>
+          ))}
+        </Grid>
+      )}
+      <Grid container spacing={1}>
+        {children.map((child, i) => (
+          <Grid item xs={COLUMN_WIDTHS[i] as GridSize}>
+            {child}
+          </Grid>
+        ))}
+      </Grid>
+    </FieldGroup>
+  );
 }
 
+WideNarrowDetails.defaultProps = {
+  label: undefined,
+  showLabel: true,
+  showHighlightedData: false
+};
+
 WideNarrowDetails.propTypes = {
-  // showLabel: PropTypes.bool,
-  // label: PropTypes.string,
-  // getPConnect: PropTypes.func.isRequired,
-  // template: PropTypes.string.isRequired
+  showLabel: PropTypes.bool,
+  label: PropTypes.string,
+  getPConnect: PropTypes.func.isRequired,
+  showHighlightedData: PropTypes.bool
 };

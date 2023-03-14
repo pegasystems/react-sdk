@@ -124,6 +124,7 @@ export default function CaseSummaryFields(props) {
       case 'datetime':
       case 'currency':
       case 'boolean':
+      case 'userreference':
         return (
           <TextField
             value={format(field.config.value, field.type)}
@@ -137,7 +138,6 @@ export default function CaseSummaryFields(props) {
 
       case 'caseoperator':
         return <Operator caseOpConfig={field.config} />;
-        break;
 
       default:
         return (

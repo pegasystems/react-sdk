@@ -23,7 +23,8 @@ export default function RadioButtons(props) {
     status,
     required,
     inline,
-    displayMode
+    displayMode,
+    hideLabel
   } = props;
   const [theSelectedButton, setSelectedButton] = useState(value);
 
@@ -43,10 +44,11 @@ export default function RadioButtons(props) {
   }, [value]);
 
   if (displayMode === 'LABELS_LEFT') {
-    const field = {
-      [label]: value
-    };
-    return <FieldValueList item={field} />;
+    return <FieldValueList name={hideLabel ? '' : label} value={value} />;
+  }
+
+  if (displayMode === 'STACKED_LARGE_VAL') {
+    return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
   }
 
   const handleChange = event => {

@@ -19,7 +19,8 @@ export default function Currency(props) {
     readOnly,
     testId,
     helperText,
-    displayMode
+    displayMode,
+    hideLabel
   } = props;
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
@@ -48,10 +49,11 @@ export default function Currency(props) {
   }, [value]);
 
   if (displayMode === 'LABELS_LEFT') {
-    const field = {
-      [label]: value
-    };
-    return <FieldValueList item={field} />;
+    return <FieldValueList name={hideLabel ? '' : label} value={value} />;
+  }
+
+  if (displayMode === 'STACKED_LARGE_VAL') {
+    return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
   }
 
   function currOnChange(event, inValue) {

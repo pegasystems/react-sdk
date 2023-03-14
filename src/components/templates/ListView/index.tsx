@@ -1,6 +1,8 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable guard-for-in */
 /* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-shadow */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -197,7 +199,6 @@ export default function ListView(props) {
   function stableSort<T>(array: Array<T>, comparator: (a: T, b: T) => number) {
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
     stabilizedThis.sort((a, b) => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow, no-shadow
       const order = comparator(a[0], b[0]);
       if (order !== 0) return order;
       return a[1] - b[1];
@@ -520,7 +521,6 @@ export default function ListView(props) {
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-shadow, no-shadow
   const buildSelect = (fieldDefs, colId, patchQueryFields = [], compositeKeys = []) => {
     const listFields: any = [];
     if (colId) {
@@ -556,6 +556,23 @@ export default function ListView(props) {
     return listFields;
   };
 
+  const addItemKeyInSelect = (
+    fieldDefs,
+    itemKey,
+    select,
+    compositeKeys
+  ) => {
+    const elementFound = getField(fieldDefs, itemKey);
+
+    if (itemKey && !elementFound && Array.isArray(select) && !(compositeKeys !== null && compositeKeys.length) && !select.find(sel => sel.field === itemKey)) {
+      return [...select, {
+        field: itemKey
+      }];
+    }
+
+    return select;
+  };
+
   const getField = (fieldDefs, columnId) => {
     const fieldsMap = getFieldsMap(fieldDefs);
     return fieldsMap.get(columnId);
@@ -571,8 +588,9 @@ export default function ListView(props) {
 
   async function fetchDataFromServer() {
     let bCallSetRowsColumns = true;
-
-    const listFields = meta?.fieldDefs ? buildSelect(meta.fieldDefs, undefined, meta.patchQueryFields, compositeKeys) : [];
+    const { fieldDefs, itemKey, patchQueryFields } = meta;
+    let listFields = fieldDefs ? buildSelect(fieldDefs, undefined, patchQueryFields, compositeKeys) : [];
+    listFields = addItemKeyInSelect(fieldDefs, itemKey, listFields, compositeKeys);
     const workListJSON = await fetchAllData(listFields);
 
     // don't update these fields until we return from promise
@@ -707,8 +725,8 @@ export default function ListView(props) {
   }
 
   function openWork(row) {
-    const { pxRefObjectClass, pxRefObjectKey } = row;
-
+    const { pxRefObjectKey } = row;
+    const pxRefObjectClass = row.pxRefObjectClass || row.pxObjClass;
     if (pxRefObjectClass !== '' && pxRefObjectKey !== '') {
       thePConn.getActionsApi().openWorkByHandle(pxRefObjectKey, pxRefObjectClass);
     }

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 import handleEvent from '../../../helpers/event-utils';
 import FieldValueList from '../../designSystemExtensions/FieldValueList';
+import { format } from '../../../helpers/formatters';
 
 // Using control from: https://github.com/unicef/material-ui-currency-textfield
 
@@ -47,13 +48,15 @@ export default function Currency(props) {
     // const testVal = value;
     setCurrValue(value.toString());
   }, [value]);
+  
+  const formattedValue = format(value, pConn.getComponentName().toLowerCase());
 
   if (displayMode === 'LABELS_LEFT') {
-    return <FieldValueList name={hideLabel ? '' : label} value={value} />;
+    return <FieldValueList name={hideLabel ? '' : label} value={formattedValue} />;
   }
 
   if (displayMode === 'STACKED_LARGE_VAL') {
-    return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
+    return <FieldValueList name={hideLabel ? '' : label} value={formattedValue} variant='stacked' />;
   }
 
   function currOnChange(event, inValue) {

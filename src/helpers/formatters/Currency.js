@@ -18,12 +18,17 @@ function CurrencyFormatter(
 ) {
   const currentLocale = getLocale(locale);
   let formattedValue = value;
-  if (value !== null && value !== undefined) {
+  if (value !== null && value !== undefined && value !== '') {
     formattedValue = NumberFormatter(value, {
       locale: currentLocale,
       decPlaces
     });
-    const countryCode = currentLocale.split("-")[1];
+    let countryCode =  currentLocale.split("-")[1];
+
+    // If countryCode is still undefined, setting it as US
+    if( !countryCode ){
+      countryCode = 'US';
+    }
 
     let code;
     if (symbol) {
@@ -33,7 +38,7 @@ function CurrencyFormatter(
     }
 
     // if position is provided, change placeholder accordingly.
-    if (position) {
+    if (position && code) {
       if (position.toLowerCase() === "before" && code.indexOf("{#}") === 0) {
         code = code.slice(3) + code.slice(0, 3);
       } else if (

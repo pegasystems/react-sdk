@@ -1,6 +1,8 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable guard-for-in */
 /* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-shadow */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -85,7 +87,7 @@ export default function ListView(props) {
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const [selectedValue, setSelectedValue] = useState('');
-
+  const [listContext, setListContext] = useState<any>({});
   // This basically will hold the list of all current filters
   const filters = useRef({});
 
@@ -146,6 +148,12 @@ export default function ListView(props) {
       }
     })
   );
+
+  useEffect(() => {
+    PCore.getAnalyticsUtils().getDataViewMetadata(referenceList).then((resp: any) => {
+      setListContext(resp.data);
+    });
+  }, []);
 
   const classes = useStyles();
 
@@ -219,16 +227,19 @@ export default function ListView(props) {
 
   // }
 
-  function getHeaderCells(colFields, fields) {
-    const arReturn = colFields.map((field: any, colIndex) => {
+  const AssignDashObjects = ['Assign-Worklist', 'Assign-WorkBasket'];
+  function getHeaderCells(colFields, fields, presetFields) {
+    const arReturn = colFields.map((field: any, index) => {
       let theField = field.config.value.substring(field.config.value.indexOf(' ') + 1);
       if (theField.indexOf('.') === 0) {
         theField = theField.substring(1);
       }
-
+      const colIndex = fields.findIndex(ele => ele.fieldID === theField);
+      const displayAsLink = field.config.displayAsLink;
       const headerRow: any = {};
       headerRow.id = theField;
       headerRow.type = field.type;
+      headerRow.displayAsLink = displayAsLink;
       headerRow.numeric =
         field.type === 'Decimal' ||
         field.type === 'Integer' ||
@@ -236,23 +247,31 @@ export default function ListView(props) {
         field.type === 'Currency' ||
         false;
       headerRow.disablePadding = false;
-      headerRow.label = fields[colIndex].config.label;
-
+      headerRow.label =  presetFields[index].config.label;
+      if (colIndex > -1) {
+        headerRow.classID = fields[colIndex].classID;
+      }
+      if (displayAsLink) {
+        headerRow.isAssignmentLink = AssignDashObjects.includes(headerRow.classID);
+        if (field.config.value?.startsWith('@CA')) {
+          headerRow.isAssociation = true;
+        }
+      }
       return headerRow;
     });
     return arReturn;
   }
 
   function updateFields(arFields, theColumns): Array<any> {
-    const arReturn = arFields;
-    arFields.forEach((field, index) => {
+    const arReturn = arFields.filter(ele => ele.type !== 'reference');
+    arReturn.forEach((field, index) => {
       arReturn[index].config.name = theColumns[index].id;
     });
 
     return arReturn;
   }
 
-  function getUsingData(arTableData, theColumns): Array<any> {
+  function getUsingData(arTableData): Array<any> {
     if (selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) {
       const record = arTableData?.length > 0 ? arTableData[0] : '';
       if (typeof record === 'object' && !('pyGUID' in record) && !('pyID' in record)) {
@@ -261,24 +280,8 @@ export default function ListView(props) {
       }
     }
     const arReturn = arTableData?.map((data: any) => {
-      const row: any = {};
 
-      theColumns.forEach(col => {
-        row[col.id] = data[col.id];
-      });
-      row[rowID] = data[rowID];
-      // for (const field of theColumns) {
-      //   row[field.id] = data[field.id];
-      // }
-
-      // add in pxRefObjectClass and pzInsKey
-      if (data['pxRefObjectClass']) {
-        row['pxRefObjectClass'] = data['pxRefObjectClass'];
-      }
-
-      if (data['pzInsKey']) {
-        row['pzInsKey'] = data['pzInsKey'];
-      }
+      const row = data;
 
       return row;
     });
@@ -485,30 +488,132 @@ export default function ListView(props) {
     }, 0);
   }, []);
 
-  function fetchAllData() {
+  function fetchAllData(fields) {
+    let query: any = null;
+    if (payload) {
+      query = payload.query;
+    } else if (fields?.length && listContext.isQueryable) {
+      query = {select: fields};
+    } else if (dashboardFilterPayload) {
+      query = dashboardFilterPayload.query;
+    }
     const context = getPConnect().getContextName();
     return PCore.getDataPageUtils().getDataAsync(
       referenceList,
       context,
       payload ? payload.dataViewParameters : dataViewParameters,
       null,
-      payload ? payload.query : dashboardFilterPayload && dashboardFilterPayload.query
+      query
     );
+  }
+
+  const buildSelect = (fieldDefs, colId, patchQueryFields = [], compositeKeys = []) => {
+    const listFields: any = [];
+    if (colId) {
+      const field = getField(fieldDefs, colId);
+      listFields.push({
+        field: field.fieldID
+      });
+    } else {
+      // NOTE: If we ever decide to not set up all the `fieldDefs` on select, ensure that the fields corresponding to `state.groups` are set up. Needed in Client-mode grouping/pagination.
+      fieldDefs.forEach(field => {
+        if (!listFields.find(f => f.field === field.fieldID)) {
+          listFields.push({
+            field: field.fieldID
+          });
+        }
+      });
+      patchQueryFields.forEach(k => {
+        if (!listFields.find(f => f.field === k)) {
+          listFields.push({
+            field: k
+          });
+        }
+      });
+    }
+
+    compositeKeys.forEach(k => {
+      if (!listFields.find(f => f.field === k)) {
+        listFields.push({
+          field: k
+        });
+      }
+    });
+    return listFields;
+  };
+
+  const addItemKeyInSelect = (
+    fieldDefs,
+    itemKey,
+    select,
+    compositeKeys
+  ) => {
+    const elementFound = getField(fieldDefs, itemKey);
+
+    if (itemKey && !elementFound && Array.isArray(select) && !(compositeKeys !== null && compositeKeys?.length) && !select.find(sel => sel.field === itemKey)) {
+      return [...select, {
+        field: itemKey
+      }];
+    }
+
+    return select;
+  };
+
+  const getField = (fieldDefs, columnId) => {
+    const fieldsMap = getFieldsMap(fieldDefs);
+    return fieldsMap.get(columnId);
+  };
+
+  const getFieldsMap = fieldDefs => {
+    const fieldsMap = new Map();
+    fieldDefs.forEach(element => {
+      fieldsMap.set(element.fieldID, element);
+    });
+    return fieldsMap;
+  };
+
+  function preparePatchQueryFields(fields) {
+    const queryFields: any = [];
+    fields.forEach((field) => {
+      const patchFields: any = [];
+      if (field && field.isAssignmentLink) {
+          const associationName = field.id.includes(':') ? `${field.id.split(':')[0]}:` : '';
+          patchFields.push(`${associationName}pzInsKey`);
+          patchFields.push(`${associationName}pxRefObjectClass`);
+      } else if (field && field.isAssociation) {
+          const associationCategory: any = field.id.split(':')[0];
+          patchFields.push(`${associationCategory}:pyID`);
+          patchFields.push(`${associationCategory}:pzInsKey`);
+          patchFields.push(`${associationCategory}:pxObjClass`);
+      } else {
+          patchFields.push('pyID');
+          patchFields.push('pzInsKey');
+          patchFields.push('pxObjClass');
+      }
+      patchFields.forEach((k) => {
+        if (!queryFields.find((q) => q === k)) {
+          queryFields.push(k);
+        }
+      });
+    });
+    return queryFields;
   }
 
   async function fetchDataFromServer() {
     let bCallSetRowsColumns = true;
-    const workListJSON = await fetchAllData();
-
+    const fieldDefs = listContext?.fields;
+    const itemKey = listContext?.classID.startsWith("Work-") ? "pzInsKey" : "pyGUID";
     // don't update these fields until we return from promise
-    let fields = presets[0].children[0].children;
+    let presetFields = presets[0].children[0].children;
 
     // this is an unresovled version of this.fields$, need unresolved, so can get the property reference
     const columnFields = componentConfig.presets[0].children[0].children;
 
-    const tableDataResults = workListJSON['data'];
+    const myColumns = getHeaderCells(columnFields, listContext?.fields, presetFields);
 
-    const myColumns = getHeaderCells(columnFields, fields);
+    const patchQueryFields = preparePatchQueryFields(myColumns)
+    let listFields = fieldDefs ? buildSelect(fieldDefs, undefined, patchQueryFields, compositeKeys) : [];
+    listFields = addItemKeyInSelect(fieldDefs, itemKey, listFields, compositeKeys);
 
     const selectParams: any = [];
 
@@ -526,14 +631,17 @@ export default function ListView(props) {
 
     columnList = colList;
 
-    fields = updateFields(fields, myColumns);
+    presetFields = updateFields(presetFields, myColumns);
+
+    const workListJSON = await fetchAllData(listFields);
+    const tableDataResults = workListJSON['data'];
 
     setResponse(tableDataResults);
 
-    const usingDataResults = getUsingData(tableDataResults, myColumns);
+    const usingDataResults = getUsingData(tableDataResults);
 
     // store globally, so can be searched, filtered, etc.
-    myRows = updateData(usingDataResults, fields);
+    myRows = updateData(usingDataResults, presetFields);
     myDisplayColmnnList = getMyColumnList(myColumns);
 
     // At this point, if we have data ready to render and haven't been asked
@@ -555,8 +663,10 @@ export default function ListView(props) {
   }
 
   useEffect(() => {
-    fetchDataFromServer();
-  }, []);
+    if (listContext?.fields) {
+      fetchDataFromServer();
+    }
+  }, [listContext]);
 
   function searchFilter(value: string, rows: Array<any>) {
     function filterArray(el: any): boolean {
@@ -854,19 +964,37 @@ export default function ListView(props) {
     return bReturn;
   }
 
-  function _listViewClick(name, row) {
-    switch (name) {
-      case 'pxTaskLabel':
-        openAssignment(row);
-        break;
+  function _listViewClick(row, column) {
+    const name = column.id
+    if (column.displayAsLink) {
+      const { pxObjClass } = row;
+      let { pzInsKey } = row;
+      if (column.isAssociation) {
+        const associationCategory = name.split(':')[0];
+        pzInsKey = row[`${associationCategory}:pzInsKey`];
+      }
+      if (column.isAssignmentLink) {
+        thePConn.getActionsApi().openAssignment(pzInsKey, pxObjClass, {
+          containerName: 'primary'
+        });
+      } else {
+        thePConn.getActionsApi().openWorkByHandle(pzInsKey, pxObjClass);
+      }
+    } else {
+      switch (name) {
+        case 'pxTaskLabel':
+          openAssignment(row);
+          break;
 
-      case 'pxRefObjectInsName':
-        openWork(row);
-        break;
+        case 'pxRefObjectInsName':
+          openWork(row);
+          break;
 
-      default:
-        break;
+        default:
+          break;
+      }
     }
+
   }
 
   function _listTitle() {
@@ -945,6 +1073,7 @@ export default function ListView(props) {
                   variant='outlined'
                   placeholder=''
                   size='small'
+                  id="search"
                   onChange={_onSearch}
                 />
               </Grid>
@@ -1008,11 +1137,11 @@ export default function ListView(props) {
                                   align={column.align}
                                   className={classes.cell}
                                 >
-                                  {_showButton(column.id, row) ? (
+                                  {_showButton(column.id, row) || column.displayAsLink ? (
                                     <Link
                                       component='button'
                                       onClick={() => {
-                                        _listViewClick(column.id, row);
+                                        _listViewClick(row, column);
                                       }}
                                     >
                                       {column.format && typeof value === 'number'

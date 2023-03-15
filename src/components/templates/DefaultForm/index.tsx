@@ -1,33 +1,33 @@
-import React, { createElement } from "react";
-import PropTypes from "prop-types";
+import React, { createElement } from 'react';
+// import PropTypes from 'prop-types';
 
 import createPConnectComponent from '../../../bridge/react_pconnect';
 
 import './DefaultForm.css';
 
 export default function DefaultForm(props) {
-  const { getPConnect, NumCols } = props;
+  const { getPConnect } = props; // NumCols
 
-  const inheritedProps = getPConnect().getInheritedProps();
-  const showLabel = inheritedProps.showLabel || 'false';
+  // const inheritedProps = getPConnect().getInheritedProps();
+  // const showLabel = inheritedProps.showLabel || 'false';
 
-  let divClass: string;
+  // let divClass: string;
 
-  const numCols = NumCols || "1";
-  switch (numCols) {
-    case "1" :
-      divClass = 'govuk-grid-column-full';
-      break;
-    case "2" :
-      divClass = 'govuk-grid-column-one-half';
-      break;
-    case "3" :
-      divClass = 'govuk-grid-column-one-third';
-      break;
-    default :
-      divClass = 'govuk-grid-column-full';
-      break;
-  }
+  // const numCols = NumCols || "1";
+  // switch (numCols) {
+  //   case "1" :
+  //     divClass = 'govuk-grid-column-full';
+  //     break;
+  //   case "2" :
+  //     divClass = 'govuk-grid-column-one-half';
+  //     break;
+  //   case "3" :
+  //     divClass = 'govuk-grid-column-one-third';
+  //     break;
+  //   default :
+  //     divClass = 'govuk-grid-column-full';
+  //     break;
+  // }
 
   // debugger;
 
@@ -35,21 +35,19 @@ export default function DefaultForm(props) {
   // to take the children and create components for them, put in an array and pass as the
   // defaultForm kids
   const arChildren = getPConnect().getChildren()[0].getPConnect().getChildren();
-  // eslint-disable-next-line react/no-array-index-key
-  const dfChildren = arChildren.map((kid, idx) => createElement(createPConnectComponent(), {...kid, key: idx}));
 
-  return (
-    <>
-      {dfChildren}
-    </>
-  )
+  const dfChildren = arChildren.map((kid, idx) =>
+    createElement(createPConnectComponent(), { ...kid, key: idx }) // eslint-disable-line react/no-array-index-key
+  );
+
+  return <>{dfChildren}</>;
 }
 
-DefaultForm.propTypes = {
-  // children: PropTypes.arrayOf(PropTypes.node).isRequired,
-  NumCols: PropTypes.string
-};
+// DefaultForm.propTypes = {
+//   // children: PropTypes.arrayOf(PropTypes.node).isRequired,
+//   NumCols: PropTypes.string
+// };
 
-DefaultForm.defaultProps = {
-  NumCols: "1"
-};
+// DefaultForm.defaultProps = {
+//   NumCols: "1"
+// };

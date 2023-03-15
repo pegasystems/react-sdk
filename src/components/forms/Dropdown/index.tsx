@@ -24,10 +24,6 @@ export default function Dropdown(props) {
     readOnly,
   } = props;
 
-  if(readOnly){
-    return <ReadOnlyDisplay label={label} value={value} />
-  }
-
 
   const [options, setOptions] = useState<Array<IOption>>([]);
   const isOnlyField = useIsOnlyField();
@@ -60,6 +56,10 @@ export default function Dropdown(props) {
     const selectedValue = evt.target.value === placeholder ? '' : evt.target.value;
     handleEvent(actionsApi, 'changeNblur', propName, selectedValue);
   };
+
+  if(readOnly){
+    return <ReadOnlyDisplay label={label} value={value} />
+  }
 
   return (
     <>

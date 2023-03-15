@@ -15,11 +15,6 @@ export default function RadioButtons(props) {
     value
   } = props;
 
-  if(readOnly){
-    return <ReadOnlyDisplay label={label} value={value} />
-  }
-
-
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();
 
@@ -35,6 +30,10 @@ export default function RadioButtons(props) {
   // theOptions will be an array of JSON objects that are literally key/value pairs.
   //  Ex: [ {key: "Basic", value: "Basic"} ]
   const theOptions = Utils.getOptionList(theConfigProps, thePConn.getDataObject());
+
+  if(readOnly){
+    return <ReadOnlyDisplay label={label} value={value} />
+  }
 
   return (
     <GDSRadioButtons

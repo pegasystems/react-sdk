@@ -39,7 +39,7 @@ import './View.css';
 // is totally at your own risk.
 //
 
-const FORMTEMPLATES = ['OneColumn', 'TwoColumn', 'DefaultForm', 'WideNarrow', 'NarrowWide'];
+// const FORMTEMPLATES = ['OneColumn', 'TwoColumn', 'DefaultForm', 'WideNarrow', 'NarrowWide'];
 
 export default function View(props) {
   const { children, template, getPConnect, mode } = props;
@@ -182,27 +182,27 @@ export default function View(props) {
     // console.log(`View rendering template: ${template}`);
 
     // spreading because all props should go to the template
-    let RenderedTemplate = <ViewTemplate {...props}>{children}</ViewTemplate>;
+    const RenderedTemplate = <ViewTemplate {...props}>{children}</ViewTemplate>;
 
-    /*if (FORMTEMPLATES.includes(template) && showLabel) {
+    // if (FORMTEMPLATES.includes(template) && showLabel) {
       // Original:
       // RenderedTemplate = (
       //   <FieldGroup name={label} style={{ marginBlockStart: "1rem" }}>
       //     {RenderedTemplate}
       //   </FieldGroup>
       // );
-      RenderedTemplate = (
-        <div
-          data-name='RenderedTemplate'
-          data-template-type={template}
-          /* name */ /*id='label'
-          style={{ marginBlockStart: '1rem' }}
-          className='govuk-grid-column-two-thirds'
-        >
-          {RenderedTemplate}
-        </div>
-      );
-    }*/
+    //   RenderedTemplate = (
+    //     <div
+    //       data-name='RenderedTemplate'
+    //       data-template-type={template}
+    //       /* name */ /*id='label'
+    //       style={{ marginBlockStart: '1rem' }}
+    //       className='govuk-grid-column-two-thirds'
+    //     >
+    //       {RenderedTemplate}
+    //     </div>
+    //   );
+    // }
 
     return (
       <>

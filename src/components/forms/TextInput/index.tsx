@@ -17,9 +17,6 @@ export default function TextInput(props) {
     readOnly,
   } = props;
 
-  if(readOnly){
-    return <ReadOnlyDisplay label={label} value={value} />
-  }
 
 
   // const maxLength = fieldMetadata?.maxLength;
@@ -46,6 +43,10 @@ export default function TextInput(props) {
   }
 
   const isOnlyField = useIsOnlyField();
+
+  if(readOnly){
+    return <ReadOnlyDisplay label={label} value={value} />
+  }
 
   return (
     <>

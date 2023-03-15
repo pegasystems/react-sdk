@@ -63,7 +63,6 @@ export function getInstructions(pConnect, instructions = 'casestep') {
 
   // If the annotation wasn't processed correctly, don't return any instruction text
   if (instructions?.startsWith('@PARAGRAPH')) {
-    console.error('@PARAGRAPH annotation was not processed. Hiding custom instructions.');
     return undefined;
   }
 

@@ -57,7 +57,7 @@ export default function NarrowWideDetails(props) {
       )}
       <Grid container spacing={1}>
         {children.map((child, i) => (
-          <Grid item xs={COLUMN_WIDTHS[i] as GridSize}>
+          <Grid item xs={COLUMN_WIDTHS[i] as GridSize} key={`r-${i + 1}`}>
             {child}
           </Grid>
         ))}

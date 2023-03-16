@@ -13,6 +13,7 @@ export default function TextInput(props) {
     getPConnect,
     inputProps,
     fieldMetadata,
+    maxLength
   } = props;
 
   // const maxLength = fieldMetadata?.maxLength;
@@ -52,6 +53,7 @@ export default function TextInput(props) {
         label={label}
         labelIsHeading={isOnlyField}
         name={propName}
+        maxLength={maxLength}
       />
     </>
   );

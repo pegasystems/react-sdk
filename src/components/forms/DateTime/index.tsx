@@ -4,6 +4,7 @@ import TextInput from '../TextInput';
 import handleEvent from '../../../helpers/event-utils';
 import FieldValueList from '../../designSystemExtensions/FieldValueList';
 import { format } from '../../../helpers/formatters/';
+import { dateFormatInfoDefault, getDateFormatInfo} from '../../../helpers/date-format-utils';
 
 export default function DateTime(props) {
   const {
@@ -21,13 +22,23 @@ export default function DateTime(props) {
     displayMode,
     hideLabel
   } = props;
+
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
   const propName = pConn.getStateProps().value;
   const helperTextToDisplay = validatemessage || helperText;
 
+  // Start with default dateFormatInfo
+  const dateFormatInfo = dateFormatInfoDefault;
+  // and then update, as needed, based on locale, etc.
+  const theDateFormat = getDateFormatInfo()
+  dateFormatInfo.dateFormatString = theDateFormat.dateFormatString;
+  dateFormatInfo.dateFormatStringLC = theDateFormat.dateFormatStringLC;
+  dateFormatInfo.dateFormatMask = theDateFormat.dateFormatMask;
+
+
   if (displayMode === 'LABELS_LEFT') {
-    const formattedDate = format(props.value, 'datetime');
+    const formattedDate = format(props.value, 'datetime', { format: `${dateFormatInfo.dateFormatString} hh:mm a` });
     return <FieldValueList name={hideLabel ? '' : label} value={formattedDate} />;
   }
 
@@ -64,9 +75,9 @@ export default function DateTime(props) {
       autoOk
       required={required}
       disabled={disabled}
-      placeholder='mm/dd/yyyy hh:mm am'
-      format='MM/DD/YYYY hh:mm a'
-      mask='__/__/____ __:__ _m'
+      placeholder={`${dateFormatInfo.dateFormatStringLC} hh:mm a`}
+      format={`${dateFormatInfo.dateFormatString} hh:mm a`}
+      mask={`${dateFormatInfo.dateFormatMask} __:__ _m`}
       minutesStep={5}
       error={status === 'error'}
       helperText={helperTextToDisplay}

@@ -3,6 +3,8 @@ import { KeyboardDatePicker } from '@material-ui/pickers';
 import TextInput from '../TextInput';
 import handleEvent from '../../../helpers/event-utils';
 import FieldValueList from '../../designSystemExtensions/FieldValueList';
+import { format } from '../../../helpers/formatters';
+import { dateFormatInfoDefault, getDateFormatInfo} from '../../../helpers/date-format-utils';
 
 export default function Date(props) {
   const {
@@ -21,13 +23,24 @@ export default function Date(props) {
     displayMode,
     hideLabel
   } = props;
+
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
   const propName = pConn.getStateProps().value;
   const helperTextToDisplay = validatemessage || helperText;
 
+  // Start with default dateFormatInfo
+  const dateFormatInfo = dateFormatInfoDefault;
+  // and then update, as needed, based on locale, etc.
+  const theDateFormat = getDateFormatInfo()
+  dateFormatInfo.dateFormatString = theDateFormat.dateFormatString;
+  dateFormatInfo.dateFormatStringLC = theDateFormat.dateFormatStringLC;
+  dateFormatInfo.dateFormatMask = theDateFormat.dateFormatMask;
+
+
   if (displayMode === 'LABELS_LEFT') {
-    return <FieldValueList name={hideLabel ? '' : label} value={value} />;
+    const formattedDate = format(props.value, 'date', { format: dateFormatInfo.dateFormatString });
+    return <FieldValueList name={hideLabel ? '' : label} value={formattedDate} />;
   }
 
   if (displayMode === 'STACKED_LARGE_VAL') {
@@ -60,13 +73,13 @@ export default function Date(props) {
       disableToolbar
       variant='inline'
       inputVariant='outlined'
-      placeholder='mm/dd/yyyy'
+      placeholder={dateFormatInfo.dateFormatStringLC}
+      format={dateFormatInfo.dateFormatString}
+      mask={dateFormatInfo.dateFormatMask}
       fullWidth
       autoOk
       required={required}
       disabled={disabled}
-      format='MM/DD/YYYY'
-      mask='__/__/____'
       error={status === 'error'}
       helperText={helperTextToDisplay}
       size='small'

@@ -1,7 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { FieldGroup } from "@pega/cosmos-react-core";
-// import { LazyMap as LazyComponentMap } from "../../components_map";
 import { getAllFields } from '../templates/utils';
 
 // Need to import any templates that we might render
@@ -178,31 +176,8 @@ export default function View(props) {
         break;
     }
 
-    // for debugging/investigation
-    // console.log(`View rendering template: ${template}`);
-
     // spreading because all props should go to the template
-    let RenderedTemplate = <ViewTemplate {...props}>{children}</ViewTemplate>;
-
-    /*if (FORMTEMPLATES.includes(template) && showLabel) {
-      // Original:
-      // RenderedTemplate = (
-      //   <FieldGroup name={label} style={{ marginBlockStart: "1rem" }}>
-      //     {RenderedTemplate}
-      //   </FieldGroup>
-      // );
-      RenderedTemplate = (
-        <div
-          data-name='RenderedTemplate'
-          data-template-type={template}
-          /* name */ /*id='label'
-          style={{ marginBlockStart: '1rem' }}
-          className='govuk-grid-column-two-thirds'
-        >
-          {RenderedTemplate}
-        </div>
-      );
-    }*/
+    const RenderedTemplate = <ViewTemplate {...props}>{children}</ViewTemplate>;
 
     return (
       <>
@@ -213,9 +188,6 @@ export default function View(props) {
       </>
     );
   }
-
-  // debugging/investigation help
-  // console.log(`View about to render React.Fragment for children: ${children}`);
 
   if (children) {
     return <>{children}</>;

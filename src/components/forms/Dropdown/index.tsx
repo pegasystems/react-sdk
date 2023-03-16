@@ -24,13 +24,12 @@ export default function Dropdown(props) {
     readOnly,
   } = props;
 
+  const [options, setOptions] = useState<Array<IOption>>([]);
+  const isOnlyField = useIsOnlyField();
+
   if(readOnly){
     return <ReadOnlyDisplay label={label} value={value} />
   }
-
-
-  const [options, setOptions] = useState<Array<IOption>>([]);
-  const isOnlyField = useIsOnlyField();
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();

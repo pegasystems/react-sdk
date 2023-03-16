@@ -8,9 +8,7 @@ import './DefaultForm.css';
 export default function DefaultForm(props) {
   const { getPConnect, NumCols } = props;
 
-  const inheritedProps = getPConnect().getInheritedProps();
-  const showLabel = inheritedProps.showLabel || 'false';
-
+  // // eslint-disable-next-line react/default-pro
   let divClass: string;
 
   const numCols = NumCols || "1";

@@ -1,7 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react';
-//import { Grid, Flex } from '@pega/cosmos-react-core';
 import PropTypes from 'prop-types';
-import { DriveEtaTwoTone } from '@material-ui/icons';
 
 //import StyledHmrcOdxCheckAnswersWrapper from './styles';
 
@@ -10,12 +8,9 @@ import { DriveEtaTwoTone } from '@material-ui/icons';
 // props passed in combination of props from property panel (config.json) and run time props from Constellation
 // any default values in config.pros should be set in defaultProps at bottom of this file
 export default function HmrcOdxCheckAnswers(props) {
-  const { getPConnect, children, template, label, NumCols } = props;
+  const { children } = props;
 
-  let nCols = parseInt(NumCols);
   const [formElms, setFormElms] = useState([null]);
-
-  //console.log(`Rendering ${getPConnect()?.getComponentName()} with ${template} with ${children?.length} Region(s)`);
 
   useEffect(() => {
     const elms = [null];
@@ -41,7 +36,7 @@ export default function HmrcOdxCheckAnswers(props) {
     /*
     <StyledHmrcOdxCheckAnswersWrapper>
 
-    </StyledHmrcOdxCheckAnswersWrapper>*/
+    </StyledHmrcOdxCheckAnswersWrapper> */
   );
 }
 

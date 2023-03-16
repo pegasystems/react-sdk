@@ -17,10 +17,11 @@ export default function TextInput(props) {
     readOnly,
   } = props;
 
+  const isOnlyField = useIsOnlyField();
+
   if(readOnly){
     return <ReadOnlyDisplay label={label} value={value} />
   }
-
 
   // const maxLength = fieldMetadata?.maxLength;
 
@@ -44,8 +45,6 @@ export default function TextInput(props) {
   if(fieldMetadata?.displayAs === "pxPassword"){
     extraInputProps["type"]="password";
   }
-
-  const isOnlyField = useIsOnlyField();
 
   return (
     <>

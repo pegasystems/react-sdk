@@ -15,10 +15,12 @@ export default function RadioButtons(props) {
     value
   } = props;
 
+
+  const isOnlyField = useIsOnlyField();
+
   if(readOnly){
     return <ReadOnlyDisplay label={label} value={value} />
   }
-
 
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();
@@ -26,8 +28,6 @@ export default function RadioButtons(props) {
   // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
   let propName = thePConn.getStateProps().value;
   propName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
-
-  const isOnlyField = useIsOnlyField();
 
   // TODO Investigate if this can be moved to 'higher' leven in component stack to avoid repititions
   useAddErrorToPageTitle(validatemessage);

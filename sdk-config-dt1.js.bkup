@@ -1,0 +1,33 @@
+{
+  "comment_sdk_config": "This is the configuration file for the React SDK",
+  "authConfig": {
+    "authConfig_comment": "Optional Full paths to Infinity server OAuth endpoints (Only needed if using custom OAuth service)",
+    "authConfig_comment2": "Optional attributes are: authorize, token, revoke, authService, silentTimeout, iframeLoginUI",
+    "authService": "pega",
+
+    "mashupClient_comment": "Client ID and Client secret from the OAuth 2.0 Client Registration record used for mashup use case",
+    "mashupClient_comment2": "See SDK Guide for instructions on how to generate and obtain the proper values for the following entries",
+    "mashupClientId": "19501985612341573869",
+    "mashupUserIdentifier": "Citizen2@ChB",
+    "mashupPassword": "SEVpYi5AM1BKKkpXZmZwWG94Mloy",
+
+    "portalClientId_comment": "Client ID from the OAuth 2.0 Client Registration record used for portal use case",
+    "portalClientId": ""
+  },
+  "serverConfig": {
+    "infinityRestServerUrl_comment": "Full path to Infinity REST server",
+    "infinityRestServerUrl": "https://hmrc-adviserui-dt1.pegacloud.net/prweb/",
+
+    "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
+    "appAlias": "chb-dev",
+
+    "sdkContentServerUrl_comment": "If specified, the given URL will be used. If left blank, window.location.origin will be used.",
+    "sdkContentServerUrl": "",
+
+    "appPortal_comment": "If specified, the given appPortal will be loaded. If left blank, the operator's default Portal is used. Ignored for Embedded use",
+    "appPortal": "",
+
+    "excludePortals_comment": "Array of specific portals to avoid attempting to load with SDK",
+    "excludePortals" : ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"]
+  }
+}

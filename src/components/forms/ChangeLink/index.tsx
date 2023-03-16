@@ -1,28 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-
-declare const PCore;
-//import { Input, Label, Link } from '@pega/cosmos-react-core';
-
-//import StyledHmrcOdxChangeLinkWrapper from './styles';
-
 // Duplicated runtime code from Constellation Design System Component
 
 // props passed in combination of props from property panel (config.json) and run time props from Constellation
 // any default values in config.pros should be set in defaultProps at bottom of this file
 const HmrcOdxChangeLink = props => {
-  const { getPConnect, value, placeholder, disabled, readOnly, required, label, testId, stepId } =
+  const { getPConnect, label, stepId } =
     props;
 
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
   const propName = pConn?.getStateProps()?.value;
 
-  const target = pConn.getTarget();
-  const key = pConn.getCaseInfo().getKey();
-
-  const containerItemID = pConn.getContextName(); // PCore.getContainerUtils().getContainerItemName(target, key);
+   const containerItemID = pConn.getContextName();
 
   const handleOnChange = event => {
     const { value: updatedValue } = event.target;
@@ -52,12 +43,6 @@ const HmrcOdxChangeLink = props => {
       </div>
 
     </>
-    /*
-    <StyledHmrcOdxChangeLinkWrapper>
-      <Link href='#' onClick={handleOnClick}>
-        Change
-      </Link>
-    </StyledHmrcOdxChangeLinkWrapper>*/
   );
 };
 

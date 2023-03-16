@@ -62,6 +62,7 @@ export default function CaseView(props) {
 
   const classes = useStyles();
 
+  const editAction = availableActions.find((action) => action.ID === 'pyUpdateCaseDetails');
 
   /**
    *
@@ -163,9 +164,6 @@ export default function CaseView(props) {
 
   function _editClick() {
 
-    const editAction = availableActions.find(
-      (action) => action.ID === "pyUpdateCaseDetails"
-    );
     const actionsAPI = thePConn.getActionsApi();
     const openLocalAction = actionsAPI.openLocalAction.bind(actionsAPI);
 
@@ -176,8 +174,7 @@ export default function CaseView(props) {
   function getActionButtonsHtml(): any {
 
     const aBHtml = <Box>
-            <Button onClick={() => {_editClick()}}>Edit</Button>
-            &nbsp;
+            {editAction && (<Button onClick={() => {_editClick()}}>Edit</Button>)}
             <CaseViewActionsMenu getPConnect={getPConnect} availableActions={availableActions} availableProcesses={availableProcesses} />
         </Box>;
 

@@ -1,7 +1,7 @@
 import React  from 'react';
 import GDSRadioButtons from '../../BaseComponents/RadioButtons/RadioButtons';
-import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks'
+import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 import Utils from '../../../helpers/utils';
 import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
@@ -44,6 +44,10 @@ export default function RadioButtons(props) {
 
 
 
+
+  if(readOnly){
+    return <ReadOnlyDisplay label={label} value={value} />
+  }
 
   return (
     <GDSRadioButtons

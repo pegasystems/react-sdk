@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 // Duplicated runtime code from Constellation Design System Component
 
-// props passed in combination of props from property panel (config.json) and run time props from Constellation
-// any default values in config.pros should be set in defaultProps at bottom of this file
+//  props passed in combination of props from property panel (config.json) and run time props from Constellation
+//  any default values in config.pros should be set in defaultProps at bottom of this file
 const HmrcOdxChangeLink = props => {
   const { getPConnect, label, stepId } =
     props;
@@ -19,8 +19,8 @@ const HmrcOdxChangeLink = props => {
 
     navigateToStepPromise
       .then(() => {
-        // navigate to step success handling
-        // console.log('navigation successful');
+        //  navigate to step success handling
+        console.log('navigation successful'); // eslint-disable-line
       })
       .catch(error => {
         // navigate to step failure handling

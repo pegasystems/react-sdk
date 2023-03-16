@@ -29,8 +29,6 @@ export default function CheckboxComponent(props) {
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps().value;
 
-
-
   // TODO - How to get the optionsList from Pega? Fetch and plug optionsList
   // Hard coded example data plugged in to pass for the checkbox optionsList
   const optionsList = [{checked: false, label: caption, hintText: "item hint", readOnly:false}]

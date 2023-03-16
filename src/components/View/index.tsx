@@ -37,8 +37,6 @@ import './View.css';
 // is totally at your own risk.
 //
 
-const FORMTEMPLATES = ['OneColumn', 'TwoColumn', 'DefaultForm', 'WideNarrow', 'NarrowWide'];
-
 export default function View(props) {
   const { children, template, getPConnect, mode } = props;
   let { label, showLabel = false } = props;

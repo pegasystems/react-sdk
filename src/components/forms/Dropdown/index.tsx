@@ -25,40 +25,37 @@ export default function Dropdown(props) {
   } = props;
 
   const [options, setOptions] = useState<Array<IOption>>([]);
+  const [displayValue, setDisplayValue] = useState();
   const isOnlyField = useIsOnlyField();
-
-  if(readOnly){
-    return <ReadOnlyDisplay label={label} value={value} />
-  }
+  // TODO consider moving this functionality 'up' especially when we add Error summary,
+  // as it may be tidier to call this only once, rather than on every input
+  useAddErrorToPageTitle(validatemessage);
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
-
 
   // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
   const propName = thePConn.getStateProps().value;
   const formattedPropName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
 
-  // TODO consider moving this functionality 'up' especially when we add Error summary,
-  // as it may be tidier to call this only once, rather than on every input
-  useAddErrorToPageTitle(validatemessage);
-
   useEffect(() => {
     const optionsList = [...Utils.getOptionList(props, getPConnect().getDataObject())];
     if(value === '') {optionsList.unshift({key:placeholder, value:placeholder})};
+    const selectedOption = optionsList.find(option => option.key === value);
+    if(selectedOption && selectedOption.value){
+      setDisplayValue(selectedOption.value);
+    }
     setOptions(optionsList);
   }, [datasource, value]);
-
-  /* let testProp = {};
-
-  testProp = {
-    'data-test-id': testId
-  }; */
 
   const handleChange = evt => {
     const selectedValue = evt.target.value === placeholder ? '' : evt.target.value;
     handleEvent(actionsApi, 'changeNblur', propName, selectedValue);
   };
+
+  if(readOnly){
+    return <ReadOnlyDisplay label={label} value={displayValue} />
+  }
 
   return (
     <>

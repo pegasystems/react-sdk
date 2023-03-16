@@ -18,6 +18,9 @@ export default function TextInput(props) {
   } = props;
 
   const isOnlyField = useIsOnlyField();
+  // TODO consider moving this functionality 'up' especially when we add Error summary,
+  // as it may be tidier to call this only once, rather than on every input
+  useAddErrorToPageTitle(validatemessage);
 
   if(readOnly){
     return <ReadOnlyDisplay label={label} value={value} />
@@ -25,9 +28,7 @@ export default function TextInput(props) {
 
   // const maxLength = fieldMetadata?.maxLength;
 
-  // TODO consider moving this functionality 'up' especially when we add Error summary,
-  // as it may be tidier to call this only once, rather than on every input
-  useAddErrorToPageTitle(validatemessage);
+
 
   // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
   const thePConn = getPConnect();

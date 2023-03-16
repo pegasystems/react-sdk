@@ -11,14 +11,8 @@ const HmrcOdxChangeLink = props => {
 
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
-  const propName = pConn?.getStateProps()?.value;
 
-   const containerItemID = pConn.getContextName();
-
-  const handleOnChange = event => {
-    const { value: updatedValue } = event.target;
-    actions.updateFieldValue(propName, updatedValue);
-  };
+  const containerItemID = pConn.getContextName();
 
   const handleOnClick = () => {
     const navigateToStepPromise = actions.navigateToStep(stepId, containerItemID);
@@ -30,7 +24,8 @@ const HmrcOdxChangeLink = props => {
       })
       .catch(error => {
         // navigate to step failure handling
-        // console.log('navigation failed', error);
+        // eslint-disable-next-line no-console
+        console.log('Change link Navigation failed', error);
       });
   };
 
@@ -46,24 +41,9 @@ const HmrcOdxChangeLink = props => {
   );
 };
 
-HmrcOdxChangeLink.defaultProps = {
-  value: '',
-  placeholder: '',
-  disabled: false,
-  readOnly: false,
-  required: false,
-  testId: null
-};
-
 HmrcOdxChangeLink.propTypes = {
   label: PropTypes.string,
-  value: PropTypes.string,
-  placeholder: PropTypes.string,
   getPConnect: PropTypes.func.isRequired,
-  disabled: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  readOnly: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  required: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
-  testId: PropTypes.string
 };
 
 export default HmrcOdxChangeLink;

@@ -4,6 +4,8 @@ import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import useAddErrorToPagetitle from '../../../helpers/hooks/useAddErrorToPageTitle'
 import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
+declare const global;
+
 export default function Date(props) {
   const {
     getPConnect,
@@ -17,14 +19,9 @@ export default function Date(props) {
   const pConn = getPConnect();
   const propName = pConn.getStateProps().value;
 
-  if(readOnly){
-    return <ReadOnlyDisplay label={label} value={new global.Date(value).toLocaleDateString()} />
-  }
-
-  const isOnlyField = useIsOnlyField();
-
   // TODO consider refactoring out to a component higher in tree to avoid needing to define in each input component.
   useAddErrorToPagetitle(validatemessage);
+  const isOnlyField = useIsOnlyField();
 
   // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
   const formattedPropName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
@@ -48,11 +45,11 @@ export default function Date(props) {
     }
   }
 
-
   // PM - On change of any of the date fields, call handleDateChange
   useLayoutEffect( () => {
     handleDateChange();
   }, [day, month, year])
+
 
   // PM - Handlers for each part of date inputs, update state for each respectively
   //      0 pad for ISOString compatibilitiy, with conditions to allow us to clear the fields
@@ -66,6 +63,9 @@ export default function Date(props) {
     setYear(yearChange.target.value);
   };
 
+  if(readOnly){
+    return <ReadOnlyDisplay label={label} value={new global.Date(value).toLocaleDateString()} />
+  }
 
   return (
     <DateInput            label={label}

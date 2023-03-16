@@ -1,0 +1,45 @@
+{
+  "name": "HMRC_ODX_CheckAnswers",
+  "label": "Check answers",
+  "description": "Change link",
+  "organization": "HMRC",
+  "version": "0.0.1",
+  "library": "ODX",
+  "allowedApplications": [],
+  "componentKey": "HMRC_ODX_CheckAnswers",
+  "type": "Template",
+  "subtype": "FORM",
+  "icon": "DefaultForm.svg",
+    "properties": [
+    {
+      "format": "SELECT",
+      "name": "NumCols",
+      "label": "Number of columns",
+      "defaultValue": "1",
+      "source": [
+        { "key": "1", "value": "One" },
+        { "key": "2", "value": "Two" },
+        { "key": "3", "value": "Three" }
+      ]
+    },
+    {
+      "format": "SELECT",
+      "name": "templateOverrideMode",
+      "label": "Template for embedded views",
+      "defaultValue": "USE_TEMPLATE",
+      "source": [
+        { "key": "USE_TEMPLATE", "value": "Use template" },
+        { "key": "IGNORE_TEMPLATE", "value": "Ignore template" }
+      ]
+    },
+    {
+      "format": "INSTRUCTIONS"
+    },
+    {
+      "name": "Fields",
+      "label": "Fields",
+      "format": "CONTENTPICKER",
+      "allowCreatingGroup": true
+    }
+  ]
+}

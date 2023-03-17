@@ -53,8 +53,8 @@ export default function Details(props) {
         </Grid>
       )}
       <Grid container spacing={1}>
-        {children.map(child => (
-          <Grid item xs={12}>
+        {children.map((child, i) => (
+          <Grid item xs={12} key={`r-${i + 1}`}>
             {child}
           </Grid>
         ))}

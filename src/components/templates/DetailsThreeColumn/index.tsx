@@ -53,8 +53,8 @@ export default function DetailsThreeColumn(props) {
         </Grid>
       )}
       <Grid container spacing={1}>
-        {children.map(child => (
-          <Grid item xs={4}>
+        {children.map((child, i) => (
+          <Grid item xs={4} key={`r-${i + 1}`}>
             {child}
           </Grid>
         ))}

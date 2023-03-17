@@ -18,26 +18,14 @@ export default function useInit(props) {
     cosmosTableRef
   } = props;
   let { editing, selectionMode } = props;
-  // Todo: once BUG-556742 is fixed we no longer need to read metadata directly
-  // Currently literal string with dot is getting resolved from redux even when it doesn't have @P annotation
 
   const runtimeParams = PCore.getRuntimeParamsAPI().getRuntimeParams();
-  // context to know if ListView is in TabbedPage or not
-  // const { inTabbedPage } = useContext(LayoutContext);
 
-  // const useBulkActionsHook = useBulkActions();
   let selectionCountThreshold;
   useEffect(() => {
     let isCompStillMounted = true; // react hooks cleanup function will toggle this flag and use it before setting a state variable
 
     (async function init() {
-      const xRayInfo = {
-        visibleColumns: {
-          personalisations: {}
-        },
-        totalColumns: 0,
-        count: 0
-      };
       // promise to fetch metadata
       const metaDataPromise = PCore.getAnalyticsUtils().getDataViewMetadata(referenceList, showDynamicFields);
 
@@ -57,7 +45,6 @@ export default function useInit(props) {
         const {
           data: { isQueryable }
         } = metadata;
-        /* BUG-636789 : in case of hybrid set editing to false */
         if (!isDataObject) {
           if (!isQueryable) {
             editing = false; /* Force editing to false if DP is non queryable */
@@ -71,11 +58,6 @@ export default function useInit(props) {
           if ([MULTI_ON_HOVER, MULTI].includes(selectionMode)) {
             selectionCountThreshold = 250; // Results count should not be greater than threshold to display SelectAll checkbox.
           }
-
-          // if (editing) {
-          //   // Promise to fetch editable fields if editable=true
-          //   return fetchEditableFields(parameters, props, runtimeParams, referenceList);
-          // }
         }
         return Promise.resolve();
       };
@@ -101,7 +83,6 @@ export default function useInit(props) {
               selectionCountThreshold,
               ref,
               selectionMode,
-              xRayInfo,
               xRayUid,
               cosmosTableRef
             });

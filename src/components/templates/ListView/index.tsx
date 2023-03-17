@@ -230,12 +230,14 @@ export default function ListView(props) {
 
   // }
 
-  function getHeaderCells(colFields, fields) {
-    const arReturn = colFields.map((field: any, colIndex) => {
+  const AssignDashObjects = ['Assign-Worklist', 'Assign-WorkBasket'];
+  function getHeaderCells(colFields, fields, presetFields) {
+    const arReturn = colFields.map((field: any, index) => {
       let theField = field.config.value.substring(field.config.value.indexOf(' ') + 1);
       if (theField.indexOf('.') === 0) {
         theField = theField.substring(1);
       }
+      const colIndex = fields.findIndex(ele => ele.name === theField);
       const displayAsLink = field.config.displayAsLink;
       const headerRow: any = {};
       headerRow.id = theField;
@@ -248,8 +250,16 @@ export default function ListView(props) {
         field.type === 'Currency' ||
         false;
       headerRow.disablePadding = false;
-      headerRow.label = fields[colIndex].config.label;
-
+      headerRow.label =  presetFields[index].config.label;
+      if (colIndex > -1) {
+        headerRow.classID = fields[colIndex].classID;
+      }
+      if (displayAsLink) {
+        headerRow.isAssignmentLink = AssignDashObjects.includes(headerRow.classID);
+        if (field.config.value?.startsWith('@CA')) {
+          headerRow.isAssociation = true;
+        }
+      }
       return headerRow;
     });
     return arReturn;
@@ -264,7 +274,7 @@ export default function ListView(props) {
     return arReturn;
   }
 
-  function getUsingData(arTableData, theColumns): Array<any> {
+  function getUsingData(arTableData): Array<any> {
     if (selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) {
       const record = arTableData?.length > 0 ? arTableData[0] : '';
       if (typeof record === 'object' && !('pyGUID' in record) && !('pyID' in record)) {
@@ -273,28 +283,8 @@ export default function ListView(props) {
       }
     }
     const arReturn = arTableData?.map((data: any) => {
-      const row: any = {};
 
-      theColumns.forEach(col => {
-        row[col.id] = data[col.id];
-      });
-      row[rowID] = data[rowID];
-      // for (const field of theColumns) {
-      //   row[field.id] = data[field.id];
-      // }
-
-      // add in pxRefObjectClass and pzInsKey
-      if (data['pxRefObjectClass']) {
-        row['pxRefObjectClass'] = data['pxRefObjectClass'];
-      }
-
-      if (data['pxObjClass']) {
-        row['pxObjClass'] = data['pxObjClass'];
-      }
-
-      if (data['pzInsKey']) {
-        row['pzInsKey'] = data['pzInsKey'];
-      }
+      const row = data;
 
       return row;
     });
@@ -600,7 +590,7 @@ export default function ListView(props) {
 
     const tableDataResults = workListJSON['data'];
 
-    const myColumns = getHeaderCells(columnFields, fields);
+    const myColumns = getHeaderCells(columnFields, fieldDefs, fields);
 
     const selectParams: any = [];
 
@@ -622,7 +612,7 @@ export default function ListView(props) {
 
     setResponse(tableDataResults);
 
-    const usingDataResults = getUsingData(tableDataResults, myColumns);
+    const usingDataResults = getUsingData(tableDataResults);
 
     // store globally, so can be searched, filtered, etc.
     myRows = updateData(usingDataResults, fields);
@@ -951,14 +941,19 @@ export default function ListView(props) {
   function _listViewClick(row, column) {
     const name = column.id
     if (column.displayAsLink) {
-      const { pzInsKey, pxObjClass } = row;
-      thePConn.getActionsApi().openWorkByHandle(pzInsKey, pxObjClass)
-          .then(() => {
-            // console.log("openAssignment successful");
-          })
-          .catch(() => {
-            showToast(`openCase failed!`);
-          });
+      const { pxObjClass } = row;
+      let { pzInsKey } = row;
+      if (column.isAssociation) {
+        const associationCategory = name.split(':')[0];
+        pzInsKey = row[`${associationCategory}:pzInsKey`];
+      }
+      if (column.isAssignmentLink) {
+        thePConn.getActionsApi().openAssignment(pzInsKey, pxObjClass, {
+          containerName: 'primary'
+        });
+      } else {
+        thePConn.getActionsApi().openWorkByHandle(pzInsKey, pxObjClass);
+      }
     } else {
       switch (name) {
         case 'pxTaskLabel':

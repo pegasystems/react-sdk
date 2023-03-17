@@ -5,52 +5,18 @@ import getDefaultViewMeta from './DefaultViewMeta';
 const USER_REFERENCE = 'UserReference';
 const PAGE = '!P!';
 const PAGELIST = '!PL!';
+
 export const formatConstants = {
-  DateTimeLong: 'DateTime-Long',
-  DateTimeShort: 'DateTime-Short',
-  DateTimeSince: 'DateTime-Since',
-  TimeOnly: 'Time-Only',
-  DateDefault: 'Date-Default',
-  DateTimeDefault: 'Date-Time-Default',
-  TimeDefault: 'Time-Default',
-  CheckCross: 'CheckCross',
-  YesNo: 'Yes/No',
-  TrueFalse: 'True/False',
-  TextInput: 'TextInput',
   WorkStatus: 'WorkStatus',
-  Email: 'Email',
-  Phone: 'Phone',
-  URL: 'URL',
   Integer: 'Integer',
-  Decimal: 'Decimal',
-  DecimalAuto: 'Decimal-Auto',
-  Currency: 'Currency',
-  CurrencyCode: 'Currency-Code',
-  CurrencyCompact: 'Currency-Compact',
-  Percentage: 'Percentage',
-  RichText: 'RichText',
-  Operator: 'Operator',
   WorkLink: 'WorkLink',
-  UserReference: 'UserReference',
-  AssignmentLink: 'AssignmentLink',
-  RowActionMenu: 'RowActionMenu',
-  CellAction: 'CellAction',
-  RowSelectHandle: 'RowSelectHandle',
-  SelectAllCheckbox: 'selectAllCheckboxRenderer',
-  RowDragDropHandle: 'RowDragDropHandle',
-  NumberDefault: 'Number-Default',
-  TextDefault: 'Text-Default',
-  BooleanDefault: 'Boolean-Default',
-  OpenInModal: 'OpenInModal'
 };
+
 export async function getContext(componentConfig) {
   const {
     promisesArray = [], // array of promises which can be invoked paralelly,
   } = componentConfig;
   const promisesResponseArray = await Promise.all(promisesArray);
-  // const {
-  //   data: { parameters = [], isQueryable = true, isSearchable = configIsSearchable, classID, insightID }
-  // } = promisesResponseArray[0];
   return {
     promisesResponseArray,
   };
@@ -464,178 +430,6 @@ function prepareConfigFields(configFields, pushToComponentsList) {
   return generateViewMetaData(extraFileds, classID, false, isQueryable);
   // Update the meta object of each of the extra fields.
 }
-const columnWidthConfigs = { auto: 'auto', custom: 'custom' };
-function getNormalizedTypes(field) {
-  let { type } = field;
-  const {
-    config: { fieldType, propertyType, componentType }
-  } = field;
-  // honour the property type for the pickList field
-  if (fieldType === 'Picklist' && propertyType) {
-    type = propertyType;
-  }
-  let tableFieldType = type;
-  switch (type) {
-    case 'Text (single line)':
-    case 'Text (paragraph)':
-      type = 'TextInput';
-      break;
-    case 'Date only':
-      type = 'Date';
-      break;
-    case 'Date & time':
-      type = 'DateTime';
-      break;
-    case 'Checkbox':
-    case 'TrueFalse':
-      type = 'Boolean';
-      break;
-    case 'Time only':
-    case 'Time':
-    case 'TimeOfDay':
-      type = 'Time-Only';
-      break;
-    case 'User reference':
-      type = 'UserReference';
-      break;
-    default:
-  }
-  switch (type) {
-    case 'TextInput':
-    case 'TextArea':
-    case 'Email':
-    case 'Phone':
-    case 'Checkbox':
-    case 'Time':
-    case 'Dropdown':
-    case 'RadioButtons':
-    case 'Location':
-      tableFieldType = 'text';
-      break;
-    case 'URL':
-      tableFieldType = 'URL';
-      type = 'URL';
-      break;
-    case 'Boolean':
-    case 'boolean':
-      tableFieldType = 'boolean';
-      break;
-    case 'Integer':
-    case 'Decimal':
-    case 'Currency':
-    case 'Percentage':
-    case 'number':
-      tableFieldType = 'number';
-      break;
-    case 'Date':
-    case 'date':
-      tableFieldType = 'date';
-      break;
-    case 'DateTime':
-    case 'datetime':
-      tableFieldType = 'datetime';
-      break;
-    case 'Time-Only':
-      tableFieldType = 'time';
-      break;
-    case 'UserReference':
-      tableFieldType = 'text';
-      break;
-    case 'ScalarList': {
-      const derivedField = { ...field };
-      derivedField.type = componentType;
-      const [tableFieldTypeForScalarList] = getNormalizedTypes(derivedField);
-      tableFieldType = tableFieldTypeForScalarList;
-      type = 'ScalarList';
-      break;
-    }
-    default:
-      tableFieldType = 'text';
-      type = 'TextInput';
-  }
-  return [tableFieldType, type];
-}
-function getNebulaFormatterNameForDefault(fieldType) {
-  switch (fieldType) {
-    case 'Date':
-      return formatConstants.DateDefault;
-    case 'DateTime':
-      return formatConstants.DateTimeDefault;
-    case 'Time-Only':
-      return formatConstants.TimeDefault;
-    case 'Integer':
-    case 'Decimal':
-    case 'Currency':
-    case 'Percentage':
-    case 'number':
-      return formatConstants.NumberDefault;
-    case 'TextInput':
-    case 'TextArea':
-    case 'Email':
-    case 'Phone':
-    case 'Time':
-    case 'Dropdown':
-    case 'RadioButtons':
-    case 'Location':
-    case 'RichText':
-      return formatConstants.TextDefault;
-    case 'Boolean':
-      return formatConstants.BooleanDefault;
-    case 'URL':
-      return formatConstants.URL;
-    default:
-      return '';
-  }
-}
-
-function populateFormatter(config, type, formatter, displayAs) {
-  // TODO displayAs will never be used as Default formatter will be applied. Need to revisit this.
-  let format = formatter || getNebulaFormatterNameForDefault(type) || displayAs;
-  if (type === 'ScalarList') {
-    format = formatter || config.meta?.config.componentType;
-  }
-  switch (format) {
-    case 'pxCurrency':
-      format = formatConstants.Currency;
-      break;
-    case 'pxInteger':
-    case 'pxNumber':
-      format = formatConstants.Integer;
-      break;
-    case 'DateTime-Harness':
-    case 'pxDateTime':
-    case 'DateTime-Medium':
-      format = formatConstants.DateTimeLong;
-      break;
-    case 'pxCheckbox':
-      format = formatConstants.YesNo;
-      break;
-    case 'RichTextDisplay':
-    case 'pxRichTextEditor':
-    case 'RichText':
-      format = formatConstants.RichText;
-      break;
-    case 'pxEmail':
-      format = formatConstants.Email;
-      break;
-    case 'pxPhone':
-      format = formatConstants.Phone;
-      break;
-    default:
-  }
-  if (type === 'UserReference') {
-    format = formatConstants.UserReference;
-  }
-  let cellRenderer = format;
-  if (type === 'ScalarList') {
-    cellRenderer = 'ScalarList';
-  }
-
-  if (config.meta.config.customComponent) {
-    cellRenderer = 'customComponent';
-  }
-  return { ...config, cellRenderer, formatter: format };
-}
 
 const AssignDashObjects = ['Assign-Worklist', 'Assign-WorkBasket'];
 
@@ -647,32 +441,19 @@ function populateRenderingOptions(name, config, field) {
       config.customObject.isAssociation = true;
     }
     config.cellRenderer = formatConstants.WorkLink;
-    config.formatter = formatConstants.WorkLink;
   } else if (name === 'pyStatusWork' || name === 'pyAssignmentStatus') {
     config.cellRenderer = formatConstants.WorkStatus;
-    config.formatter = formatConstants.WorkStatus;
-    config.filterPickList = 'true';
   } else if (name === 'pxUrgencyWork') {
     config.cellRenderer = formatConstants.Integer;
-    config.formatter = formatConstants.Integer;
-  } else if (field.config.openInModal && field.config.name) {
-    config.cellRenderer = formatConstants.OpenInModal;
-    config.meta.config.forceDisplayMode = true;
   }
 }
 export function initializeColumns(
   fields = [],
-  actionsApi,
-  pConnect,
   getMappedProperty
 ) {
   return fields.map((field, originalColIndex) => {
     let name = field.config.value;
-    let { tooltip } = field.config;
 
-    if (tooltip && tooltip.startsWith('@')) {
-      tooltip = tooltip.substring(4);
-    }
     if (name.startsWith('@')) {
       name = name.substring(name.indexOf(' ') + 1);
       if (name[0] === '.') name = name.substring(1);
@@ -680,45 +461,26 @@ export function initializeColumns(
     name = getMappedProperty?.(name) ?? name;
 
     let label = field.config.label || field.config.caption;
-    const { show = true, displayAs, formatter } = field.config;
+    const { show = true, displayAs } = field.config;
     if (label.startsWith('@')) {
       label = label.substring(3);
     }
-    const [typeForTable, type] = getNormalizedTypes(field);
-    let config = {
-      type: typeForTable,
+
+    const config = {
       name,
-      fillAvailableSpace: !!field.config.fillAvailableSpace,
       label,
-      showTooltip: false,
-      showCategoryInHeaderLabel: field.config.showCategoryInHeaderLabel || false,
-      tooltip,
       show,
       classID: field.config.classID,
       id: field.id || name || originalColIndex,
       displayAs,
-      autosize: field.config.columnWidth ? field.config.columnWidth === columnWidthConfigs.auto : true,
-      width: field.config.columnWidth === columnWidthConfigs.custom ? field.config.width : undefined,
       associationID: field.config.associationID,
       ...(field.config.classID && { category: field.config.category }),
-      grouping: field.config.grouping,
-      sort: field.config.sort,
-      filter: field.config.filter,
       customObject: {},
       fieldType: field.config.fieldType,
       meta: {
         ...field
       },
-      hideGroupColumnNameLabel: field.config.hideGroupColumnNameLabel,
-      hierarchicalInfo: field.config.hierarchicalInfo
     };
-
-    config = populateFormatter(
-      config,
-      config?.meta?.type === formatConstants.RichText ? config.meta.type : type,
-      formatter,
-      displayAs
-    );
 
     populateRenderingOptions(name, config, field);
 
@@ -736,19 +498,8 @@ export const getItemKey = (fields) => {
   return itemKey;
 };
 
-export function isAlternateKeyStorageForLookUp(lookUpDataPageInfo) {
-  return lookUpDataPageInfo && lookUpDataPageInfo.isAlternateKeyStorage;
-}
-
-export function getLookUpDataPageInfo(classID) {
-  const lookUpDatePage = PCore.getDataTypeUtils().getLookUpDataPage(classID);
-  const lookUpDataPageInfo = PCore.getDataTypeUtils().getLookUpDataPageInfo(classID);
-  return { lookUpDatePage, lookUpDataPageInfo };
-}
-
 export function preparePatchQueryFields(fields, isDataObject = false, classID = '') {
   const queryFields = [];
-  const { lookUpDatePage, lookUpDataPageInfo } = getLookUpDataPageInfo(classID);
   fields.forEach((field) => {
     const patchFields = [];
     if (field.cellRenderer === 'WorkLink') {
@@ -772,136 +523,27 @@ export function preparePatchQueryFields(fields, isDataObject = false, classID = 
         patchFields.push('pzInsKey');
         patchFields.push('pxObjClass');
       }
-      if (lookUpDatePage && isAlternateKeyStorageForLookUp(lookUpDataPageInfo)) {
-        const { parameters } = lookUpDataPageInfo;
-        Object.keys(parameters).forEach((param) => {
-          const paramValue = parameters[param];
-          // eslint-disable-next-line no-unused-expressions
-          PCore.getAnnotationUtils().isProperty(paramValue)
-            ? patchFields.push(PCore.getAnnotationUtils().getPropertyName(paramValue))
-            : null;
-        });
-      }
-    } else if (field.cellRenderer === 'UserReference') {
-      const associationCategory = field.customObject.associationID;
-      if (associationCategory) {
-        patchFields.push(`${associationCategory}:pyUserName`);
-      }
     }
-
     patchFields.forEach((k) => {
       if (!queryFields.find((q) => q === k)) {
         queryFields.push(k);
       }
     });
   });
+
   return queryFields;
-}
-
-export function initializeTableConfig(config, fields) {
-  const {
-    presetId,
-    presetName,
-    title,
-    icon,
-    deltaAdjustment,
-    fitHeightToElement,
-    basicMode,
-    selectionMode,
-    relativeDates,
-    dateFunctions,
-    additionalTableConfig,
-    numberOfRows,
-    allowMovingRecords,
-    selectionCountThreshold,
-    disabled,
-    required,
-    defaultRowHeight,
-    inTabbedPage,
-    isDataObject,
-    classID,
-    isQueryable = false,
-    reportColumnsSet
-  } = config;
-
-  const featuresMap = {};
-
-  return {
-    height: {
-      minHeight: 600,
-      fitHeightToElement: fitHeightToElement ?? 'document',
-      deltaAdjustment: deltaAdjustment ?? 50,
-      autoSize: true,
-      maxHeight: inTabbedPage ? `--content-height-in-view` : undefined
-    },
-    numberOfRows: numberOfRows ? parseInt(numberOfRows, 10) : undefined,
-    reorderItems: allowMovingRecords,
-    dragHandle: allowMovingRecords,
-    moveListRecords: allowMovingRecords,
-    basicMode,
-    selectionMode,
-    fieldDefs: fields,
-    patchQueryFields: preparePatchQueryFields(fields, isDataObject, classID),
-    itemKey: getItemKey(fields),
-    id: presetId,
-    name: presetName,
-    ...featuresMap,
-    ...additionalTableConfig,
-    title,
-    icon,
-    dateFunctions,
-    relativeDates,
-    isQueryable,
-    timezone: PCore.getEnvironmentInfo().getTimeZone(),
-    renderingMode: PCore.getEnvironmentInfo()?.getRenderingMode(),
-    selectionCountThreshold,
-    disableSelectionOnLoad: disabled,
-    requiredOnLoad: required,
-    // if defaultRowHeight empty string set undefined to fallback to Row Density OOTB defaulting logic.
-    defaultRowHeight: defaultRowHeight || undefined,
-    // Export to excel option is shown for list sourced from queryable RD sourced DP.
-    showExportToExcelOption: isQueryable && reportColumnsSet.size > 0,
-  };
 }
 
 export const readContextResponse = async (context, params) => {
   const {
-    personalization,
-    grouping,
     getPConnect,
-    expandGroups,
-    reorderFields,
-    editing,
-    deleting,
-    globalSearch,
-    toggleFieldVisibility,
-    personalizationId,
-    showHeaderIcons,
-    title,
-    basicMode,
-    selectionMode,
-    allowAddingNewRecords,
-    numberOfRows,
-    allowMovingRecords,
     apiContext,
     setListContext,
-    icon,
     children,
-    selectionCountThreshold,
-    xRayInfo,
-    xRayUid,
-    disabled,
-    required,
-    openCaseViewAfterCreate,
-    enableGetNextWork,
-    defaultRowHeight,
     showDynamicFields,
-    inTabbedPage,
     referenceList,
-    create,
     isDataObject
   } = params;
-  const xRayApis = PCore.getDebugger().getXRayRuntime();
   const { promisesResponseArray, apiContext: otherContext } = context;
   // eslint-disable-next-line sonarjs/no-unused-collection
   const listOfComponents = [];
@@ -923,13 +565,8 @@ export const readContextResponse = async (context, params) => {
   updateFieldType(metaFields);
 
 
-  // Setting fetchRowActionDetails API to null for Data objects
-  // preparing composite keys from classKeys for dataObjects CRUD operations, If classKeys are available then itemKey is '$key'
-  // using the additionalTableConfig prop and assigning it a new object with itemKey as '$key'
-  let { additionalTableConfig } = params;
   if (isDataObject) {
     const compositeKeys = [];
-    const dataObjectKey = '$key';
     const dataViewName = PCore.getDataTypeUtils().getSavableDataPage(classID);
     const dataPageKeys = PCore.getDataTypeUtils().getDataPageKeys(dataViewName);
     dataPageKeys?.forEach((item) =>
@@ -937,7 +574,6 @@ export const readContextResponse = async (context, params) => {
     );
     if (compositeKeys.length) {
       otherContext.setCompositeKeys(compositeKeys);
-      additionalTableConfig = { ...additionalTableConfig, itemKey: dataObjectKey };
     }
     otherContext.fetchRowActionDetails = null;
   }
@@ -951,11 +587,7 @@ export const readContextResponse = async (context, params) => {
   let fields;
   let tableConfig;
   childrenIterator?.forEach((presetMeta, index) => {
-    const template = presetMeta.template || 'Table';
     const {
-      presetId,
-      presetName,
-      filterExpression,
       configFields
     } = getTableConfigFromPresetMeta(
       { ...presetMeta, label: resolvedPresets[index].label },
@@ -999,59 +631,11 @@ export const readContextResponse = async (context, params) => {
 
     fields = initializeColumns(
       [...configFields, ...extraFields],
-      getPConnect().getActionsApi(),
-      getPConnect(),
-
     );
-    // Capture the xRay metrics per preset
-    xRayInfo.visibleColumns.personalisations[resolvedPresets[index].label] = configFields.length;
-    xRayInfo.totalColumns = extraFields.length;
-    tableConfig = initializeTableConfig(
-      {
-        personalization,
-        grouping,
-        expandGroups,
-        reorderFields,
-        editing,
-        deleting,
-        globalSearch,
-        toggleFieldVisibility,
-        filterExpression,
-        personalizationId,
-        presetId,
-        presetName,
-        showHeaderIcons,
-        title,
-        icon: icon?.replace('pi pi-', ''),
-        headerBar: true,
-        deltaAdjustment: 20,
-        relativeDates: true,
-        template,
-        basicMode,
-        selectionMode,
-        additionalTableConfig,
-        allowAddingNewRecords,
-        numberOfRows,
-        allowMovingRecords,
-        selectionCountThreshold,
-        disabled,
-        required,
-        openCaseViewAfterCreate,
-        enableGetNextWork,
-        defaultRowHeight,
-        inTabbedPage,
-        isDataObject,
-        classID,
-        isQueryable,
-        create,
-        showDynamicFields,
-        reportColumnsSet
-      },
-      fields
-    );
+    const patchQueryFields = preparePatchQueryFields(fields, isDataObject, classID);
+    const itemKey = getItemKey(fields);
+    tableConfig = { fieldDefs: fields, patchQueryFields, itemKey, isQueryable}
   });
-  // Set the presets info in xRayInfo object
-  xRayApis.updateXRay(xRayUid, xRayInfo);
   const meta = tableConfig;
   setListContext({
     meta,

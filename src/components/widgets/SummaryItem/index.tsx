@@ -68,7 +68,7 @@ export default function SummaryItem(props) {
             onClose={handleClose}
           >
           {item.actions && item.actions.map((option) => (
-            <MenuItem style={{fontSize: '14px'}} key={option.id} onClick={option.onClick}>
+            <MenuItem style={{fontSize: '14px'}} key={option.id || option.text} onClick={option.onClick}>
               {option.text}
             </MenuItem>
           ))}

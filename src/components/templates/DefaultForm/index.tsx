@@ -1,12 +1,14 @@
 import React, { createElement } from "react";
 import PropTypes from "prop-types";
-
+import { getInstructions } from '../utils';
 import createPConnectComponent from '../../../bridge/react_pconnect';
 
 import './DefaultForm.css';
 
 export default function DefaultForm(props) {
   const { getPConnect, NumCols } = props;
+  const instructions = getInstructions(getPConnect(), props.instructions);
+  const instructionText = instructions?.replace(/<\/?[^>]+(>|$)/g, '');
 
   let divClass: string;
 
@@ -37,6 +39,7 @@ export default function DefaultForm(props) {
 
   return (
     <div className={divClass}>
+      <div>{instructionText}</div>
       {dfChildren}
     </div>
   )

@@ -34,7 +34,7 @@ mat-horizontal-stepper {
 }
 
 .psdk-sub-step-current {
-    padding-left: 0.625rem; 
+    padding-left: 0.625rem;
     font-weight: bold;
     color: rgba(0,0,0,.87);
 }
@@ -53,7 +53,7 @@ mat-horizontal-stepper {
 }
 
 .psdk-sub-step-list {
-    list-style: none; 
+    list-style: none;
     padding-bottom: 0.625rem;
 }
 
@@ -219,35 +219,21 @@ mat-horizontal-stepper {
 .psdk-horizontal-step-label {
     color: rgba(0,0,0,.54);
     display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     min-width: 50px;
     vertical-align: middle;
     font-size: 14px;
     font-weight: 500;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    white-space: initial;
 }
 
 .psdk-horizontal-step-label-selected {
     color: rgba(0,0,0,.87);
     display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     min-width: 50px;
     vertical-align: middle;
     font-size: 14px;
     font-weight: 500;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.psdk-horizontal-step-text-label {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: block;
+    white-space: initial;
 }
 
 .psdk-horizontal-step-line {

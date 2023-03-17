@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-import { updatePageListFieldsConfig } from './EmbeddedUtil';
 import getDefaultViewMeta from './DefaultViewMeta';
 
 const USER_REFERENCE = 'UserReference';
@@ -142,8 +141,8 @@ function getPresetMetaAttribute(attribute) {
  * @param   {string}  classID          Class ID from the response
  * @returns {Array}                    List of fields with updated meta objects.
  */
- function generateViewMetaData(rawFields, classID, showField, isQueryable) {
-  return rawFields.map((item) => getDefaultViewMeta(item, classID, showField, isQueryable));
+ function generateViewMetaData(rawFields, classID, showField) {
+  return rawFields.map((item) => getDefaultViewMeta(item, classID, showField));
 }
 
 /**
@@ -156,7 +155,7 @@ function getPresetMetaAttribute(attribute) {
  * @param   {string}  classID           Class ID from the response
  * @returns {Array}                     List of all fields with their meta updated.
  */
- function getConfigFields(configFields, primaryFields, metaFields, classID, isQueryable) {
+ function getConfigFields(configFields, primaryFields, metaFields, classID) {
   const presetConfigFields = configFields;
   const primaryFieldsViewIndex = presetConfigFields.findIndex((field) => field.config.value === 'pyPrimaryFields');
   if (!primaryFields || !primaryFields.length) {
@@ -178,7 +177,7 @@ function getPresetMetaAttribute(attribute) {
       const uncommonFieldMeta = metaFields.find((metaField) => metaField.fieldID === uncommonField);
       if (uncommonFieldMeta) uncommonFieldsRawMeta.push(uncommonFieldMeta);
     });
-    const uncommonFieldsConfigMeta = generateViewMetaData(uncommonFieldsRawMeta, classID, true, isQueryable);
+    const uncommonFieldsConfigMeta = generateViewMetaData(uncommonFieldsRawMeta, classID, true);
 
     presetConfigFields.splice(primaryFieldsViewIndex, 1, ...uncommonFieldsConfigMeta);
   }
@@ -203,8 +202,7 @@ function getPresetMetaAttribute(attribute) {
   getPConnect,
   classID,
   primaryFields,
-  metaFields,
-  isQueryable
+  metaFields
 ) {
   let presetId;
   let presetName;
@@ -246,7 +244,7 @@ function getPresetMetaAttribute(attribute) {
       const { type, config } = presetMeta.timelineDate;
       fieldsMeta.children.push({ type, config: { ...config, show: false } });
     }
-    configFields = getConfigFields(fieldsMeta.children, primaryFields, metaFields, classID, isQueryable);
+    configFields = getConfigFields(fieldsMeta.children, primaryFields, metaFields, classID);
   } else {
     fieldsMeta = presetMeta.props;
     configFields = getConfigFields(
@@ -258,8 +256,7 @@ function getPresetMetaAttribute(attribute) {
         }),
       primaryFields,
       metaFields,
-      classID,
-      isQueryable
+      classID
     );
   }
   return {
@@ -420,14 +417,13 @@ function prepareConfigFields(configFields, pushToComponentsList) {
   configFieldSet,
   reportColumnsSet,
   classID,
-  showDynamicFields,
-  isQueryable
+  showDynamicFields
 ) {
   // Filter all the extra fields
   const extraFileds = metaFields.filter((item) => {
     return isAnExtraField(configFields, configFieldSet, reportColumnsSet, item, classID, showDynamicFields);
   });
-  return generateViewMetaData(extraFileds, classID, false, isQueryable);
+  return generateViewMetaData(extraFileds, classID, false);
   // Update the meta object of each of the extra fields.
 }
 
@@ -595,8 +591,7 @@ export const readContextResponse = async (context, params) => {
       getPConnect,
       classID,
       primaryFields,
-      metaFields,
-      isQueryable
+      metaFields
     );
     const pushToComponentsList = (fieldType) => {
       listOfComponents.push(fieldType);
@@ -604,11 +599,6 @@ export const readContextResponse = async (context, params) => {
     // read report columns response - in case of nonqueryable ignore the response and rely only on the fields configured at authoing time in presets
     const reportColumnsSet = isQueryable ? getReportColumns(promisesResponseArray[1]) : new Set();
 
-    // in case of queryable, change pagelist field config from filtered-list annotation to property annotation
-    // TODO: Remove this conversion if the response is nested and we support scalar list component for pageList properties - queryable
-    if (isQueryable) {
-      updatePageListFieldsConfig(configFields);
-    }
     const configFieldSet = prepareConfigFields(configFields, pushToComponentsList);
 
     // FIXME #EmbeddedPropertyPatch
@@ -624,8 +614,7 @@ export const readContextResponse = async (context, params) => {
       configFieldSet,
       reportColumnsSet,
       classID,
-      showDynamicFields,
-      isQueryable
+      showDynamicFields
     );
 
 

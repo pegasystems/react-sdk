@@ -3,8 +3,6 @@ const PROPERTY_ANNOTATION = '@P .';
 const USER_ANNOTATION = '@USER .';
 const ASSOCIATED_ANNOTATION = '@ASSOCIATED .';
 const ASSOCIATION_ANNOTATION = '@CA ';
-const FILTERED_LIST_ANNOTATION = '@FILTERED_LIST ';
-const SCALAR_LIST = 'ScalarList';
 
 const getDefaultConfig = (fieldMeta, classID, show) => {
   const {
@@ -36,24 +34,9 @@ const getDefaultConfig = (fieldMeta, classID, show) => {
   };
 };
 
-function updateMetaWithScalarList(viewMeta, fieldMeta) {
-  const { classID: contextClass } = fieldMeta;
-  const {
-    type,
-    config: { value }
-  } = viewMeta;
-  const [propertyAnnotation, parent] = value.split('.');
-  const updatedValue = value.replace(parent, parent.concat('[]')).replace(propertyAnnotation, FILTERED_LIST_ANNOTATION);
-  viewMeta.config.value = updatedValue;
-  viewMeta.config.componentType = type;
-  viewMeta.config.readOnly = true;
-  viewMeta.config.contextClass = contextClass;
-  viewMeta.type = SCALAR_LIST;
-  return viewMeta;
-}
 
-export default function getDefaultViewMeta(fieldMeta, classID, showField, isQueryableDataPage) {
-  const { type, name, displayAs, fieldID, isUserReference, associationID, datasource, label, embeddedType, fieldType } =
+export default function getDefaultViewMeta(fieldMeta, classID, showField) {
+  const { type, name, displayAs, fieldID, isUserReference, associationID, datasource, label, fieldType } =
     fieldMeta;
   const mapperKey = type && displayAs ? type.concat(':').concat(displayAs) : type;
   const defaultConfig = getDefaultConfig(fieldMeta, classID, showField);
@@ -234,10 +217,6 @@ export default function getDefaultViewMeta(fieldMeta, classID, showField, isQuer
         type,
         config: defaultConfig
       };
-  }
-
-  if (embeddedType === 'Page List' && !isQueryableDataPage) {
-    updateMetaWithScalarList(viewMeta, fieldMeta);
   }
   return viewMeta;
 }

@@ -3,6 +3,7 @@ import { getLocale } from './formatters/common';
 
 export const dateFormatInfoDefault = {
   dateFormatString: "MM/DD/YYYY",
+  dateFormatStringLong: "MMM DD, YYYY",
   dateFormatStringLC: "mm/dd/yyyy",
   dateFormatMask: "__/__/____"
 }
@@ -28,18 +29,21 @@ export const getDateFormatInfo = () => {
     {
       loc: locMM,
       format: 'MM',
+      longFormat: 'MMM',
       placeholder: 'mm',
       mask: '__'
     },
     {
       loc: locDD,
       format: 'DD',
+      longFormat: 'DD',
       placeholder: 'dd',
       mask: '__'
     },
     {
       loc: locYYYY,
       format: 'YYYY',
+      longFormat: 'YYYY',
       placeholder: 'yyyy',
       mask: '____'
     }
@@ -54,6 +58,7 @@ export const getDateFormatInfo = () => {
 
   // Construct the structure to return...
   theDateFormatInfo.dateFormatString = `${arrPieces[0].format}/${arrPieces[1].format}/${arrPieces[2].format}`;
+  theDateFormatInfo.dateFormatStringLong = `${arrPieces[0].longFormat} ${arrPieces[1].longFormat}, ${arrPieces[2].longFormat}`;
   theDateFormatInfo.dateFormatStringLC = `${arrPieces[0].placeholder}/${arrPieces[1].placeholder}/${arrPieces[2].placeholder}`;
   theDateFormatInfo.dateFormatMask = `${arrPieces[0].mask}/${arrPieces[1].mask}/${arrPieces[2].mask}`;
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 // import { TextField } from "@material-ui/core";
 import CurrencyTextField from '@unicef/material-ui-currency-textfield';
 import handleEvent from '../../../helpers/event-utils';
-import FieldValueList from '../../../components/designSystemExtensions/FieldValueList';
+import FieldValueList from '../../designSystemExtensions/FieldValueList';
 import { format } from "../../../helpers/formatters";
 import { getCurrencyCharacters, getCurrencyOptions } from './currency-utils';
 

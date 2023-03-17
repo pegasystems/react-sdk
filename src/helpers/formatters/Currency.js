@@ -26,7 +26,7 @@ function CurrencyFormatter(
       currency
     });
 
-    let countryCode =  currentLocale.split("-")[1];
+    let countryCode =  currentLocale.split("-")[1].toUpperCase();
 
     // If countryCode is still undefined, setting it as US
     if( !countryCode ){

@@ -23,7 +23,6 @@ export default function Currency(props) {
     helperText,
     displayMode,
     hideLabel,
-    allowDecimals,
     currencyISOCode = "USD"
   } = props;
 
@@ -31,7 +30,6 @@ export default function Currency(props) {
   const actions = pConn.getActionsApi();
   const propName = pConn.getStateProps().value;
   const helperTextToDisplay = validatemessage || helperText;
-  const decPlaces = allowDecimals ? 2 : 0;
 
   // console.log(`Currency: label: ${label} value: ${value}`);
 
@@ -110,7 +108,6 @@ export default function Currency(props) {
       outputFormat='number'
       textAlign='left'
       InputProps={{ ...readOnlyProp, inputProps: { ...testProp, value: currValue } }}
-      decimalPlaces={decPlaces}
       currencySymbol={theCurrSym}
       decimalCharacter={theCurrDec}
       digitGroupSeparator={theCurrSep}

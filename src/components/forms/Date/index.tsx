@@ -44,7 +44,8 @@ export default function Date(props) {
   }
 
   if (displayMode === 'STACKED_LARGE_VAL') {
-    return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
+    const formattedDate = format(props.value, 'date', { format: dateFormatInfo.dateFormatString });
+    return <FieldValueList name={hideLabel ? '' : label} value={formattedDate} variant='stacked' />;
   }
 
   if (readOnly) {

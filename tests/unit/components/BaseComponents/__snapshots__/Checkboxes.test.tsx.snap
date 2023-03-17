@@ -30,6 +30,7 @@ exports[`renders a group of 3 checkboxes, hint text for label 1`] = `
         className="govuk-checkboxes__item"
       >
         <input
+          aria-describedby=""
           className="govuk-checkboxes__input"
           id="test-checkbox"
           name="test-checkbox"
@@ -46,9 +47,10 @@ exports[`renders a group of 3 checkboxes, hint text for label 1`] = `
         className="govuk-checkboxes__item"
       >
         <input
+          aria-describedby=""
           className="govuk-checkboxes__input"
           id="test-checkbox-1"
-          name="test-checkbox-1"
+          name="test-checkbox"
           type="checkbox"
           value={false}
         />
@@ -62,9 +64,10 @@ exports[`renders a group of 3 checkboxes, hint text for label 1`] = `
         className="govuk-checkboxes__item"
       >
         <input
+          aria-describedby=""
           className="govuk-checkboxes__input"
           id="test-checkbox-2"
-          name="test-checkbox-2"
+          name="test-checkbox"
           type="checkbox"
           value={false}
         />
@@ -103,6 +106,7 @@ exports[`renders a group of 3 checkboxes, hint text for optionsList 1`] = `
         className="govuk-checkboxes__item"
       >
         <input
+          aria-describedby="test-checkbox-hint"
           className="govuk-checkboxes__input"
           id="test-checkbox"
           name="test-checkbox"
@@ -125,9 +129,10 @@ exports[`renders a group of 3 checkboxes, hint text for optionsList 1`] = `
         className="govuk-checkboxes__item"
       >
         <input
+          aria-describedby=""
           className="govuk-checkboxes__input"
           id="test-checkbox-1"
-          name="test-checkbox-1"
+          name="test-checkbox"
           type="checkbox"
           value={false}
         />
@@ -141,9 +146,10 @@ exports[`renders a group of 3 checkboxes, hint text for optionsList 1`] = `
         className="govuk-checkboxes__item"
       >
         <input
+          aria-describedby=""
           className="govuk-checkboxes__input"
           id="test-checkbox-2"
-          name="test-checkbox-2"
+          name="test-checkbox"
           type="checkbox"
           value={false}
         />
@@ -193,6 +199,7 @@ exports[`renders a group of 3 checkboxes, with error as expected  1`] = `
         className="govuk-checkboxes__item"
       >
         <input
+          aria-describedby=""
           className="govuk-checkboxes__input"
           id="test-checkbox"
           name="test-checkbox"
@@ -209,9 +216,10 @@ exports[`renders a group of 3 checkboxes, with error as expected  1`] = `
         className="govuk-checkboxes__item"
       >
         <input
+          aria-describedby=""
           className="govuk-checkboxes__input"
           id="test-checkbox-1"
-          name="test-checkbox-1"
+          name="test-checkbox"
           type="checkbox"
           value={false}
         />
@@ -225,9 +233,10 @@ exports[`renders a group of 3 checkboxes, with error as expected  1`] = `
         className="govuk-checkboxes__item"
       >
         <input
+          aria-describedby=""
           className="govuk-checkboxes__input"
           id="test-checkbox-2"
-          name="test-checkbox-2"
+          name="test-checkbox"
           type="checkbox"
           value={false}
         />
@@ -266,6 +275,7 @@ exports[`renders a group of 3 checkboxes, with legend 'heading'  1`] = `
         className="govuk-checkboxes__item"
       >
         <input
+          aria-describedby=""
           className="govuk-checkboxes__input"
           id="test-checkbox"
           name="test-checkbox"
@@ -282,9 +292,10 @@ exports[`renders a group of 3 checkboxes, with legend 'heading'  1`] = `
         className="govuk-checkboxes__item"
       >
         <input
+          aria-describedby=""
           className="govuk-checkboxes__input"
           id="test-checkbox-1"
-          name="test-checkbox-1"
+          name="test-checkbox"
           type="checkbox"
           value={false}
         />
@@ -298,9 +309,10 @@ exports[`renders a group of 3 checkboxes, with legend 'heading'  1`] = `
         className="govuk-checkboxes__item"
       >
         <input
+          aria-describedby=""
           className="govuk-checkboxes__input"
           id="test-checkbox-2"
-          name="test-checkbox-2"
+          name="test-checkbox"
           type="checkbox"
           value={false}
         />

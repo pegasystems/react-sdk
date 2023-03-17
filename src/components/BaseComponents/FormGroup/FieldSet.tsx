@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ConditionalWrapper from '../../../helpers/formatters/ConditionalWrapper';
 
 export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, children, fieldsetElementProps}){
 
@@ -12,12 +13,6 @@ export default function FieldSet({legendIsHeading=true, label, name, errorText, 
   const errorID = `${name}-error`;
   if (hintText) {describedByIDs.push(hintID)};
   if (errorText) {describedByIDs.push(errorID)};
-
-
-  // TODO Refactor if required elsewhere - THIS IS ALSO USED IN FORMGROUP.tsx
-  const ConditionalWrapper = ({ condition, wrapper, childrenToWrap }) => {
-    return condition ? wrapper(childrenToWrap) : childrenToWrap;
-  }
 
   return (
     <div className={formGroupDivClasses}>

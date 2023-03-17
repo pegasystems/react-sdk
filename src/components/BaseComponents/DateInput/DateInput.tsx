@@ -12,6 +12,7 @@ export default function DateInput(props){
     return `${inputClasses} govuk-input--width-${width}`.trim();
   }
 
+
   // NOTE - Calculating outside of JSX incase of future translation requirements
   const dayLabel = "Day";
   const monthLabel = "Month";

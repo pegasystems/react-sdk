@@ -1,8 +1,8 @@
 import React from 'react';
 import GDSCheckboxes from '../../BaseComponents/Checkboxes/Checkboxes';
-import {useIsOnlyField, useStepName} from '../../../helpers/hooks/QuestionDisplayHooks'
+import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks'
 import handleEvent from '../../../helpers/event-utils';
-
+import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
 export default function CheckboxComponent(props) {
   const {
@@ -11,18 +11,23 @@ export default function CheckboxComponent(props) {
     inputProps,
     required,
     errorText,
-    hintText
+    hintText,
+    label,
+    readOnly,
+    value
   } = props;
 
+  const isOnlyField = useIsOnlyField();
+
+  if(readOnly){
+    return (<ReadOnlyDisplay value={value} label={label}/>)
+  }
 
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();
   const { caption } = theConfigProps;
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps().value;
-
-  const isOnlyField = useIsOnlyField();
-  const stepName = useStepName(getPConnect);
 
   // TODO - How to get the optionsList from Pega? Fetch and plug optionsList
   // Hard coded example data plugged in to pass for the checkbox optionsList
@@ -42,7 +47,7 @@ export default function CheckboxComponent(props) {
       <GDSCheckboxes
         inputProps={...inputProps}
         name={name}
-        label={stepName}
+        label={label}
         optionsList={optionsList}
         isSmall
         legendIsHeading={isOnlyField}

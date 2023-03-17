@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import { FieldGroup } from "@pega/cosmos-react-core";
-// import { LazyMap as LazyComponentMap } from "../../components_map";
 import { getAllFields } from '../templates/utils';
+import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
 
 // Need to import any templates that we might render
 import CaseSummary from '../templates/CaseSummary';
@@ -30,6 +29,7 @@ import OneColumnPage from '../templates/OneColumnPage';
 import InlineDashboardPage from '../templates/InlineDashboardPage';
 import DetailsSubTabs from '../templates/Details/SubTabs';
 import TwoColumnTab from '../templates/TwoColumnTab';
+import CheckAnswers from '../templates/CheckAnswers'
 
 import './View.css';
 //
@@ -38,10 +38,8 @@ import './View.css';
 // is totally at your own risk.
 //
 
-const FORMTEMPLATES = ['OneColumn', 'TwoColumn', 'DefaultForm', 'WideNarrow', 'NarrowWide'];
-
 export default function View(props) {
-  const { children, template, getPConnect, mode } = props;
+  const { children, template, getPConnect, mode, readOnly } = props;
   let { label, showLabel = false } = props;
 
   // Get the inherited props from the parent to determine label settings. For 8.6, this is only for embedded data form views
@@ -167,50 +165,36 @@ export default function View(props) {
         ViewTemplate = DataReference;
         break;
 
+      case 'HMRC_ODX_CheckAnswers':
+        ViewTemplate = CheckAnswers;
+        break;
+
       default:
         // eslint-disable-next-line no-console
         console.error(`View: Trying to render an unknown template: ${template}`);
         break;
     }
 
-    // for debugging/investigation
-    // console.log(`View rendering template: ${template}`);
-
     // spreading because all props should go to the template
-    let RenderedTemplate = <ViewTemplate {...props}>{children}</ViewTemplate>;
-
-    if (FORMTEMPLATES.includes(template) && showLabel) {
-      // Original:
-      // RenderedTemplate = (
-      //   <FieldGroup name={label} style={{ marginBlockStart: "1rem" }}>
-      //     {RenderedTemplate}
-      //   </FieldGroup>
-      // );
-      RenderedTemplate = (
-        <div
-          data-name='RenderedTemplate'
-          data-template-type={template}
-          /* name */ id='label'
-          style={{ marginBlockStart: '1rem' }}
-          className='govuk-grid-column-two-thirds'
-        >
-          {RenderedTemplate}
-        </div>
-      );
-    }
+    const RenderedTemplate = <ViewTemplate {...props}>{children}</ViewTemplate>;
 
     return (
-      <div className='govuk-grid-row'>
+      <>
         {showLabel && template !== 'SubTabs' && template !== 'SimpleTable' && (
-          <h1 className='govuk-heading-m'>{label}</h1>
+          <h2 className='govuk-heading-m'>{label}</h2>
         )}
-        {RenderedTemplate}
-      </div>
+
+        {/* Conditional wrapping of a view in <dl> when read only. Currently expected only to be used in check answers screen */}
+        <ConditionalWrapper
+          condition={readOnly && mode === undefined && showLabel}
+          wrapper={child => <dl className="govuk-summary-list">
+            {child}
+          </dl>}
+          childrenToWrap={RenderedTemplate}
+        />
+      </>
     );
   }
-
-  // debugging/investigation help
-  // console.log(`View about to render React.Fragment for children: ${children}`);
 
   if (children) {
     return <>{children}</>;

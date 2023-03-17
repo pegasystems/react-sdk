@@ -5,6 +5,7 @@ import handleEvent from '../../../helpers/event-utils';
 import Select from '../../BaseComponents/Select/Select';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
+import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay'
 
 interface IOption {
   key: string;
@@ -19,40 +20,42 @@ export default function Dropdown(props) {
     datasource = [],
     validatemessage,
     helperText,
-    label
+    label,
+    readOnly,
   } = props;
 
   const [options, setOptions] = useState<Array<IOption>>([]);
+  const [displayValue, setDisplayValue] = useState();
   const isOnlyField = useIsOnlyField();
+  // TODO consider moving this functionality 'up' especially when we add Error summary,
+  // as it may be tidier to call this only once, rather than on every input
+  useAddErrorToPageTitle(validatemessage);
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
-
 
   // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
   const propName = thePConn.getStateProps().value;
   const formattedPropName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
 
-  // TODO consider moving this functionality 'up' especially when we add Error summary,
-  // as it may be tidier to call this only once, rather than on every input
-  useAddErrorToPageTitle(validatemessage);
-
   useEffect(() => {
     const optionsList = [...Utils.getOptionList(props, getPConnect().getDataObject())];
     if(value === '') {optionsList.unshift({key:placeholder, value:placeholder})};
+    const selectedOption = optionsList.find(option => option.key === value);
+    if(selectedOption && selectedOption.value){
+      setDisplayValue(selectedOption.value);
+    }
     setOptions(optionsList);
   }, [datasource, value]);
-
-  /* let testProp = {};
-
-  testProp = {
-    'data-test-id': testId
-  }; */
 
   const handleChange = evt => {
     const selectedValue = evt.target.value === placeholder ? '' : evt.target.value;
     handleEvent(actionsApi, 'changeNblur', propName, selectedValue);
   };
+
+  if(readOnly){
+    return <ReadOnlyDisplay label={label} value={displayValue} />
+  }
 
   return (
     <>

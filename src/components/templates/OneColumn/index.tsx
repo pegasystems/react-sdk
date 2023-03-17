@@ -5,9 +5,9 @@ export default function OneColumn(props) {
   const { children} = props;
 
   return (
-    <div className="govuk-grid-column-full">
+    <>
         {children.map(child => { return child; } )}
-    </div>
+    </>
   )
 }
 

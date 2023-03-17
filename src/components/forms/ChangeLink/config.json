@@ -1,0 +1,45 @@
+{
+  "name": "HMRC_ODX_ChangeLink",
+  "label": "Change link",
+  "description": "Change link",
+  "organization": "HMRC",
+  "version": "0.0.1",
+  "library": "ODX",
+  "allowedApplications": [],
+  "componentKey": "HMRC_ODX_ChangeLink",
+  "type": "Field",
+  "subtype": "Text",
+  "properties": [
+    {
+      "name": "label",
+      "label": "Label value",
+      "format": "TEXT"
+    },
+    {
+      "name": "placeholder",
+      "label": "Placeholder",
+      "format": "TEXT"
+    },
+    {
+      "name": "visibility",
+      "label": "Visible",
+      "format": "VISIBILITY"
+    },
+    {
+      "name": "disabled",
+      "label": "Disabled",
+      "format": "DISABLED"
+    },
+    {
+      "name": "required",
+      "label": "Required",
+      "format": "REQUIRED"
+    },
+    {
+      "name": "stepId",
+      "label": "Step ID (Navigation)",
+      "format": "TEXT"
+    }
+  ],
+  "defaultConfig": {}
+}

@@ -75,8 +75,7 @@ export default function Currency(props) {
   }
 
   function currOnChange(event, inValue) {
-    // eslint-disable-next-line no-console
-    console.log(`Currency currOnChange inValue: ${inValue}`);
+    // console.log(`Currency currOnChange inValue: ${inValue}`);
 
     // update internal value
     setCurrValue(inValue);
@@ -87,8 +86,7 @@ export default function Currency(props) {
     handleEvent(actions, 'changeNblur', propName, inValue !== '' ? Number(inValue) : inValue);
   }
 
-  // eslint-disable-next-line no-console
-  console.log(`theCurrSym: ${theCurrSym} | theCurrDec: ${theCurrDec} | theCurrSep: ${theCurrSep}`);
+  // console.log(`theCurrSym: ${theCurrSym} | theCurrDec: ${theCurrDec} | theCurrSep: ${theCurrSep}`);
 
   return (
     <CurrencyTextField

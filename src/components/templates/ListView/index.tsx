@@ -1,6 +1,8 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable guard-for-in */
 /* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-shadow */
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
@@ -37,6 +39,7 @@ import { Radio } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import { filterData } from '../../templates/SimpleTable/helpers';
 import './ListView.css';
+import useInit from './hooks'
 
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
 declare const PCore: any;
@@ -59,7 +62,16 @@ const filterByColumns: Array<any> = [];
 
 export default function ListView(props) {
   const { getPConnect, bInForm } = props;
-  const { globalSearch, presets, referenceList, rowClickAction, selectionMode, referenceType, payload, parameters, compositeKeys } = props;
+  const { globalSearch, referenceList, rowClickAction, selectionMode, referenceType, payload, parameters, compositeKeys, showDynamicFields, presets } = props;
+  const ref = useRef({}).current;
+  const cosmosTableRef = useRef();
+  // List component context
+  const [listContext, setListContext] = useState<any>({});
+  const { meta } = listContext;
+  const xRayApis = PCore.getDebugger().getXRayRuntime();
+  const xRayUid = xRayApis.startXRay();
+
+  useInit({ ...props, setListContext, ref, showDynamicFields, xRayUid, cosmosTableRef });
 
   const thePConn = getPConnect();
   const componentConfig = thePConn.getComponentConfig();
@@ -186,7 +198,6 @@ export default function ListView(props) {
   function stableSort<T>(array: Array<T>, comparator: (a: T, b: T) => number) {
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
     stabilizedThis.sort((a, b) => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow, no-shadow
       const order = comparator(a[0], b[0]);
       if (order !== 0) return order;
       return a[1] - b[1];
@@ -219,16 +230,19 @@ export default function ListView(props) {
 
   // }
 
-  function getHeaderCells(colFields, fields) {
-    const arReturn = colFields.map((field: any, colIndex) => {
+  const AssignDashObjects = ['Assign-Worklist', 'Assign-WorkBasket'];
+  function getHeaderCells(colFields, fields, presetFields) {
+    const arReturn = colFields.map((field: any, index) => {
       let theField = field.config.value.substring(field.config.value.indexOf(' ') + 1);
       if (theField.indexOf('.') === 0) {
         theField = theField.substring(1);
       }
-
+      const colIndex = fields.findIndex(ele => ele.name === theField);
+      const displayAsLink = field.config.displayAsLink;
       const headerRow: any = {};
       headerRow.id = theField;
       headerRow.type = field.type;
+      headerRow.displayAsLink = displayAsLink;
       headerRow.numeric =
         field.type === 'Decimal' ||
         field.type === 'Integer' ||
@@ -236,23 +250,31 @@ export default function ListView(props) {
         field.type === 'Currency' ||
         false;
       headerRow.disablePadding = false;
-      headerRow.label = fields[colIndex].config.label;
-
+      headerRow.label =  presetFields[index].config.label;
+      if (colIndex > -1) {
+        headerRow.classID = fields[colIndex].classID;
+      }
+      if (displayAsLink) {
+        headerRow.isAssignmentLink = AssignDashObjects.includes(headerRow.classID);
+        if (field.config.value?.startsWith('@CA')) {
+          headerRow.isAssociation = true;
+        }
+      }
       return headerRow;
     });
     return arReturn;
   }
 
   function updateFields(arFields, theColumns): Array<any> {
-    const arReturn = arFields;
-    arFields.forEach((field, index) => {
+    const arReturn = arFields.filter(ele => ele.type !== 'reference');
+    arReturn.forEach((field, index) => {
       arReturn[index].config.name = theColumns[index].id;
     });
 
     return arReturn;
   }
 
-  function getUsingData(arTableData, theColumns): Array<any> {
+  function getUsingData(arTableData): Array<any> {
     if (selectionMode === SELECTION_MODE.SINGLE || selectionMode === SELECTION_MODE.MULTI) {
       const record = arTableData?.length > 0 ? arTableData[0] : '';
       if (typeof record === 'object' && !('pyGUID' in record) && !('pyID' in record)) {
@@ -261,24 +283,8 @@ export default function ListView(props) {
       }
     }
     const arReturn = arTableData?.map((data: any) => {
-      const row: any = {};
 
-      theColumns.forEach(col => {
-        row[col.id] = data[col.id];
-      });
-      row[rowID] = data[rowID];
-      // for (const field of theColumns) {
-      //   row[field.id] = data[field.id];
-      // }
-
-      // add in pxRefObjectClass and pzInsKey
-      if (data['pxRefObjectClass']) {
-        row['pxRefObjectClass'] = data['pxRefObjectClass'];
-      }
-
-      if (data['pzInsKey']) {
-        row['pzInsKey'] = data['pzInsKey'];
-      }
+      const row = data;
 
       return row;
     });
@@ -485,20 +491,96 @@ export default function ListView(props) {
     }, 0);
   }, []);
 
-  function fetchAllData() {
+  function fetchAllData(fields) {
+    let query: any = null;
+    if (payload) {
+      query = payload.query;
+    } else if (fields?.length && meta.isQueryable) {
+      query = {select: fields};
+    } else if (dashboardFilterPayload) {
+      query = dashboardFilterPayload.query;
+    }
     const context = getPConnect().getContextName();
     return PCore.getDataPageUtils().getDataAsync(
       referenceList,
       context,
       payload ? payload.dataViewParameters : dataViewParameters,
       null,
-      payload ? payload.query : dashboardFilterPayload && dashboardFilterPayload.query
+      query
     );
   }
 
+  const buildSelect = (fieldDefs, colId, patchQueryFields = [], compositeKeys = []) => {
+    const listFields: any = [];
+    if (colId) {
+      const field = getField(fieldDefs, colId);
+      listFields.push({
+        field: field.name
+      });
+    } else {
+      // NOTE: If we ever decide to not set up all the `fieldDefs` on select, ensure that the fields corresponding to `state.groups` are set up. Needed in Client-mode grouping/pagination.
+      fieldDefs.forEach(field => {
+        if (!listFields.find(f => f.field === field.name)) {
+          listFields.push({
+            field: field.name
+          });
+        }
+      });
+      patchQueryFields.forEach(k => {
+        if (!listFields.find(f => f.field === k)) {
+          listFields.push({
+            field: k
+          });
+        }
+      });
+    }
+
+    compositeKeys.forEach(k => {
+      if (!listFields.find(f => f.field === k)) {
+        listFields.push({
+          field: k
+        });
+      }
+    });
+    return listFields;
+  };
+
+  const addItemKeyInSelect = (
+    fieldDefs,
+    itemKey,
+    select,
+    compositeKeys
+  ) => {
+    const elementFound = getField(fieldDefs, itemKey);
+
+    if (itemKey && !elementFound && Array.isArray(select) && !(compositeKeys !== null && compositeKeys?.length) && !select.find(sel => sel.field === itemKey)) {
+      return [...select, {
+        field: itemKey
+      }];
+    }
+
+    return select;
+  };
+
+  const getField = (fieldDefs, columnId) => {
+    const fieldsMap = getFieldsMap(fieldDefs);
+    return fieldsMap.get(columnId);
+  };
+
+  const getFieldsMap = fieldDefs => {
+    const fieldsMap = new Map();
+    fieldDefs.forEach(element => {
+      fieldsMap.set(element.id, element);
+    });
+    return fieldsMap;
+  };
+
   async function fetchDataFromServer() {
     let bCallSetRowsColumns = true;
-    const workListJSON = await fetchAllData();
+    const { fieldDefs, itemKey, patchQueryFields } = meta;
+    let listFields = fieldDefs ? buildSelect(fieldDefs, undefined, patchQueryFields, compositeKeys) : [];
+    listFields = addItemKeyInSelect(fieldDefs, itemKey, listFields, compositeKeys);
+    const workListJSON = await fetchAllData(listFields);
 
     // don't update these fields until we return from promise
     let fields = presets[0].children[0].children;
@@ -508,7 +590,7 @@ export default function ListView(props) {
 
     const tableDataResults = workListJSON['data'];
 
-    const myColumns = getHeaderCells(columnFields, fields);
+    const myColumns = getHeaderCells(columnFields, fieldDefs, fields);
 
     const selectParams: any = [];
 
@@ -530,7 +612,7 @@ export default function ListView(props) {
 
     setResponse(tableDataResults);
 
-    const usingDataResults = getUsingData(tableDataResults, myColumns);
+    const usingDataResults = getUsingData(tableDataResults);
 
     // store globally, so can be searched, filtered, etc.
     myRows = updateData(usingDataResults, fields);
@@ -555,8 +637,10 @@ export default function ListView(props) {
   }
 
   useEffect(() => {
-    fetchDataFromServer();
-  }, []);
+    if (listContext.meta) {
+      fetchDataFromServer();
+    }
+  }, [listContext]);
 
   function searchFilter(value: string, rows: Array<any>) {
     function filterArray(el: any): boolean {
@@ -630,8 +714,8 @@ export default function ListView(props) {
   }
 
   function openWork(row) {
-    const { pxRefObjectClass, pxRefObjectKey } = row;
-
+    const { pxRefObjectKey } = row;
+    const pxRefObjectClass = row.pxRefObjectClass || row.pxObjClass;
     if (pxRefObjectClass !== '' && pxRefObjectKey !== '') {
       thePConn.getActionsApi().openWorkByHandle(pxRefObjectKey, pxRefObjectClass);
     }
@@ -854,19 +938,37 @@ export default function ListView(props) {
     return bReturn;
   }
 
-  function _listViewClick(name, row) {
-    switch (name) {
-      case 'pxTaskLabel':
-        openAssignment(row);
-        break;
+  function _listViewClick(row, column) {
+    const name = column.id
+    if (column.displayAsLink) {
+      const { pxObjClass } = row;
+      let { pzInsKey } = row;
+      if (column.isAssociation) {
+        const associationCategory = name.split(':')[0];
+        pzInsKey = row[`${associationCategory}:pzInsKey`];
+      }
+      if (column.isAssignmentLink) {
+        thePConn.getActionsApi().openAssignment(pzInsKey, pxObjClass, {
+          containerName: 'primary'
+        });
+      } else {
+        thePConn.getActionsApi().openWorkByHandle(pzInsKey, pxObjClass);
+      }
+    } else {
+      switch (name) {
+        case 'pxTaskLabel':
+          openAssignment(row);
+          break;
 
-      case 'pxRefObjectInsName':
-        openWork(row);
-        break;
+        case 'pxRefObjectInsName':
+          openWork(row);
+          break;
 
-      default:
-        break;
+        default:
+          break;
+      }
     }
+
   }
 
   function _listTitle() {
@@ -945,6 +1047,7 @@ export default function ListView(props) {
                   variant='outlined'
                   placeholder=''
                   size='small'
+                  id="search"
                   onChange={_onSearch}
                 />
               </Grid>
@@ -1008,11 +1111,11 @@ export default function ListView(props) {
                                   align={column.align}
                                   className={classes.cell}
                                 >
-                                  {_showButton(column.id, row) ? (
+                                  {_showButton(column.id, row) || column.displayAsLink ? (
                                     <Link
                                       component='button'
                                       onClick={() => {
-                                        _listViewClick(column.id, row);
+                                        _listViewClick(row, column);
                                       }}
                                     >
                                       {column.format && typeof value === 'number'

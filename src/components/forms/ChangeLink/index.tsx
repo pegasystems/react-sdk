@@ -31,7 +31,7 @@ const HmrcOdxChangeLink = props => {
 
   return (
     <>
-      <div style={{"display":"flex", "gap": "20px"}}>
+      <div className="govuk-!-margin-bottom-9" style={{"display":"flex", "gap": "20px"}}>
         <span><h2 className="govuk-heading-m" >{label}</h2></span>
         <span style={{"marginLeft":"auto"}}><a href='#' className="govuk-link" onClick={handleOnClick}>Change<span className="govuk-visually-hidden"> {label}</span></a>
         </span>

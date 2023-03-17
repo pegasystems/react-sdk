@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getAllFields } from '../templates/utils';
+import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
 
 // Need to import any templates that we might render
 import CaseSummary from '../templates/CaseSummary';
@@ -38,7 +39,7 @@ import './View.css';
 //
 
 export default function View(props) {
-  const { children, template, getPConnect, mode } = props;
+  const { children, template, getPConnect, mode, readOnly } = props;
   let { label, showLabel = false } = props;
 
   // Get the inherited props from the parent to determine label settings. For 8.6, this is only for embedded data form views
@@ -182,7 +183,15 @@ export default function View(props) {
         {showLabel && template !== 'SubTabs' && template !== 'SimpleTable' && (
           <h2 className='govuk-heading-m'>{label}</h2>
         )}
-        {RenderedTemplate}
+        {/* US-9361 TODO Condition here is flakey! Possible solutions, - new layout (readonly answers), set showlabel false in checkanswers and wrap top level...*/}
+        <ConditionalWrapper
+          condition={readOnly && mode === undefined && showLabel}
+          wrapper={child => <dl className="govuk-summary-list">
+            {child}
+          </dl>}
+          childrenToWrap={RenderedTemplate}
+        />
+
       </>
     );
   }

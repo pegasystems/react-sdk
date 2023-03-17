@@ -8,31 +8,29 @@ export default function HmrcOdxCheckAnswers(props) {
 
   const [formElms, setFormElms] = useState<Array<React.ReactElement>>([]);
 
+  props.getPConnect().setInheritedProp('partOfCheckAnswers', true);
+
   useEffect(() => {
     const elms:Array<React.ReactElement> = [];
     const region = children[0] ? children[0].props.getPConnect() : null;
     if (region?.getChildren()) {
-      region.getChildren().forEach((child => {
+      region.getChildren().map(child => {
         child.getPConnect().setInheritedProp('readOnly', true);
-        child.getPConnect().setInheritedProp('showLabel', false);
         elms.push(child.getPConnect().getComponent());
-      }));
+      });
       setFormElms(elms);
     }
   }, [children[0]]);
 
+
+
   return (
     <div>
       {formElms.map((field, index) => {
-        const key = `${field.props.inheritedProps.find(prop => prop.prop === "label").value.replace(/ /g,"_")}_${index}`;
+          const key = `${field.props.inheritedProps.find(prop => prop.prop === "label").value.replace(/ /g,"_")}_${index}`;
 
-
-        return(
-          <dl key={`${key}-dl`} className="govuk-summary-list govuk-!-margin-bottom-9">
-            <Fragment key={`${key}`}>{field}</Fragment>
-          </dl>
-        )})
-      }
+          return (<Fragment key={key}>{field}</Fragment>)
+      })}
     </div>
   );
 }

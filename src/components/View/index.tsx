@@ -183,7 +183,8 @@ export default function View(props) {
         {showLabel && template !== 'SubTabs' && template !== 'SimpleTable' && (
           <h2 className='govuk-heading-m'>{label}</h2>
         )}
-        {/* US-9361 TODO Condition here is flakey! Possible solutions, - new layout (readonly answers), set showlabel false in checkanswers and wrap top level...*/}
+
+        {/* Conditional wrapping of a view in <dl> when read only. Currently expected only to be used in check answers screen */}
         <ConditionalWrapper
           condition={readOnly && mode === undefined && showLabel}
           wrapper={child => <dl className="govuk-summary-list">
@@ -191,7 +192,6 @@ export default function View(props) {
           </dl>}
           childrenToWrap={RenderedTemplate}
         />
-
       </>
     );
   }

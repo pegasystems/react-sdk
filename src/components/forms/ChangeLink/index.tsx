@@ -35,7 +35,6 @@ const HmrcOdxChangeLink = props => {
         <span style={{"marginLeft":"auto"}}><a href='#' className="govuk-link" onClick={handleOnClick}>Change<span className="govuk-visually-hidden"> {label}</span></a>
         </span>
       </div>
-
     </>
   );
 };

@@ -14,7 +14,7 @@ export default function HmrcOdxCheckAnswers(props) {
     const elms:Array<React.ReactElement> = [];
     const region = children[0] ? children[0].props.getPConnect() : null;
     if (region?.getChildren()) {
-      region.getChildren().map(child => {
+      region.getChildren().forEach(child => {
         child.getPConnect().setInheritedProp('readOnly', true);
         elms.push(child.getPConnect().getComponent());
       });

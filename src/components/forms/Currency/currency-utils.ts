@@ -33,8 +33,7 @@ export const getCurrencyOptions = (inISOCode: string) => {
     currMapToUse = CurrencyMapAlias.US;
   }
 
-  // eslint-disable-next-line no-console
-  console.log(`currMapToUse: ${JSON.stringify(currMapToUse)}`);
+  // console.log(`currMapToUse: ${JSON.stringify(currMapToUse)}`);
 
   // let currencyOptions = {};
   //
@@ -70,8 +69,7 @@ export const getCurrencyCharacters = (inISOCode: string) => {
   const testValue = 1234.56;
   const formattedString = CurrencyAlias.Currency(testValue, theCurrencyOptions);
 
-  // eslint-disable-next-line no-console
-  console.log(`formattedString: ${formattedString}`);
+  // console.log(`formattedString: ${formattedString}`);
 
   // Here, we have the formatted string (ex: $1,234.56) where:
   //  Currency symbol = formattedString[0]
@@ -82,8 +80,7 @@ export const getCurrencyCharacters = (inISOCode: string) => {
   theCurrencyChars.theDigitGroupSeparator = formattedString[2];
   theCurrencyChars.theDecimalIndicator = formattedString[6];
 
-  // eslint-disable-next-line no-console
-  console.log(`theCurrencyChars: symbol: ${theCurrencyChars.theCurrencySymbol} | theDigitGroupSeparator: ${theCurrencyChars.theDigitGroupSeparator} | theDecimalIndicator: ${theCurrencyChars.theDecimalIndicator}`);
+  // console.log(`theCurrencyChars: symbol: ${theCurrencyChars.theCurrencySymbol} | theDigitGroupSeparator: ${theCurrencyChars.theDigitGroupSeparator} | theDecimalIndicator: ${theCurrencyChars.theDecimalIndicator}`);
 
   return theCurrencyChars;
 

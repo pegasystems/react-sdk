@@ -14,16 +14,19 @@ function NumberFormatter(value, { locale, decPlaces = 2 } = {}) {
 
 function CurrencyFormatter(
   value,
-  { symbol = true, position, locale, decPlaces = 2 } = {}
+  { symbol = true, position, locale, decPlaces = 2, style = "currency", currency = "USD" } = {}
 ) {
   const currentLocale = getLocale(locale);
   let formattedValue = value;
   if (value !== null && value !== undefined && value !== '') {
     formattedValue = NumberFormatter(value, {
       locale: currentLocale,
-      decPlaces
+      decPlaces,
+      style,
+      currency
     });
-    let countryCode =  currentLocale.split("-")[1];
+
+    let countryCode =  currentLocale.split("-")[1].toUpperCase();
 
     // If countryCode is still undefined, setting it as US
     if( !countryCode ){

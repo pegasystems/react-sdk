@@ -5,6 +5,8 @@ import isDeepEqual from 'fast-deep-equal/react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Operator from '../Operator';
+import { getDateFormatInfo } from '../../../helpers/date-format-utils';
+import { getCurrencyOptions } from '../../forms/Currency/currency-utils';
 
 import './CaseSummaryFields.css';
 
@@ -121,8 +123,38 @@ export default function CaseSummaryFields(props) {
       }
 
       case 'date':
-      case 'datetime':
-      case 'currency':
+      case 'datetime': {
+        const theDateFormatInfo = getDateFormatInfo();
+        // eslint-disable-next-line no-console
+        console.log(`theDateFormatInfo: ${theDateFormatInfo}`);
+        const theFormat = (fieldTypeLower === 'datetime') ? `${theDateFormatInfo.dateFormatStringLong} hh:mm a` : theDateFormatInfo.dateFormatStringLong
+
+        return (
+          <TextField
+            value={format(field.config.value, field.type, { format: theFormat })}
+            label={field.config.label}
+            InputProps={{
+              readOnly: true,
+              disableUnderline: true
+            }}
+          />
+        );
+      }
+
+      case 'currency': {
+        const theCurrencyOptions = getCurrencyOptions(field.config?.currencyISOCode);
+        return (
+          <TextField
+            value={format(field.config.value, field.type, theCurrencyOptions)}
+            label={field.config.label}
+            InputProps={{
+              readOnly: true,
+              disableUnderline: true
+            }}
+          />
+        );
+      }
+
       case 'boolean':
       case 'userreference':
         return (

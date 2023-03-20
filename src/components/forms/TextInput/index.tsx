@@ -18,6 +18,10 @@ export default function TextInput(props) {
   } = props;
 
   const isOnlyField = useIsOnlyField();
+
+
+  const maxLength = fieldMetadata?.maxLength;
+
   // TODO consider moving this functionality 'up' especially when we add Error summary,
   // as it may be tidier to call this only once, rather than on every input
   useAddErrorToPageTitle(validatemessage);
@@ -40,11 +44,11 @@ export default function TextInput(props) {
     'data-test-id': testId
   }; */
 
-  const extraInputProps = {onChange, value};
+  const extraInputProps = { onChange, value };
 
   // TODO Investigate more robust way to check if we should display as password
-  if(fieldMetadata?.displayAs === "pxPassword"){
-    extraInputProps["type"]="password";
+  if (fieldMetadata?.displayAs === 'pxPassword') {
+    extraInputProps['type'] = 'password';
   }
 
   return (
@@ -59,6 +63,7 @@ export default function TextInput(props) {
         label={label}
         labelIsHeading={isOnlyField}
         name={propName}
+        maxLength={maxLength}
       />
     </>
   );

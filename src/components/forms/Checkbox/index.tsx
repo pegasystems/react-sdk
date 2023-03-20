@@ -31,7 +31,7 @@ export default function CheckboxComponent(props) {
 
   // TODO - How to get the optionsList from Pega? Fetch and plug optionsList
   // Hard coded example data plugged in to pass for the checkbox optionsList
-  const optionsList = [{checked: false, label: caption, hintText: "item hint", readOnly:false}]
+  const optionsList = [{checked: false, label: caption, hintText: " ", readOnly:false}]
 
   const handleChange = event => {
     handleEvent(actionsApi, 'changeNblur', propName, event.target.checked);

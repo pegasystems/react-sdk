@@ -53,13 +53,7 @@ const StartPage: React.FC<{onStart: React.MouseEventHandler}> = ({onStart}) => {
           <li>your bank or building society details</li>
           <li>your National Insurance number</li>
           <li>your partner’s National Insurance number, if you have a partner</li>
-          <li>a printer - to print off your completed form</li>
         </ul>
-        <p className='govuk-body'>
-          You will need to download, print and send your completed form to HMRC, along with any
-          documents you may need to provide. We will let you know what those documents are at the
-          end of this form.
-        </p>
         <div className='govuk-warning-text'>
           <span className='govuk-warning-text__icon' aria-hidden='true'>
             !

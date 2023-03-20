@@ -22,11 +22,7 @@ export const getCurrencyOptions = (inISOCode: string) => {
     } else {
       // For all other ISO codes, use first 2 characters as the lookup from CurrencyMap
       const countryCode = inISOCode.substring(0,2);
-      // If the country code doesn't have an entry, default to US
       currMapToUse = CurrencyMapAlias[countryCode];
-      if (!currMapToUse) {
-        currMapToUse = CurrencyMapAlias['US'];
-      }
     }
   } else if (operatorLocale) {
     // No ISO Code so check for operator locale (and force upper case for lookup)
@@ -35,6 +31,11 @@ export const getCurrencyOptions = (inISOCode: string) => {
   } else {
     // no ISO code and no operator locale, default to US
     currMapToUse = CurrencyMapAlias.US;
+  }
+
+  // If no currMapToUse at this point, default to US as a failsafe
+  if (!currMapToUse) {
+    currMapToUse = CurrencyMapAlias['US'];
   }
 
   const theCode = currMapToUse.currencyCode.substring(0, 3);

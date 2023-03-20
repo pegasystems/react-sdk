@@ -40,7 +40,6 @@ export default function Dropdown(props) {
 
   useEffect(() => {
     const optionsList = [...Utils.getOptionList(props, getPConnect().getDataObject())];
-    if(value === '') {optionsList.unshift({key:placeholder, value:placeholder})};
     const selectedOption = optionsList.find(option => option.key === value);
     if(selectedOption && selectedOption.value){
       setDisplayValue(selectedOption.value);
@@ -59,16 +58,24 @@ export default function Dropdown(props) {
 
   return (
     <>
-      <Select label={label}
-       hintText={helperText}
-       errorText={validatemessage}
-       labelIsHeading={isOnlyField}
-       onChange={handleChange}
-       value={value}
-       name={formattedPropName}
+      <Select
+        label={label}
+        hintText={helperText}
+        errorText={validatemessage}
+        labelIsHeading={isOnlyField}
+        onChange={handleChange}
+        value={value}
+        name={formattedPropName}
       >
-        {options.map((option) => {
-          return (<option key={option.key} value={option.key}>{option.value}</option>)
+        <option key={placeholder} value=''>
+          {placeholder}
+        </option>
+        {options.map(option => {
+          return (
+            <option key={option.key} value={option.key}>
+              {option.value}
+            </option>
+          );
         })}
       </Select>
     </>

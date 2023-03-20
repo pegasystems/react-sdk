@@ -12,10 +12,10 @@ const ConfirmationPage = () => {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-panel govuk-panel--confirmation'>
-              <h1 className='govuk-panel__title'>Application for Child Benefit completed</h1>
+              <h1 className='govuk-panel__title'>Application for Child Benefit complete</h1>
             </div>
             <h2 className='govuk-heading-m'>What happens next</h2>
-            <p className='govuk-body'>We&apos;ve sent your application to child benefit service.</p>
+            <p className='govuk-body'>We&apos;ve sent your application to Child Benefit Service.</p>
             <p className='govuk-body'>
               We&apos;ll tell you in 14 calendar days if your application has been successful.
             </p>

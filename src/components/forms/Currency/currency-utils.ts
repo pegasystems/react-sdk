@@ -22,32 +22,20 @@ export const getCurrencyOptions = (inISOCode: string) => {
     } else {
       // For all other ISO codes, use first 2 characters as the lookup from CurrencyMap
       const countryCode = inISOCode.substring(0,2);
+      // If the country code doesn't have an entry, default to US
       currMapToUse = CurrencyMapAlias[countryCode];
+      if (!currMapToUse) {
+        currMapToUse = CurrencyMapAlias['US'];
+      }
     }
   } else if (operatorLocale) {
-    // No ISO Code so check for operator locale
-    const countryCode = operatorLocale.substring(3);
+    // No ISO Code so check for operator locale (and force upper case for lookup)
+    const countryCode = operatorLocale.substring(3).toUpperCase();
     currMapToUse = CurrencyMapAlias[countryCode];
   } else {
     // no ISO code and no operator locale, default to US
     currMapToUse = CurrencyMapAlias.US;
   }
-
-  // console.log(`currMapToUse: ${JSON.stringify(currMapToUse)}`);
-
-  // let currencyOptions = {};
-  //
-  // // Prefer the control's specified ISO Code but use locale if that's not defined
-  // if (currMapToUse) {
-  //   // eslint-disable-next-line no-debugger
-  //   debugger;
-  //   const theCode = currMapToUse.currencyCode.substring(0, 3);
-  //   currencyOptions = { locale: localeToUse, style: "currency", currency: theCode }
-  // } else if (operatorLocale) {
-  //   // eslint-disable-next-line no-debugger
-  //   debugger;
-  //   currencyOptions = { locale: operatorLocale };
-  // }
 
   const theCode = currMapToUse.currencyCode.substring(0, 3);
   const currencyOptions = { locale: localeToUse, style: "currency", currency: theCode }

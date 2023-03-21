@@ -543,6 +543,7 @@ export const authTokenUpdated = (tokenInfo ) => {
 };
 
 export const logout = () => {
+  sessionStorage.removeItem('rsdk_portalName');
   return new Promise((resolve) => {
     const fnClearAndResolve = () => {
       clearAuthMgr();

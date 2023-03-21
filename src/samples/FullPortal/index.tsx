@@ -1,8 +1,8 @@
-import React, { useEffect }  from 'react';
+import React, { useEffect, useMemo }  from 'react';
 import ReactDOM from "react-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-
+import { useLocation } from 'react-router-dom';
 import StoreContext from "../../bridge/Context/StoreContext";
 import createPConnectComponent from "../../bridge/react_pconnect";
 import { SdkConfigAccess } from '../../helpers/config_access';
@@ -13,7 +13,18 @@ declare const PCore: any;
 declare const myLoadPortal: any;
 declare const myLoadDefaultPortal: any;
 
+function useQuery() {
+  const { search } = useLocation();
+
+  return useMemo(() => new URLSearchParams(search), [search]);
+}
+
 export default function FullPortal() {
+  const query = useQuery();
+  if (query.get('portal')) {
+    const portalValue: any = query.get('portal');
+    sessionStorage.setItem("rsdk_portalName", portalValue);
+  }
 
   const theme = createTheme({
     // palette: {
@@ -128,8 +139,11 @@ export default function FullPortal() {
 
     const thePortal = SdkConfigAccess.getSdkConfigServer().appPortal;
     const defaultPortal = PCore?.getEnvironmentInfo?.().getDefaultPortal?.();
+    const queryPortal = sessionStorage.getItem("rsdk_portalName");
     // Note: myLoadPortal and myLoadDefaultPortal are set when bootstrapWithAuthHeader is invoked
-    if( thePortal ) {
+    if ( queryPortal ) {
+      myLoadPortal("pega-root", queryPortal, []);
+    } else if( thePortal ) {
       // eslint-disable-next-line no-console
       console.log(`Loading specified appPortal: ${thePortal}`);
       myLoadPortal("pega-root", thePortal, []);

@@ -20,9 +20,10 @@ function useQuery() {
 }
 
 export default function FullPortal() {
-  const query = useQuery().get('portal');
-  if (query) {
-    sessionStorage.setItem("rsdk_portalName", query);
+  const query = useQuery();
+  if (query.get('portal')) {
+    const portalValue: any = query.get('portal');
+    sessionStorage.setItem("rsdk_portalName", portalValue);
   }
 
   const theme = createTheme({

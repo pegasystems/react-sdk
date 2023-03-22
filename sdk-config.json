@@ -33,14 +33,16 @@
   },
   "dxcbConfig": {
     "publishAccess": {
-      "user": "YourOperatorLogin-Required",
-      "password": "",
       "rulesetName": "",
       "rulesetVersion": "01-01-01",
       "sourceOfComponents": "Server",
       "devBuild": false,
-      "clientId": "",
-      "clientSecret": ""
+      "clientId": "10095186356008396159",
+      "clientSecret": "",
+      "grantType": "authCode",
+      "redirectUri": "http://localhost:4010/",
+      "user": "",
+      "password": ""
     },
 
     "componentDefaults": {

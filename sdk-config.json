@@ -44,6 +44,7 @@
       "cert_and_key_comment": "path to ssl certificate file and ssl key file to use when starting local https server",
       "cert": "",
       "key": "",
+      "user_and_password_comment": "useful primarily for passwordCreds grant type",
       "user": "",
       "password": ""
     },

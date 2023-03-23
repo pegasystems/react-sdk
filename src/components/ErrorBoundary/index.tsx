@@ -1,5 +1,3 @@
-// Adapted from nebula ErrorBoundary (remove Cosmos dependencies)
-
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -16,18 +14,6 @@ function ErrorBoundary(props) {
   if (!getPConnect) {
     return (
       theErrorDiv
-      // <Flex
-      //   container={{
-      //     alignItems: "center",
-      //     justify: "center",
-      //     itemGap: 1
-      //   }}
-      // >
-      //   <Text status="error">
-      //     <Icon name="warn-solid" />
-      //   </Text>
-      //   <Text data-testid="errorText">{ERROR_TEXT}</Text>
-      // </Flex>
     );
   }
 
@@ -43,12 +29,6 @@ function ErrorBoundary(props) {
   if (pConn.getConfigProps().type === "page") {
     return (
       theErrorDiv
-      // <Banner
-      //   data-testid="errorBanner"
-      //   variant="urgent"
-      //   heading="Error"
-      //   messages={[ERROR_TEXT]}
-      // />
     );
   }
 
@@ -64,30 +44,6 @@ function ErrorBoundary(props) {
 
   return (
     theErrorDiv
-    // <Card>
-    //   <CardHeader>
-    //     <Text variant="h3">
-    //       {pConn.getConfigProps().label || pConn.getComponentName()}
-    //     </Text>
-    //   </CardHeader>
-    //   <CardContent
-    //     direction="row"
-    //     style={{ minHeight: "5rem", justifyContent: "center" }}
-    //   >
-    //     <Flex
-    //       container={{
-    //         alignItems: "center",
-    //         justify: "center",
-    //         itemGap: 1
-    //       }}
-    //     >
-    //       <Text status="error">
-    //         <Icon name="warn-solid" />
-    //       </Text>
-    //       <Text>{ERROR_TEXT}</Text>
-    //     </Flex>
-    //   </CardContent>
-    // </Card>
   );
 }
 ErrorBoundary.propTypes = {

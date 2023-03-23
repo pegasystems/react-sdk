@@ -385,7 +385,7 @@ export default function FlowContainer(props) {
             theNewChildren.push(configObject);
             setArNewChildren(theNewChildren);
 
-            // JEA - adapted from Nebula FlowContainer since we want to render children that are React components
+            // JEA - adapted from Constellation DX Components FlowContainer since we want to render children that are React components
             const root = createElement(createPConnectComponent(), configObject);
             setArNewChildrenAsReact([root]);
 

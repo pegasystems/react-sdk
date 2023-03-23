@@ -54,7 +54,7 @@ function getFilteredStages(stages) {
   );
 }
 
-/* TODO - this component should be refactored and not exposed as top level Nebula component -
+/* TODO - this component should be refactored and not exposed as top level DX component -
   the stages should be created as part of the CaseView */
 export default function Stages(props) {
   const classes = useStyles();

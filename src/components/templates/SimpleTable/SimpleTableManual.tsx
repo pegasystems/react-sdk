@@ -145,14 +145,12 @@ export default function SimpleTableManual(props) {
     }
   }, [referenceList.length]);
 
-  // Nebula has other handling for isReadOnlyMode but has Cosmos-specific code
-  //  so ignoring that for now...
   // fieldDefs will be an array where each entry will have a "name" which will be the
   //  "resolved" property name (that we can use as the colId) though it's not really
   //  resolved. The buildFieldsForTable helper just removes the "@P " (which is what
-  //  Nebula does). It will also have the "label", and "meta" contains the original,
+  //  Constellation DX Components do). It will also have the "label", and "meta" contains the original,
   //  unchanged config info. For now, much of the info here is carried over from
-  //  Nebula and we may not end up using it all.
+  //  Constellation DX Components.
   const fieldDefs = buildFieldsForTable(rawFields, resolvedFields, showDeleteButton);
 
   const displayedColumns = fieldDefs.map(field => {
@@ -161,18 +159,6 @@ export default function SimpleTableManual(props) {
 
   // console.log(`SimpleTable displayedColumns:`);
   // console.log(displayedColumns);
-
-  // And now we can process the resolvedFields to add in the "name"
-  //  from from the fieldDefs. This "name" is the value that
-  //  we'll share to connect things together in the table.
-
-  // const processedFields = resolvedFields.map((field, i) => {
-  //   field.config['name'] = displayedColumns[i]; // .config["value"].replace(/ ./g,"_");   // replace space dot with underscore
-  //   return field;
-  // });
-
-  // console.log("SimpleTable processedFields:");
-  // console.log(processedFields);
 
   // return the value that should be shown as the contents for the given row data
   //  of the given row field
@@ -224,25 +210,18 @@ export default function SimpleTableManual(props) {
     }
   }
 
+  // May be useful for debugging or understanding how it works.
   // These are the data structures referred to in the html file.
   //  These are the relationships that make the table work
   //  displayedColumns: key/value pairs where key is order of column and
   //    value is the property shown in that column. Ex: 1: "FirstName"
-  //  processedFields: key/value pairs where each key is order of column
-  //    and each value is an object of more detailed information about that
-  //    column.
   //  rowData: array of each row's key/value pairs. Inside each row,
   //    each key is an entry in displayedColumns: ex: "FirstName": "Charles"
   //    Ex: { 1: {config: {label: "First Name", readOnly: true: name: "FirstName"}}, type: "TextInput" }
   //    The "type" indicates the type of component that should be used for editing (when editing is enabled)
   //
-  //  Note that the "property" shown in the column ("FirstName" in the above examples) is what
-  //  ties the 3 data structures together.
-
   // console.log("SimpleTable displayedColumns:");
   // console.log(displayedColumns);
-  // console.log("SimpleTable processedFields:");
-  // console.log(processedFields);
   // console.log(`SimpleTable rowData (${rowData.length} row(s)):`);
   // console.log(JSON.stringify(rowData));
 

@@ -9,7 +9,7 @@ export default function CaseSummary(props) {
   const theConfigProps = thePConn.getConfigProps();
   const { status, showStatus } = theConfigProps;
 
-  // from Nebula
+  // from Constellation DX Components
   // get the primary and secondary fields with the raw data (which has the non-resolved property values)
   // const regionsRaw = getPConnect().getRawMetadata().children;
   // const primaryFieldsRaw = regionsRaw[0].children;

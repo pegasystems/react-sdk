@@ -27,7 +27,7 @@ export default function DateInput(props){
     <FieldSet {...props} fieldsetElementProps={{role:"group"}} >
       <div className="govuk-date-input" id={name}>
         <div className="govuk-date-input__item">
-          <FormGroup name={name} label={dayLabel} labelIsHeading={false} extraLabelClasses="govuk-date-input__label">
+          <FormGroup name={`${name}-day`} label={dayLabel} labelIsHeading={false} extraLabelClasses="govuk-date-input__label">
             <input className={dateInputClassesWithWidth(2)}
               id={`${name}-day`} name={`${name}-day`} type="text"
               inputMode="numeric" value={value?.day}
@@ -35,7 +35,7 @@ export default function DateInput(props){
           </FormGroup>
         </div>
         <div className="govuk-date-input__item">
-          <FormGroup name={name} label={monthLabel} labelIsHeading={false} extraLabelClasses="govuk-date-input__label">
+          <FormGroup name={`${name}-month`} label={monthLabel} labelIsHeading={false} extraLabelClasses="govuk-date-input__label">
             <input className={dateInputClassesWithWidth(2)}
               id={`${name}-month`} name={`${name}-month`} type="text"
               inputMode="numeric" value={value?.month}
@@ -44,7 +44,7 @@ export default function DateInput(props){
           </FormGroup>
         </div>
         <div className="govuk-date-input__item">
-          <FormGroup name={name} label={yearLabel} labelIsHeading={false} extraLabelClasses="govuk-date-input__label"></FormGroup>
+          <FormGroup name={`${name}-year`} label={yearLabel} labelIsHeading={false} extraLabelClasses="govuk-date-input__label"></FormGroup>
           <input className={dateInputClassesWithWidth(4)}
             id={`${name}-year`} name={`${name}-year`} type="text"
             inputMode="numeric" value={value?.year}

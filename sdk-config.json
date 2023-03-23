@@ -41,6 +41,9 @@
       "clientSecret": "",
       "grantType": "authCode",
       "redirectUri": "http://localhost:4010/",
+      "cert_and_key_comment": "path to ssl certificate file and ssl key file to use when starting local https server",
+      "cert": "",
+      "key": "",
       "user": "",
       "password": ""
     },

@@ -1,5 +1,4 @@
 import React from "react";
-// import { Stages as CosmosStages } from "@pega/cosmos-react-work";
 import PropTypes from "prop-types";
 import { Breadcrumbs, Card, Typography } from "@material-ui/core";
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';

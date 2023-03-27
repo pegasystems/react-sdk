@@ -27,7 +27,8 @@ export default function Reference(props) {
   };
 
   const viewComponent = pConnect.createComponent(viewObject, null, null, {
-    pageReference: context
+    pageReference: context,
+    ...pConnect.getStateProps(),
   });
 
   viewComponent.props.getPConnect().setInheritedConfig({

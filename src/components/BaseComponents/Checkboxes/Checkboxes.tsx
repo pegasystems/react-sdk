@@ -10,10 +10,11 @@ export default function Checkboxes(props) {
     isSmall,
     onChange,
     onBlur,
-    inputProps
+    inputProps,
   } = props;
 
   const checkboxClasses = `govuk-checkboxes ${isSmall ? 'govuk-checkboxes--small' : ''}`;
+  console.log(isSmall, 'isSmall')
 
   return (
     <FieldSet {...props}>
@@ -39,7 +40,6 @@ Checkboxes.propTypes = {
   isSmall: PropTypes.bool,
   legendIsHeading: PropTypes.bool,
   optionsList: PropTypes.array,
-  required: PropTypes.bool,
   errorText: PropTypes.string,
   hintText: PropTypes.string,
   inputProps: PropTypes.object,

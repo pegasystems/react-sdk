@@ -21,6 +21,7 @@ export default function Checkbox({ item, index, name, inputProps= {}, onChange, 
         value={item.checked}
         onChange={!item.readOnly ? onChange : () => {}}
         onBlur={!item.readOnly ? onBlur : () => {}}
+        required
       ></input>
       <label className={labelClasses}>{item.label}</label>
       {item.hintText ? (
@@ -38,5 +39,5 @@ Checkbox.propTypes = {
   name: PropTypes.string,
   inputProps: PropTypes.object,
   onChange: PropTypes.func,
-  onBlur: PropTypes.func
+  onBlur: PropTypes.func,
 };

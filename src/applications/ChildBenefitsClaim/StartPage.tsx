@@ -3,7 +3,6 @@ import Button from '../../components/BaseComponents/Button/Button'
 
 const StartPage: React.FC<{onStart: React.MouseEventHandler}> = ({onStart}) => {
   return (
-    <div className='govuk-grid-row'>
       <div className='govuk-grid-column-two-thirds'>
         <h1 className='govuk-heading-xl'>Claim Child Benefit</h1>
         <p className='govuk-body'>
@@ -82,7 +81,6 @@ const StartPage: React.FC<{onStart: React.MouseEventHandler}> = ({onStart}) => {
           </a>
         </div>
       </div>
-    </div>
   );
 }
 

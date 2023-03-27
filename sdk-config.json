@@ -47,6 +47,8 @@
       "cert_and_key_comment2": "Needed only when using 'authCode' grantType and redirectUri begins with 'https://localhost'",
       "cert": "",
       "key": "",
+      "rejectUnauthorized_comment": "Set to '0' to disable cert checking and resolve DEPTH_ZERO_SELF_SIGNED_CERT issue",
+      "rejectUnauthorized": "",
       "user_and_password_comment": "Useful primarily when using 'passwordCreds' grantType",
       "user": "",
       "password": ""

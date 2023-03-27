@@ -1,5 +1,4 @@
 import React from "react";
-// import { Stages as CosmosStages } from "@pega/cosmos-react-work";
 import PropTypes from "prop-types";
 import { Breadcrumbs, Card, Typography } from "@material-ui/core";
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
@@ -54,7 +53,7 @@ function getFilteredStages(stages) {
   );
 }
 
-/* TODO - this component should be refactored and not exposed as top level Nebula component -
+/* TODO - this component should be refactored and not exposed as top level DX component -
   the stages should be created as part of the CaseView */
 export default function Stages(props) {
   const classes = useStyles();

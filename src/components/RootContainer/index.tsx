@@ -66,8 +66,6 @@ const RootContainer = (props) => {
     options["context"] = "root";
   }
 
-  // Used for embedded mode
-  // let newPConn: any;
   const [componentName, setComponentName] = useState("");
 
   useEffect( () => {
@@ -78,7 +76,6 @@ const RootContainer = (props) => {
   // debugging/investigation help
   // console.log(`RootContainer props.routingInfo: ${JSON.stringify(routingInfo)}`);
 
-  // const bannerRef = useRef(null);
   let hasBanner = false;
   let banners: any = null;
   const messages = httpMessages
@@ -87,21 +84,6 @@ const RootContainer = (props) => {
 
   hasBanner = messages && messages.length > 0;
   banners = hasBanner && (<div>RootContainer: trying to emit Banner with {messages}</div>);
-    // && (
-    // <Banner
-    //   ref={bannerRef}
-    //   id="appShellBanner"
-    //   variant="urgent"
-    //   heading="Error"
-    //   onDismiss={() =>
-    //     pConn.clearErrorMessages({
-    //       category: "HTTP",
-    //       context: "root"
-    //     })
-    //   }
-    //   messages={messages}
-    // />
-    // );
 
   const MemoizedModalViewContainer = useMemo(() => {
     return createElement(
@@ -175,7 +157,6 @@ const RootContainer = (props) => {
   }
 
 
-  // const rootViewRef: any = useRef(null);
   let rootView : any;
   let rootViewConfig: any = null;
 
@@ -187,7 +168,6 @@ const RootContainer = (props) => {
     PCore.getContainerUtils().getContainerAPI().addContainerItems(items);
   }, [routingInfo]);
 
-  // const { store } = useConstellationContext();
   const items: any = getItemView(routingInfo, renderingMode);
 
   if (items.length > 0) {
@@ -225,14 +205,6 @@ const RootContainer = (props) => {
         );
     }
 
-    // interior was
-    // <ModalManager>
-    //   {rootViewRef.current}
-    //   {MemoisedModalViewContainer}
-    //   {MemoizedPreviewViewContainer}
-    //   <ReAuthMessageModal openModal={false} key="reauthMessageModel" />
-    // </ModalManager> */}
-
     // debugging/investigation help
     // console.log(`rootView.props.getPConnect().getComponentName(): ${rootView.props.getPConnect().getComponentName()}`);
 
@@ -252,10 +224,7 @@ const RootContainer = (props) => {
 
     const theChildren = pConn.getChildren();
     if (theChildren && (theChildren.length === 1)) {
-      // this.createdPConnect =  theChildren[0];
-      // this.createdPConnect = null;
       const localPConn = theChildren[0].getPConnect();
-      // newPConn = pConn;
       const localCompName = localPConn.getComponentName()
       if (componentName !== localCompName) {
         setComponentName(localCompName);
@@ -267,15 +236,6 @@ const RootContainer = (props) => {
     return noPortalContent;
   }
   else if (children && children.length > 0) {
-    // interior was
-    // <ModalManager>
-    //       {httpMessages ? <div id="root-container">{banners}</div> : ""}
-    //       {children}
-    //       {MemoizedModalViewContainer}
-    //       <ReAuthMessageModal openModal={false} key="reauthMessageModel" />
-    //       {MemoizedPreviewViewContainer}
-    //     </ModalManager>
-
     return (
       <React.Fragment>
         <div>RootContainer: Has children. Trying to show ModalManager with children, etc.</div>
@@ -285,14 +245,8 @@ const RootContainer = (props) => {
 
     );
   } else if (skeleton) {
-    // TODO: need to update once skeletons are available
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-  const LoadingComponent = LazyComponentMap[skeleton];
-    // interior was
-    // <ModalManager>
-    //   <ReAuthMessageModal openModal={false} key="reauthMessageModel" />
-    //   <LoadingComponent />
-    // </ModalManager>
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+    const LoadingComponent = LazyComponentMap[skeleton];
 
     return (
       <div id="root-container">
@@ -301,12 +255,6 @@ const RootContainer = (props) => {
       </div>
     );
   } else {
-    // interior was
-    // <ModalManager>
-    //   {MemoisedModalViewContainer}
-    //   {MemoizedPreviewViewContainer}
-    //   <ReAuthMessageModal openModal={false} key="reauthMessageModel" />
-    // </ModalManager>
     return (
       <div id="root-container">
         <div>RootContainer: Should be ModalManager, etc.</div>

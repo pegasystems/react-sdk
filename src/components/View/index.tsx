@@ -249,7 +249,7 @@ View.propTypes = {
   title: PropTypes.string
 };
 
-// Adapted from Nebula/Constellation to add in additional props for some templates
+// Adapted from Constellation DX Component to add in additional props for some templates
 View.additionalProps = (state, getPConnect) => {
   const thePConn = getPConnect();
   const { template } = thePConn.getConfigProps();

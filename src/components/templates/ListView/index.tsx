@@ -53,11 +53,6 @@ let menuColumnLabel = '';
 
 let sortColumnId: any;
 
-// let dialogContainsFilter: string = "contains";
-// let dialogContainsValue: string = "";
-// let dialogDateFilter: string = "notequal";
-// let dialogDateValue: string = "";
-
 const filterByColumns: Array<any> = [];
 
 export default function ListView(props) {
@@ -217,19 +212,6 @@ export default function ListView(props) {
     setPage(0);
   };
 
-  // function getDisplayColumns(fields = []) {
-  //   let arReturn = fields.map(( field: any, colIndex) => {
-  //     let theField = field.config.value.substring(field.config.value.indexOf(" ")+1);
-  //     if (theField.indexOf(".") == 0) {
-  //       theField = theField.substring(1);
-  //     }
-
-  //     return theField;
-  //   });
-  //   return arReturn;
-
-  // }
-
   const AssignDashObjects = ['Assign-Worklist', 'Assign-WorkBasket'];
   function getHeaderCells(colFields, fields, presetFields) {
     const arReturn = colFields.map((field: any, index) => {
@@ -345,10 +327,6 @@ export default function ListView(props) {
       myColList.push(col.id);
     });
 
-    // for (const col of arCols) {
-    //   myColList.push(col.id);
-    // }
-
     return myColList;
   }
 
@@ -381,7 +359,7 @@ export default function ListView(props) {
 
     let field = getFieldFromFilter(filterExpression, isDateRange);
     selectParam = [];
-    // Constructing the select parameters list( will be sent in dashboardFilterPayload)
+    // Constructing the select parameters list (will be sent in dashboardFilterPayload)
     columnList.forEach(col => {
       selectParam.push({
         field: col
@@ -417,7 +395,7 @@ export default function ListView(props) {
       // If we reach here that implies we've at least one valid filter, hence setting the flag
       validFilter = true;
       /** Below are the 2 cases for- Text & Date-Range filter types where we'll construct filter data which will be sent in the dashboardFilterPayload
-       * In Nebula, through Repeating Structures they might be using several APIs to do it, we're doing it here
+       * In Constellation DX Components, through Repeating Structures they might be using several APIs to do it. We're doing it here
       */
       if (isDateRange) {
         const dateRelationalOp = filter?.AND ? 'AND' : 'OR';
@@ -518,7 +496,8 @@ export default function ListView(props) {
         field: field.name
       });
     } else {
-      // NOTE: If we ever decide to not set up all the `fieldDefs` on select, ensure that the fields corresponding to `state.groups` are set up. Needed in Client-mode grouping/pagination.
+      // NOTE: If we ever decide to not set up all the `fieldDefs` on select, ensure that the fields
+      //  corresponding to `state.groups` are set up. Needed in Client-mode grouping/pagination.
       fieldDefs.forEach(field => {
         if (!listFields.find(f => f.field === field.name)) {
           listFields.push({
@@ -867,26 +846,6 @@ export default function ListView(props) {
     // move data to array and then sort
     setRows(theData);
     createSortHandler(sortColumnId);
-
-    // grouping here
-
-    // let reGroupData = this.addGroups(theData, this.groupByColumns$);
-
-    // this.repeatList$.data = [];
-    // this.repeatList$.data.push( ...reGroupData);
-
-    // if (this.searchFilter && this.searchFilter != "") {
-    //   this.repeatList$.filter = this.searchFilter;
-    // }
-    // else {
-    //   this.perfFilter = performance.now().toString();
-    //   this.repeatList$.filter = this.perfFilter;
-    // }
-    // this.repeatList$.filter = "";
-
-    // if (this.repeatList$.paginator) {
-    //   this.repeatList$.paginator.firstPage();
-    // }
   }
 
   function _dialogContainsFilter(event) {
@@ -1348,10 +1307,8 @@ export default function ListView(props) {
 }
 
 ListView.defaultProps = {
-  // parameters: undefined
 };
 
 ListView.propTypes = {
   getPConnect: PropTypes.func.isRequired
-  // parameters: PropTypes.objectOf(PropTypes.any)
 };

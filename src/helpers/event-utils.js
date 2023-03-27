@@ -1,4 +1,4 @@
-// From npm-nebula/src/utils/event-utils.js
+// From DX Components src/utils/event-utils.js
 
 const handleEvent = (actions, eventType, propName, value) => {
   switch (eventType) {

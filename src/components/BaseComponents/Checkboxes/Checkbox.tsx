@@ -38,5 +38,5 @@ Checkbox.propTypes = {
   name: PropTypes.string,
   inputProps: PropTypes.object,
   onChange: PropTypes.func,
-  onBlur: PropTypes.func
+  onBlur: PropTypes.func,
 };

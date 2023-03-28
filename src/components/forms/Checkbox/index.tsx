@@ -9,7 +9,6 @@ export default function CheckboxComponent(props) {
     getPConnect,
     name,
     inputProps,
-    required,
     validatemessage,
     hintText,
     label,
@@ -49,7 +48,6 @@ export default function CheckboxComponent(props) {
         name={name}
         label={label}
         optionsList={optionsList}
-        isSmall
         legendIsHeading={isOnlyField}
         errorText={validatemessage}
         hintText={hintText}

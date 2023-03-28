@@ -12,8 +12,7 @@ exports[`Basic multi question text input 1`] = `
   </label>
   <input
     aria-describedby=""
-    className="govuk-input"
-    id="name"
+    className="govuk-input govuk-input--width-undefined"
     name="name"
   />
 </div>
@@ -42,8 +41,7 @@ exports[`Basic multi question text input with error 1`] = `
   </p>
   <input
     aria-describedby="name-error"
-    className="govuk-input govuk-input--error"
-    id="name"
+    className="govuk-input govuk-input--error govuk-input--width-undefined"
     name="name"
   />
 </div>
@@ -67,8 +65,7 @@ exports[`Basic multi question text input with hint 1`] = `
   </div>
   <input
     aria-describedby="name-hint"
-    className="govuk-input"
-    id="name"
+    className="govuk-input govuk-input--width-undefined"
     name="name"
   />
 </div>
@@ -103,8 +100,7 @@ exports[`Basic multi question text input with hint and error 1`] = `
   </p>
   <input
     aria-describedby="name-error name-hint"
-    className="govuk-input govuk-input--error"
-    id="name"
+    className="govuk-input govuk-input--error govuk-input--width-undefined"
     name="name"
   />
 </div>
@@ -126,8 +122,7 @@ exports[`Basic single question password input 1`] = `
   </h1>
   <input
     aria-describedby=""
-    className="govuk-input"
-    id="name"
+    className="govuk-input govuk-input--width-undefined"
     name="name"
     type="password"
   />
@@ -150,8 +145,7 @@ exports[`Basic single question text input 1`] = `
   </h1>
   <input
     aria-describedby=""
-    className="govuk-input"
-    id="name"
+    className="govuk-input govuk-input--width-undefined"
     name="name"
   />
 </div>
@@ -170,7 +164,7 @@ exports[`renders correctly 1`] = `
   </h1>
   <input
     aria-describedby=""
-    className="govuk-input"
+    className="govuk-input govuk-input--width-undefined"
   />
 </div>
 `;

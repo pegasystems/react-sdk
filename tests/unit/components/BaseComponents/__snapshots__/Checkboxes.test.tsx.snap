@@ -24,7 +24,7 @@ exports[`renders a group of 3 checkboxes, hint text for label 1`] = `
       Testing hint text
     </div>
     <div
-      className="govuk-checkboxes "
+      className="govuk-checkboxes"
     >
       <div
         className="govuk-checkboxes__item"
@@ -100,7 +100,7 @@ exports[`renders a group of 3 checkboxes, hint text for optionsList 1`] = `
       </h1>
     </legend>
     <div
-      className="govuk-checkboxes "
+      className="govuk-checkboxes"
     >
       <div
         className="govuk-checkboxes__item"
@@ -193,7 +193,7 @@ exports[`renders a group of 3 checkboxes, with error as expected  1`] = `
       A testing Error.
     </p>
     <div
-      className="govuk-checkboxes "
+      className="govuk-checkboxes"
     >
       <div
         className="govuk-checkboxes__item"
@@ -269,7 +269,7 @@ exports[`renders a group of 3 checkboxes, with legend 'heading'  1`] = `
       </h1>
     </legend>
     <div
-      className="govuk-checkboxes "
+      className="govuk-checkboxes"
     >
       <div
         className="govuk-checkboxes__item"

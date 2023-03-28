@@ -43,7 +43,7 @@ exports[`Basic date input component hint and error 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
-            htmlFor="name"
+            htmlFor="name-day"
           >
             Day
           </label>
@@ -64,7 +64,7 @@ exports[`Basic date input component hint and error 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
-            htmlFor="name"
+            htmlFor="name-month"
           >
             Month
           </label>
@@ -85,7 +85,7 @@ exports[`Basic date input component hint and error 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
-            htmlFor="name"
+            htmlFor="name-year"
           >
             Year
           </label>
@@ -144,7 +144,7 @@ exports[`Basic date input component prepoulated with a date 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
-            htmlFor="name"
+            htmlFor="name-day"
           >
             Day
           </label>
@@ -166,7 +166,7 @@ exports[`Basic date input component prepoulated with a date 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
-            htmlFor="name"
+            htmlFor="name-month"
           >
             Month
           </label>
@@ -188,7 +188,7 @@ exports[`Basic date input component prepoulated with a date 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
-            htmlFor="name"
+            htmlFor="name-year"
           >
             Year
           </label>
@@ -254,7 +254,7 @@ exports[`Basic date input component with legend as h1 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
-            htmlFor="name"
+            htmlFor="name-day"
           >
             Day
           </label>
@@ -276,7 +276,7 @@ exports[`Basic date input component with legend as h1 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
-            htmlFor="name"
+            htmlFor="name-month"
           >
             Month
           </label>
@@ -298,7 +298,7 @@ exports[`Basic date input component with legend as h1 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
-            htmlFor="name"
+            htmlFor="name-year"
           >
             Year
           </label>
@@ -358,7 +358,7 @@ exports[`Basic date input componentwith error applying to whole input 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
-            htmlFor="name"
+            htmlFor="name-day"
           >
             Day
           </label>
@@ -379,7 +379,7 @@ exports[`Basic date input componentwith error applying to whole input 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
-            htmlFor="name"
+            htmlFor="name-month"
           >
             Month
           </label>
@@ -400,7 +400,7 @@ exports[`Basic date input componentwith error applying to whole input 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
-            htmlFor="name"
+            htmlFor="name-year"
           >
             Year
           </label>
@@ -445,6 +445,7 @@ exports[`renders correctly 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
+            htmlFor="undefined-day"
           >
             Day
           </label>
@@ -465,6 +466,7 @@ exports[`renders correctly 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
+            htmlFor="undefined-month"
           >
             Month
           </label>
@@ -485,6 +487,7 @@ exports[`renders correctly 1`] = `
         >
           <label
             className="govuk-label  govuk-date-input__label"
+            htmlFor="undefined-year"
           >
             Year
           </label>

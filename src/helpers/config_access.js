@@ -69,7 +69,7 @@ class ConfigAccess {
     // Specify our own internal list of well known portals to exclude (if one not specified)
     if( !oServerConfig.excludePortals ) {
       oServerConfig.excludePortals = ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"];
-      console.warn(`No exludePortals entry found within serverConfig section of sdk-config.json.  Using the following default list: ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"]`);
+      console.warn(`No excludePortals entry found within serverConfig section of sdk-config.json.  Using the following default list: ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"]`);
     }
   }
 

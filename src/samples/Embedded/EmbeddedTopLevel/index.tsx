@@ -12,7 +12,7 @@ import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '@pega/react-sdk-
 
 import EmbeddedSwatch from '../EmbeddedSwatch';
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
-import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import { getSdkConfig, SdkConfigAccess } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../../sdk-local-component-map';
@@ -462,14 +462,16 @@ export default function EmbeddedTopLevel() {
     const actionsApi = pConn.getActionsApi();
     const createWork = actionsApi.createWork.bind(actionsApi);
     const sFlowType = "pyStartCase";
+    let mashupUserIdentifier = null;
 
     //
     // NOTE:  Below, can remove case statement when 8.6.1 and pyCreate
     //        works with mashup and can default to MediaCo
 
     let actionInfo;
+    const appLabel = PCore.getEnvironmentInfo().getApplicationLabel();
 
-    switch (PCore.getEnvironmentInfo().getApplicationLabel()) {
+    switch (appLabel) {
       case "CableCo" :
         actionInfo = {
           containerName: "primary",
@@ -500,7 +502,11 @@ export default function EmbeddedTopLevel() {
         break;
 
       default:
-          break;
+        // Determine if appAlias is specified
+        mashupUserIdentifier = SdkConfigAccess.getSdkConfigAuth().mashupUserIdentifier
+        // eslint-disable-next-line no-console
+        console.error(`mashupUserIdentifier '${mashupUserIdentifier}' is configured for an unrecognized application '${appLabel}'.`);
+        break;
     }
 
   }

@@ -157,112 +157,112 @@ const getComponent = (c11nEnv, declarative) => {
   if (component === undefined) {
     // eslint-disable-next-line sonarjs/max-switch-cases
     switch (type) {
-      case "AppAnnouncement":
+      case 'AppAnnouncement':
         component = AppAnnouncement;
         break;
 
-      case "AppShell":
+      case 'AppShell':
         component = AppShell;
         break;
 
-      case "Attachment":
+      case 'Attachment':
         component = Attachment;
         break;
 
-      case "AutoComplete":
+      case 'AutoComplete':
         component = AutoComplete;
         break;
 
-      case "CaseHistory":
+      case 'CaseHistory':
         component = CaseHistory;
         break;
 
-      case "CaseSummary":
+      case 'CaseSummary':
         component = CaseSummary;
         break;
 
-        case "CaseView":
+      case 'CaseView':
         component = CaseView;
         break;
 
-      case "Checkbox":
+      case 'Checkbox':
         component = CheckboxComponent;
         break;
 
-      case "Currency":
+      case 'Currency':
         component = Currency;
         break;
 
-      case "Date":
+      case 'Date':
         component = Date;
         break;
 
-      case "DateTime":
+      case 'DateTime':
         component = DateTime;
         break;
 
-      case "Decimal":
+      case 'Decimal':
         component = Decimal;
         break;
 
-      case "DeferLoad":
+      case 'DeferLoad':
         component = DeferLoad;
         break;
 
-      case "Dropdown":
+      case 'Dropdown':
         component = Dropdown;
         break;
 
-      case "Email":
+      case 'Email':
         component = Email;
         break;
 
-      case "FileUtility":
+      case 'FileUtility':
         component = FileUtility;
         break;
 
-      case "FlowContainer":
+      case 'FlowContainer':
         component = FlowContainer;
         break;
 
-      case "Followers":
+      case 'Followers':
         component = Followers;
         break;
 
-      case "Integer":
+      case 'Integer':
         component = Integer;
         break;
 
-      case "ModalViewContainer":
+      case 'ModalViewContainer':
         component = ModalViewContainer;
         break;
 
-      case "Percentage":
+      case 'Percentage':
         component = Percentage;
         break;
 
-      case "Phone":
+      case 'Phone':
         component = Phone;
         break;
 
-      case "Pulse":
+      case 'Pulse':
         component = Pulse;
         break;
 
-      case "RadioButtons":
+      case 'RadioButtons':
         component = RadioButtons;
         break;
 
-      case "reference":
-      case "Reference":
+      case 'reference':
+      case 'Reference':
         component = Reference;
         break;
 
-      case "Region":
+      case 'Region':
         component = Region;
         break;
 
-      case "RootContainer":
+      case 'RootContainer':
         component = RootContainer;
         break;
 
@@ -278,7 +278,7 @@ const getComponent = (c11nEnv, declarative) => {
         component = DataReference;
         break;
 
-      case "UserReference":
+      case 'UserReference':
         component = UserReference;
         break;
 
@@ -286,11 +286,11 @@ const getComponent = (c11nEnv, declarative) => {
         component = PromotedFilters;
         break;
 
-      case "Stages":
+      case 'Stages':
         component = Stages;
         break;
 
-      case "TextArea":
+      case 'TextArea':
         component = TextArea;
         break;
 
@@ -298,42 +298,46 @@ const getComponent = (c11nEnv, declarative) => {
         component = TextContent;
         break;
 
-      case "TextInput":
+      case 'TextInput':
         component = TextInput;
         break;
 
-      case "Time":
+      case 'Time':
         component = Time;
         break;
 
-      case "ToDo":
-      case "Todo":
+      case 'ToDo':
+      case 'Todo':
         component = ToDo;
         break;
 
-      case "URL":
+      case 'URL':
         component = URLComponent;
         break;
 
-      case "View":
+      case 'View':
         component = View;
         break;
 
-      case "ViewContainer":
+      case 'ViewContainer':
         component = ViewContainer;
         break;
 
-      case "SemanticLink":
+      case 'SemanticLink':
         component = SemanticLink;
         break;
 
-      case "HMRC_ODX_ChangeLink":
+      case 'HMRC_ODX_ChangeLink':
         component = ChangeLink;
+        break;
+
+      case 'HMRC_ODX_PhoneNumber':
+        component = Phone;
         break;
 
       default:
         // eslint-disable-next-line no-console
-        console.log( `getComponent doesn't have an entry for type ${type}`);
+        console.log(`getComponent doesn't have an entry for type ${type}`);
         component = ErrorBoundary;
         break;
     }

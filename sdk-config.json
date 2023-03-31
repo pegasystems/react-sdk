@@ -53,19 +53,21 @@
     },
 
     "componentDefaults": {
-      "organization": "YourOrg-Required",
-      "library": "",
+      "organization": "YourOrg",
+      "library": "YourComponentLib",
       "version": "0.0.1",
       "type": "",
       "subtype": "",
       "description": "",
-      "icon": ""
-    }
-  },
+      "icon": "",
+      "linkAction": "block"
+    },
 
-  "componentTemplates": {
-    "componentTemplates_comment": "Optional paths for location of custom or override templates.",
-    "customTemplatesPath": "",
-    "overrideTemplatesPath": ""
+    "componentTemplates": {
+      "componentTemplates_comment": "Optional paths for location of custom or override templates.",
+      "customTemplatesPath": "",
+      "overrideTemplatesPath": ""
+    }
   }
+
 }

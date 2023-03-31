@@ -59,13 +59,14 @@
       "type": "",
       "subtype": "",
       "description": "",
-      "icon": ""
-    }
-  },
+      "icon": "",
+      "lintAction": "block"
+    },
 
-  "componentTemplates": {
-    "componentTemplates_comment": "Optional paths for location of custom or override templates.",
-    "customTemplatesPath": "",
-    "overrideTemplatesPath": ""
+    "componentTemplates": {
+      "componentTemplates_comment": "Optional paths for location of custom or override templates.",
+      "customTemplatesPath": "",
+      "overrideTemplatesPath": ""
+    }
   }
 }

@@ -165,7 +165,7 @@ export default function Assignment(props) {
               setErrorSummary(false);
             })
             .catch(() => {
-              showErrorSummary
+              showErrorSummary();
             });
 
           break;

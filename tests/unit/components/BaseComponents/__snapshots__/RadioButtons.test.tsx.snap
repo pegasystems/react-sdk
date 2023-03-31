@@ -23,14 +23,14 @@ exports[`renders basic radio button set with 2 options (displays inline), legend
         <input
           className="govuk-radios__input"
           defaultChecked={false}
-          id="radioButtons-0"
+          id="radioButtons"
           name="radioButtons"
           type="radio"
           value="Option 1"
         />
         <label
           className="govuk-label govuk-radios__label"
-          htmlFor="radioButtons-0"
+          htmlFor="radioButtons"
         />
       </div>
       <div
@@ -81,14 +81,14 @@ exports[`renders basic radio button set with 3 options, legend is heading 1`] = 
         <input
           className="govuk-radios__input"
           defaultChecked={false}
-          id="radioButtons-0"
+          id="radioButtons"
           name="radioButtons"
           type="radio"
           value="Option 1"
         />
         <label
           className="govuk-label govuk-radios__label"
-          htmlFor="radioButtons-0"
+          htmlFor="radioButtons"
         />
       </div>
       <div
@@ -172,14 +172,14 @@ exports[`renders basic radio button set with 3 options, legend is heading with h
         <input
           className="govuk-radios__input"
           defaultChecked={false}
-          id="radioButtons-0"
+          id="radioButtons"
           name="radioButtons"
           type="radio"
           value="Option 1"
         />
         <label
           className="govuk-label govuk-radios__label"
-          htmlFor="radioButtons-0"
+          htmlFor="radioButtons"
         />
       </div>
       <div
@@ -240,21 +240,21 @@ exports[`renders basic radio button set with 3 options, legend is not heading, o
         className="govuk-radios__item"
       >
         <input
-          aria-describedby="radioButtons-0-item-hint"
+          aria-describedby="radioButtons-item-hint"
           className="govuk-radios__input"
           defaultChecked={false}
-          id="radioButtons-0"
+          id="radioButtons"
           name="radioButtons"
           type="radio"
           value="Option 1"
         />
         <label
           className="govuk-label govuk-radios__label"
-          htmlFor="radioButtons-0"
+          htmlFor="radioButtons"
         />
         <div
           className="govuk-hint govuk-radios__hint"
-          id="radioButtons-0-item-hint"
+          id="radioButtons-item-hint"
         >
           For example, 1,one
         </div>

@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders an error summary component with 3 errors listed 1`] = `
+<div
+  className="govuk-error-summary"
+  data-module="govuk-error-summary"
+  tabIndex={-1}
+>
+  <div
+    role="alert"
+  >
+    <h2
+      className="govuk-error-summary__title"
+    >
+      There is a problem
+    </h2>
+    <div
+      className="govuk-error-summary__body"
+    >
+      <ul
+        className="govuk-list govuk-error-summary__list"
+      >
+        <li>
+          <a
+            href="#textInput1"
+            onClick={[Function]}
+          >
+            Cannot be blank
+          </a>
+        </li>
+        <li>
+          <a
+            href="#dateInput1"
+            onClick={[Function]}
+          >
+            Date cannot be in the past
+          </a>
+        </li>
+        <li>
+          <a
+            href="#dateInput2"
+            onClick={[Function]}
+          >
+            Date Cannot be in the future
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`renders correctly 1`] = `
+<div
+  className="govuk-error-summary"
+  data-module="govuk-error-summary"
+  tabIndex={-1}
+>
+  <div
+    role="alert"
+  >
+    <h2
+      className="govuk-error-summary__title"
+    >
+      There is a problem
+    </h2>
+    <div
+      className="govuk-error-summary__body"
+    >
+      <ul
+        className="govuk-list govuk-error-summary__list"
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -23,7 +23,20 @@ export default function DefaultForm(props) {
       childPConnect.setInheritedProp('label', getPConnect().getDataObject().caseInfo.assignments[0].name);
     }
     if(readOnly) extraProps = {...extraProps, showLabel:false, labelHiddenForReadOnly:kid.showLabel};
-    return createElement(createPConnectComponent(), { ...kid, key: idx, ...extraProps }) // eslint-disable-line react/no-array-index-key
+
+    let displayOrder = '';
+    if(props.additionalProps.displayOrder){
+      displayOrder= `${props.additionalProps.displayOrder}-${idx}`;
+    } else {
+      displayOrder=`${idx}`;
+    }
+    childPConnect.registerAdditionalProps({displayOrder});
+
+    const formattedContext = props.context ? props.context?.split('.').pop() : '';
+    const formattedPropertyName = childPConnect.getStateProps().value && childPConnect.getStateProps().value.split('.').pop();
+    const generatedName = props.context ? `${formattedContext}-${formattedPropertyName}`:`${formattedPropertyName}`;
+    childPConnect.registerAdditionalProps({name: generatedName});
+    return createElement(createPConnectComponent(), { ...kid, key: idx, extraProps }) // eslint-disable-line react/no-array-index-key
   });
 
 

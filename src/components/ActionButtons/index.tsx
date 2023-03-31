@@ -15,10 +15,11 @@ export default function ActionButtons(props) {
         <Button
           variant='primary'
           onClick={(e) => {
-            e.target.blur()
+            e.target.blur();
             _onButtonPress(mButton.jsAction, 'primary');
           }}
           key={mButton.actionID}
+          attributes={{type:"button"}}
         >
           {mButton.name}
         </Button>
@@ -31,6 +32,7 @@ export default function ActionButtons(props) {
             _onButtonPress(sButton.jsAction, 'secondary');
           }}
           key={sButton.actionID}
+          attributes={{type:"button"}}
         >
           {sButton.name}
         </Button>

@@ -1,18 +1,14 @@
 import React, { useState, useLayoutEffect } from 'react';
 import DateInput from '../../BaseComponents/DateInput/DateInput';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
-import useAddErrorToPagetitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
 declare const global;
 
 export default function Date(props) {
-  const { getPConnect, label, value = '', validatemessage, onChange, helperText, readOnly } = props;
+  const { getPConnect, label, value = '', validatemessage, onChange, helperText, readOnly, name } = props;
   const pConn = getPConnect();
-  const propName = pConn.getStateProps().value;
 
-  // TODO consider refactoring out to a component higher in tree to avoid needing to define in each input component.
-  useAddErrorToPagetitle(validatemessage);
   const isOnlyField = useIsOnlyField();
 
   // PM - Set up state for each input field, either the value we received from pega, or emtpy
@@ -44,11 +40,9 @@ export default function Date(props) {
     return <ReadOnlyDisplay label={label} value={new global.Date(value).toLocaleDateString()} />;
   }
 
-  // TODO consider refactoring out to a component higher in tree to avoid needing to define in each input component.
-
-  // TODO Investigate whether or not this can be refactored out, or if a name can be injected as a prop higher up
-  const formattedPropName = propName.indexOf('.') === 0 ? propName.substring(1) : propName;
-
+  // This sets a state prop to be exposed to the error summary set up in Assisgnment component - and should match the id of the first field of
+  // the date component. Will investigate better way to do this, to avoid mismatches if the Date BaseComponent changes.
+  pConn.setStateProps({fieldId: `${name}-day`});
 
   // PM - Handlers for each part of date inputs, update state for each respectively
   //      0 pad for ISOString compatibilitiy, with conditions to allow us to clear the fields
@@ -74,7 +68,7 @@ export default function Date(props) {
       onChangeMonth={handleChangeMonth}
       onChangeYear={handleChangeYear}
       value={{ day, month, year }}
-      name={formattedPropName}
+      name={name}
       errorText={validatemessage}
       hintText={helperText}
     />

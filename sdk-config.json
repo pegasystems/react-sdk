@@ -60,7 +60,7 @@
       "subtype": "",
       "description": "",
       "icon": "",
-      "linkAction": "block"
+      "lintAction": "block"
     },
 
     "componentTemplates": {

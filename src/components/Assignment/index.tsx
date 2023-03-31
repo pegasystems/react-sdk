@@ -118,40 +118,42 @@ export default function Assignment(props) {
 
   function buttonPress(sAction: string, sButtonType: string) {
     setErrorSummary(false);
-    if (sButtonType === "secondary") {
 
+    if (sButtonType === 'secondary') {
       switch (sAction) {
-        case "navigateToStep": {
-          const navigatePromise = navigateToStep( "previous", itemKey );
+        case 'navigateToStep': {
+          const navigatePromise = navigateToStep('previous', itemKey);
 
           navigatePromise
             .then(() => {
             })
             .catch(() => {
-              showErrorSummary( `Navigation failed!`);
+              showErrorSummary(`Navigation failed!`);
             });
 
           break;
         }
 
-        case "saveAssignment": {
+        case 'saveAssignment': {
           const caseID = thePConn.getCaseInfo().getKey();
           const assignmentID = thePConn.getCaseInfo().getAssignmentID();
           const savePromise = saveAssignment(itemKey);
 
           savePromise
-          .then(() => {
-            const caseType = thePConn.getCaseInfo().c11nEnv.getValue(PCore.getConstants().CASE_INFO.CASE_TYPE_ID);
-            onSaveActionSuccess({ caseType, caseID, assignmentID });
-          })
-          .catch(() => {
-            showErrorSummary('Save failed');
-          });
+            .then(() => {
+              const caseType = thePConn
+                .getCaseInfo()
+                .c11nEnv.getValue(PCore.getConstants().CASE_INFO.CASE_TYPE_ID);
+              onSaveActionSuccess({ caseType, caseID, assignmentID });
+            })
+            .catch(() => {
+              showErrorSummary('Save failed');
+            });
 
           break;
         }
 
-        case "cancelAssignment": {
+        case 'cancelAssignment': {
           // check if create stage (modal)
           const { PUB_SUB_EVENTS } = PCore.getConstants();
           const { publish } = PCore.getPubSubUtils();
@@ -182,29 +184,25 @@ export default function Assignment(props) {
         default:
           break;
       }
-    }
-    else if (sButtonType === "primary") {
+    } else if (sButtonType === 'primary') {
       // eslint-disable-next-line sonarjs/no-small-switch
       switch (sAction) {
-        case "finishAssignment" :
-          {
-            const finishPromise = finishAssignment(itemKey);
+        case 'finishAssignment': {
+          const finishPromise = finishAssignment(itemKey);
 
-            finishPromise
-              .then(() => {
-              })
-              .catch(() => {
-                showErrorSummary( `Submit failed!`);
-              });
+          finishPromise
+            .then(() => {})
+            .catch(() => {
+              showErrorSummary(`Submit failed!`);
+            });
 
-            break;
-          }
+          break;
+        }
 
         default:
           break;
       }
     }
-
   }
 
   return (
@@ -213,7 +211,7 @@ export default function Assignment(props) {
       {bHasNavigation ? (
         <React.Fragment>
           <div>has Nav</div>
-          {!isOnlyOneField && <h1 className="govuk-heading-l">{containerName}</h1>}
+          {!isOnlyOneField && <h1 className='govuk-heading-l'>{containerName}</h1>}
           <MultiStep
             getPConnect={getPConnect}
             itemKey={itemKey}
@@ -228,7 +226,7 @@ export default function Assignment(props) {
         </React.Fragment>
       ) : (
         <>
-          {!isOnlyOneField && <h1 className="govuk-heading-l">{containerName}</h1>}
+          {!isOnlyOneField && <h1 className='govuk-heading-l'>{containerName}</h1>}
           <AssignmentCard
             getPConnect={getPConnect}
             itemKey={itemKey}
@@ -239,6 +237,14 @@ export default function Assignment(props) {
           </AssignmentCard>
         </>
       )}
+      <a
+        href='https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit'
+        className='govuk-link'
+        rel='noreferrer noopener'
+        target='_blank'
+      >
+        Ask HMRC online (opens in new tab)
+      </a>
     </div>
   );
 }

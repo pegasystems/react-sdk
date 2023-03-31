@@ -22,6 +22,7 @@
     "buildAllComponents": "dx-component-builder-sdk buildAllComponents",
     "buildComponent": "dx-component-builder-sdk buildComponent",
     "create": "dx-component-builder-sdk create",
+    "createAll": "dx-component-builder-sdk createAll",
     "delete": "dx-component-builder-sdk delete",
     "deleteAll": "dx-component-builder-sdk deleteAll",
     "generateMissingCompanions": "dx-component-builder-sdk generateMissingCompanions",

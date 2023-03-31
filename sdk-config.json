@@ -53,8 +53,8 @@
     },
 
     "componentDefaults": {
-      "organization": "YourOrg-Required",
-      "library": "",
+      "organization": "YourOrg",
+      "library": "YourComponentLib",
       "version": "0.0.1",
       "type": "",
       "subtype": "",
@@ -69,4 +69,5 @@
       "overrideTemplatesPath": ""
     }
   }
+
 }

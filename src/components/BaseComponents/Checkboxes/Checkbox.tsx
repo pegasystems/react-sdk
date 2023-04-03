@@ -21,6 +21,7 @@ export default function Checkbox({ item, index, name, inputProps= {}, onChange, 
         value={item.checked}
         onChange={!item.readOnly ? onChange : () => {}}
         onBlur={!item.readOnly ? onBlur : () => {}}
+        checked={item.checked}
       ></input>
       <label className={labelClasses}>{item.label}</label>
       {item.hintText ? (

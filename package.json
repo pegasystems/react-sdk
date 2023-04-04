@@ -5,15 +5,14 @@
   "scripts": {
     "_comment_SDK_install_build_run_commands": "The following are public commands to clean, install, build, and run the SDK",
     "build:dev": "run-p -l lint _internal-build-dev-only",
-    "build:dev:ci": "npm run clean && npm run install-sdk && npm run build:dev",
+    "build:dev:ci": "npm run clean && npm run _internal-install-sdk && npm run build:dev",
     "build:prod": "run-p -l lint _internal-build-prod-only",
-    "build:prod:ci": "npm run clean && npm run install-sdk && npm run build:prod",
+    "build:prod:ci": "npm run clean && npm run _internal-install-sdk && npm run build:prod",
     "start-dev": "webpack serve",
     "start-dev-https": "webpack serve --https",
     "start-prod": "http-server ./dist --port 3502 --gzip --brotli --cors --proxy http://localhost:3502?",
     "start-prod-https": "http-server ./dist --port 3502 --gzip --brotli --cors --ssl --cert private.pem --key private.key --proxy https://localhost:3502?",
     "clean": "echo \"cleaning...\" && npx shx --yes rm -rf ./dist/** ./node_modules",
-    "install-sdk": "echo \"installing...\" && npm install --loglevel notice",
     "lint": "echo \"linting...\" && npx eslint \"src/**\"",
     "lint-errors-only": "npx eslint \"src/**\" --quiet",
 
@@ -25,14 +24,14 @@
     "createAll": "dx-component-builder-sdk createAll",
     "delete": "dx-component-builder-sdk delete",
     "deleteAll": "dx-component-builder-sdk deleteAll",
-    "generateMissingCompanions": "dx-component-builder-sdk generateMissingCompanions",
     "list": "dx-component-builder-sdk list",
     "mapAll": "dx-component-builder-sdk mapAll",
     "override": "dx-component-builder-sdk override",
     "overrideAll": "dx-component-builder-sdk overrideAll",
     "publish": "dx-component-builder-sdk publish",
     "publishAll": "dx-component-builder-sdk publishAll",
-    "start-storybook": "start-storybook --port 6040 --quiet",
+    "scanAndFix": "dx-component-builder-sdk scanAndFix",
+    "startStorybook": "start-storybook --port 6040 --quiet",
     "update": "dx-component-builder-sdk update",
     "validate-schema": "dx-component-builder-sdk validateSchema",
 
@@ -41,17 +40,14 @@
     "test:headed": "playwright test --headed --project=chromium MediaCo/portal MediaCo/embedded",
     "test-report": "playwright show-report tests/playwright-report",
 
-    "_comment_Component_Config_Server": "The following are public commands related to the Component Config Server that's only needed at design time/authoring",
-    "_comment_Component_Config_Server_2": "The Component Config Server can only be used when running against Infinity 8.7.* or newer",
-    "start-component-config-server": "http-server ./distAuthoring --port 4502 --cors -d false",
-    "start-component-config-server-https": "http-server ./distAuthoring --port 4502 --cors -d false --ssl --cert private.pem --key private.key",
-
     "_comment_internal_SDK_scripts": "The following commands are for internal use and are intended to be called only from public scripts above",
     "_comment_internal_SDK_scripts_2": "The _internal-copy-configs script can only be used when running against Infinity 8.7.* or newer",
     "_internal-build-dev-only": "echo \"building...\" && webpack --mode=development && npm run _internal-copy-index && npm run _internal-copy-configs",
     "_internal-build-prod-only": "echo \"building...\" && webpack --mode=production && npm run _internal-copy-index && npm run _internal-copy-configs",
     "_internal-copy-index": "shx cp dist/index.html dist/simpleportal.html && shx cp dist/index.html dist/portal.html && shx cp dist/index.html dist/fullportal.html && shx cp dist/index.html dist/embedded.html",
-    "_internal-copy-configs": "node ./scripts/copy-configs"
+    "_internal-copy-configs": "node ./scripts/copy-configs",
+    "_internal-install-sdk": "echo \"installing...\" && npm install --loglevel notice"
+
   },
   "dependencies": {
     "@date-io/dayjs": "^1.3.13",

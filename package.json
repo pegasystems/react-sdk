@@ -32,7 +32,6 @@
     "publishAll": "dx-component-builder-sdk publishAll",
     "scanAndFix": "dx-component-builder-sdk scanAndFix",
     "startStorybook": "start-storybook --port 6040 --quiet",
-    "update": "dx-component-builder-sdk update",
     "validate-schema": "dx-component-builder-sdk validateSchema",
 
     "_comment_SDK_public_SDK_test_commands": "The following are public commands used for testing the SDK",

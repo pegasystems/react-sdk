@@ -319,6 +319,7 @@ export default function FlowContainer(props) {
        // So, if we get here and caseMessages$ is empty, use default value in DX API response
       setCaseMessages(theCaseMessages || "Thank you! The next step in this case has been routed appropriately.");
       setHasCaseMessages(true);
+      setShowConfirm(true);
 
 
       // publish this "assignmentFinished" for mashup, need to get approved as a standard
@@ -333,6 +334,7 @@ export default function FlowContainer(props) {
     else {
       // debugger;
       setHasCaseMessages(false);
+      setShowConfirm(false);
     }
 
 

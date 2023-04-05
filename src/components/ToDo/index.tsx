@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Utils } from '../../helpers/utils';
@@ -28,7 +30,7 @@ import './ToDo.css';
 
 declare const PCore: any;
 
-const isChildCase = (assignment) => {
+const isChildCase = assignment => {
   return assignment.isChild;
 };
 
@@ -167,14 +169,28 @@ export default function ToDo(props) {
       });
   }
 
+  const renderTaskId = (type, getPConnect, showTodoList, assignment) => {
+    const displayID = getID(assignment);
+
+    if ((showTodoList && type !== CONSTS.TODO) || assignment.isChild === true) {
+      /* Supress link for todo inside flow step */
+      return (
+        <Button size='small' color='primary'>{`${assignment.name} ${getID(assignment)}`}</Button>
+      );
+    }
+    return displayID;
+  };
+
   const getListItemComponent = assignment => {
     if (isDesktop) {
       return (
         <>
           Task in
-          <Button size='small' color='primary'>{`${assignment.name} ${getID(assignment)}`}</Button>
-          {` \u2022 `}
-          <span className='psdk-todo-assignment-status'>{assignment.status}</span>
+          {renderTaskId(type, getPConnect, showTodoList, assignment)}
+          {type === CONSTS.WORKLIST && assignment.status ? `\u2022 ` : undefined}
+          {type === CONSTS.WORKLIST && assignment.status ? (
+            <span className='psdk-todo-assignment-status'>{assignment.status}</span>
+          ) : undefined}
           {` \u2022  Urgency  ${getPriority(assignment)}`}
         </>
       );
@@ -189,51 +205,98 @@ export default function ToDo(props) {
 
   return (
     <React.Fragment>
-      <Card className={classes.root}>
-        {showTodoList && (
-          <CardHeader
-            title={
+      {type === CONSTS.WORKLIST && (
+        <Card className={classes.root}>
+          {showTodoList && (
+            <CardHeader
+              title={
+                <Badge badgeContent={assignmentCount} color='primary'>
+                  <Typography variant='h6'>{headerText}&nbsp;&nbsp;&nbsp;</Typography>
+                </Badge>
+              }
+              avatar={<Avatar className={classes.avatar}>{currentUserInitials}</Avatar>}
+            ></CardHeader>
+          )}
+          <CardContent>
+            <List>
+              {assignments.map(assignment => (
+                <ListItem
+                  key={getAssignmentId(assignment)}
+                  dense
+                  divider
+                  onClick={() => clickGo(assignment)}
+                >
+                  <ListItemText
+                    primary={getAssignmentName(assignment)}
+                    secondary={getListItemComponent(assignment)}
+                  />
+                  {type === CONSTS.WORKLIST && (
+                    <ListItemSecondaryAction>
+                      <IconButton onClick={() => clickGo(assignment)}>
+                        <ArrowForwardIosOutlinedIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  )}
+                </ListItem>
+              ))}
+            </List>
+          </CardContent>
+          {assignmentCount > 3 && (
+            <Box display='flex' justifyContent='center'>
+              {bShowMore ? (
+                <Button color='primary' onClick={_showMore}>
+                  Show more
+                </Button>
+              ) : (
+                <Button onClick={_showLess}>Show less</Button>
+              )}
+            </Box>
+          )}
+        </Card>
+      )}
+
+      {type === CONSTS.TODO && (
+        <>
+          {showTodoList && (
+            <>
               <Badge badgeContent={assignmentCount} color='primary'>
                 <Typography variant='h6'>{headerText}&nbsp;&nbsp;&nbsp;</Typography>
               </Badge>
-            }
-            avatar={<Avatar className={classes.avatar}>{currentUserInitials}</Avatar>}
-          ></CardHeader>
-        )}
-        <CardContent>
+            </>
+          )}
           <List>
             {assignments.map(assignment => (
-              <ListItem
-                key={getAssignmentId(assignment)}
-                dense
-                divider
-                onClick={() => clickGo(assignment)}
-              >
-                <ListItemText
-                  primary={getAssignmentName(assignment)}
-                  secondary={getListItemComponent(assignment)}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton onClick={() => clickGo(assignment)}>
-                    <ArrowForwardIosOutlinedIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
+              <>
+                <div className='psdk-todo-avatar-header'>
+                  <Avatar className={classes.avatar} style={{ marginRight: '16px' }}>
+                    {currentUserInitials}
+                  </Avatar>
+                  <div style={{ display: 'block' }}>
+                    <Typography variant='h6'>{assignment?.name}</Typography>
+                    {`Task in ${renderTaskId(
+                      type,
+                      getPConnect,
+                      showTodoList,
+                      assignment
+                    )} \u2022  Urgency  ${getPriority(assignment)}`}
+                  </div>
+                </div>
+              </>
             ))}
           </List>
-        </CardContent>
-        {assignmentCount > 3 && (
-          <Box display='flex' justifyContent='center'>
-            {bShowMore ? (
-              <Button color='primary' onClick={_showMore}>
-                Show more
-              </Button>
-            ) : (
-              <Button onClick={_showLess}>Show less</Button>
-            )}
-          </Box>
-        )}
-      </Card>
+          {assignmentCount > 3 && (
+            <Box display='flex' justifyContent='center'>
+              {bShowMore ? (
+                <Button color='primary' onClick={_showMore}>
+                  Show more
+                </Button>
+              ) : (
+                <Button onClick={_showLess}>Show less</Button>
+              )}
+            </Box>
+          )}
+        </>
+      )}
 
       <Snackbar
         open={showSnackbar}

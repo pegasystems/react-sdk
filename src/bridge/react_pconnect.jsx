@@ -52,6 +52,7 @@ import PromotedFilters from '../components/templates/PromotedFilters';
 import DataReference from '../components/templates/DataReference';
 import SemanticLink from '../components/forms/SemanticLink';
 import UserReference from '../components/forms/UserReference';
+import Confirmation from '../components/templates/Confirmation';
 
 const connectRedux = (component, c11nEnv) => {
 
@@ -190,6 +191,10 @@ const getComponent = (c11nEnv, declarative) => {
 
       case "Currency":
         component = Currency;
+        break;
+
+      case "Confirmation":
+        component = Confirmation;
         break;
 
       case "Date":

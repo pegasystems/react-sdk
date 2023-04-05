@@ -152,7 +152,7 @@ export default function ToDo(props) {
       options['isChild'] = isChildCase(assignment);
     } else {
       options['isActionFromToDoList'] = false;
-      options['target'] = '';
+      options['target'] = sTarget;
     }
 
     thePConn

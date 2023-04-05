@@ -30,6 +30,7 @@ import OneColumnPage from '../templates/OneColumnPage';
 import InlineDashboardPage from '../templates/InlineDashboardPage';
 import DetailsSubTabs from '../templates/Details/SubTabs';
 import TwoColumnTab from '../templates/TwoColumnTab';
+import Confirmation from '../templates/Confirmation';
 
 import './View.css';
 //
@@ -38,7 +39,7 @@ import './View.css';
 // is totally at your own risk.
 //
 
-const FORMTEMPLATES = ['OneColumn', 'TwoColumn', 'DefaultForm', 'WideNarrow', 'NarrowWide'];
+const FORMTEMPLATES = ['OneColumn', 'TwoColumn', 'DefaultForm', 'WideNarrow', 'NarrowWide', 'Confirmation'];
 const NO_HEADER_TEMPLATES = [
   'SubTabs',
   'SimpleTable',
@@ -46,7 +47,8 @@ const NO_HEADER_TEMPLATES = [
   'DetailsTwoColumn',
   'DetailsThreeColumn',
   'NarrowWideDetails',
-  'WideNarrowDetails'
+  'WideNarrowDetails',
+  'Confirmation'
 ];
 
 export default function View(props) {
@@ -79,6 +81,10 @@ export default function View(props) {
 
       case 'CaseView':
         ViewTemplate = CaseView;
+        break;
+
+      case "Confirmation":
+        ViewTemplate = Confirmation;
         break;
 
       case 'DefaultForm':

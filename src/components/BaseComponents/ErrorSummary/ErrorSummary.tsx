@@ -27,7 +27,7 @@ export default function ErrorSummary(props) {
         <div className='govuk-error-summary__body'>
           <ul className='govuk-list govuk-error-summary__list'>
               {errors.map(error => {
-                return <li>
+                return <li key={error.fieldId}>
                   <a href={`#${error.fieldId}`} onClick={onClick}>{error.message}</a>
                 </li>
               })}

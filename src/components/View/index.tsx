@@ -39,7 +39,7 @@ import './View.css';
 // is totally at your own risk.
 //
 
-const FORMTEMPLATES = ['OneColumn', 'TwoColumn', 'DefaultForm', 'WideNarrow', 'NarrowWide', 'Confirmation'];
+const FORMTEMPLATES = ['OneColumn', 'TwoColumn', 'DefaultForm', 'WideNarrow', 'NarrowWide'];
 const NO_HEADER_TEMPLATES = [
   'SubTabs',
   'SimpleTable',

@@ -329,7 +329,6 @@ export default function FlowContainer(props) {
 
       // debugger;
       setCheckSvg(Utils.getImageSrc("check", PCore.getAssetLoader().getStaticServerUrl()));
-      return;
     }
     else {
       // debugger;

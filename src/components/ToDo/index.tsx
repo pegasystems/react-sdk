@@ -98,17 +98,14 @@ export default function ToDo(props) {
 
   const getAssignmentId = assignment => {
     return type === CONSTS.TODO ? assignment.ID : assignment.id;
-    // return type === CONSTS.TODO ? assignment.ID : assignment.id || assignment.ID;
   };
 
   const getPriority = assignment => {
     return type === CONSTS.TODO ? assignment.urgency : assignment.priority;
-    // return type === CONSTS.TODO ? assignment.urgency : assignment.priority || assignment.urgency;
   };
 
   const getAssignmentName = assignment => {
     return type === CONSTS.TODO ? assignment.name : assignment.stepName;
-    // return type === CONSTS.TODO ? assignment.name : assignment.stepName || assignment.name;
   };
 
   function showToast(message: string) {

@@ -30,6 +30,7 @@
     "overrideAll": "dx-component-builder-sdk overrideAll",
     "publish": "dx-component-builder-sdk publish",
     "publishAll": "dx-component-builder-sdk publishAll",
+    "rename": "dx-component-builder-sdk rename",
     "scanAndFix": "dx-component-builder-sdk scanAndFix",
     "startStorybook": "start-storybook --port 6040 --quiet",
 

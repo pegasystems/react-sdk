@@ -209,10 +209,6 @@ export default function ToDo(props) {
     );
   };
 
-  // if(assignments.length > 0){
-  //   assignments.push(assignments[0]);
-  // }
-
   const toDoContent = (
     <>
       {showTodoList && (

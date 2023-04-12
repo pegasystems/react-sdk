@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/no-shadow */
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Utils } from '../../helpers/utils';
 import {
@@ -60,11 +60,17 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     backgroundColor: theme.palette.primary.light,
     color: theme.palette.getContrastText(theme.palette.primary.light)
+  },
+  todoWrapper: {
+    borderLeft: '6px solid',
+    borderLeftColor: theme.palette.primary.light,
+    padding: theme.spacing(1),
+    margin: theme.spacing(1)
   }
 }));
 
 export default function ToDo(props) {
-  const { datasource, getPConnect, headerText, showTodoList, myWorkList, type } = props;
+  const { datasource, getPConnect, headerText, showTodoList, myWorkList, type, isConfirm } = props;
 
   const CONSTS = PCore.getConstants();
 
@@ -203,6 +209,50 @@ export default function ToDo(props) {
     );
   };
 
+  // if(assignments.length > 0){
+  //   assignments.push(assignments[0]);
+  // }
+
+  const toDoContent = (
+    <>
+      {showTodoList && (
+        <CardHeader
+          title={
+            <Badge badgeContent={assignmentCount} color='primary'>
+              <Typography variant='h6'>{headerText}&nbsp;&nbsp;&nbsp;</Typography>
+            </Badge>
+          }
+        ></CardHeader>
+      )}
+      <List>
+        {assignments.map(assignment => (
+          <>
+            <div className='psdk-todo-avatar-header'>
+              <Avatar className={classes.avatar} style={{ marginRight: '16px' }}>
+                {currentUserInitials}
+              </Avatar>
+              <div style={{ display: 'block' }}>
+                <Typography variant='h6'>{assignment?.name}</Typography>
+                {`Task in ${renderTaskId(
+                  type,
+                  getPConnect,
+                  showTodoList,
+                  assignment
+                )} \u2022  Urgency  ${getPriority(assignment)}`}
+              </div>
+              {!isConfirm && (
+                <div style={{ marginLeft: 'auto' }}>
+                  <IconButton onClick={() => clickGo(assignment)}>
+                    <ArrowForwardIosOutlinedIcon />
+                  </IconButton>
+                </div>
+              )}
+            </div>
+          </>
+        ))}
+      </List>
+    </>
+  );
   return (
     <React.Fragment>
       {type === CONSTS.WORKLIST && (
@@ -230,72 +280,32 @@ export default function ToDo(props) {
                     primary={getAssignmentName(assignment)}
                     secondary={getListItemComponent(assignment)}
                   />
-                  {type === CONSTS.WORKLIST && (
-                    <ListItemSecondaryAction>
-                      <IconButton onClick={() => clickGo(assignment)}>
-                        <ArrowForwardIosOutlinedIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  )}
+                  <ListItemSecondaryAction>
+                    <IconButton onClick={() => clickGo(assignment)}>
+                      <ArrowForwardIosOutlinedIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
                 </ListItem>
               ))}
             </List>
           </CardContent>
-          {assignmentCount > 3 && (
-            <Box display='flex' justifyContent='center'>
-              {bShowMore ? (
-                <Button color='primary' onClick={_showMore}>
-                  Show more
-                </Button>
-              ) : (
-                <Button onClick={_showLess}>Show less</Button>
-              )}
-            </Box>
-          )}
         </Card>
       )}
 
-      {type === CONSTS.TODO && (
-        <>
-          {showTodoList && (
-            <>
-              <Badge badgeContent={assignmentCount} color='primary'>
-                <Typography variant='h6'>{headerText}&nbsp;&nbsp;&nbsp;</Typography>
-              </Badge>
-            </>
+      {type === CONSTS.TODO && !isConfirm && (
+        <Card className={classes.todoWrapper}>{toDoContent}</Card>
+      )}
+      {type === CONSTS.TODO && isConfirm && <Fragment>{toDoContent}</Fragment>}
+      {assignmentCount > 3 && (
+        <Box display='flex' justifyContent='center'>
+          {bShowMore ? (
+            <Button color='primary' onClick={_showMore}>
+              Show more
+            </Button>
+          ) : (
+            <Button onClick={_showLess}>Show less</Button>
           )}
-          <List>
-            {assignments.map(assignment => (
-              <>
-                <div className='psdk-todo-avatar-header'>
-                  <Avatar className={classes.avatar} style={{ marginRight: '16px' }}>
-                    {currentUserInitials}
-                  </Avatar>
-                  <div style={{ display: 'block' }}>
-                    <Typography variant='h6'>{assignment?.name}</Typography>
-                    {`Task in ${renderTaskId(
-                      type,
-                      getPConnect,
-                      showTodoList,
-                      assignment
-                    )} \u2022  Urgency  ${getPriority(assignment)}`}
-                  </div>
-                </div>
-              </>
-            ))}
-          </List>
-          {assignmentCount > 3 && (
-            <Box display='flex' justifyContent='center'>
-              {bShowMore ? (
-                <Button color='primary' onClick={_showMore}>
-                  Show more
-                </Button>
-              ) : (
-                <Button onClick={_showLess}>Show less</Button>
-              )}
-            </Box>
-          )}
-        </>
+        </Box>
       )}
 
       <Snackbar
@@ -328,8 +338,9 @@ ToDo.propTypes = {
   type: PropTypes.string,
   // pageMessages: PropTypes.arrayOf(PropTypes.any),
   // eslint-disable-next-line react/no-unused-prop-types
-  context: PropTypes.string
+  context: PropTypes.string,
   // hideActionButtons: PropTypes.bool
+  isConfirm: PropTypes.bool
 };
 
 ToDo.defaultProps = {
@@ -343,6 +354,7 @@ ToDo.defaultProps = {
   // target: "",
   type: 'worklist',
   // pageMessages: null,
-  context: ''
+  context: '',
   // hideActionButtons: false
+  isConfirm: false
 };

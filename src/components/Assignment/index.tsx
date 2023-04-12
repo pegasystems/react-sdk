@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import AssignmentCard from '../AssignmentCard';
 import MultiStep from '../MultiStep';
@@ -14,7 +14,7 @@ export default function Assignment(props) {
   const thePConn = getPConnect();
 
   const [bHasNavigation, setHasNavigation] = useState(false);
-  const [actionButtons, setActionButtons] = useState( {} );
+  const [actionButtons, setActionButtons] = useState({});
   const [bIsVertical, setIsVertical] = useState(false);
   const [arCurrentStepIndicies, setArCurrentStepIndicies] = useState<Array<any>>([]);
   const [arNavigationSteps, setArNavigationSteps] = useState<Array<any>>([]);
@@ -30,40 +30,38 @@ export default function Assignment(props) {
   // const showPage = actionsAPI.showPage.bind(actionsAPI);
 
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
-  function findCurrentIndicies(arStepperSteps: Array<any>, arIndicies: Array<number>, depth: number) : Array<number> {
-
+  function findCurrentIndicies(
+    arStepperSteps: Array<any>,
+    arIndicies: Array<number>,
+    depth: number
+  ): Array<number> {
     let count = 0;
-    arStepperSteps.forEach( (step) => {
-      if (step.visited_status === "current") {
+    arStepperSteps.forEach(step => {
+      if (step.visited_status === 'current') {
         arIndicies[depth] = count;
 
         // add in
-        step["step_status"] = "";
-      }
-      else if (step.visited_status === "success") {
+        step['step_status'] = '';
+      } else if (step.visited_status === 'success') {
         count += 1;
-        step.step_status = "completed"
-      }
-      else {
+        step.step_status = 'completed';
+      } else {
         count += 1;
-        step.step_status = "";
+        step.step_status = '';
       }
 
       if (step.steps) {
-        arIndicies = findCurrentIndicies(step.steps, arIndicies, depth + 1)
+        arIndicies = findCurrentIndicies(step.steps, arIndicies, depth + 1);
       }
     });
 
     return arIndicies;
   }
 
-
-  useEffect( ()=> {
-
+  useEffect(() => {
     if (children && children.length > 0) {
-
       // debugger;
 
       const oWorkItem = children[0].props.getPConnect();
@@ -77,31 +75,31 @@ export default function Assignment(props) {
           setActionButtons(oCaseInfo.actionButtons);
         }
 
-        if ( oCaseInfo?.navigation /* was oCaseInfo.navigation != null */) {
+        if (oCaseInfo?.navigation /* was oCaseInfo.navigation != null */) {
           setHasNavigation(true);
 
-          if (oCaseInfo.navigation.template && oCaseInfo.navigation.template.toLowerCase() === "standard") {
+          if (
+            oCaseInfo.navigation.template &&
+            oCaseInfo.navigation.template.toLowerCase() === 'standard'
+          ) {
             setHasNavigation(false);
-          }
-          else if (oCaseInfo.navigation.template && oCaseInfo.navigation.template.toLowerCase() === "vertical") {
+          } else if (
+            oCaseInfo.navigation.template &&
+            oCaseInfo.navigation.template.toLowerCase() === 'vertical'
+          ) {
             setIsVertical(true);
-          }
-          else {
+          } else {
             setIsVertical(false);
           }
 
           setArNavigationSteps(JSON.parse(JSON.stringify(oCaseInfo.navigation.steps)));
-          setArCurrentStepIndicies(findCurrentIndicies(arNavigationSteps, arCurrentStepIndicies, 0));
-
+          setArCurrentStepIndicies(
+            findCurrentIndicies(arNavigationSteps, arCurrentStepIndicies, 0)
+          );
         }
       }
-
     }
-
-
   }, [children]);
-
-
 
   function showToast(message: string) {
     const theMessage = `Assignment: ${message}`;
@@ -111,61 +109,65 @@ export default function Assignment(props) {
     setShowSnackbar(true);
   }
 
-
   function handleSnackbarClose(event: React.SyntheticEvent | React.MouseEvent, reason?: string) {
     if (reason === 'clickaway') {
       return;
     }
     setShowSnackbar(false);
-  };
+  }
 
   function onSaveActionSuccess(data) {
     actionsAPI.cancelAssignment(itemKey).then(() => {
-      PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CREATE_STAGE_SAVED, data);
+      PCore.getPubSubUtils().publish(
+        PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CREATE_STAGE_SAVED,
+        data
+      );
     });
   }
 
   function buttonPress(sAction: string, sButtonType: string) {
-
-    if (sButtonType === "secondary") {
-
+    if (sButtonType === 'secondary') {
       switch (sAction) {
-        case "navigateToStep": {
-          const navigatePromise = navigateToStep( "previous", itemKey );
+        case 'navigateToStep': {
+          const navigatePromise = navigateToStep('previous', itemKey);
 
           navigatePromise
-            .then(() => {
-            })
+            .then(() => {})
             .catch(() => {
-              showToast( `Navigation failed!`);
+              showToast(`Navigation failed!`);
             });
 
           break;
         }
 
-        case "saveAssignment": {
+        case 'saveAssignment': {
           const caseID = thePConn.getCaseInfo().getKey();
           const assignmentID = thePConn.getCaseInfo().getAssignmentID();
           const savePromise = saveAssignment(itemKey);
 
           savePromise
-          .then(() => {
-            const caseType = thePConn.getCaseInfo().c11nEnv.getValue(PCore.getConstants().CASE_INFO.CASE_TYPE_ID);
-            onSaveActionSuccess({ caseType, caseID, assignmentID });
-          })
-          .catch(() => {
-            showToast('Save failed');
-          });
+            .then(() => {
+              const caseType = thePConn
+                .getCaseInfo()
+                .c11nEnv.getValue(PCore.getConstants().CASE_INFO.CASE_TYPE_ID);
+              onSaveActionSuccess({ caseType, caseID, assignmentID });
+            })
+            .catch(() => {
+              showToast('Save failed');
+            });
 
           break;
         }
 
-        case "cancelAssignment": {
+        case 'cancelAssignment': {
           // check if create stage (modal)
           const { PUB_SUB_EVENTS } = PCore.getConstants();
           const { publish } = PCore.getPubSubUtils();
           const isAssignmentInCreateStage = thePConn.getCaseInfo().isAssignmentInCreateStage();
-          const isLocalAction = thePConn.getCaseInfo().isLocalAction() || getPConnect().getValue(PCore.getConstants().CASE_INFO.IS_LOCAL_ACTION);
+          const isLocalAction =
+            thePConn.getCaseInfo().isLocalAction() ||
+            (PCore.getConstants().CASE_INFO.IS_LOCAL_ACTION &&
+              getPConnect().getValue(PCore.getConstants().CASE_INFO.IS_LOCAL_ACTION));
           if (isAssignmentInCreateStage && isInModal && !isLocalAction) {
             const cancelPromise = cancelCreateStageAssignment(itemKey);
 
@@ -193,73 +195,89 @@ export default function Assignment(props) {
         default:
           break;
       }
-    }
-    else if (sButtonType === "primary") {
+    } else if (sButtonType === 'primary') {
       // eslint-disable-next-line sonarjs/no-small-switch
       switch (sAction) {
-        case "finishAssignment" :
-          {
-            const finishPromise = finishAssignment(itemKey);
+        case 'finishAssignment': {
+          const finishPromise = finishAssignment(itemKey);
 
-            finishPromise
-              .then(() => {
-              })
-              .catch(() => {
-                showToast( `Submit failed!`);
-              });
+          finishPromise
+            .then(() => {})
+            .catch(() => {
+              showToast(`Submit failed!`);
+            });
 
-            break;
-          }
+          break;
+        }
 
         default:
           break;
       }
     }
-
   }
 
-
   return (
-    <div id="Assignment">
-      { bHasNavigation ?
-          <React.Fragment>
-            <MultiStep getPConnect={getPConnect} itemKey={itemKey} actionButtons={actionButtons} onButtonPress={buttonPress}
-              bIsVertical={bIsVertical} arCurrentStepIndicies={arCurrentStepIndicies} arNavigationSteps={arNavigationSteps}>
-              {children}
-            </MultiStep>
-            <Snackbar
-              open={showSnackbar}
-              autoHideDuration={3000}
-              onClose={handleSnackbarClose}
-              message={snackbarMessage}
-              action={
-                <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose}>
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              }
-            />
-          </React.Fragment>
-        : (
-          <React.Fragment>
-            <AssignmentCard getPConnect={getPConnect} itemKey={itemKey} actionButtons={actionButtons} onButtonPress={buttonPress} >
-              {children}
-            </AssignmentCard>
-            <Snackbar
-              open={showSnackbar}
-              autoHideDuration={3000}
-              onClose={handleSnackbarClose}
-              message={snackbarMessage}
-              action={
-                <IconButton size="small" aria-label="close" color="inherit" onClick={handleSnackbarClose}>
-                  <CloseIcon fontSize="small" />
-                </IconButton>
-              }
-            />
-          </React.Fragment>
-        )
-    }
+    <div id='Assignment'>
+      {bHasNavigation ? (
+        <React.Fragment>
+          <MultiStep
+            getPConnect={getPConnect}
+            itemKey={itemKey}
+            actionButtons={actionButtons}
+            onButtonPress={buttonPress}
+            bIsVertical={bIsVertical}
+            arCurrentStepIndicies={arCurrentStepIndicies}
+            arNavigationSteps={arNavigationSteps}
+          >
+            {children}
+          </MultiStep>
+          <Snackbar
+            open={showSnackbar}
+            autoHideDuration={3000}
+            onClose={handleSnackbarClose}
+            message={snackbarMessage}
+            action={
+              <IconButton
+                size='small'
+                aria-label='close'
+                color='inherit'
+                onClick={handleSnackbarClose}
+              >
+                <CloseIcon fontSize='small' />
+              </IconButton>
+            }
+          />
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <AssignmentCard
+            getPConnect={getPConnect}
+            itemKey={itemKey}
+            actionButtons={actionButtons}
+            onButtonPress={buttonPress}
+          >
+            {children}
+          </AssignmentCard>
+          <Snackbar
+            open={showSnackbar}
+            autoHideDuration={3000}
+            onClose={handleSnackbarClose}
+            message={snackbarMessage}
+            action={
+              <IconButton
+                size='small'
+                aria-label='close'
+                color='inherit'
+                onClick={handleSnackbarClose}
+              >
+                <CloseIcon fontSize='small' />
+              </IconButton>
+            }
+          />
+        </React.Fragment>
+      )}
     </div>
-  )
+  );
 }
 
 // From WC SDK
@@ -285,7 +303,6 @@ export default function Assignment(props) {
 //         <lit-toast></lit-toast>
 //     </div>`}
 // `;
-
 
 Assignment.propTypes = {
   children: PropTypes.node.isRequired,

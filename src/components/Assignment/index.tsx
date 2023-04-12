@@ -139,6 +139,14 @@ export default function Assignment(props) {
     });
   }, [children])
 
+  useEffect(() => {
+    if(!errorSummary){
+      const skiplink:any = document.getElementsByClassName('govuk-skip-link')[0];
+      skiplink.focus();
+    }
+
+  }, [children]);
+
   useAddErrorToPageTitle(errorMessages.length > 0);
 
   function showErrorSummary() {

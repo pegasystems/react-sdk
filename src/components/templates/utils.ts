@@ -4,15 +4,15 @@ export function getAllFields(pConnect: any) {
   const metadata = pConnect.getRawMetadata();
   let allFields = [];
   if (metadata.children && metadata.children.map) {
-    allFields = metadata.children.map((fields) => {
+    allFields = metadata.children.map(fields => {
       const children = fields.children instanceof Array ? fields.children : [];
-      return children.map((field) => field.config);
+      return children.map(field => field.config);
     });
   }
   return allFields;
 }
 
-export function filterForFieldValueList(fields : any) {
+export function filterForFieldValueList(fields: any) {
   return fields
     .filter(({ visibility }) => visibility !== false)
     .map(({ value, label }) => ({
@@ -26,7 +26,7 @@ export function filterForFieldValueList(fields : any) {
  * Determine if the current view is the view of the case step/assignment.
  * @param {Function} pConnect PConnect object for the component
  */
- export function getIsAssignmentView(pConnect) {
+export function getIsAssignmentView(pConnect) {
   // Get caseInfo content from the store which contains the view info about the current assignment/step
   // TODO To be replaced with pConnect.getCaseInfo().getCurrentAssignmentView when it's available
   const assignmentViewClass = pConnect.getValue(PCore.getConstants().CASE_INFO.CASE_INFO_CLASSID);
@@ -46,7 +46,9 @@ export function filterForFieldValueList(fields : any) {
  * @param {string} [instructions="casestep"] 'casestep', 'none', or the html content of a Rule-UI-Paragraph rule (processed via core's paragraph annotation handler)
  */
 export function getInstructions(pConnect, instructions = 'casestep') {
-  const caseStepInstructions = pConnect.getValue(PCore.getConstants().CASE_INFO.INSTRUCTIONS);
+  const caseStepInstructions =
+    PCore.getConstants().CASE_INFO.INSTRUCTIONS &&
+    pConnect.getValue(PCore.getConstants().CASE_INFO.INSTRUCTIONS);
 
   // Determine if this view is the current assignment/step view
   const isCurrentAssignmentView = getIsAssignmentView(pConnect);

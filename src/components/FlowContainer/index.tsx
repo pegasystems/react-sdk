@@ -170,7 +170,7 @@ export default function FlowContainer(props) {
 
     if (bLoadChildren && oWorkData) {
       // debugger;
-      setContainerName(oWorkData.caseInfo.assignments[0].name);
+      setContainerName(oWorkData.caseInfo.assignments?.[0].name);
     }
 
     // debugger;
@@ -251,7 +251,7 @@ export default function FlowContainer(props) {
 
     const caseActions = ourPConn.getValue(CASE_CONSTS.CASE_INFO_ACTIONS);
     const activeActionID = ourPConn.getValue(CASE_CONSTS.ACTIVE_ACTION_ID);
-    const activeAction = caseActions.find(action => action.ID === activeActionID);
+    const activeAction = caseActions?.find(action => action.ID === activeActionID);
     if (activeAction) {
       activeActionLabel = activeAction.name;
     }
@@ -398,7 +398,7 @@ export default function FlowContainer(props) {
           // check if have oWorkData, there are times due to timing of state change, when this
           // may not be available
           if (oWorkData) {
-            setContainerName(getActiveViewLabel() || oWorkData.caseInfo.assignments[0].name);
+            setContainerName(getActiveViewLabel() || oWorkData.caseInfo.assignments?.[0].name);
           }
         }
       }
@@ -410,7 +410,7 @@ export default function FlowContainer(props) {
 
   const caseId = thePConn.getCaseSummary().content.pyID;
   const urgency = getPConnect().getCaseSummary().assignments
-    ? getPConnect().getCaseSummary().assignments[0].urgency
+    ? getPConnect().getCaseSummary().assignments?.[0].urgency
     : '';
   const operatorInitials = Utils.getInitials(PCore.getEnvironmentInfo().getOperatorName());
   let instructionText = thePConn.getCaseSummary()?.assignments?.[0]?.instructions;
@@ -470,7 +470,7 @@ export default function FlowContainer(props) {
           <Alert severity='success'>{caseMessages}</Alert>
         </div>
       )}
-      {bShowConfirm && <Card className={classes.root}>{arNewChildrenAsReact}</Card>}
+      {bShowConfirm && <div>{arNewChildrenAsReact}</div>}
     </div>
   );
 }

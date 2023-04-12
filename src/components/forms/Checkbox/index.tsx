@@ -28,8 +28,6 @@ export default function CheckboxComponent(props) {
       return (<ReadOnlyDisplay value={value?props.trueLabel:props.falseLabel} label={caption}/>)
   }
 
-  // TODO - How to get the optionsList from Pega? Fetch and plug optionsList
-  // Hard coded example data plugged in to pass for the checkbox optionsList
   const optionsList = [{checked: value, label: caption, hintText: " ", readOnly:false}]
 
   const handleChange = event => {
@@ -47,7 +45,7 @@ export default function CheckboxComponent(props) {
         legendIsHeading={isOnlyField}
         errorText={validatemessage}
         hintText={hintText}
-        onChange={ handleChange }
+        onChange={ handleChange}
       />
     </>
   );

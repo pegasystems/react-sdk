@@ -15,7 +15,7 @@ export default function ActionButtons(props) {
         <Button
           variant='primary'
           onClick={(e) => {
-            e.target.blur();
+            e.target.blur()
             _onButtonPress(mButton.jsAction, 'primary');
           }}
           key={mButton.actionID}

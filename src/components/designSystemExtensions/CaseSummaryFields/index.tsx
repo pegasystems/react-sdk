@@ -125,8 +125,7 @@ export default function CaseSummaryFields(props) {
       case 'date':
       case 'datetime': {
         const theDateFormatInfo = getDateFormatInfo();
-        // eslint-disable-next-line no-console
-        console.log(`theDateFormatInfo: ${theDateFormatInfo}`);
+        // console.log(`theDateFormatInfo: ${theDateFormatInfo}`);
         const theFormat = (fieldTypeLower === 'datetime') ? `${theDateFormatInfo.dateFormatStringLong} hh:mm a` : theDateFormatInfo.dateFormatStringLong
 
         return (

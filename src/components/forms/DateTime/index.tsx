@@ -38,19 +38,18 @@ export default function DateTime(props) {
 
 
   if (displayMode === 'LABELS_LEFT') {
-    const formattedDate = format(props.value, 'datetime', { format: `${dateFormatInfo.dateFormatString} hh:mm a` });
-    return <FieldValueList name={hideLabel ? '' : label} value={formattedDate} />;
+    const formattedDateTime = format(props.value, 'datetime', { format: `${dateFormatInfo.dateFormatString} hh:mm a` });
+    return <FieldValueList name={hideLabel ? '' : label} value={formattedDateTime} />;
   }
 
   if (displayMode === 'STACKED_LARGE_VAL') {
-    const formattedDate = format(props.value, 'datetime', { format: `${dateFormatInfo.dateFormatString} hh:mm a` });
-    return <FieldValueList name={hideLabel ? '' : label} value={formattedDate} variant='stacked' />;
+    const formattedDateTime = format(props.value, 'datetime', { format: `${dateFormatInfo.dateFormatString} hh:mm a` });
+    return <FieldValueList name={hideLabel ? '' : label} value={formattedDateTime} variant='stacked' />;
   }
 
   if (readOnly) {
-    const formattedDate = format(props.value, 'datetime');
-    props.value = formattedDate;
-    return <TextInput {...props} />;
+    const formattedDateTimeTime = format(props.value, 'datetime');
+    return <TextInput {...props} value={formattedDateTimeTime} />;
   }
 
   const handleChange = date => {

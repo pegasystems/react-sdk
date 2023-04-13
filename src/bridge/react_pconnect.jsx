@@ -53,6 +53,7 @@ import DataReference from '../components/templates/DataReference';
 import SemanticLink from '../components/forms/SemanticLink';
 import UserReference from '../components/forms/UserReference';
 import Confirmation from '../components/templates/Confirmation';
+import BannerPage from '../components/templates/BannerPage';
 
 const connectRedux = (component, c11nEnv) => {
 
@@ -181,7 +182,11 @@ const getComponent = (c11nEnv, declarative) => {
         component = CaseSummary;
         break;
 
-        case "CaseView":
+      case "BannerPage":
+        component = BannerPage;
+        break;
+
+      case "CaseView":
         component = CaseView;
         break;
 

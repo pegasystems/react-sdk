@@ -31,6 +31,7 @@ import InlineDashboardPage from '../templates/InlineDashboardPage';
 import DetailsSubTabs from '../templates/Details/SubTabs';
 import TwoColumnTab from '../templates/TwoColumnTab';
 import Confirmation from '../templates/Confirmation';
+import BannerPage from '../templates/BannerPage';
 
 import './View.css';
 //
@@ -180,6 +181,10 @@ export default function View(props) {
 
       case 'DataReference':
         ViewTemplate = DataReference;
+        break;
+
+      case "BannerPage":
+        ViewTemplate = BannerPage;
         break;
 
       default:

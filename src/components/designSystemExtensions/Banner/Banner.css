@@ -1,0 +1,35 @@
+.background-image-style {
+  margin-left: -16px;
+  margin-right: -16px;
+  height: calc(19rem);
+  background-size: cover;
+  background-position: center center;
+}
+
+.background-style {
+  background-color: transparent;
+  color: rgb(0, 0, 0);
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: calc(0.5rem);
+}
+
+.title {
+  margin: 0rem;
+  font-size: 1.728rem;
+  font-weight: 600;
+}
+
+.message {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+}

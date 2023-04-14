@@ -1,8 +1,16 @@
 import React from 'react';
+import parse from 'html-react-parser';
+import DOMPurify from 'dompurify';
 import PropTypes from 'prop-types';
 import ConditionalWrapper from '../../../helpers/formatters/ConditionalWrapper';
 
-export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, children, fieldsetElementProps}){
+function InstructionComp({htmlString}) {
+  const cleanHTML = DOMPurify.sanitize(htmlString,
+    { USE_PROFILES: { html: true } });
+  return <>{parse(cleanHTML)}</>;
+}
+
+export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, instructionText, children, fieldsetElementProps}){
 
   const formGroupDivClasses = `govuk-form-group ${errorText?'govuk-form-group--error':""}`.trim();
   const legendClasses = `govuk-fieldset__legend ${legendIsHeading?"govuk-fieldset__legend--l":""}`.trim();
@@ -13,6 +21,7 @@ export default function FieldSet({legendIsHeading=true, label, name, errorText, 
   const errorID = `${name}-error`;
   if (hintText) {describedByIDs.push(hintID)};
   if (errorText) {describedByIDs.push(errorID)};
+
 
   return (
     <div className={formGroupDivClasses}>
@@ -29,6 +38,7 @@ export default function FieldSet({legendIsHeading=true, label, name, errorText, 
             childrenToWrap={label}
           />
         </legend>
+        {instructionText && <div id='instructions' className='govuk-hint'><InstructionComp htmlString={instructionText}/></div>}
         {hintText && <div id={hintID} className="govuk-hint">{hintText}</div>}
         {errorText  && <p id={errorID} className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{errorText}</p> }
         {children}

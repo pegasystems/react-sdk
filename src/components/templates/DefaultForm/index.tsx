@@ -15,6 +15,7 @@ export default function DefaultForm(props) {
   // defaultForm kids
   const arChildren = getPConnect().getChildren()[0].getPConnect().getChildren();
   let hasSingleChildWhichIsReference = false;
+  const instructionText = props.instructions
 
   const dfChildren = arChildren.map((kid, idx) =>{
     let extraProps = {};
@@ -37,7 +38,7 @@ export default function DefaultForm(props) {
     const generatedName = props.context ? `${formattedContext}-${formattedPropertyName}`:`${formattedPropertyName}`;
     childPConnect.registerAdditionalProps({name: generatedName});
     if(additionalProps.hasBeenWrapped) childPConnect.setStateProps({'hasBeenWrapped': true});
-    return createElement(createPConnectComponent(), { ...kid, key: idx, extraProps }) // eslint-disable-line react/no-array-index-key
+    return createElement(createPConnectComponent(), { ...kid, key: idx, extraProps, instructionText }) // eslint-disable-line react/no-array-index-key
   });
 
 

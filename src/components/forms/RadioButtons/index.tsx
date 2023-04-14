@@ -4,12 +4,14 @@ import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks'
 import Utils from '../../../helpers/utils';
 import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
+
 export default function RadioButtons(props) {
   const {
     getPConnect,
     label,
     validatemessage,
     helperText,
+    instructionText,
     readOnly,
     value,
     name
@@ -23,7 +25,6 @@ export default function RadioButtons(props) {
   //  Ex: [ {key: "Basic", value: "Basic"} ]
   const theOptions = Utils.getOptionList(theConfigProps, thePConn.getDataObject());
   const selectedOption = theOptions.find(option => option.key === value);
-
 
   let displayValue = null;
   if(selectedOption && selectedOption.value){
@@ -43,6 +44,7 @@ export default function RadioButtons(props) {
       options={theOptions.map(option => {return {value:option.key, label:option.value}})}
       displayInline={theOptions.length === 2}
       hintText={helperText}
+      instructionText={instructionText}
       errorText={validatemessage}
     />
   );

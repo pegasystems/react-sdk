@@ -48,8 +48,8 @@ export default function DateTime(props) {
   }
 
   if (readOnly) {
-    const formattedDateTimeTime = format(props.value, 'datetime');
-    return <TextInput {...props} value={formattedDateTimeTime} />;
+    const formattedDateTime = format(props.value, 'datetime');
+    return <TextInput {...props} value={formattedDateTime} />;
   }
 
   const handleChange = date => {

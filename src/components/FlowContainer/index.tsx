@@ -15,7 +15,7 @@ import StoreContext from '../../bridge/Context/StoreContext';
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-import { addContainerItem, getToDoAssignments } from './helpers';
+import { addContainerItem, getToDoAssignments, showBanner } from './helpers';
 
 declare const PCore;
 
@@ -311,36 +311,31 @@ export default function FlowContainer(props) {
     }
 
     // if have caseMessage show message and end
-    const theCaseMessages = thePConn.getValue("caseMessages");
+    const theCaseMessages = thePConn.getValue('caseMessages');
 
     if (theCaseMessages || !hasAssignments()) {
-
-       // Temp fix for 8.7 change: confirmationNote no longer coming through in caseMessages$.
-       // So, if we get here and caseMessages$ is empty, use default value in DX API response
-      setCaseMessages(theCaseMessages || "Thank you! The next step in this case has been routed appropriately.");
+      // Temp fix for 8.7 change: confirmationNote no longer coming through in caseMessages$.
+      // So, if we get here and caseMessages$ is empty, use default value in DX API response
+      setCaseMessages(
+        theCaseMessages || 'Thank you! The next step in this case has been routed appropriately.'
+      );
       setHasCaseMessages(true);
       setShowConfirm(true);
 
-
       // publish this "assignmentFinished" for mashup, need to get approved as a standard
-      PCore.getPubSubUtils().publish(
-        "assignmentFinished");
-
+      PCore.getPubSubUtils().publish('assignmentFinished');
 
       // debugger;
-      setCheckSvg(Utils.getImageSrc("check", PCore.getAssetLoader().getStaticServerUrl()));
-    }
-    else {
+      setCheckSvg(Utils.getImageSrc('check', PCore.getAssetLoader().getStaticServerUrl()));
+    } else {
       // debugger;
       setHasCaseMessages(false);
       setShowConfirm(false);
     }
 
-
     // this check in routingInfo, mimic React to check and get the internals of the
     // flowContainer and force updates to pConnect/redux
     if (routingInfo && loadingInfo !== undefined) {
-
       // debugging/investigation help
       // console.log(`${thePConn.getComponentName()}: >>routingInfo: ${JSON.stringify(routingInfo)}`);
 
@@ -394,7 +389,6 @@ export default function FlowContainer(props) {
           const oWorkItem = configObject.getPConnect(); // was theNewChildren[0].getPConnect()
           const oWorkData = oWorkItem.getDataObject();
 
-
           // check if have oWorkData, there are times due to timing of state change, when this
           // may not be available
           if (oWorkData) {
@@ -402,10 +396,7 @@ export default function FlowContainer(props) {
           }
         }
       }
-
     }
-
-
   }, [props]);
 
   const caseId = thePConn.getCaseSummary().content.pyID;
@@ -417,6 +408,8 @@ export default function FlowContainer(props) {
   if (instructionText === undefined) {
     instructionText = '';
   }
+
+  const bShowBanner = showBanner(getPConnect);
 
   return (
     <div style={{ textAlign: 'left' }} id={buildName} className='psdk-flow-container-top'>
@@ -470,11 +463,10 @@ export default function FlowContainer(props) {
           <Alert severity='success'>{caseMessages}</Alert>
         </div>
       )}
-      {bShowConfirm && <div>{arNewChildrenAsReact}</div>}
+      {bShowConfirm && bShowBanner && <div>{arNewChildrenAsReact}</div>}
     </div>
   );
 }
-
 FlowContainer.defaultProps = {
   children: null,
   getPConnect: null,

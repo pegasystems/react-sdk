@@ -74,11 +74,12 @@ export default function Currency(props) {
     return <FieldValueList name={hideLabel ? '' : label} value={formattedValue} variant='stacked' />;
   }
 
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   function currOnChange(event, inValue) {
     // console.log(`Currency currOnChange inValue: ${inValue}`);
 
     // update internal value
-    setCurrValue(inValue);
+    setCurrValue(event?.target?.value);
   }
 
   function currOnBlur(event, inValue) {

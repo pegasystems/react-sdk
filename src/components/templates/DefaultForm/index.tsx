@@ -1,5 +1,5 @@
-import React, { createElement } from "react";
-import PropTypes from "prop-types";
+import React, { createElement } from 'react';
+import PropTypes from 'prop-types';
 import { getInstructions } from '../utils';
 import createPConnectComponent from '../../../bridge/react_pconnect';
 
@@ -12,19 +12,19 @@ export default function DefaultForm(props) {
 
   let divClass: string;
 
-  const numCols = NumCols || "1";
+  const numCols = NumCols || '1';
   switch (numCols) {
-    case "1" :
-      divClass = "psdk-default-form-one-column";
+    case '1':
+      divClass = 'psdk-default-form-one-column';
       break;
-    case "2" :
-      divClass = "psdk-default-form-two-column";
+    case '2':
+      divClass = 'psdk-default-form-two-column';
       break;
-    case "3" :
-      divClass = "psdk-default-form-three-column";
+    case '3':
+      divClass = 'psdk-default-form-three-column';
       break;
-    default :
-      divClass = "psdk-default-form-one-column";
+    default:
+      divClass = 'psdk-default-form-one-column';
       break;
   }
 
@@ -34,17 +34,17 @@ export default function DefaultForm(props) {
   // to take the children and create components for them, put in an array and pass as the
   // defaultForm kids
   const arChildren = getPConnect().getChildren()[0].getPConnect().getChildren();
-  // eslint-disable-next-line react/no-array-index-key
-  const dfChildren = arChildren.map((kid, idx) => createElement(createPConnectComponent(), {...kid, key: idx}));
+  const dfChildren = arChildren.map((kid, idx) =>
+    // eslint-disable-next-line react/no-array-index-key
+    createElement(createPConnectComponent(), { ...kid, key: idx })
+  );
 
   return (
     <>
-    <div>{instructionText}</div>
-    <div className={divClass}>
-      {dfChildren}
-    </div>
+      {instructionText && <div className='psdk-default-form-instruction-text'>{instructionText}</div>}
+      <div className={divClass}>{dfChildren}</div>
     </>
-  )
+  );
 }
 
 DefaultForm.propTypes = {
@@ -53,5 +53,5 @@ DefaultForm.propTypes = {
 };
 
 DefaultForm.defaultProps = {
-  NumCols: "1"
+  NumCols: '1'
 };

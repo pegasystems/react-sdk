@@ -38,10 +38,12 @@ export default function DefaultForm(props) {
   const dfChildren = arChildren.map((kid, idx) => createElement(createPConnectComponent(), {...kid, key: idx}));
 
   return (
+    <>
+    <div>{instructionText}</div>
     <div className={divClass}>
-      <div>{instructionText}</div>
       {dfChildren}
     </div>
+    </>
   )
 }
 

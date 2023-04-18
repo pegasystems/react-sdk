@@ -3,3 +3,9 @@
   text-transform: capitalize !important;
   font-size: 1rem !important;
 }
+
+.nav-bar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 100;
+}

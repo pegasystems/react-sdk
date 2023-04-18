@@ -6,7 +6,7 @@ export default function Banner(props) {
   const { a, b, banner } = props;
   const { title, message, backgroundImage } = banner;
   return (
-    <div>
+    <div style={{ marginBottom: '2rem' }}>
       <div
         className='background-image-style'
         style={{ backgroundImage: `url(${backgroundImage})` }}

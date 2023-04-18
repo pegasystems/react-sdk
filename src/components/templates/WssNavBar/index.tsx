@@ -56,7 +56,7 @@ export default function WssNavBar(props) {
   };
 
   return (
-    <div id='NavBar'>
+    <div id='NavBar' className='nav-bar'>
       <AppBar position='static' color='primary'>
         <Container maxWidth='xl'>
           <Toolbar disableGutters>

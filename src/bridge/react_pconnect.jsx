@@ -54,6 +54,7 @@ import SemanticLink from '../components/forms/SemanticLink';
 import UserReference from '../components/forms/UserReference';
 import Confirmation from '../components/templates/Confirmation';
 import BannerPage from '../components/templates/BannerPage';
+import QuickCreate from '../components/widgets/QuickCreate';
 
 const connectRedux = (component, c11nEnv) => {
 
@@ -334,6 +335,10 @@ const getComponent = (c11nEnv, declarative) => {
 
       case "SemanticLink":
         component = SemanticLink;
+        break;
+
+      case "QuickCreate":
+        component = QuickCreate;
         break;
 
       default:

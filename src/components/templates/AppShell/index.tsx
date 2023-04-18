@@ -23,7 +23,6 @@ const useStyles = makeStyles(theme => ({
   wsscontent: {
     flexGrow: 1,
     height: '100vh',
-    overflow: 'auto',
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1)
   }

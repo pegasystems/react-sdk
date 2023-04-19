@@ -1,11 +1,11 @@
-import React, { Children, Component, createElement } from "react";
-// import { render, unmountComponentAtNode } from "react-dom";
-import PropTypes from "prop-types";
-import { connect, shallowEqual } from "react-redux";
+/* eslint-disable max-classes-per-file */
+import React, { Component, createElement } from 'react';
+import PropTypes from 'prop-types';
+import { connect, shallowEqual } from 'react-redux';
 // Initial simplification to remove ErrorBoundary
-import ErrorBoundary from "../components/ErrorBoundary";
-import ComponentMap, { LazyMap as LazyComponentMap } from "../components_map";
-import StoreContext from "./Context/StoreContext";
+import ErrorBoundary from '../components/ErrorBoundary';
+import ComponentMap, { LazyMap as LazyComponentMap } from '../components_map';
+import StoreContext from './Context/StoreContext';
 
 // For now, NOT doing lazy loading - needs some work on the loader to work with TypeScript
 // As we add components, we'll need to import them here and add to the switch statement
@@ -23,9 +23,9 @@ import Date from '../components/forms/Date';
 import DateTime from '../components/forms/DateTime';
 import Decimal from '../components/forms/Decimal';
 import DeferLoad from '../components/DeferLoad';
-import Dropdown from "../components/forms/Dropdown";
+import Dropdown from '../components/forms/Dropdown';
 import Email from '../components/forms/Email';
-import FileUtility from "../components/widgets/FileUtility";
+import FileUtility from '../components/widgets/FileUtility';
 import FlowContainer from '../components/FlowContainer';
 import Followers from '../components/widgets/Followers';
 import Integer from '../components/forms/Integer';
@@ -56,50 +56,62 @@ import Confirmation from '../components/templates/Confirmation';
 import BannerPage from '../components/templates/BannerPage';
 import QuickCreate from '../components/widgets/QuickCreate';
 
+const isClassIDCompare = (key, prev) => {
+  return !(key === 'classID' && !prev[key]);
+};
+
+const routingInfoCompare = (next, prev) => {
+  return (
+    'routingInfo' in next &&
+    (!shallowEqual(next.routingInfo, prev.routingInfo) ||
+      // eslint-disable-next-line no-undef
+      !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))
+  );
+};
+
+/** Generate unique id for elements */
+const createUID = () => {
+  return `_${Math.random().toString(36).slice(2, 11)}`;
+};
+
+export const setVisibilityForList = (c11nEnv, visibility) => {
+  const { selectionMode, selectionList, renderMode, referenceList } = c11nEnv.getComponentConfig();
+  // usecase:multiselect, fieldgroup, editable table
+  if (
+    // eslint-disable-next-line no-undef
+    (selectionMode === PCore.getConstants().LIST_SELECTION_MODE.MULTI && selectionList) ||
+    (renderMode === 'Editable' && referenceList)
+  ) {
+    c11nEnv.getListActions().setVisibility(visibility);
+  }
+};
+
 const connectRedux = (component, c11nEnv) => {
-
-  // console.log(`in connectRedux: ${component.name}`);
-
   return connect(
     (state, ownProps) => {
       let addProps = {};
       const obj = {};
+      // Need to use ownProps pconnect since c11nEnv is stale and prior to re-render
+      if (!ownProps.getPConnect) {
+        // eslint-disable-next-line no-console
+        console.error('connectRedux ownProps are not defined');
+      } else {
+        c11nEnv = ownProps.getPConnect();
+      }
 
-
-      // JA - testing
-      // const theCompName = c11nEnv.getComponentName();
-      // console.log(`in connect mapStateToProps callback for: ${theCompName}`);
-      // if ( theCompName === "ViewContainer" || theCompName === "View") {
-      //   debugger;
-      // }
-
-      if (typeof component.additionalProps === "object") {
+      if (typeof component.additionalProps === 'object') {
         addProps = c11nEnv.resolveConfigProps(component.additionalProps);
-      } else if (typeof component.additionalProps === "function") {
+      } else if (typeof component.additionalProps === 'function') {
         addProps = c11nEnv.resolveConfigProps(
           component.additionalProps(state, ownProps.getPConnect)
         );
       }
 
-      // const obj = c11nEnv.getConfigProps();
       c11nEnv.getConfigProps(obj);
-
-      // debugging/investigation help
-      // if (obj.routingInfo) {
-      //   console.log( `${theCompName}: BEFORE populateAdditionalProps: obj.routingInfo: ${JSON.stringify(obj.routingInfo)}`);
-      // }
 
       // populate additional props which are component specific and not present in configurations
       // This block can be removed once all these props will be added as part of configs
       c11nEnv.populateAdditionalProps(obj);
-
-      // debugging/investigation help
-      // if (obj.routingInfo) {
-      //   console.log( `${theCompName}: AFTER populateAdditionalProps: obj.routingInfo: ${JSON.stringify(obj.routingInfo)}`);
-      //   // if (theCompName === "ViewContainer") {
-      //   //   debugger;
-      //   // }
-      // }
 
       return {
         ...obj,
@@ -110,39 +122,50 @@ const connectRedux = (component, c11nEnv) => {
     null,
     {
       context: StoreContext,
-      areStatePropsEqual: (next,prev) => {
+      areStatePropsEqual: (next, prev) => {
         const allStateProps = c11nEnv.getStateProps();
-        for(const key in allStateProps){
-          // eslint-disable-next-line no-undef
-          if(!shallowEqual(next[key], prev[key]) || (next.routingInfo && !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))){
+        for (const key in allStateProps) {
+          if (
+            (isClassIDCompare(key, prev) && !shallowEqual(next[key], prev[key])) ||
+            // eslint-disable-next-line no-undef
+            (next.routingInfo && !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))
+          ) {
             return false;
           }
-        }
-        /* TODO For some rawConfig we are not getting routingInfo under allStateProps */
-        // eslint-disable-next-line no-undef
-        if('routingInfo' in next && (!shallowEqual(next.routingInfo, prev.routingInfo) || !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))){
-          return false;
         }
 
         // For CaseSummary (when status === ".pyStatusWork"), we need to compare changes in
         //  primaryFields and secondary Fields
-        if (allStateProps.status === ".pyStatusWork") {
-          for(const key in prev){
+        if (allStateProps.status === '.pyStatusWork') {
+          for (const key in prev) {
             // eslint-disable-next-line no-undef
             if (!PCore.isDeepEqual(next[key], prev[key])) {
               return false;
             }
           }
         }
-
-        return true;
+        /* TODO For some rawConfig we are not getting routingInfo under allStateProps */
+        return !routingInfoCompare(next, prev);
       }
     }
   )(component);
 };
 
+function withVisibility(WrappedComponent) {
+  // eslint-disable-next-line react/prefer-stateless-function
+  return class extends Component {
+    render() {
+      const { visibility } = this.props;
 
-const getComponent = (c11nEnv, declarative) => {
+      if (visibility === false) {
+        return null;
+      }
+      return <WrappedComponent {...this.props} />;
+    }
+  };
+}
+
+const getComponent = c11nEnv => {
   // PCore is defined in pxBootstrapShell - eventually will be exported in place of constellationCore
   // eslint-disable-next-line no-undef
   const ComponentsRegistry = PCore.getComponentsRegistry();
@@ -152,127 +175,126 @@ const getComponent = (c11nEnv, declarative) => {
   const componentType = (componentObj && componentObj.component) || type;
 
   // JEA - modifying logic before bailing to RootContainer logic to work around async loading problem
-  let component =
-    LazyComponentMap[componentType] /* || window[componentType] */;
+  let component = LazyComponentMap[componentType]; /* || window[componentType] */
 
   // NOTE: Until we get lazy loading working, maintain this for each component we add
   if (component === undefined) {
     // eslint-disable-next-line sonarjs/max-switch-cases
     switch (type) {
-      case "AppAnnouncement":
+      case 'AppAnnouncement':
         component = AppAnnouncement;
         break;
 
-      case "AppShell":
+      case 'AppShell':
         component = AppShell;
         break;
 
-      case "Attachment":
+      case 'Attachment':
         component = Attachment;
         break;
 
-      case "AutoComplete":
+      case 'AutoComplete':
         component = AutoComplete;
         break;
 
-      case "CaseHistory":
+      case 'CaseHistory':
         component = CaseHistory;
         break;
 
-      case "CaseSummary":
+      case 'CaseSummary':
         component = CaseSummary;
         break;
 
-      case "BannerPage":
+      case 'BannerPage':
         component = BannerPage;
         break;
 
-      case "CaseView":
+      case 'CaseView':
         component = CaseView;
         break;
 
-      case "Checkbox":
+      case 'Checkbox':
         component = CheckboxComponent;
         break;
 
-      case "Currency":
+      case 'Currency':
         component = Currency;
         break;
 
-      case "Confirmation":
+      case 'Confirmation':
         component = Confirmation;
         break;
 
-      case "Date":
+      case 'Date':
         component = Date;
         break;
 
-      case "DateTime":
+      case 'DateTime':
         component = DateTime;
         break;
 
-      case "Decimal":
+      case 'Decimal':
         component = Decimal;
         break;
 
-      case "DeferLoad":
+      case 'DeferLoad':
         component = DeferLoad;
         break;
 
-      case "Dropdown":
+      case 'Dropdown':
         component = Dropdown;
         break;
 
-      case "Email":
+      case 'Email':
         component = Email;
         break;
 
-      case "FileUtility":
+      case 'FileUtility':
         component = FileUtility;
         break;
 
-      case "FlowContainer":
+      case 'FlowContainer':
         component = FlowContainer;
         break;
 
-      case "Followers":
+      case 'Followers':
         component = Followers;
         break;
 
-      case "Integer":
+      case 'Integer':
         component = Integer;
         break;
 
-      case "ModalViewContainer":
+      case 'ModalViewContainer':
         component = ModalViewContainer;
         break;
 
-      case "Percentage":
+      case 'Percentage':
         component = Percentage;
         break;
 
-      case "Phone":
+      case 'Phone':
         component = Phone;
         break;
 
-      case "Pulse":
+      case 'Pulse':
         component = Pulse;
         break;
 
-      case "RadioButtons":
+      case 'RadioButtons':
         component = RadioButtons;
         break;
 
-      case "reference":
-      case "Reference":
+      case 'reference':
+      case 'Reference':
         component = Reference;
         break;
 
-      case "Region":
+      case 'Region':
         component = Region;
         break;
 
-      case "RootContainer":
+      case 'RootContainer':
         component = RootContainer;
         break;
 
@@ -288,7 +310,7 @@ const getComponent = (c11nEnv, declarative) => {
         component = DataReference;
         break;
 
-      case "UserReference":
+      case 'UserReference':
         component = UserReference;
         break;
 
@@ -296,11 +318,11 @@ const getComponent = (c11nEnv, declarative) => {
         component = PromotedFilters;
         break;
 
-      case "Stages":
+      case 'Stages':
         component = Stages;
         break;
 
-      case "TextArea":
+      case 'TextArea':
         component = TextArea;
         break;
 
@@ -308,32 +330,32 @@ const getComponent = (c11nEnv, declarative) => {
         component = TextContent;
         break;
 
-      case "TextInput":
+      case 'TextInput':
         component = TextInput;
         break;
 
-      case "Time":
+      case 'Time':
         component = Time;
         break;
 
-      case "ToDo":
-      case "Todo":
+      case 'ToDo':
+      case 'Todo':
         component = ToDo;
         break;
 
-      case "URL":
+      case 'URL':
         component = URLComponent;
         break;
 
-      case "View":
+      case 'View':
         component = View;
         break;
 
-      case "ViewContainer":
+      case 'ViewContainer':
         component = ViewContainer;
         break;
 
-      case "SemanticLink":
+      case 'SemanticLink':
         component = SemanticLink;
         break;
 
@@ -343,30 +365,22 @@ const getComponent = (c11nEnv, declarative) => {
 
       default:
         // eslint-disable-next-line no-console
-        console.log( `getComponent doesn't have an entry for type ${type}`);
+        console.log(`getComponent doesn't have an entry for type ${type}`);
         component = ErrorBoundary;
         break;
     }
   } else {
     // eslint-disable-next-line no-console
-    console.log( `getComponent doesn't have an entry for component ${component}`);
+    console.log(`getComponent doesn't have an entry for component ${component}`);
     component = ErrorBoundary;
   }
 
-  // Declarative components already connected to redux so return without connect.
-  if (declarative) {
-    return component;
-  }
-
   if (c11nEnv.isConditionExist()) {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    component = connectRedux(createPConnectComponent(true), c11nEnv);
-  } else {
-    component = connectRedux(component, c11nEnv);
+    return connectRedux(withVisibility(component), c11nEnv);
   }
-  return component;
-};
 
+  return connectRedux(component, c11nEnv);
+};
 
 /**
  *
@@ -375,7 +389,7 @@ const getComponent = (c11nEnv, declarative) => {
  * return type of React.FunctionComponent inspired by:
  * https://stackoverflow.com/questions/64890278/argument-of-type-function-is-not-assignable-to-parameter-of-type-componenttyp
  */
- const createPConnectComponent = (declarative=false) => {
+const createPConnectComponent = () => {
   /**
    * Add TypeScript hinting info via JSdoc syntax...
    * @extends {React.FunctionComponent<Props, State>}
@@ -389,21 +403,19 @@ const getComponent = (c11nEnv, declarative) => {
   class PConnect extends Component {
     constructor(props) {
       super(props);
-      this.children = [];
-      this.c11nEnv = this.props.getPConnect();
-      this.initialize();
-      this.state = { hasError: false };
-      this.Control = getComponent(this.c11nEnv, declarative);
+      const { getPConnect } = this.props;
+      this.state = {
+        hasError: false
+      };
+
+      this.eventHandler = this.eventHandler.bind(this);
+      this.changeHandler = this.changeHandler.bind(this);
+
+      this.c11nEnv = getPConnect();
+      this.Control = getComponent(this.c11nEnv);
       this.actionsAPI = this.c11nEnv.getActionsApi();
 
-      let theDisplayName = this.Control.displayName;
-      if (theDisplayName === undefined) {
-        // In some case (ex: RadioButtons), displayName isn't defined. So,
-        //  When this happens, use getComponentName() instead
-        theDisplayName = this.c11nEnv.getComponentName();
-      }
-
-      // console.log( `PConnect constructor: ${theDisplayName}`);
+      this.processActions(this.c11nEnv);
     }
 
     static getDerivedStateFromError(error) {
@@ -416,6 +428,7 @@ const getComponent = (c11nEnv, declarative) => {
 
     componentDidMount() {
       this.c11nEnv.addFormField();
+      setVisibilityForList(this.c11nEnv, true);
     }
 
     componentDidCatch(error, info) {
@@ -430,6 +443,7 @@ const getComponent = (c11nEnv, declarative) => {
     componentWillUnmount() {
       if (this.c11nEnv.removeFormField) {
         this.c11nEnv.removeFormField();
+        setVisibilityForList(this.c11nEnv, false);
       }
     }
 
@@ -439,8 +453,8 @@ const getComponent = (c11nEnv, declarative) => {
      */
     processActions() {
       if (this.c11nEnv.isEditable()) {
-        this.c11nEnv.setAction("onChange", this.changeHandler);
-        this.c11nEnv.setAction("onBlur", this.eventHandler);
+        this.c11nEnv.setAction('onChange', this.changeHandler);
+        this.c11nEnv.setAction('onBlur', this.eventHandler);
       }
     }
 
@@ -455,46 +469,35 @@ const getComponent = (c11nEnv, declarative) => {
       //      getActionProcessor().eventHandler(this.c11nEnv, event);
     }
 
-    addChildren(child) {
-      this.configProps.children.push(createElement(createPConnectComponent(), child));
+    createChildren() {
+      const { getPConnect } = this.props;
+      if (getPConnect().hasChildren() && getPConnect().getChildren()) {
+        return getPConnect()
+          .getChildren()
+          .map(childProps => <PConnect {...childProps} />);
+      }
+      return null;
     }
 
-    /* This should be called only once per component instance
-     *  this.props.__internal is to have info like propertiesMap, isExpressionExist, isWhenExist
-     *  which would be used to call redux connect for re-render purpose on state change
-     */
-    initialize() {
+    getKey() {
       const { getPConnect } = this.props;
-      this.c11nEnv = getPConnect();
-      this.configProps = {};
-      this.eventHandler = this.eventHandler.bind(this);
-      this.changeHandler = this.changeHandler.bind(this);
-      this.processActions(this.c11nEnv);
-      this.propsToChild = {};
+      const viewName = getPConnect().getConfigProps().name || getPConnect().getCurrentView();
+      let key = !viewName
+        ? createUID()
+        : `${viewName}!${getPConnect().getCurrentClassID() || createUID()}`;
 
-      this.configProps.children = [];
-
-      if (this.c11nEnv.hasChildren()) {
-        const children = this.c11nEnv.getChildren() || [];
-        children.forEach((child) => this.addChildren(child));
-        this.configProps.children = Children.toArray(
-          this.configProps.children
-        );
+      // In the case of pyDetails the key must be unigue for each instance
+      if (viewName && viewName.toUpperCase() === 'PYDETAILS') {
+        key += `!${getPConnect().getCaseInfo().getID()}`;
       }
+
+      return key.toUpperCase();
     }
 
     render() {
       const { hasError } = this.state;
-      const {
-        getPConnect,
-        visibility,
-        additionalProps,
-        ...otherProps
-      } = this.props;
+      const { getPConnect, additionalProps, ...otherProps } = this.props;
 
-      if (visibility === false) {
-        return null;
-      }
       if (hasError) {
         // You can render any custom fallback UI
         // console.log(`react_pconnect error: used to return: <ErrorBoundary getPConnect={() => this.c11nEnv} isInternalError />`);
@@ -506,15 +509,19 @@ const getComponent = (c11nEnv, declarative) => {
       const finalProps = {
         ...props,
         getPConnect,
-        ...this.configProps,
         ...actions,
         additionalProps,
         ...otherProps
       };
 
+      // If the new component is a reference node then mark with a unique key
+      if (['reference', 'View'].includes(getPConnect().getComponentName()) && !finalProps.key) {
+        finalProps.key = this.getKey();
+      }
+
       // console.log(`react_pconnect: used to return: <this.Control {...finalProps} />`);
 
-      return <this.Control {...finalProps} />;
+      return <this.Control {...finalProps}>{this.createChildren()}</this.Control>;
     }
   }
 
@@ -524,7 +531,6 @@ const getComponent = (c11nEnv, declarative) => {
     // meta: PropTypes.object.isRequired,
     // configObject: PropTypes.object.isRequired,
     getPConnect: PropTypes.func.isRequired,
-    visibility: PropTypes.bool/* .isRequired */,
     additionalProps: PropTypes.shape({
       noLabel: PropTypes.bool,
       readOnly: PropTypes.bool
@@ -535,69 +541,60 @@ const getComponent = (c11nEnv, declarative) => {
   // eslint-disable-next-line react/static-property-placement
   PConnect.defaultProps = {
     additionalProps: {},
-    validatemessage: ""
+    validatemessage: ''
   };
 
   return PConnect;
 };
 
-
 // Move these into SdkConstellationReady so PCore is available
-document.addEventListener("SdkConstellationReady", () => {
-
+document.addEventListener('SdkConstellationReady', () => {
   // eslint-disable-next-line no-undef
   PCore.registerComponentCreator((c11nEnv, additionalProps = {}) => {
     const PConnectComp = createPConnectComponent();
-    return (
-        <PConnectComp {
-          ...{
-            ...c11nEnv,
-            ...c11nEnv.getPConnect().getConfigProps(),
-            ...c11nEnv.getPConnect().getActions(),
-            additionalProps
-          }}
-        />
-      );
+    return createElement(PConnectComp, {
+      ...c11nEnv,
+      ...c11nEnv.getPConnect().getConfigProps(),
+      ...c11nEnv.getPConnect().getActions(),
+      ...{ additionalProps }
+    });
   });
 
   // eslint-disable-next-line no-undef
-  PCore.getAssetLoader().register(
-    "component-loader",
-    async (componentNames = []) => {
-      const promises = [];
-      componentNames.forEach((comp) => {
-        if (/^[A-Z]/.test(comp) && !LazyComponentMap[comp]) {
-          if (!ComponentMap[comp]) {
-            // eslint-disable-next-line no-undef
-            const srcUrl = `${PCore.getAssetLoader().getConstellationServiceUrl()}/v860/${PCore.getAssetLoader().getAppAlias()}/component/${comp}.js`;
-            // eslint-disable-next-line no-undef
-            promises.push(PCore.getAssetLoader().getLoader()(srcUrl, "script"));
-          } else {
-            if (ComponentMap[comp].modules && ComponentMap[comp].modules.length) {
-              ComponentMap[comp].modules.forEach((module) => {
-                LazyComponentMap[comp] = module;
-              });
-            }
-            if (ComponentMap[comp].scripts && ComponentMap[comp].scripts.length) {
-              ComponentMap[comp].scripts.forEach((script) => {
-                promises.push(
-                  // eslint-disable-next-line no-undef
-                  PCore.getAssetLoader().getLoader()(script, "script")
-                );
-              });
-            }
+  PCore.getAssetLoader().register('component-loader', async (componentNames = []) => {
+    const promises = [];
+    componentNames.forEach(comp => {
+      if (/^[A-Z]/.test(comp) && !LazyComponentMap[comp]) {
+        if (!ComponentMap[comp]) {
+          // eslint-disable-next-line no-undef
+          const srcUrl = `${PCore.getAssetLoader().getConstellationServiceUrl()}/v860/${PCore.getAssetLoader().getAppAlias()}/component/${comp}.js`;
+          // eslint-disable-next-line no-undef
+          promises.push(PCore.getAssetLoader().getLoader()(srcUrl, 'script'));
+        } else {
+          if (ComponentMap[comp].modules && ComponentMap[comp].modules.length) {
+            ComponentMap[comp].modules.forEach(module => {
+              LazyComponentMap[comp] = module;
+            });
+          }
+          if (ComponentMap[comp].scripts && ComponentMap[comp].scripts.length) {
+            ComponentMap[comp].scripts.forEach(script => {
+              promises.push(
+                // eslint-disable-next-line no-undef
+                PCore.getAssetLoader().getLoader()(script, 'script')
+              );
+            });
           }
         }
-      });
-      /* Promise.all rejects or accepts all or none. This causes entire component loader to fail
+      }
+    });
+    /* Promise.all rejects or accepts all or none. This causes entire component loader to fail
       in case there is a single failure.
       Using allSettled to allow Promise to be resolved even if there are failed components
       Note : This is a liberty taken at component loader and unwise to be used at
       asset loader which will still use Promise.all
       */
-      await Promise.allSettled(promises);
-    }
-  );
+    await Promise.allSettled(promises);
+  });
 });
 
 export default createPConnectComponent;

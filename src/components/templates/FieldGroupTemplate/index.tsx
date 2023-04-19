@@ -79,14 +79,17 @@ export default function FieldGroupTemplate(props) {
 
   pConn.setInheritedProp('displayMode', 'LABELS_LEFT');
   const memoisedReadOnlyList = useMemo(() => {
-    return referenceList.map((item, index) => (
-      <FieldGroup
-        key={item[heading]}
-        name={fieldHeader === 'propertyRef' ? getDynamicHeaderProp(item, index) : `${HEADING} ${index + 1}`}
-      >
-        {buildView(pConn, index, lookForChildInConfig)}
-      </FieldGroup>
-    ));
+    return referenceList.map((item, index) => {
+      const key = item[heading] || `field-group-row-${index}`;
+      return (
+        <FieldGroup
+          key={key}
+          name={fieldHeader === 'propertyRef' ? getDynamicHeaderProp(item, index) : `${HEADING} ${index + 1}`}
+        >
+          {buildView(pConn, index, lookForChildInConfig)}
+        </FieldGroup>
+      );
+    });
   }, []);
 
   return <div>{memoisedReadOnlyList}</div>;

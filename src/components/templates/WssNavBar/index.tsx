@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function WssNavBar(props) {
   const { appInfo, navLinks, operator, navDisplayOptions } = props;
-  const { alignment } = navDisplayOptions;
+  const { alignment, position } = navDisplayOptions;
   const classes = useStyles();
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -59,7 +59,7 @@ export default function WssNavBar(props) {
     <div id='NavBar' className='nav-bar'>
       <AppBar position='static' color='primary'>
         <Container maxWidth='xl'>
-          <Toolbar disableGutters>
+          <Toolbar disableGutters style={{justifyContent: 'space-between'}}>
             <Button style={{ textTransform: 'capitalize' }} onClick={appInfo.onClick}>
               <img src={appInfo.imageSrc} className={classes.appListLogo} />
               <span className={classes.appName}>{appInfo.appName}</span>
@@ -98,16 +98,18 @@ export default function WssNavBar(props) {
               </Menu>
             </Box>
 
-            <Box
-              sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
-              style={{ justifyContent: alignment }}
-            >
-              {navLinks.map(link => (
-                <Button className='link-style' key={link.text} onClick={link.onClick}>
-                  {link.text}
-                </Button>
-              ))}
-            </Box>
+            {position === 'inline' && (
+              <Box
+                sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
+                style={{ justifyContent: alignment }}
+              >
+                {navLinks.map(link => (
+                  <Button className='link-style' key={link.text} onClick={link.onClick}>
+                    {link.text}
+                  </Button>
+                ))}
+              </Box>
+            )}
 
             <Box sx={{ flexGrow: 0 }}>
               <IconButton onClick={handleOpenUserMenu}>
@@ -134,6 +136,18 @@ export default function WssNavBar(props) {
               </Menu>
             </Box>
           </Toolbar>
+          {position === 'below' && (
+            <Box
+              sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
+              style={{ justifyContent: alignment }}
+            >
+              {navLinks.map(link => (
+                <Button className='link-style' key={link.text} onClick={link.onClick}>
+                  {link.text}
+                </Button>
+              ))}
+            </Box>
+          )}
         </Container>
       </AppBar>
     </div>

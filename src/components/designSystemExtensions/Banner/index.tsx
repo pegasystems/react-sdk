@@ -1,7 +1,9 @@
 import React from 'react';
+import Grid from '@material-ui/core/Grid';
 import './Banner.css';
 
 export default function Banner(props) {
+  console.log('Banner props', props);
   const { a, b, banner, variant} = props;
   const { title, message, backgroundImage } = banner;
   const variantMap = {
@@ -23,14 +25,14 @@ export default function Banner(props) {
           </div>
         </div>
       </div>
-      <div className='banner-layout' style={{gridTemplateColumns: b ? `${gridCols}` : '1fr'}}>
-        <div style={{ padding: '1em' }}>
+      <Grid className='banner-layout' style={{gridTemplateColumns: b ? `${gridCols}` : '1fr'}}>
+        <Grid style={{ padding: '1em' }}>
           {a}
-        </div>
-        <div style={{ padding: '1em' }}>
+        </Grid>
+        <Grid style={{ padding: '1em' }}>
           {b}
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </div>
   );
 }

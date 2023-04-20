@@ -141,8 +141,8 @@ export default function Assignment(props) {
 
   useEffect(() => {
     if(!errorSummary){
-      const skiplink:any = document.getElementsByClassName('govuk-skip-link')[0];
-      skiplink.focus();
+      const bodyfocus:any = document.getElementsByClassName('govuk-template__body')[0];
+      bodyfocus.focus();
     }
 
   }, [children]);

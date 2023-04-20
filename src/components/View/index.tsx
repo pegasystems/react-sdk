@@ -244,6 +244,8 @@ export default function View(props) {
   if (children) {
     return <>{children}</>;
   }
+
+  return null;
 }
 
 View.defaultProps = {

@@ -6,11 +6,10 @@ export default function Banner(props) {
   const { a, b, banner, variant} = props;
   const { title, message, backgroundImage } = banner;
   const variantMap = {
-    'two-column': '1fr 1fr',
-    'narrow-wide': '3fr 7fr',
-    'wide-narrow': '7fr 3fr'
+    'two-column': [6, 6],
+    'narrow-wide': [4, 8],
+    'wide-narrow': [8,4]
   };
-  const gridCols = variantMap[variant];
   return (
     <div style={{ marginBottom: '2rem' }}>
       <div
@@ -24,11 +23,11 @@ export default function Banner(props) {
           </div>
         </div>
       </div>
-      <Grid className='banner-layout' style={{gridTemplateColumns: b ? `${gridCols}` : '1fr'}}>
-        <Grid style={{ padding: '1em' }}>
+      <Grid container item xs={12} className='banner-layout' spacing={1}>
+        <Grid item xs={variantMap[variant][0]} style={{ padding: '1em' }}>
           {a}
         </Grid>
-        <Grid style={{ padding: '1em' }}>
+        <Grid item xs={variantMap[variant][1]} style={{ padding: '1em' }}>
           {b}
         </Grid>
       </Grid>

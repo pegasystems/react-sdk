@@ -4,8 +4,8 @@
 /** We're testing the visibility of tabs within the Case Summary area in the Case View here, more tests to be added in the future. */
 
 const { test, expect } = require('@playwright/test');
-const config = require('../../config');
-const common = require('../../common');
+const config = require('../../../config');
+const common = require('../../../common');
 
 // These values represent the visibility(as authored in the app) of the tabs
 const detailsTabVisible = false;

@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import './Banner.css';
 
 export default function Banner(props) {
-  console.log('Banner props', props);
   const { a, b, banner, variant} = props;
   const { title, message, backgroundImage } = banner;
   const variantMap = {

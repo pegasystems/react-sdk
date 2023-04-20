@@ -8,7 +8,7 @@ export default function Banner(props) {
   const variantMap = {
     'two-column': [6, 6],
     'narrow-wide': [4, 8],
-    'wide-narrow': [8,4]
+    'wide-narrow': [8, 4]
   };
   return (
     <div style={{ marginBottom: '2rem' }}>

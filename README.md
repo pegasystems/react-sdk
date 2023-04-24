@@ -1,7 +1,9 @@
 <p align="center"><img width=60% src="docs/media/ReactSDK-Logo.png">
 
-<hr />
-<h1 style="color: red">IMPORTANT – PLEASE READ!</h1>
+<h1 style="color: red">
+MAIN BRANCH <u><em>CLOSED</em></u> FOR MAINTENANCE!<br /><br />
+Be back soon!<br />
+IMPORTANT – PLEASE READ!</h1>
 
 <h3>On <strong>April 24, 2023</strong>, there will be a <strong>significant update</strong> to the React SDK <strong>main</strong> branch.</h3>
 <br />

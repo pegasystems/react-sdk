@@ -1,0 +1,49 @@
+.DS_Store
+node_modules
+/dist
+/distAuthoring
+/__DO_NOT_COMMIT
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Constellation build files
+/constellation/bootstrap*
+/constellation/lib_asset.json
+/constellation/constellation*
+
+# localhost cert files
+/private.*
+/ssl.conf
+
+# Files generated during component compilation
+/lib
+
+# test output directories (jest, playwright)
+test-results/
+tests/coverage
+tests/playwright-report
+
+
+# unit testing coverage
+/coverage

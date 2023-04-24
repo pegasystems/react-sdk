@@ -1,46 +1,28 @@
-## Release SDK-R.87.3
-* Added support for Infinity 8.7.2
-* Added use of npm dependency to get necessary ConstellationJS Engine files (see package.json @pega/constellationjs dependency)
-* Added support for DataReference component
-* Added playwright smoke tests that can be run against the MediaCo sample app
-* Improvements to auth code and to make it easier to deploy the SDK on a different web server (ex: Tomcat)
-* Support for "save for later" button to local action in modal dialog
-* Added support for SubTabs & DetailsSubTabs templates.
-
-## Release SDK-R.87.2
-* This release provides support for Infinity 8.7.0 **and** 8.7.1
-* Added Attachment form component
-* Added FileUtility component that allows attaching documents or links
-* Improved updating of Vertical Tab component via DeferLoad
-* Can open a ToDo item after cancelling out of a form step
-* Support for View inside a View (including not losing focus)
-* Updated **Phone** component with improved formatting (material-ui-phone-number component)
-* Added support for form-level "instructions" text
-
-## Release SDK-R.87.1
-* This is the first public release of the React SDK for Infinity 8.7.
-* This SDK release supports Infinity **8.7.0**.
-* Use the corresponding ConstellationJS files found in the SDK-R.87.1 download from Pega Marketplace: https://community.pega.com/marketplace/components/react-sdk
-* The React SDK does not include every component that a Constellation application supports. At this time, we provide the most commonly used components to get you started with your application.
-
-## Release SDK-R.87.0
-* This was the initial, Pega internal ony release of the React SDK for Infinity 8.7.
-
+## 24-April-2023 - Major change to React SDK Packaging
+<br />
+<h3>On <strong>April 24, 2023</strong>, a <strong>significant update</strong> to the React SDK <strong>main</strong> branch was completed.</h3>
 <br />
 
-<hr />
+**We strongly recommend that existing SDK users** clone the update into a new working folder locally. The existing SDK folder structure has significantly changed and may result in the deletion of folders in your local working copy.   Some recommendations on how to migrate your existing components to the new SDK will be published on the release date, along with a comprehensive set of documentation updates describing the new capabilities (navigate to **https://docs.pega.com** and then search for 'Constellation SDKs').
 
-### About the SDK version naming: \<**SDK**>.\<**InfinityVersion**>.\<**SDK-release**>
+**For any SDK user who wants to remain on the <u>old</u> main branch**, check out the following branch which is available <strong>now</strong>:
 
-**An example: SDK-R.87.0**
-* **SDK-R** indicates that this is the React SDK. The React SDK provides a React-based bridge and associated components that connect to the ConstellationJS Engine. The SDK provides support for design systems based on React other than Pega's Cosmos React design system.
-* **87** indicates that this version of the SDK is applicable to Pega Infinity version 87.*
-* **0** indicates that this is the initial release of the SDK for Infinity 8.7. Even though this is the initial release, it _may_ still be applicable for Infinity 8.7.0, 8.7.1, etc. Check the SDK Marketplace page to find the SDK release that works with the Infinity point release you require.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**release/8.8.10**
+
+The updates made to the <strong>main</strong> branch reflect a significant repackaging of the React SDK that addresses 2 key improvements:
+
+1.	The **DX Component Builder tool** for creating custom DX components is **fully integrated** into the SDK. There is no longer a need to create custom components with a separate tool (in a separate folder structure) and then copy the components into the SDK.
+
+2.	The Pega-provided React SDK components have been moved into an npm package (@pega/react-sdk-components) that is a new dependency for the React SDK. This means that a new React SDK project provides an **empty component structure** that will only contain the SDK user’s code without the clutter of the Pega provided components. SDK users will add their components to the project by creating custom components or overriding existing Pega components. It also allows for easier updates to the Pega-provided components since updates to the npm package won’t directly affect the SDK user’s code.
+
+A <strong>new repo</strong> (from which the @pega/react-sdk-components and @pega/react-sdk-overrides packages are created) will be public and open source soon. When it becomes public, the source code for the React SDK components will be available there. Until then, the source code for the components
+can be found in the node_modules/@pega/react-sdk-overrides/lib directory.
+<br /><br />
 <hr />
 
 <br />
 
-### Pega SDKs available:
+### Pega Constellation SDKs available:
 * **Angular SDK**:
   * Marketplace: https://community.pega.com/marketplace/components/angular-sdk
   * Github: https://github.com/pegasystems/angular-sdk

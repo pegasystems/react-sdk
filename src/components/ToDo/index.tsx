@@ -222,29 +222,27 @@ export default function ToDo(props) {
       )}
       <List>
         {assignments.map(assignment => (
-          <>
-            <div className='psdk-todo-avatar-header'>
-              <Avatar className={classes.avatar} style={{ marginRight: '16px' }}>
-                {currentUserInitials}
-              </Avatar>
-              <div style={{ display: 'block' }}>
-                <Typography variant='h6'>{assignment?.name}</Typography>
-                {`Task in ${renderTaskId(
-                  type,
-                  getPConnect,
-                  showTodoList,
-                  assignment
-                )} \u2022  Urgency  ${getPriority(assignment)}`}
-              </div>
-              {!isConfirm && (
-                <div style={{ marginLeft: 'auto' }}>
-                  <IconButton onClick={() => clickGo(assignment)}>
-                    <ArrowForwardIosOutlinedIcon />
-                  </IconButton>
-                </div>
-              )}
+          <div key={getAssignmentId(assignment)} className='psdk-todo-avatar-header'>
+            <Avatar className={classes.avatar} style={{ marginRight: '16px' }}>
+              {currentUserInitials}
+            </Avatar>
+            <div style={{ display: 'block' }}>
+              <Typography variant='h6'>{assignment?.name}</Typography>
+              {`Task in ${renderTaskId(
+                type,
+                getPConnect,
+                showTodoList,
+                assignment
+              )} \u2022  Urgency  ${getPriority(assignment)}`}
             </div>
-          </>
+            {!isConfirm && (
+              <div style={{ marginLeft: 'auto' }}>
+                <IconButton onClick={() => clickGo(assignment)}>
+                  <ArrowForwardIosOutlinedIcon />
+                </IconButton>
+              </div>
+            )}
+          </div>
         ))}
       </List>
     </>

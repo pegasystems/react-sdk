@@ -53,7 +53,7 @@ const NO_HEADER_TEMPLATES = [
 ];
 
 export default function View(props) {
-  const { children, template, getPConnect, mode } = props;
+  const { children, template, getPConnect, mode, visibility, name: pageName } = props;
   let { label, showLabel = false } = props;
 
   // Get the inherited props from the parent to determine label settings. For 8.6, this is only for embedded data form views
@@ -66,6 +66,13 @@ export default function View(props) {
   const isEmbeddedDataView = mode === 'editable'; // would be better to check the reference child for `context` attribute if possible
   if (isEmbeddedDataView && showLabel === undefined) {
     showLabel = true;
+  }
+
+  const key = `${getPConnect().getContextName()}_${getPConnect().getPageReference()}_${pageName}`;
+  // As long as the template is defined in the dependencies of the view
+  // it will be loaded, otherwise fall back to single column
+  if (visibility === false) {
+    return '';
   }
 
   // As long as the template is defined in the dependencies of the view
@@ -197,7 +204,7 @@ export default function View(props) {
     // console.log(`View rendering template: ${template}`);
 
     // spreading because all props should go to the template
-    let RenderedTemplate = <ViewTemplate {...props}>{children}</ViewTemplate>;
+    let RenderedTemplate = <ViewTemplate key={key} {...props}>{children}</ViewTemplate>;
 
     if (FORMTEMPLATES.includes(template) && showLabel) {
       // Original:
@@ -236,9 +243,9 @@ export default function View(props) {
 
   if (children) {
     return <>{children}</>;
-  } else {
-    return <div id='View'>View has no children.</div>;
   }
+
+  return null;
 }
 
 View.defaultProps = {

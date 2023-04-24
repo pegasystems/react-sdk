@@ -6,7 +6,7 @@ import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDispla
 declare const global;
 
 export default function Date(props) {
-  const { getPConnect, label, value = '', validatemessage, onChange, helperText, readOnly, name } = props;
+  const { getPConnect, label, value = '', validatemessage, onChange, helperText, readOnly, name, testId } = props;
   const pConn = getPConnect();
 
   const isOnlyField = useIsOnlyField();
@@ -60,6 +60,8 @@ export default function Date(props) {
     return <ReadOnlyDisplay label={label} value={new global.Date(value).toLocaleDateString()} />
   }
 
+  const extraProps= {testProps:{'data-test-id':testId}};
+
   return (
     <DateInput
       label={label}
@@ -71,6 +73,7 @@ export default function Date(props) {
       name={name}
       errorText={validatemessage}
       hintText={helperText}
+      {...extraProps}
     />
   );
 }

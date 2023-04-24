@@ -20,8 +20,10 @@ export default function FormGroup({
   name,
   id,
   extraLabelClasses = '',
-  children
+  children,
+  testProps = {}
 }) {
+
   const formGroupDivClasses = `govuk-form-group ${
     errorText ? 'govuk-form-group--error' : ''
   }`.trim();
@@ -30,7 +32,7 @@ export default function FormGroup({
   } ${extraLabelClasses}`.trim();
 
   return (
-    <div className={formGroupDivClasses}>
+    <div className={formGroupDivClasses} {...testProps}>
       <ConditionalWrapper
         condition={labelIsHeading}
         wrapper={child => {

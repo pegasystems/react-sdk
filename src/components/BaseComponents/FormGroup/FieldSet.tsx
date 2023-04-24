@@ -10,7 +10,7 @@ function InstructionComp({htmlString}) {
   return <>{parse(cleanHTML)}</>;
 }
 
-export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, instructionText, children, fieldsetElementProps}){
+export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, instructionText, children, fieldsetElementProps, testProps}){
 
   const formGroupDivClasses = `govuk-form-group ${errorText?'govuk-form-group--error':""}`.trim();
   const legendClasses = `govuk-fieldset__legend ${legendIsHeading?"govuk-fieldset__legend--l":""}`.trim();
@@ -24,7 +24,7 @@ export default function FieldSet({legendIsHeading=true, label, name, errorText, 
 
 
   return (
-    <div className={formGroupDivClasses}>
+    <div className={formGroupDivClasses} {...testProps}>
       <fieldset className="govuk-fieldset" aria-describedby={describedByIDs.join(' ')} {...fieldsetElementProps}>
         <legend className={legendClasses}>
           <ConditionalWrapper

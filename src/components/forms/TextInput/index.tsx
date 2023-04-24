@@ -13,7 +13,8 @@ export default function TextInput(props) {
     inputProps,
     fieldMetadata,
     readOnly,
-    name
+    name,
+    testId,
   } = props;
 
   const isOnlyField = useIsOnlyField();
@@ -26,10 +27,7 @@ export default function TextInput(props) {
 
   // const maxLength = fieldMetadata?.maxLength;
 
-  /* let testProp = {};
-  testProp = {
-    'data-test-id': testId
-  }; */
+  const extraProps= {testProps:{'data-test-id':testId}};
 
   const extraInputProps = { onChange, value };
 
@@ -43,7 +41,7 @@ export default function TextInput(props) {
       <GDSTextInput
         inputProps={{
           ...inputProps,
-          ...extraInputProps
+          ...extraInputProps,
         }}
         hintText={helperText}
         errorText={validatemessage}
@@ -52,6 +50,7 @@ export default function TextInput(props) {
         name={name}
         maxLength={maxLength}
         id={name}
+        {...extraProps}
       />
     </>
   );

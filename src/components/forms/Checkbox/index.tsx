@@ -13,7 +13,8 @@ export default function CheckboxComponent(props) {
     hintText,
     label,
     readOnly,
-    value
+    value,
+    testId,
   } = props;
 
   const isOnlyField = useIsOnlyField();
@@ -35,6 +36,8 @@ export default function CheckboxComponent(props) {
   };
 
 
+  const extraProps= {testProps:{'data-test-id':testId}};
+
   return (
     <>
       <GDSCheckboxes
@@ -46,6 +49,7 @@ export default function CheckboxComponent(props) {
         errorText={validatemessage}
         hintText={hintText}
         onChange={ handleChange}
+        {...extraProps}
       />
     </>
   );

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 //  props passed in combination of props from property panel (config.json) and run time props from Constellation
 //  any default values in config.pros should be set in defaultProps at bottom of this file
 const HmrcOdxChangeLink = props => {
-  const { getPConnect, label, stepId } =
+  const { getPConnect, label, stepId, testID } =
     props;
 
   const pConn = getPConnect();
@@ -31,7 +31,7 @@ const HmrcOdxChangeLink = props => {
 
   return (
     <>
-      <div className="govuk-!-margin-bottom-9" style={{"display":"flex", "gap": "20px"}}>
+      <div className="govuk-!-margin-bottom-9" style={{"display":"flex", "gap": "20px"}} data-test-id={testID}>
         <span style={{"marginLeft":"auto"}}><a href='#' className="govuk-link" onClick={handleOnClick}>Change<span className="govuk-visually-hidden"> {label}</span></a>
         </span>
       </div>

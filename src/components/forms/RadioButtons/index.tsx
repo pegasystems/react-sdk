@@ -14,7 +14,8 @@ export default function RadioButtons(props) {
     instructionText,
     readOnly,
     value,
-    name
+    name,
+    testId
   } = props;
 
   const isOnlyField = useIsOnlyField();
@@ -35,6 +36,8 @@ export default function RadioButtons(props) {
     return <ReadOnlyDisplay label={label} value={displayValue} />
   }
 
+  const extraProps= {testProps:{'data-test-id':testId}};
+
   return (
     <GDSRadioButtons
       {...props}
@@ -46,6 +49,7 @@ export default function RadioButtons(props) {
       hintText={helperText}
       instructionText={instructionText}
       errorText={validatemessage}
+      {...extraProps}
     />
   );
 }

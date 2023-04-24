@@ -302,6 +302,10 @@ const getComponent = (c11nEnv, declarative) => {
         component = TextInput;
         break;
 
+      case 'RichText':
+      component = TextInput;
+      break;
+
       case 'Time':
         component = Time;
         break;

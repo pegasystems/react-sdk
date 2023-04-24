@@ -2,7 +2,7 @@
 
 # React SDK - Release Announcement
 
-This is the latest version of the React SDK and it provides many new feature that are documented here: 
+This is the latest version of the React SDK and it provides many new features that are documented here: 
 
 [What's new in the SDK?](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/whats-new-sdk.html) and also outlined below:
 
@@ -18,7 +18,7 @@ The following list shows some of the key features and changes in this release:
 
 ***IMPORTANT:***  Please follow the guidelines documented here if you are upgrading from a previous version of React SDK: [Upgrading the SDK](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/upgrading-sdk.html)
 
-If you want to continue using the previous release you can checkout the [release/8.8.10](https://github.com/pegasystems/react-sdk/tree/release/8.8.10)
+If you want to continue using the previous release you can checkout [release/8.8.10](https://github.com/pegasystems/react-sdk/tree/release/8.8.10)
 
 ---
 

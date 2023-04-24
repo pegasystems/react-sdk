@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "_comment_SDK_install_build_run_commands": "The following are public commands to clean, install, build, and run the SDK",
-    "build:dev": "run-p -l lint _internal-build-dev-only",
-    "build:dev:ci": "npm run clean && npm run _internal-install-sdk && npm run build:dev",
-    "build:prod": "run-p -l lint _internal-build-prod-only",
-    "build:prod:ci": "npm run clean && npm run _internal-install-sdk && npm run build:prod",
+    "build:dev": "npm run _internal-check-node-version && run-p -l  lint _internal-build-dev-only",
+    "build:dev:ci": "npm run _internal-check-node-version && npm run clean && npm run _internal-install-sdk && npm run build:dev",
+    "build:prod": "npm run _internal-check-node-version && run-p -l lint _internal-build-prod-only",
+    "build:prod:ci": "npm run _internal-check-node-version && npm run clean && npm run _internal-install-sdk && npm run build:prod",
     "start-dev": "webpack serve",
     "start-dev-https": "webpack serve --https",
     "start-prod": "http-server ./dist --port 3502 --gzip --brotli --cors --proxy http://localhost:3502?",
@@ -43,6 +43,7 @@
     "_comment_internal_SDK_scripts": "The following commands are for internal use and are intended to be called only from public scripts above",
     "_internal-build-dev-only": "echo \"building...\" && webpack --mode=development && npm run _internal-copy-index",
     "_internal-build-prod-only": "echo \"building...\" && webpack --mode=production && npm run _internal-copy-index",
+    "_internal-check-node-version": "node scripts/check-node-version",
     "_internal-copy-index": "shx cp dist/index.html dist/simpleportal.html && shx cp dist/index.html dist/portal.html && shx cp dist/index.html dist/fullportal.html && shx cp dist/index.html dist/embedded.html",
     "_internal-install-sdk": "echo \"installing...\" && npm install --loglevel notice"
 

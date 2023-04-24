@@ -3,16 +3,16 @@
 <hr />
 <h1 style="color: red">IMPORTANT – PLEASE READ!</h1>
 
-<h3>On <strong>April 24, 2023</strong>, there has been a <strong>significant update</strong> to the React SDK <strong>main</strong> branch.</h3>
+<h3>On <strong>April 24, 2023</strong>, there has been a <strong>significant update</strong> to the React SDK <strong>main</strong> branch.</h3>.  The previous **main** branch has been moved to the **release/8.8.10** branch.
 <br />
 
 For those users that want to move to the new main branch **we strongly recommend** that you clone the latest main (known as release 8.23.10) into a new working folder locally. The existing SDK folder structure has significantly changed and may result in the deletion of folders in your local working copy.   Some recommendations on how to migrate your existing components to the new SDK are [available here](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/upgrading-sdk.html) along with a comprehensive set of documentation updates describing the [new capabilities](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/whats-new-sdk.html)
 
-**For any SDK user who wants to remain on the old main branch**, check out the following branch:
+**For any SDK user who wants to remain on the old main branch**, check out this branch:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**release/8.8.10**
 
-The updates that will be made to the main branch reflect a significant repackaging of the React SDK that addresses 2 key improvements:
+The updates that have been made to the main branch reflect a significant repackaging of the React SDK that addresses 2 key improvements:
 
 1.	The **DX Component Builder tool** for creating custom DX components is **fully integrated** into the SDK. There is no longer a need to create custom components with a separate tool (in a separate folder structure) and then copy the components into the SDK.
 

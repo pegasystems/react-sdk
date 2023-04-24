@@ -3,12 +3,12 @@
 <hr />
 <h1 style="color: red">IMPORTANT – PLEASE READ!</h1>
 
-<h3>On <strong>April 24, 2023</strong>, there will be a <strong>significant update</strong> to the React SDK <strong>main</strong> branch.</h3>
+<h3>On <strong>April 24, 2023</strong>, there has been a <strong>significant update</strong> to the React SDK <strong>main</strong> branch.</h3>
 <br />
 
-**We strongly recommend that existing SDK users** clone the update into a new working folder locally. The existing SDK folder structure has significantly changed and may result in the deletion of folders in your local working copy.   Some recommendations on how to migrate your existing components to the new SDK will be published on the release date, along with a comprehensive set of documentation updates describing the new capabilities (navigate to **https://docs.pega.com** and then search for 'Constellation SDKs').
+For those users that want to move to the new main branch **we strongly recommend** that you clone the latest main (known as release 8.23.10) into a new working folder locally. The existing SDK folder structure has significantly changed and may result in the deletion of folders in your local working copy.   Some recommendations on how to migrate your existing components to the new SDK are [available here](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/upgrading-sdk.html) along with a comprehensive set of documentation updates describing the [new capabilities](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/whats-new-sdk.html)
 
-**For any SDK user who wants to remain on the old main branch**, check out the following branch which will be created on April 24, 2023 before updates are made to the **main** branch:
+**For any SDK user who wants to remain on the old main branch**, check out the following branch:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**release/8.8.10**
 

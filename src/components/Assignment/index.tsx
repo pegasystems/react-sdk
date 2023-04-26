@@ -6,6 +6,7 @@ import MultiStep from '../MultiStep';
 import useIsOnlyField from '../../helpers/hooks/QuestionDisplayHooks';
 import useAddErrorToPageTitle from '../../helpers/hooks/useAddErrorToPageTitle';
 import ErrorSummary from '../BaseComponents/ErrorSummary/ErrorSummary';
+import { DateErrorFormatter } from '../../helpers/formatters/DateErrorFormatter';
 
 export interface ErrorMessageDetails{
   message:string,
@@ -128,8 +129,8 @@ export default function Assignment(props) {
       const fieldComponent = fieldC11nEnv.getComponent();
       if(fieldStateprops && fieldStateprops.validatemessage && fieldStateprops.validatemessage !== ''){
         const fieldId = fieldC11nEnv.getStateProps().fieldId || fieldComponent.props.name;
-
-        acc.push({message:{message:fieldStateprops.validatemessage, fieldId}, displayOrder:fieldComponent.props.displayOrder});
+        const validatemessage = fieldC11nEnv.getMetadata().type === 'Date' ? DateErrorFormatter(fieldStateprops.validatemessage, fieldC11nEnv.resolveConfigProps(fieldC11nEnv.getMetadata().config).label) : fieldStateprops.validatemessage
+        acc.push({message:{message:validatemessage, fieldId}, displayOrder:fieldComponent.props.displayOrder});
       }
         return acc;
       }, [] );

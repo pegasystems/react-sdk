@@ -6,16 +6,16 @@
 <h3>On <strong>April 24, 2023</strong>, there has been a <strong>significant update</strong> to the React SDK <strong>main</strong> branch. The previous <strong>main</strong> branch was moved to <u>this</u> <strong>release/8.8.10</strong> branch.
 </h3>
 
-<br />
+<p>
 This <strong>release/8.8.10</strong> branch provides the original <strong>React
 SDK</strong> packaging and is intended for early users who had started to use
 the original React SDK <em>or</em> who <em>require</em> the use of <strong>Infinity 8.7.*</strong>
-<br /><br />
+</p>
+<p>
 <strong>New</strong> React SDK users and users targeting
 <strong>Infinity 8.8.0+</strong> are strongly encouraged to use the newer
 React SDK packaging found in the <strong>main</strong> branch.
-
-<br />
+</p>
 
 For those users that want to move to the new **main** branch **we strongly recommend** that you clone the latest main (known as release 8.23.10) into a new working folder locally. The existing SDK folder structure has significantly changed and may result in the deletion of folders in your local working copy.   Some recommendations on how to migrate your existing components to the new SDK are [available here](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/upgrading-sdk.html) along with a comprehensive set of documentation updates describing the [new capabilities](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/whats-new-sdk.html)
 

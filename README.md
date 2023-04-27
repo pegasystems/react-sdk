@@ -40,7 +40,7 @@ The React SDK is built on a new and modernized UI technology stack (the JavaScri
 
 ## Pega Infinity Server and Constellation-enabled Application
 
-This version of the React SDK assumes that you have access to a Pega Infinity server (**8.8.0+**) running an application that is configured to run using the Constellation UI service.
+This version of the React SDK assumes that you have access to a Pega Infinity server (**8.8.0+**) running an application that is configured to run using the Constellation UI service. _(If you need to use Infinity 8.7.*, please use the **release/8.8.10** branch instead of this **main** branch.)_
 
 The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download. For more information about the MediaCo sample application, see [MediaCo sample application](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/mediaco-sample-application.html).
 

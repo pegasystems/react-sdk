@@ -27,9 +27,9 @@ If you want to continue using the previous release you can checkout [release/8.8
 
 # Overview
 
-The **React SDK** provides Pega customers with the ability to build DX components that connect Pega’s ConstellationJS Engine APIs with a design system other than Pega Cosmos.
+The **React SDK** provides Pega customers with the ability to build DX components that connect Pega’s ConstellationJS Engine APIs with a design system other than Pega [Constellation Design System](https://design.pega.com).
 
-The React SDK differs from out-of-the-box Constellation design system because it provides and demonstrates the use of a React design system that is not the Pega **Constellation** design system. The alternative design system used in this React SDK is **Material UI** (https://mui.com/).
+The React SDK differs from out-of-the-box Constellation design system because it provides and demonstrates the use of a React design system that is not the Pega **Constellation** design system. The alternative design system used in this React SDK is [Material UI](https://mui.com/).
 
 The React SDK is built on a new and modernized UI technology stack (the JavaScript ConstellationJS Orchestration engine and Public API). Many additional SDK features are planned for 1H 2022 to expand the scope of supported use cases.
 

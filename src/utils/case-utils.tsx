@@ -1,6 +1,8 @@
 import React from 'react';
 import AlertBanner from '../components/designSystemExtensions/AlertBanner';
 
+declare let PCore: any;
+
 /**
  * Function that accepts array of messages as input and group them by their type and returns the resulting object
  * @param {Array} inputMessages
@@ -63,7 +65,7 @@ function getBanners(config) {
   const { target, pageMessages, httpMessages } = config;
   const { PAGE } = PCore.getConstants();
   const { clearMessages } = PCore.getMessageManager();
-  const banners = [];
+  const banners: any = [];
   const groupedPageMessages = getMessagesGrouped(pageMessages);
 
   Object.keys(groupedPageMessages).forEach(type => {

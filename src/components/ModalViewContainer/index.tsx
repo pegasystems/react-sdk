@@ -9,6 +9,7 @@ import createPConnectComponent from '../../bridge/react_pconnect';
 import Assignment from '../Assignment';
 import CancelAlert from '../forms/CancelAlert';
 import Utils from '../../helpers/utils';
+import { getBanners } from '../../utils/case-utils';
 
 declare const PCore;
 
@@ -71,7 +72,7 @@ const ModalViewContainer = props => {
   const classes = useStyles();
 
   const routingInfoRef = useRef({});
-  const { getPConnect, routingInfo, loadingInfo } = props;
+  const { getPConnect, routingInfo, loadingInfo, pageMessages } = props;
   const pConn = getPConnect();
   const {
     CONTAINER_TYPE: { MULTIPLE },
@@ -286,7 +287,15 @@ const ModalViewContainer = props => {
         </DialogTitle>
         <DialogContent className={classes.dlgContent}>
           {bShowModal ? (
-            <Assignment getPConnect={createdView.getPConnect} itemKey={itemKey} isInModal>
+            <Assignment
+              getPConnect={createdView.getPConnect}
+              itemKey={itemKey}
+              isInModal
+              banners={getBanners({
+                target: itemKey,
+                pageMessages
+              })}
+            >
               {arNewChildrenAsReact}
             </Assignment>
           ) : (

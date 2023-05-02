@@ -10,7 +10,7 @@ import CloseIcon from '@material-ui/icons/Close';
 declare const PCore: any;
 
 export default function Assignment(props) {
-  const { getPConnect, children, itemKey, isInModal } = props;
+  const { getPConnect, children, itemKey, isInModal, banners } = props;
   const thePConn = getPConnect();
 
   const [bHasNavigation, setHasNavigation] = useState(false);
@@ -218,6 +218,7 @@ export default function Assignment(props) {
 
   return (
     <div id='Assignment'>
+      {banners}
       {bHasNavigation ? (
         <React.Fragment>
           <MultiStep
@@ -308,7 +309,8 @@ Assignment.propTypes = {
   children: PropTypes.node.isRequired,
   getPConnect: PropTypes.func.isRequired,
   itemKey: PropTypes.string,
-  isInModal: PropTypes.bool
+  isInModal: PropTypes.bool,
+  banners: PropTypes.any
   // actionButtons: PropTypes.object
   // buildName: PropTypes.string
 };

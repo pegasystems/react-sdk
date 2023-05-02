@@ -27,12 +27,13 @@ If you want to continue using the previous release you can checkout [release/8.8
 
 # Overview
 
-The **React SDK** provides Pega customers with the ability to build DX components that connect Pega’s ConstellationJS Engine APIs with a design system other than Pega [Constellation Design System](https://design.pega.com).
+The **React SDK** provides Pega customers with the ability to build DX components that connect Pega’s ConstellationJS Engine APIs with a design system other than the Pega [Constellation Design System](https://design.pega.com).
 
 The React SDK differs from out-of-the-box Constellation design system because it provides and demonstrates the use of a React design system that is not the Pega **Constellation** design system. The alternative design system used in this React SDK is [Material UI](https://mui.com/).
 
-The React SDK is built on a new and modernized UI technology stack (the JavaScript ConstellationJS Orchestration engine and Public API). Many additional SDK features are planned for 1H 2022 to expand the scope of supported use cases.
-
+A **summary of the latest updates** to the **@pega/react-sdk-components** and
+**@pega/react-sdk-overrides** used by the React SDK can be found in
+[react-sdk-components KeyReleaseUpdates.md](./node_modules/@pega/react-sdk-components/lib/doc/KeyReleaseUpdates.md).
 
 <br>
 
@@ -94,7 +95,10 @@ Refer to our [guidelines for contributors](./docs/CONTRIBUTING.md) if you are in
 
 ## Additional Resources
 
-* [Material UI](https://v4.mui.com/)
-* [Constellation SDKs Documentation](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html)
-* [Troubleshooting Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/troubleshooting-constellation-sdks.html)
-* [MediaCo sample application](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/mediaco-sample-application.html)
+* [**KeyReleaseUpdates.md**](./node_modules/@pega/react-sdk-components/lib/doc/KeyReleaseUpdates.md): A summary of the latest updates to the **@pega/react-sdk-components** and
+**@pega/react-sdk-overrides** used by the React SDK can be found in
+[react-sdk-components KeyReleaseUpdates.md](./node_modules/@pega/react-sdk-components/lib/doc/KeyReleaseUpdates.md).
+* [**Material UI**](https://v4.mui.com/)
+* [**Constellation SDKs Documentation**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html)
+* [**Troubleshooting Constellation SDKs**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/troubleshooting-constellation-sdks.html)
+* [**MediaCo sample application**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/mediaco-sample-application.html)

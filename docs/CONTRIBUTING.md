@@ -31,7 +31,7 @@ Be sure to reference the original issue in the pull request.
 
 ## Run Tests
 
-Since the Angular SDK requires interaction with a running Pega Infinity&trade; server, there is not an automated set of tests provided at this time.
+Since the React SDK requires interaction with a running Pega Infinity&trade; server, there is not an automated set of tests provided at this time.
 
 We suggest you begin by using the **MediaCo** application provided in the [React SDK download](https://community.pega.com/marketplace/components/react-sdk). Test your change by using the MediaCo application and completing a complete case flow using the **New Service** casetype provided in that sample application.
 

@@ -77,7 +77,7 @@
     "@kooneko/livereload-webpack-plugin": "^1.2.0",
     "@loadable/component": "^5.13.1",
     "@pega/configs": "^0.4.0",
-    "@pega/dx-component-builder-sdk": "~8.23.10",
+    "@pega/dx-component-builder-sdk": "~8.23.11",
     "@pega/eslint-config": "^0.4.0",
     "@pega/prettier-config": "^0.4.0",
     "@pega/react-sdk-overrides": "~8.23.10",

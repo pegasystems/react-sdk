@@ -4,7 +4,15 @@
 }
 
 .file-div {
-  border: 1px dashed #262626;
+  border: 1px dashed var(--app-neutral-dark-color);
+  width: 100%;
+  padding: 0.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.file-div-error {
+  border: 1px dashed var(--app-error-color);
   width: 100%;
   padding: 0.5rem;
   text-align: center;
@@ -21,5 +29,9 @@
   display: inline;
   content: " *";
   vertical-align: top;
-  color: rgb(217, 28, 41);
+  color: var(--app-neutral-dark-color);
+}
+
+.file-error {
+  color: var(--app-error-color);
 }

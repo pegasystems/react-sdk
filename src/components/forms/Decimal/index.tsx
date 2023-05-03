@@ -21,9 +21,9 @@ export default function Decimal(props) {
     helperText,
     displayMode,
     hideLabel,
-    currencyISOCode,
+    currencyISOCode = "USD",
     decimalPrecision = 2,
-    showGroupSeparators
+    showGroupSeparators = true
   } = props;
 
   const pConn = getPConnect();

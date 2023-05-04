@@ -14,10 +14,10 @@
   --app-warning-color: #ff9800;
   --app-warning-color-light: #ffb74d;
   --app-warning-color-dark: #f57c00;
-  
+
   --app-background-color: whitesmoke;
   --app-form-color: white;
-  
+
   /* svg filter colors that match above, go here to generate https://codepen.io/sosuke/pen/Pjoqqp */
   /* replaced 3 filters when the primary, primary-dark, and primary-light were updated above
   --app-primary-color-filter: invert(23%) sepia(23%) saturate(6785%) hue-rotate(250deg) brightness(93%) contrast(88%);
@@ -31,8 +31,8 @@
   --app-neutral-color-filter: invert(55%) sepia(25%) saturate(0%) hue-rotate(269deg) brightness(87%) contrast(91%);
   --app-neutral-light-color-filter: invert(69%) sepia(74%) saturate(0%) hue-rotate(205deg) brightness(102%) contrast(103%);
   --app-white-color-filter: invert(100%) sepia(99%) saturate(0%) hue-rotate(144deg) brightness(109%) contrast(101%);
-  
-  
+
+
   /* App Navigation */
   --app-nav-bg: #262626;  /*!default*/
   --app-nav-color: #d9d9d9; /* invert( var(--app-nav-bg)) !default */

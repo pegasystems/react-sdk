@@ -15,7 +15,7 @@ function getCurrentAttachmentsList(context) {
 }
 
 export default function Attachment(props) {
-  const {value, getPConnect, label} = props;
+  const {value, getPConnect, label, validatemessage} = props;
   /* this is a temporary fix because required is supposed to be passed as a boolean and NOT as a string */
   let { required, disabled } = props;
   [required, disabled] = [required, disabled].map(
@@ -433,7 +433,7 @@ export default function Attachment(props) {
   }, []);
 
   let content = (
-    <div className='file-div'>
+    <div className={`${validatemessage === '' ? 'file-div' : 'file-div-error'}`}>
         {file.inProgress && (<div className="progress-div"><CircularProgress /></div>)}
         <div hidden={true} id="attachment-ID">{valueRef}</div>
         <label htmlFor={valueRef}>
@@ -466,6 +466,7 @@ export default function Attachment(props) {
     <div className='file-upload-container'>
       <span className={`label ${required ? 'file-label' : ''}`}>{label}</span>
       <section>{content}</section>
+      {validatemessage !== "" ? <span className='file-error'>{validatemessage}</span> : ''}
     </div>
   );
 }

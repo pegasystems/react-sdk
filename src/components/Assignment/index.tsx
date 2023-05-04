@@ -161,6 +161,12 @@ export default function Assignment(props) {
     });
   }
 
+  function scrollToTop(){
+    const position = document.querySelector('h1')?.offsetTop || 0;
+    document.body.scrollTop = position;
+    document.documentElement.scrollTop = position;
+  }
+
   function buttonPress(sAction: string, sButtonType: string) {
     setErrorSummary(false);
 
@@ -171,9 +177,11 @@ export default function Assignment(props) {
 
           navigatePromise
             .then(() => {
+              scrollToTop();
               setErrorSummary(false);
             })
             .catch(() => {
+              scrollToTop();
               showErrorSummary();
             });
 
@@ -238,8 +246,12 @@ export default function Assignment(props) {
           const finishPromise = finishAssignment(itemKey);
 
             finishPromise
-            .then(() => setErrorSummary(false))
+            .then(() => {
+              scrollToTop();
+              setErrorSummary(false);
+            })
             .catch(() => {
+              scrollToTop();
               showErrorSummary();
             });
 

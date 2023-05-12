@@ -90,20 +90,13 @@ exports[`Basic date input component hint and error 1`] = `
             Year
           </label>
           <input
-            className="govuk-input govuk-input--error undefined govuk-input--width-4"
+            className="govuk-input govuk-input--width-4 govuk-input--error"
             id="name-year"
             inputMode="numeric"
             name="name-year"
             type="text"
           />
         </div>
-        <input
-          className="govuk-input govuk-input--width-4 govuk-input--error"
-          id="name-year"
-          inputMode="numeric"
-          name="name-year"
-          type="text"
-        />
       </div>
     </div>
   </fieldset>
@@ -200,7 +193,7 @@ exports[`Basic date input component prepoulated with a date 1`] = `
             Year
           </label>
           <input
-            className="govuk-input govuk-input--error undefined govuk-input--width-4"
+            className="govuk-input govuk-input--width-4 govuk-input--error"
             id="name-year"
             inputMode="numeric"
             name="name-year"
@@ -208,14 +201,6 @@ exports[`Basic date input component prepoulated with a date 1`] = `
             value="1990"
           />
         </div>
-        <input
-          className="govuk-input govuk-input--width-4 govuk-input--error"
-          id="name-year"
-          inputMode="numeric"
-          name="name-year"
-          type="text"
-          value="1990"
-        />
       </div>
     </div>
   </fieldset>
@@ -318,7 +303,7 @@ exports[`Basic date input component with legend as h1 1`] = `
             Year
           </label>
           <input
-            className="govuk-input govuk-input--error undefined govuk-input--width-4"
+            className="govuk-input govuk-input--width-4 govuk-input--error"
             id="name-year"
             inputMode="numeric"
             name="name-year"
@@ -326,14 +311,6 @@ exports[`Basic date input component with legend as h1 1`] = `
             type="text"
           />
         </div>
-        <input
-          className="govuk-input govuk-input--width-4 govuk-input--error"
-          id="name-year"
-          inputMode="numeric"
-          name="name-year"
-          onChange={[Function]}
-          type="text"
-        />
       </div>
     </div>
   </fieldset>
@@ -428,20 +405,13 @@ exports[`Basic date input componentwith error applying to whole input 1`] = `
             Year
           </label>
           <input
-            className="govuk-input govuk-input--error undefined govuk-input--width-4"
+            className="govuk-input govuk-input--width-4 govuk-input--error"
             id="name-year"
             inputMode="numeric"
             name="name-year"
             type="text"
           />
         </div>
-        <input
-          className="govuk-input govuk-input--width-4 govuk-input--error"
-          id="name-year"
-          inputMode="numeric"
-          name="name-year"
-          type="text"
-        />
       </div>
     </div>
   </fieldset>
@@ -522,20 +492,13 @@ exports[`renders correctly 1`] = `
             Year
           </label>
           <input
-            className="govuk-input  undefined govuk-input--width-4"
+            className="govuk-input govuk-input--width-4 "
             id="undefined-year"
             inputMode="numeric"
             name="undefined-year"
             type="text"
           />
         </div>
-        <input
-          className="govuk-input govuk-input--width-4 "
-          id="undefined-year"
-          inputMode="numeric"
-          name="undefined-year"
-          type="text"
-        />
       </div>
     </div>
   </fieldset>

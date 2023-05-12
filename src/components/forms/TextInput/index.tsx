@@ -3,10 +3,14 @@ import GDSTextInput from '../../BaseComponents/TextInput/TextInput';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
+import handleEvent from '../../../helpers/event-utils';
+
 export default function TextInput(props) {
   const {
+    getPConnect,
     label,
     value = '',
+    placeholder,
     validatemessage,
     onChange,
     helperText,
@@ -14,8 +18,20 @@ export default function TextInput(props) {
     fieldMetadata,
     readOnly,
     name,
-    testId,
+    testId
   } = props;
+
+  const thePConn = getPConnect();
+  const actionsApi = thePConn.getActionsApi();
+
+  const propName = thePConn.getStateProps().value;
+
+  const handleChange = evt => {
+    if (name === 'content-pyPostalCode') {
+      const selectedValue = evt.target.value === placeholder ? '' : evt.target.value;
+      handleEvent(actionsApi, 'changeNblur', propName, selectedValue);
+    }
+  };
 
   const isOnlyField = useIsOnlyField();
 
@@ -27,7 +43,7 @@ export default function TextInput(props) {
 
   // const maxLength = fieldMetadata?.maxLength;
 
-  const extraProps= {testProps:{'data-test-id':testId}};
+  const extraProps = { testProps: { 'data-test-id': testId } };
 
   const extraInputProps = { onChange, value };
 
@@ -41,7 +57,7 @@ export default function TextInput(props) {
       <GDSTextInput
         inputProps={{
           ...inputProps,
-          ...extraInputProps,
+          ...extraInputProps
         }}
         hintText={helperText}
         errorText={validatemessage}
@@ -50,6 +66,7 @@ export default function TextInput(props) {
         name={name}
         maxLength={maxLength}
         id={name}
+        onBlur={e => handleChange(e)}
         {...extraProps}
       />
     </>

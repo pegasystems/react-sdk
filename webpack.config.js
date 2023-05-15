@@ -180,6 +180,7 @@ module.exports = (env, argv) => {
         { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' }
       ]
     },
+    /* optimization: { splitChunks: { chunks: "all", minSize: 600000,  maxSize: 200000} }, */
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.jsx']
     }

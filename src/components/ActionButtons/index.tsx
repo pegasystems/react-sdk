@@ -25,6 +25,7 @@ export default function ActionButtons(props) {
         </Button>
       ))}
       {arSecondaryButtons.map(sButton => (
+         sButton.actionID !== 'back' ?
         <Button
           variant='secondary'
           onClick={(e) => {
@@ -35,7 +36,7 @@ export default function ActionButtons(props) {
           attributes={{type:"button"}}
         >
           {sButton.name}
-        </Button>
+        </Button>:null
       ))}
     </div>
   );

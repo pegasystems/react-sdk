@@ -7,6 +7,7 @@ import useIsOnlyField from '../../helpers/hooks/QuestionDisplayHooks';
 import useAddErrorToPageTitle from '../../helpers/hooks/useAddErrorToPageTitle';
 import ErrorSummary from '../BaseComponents/ErrorSummary/ErrorSummary';
 import { DateErrorFormatter } from '../../helpers/formatters/DateErrorFormatter';
+import BackLink from '../BaseComponents/BackLink/BackLink';
 
 export interface ErrorMessageDetails{
   message:string,
@@ -24,9 +25,9 @@ declare const PCore: any;
 export default function Assignment(props) {
   const { getPConnect, children, itemKey, isCreateStage } = props;
   const thePConn = getPConnect();
-
+  const [arSecondaryButtons, setArSecondaryButtons] = useState([]);
   const [bHasNavigation, setHasNavigation] = useState(false);
-  const [actionButtons, setActionButtons] = useState( {} );
+  const [actionButtons, setActionButtons] = useState<any>( {} );
   const [bIsVertical, setIsVertical] = useState(false);
   const [arCurrentStepIndicies, setArCurrentStepIndicies] = useState<Array<any>>([]);
   const [arNavigationSteps, setArNavigationSteps] = useState<Array<any>>([]);
@@ -263,6 +264,14 @@ export default function Assignment(props) {
       }
     }
   }
+  function _onButtonPress(sAction: string, sButtonType: string) {
+    buttonPress(sAction, sButtonType);
+  }
+  useEffect(() => {
+    if (actionButtons) {
+      setArSecondaryButtons(actionButtons.secondary);
+    }
+  }, [actionButtons]);
 
   return (
     <div id='Assignment'>
@@ -284,6 +293,20 @@ export default function Assignment(props) {
         </React.Fragment>
       ) : (
         <>
+            {arSecondaryButtons?.map((sButton) =>
+            sButton['name'] === 'Previous' ? (
+              <BackLink
+                onClick={e => {
+                  e.target.blur();
+                  _onButtonPress(sButton['jsAction'], 'secondary');
+                }}
+                key={sButton['actionID']}
+                attributes={{ type: 'link' }}
+              >
+               {/* {sButton['name']} */}
+              </BackLink>
+            ) : null
+          )}
           {errorSummary && errorMessages.length > 0 && <ErrorSummary errors={errorMessages.map(item => item.message)} />}
           {!isOnlyOneField && <h1 className="govuk-heading-l">{containerName}</h1>}
           <form>
@@ -340,7 +363,6 @@ Assignment.propTypes = {
   getPConnect: PropTypes.func.isRequired,
   itemKey: PropTypes.string,
   isCreateStage: PropTypes.bool
-  // actionButtons: PropTypes.object
   // buildName: PropTypes.string
 };
 

@@ -38,7 +38,7 @@ export default function FieldGroupTemplate(props) {
     if (PCore.getPCoreVersion()?.includes('8.7')) {
       pConn.getListActions().insert({ classID: contextClass }, referenceList.length, pageReference);
     } else {
-      pConn.getListActions().insert({ classID: contextClass }, referenceList.length);
+      pConn.getListActions().insert({}, referenceList.length);
     }
   };
 

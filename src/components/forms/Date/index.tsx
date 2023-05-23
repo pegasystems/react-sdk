@@ -3,6 +3,7 @@ import DateInput from '../../BaseComponents/DateInput/DateInput';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 import {DateErrorFormatter, DateErrorTargetFields} from '../../../helpers/formatters/DateErrorFormatter';
+import handleEvent from '../../../helpers/event-utils';
 
 declare const global;
 
@@ -20,6 +21,9 @@ export default function Date(props) {
   const [specificErrors, setSpecificErrors] = useState<any>(null)
   pConn.setStateProps({fieldId: `${name}-day`});
 
+  const actionsApi = getPConnect().getActionsApi();
+  const propName = getPConnect().getStateProps().value;
+
   // PM - Create ISODate string (as expected by onChange) and pass to onchange value, adding 0 padding here for day and month to comply with isostring format.
   const handleDateChange = () => {
     let isoDate;
@@ -31,7 +35,8 @@ export default function Date(props) {
       isoDate = '';
     }
     if (isoDate !== value) {
-      onChange({ value: isoDate });
+      //Using handle event instead of onChange to workaround client side validation issue (BUG-6202)
+      handleEvent(actionsApi, 'change', propName, isoDate);
     }
   };
 

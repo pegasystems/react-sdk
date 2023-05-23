@@ -29,12 +29,11 @@ export default function CheckboxComponent(props) {
       return (<ReadOnlyDisplay value={value?props.trueLabel:props.falseLabel} label={caption}/>)
   }
 
-  const optionsList = [{checked: value, label: caption, hintText: " ", readOnly:false}]
-
   const handleChange = event => {
     handleEvent(actionsApi, 'changeNblur', propName, event.target.checked);
   };
 
+  const optionsList = [{checked: value, label: caption, hintText: " ", readOnly:false, name, onChange:handleChange}]
 
   const extraProps= {testProps:{'data-test-id':testId}};
 
@@ -48,7 +47,7 @@ export default function CheckboxComponent(props) {
         legendIsHeading={isOnlyField}
         errorText={validatemessage}
         hintText={hintText}
-        onChange={ handleChange}
+        onChange={handleChange}
         {...extraProps}
       />
     </>

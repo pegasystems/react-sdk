@@ -54,4 +54,5 @@ FieldSet.propTypes = {
   errorText: PropTypes.string,
   children: PropTypes.node,
   fieldsetElementProps: PropTypes.object,
+  instructionText: PropTypes.string
 }

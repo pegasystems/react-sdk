@@ -5,9 +5,7 @@ import GDSCheckbox from './Checkbox'
 
 export default function Checkboxes(props) {
   const {
-    name,
     optionsList,
-    onChange,
     onBlur,
     inputProps,
   } = props;
@@ -22,10 +20,11 @@ export default function Checkboxes(props) {
           <GDSCheckbox
             item={item}
             index={index}
-            name={name}
+            name={item.name}
             inputProps={...inputProps}
-            onChange={onChange}
+            onChange={item.onChange}
             onBlur={onBlur}
+            key={item.name}
           />
         ))}
       </div>
@@ -35,12 +34,15 @@ export default function Checkboxes(props) {
 
 Checkboxes.propTypes = {
   name: PropTypes.string,
-  label: PropTypes.string,
-  legendIsHeading: PropTypes.bool,
-  optionsList: PropTypes.array,
-  errorText: PropTypes.string,
-  hintText: PropTypes.string,
+  optionsList: PropTypes.arrayOf(PropTypes.shape({
+    checked: PropTypes.bool,
+    label: PropTypes.string,
+    hintText: PropTypes.string,
+    readOnly:PropTypes.bool,
+    onChange:PropTypes.func})
+  ),
   inputProps: PropTypes.object,
   onChange: PropTypes.func,
-  onBlur: PropTypes.func
+  onBlur: PropTypes.func,
+  ...FieldSet.propTypes ,
 };

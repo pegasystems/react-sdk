@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ConditionalWrapper from '../../../helpers/formatters/ConditionalWrapper';
+import HintTextComponent from '../../../helpers/formatters/ParsedHtml';
 
 export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, children, fieldsetElementProps, testProps}){
 
@@ -30,7 +31,7 @@ export default function FieldSet({legendIsHeading=true, label, name, errorText, 
             childrenToWrap={label}
           />
         </legend>
-        {hintText && <div id={hintID} className="govuk-hint">{hintText}</div>}
+        {hintText && <div id={hintID} className="govuk-hint"> <HintTextComponent htmlString={hintText}/></div>}
         {errorText  && <p id={errorID} className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{errorText}</p> }
         {children}
     </fieldset>

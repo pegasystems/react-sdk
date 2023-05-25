@@ -149,6 +149,7 @@ exports[`renders basic radio button set with 3 options, legend is heading with h
       className="govuk-hint"
       id="radioButtons-hint"
     >
+       
       Helpful text for radio buttons
     </div>
     <p

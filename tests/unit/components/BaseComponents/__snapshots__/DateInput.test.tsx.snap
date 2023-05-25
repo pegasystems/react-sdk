@@ -18,6 +18,7 @@ exports[`Basic date input component hint and error 1`] = `
       className="govuk-hint"
       id="name-hint"
     >
+       
       hintText
     </div>
     <p
@@ -229,6 +230,7 @@ exports[`Basic date input component with legend as h1 1`] = `
       className="govuk-hint"
       id="name-hint"
     >
+       
       hintText
     </div>
     <p

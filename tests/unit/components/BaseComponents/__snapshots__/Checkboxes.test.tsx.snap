@@ -21,6 +21,7 @@ exports[`renders a group of 3 checkboxes, hint text for label 1`] = `
       className="govuk-hint"
       id="test-checkbox-hint"
     >
+       
       Testing hint text
     </div>
     <div

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ConditionalWrapper from '../../../helpers/formatters/ConditionalWrapper';
+import HintTextComponent from '../../../helpers/formatters/ParsedHtml';
 
 function makeHintId(identifier) {
   return `${identifier}-hint`;
@@ -46,7 +47,7 @@ export default function FormGroup({
       />
       {hintText && (
         <div id={makeHintId(name)} className='govuk-hint'>
-          {hintText}
+          <HintTextComponent htmlString={hintText}/>
         </div>
       )}
       {errorText && (

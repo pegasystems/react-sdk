@@ -2,13 +2,25 @@ import React, { useState, useLayoutEffect, useEffect } from 'react';
 import DateInput from '../../BaseComponents/DateInput/DateInput';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
-import {DateErrorFormatter, DateErrorTargetFields} from '../../../helpers/formatters/DateErrorFormatter';
+import {
+  DateErrorFormatter,
+  DateErrorTargetFields
+} from '../../../helpers/formatters/DateErrorFormatter';
 import handleEvent from '../../../helpers/event-utils';
 
 declare const global;
 
 export default function Date(props) {
-  const { getPConnect, label, value = '', validatemessage, onChange, helperText, readOnly, name, testId } = props;
+  const {
+    getPConnect,
+    label,
+    value = '',
+    validatemessage,
+    helperText,
+    readOnly,
+    name,
+    testId
+  } = props;
   const pConn = getPConnect();
 
   const isOnlyField = useIsOnlyField();
@@ -18,8 +30,8 @@ export default function Date(props) {
   const [month, setMonth] = useState(value ? value.split('-')[1] : '');
   const [year, setYear] = useState(value ? value.split('-')[0] : '');
   const [editedValidateMessage, setEditedValidateMessage] = useState(validatemessage);
-  const [specificErrors, setSpecificErrors] = useState<any>(null)
-  pConn.setStateProps({fieldId: `${name}-day`});
+  const [specificErrors, setSpecificErrors] = useState<any>(null);
+  pConn.setStateProps({ fieldId: `${name}-day` });
 
   const actionsApi = getPConnect().getActionsApi();
   const propName = getPConnect().getStateProps().value;
@@ -35,7 +47,7 @@ export default function Date(props) {
       isoDate = '';
     }
     if (isoDate !== value) {
-      //Using handle event instead of onChange to workaround client side validation issue (BUG-6202)
+      // Using handle event instead of onChange to workaround client side validation issue (BUG-6202)
       handleEvent(actionsApi, 'change', propName, isoDate);
     }
   };
@@ -45,29 +57,37 @@ export default function Date(props) {
     handleDateChange();
   }, [day, month, year]);
 
-  useEffect(()=>{
-    if(validatemessage){
-      setEditedValidateMessage(DateErrorFormatter(validatemessage, getPConnect().resolveConfigProps(getPConnect().getMetadata().config).label));
+  useEffect(() => {
+    if (validatemessage) {
+      setEditedValidateMessage(
+        DateErrorFormatter(
+          validatemessage,
+          getPConnect().resolveConfigProps(getPConnect().getMetadata().config).label
+        )
+      );
 
       const errorTargets = DateErrorTargetFields(validatemessage);
-      let specificError:any = null;
-      if(errorTargets.length > 0) specificError = {day: errorTargets.includes('day'), month: errorTargets.includes('month'), year: errorTargets.includes('year')};
+      let specificError: any = null;
+      if (errorTargets.length > 0)
+        specificError = {
+          day: errorTargets.includes('day'),
+          month: errorTargets.includes('month'),
+          year: errorTargets.includes('year')
+        };
 
       // This sets a state prop to be exposed to the error summary set up in Assisgnment component - and should match the id of the first field of
       // the date component. Will investigate better way to do this, to avoid mismatches if the Date BaseComponent changes.
 
-      if(!specificError?.day){
-        if(specificError?.month){
-          pConn.setStateProps({fieldId: `${name}-month`});
-        } else if (specificError?.year){
-          pConn.setStateProps({fieldId: `${name}-year`});
+      if (!specificError?.day) {
+        if (specificError?.month) {
+          pConn.setStateProps({ fieldId: `${name}-month` });
+        } else if (specificError?.year) {
+          pConn.setStateProps({ fieldId: `${name}-year` });
         }
       }
       setSpecificErrors(specificError);
     }
   }, [validatemessage]);
-
-
 
   // PM - Handlers for each part of date inputs, update state for each respectively
   //      0 pad for ISOString compatibilitiy, with conditions to allow us to clear the fields
@@ -81,11 +101,11 @@ export default function Date(props) {
     setYear(yearChange.target.value);
   };
 
-  if(readOnly){
-    return <ReadOnlyDisplay label={label} value={new global.Date(value).toLocaleDateString()} />
+  if (readOnly) {
+    return <ReadOnlyDisplay label={label} value={new global.Date(value).toLocaleDateString()} />;
   }
 
-  const extraProps= {testProps:{'data-test-id':testId}};
+  const extraProps = { testProps: { 'data-test-id': testId } };
 
   return (
     <DateInput
@@ -98,7 +118,7 @@ export default function Date(props) {
       name={name}
       errorText={editedValidateMessage}
       hintText={helperText}
-      errorProps={specificErrors?{specificError:specificErrors}:null}
+      errorProps={specificErrors ? { specificError: specificErrors } : null}
       {...extraProps}
     />
   );

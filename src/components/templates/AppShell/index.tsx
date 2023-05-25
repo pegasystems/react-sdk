@@ -95,11 +95,11 @@ export default function AppShell(props) {
       portalLogo.toLowerCase().includes('py-logo') ||
       portalLogo.toLowerCase().includes('py-full-logo')
     ) {
-      const portalLogoImage = Utils.getIconPath(PCore.getAssetLoader().getStaticServerUrl()).concat(
+      const portalLogoImage = Utils.getIconPath(Utils.getSDKStaticConentUrl()).concat(
         'pzpega-logo-mark.svg'
       );
       setIconURL(portalLogoImage);
-      setFullIconURL(`${PCore.getAssetLoader().getStaticServerUrl()}static/py-full-logo.svg`);
+      setFullIconURL(`${Utils.getSDKStaticConentUrl()}static/py-full-logo.svg`);
     }
     // not using default icon to fetch it using the way which uses authentication
     else {

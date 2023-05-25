@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { SdkConfigAccess } from './config_access';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(localizedFormat);
@@ -9,6 +10,17 @@ dayjs.extend(relativeTime);
 
 export class Utils {
   static lastControlID: number = 0;
+
+  static getSDKStaticConentUrl() {
+    const sdkConfigServer = SdkConfigAccess.getSdkConfigServer();
+
+    // NOTE: Needs a trailing slash! So add one if not provided
+    if (!sdkConfigServer.sdkContentServerUrl.endsWith('/')) {
+      sdkConfigServer.sdkContentServerUrl = `${sdkConfigServer.sdkContentServerUrl}/`;
+    }
+
+    return `${sdkConfigServer.sdkContentServerUrl}constellation/`;
+  }
 
   static getUniqueControlID(): string {
     const sPrefix = 'control-';

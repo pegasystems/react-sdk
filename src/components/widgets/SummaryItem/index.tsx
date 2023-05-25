@@ -4,19 +4,17 @@ import './SummaryItem.css'
 import  { IconButton, Menu, MenuItem } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-declare const PCore: any;
-
 export default function SummaryItem(props) {
   let imagePath$ = "";
   let menuIconOverride$;
   menuIconOverride$ = props.menuIconOverride$
-  imagePath$ = Utils.getIconPath(PCore.getAssetLoader().getStaticServerUrl());
+  imagePath$ = Utils.getIconPath(Utils.getSDKStaticConentUrl());
   const item = props.arItems$;
   const srcImg = `${imagePath$}${item.visual.icon}.svg`
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   if (menuIconOverride$) {
-    menuIconOverride$ = Utils.getImageSrc(menuIconOverride$ , PCore.getAssetLoader().getStaticServerUrl());
+    menuIconOverride$ = Utils.getImageSrc(menuIconOverride$ , Utils.getSDKStaticConentUrl());
   }
 
   function removeAttachment() {

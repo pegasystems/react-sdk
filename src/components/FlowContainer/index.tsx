@@ -326,7 +326,7 @@ export default function FlowContainer(props) {
       PCore.getPubSubUtils().publish('assignmentFinished');
 
       // debugger;
-      setCheckSvg(Utils.getImageSrc('check', PCore.getAssetLoader().getStaticServerUrl()));
+      setCheckSvg(Utils.getImageSrc('check', Utils.getSDKStaticConentUrl()));
     } else {
       // debugger;
       setHasCaseMessages(false);

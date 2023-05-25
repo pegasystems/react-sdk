@@ -59,10 +59,11 @@ export default function Attachment(props) {
 
   function setNewFiles(arFiles) {
     let index = 0;
+    const maxAttachmentSize = 5;
     for (const item of arFiles) {
-      if (!validateMaxSize(item, 5)) {
+      if (!validateMaxSize(item, maxAttachmentSize)) {
         item.error = true;
-        item.meta = "File is too big. Max allowed size is 5MB.";
+        item.meta = pConn.getLocalizedValue(`File is too big. Max allowed size is ${maxAttachmentSize}MB.`);
       }
       item.mimeType = item.type;
       item.icon = getIconFromFileType(item.type);
@@ -88,7 +89,7 @@ export default function Attachment(props) {
       actions = [
         {
           id: `Cancel-${att.ID}`,
-          text: "Cancel",
+          text: pConn.getLocalizedValue('Cancel'),
           icon: "times",
           onClick: cancelFile
         }
@@ -101,7 +102,7 @@ export default function Attachment(props) {
           "download",
           {
             id: `download-${ID}`,
-            text: isFile ? "Download" : "Open",
+            text: isFile ? pConn.getLocalizedValue('Download') : pConn.getLocalizedValue('Open'),
             icon: isFile ? "download" : "open",
             onClick: downloadFile
           }
@@ -110,7 +111,7 @@ export default function Attachment(props) {
           "delete",
           {
             id: `Delete-${ID}`,
-            text: "Delete",
+            text: pConn.getLocalizedValue('Delete'),
             icon: "trash",
             onClick: deleteFile
           }
@@ -126,7 +127,7 @@ export default function Attachment(props) {
       actions = [
         {
           id: `Remove-${att.ID}`,
-          text: "Remove",
+          text: pConn.getLocalizedValue('Remove'),
           icon: "trash",
           onClick: removeFile
         }
@@ -249,7 +250,7 @@ export default function Attachment(props) {
           pageReference: pConn.getPageReference(),
           context
         });
-        myFiles[0].meta = "Uploaded Successfully";
+        myFiles[0].meta = pConn.getLocalizedValue('Uploaded successfully');
 
         arFileList$ = myFiles.map((att) => {
           return getNewListUtilityItemProps({
@@ -371,12 +372,12 @@ export default function Attachment(props) {
         let oMenu: any = {};
 
         oMenu.icon = "download";
-        oMenu.text = "Download";
+        oMenu.text = pConn.getLocalizedValue('Download');
         oMenu.onClick = () => { _downloadFileFromList(value.pxResults[0])}
         arMenuList.push(oMenu);
         oMenu = {};
         oMenu.icon = "trash";
-        oMenu.text = "Delete";
+        oMenu.text = pConn.getLocalizedValue('Delete');
         oMenu.onClick = () => { _removeFileFromList(arFileList$[0], arFileList$)}
         arMenuList.push(oMenu);
 

@@ -134,10 +134,10 @@ export default function PromotedFilters(props) {
       </div>
       <div>
         <Button key='1' type='button' onClick={clearFilterData} data-testid='clear' variant='contained' color='primary'>
-            {localizedVal('Clear', localeCategory)}
+          {localizedVal('Clear', localeCategory)}
         </Button>
         <Button style={{float: 'right'}} key='2' type='submit' onClick={getFilterData} data-testid='search' variant='contained' color='primary'>
-            {localizedVal('Search', localeCategory)}
+          {localizedVal('Search', localeCategory)}
         </Button>
       </div>
       {initTable && <ListView {...listViewProps} title='' payload={payload}

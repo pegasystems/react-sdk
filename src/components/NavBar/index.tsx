@@ -108,7 +108,7 @@ export default function NavBar(props) {
   const [bShowOperatorButtons, setBShowOperatorButtons] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const portalLogoImage = Utils.getIconPath(PCore.getAssetLoader().getStaticServerUrl()).concat(
+  const portalLogoImage = Utils.getIconPath(Utils.getSDKStaticConentUrl()).concat(
     'pzpega-logo-mark.svg'
   );
   const portalOperator = PCore.getEnvironmentInfo().getOperatorName();

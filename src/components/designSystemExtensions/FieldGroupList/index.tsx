@@ -6,14 +6,12 @@ import Link from '@material-ui/core/Link';
 
 import { Utils } from '../../../helpers/utils';
 
-declare const PCore: any;
-
 const FieldGroupList = props => {
   let menuIconOverride$ = 'trash';
   if (menuIconOverride$) {
     menuIconOverride$ = Utils.getImageSrc(
       menuIconOverride$,
-      PCore.getAssetLoader().getStaticServerUrl()
+      Utils.getSDKStaticConentUrl()
     );
   }
 

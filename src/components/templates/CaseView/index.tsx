@@ -89,7 +89,7 @@ export default function CaseView(props) {
   const theUtilitiesRegion = getChildRegionByName("utilities");
   const theTabsRegion = getChildRegionByName("tabs");
 
-  const svgCase = Utils.getImageSrc(icon, PCore.getAssetLoader().getStaticServerUrl());
+  const svgCase = Utils.getImageSrc(icon, Utils.getSDKStaticConentUrl());
 
   const [activeVertTab, setActiveVertTab] = useState(0);
 

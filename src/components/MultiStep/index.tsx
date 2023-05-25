@@ -10,8 +10,8 @@ export default function MultiStep(props) {
     const { getPConnect, children, itemKey, actionButtons, onButtonPress} = props;
     const { bIsVertical, arNavigationSteps } = props;
 
-    // const svgCurrent = Utils.getImageSrc("circle-solid", PCore.getAssetLoader().getStaticServerUrl());
-    // const svgNotCurrent = Utils.getImageSrc("circle-solid", PCore.getAssetLoader().getStaticServerUrl());
+    // const svgCurrent = Utils.getImageSrc("circle-solid", Utils.getSDKStaticConentUrl());
+    // const svgNotCurrent = Utils.getImageSrc("circle-solid", Utils.getSDKStaticConentUrl());
 
     function _getVIconClass(status): string {
         if (status === "current") {

@@ -26,11 +26,11 @@ export default function QuickCreate(props) {
     envInfo.environmentInfoObject.pyCaseTypeList.length > 0
   ) {
     classFilter.forEach((item) => {
-      let icon = Utils.getImageSrc('polaris-solid', PCore.getAssetLoader().getStaticServerUrl());
+      let icon = Utils.getImageSrc('polaris-solid', Utils.getSDKStaticConentUrl());
       let label = '';
       envInfo.environmentInfoObject.pyCaseTypeList.forEach((casetype) => {
         if (casetype.pyWorkTypeImplementationClassName === item) {
-          icon = casetype.pxIcon && Utils.getImageSrc(casetype?.pxIcon, PCore.getAssetLoader().getStaticServerUrl());
+          icon = casetype.pxIcon && Utils.getImageSrc(casetype?.pxIcon, Utils.getSDKStaticConentUrl());
           label = casetype.pyWorkTypeName ?? '';
         }
       });

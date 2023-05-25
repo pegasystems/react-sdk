@@ -22,8 +22,8 @@ export default function FileUtility(props) {
     count: 0
   };
   const [list, setList] = useState(listTemp);
-  const headerSvgIcon$ = Utils.getImageSrc('paper-clip', PCore.getAssetLoader().getStaticServerUrl());
-  const closeSvgIcon = Utils.getImageSrc("times", PCore.getAssetLoader().getStaticServerUrl());
+  const headerSvgIcon$ = Utils.getImageSrc('paper-clip', Utils.getSDKStaticConentUrl());
+  const closeSvgIcon = Utils.getImageSrc("times", Utils.getSDKStaticConentUrl());
   const configProps: any = thePConn.resolveConfigProps(thePConn.getConfigProps());
 
   const header = configProps.label;

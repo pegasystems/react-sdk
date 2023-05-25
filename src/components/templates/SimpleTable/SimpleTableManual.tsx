@@ -111,7 +111,7 @@ export default function SimpleTableManual(props) {
   const resolvedList = getReferenceList(pConn);
   const pageReference = `${pConn.getPageReference()}${resolvedList}`;
   pConn.setReferenceList(resolvedList);
-  const menuIconOverride$ = Utils.getImageSrc('trash', PCore.getAssetLoader().getStaticServerUrl());
+  const menuIconOverride$ = Utils.getImageSrc('trash', Utils.getSDKStaticConentUrl());
 
   const resolvedFields = children?.[0]?.children || presets?.[0].children?.[0].children;
   // NOTE: props has each child.config with datasource and value undefined

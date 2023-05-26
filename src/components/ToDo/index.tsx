@@ -92,6 +92,8 @@ export default function ToDo(props) {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const localeCategory = 'Todo';
+  const showlessLocalizedValue = localizedVal('show_less', 'CosmosFields');
+  const showMoreLocalizedValue = localizedVal('show_more', 'CosmosFields');
   // const { setOpen } = useNavBar();
 
   function initAssignments(): Array<any> {
@@ -296,10 +298,12 @@ export default function ToDo(props) {
         <Box display='flex' justifyContent='center'>
           {bShowMore ? (
             <Button color='primary' onClick={_showMore}>
-              {localizedVal('show_more', 'CosmosFields')}
+              {showMoreLocalizedValue ===  'show_more' ? 'Show more': showMoreLocalizedValue}
             </Button>
           ) : (
-            <Button onClick={_showLess}>{localizedVal('show_less', 'CosmosFields')}</Button>
+            <Button onClick={_showLess}>
+              {showlessLocalizedValue ===  'show_less' ? 'Show less': showlessLocalizedValue}
+            </Button>
           )}
         </Box>
       )}

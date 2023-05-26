@@ -31,16 +31,16 @@ export default function FileUtility(props) {
     showfileModal: false,
     fileList: [],
     attachedFiles: [],
-    fileMainButtons: [{ actionID: "attach", jsAction: "attachFiles", name: "Attach files"}],
-    fileSecondaryButtons: [{ actionID: "cancel", jsAction: "cancel", name: "Cancel"}]
+    fileMainButtons: [{ actionID: "attach", jsAction: "attachFiles", name: thePConn.getLocalizedValue('Attach files')}],
+    fileSecondaryButtons: [{ actionID: "cancel", jsAction: "cancel", name: thePConn.getLocalizedValue('Cancel')}]
   };
   const [fileData, setFileData] = useState(fileTemp);
   const linkTemp = {
     showLinkModal: false,
     linksList: [],
     attachedLinks: [],
-    linkMainButtons: [{ actionID: "attach", jsAction: "attachLinks", name: "Attach links"}],
-    linkSecondaryButtons: [{ actionID: "cancel", jsAction: "cancel", name: "Cancel"}]
+    linkMainButtons: [{ actionID: "attach", jsAction: "attachLinks", name: thePConn.getLocalizedValue('Attach links')}],
+    linkSecondaryButtons: [{ actionID: "cancel", jsAction: "cancel", name: thePConn.getLocalizedValue('Cancel')}]
   };
   const [linkData, setLinkData] = useState(linkTemp);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -80,7 +80,7 @@ export default function FileUtility(props) {
       actions = [
         {
           id: `Cancel-${att.ID}`,
-          text: "Cancel",
+          text: thePConn.getLocalizedValue('Cancel'),
           icon: "times",
           onClick: cancelFile
         }
@@ -93,7 +93,7 @@ export default function FileUtility(props) {
           "download",
           {
             id: `download-${ID}`,
-            text: isFile ? "Download" : "Open",
+            text: isFile ? thePConn.getLocalizedValue('Download') : thePConn.getLocalizedValue('Open'),
             icon: isFile ? "download" : "open",
             onClick: downloadFile
           }
@@ -102,7 +102,7 @@ export default function FileUtility(props) {
           "delete",
           {
             id: `Delete-${ID}`,
-            text: "Delete",
+            text: thePConn.getLocalizedValue('Delete'),
             icon: "trash",
             onClick: deleteFile
           }
@@ -118,7 +118,7 @@ export default function FileUtility(props) {
       actions = [
         {
           id: `Remove-${att.ID}`,
-          text: "Remove",
+          text: thePConn.getLocalizedValue('Remove'),
           icon: "trash",
           onClick: removeFile
         }
@@ -492,8 +492,8 @@ export default function FileUtility(props) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem style={{fontSize: '14px'}} onClick={onAddFilesClick}>Add Files</MenuItem>
-            <MenuItem style={{fontSize: '14px'}} onClick={onAddLinksClick}>Add Links</MenuItem>
+            <MenuItem style={{fontSize: '14px'}} onClick={onAddFilesClick}>{thePConn.getLocalizedValue('Add files')}</MenuItem>
+            <MenuItem style={{fontSize: '14px'}} onClick={onAddLinksClick}>{thePConn.getLocalizedValue('Add links')}</MenuItem>
           </Menu>
         </div>
       </div>
@@ -506,12 +506,12 @@ export default function FileUtility(props) {
       {fileData.showfileModal && (
         <div className="psdk-dialog-background">
         <div className="psdk-modal-file-top">
-          <h3>Add local files</h3>
+          <h3>{thePConn.getLocalizedValue('Add local files')}</h3>
           <div className="psdk-modal-body">
             <div className="psdk-modal-file-selector">
               <label htmlFor='upload-files'>
                 <input style={{ display: 'none' }} id='upload-files' name='upload-files' type='file' multiple onChange={uploadMyFiles}/>
-                <Button variant='outlined' color='primary' component="span">Upload file(s)</Button>
+                <Button variant='outlined' color='primary' component="span">{thePConn.getLocalizedValue('Attach files')}</Button>
               </label>
             </div>
             {fileData.fileList.length > 0 && (<div style={{marginTop: '1rem'}}>
@@ -527,7 +527,7 @@ export default function FileUtility(props) {
       {linkData.showLinkModal && (
         <div className="psdk-dialog-background">
           <div className="psdk-modal-file-top">
-            <h3>Add links</h3>
+            <h3>{thePConn.getLocalizedValue('Add links')}</h3>
             <div className="psdk-modal-body">
               <div className="psdk-modal-links-row">
                   <div className="psdk-links-two-column">
@@ -539,7 +539,7 @@ export default function FileUtility(props) {
                     </div>
                   </div>
                   <div className="psdk-modal-link-add">
-                    <Button className="psdk-add-link-action" color="primary" variant="contained" component="span" onClick={addLink} disabled={link.disable}>Add Link</Button>
+                    <Button className="psdk-add-link-action" color="primary" variant="contained" component="span" onClick={addLink} disabled={link.disable}>{thePConn.getLocalizedValue('Add link')}</Button>
                   </div>
                 </div>
                 {linkData.linksList.length > 0 && (<div style={{marginTop: '1rem'}}>
@@ -554,7 +554,7 @@ export default function FileUtility(props) {
       {showViewAllModal && (<div className="psdk-dialog-background">
         <div className="psdk-modal-file-top">
           <div className="psdk-view-all-header">
-              <h3>Attachments</h3>
+              <h3>{thePConn.getLocalizedValue('Attachments')}</h3>
               {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
               <button type="button" className="psdk-close-button" onClick = {() => setViewAll(false)}><img className="psdk-utility-card-actions-svg-icon" src={closeSvgIcon}></img></button>
           </div>

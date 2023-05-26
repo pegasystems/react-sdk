@@ -38,9 +38,9 @@ export default function CaseHistory(props) {
   // let waitingForData = true;
 
   const displayedColumns = [
-    { label: "Date", type: "DateTime", fieldName: "pxTimeCreated" },
-    { label: "Description", type: "TextInput", fieldName: "pyMessageKey" },
-    { label: "User", type: "TextInput", fieldName: "pyPerformer" }
+    { label: thePConn.getLocalizedValue('Date'), type: "DateTime", fieldName: "pxTimeCreated" },
+    { label: thePConn.getLocalizedValue('Description'), type: "TextInput", fieldName: "pyMessageKey" },
+    { label: thePConn.getLocalizedValue('Performed by'), type: "TextInput", fieldName: "pyPerformer" }
    ];
 
   const rowData: any = useRef([]);

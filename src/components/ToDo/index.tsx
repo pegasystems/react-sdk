@@ -90,6 +90,8 @@ export default function ToDo(props) {
   const classes = useStyles();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+  const localeCategory = 'Todo';
   // const { setOpen } = useNavBar();
 
   function initAssignments(): Array<any> {
@@ -191,20 +193,20 @@ export default function ToDo(props) {
     if (isDesktop) {
       return (
         <>
-          Task in
+          {localizedVal('Task in', localeCategory)}
           {renderTaskId(type, getPConnect, showTodoList, assignment)}
           {type === CONSTS.WORKLIST && assignment.status ? `\u2022 ` : undefined}
           {type === CONSTS.WORKLIST && assignment.status ? (
             <span className='psdk-todo-assignment-status'>{assignment.status}</span>
           ) : undefined}
-          {` \u2022  Urgency  ${getPriority(assignment)}`}
+          {` \u2022  ${localizedVal('Urgency', localeCategory)}  ${getPriority(assignment)}`}
         </>
       );
     }
     return (
       <>
         <Button size='small' color='primary'>{`${assignment.name} ${getID(assignment)}`}</Button>
-        {` \u2022  Urgency  ${getPriority(assignment)}`}
+        {` \u2022 ${localizedVal('Urgency', localeCategory)}  ${getPriority(assignment)}`}
       </>
     );
   };
@@ -228,12 +230,12 @@ export default function ToDo(props) {
             </Avatar>
             <div style={{ display: 'block' }}>
               <Typography variant='h6'>{assignment?.name}</Typography>
-              {`Task in ${renderTaskId(
+              {`${localizedVal('Task in', localeCategory)} ${renderTaskId(
                 type,
                 getPConnect,
                 showTodoList,
                 assignment
-              )} \u2022  Urgency  ${getPriority(assignment)}`}
+              )} \u2022  ${localizedVal('Urgency', localeCategory)}  ${getPriority(assignment)}`}
             </div>
             {!isConfirm && (
               <div style={{ marginLeft: 'auto' }}>
@@ -294,10 +296,10 @@ export default function ToDo(props) {
         <Box display='flex' justifyContent='center'>
           {bShowMore ? (
             <Button color='primary' onClick={_showMore}>
-              Show more
+              {localizedVal('show_more', 'CosmosFields')}
             </Button>
           ) : (
-            <Button onClick={_showLess}>Show less</Button>
+            <Button onClick={_showLess}>{localizedVal('show_less', 'CosmosFields')}</Button>
           )}
         </Box>
       )}

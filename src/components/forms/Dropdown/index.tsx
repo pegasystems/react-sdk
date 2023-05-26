@@ -26,7 +26,8 @@ export default function Dropdown(props) {
     helperText,
     displayMode,
     hideLabel,
-    onRecordChange
+    onRecordChange,
+    fieldMetadata
   } = props;
   const [options, setOptions] = useState<Array<IOption>>([]);
   const helperTextToDisplay = validatemessage || helperText;
@@ -34,12 +35,25 @@ export default function Dropdown(props) {
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps().value;
+  const className = thePConn.getCaseInfo().getClassName();
+  const refName = propName?.slice(propName.lastIndexOf('.') + 1);
 
   useEffect(() => {
     const optionsList = Utils.getOptionList(props, getPConnect().getDataObject());
     optionsList.unshift({ key: 'Select', value: 'Select...' });
     setOptions(optionsList);
   }, [datasource]);
+
+  const metaData = Array.isArray(fieldMetadata)
+    ? fieldMetadata.filter(field => field?.classID === className)[0]
+    : fieldMetadata;
+
+  let displayName = metaData?.datasource?.propertyForDisplayText;
+  displayName = displayName?.slice(displayName.lastIndexOf('.') + 1);
+  const localeContext = metaData?.datasource?.tableType === 'DataPage' ? 'datapage' : 'associated';
+  const localeClass = localeContext === 'datapage' ? '@baseclass' : className;
+  const localeName = localeContext === 'datapage' ? metaData?.datasource?.name : refName;
+  const localePath = localeContext === 'datapage' ? displayName : '';
 
   let readOnlyProp = {};
 
@@ -76,7 +90,7 @@ export default function Dropdown(props) {
       fullWidth
       variant={readOnly ? 'standard' : 'outlined'}
       helperText={helperTextToDisplay}
-      placeholder={placeholder}
+      placeholder={thePConn.getLocalizedValue(placeholder)}
       size='small'
       required={required}
       disabled={disabled}
@@ -89,7 +103,11 @@ export default function Dropdown(props) {
     >
       {options.map((option: any) => (
         <MenuItem key={option.key} value={option.key}>
-          {option.value}
+          {thePConn.getLocalizedValue(
+            option.value,
+            localePath,
+            thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+          )}
         </MenuItem>
       ))}
     </TextField>

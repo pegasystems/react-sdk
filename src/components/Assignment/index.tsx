@@ -20,6 +20,8 @@ export default function Assignment(props) {
   const [arNavigationSteps, setArNavigationSteps] = useState<Array<any>>([]);
 
   const actionsAPI = thePConn.getActionsApi();
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+  const localeCategory = 'Assignment';
 
   // store off bound functions to above pointers
   const finishAssignment = actionsAPI.finishAssignment.bind(actionsAPI);
@@ -134,7 +136,7 @@ export default function Assignment(props) {
           navigatePromise
             .then(() => {})
             .catch(() => {
-              showToast(`Navigation failed!`);
+              showToast(`${localizedVal('Navigation failed!', localeCategory)}`);
             });
 
           break;
@@ -153,7 +155,7 @@ export default function Assignment(props) {
               onSaveActionSuccess({ caseType, caseID, assignmentID });
             })
             .catch(() => {
-              showToast('Save failed');
+              showToast(`${localizedVal('Save failed', localeCategory)}`);
             });
 
           break;
@@ -176,7 +178,7 @@ export default function Assignment(props) {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
               })
               .catch(() => {
-                showToast(`Cancel failed!`);
+                showToast(`${localizedVal('Cancel failed!', localeCategory)}`);
               });
           } else {
             const cancelPromise = cancelAssignment(itemKey);
@@ -186,7 +188,7 @@ export default function Assignment(props) {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
               })
               .catch(() => {
-                showToast(`Cancel failed!`);
+                showToast(`${localizedVal('Cancel failed!', localeCategory)}`);
               });
           }
           break;
@@ -204,7 +206,7 @@ export default function Assignment(props) {
           finishPromise
             .then(() => {})
             .catch(() => {
-              showToast(`Submit failed!`);
+              showToast(`${localizedVal('Submit failed!', localeCategory)}`);
             });
 
           break;

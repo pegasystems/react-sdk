@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
 
 declare const PCore;
 
-
 const NavContext = createContext({ open: false, setOpen: f => f });
 export const useNavBar = () => useContext(NavContext);
 
@@ -57,7 +56,8 @@ export default function AppShell(props) {
   const appNameToDisplay = showAppName ? envInfo.getApplicationLabel() : '';
   const portalClass = pConn.getValue('.classID');
   const envPortalName = envInfo.getPortalName();
-  const localeUtils = PCore.getLocaleUtils();
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+
   const classes = useStyles();
   const actionsAPI = pConn.getActionsApi();
   const localeReference = pConn.getValue('.pyLocaleReference');
@@ -111,9 +111,12 @@ export default function AppShell(props) {
           setFullIconURL(data);
         })
         .catch(() => {
-           // eslint-disable-next-line no-console
+          // eslint-disable-next-line no-console
           console.error(
-            `Unable to load the image for the portal logo/icon with the insName:${portalLogo}`
+            `${localizedVal(
+              'Unable to load the image for the portal logo/icon with the insName',
+              'AppShell'
+            )}:${portalLogo}`
           );
         });
     }
@@ -147,7 +150,7 @@ export default function AppShell(props) {
   const links = !pages
     ? []
     : pages.map(page => {
-        const name = localeUtils.getLocaleValue(page.pyLabel, '', localeReference);
+        const name = localizedVal(page.pyLabel, '', localeReference);
         return {
           text: name,
           name,
@@ -175,14 +178,14 @@ export default function AppShell(props) {
           portalName={portalName}
           imageSrc={iconURL}
           fullImageSrc={fullIconURL}
-          appName={localeUtils.getLocaleValue(
+          appName={localizedVal(
             appNameToDisplay,
             '',
             `${portalClass}!PORTAL!${envPortalName}`.toUpperCase()
           )}
           appInfo={{
             imageSrc: iconURL,
-            appName: localeUtils.getLocaleValue(
+            appName: localizedVal.getLocaleValue(
               appNameToDisplay,
               '',
               `${portalClass}!PORTAL!${envPortalName}`.toUpperCase()
@@ -197,7 +200,6 @@ export default function AppShell(props) {
         />
         <div className={classes.wsscontent}>{children}</div>
       </div>
-
     );
   }
 
@@ -206,7 +208,11 @@ export default function AppShell(props) {
       <div id='AppShell' className={classes.root}>
         <NavBar
           pConn={getPConnect()}
-          appName={appNameToDisplay}
+          appName={localizedVal(
+            appNameToDisplay,
+            '',
+            `${portalClass}!PORTAL!${envPortalName}`.toUpperCase()
+          )}
           pages={pages}
           caseTypes={caseTypes}
         ></NavBar>

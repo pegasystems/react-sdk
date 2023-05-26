@@ -89,6 +89,9 @@ const ModalViewContainer = props => {
   const [itemKey, setItemKey] = useState('');
   const [cancelPConn, setCancelPConn] = useState(null);
 
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+  const localeCategory = 'Data Object';
+
   function showAlert(payload) {
     const { latestItem } = getKeyAndLatestItem(routingInfoRef.current, pConn);
     const { isModalAction } = payload;
@@ -158,11 +161,7 @@ const ModalViewContainer = props => {
       // console.log(`ModalViewContainer: key: ${key} latestItem: ${JSON.stringify(latestItem)}`);
 
       if (currentOrder.length > 0) {
-        if (
-          currentItems[key] &&
-          currentItems[key].view &&
-          !isEmptyObject(currentItems[key].view)
-        ) {
+        if (currentItems[key] && currentItems[key].view && !isEmptyObject(currentItems[key].view)) {
           const currentItem = currentItems[key];
           const rootView = currentItem.view;
           const { context } = rootView.config;
@@ -219,7 +218,7 @@ const ModalViewContainer = props => {
             const caseName = theNewCaseInfo.getName();
             const ID = theNewCaseInfo.getID();
 
-            setTitle(actionName || `New ${caseName} (${ID})`);
+            setTitle(actionName || `${localizedVal('New', localeCategory)} ${caseName} (${ID})`);
 
             let arChildrenAsReact: Array<any> = [];
 

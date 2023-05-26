@@ -108,6 +108,9 @@ export default function NavBar(props) {
   const [bShowOperatorButtons, setBShowOperatorButtons] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+  const localeCategory = 'AppShell';
+
   const portalLogoImage = Utils.getIconPath(Utils.getSDKStaticConentUrl()).concat(
     'pzpega-logo-mark.svg'
   );
@@ -126,7 +129,7 @@ export default function NavBar(props) {
       .showPage(pyRuleName, pyClassName)
       .then(() => {
         // eslint-disable-next-line no-console
-        console.log(`showPage completed`);
+        console.log(`${localizedVal('showPage completed', localeCategory)}`);
       });
   }
 
@@ -142,7 +145,7 @@ export default function NavBar(props) {
       .createWork(sCaseType, actionInfo)
       .then(() => {
         // eslint-disable-next-line no-console
-        console.log(`createWork completed`);
+        console.log(`${localizedVal('createWork completed', localeCategory)}`);
       });
   }
 
@@ -278,7 +281,7 @@ export default function NavBar(props) {
               <ListItemIcon>
                 <ArrowBackIcon fontSize='large' />
               </ListItemIcon>
-              <Typography variant='inherit'>Logout</Typography>
+              <Typography variant='inherit'>{localizedVal('Logout', localeCategory)}</Typography>
             </MenuItem>
           </Menu>
         </>

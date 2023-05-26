@@ -79,6 +79,8 @@ export default function FlowContainer(props) {
   const [containerName, setContainerName] = useState('');
   const [buildName, setBuildName] = useState('');
   const [bShowConfirm, setShowConfirm] = useState(false);
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+  const localeCategory = 'Messages';
 
   const classes = useStyles();
 
@@ -312,13 +314,17 @@ export default function FlowContainer(props) {
     }
 
     // if have caseMessage show message and end
-    const theCaseMessages = thePConn.getValue('caseMessages');
+    const theCaseMessages = localizedVal(thePConn.getValue('caseMessages'), localeCategory);
 
     if (theCaseMessages || !hasAssignments()) {
       // Temp fix for 8.7 change: confirmationNote no longer coming through in caseMessages$.
       // So, if we get here and caseMessages$ is empty, use default value in DX API response
       setCaseMessages(
-        theCaseMessages || 'Thank you! The next step in this case has been routed appropriately.'
+        theCaseMessages ||
+          localizedVal(
+            'Thank you! The next step in this case has been routed appropriately.',
+            localeCategory
+          )
       );
       setHasCaseMessages(true);
       setShowConfirm(true);

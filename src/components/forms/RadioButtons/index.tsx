@@ -24,7 +24,8 @@ export default function RadioButtons(props) {
     required,
     inline,
     displayMode,
-    hideLabel
+    hideLabel,
+    fieldMetadata
   } = props;
   const [theSelectedButton, setSelectedButton] = useState(value);
 
@@ -33,6 +34,21 @@ export default function RadioButtons(props) {
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps().value;
   const helperTextToDisplay = validatemessage || helperText;
+  const className = thePConn.getCaseInfo().getClassName();
+
+  let configProperty = thePConn.getRawMetadata()?.config?.value || '';
+  configProperty = configProperty.startsWith('@P') ? configProperty.substring(3) : configProperty;
+  configProperty = configProperty.startsWith('.') ? configProperty.substring(1) : configProperty;
+
+  const metaData = Array.isArray(fieldMetadata)
+    ? fieldMetadata.filter(field => field?.classID === className)[0]
+    : fieldMetadata;
+  let displayName = metaData?.datasource?.propertyForDisplayText;
+  displayName = displayName?.slice(displayName.lastIndexOf('.') + 1);
+  const localeContext = metaData?.datasource?.tableType === 'DataPage' ? 'datapage' : 'associated';
+  const localeClass = localeContext === 'datapage' ? '@baseclass' : className;
+  const localeName = localeContext === 'datapage' ? metaData?.datasource?.name : configProperty;
+  const localePath = localeContext === 'datapage' ? displayName : '';
 
   // theOptions will be an array of JSON objects that are literally key/value pairs.
   //  Ex: [ {key: "Basic", value: "Basic"} ]
@@ -73,7 +89,11 @@ export default function RadioButtons(props) {
             <FormControlLabel
               value={theOption.key}
               key={theOption.key}
-              label={theOption.value}
+              label={thePConn.getLocalizedValue(
+                theOption.value,
+                localePath,
+                thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+              )}
               control={<Radio key={theOption.key} color='primary' disabled={readOnly} />}
             />
           );

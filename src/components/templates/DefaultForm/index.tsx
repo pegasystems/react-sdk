@@ -1,4 +1,4 @@
-import React, { createElement } from "react";
+import React, { createElement } from 'react';
 
 import createPConnectComponent from '../../../bridge/react_pconnect';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
@@ -15,90 +15,150 @@ export default function DefaultForm(props) {
   // defaultForm kids
   const arChildren = getPConnect().getChildren()[0].getPConnect().getChildren();
   let hasSingleChildWhichIsReference = false;
-  const instructionText = props.instructions === 'none'? '' : props.instructions;
+  const instructionText = props.instructions === 'none' ? '' : props.instructions;
   const instructionExists = instructionText !== undefined && instructionText !== '';
+  const getFormattedInstructionText = () => {
+    let text = instructionText.replaceAll('\n<p>&nbsp;</p>\n', '');
 
-  const dfChildren = arChildren.map((kid, idx) =>{
+    // If there is a Warning Text
+    if(text.indexOf('<strong>WARNING!!')){
+      const start = text.indexOf('<strong>WARNING!!') + '<strong>WARNING!!'.length + 1;
+      const end = text.indexOf('</strong>', start);
+      const warningText = text.substring(start, end);
+
+      const start1 = text.indexOf('<strong>WARNING!!');
+      const end1 = text.indexOf('</strong>', start1) + '</strong>'.length;
+      const stringToBeReplaced = text.substring(start1, end1);
+      const stringToReplace = `<div class="govuk-warning-text">
+      <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+      <strong class="govuk-warning-text__text">
+        <span class="govuk-warning-text__assistive">Warning</span>
+        ${warningText}
+      </strong>
+    </div>`;
+
+      text = text.replaceAll(stringToBeReplaced, stringToReplace);
+    }
+
+    return text;
+  };
+
+  const dfChildren = arChildren.map((kid, idx) => {
     let extraProps = {};
     const childPConnect = kid.getPConnect();
-    if(isOnlyField && !instructionExists && childPConnect.getConfigProps().readOnly !== true && idx === 0){
-      childPConnect.setInheritedProp('label', getPConnect().getDataObject().caseInfo.assignments[0].name);
+    if (
+      isOnlyField &&
+      !instructionExists &&
+      childPConnect.getConfigProps().readOnly !== true &&
+      idx === 0
+    ) {
+      childPConnect.setInheritedProp(
+        'label',
+        getPConnect().getDataObject().caseInfo.assignments[0].name
+      );
     }
-    if(readOnly) extraProps = {...extraProps, showLabel:false, labelHiddenForReadOnly:kid.showLabel};
+    if (readOnly)
+      extraProps = { ...extraProps, showLabel: false, labelHiddenForReadOnly: kid.showLabel };
 
     let displayOrder = '';
-    if(props.additionalProps.displayOrder){
-      displayOrder= `${props.additionalProps.displayOrder}-${idx}`;
+    if (props.additionalProps.displayOrder) {
+      displayOrder = `${props.additionalProps.displayOrder}-${idx}`;
     } else {
-      displayOrder=`${idx}`;
+      displayOrder = `${idx}`;
     }
-    childPConnect.registerAdditionalProps({displayOrder});
+    childPConnect.registerAdditionalProps({ displayOrder });
 
     const formattedContext = props.context ? props.context?.split('.').pop() : '';
-    const formattedPropertyName = childPConnect.getStateProps().value && childPConnect.getStateProps().value.split('.').pop();
-    const generatedName = props.context ? `${formattedContext}-${formattedPropertyName}`:`${formattedPropertyName}`;
-    childPConnect.registerAdditionalProps({name: generatedName});
-    if(additionalProps.hasBeenWrapped) childPConnect.setStateProps({'hasBeenWrapped': true});
-    return createElement(createPConnectComponent(), { ...kid, key: idx, extraProps, instructionText, instructionExists }) // eslint-disable-line react/no-array-index-key
+    const formattedPropertyName =
+      childPConnect.getStateProps().value && childPConnect.getStateProps().value.split('.').pop();
+    const generatedName = props.context
+      ? `${formattedContext}-${formattedPropertyName}`
+      : `${formattedPropertyName}`;
+    childPConnect.registerAdditionalProps({ name: generatedName });
+    if (additionalProps.hasBeenWrapped) childPConnect.setStateProps({ hasBeenWrapped: true });
+    return createElement(createPConnectComponent(), {
+      ...kid,
+      key: idx,
+      extraProps,
+      instructionText,
+      instructionExists
+    }); // eslint-disable-line react/no-array-index-key
   });
-
 
   // PM - This function batches the children of a DefaultForm, to group single in put fields togehter, or with preceeding sets of fields,
   // creating a new 'batch' each time a child is a reference type, and will show label.
   // Used when read only to avoid creating individual <dl> wrappers for individual fields, and to enable the correct wrapping of read only field
   // in a <dl> when a label is being shown (as this needs to be displayed outside of the <dl> wrapper)
-  const batchChildren = (children) => {
+  const batchChildren = children => {
     let ind = 0;
-    const groupedChildren:any = [];
+    const groupedChildren: any = [];
 
-    let group:any = [];
+    let group: any = [];
 
-    children.forEach( (child) => {
-
-      if(children.length > 1 && child.props.getPConnect().getMetadata().type === 'reference' && ind !== 0 && child.props.getPConnect().getInheritedProps().showLabel){
-        if(group.length > 0) {
-          groupedChildren.push(group)
+    children.forEach(child => {
+      if (
+        children.length > 1 &&
+        child.props.getPConnect().getMetadata().type === 'reference' &&
+        ind !== 0 &&
+        child.props.getPConnect().getInheritedProps().showLabel
+      ) {
+        if (group.length > 0) {
+          groupedChildren.push(group);
         }
         groupedChildren.push([child]);
         group = [];
-        ind+=1;
+        ind += 1;
         return;
       }
 
-      group.push(child)
-      ind+=1;
-    })
-    if(group.length > 0){
+      group.push(child);
+      ind += 1;
+    });
+    if (group.length > 0) {
       groupedChildren.push(group);
     }
     return groupedChildren;
-  }
+  };
 
-  hasSingleChildWhichIsReference = (dfChildren?.length === 1 && dfChildren[0].props.getPConnect().getMetadata().type === "reference");
+  hasSingleChildWhichIsReference =
+    dfChildren?.length === 1 &&
+    dfChildren[0].props.getPConnect().getMetadata().type === 'reference';
 
-  if(readOnly && !hasSingleChildWhichIsReference) {
-    return (batchChildren(dfChildren).map((childGroup, index) => {
-      if(childGroup.length < 1){
+  if (readOnly && !hasSingleChildWhichIsReference) {
+    return batchChildren(dfChildren).map((childGroup, index) => {
+      if (childGroup.length < 1) {
         return;
       }
 
-      const key = `${getPConnect().getMetadata().name}-${index}`
+      const key = `${getPConnect().getMetadata().name}-${index}`;
 
-      const allrefs = childGroup.every(child => child.props.getPConnect().getMetadata().type === 'reference');
-      if(additionalProps.hasBeenWrapped || allrefs){
-        return(
-          <React.Fragment key={key}>{childGroup}</React.Fragment>
-        )
+      const allrefs = childGroup.every(
+        child => child.props.getPConnect().getMetadata().type === 'reference'
+      );
+      if (additionalProps.hasBeenWrapped || allrefs) {
+        return <React.Fragment key={key}>{childGroup}</React.Fragment>;
       }
 
-      childGroup.forEach( child => child.props.getPConnect().setStateProps({'hasBeenWrapped': true}));
+      childGroup.forEach(child =>
+        child.props.getPConnect().setStateProps({ hasBeenWrapped: true })
+      );
 
-      return (<dl className="govuk-summary-list" key={key}>
-        {childGroup}
-      </dl>
-      )
-    }))
+      return (
+        <dl className='govuk-summary-list' key={key}>
+          {childGroup}
+        </dl>
+      );
+    });
   }
 
-  return <>{instructionExists && <div id='instructions' className='govuk-hint'><InstructionComp htmlString={instructionText.replaceAll('\n<p>&nbsp;</p>\n', '')}/></div>}{dfChildren}</>;
+  return (
+    <>
+      {instructionExists && (
+        <div id='instructions' className='govuk-hint'>
+          <InstructionComp htmlString={getFormattedInstructionText()} />
+        </div>
+      )}
+      {dfChildren}
+    </>
+  );
 }

@@ -8,8 +8,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import createPConnectComponent from '../../bridge/react_pconnect';
 import Assignment from '../Assignment';
 import CancelAlert from '../forms/CancelAlert';
-import Utils from '../../helpers/utils';
 import { getBanners } from '../../utils/case-utils';
+import { isEmptyObject } from '../../helpers/common-utils';
 
 declare const PCore;
 
@@ -161,7 +161,7 @@ const ModalViewContainer = props => {
         if (
           currentItems[key] &&
           currentItems[key].view &&
-          !Utils.isEmptyObject(currentItems[key].view)
+          !isEmptyObject(currentItems[key].view)
         ) {
           const currentItem = currentItems[key];
           const rootView = currentItem.view;
@@ -256,7 +256,7 @@ const ModalViewContainer = props => {
         if (bShowModal) {
           setShowModal(false);
         }
-        if (!Utils.isEmptyObject(oCaseInfo)) {
+        if (!isEmptyObject(oCaseInfo)) {
           setOCaseInfo({});
         }
       }

@@ -78,11 +78,11 @@ export default function DefaultForm(props) {
     if (additionalProps.hasBeenWrapped) childPConnect.setStateProps({ hasBeenWrapped: true });
     return createElement(createPConnectComponent(), {
       ...kid,
-      key: idx,
+      key: idx, // eslint-disable-line react/no-array-index-key
       extraProps,
       instructionText,
       instructionExists
-    }); // eslint-disable-line react/no-array-index-key
+    });
   });
 
   // PM - This function batches the children of a DefaultForm, to group single in put fields togehter, or with preceeding sets of fields,

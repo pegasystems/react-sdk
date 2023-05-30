@@ -3,6 +3,7 @@
 
 import { getSdkConfig, SdkConfigAccess } from './config_access';
 import PegaAuth from './auth';
+import { processQueryParams } from './common-utils';
 
 // eslint-disable-next-line import/no-mutable-exports
 export let gbLoggedIn = sessionStorage.getItem('rsdk_AH') !== null;
@@ -64,6 +65,8 @@ const clearAuthMgr = (bFullReauth=false) => {
   sessionStorage.removeItem("rsdk_TI");
   sessionStorage.removeItem("rsdk_UI");
   sessionStorage.removeItem("rsdk_loggingIn");
+  sessionStorage.removeItem('rsdk_portalName');
+  sessionStorage.removeItem("rsdk_locale");
   gbLoggedIn = false;
   gbLoginInProgress = false;
   forcePopupForReauths(bFullReauth);
@@ -268,6 +271,7 @@ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) =>
     window.myLoadMashup = bootstrapShell.loadMashup;
     window.myLoadPortal = bootstrapShell.loadPortal;
     window.myLoadDefaultPortal = bootstrapShell.loadDefaultPortal;
+    window.myUpdateLocale = bootstrapShell.updateLocale;
 
     bootstrapShell.bootstrapWithAuthHeader(constellationBootConfig, 'shell').then(() => {
       // eslint-disable-next-line no-console
@@ -418,6 +422,8 @@ const updateRedirectUri = (aMgr, sRedirectUri) => {
 
 export const login = (bFullReauth=false) => {
 
+  processQueryParams();
+
   if( gbCustomAuth ) return;
 
   gbLoginInProgress = true;
@@ -543,7 +549,6 @@ export const authTokenUpdated = (tokenInfo ) => {
 };
 
 export const logout = () => {
-  sessionStorage.removeItem('rsdk_portalName');
   return new Promise((resolve) => {
     const fnClearAndResolve = () => {
       clearAuthMgr();

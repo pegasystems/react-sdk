@@ -34,14 +34,13 @@ exports[`renders a group of 3 checkboxes, hint text for label 1`] = `
           aria-describedby=""
           checked={false}
           className="govuk-checkboxes__input"
-          id="test-checkbox"
-          name="test-checkbox"
+          id="undefined"
           type="checkbox"
           value={false}
         />
         <label
           className="govuk-label govuk-checkboxes__label"
-          htmlFor="test-checkbox"
+          htmlFor="undefined"
         >
           Item 1
         </label>
@@ -53,14 +52,13 @@ exports[`renders a group of 3 checkboxes, hint text for label 1`] = `
           aria-describedby=""
           checked={false}
           className="govuk-checkboxes__input"
-          id="test-checkbox-1"
-          name="test-checkbox"
+          id="undefined-1"
           type="checkbox"
           value={false}
         />
         <label
           className="govuk-label govuk-checkboxes__label"
-          htmlFor="test-checkbox-1"
+          htmlFor="undefined-1"
         >
           Item 2
         </label>
@@ -72,14 +70,13 @@ exports[`renders a group of 3 checkboxes, hint text for label 1`] = `
           aria-describedby=""
           checked={false}
           className="govuk-checkboxes__input"
-          id="test-checkbox-2"
-          name="test-checkbox"
+          id="undefined-2"
           type="checkbox"
           value={false}
         />
         <label
           className="govuk-label govuk-checkboxes__label"
-          htmlFor="test-checkbox-2"
+          htmlFor="undefined-2"
         >
           Item 3
         </label>
@@ -113,23 +110,22 @@ exports[`renders a group of 3 checkboxes, hint text for optionsList 1`] = `
         className="govuk-checkboxes__item"
       >
         <input
-          aria-describedby="test-checkbox-hint"
+          aria-describedby="undefined-hint"
           checked={false}
           className="govuk-checkboxes__input"
-          id="test-checkbox"
-          name="test-checkbox"
+          id="undefined"
           type="checkbox"
           value={false}
         />
         <label
           className="govuk-label govuk-checkboxes__label"
-          htmlFor="test-checkbox"
+          htmlFor="undefined"
         >
           Item 1
         </label>
         <div
           className="govuk-hint govuk-checkboxes__hint"
-          id="test-checkbox-item-hint"
+          id="undefined-item-hint"
         >
           testing item hint text
         </div>
@@ -141,14 +137,13 @@ exports[`renders a group of 3 checkboxes, hint text for optionsList 1`] = `
           aria-describedby=""
           checked={false}
           className="govuk-checkboxes__input"
-          id="test-checkbox-1"
-          name="test-checkbox"
+          id="undefined-1"
           type="checkbox"
           value={false}
         />
         <label
           className="govuk-label govuk-checkboxes__label"
-          htmlFor="test-checkbox-1"
+          htmlFor="undefined-1"
         >
           Item 2
         </label>
@@ -160,14 +155,13 @@ exports[`renders a group of 3 checkboxes, hint text for optionsList 1`] = `
           aria-describedby=""
           checked={false}
           className="govuk-checkboxes__input"
-          id="test-checkbox-2"
-          name="test-checkbox"
+          id="undefined-2"
           type="checkbox"
           value={false}
         />
         <label
           className="govuk-label govuk-checkboxes__label"
-          htmlFor="test-checkbox-2"
+          htmlFor="undefined-2"
         >
           Item 3
         </label>
@@ -215,14 +209,13 @@ exports[`renders a group of 3 checkboxes, with error as expected  1`] = `
           aria-describedby=""
           checked={false}
           className="govuk-checkboxes__input"
-          id="test-checkbox"
-          name="test-checkbox"
+          id="undefined"
           type="checkbox"
           value={false}
         />
         <label
           className="govuk-label govuk-checkboxes__label"
-          htmlFor="test-checkbox"
+          htmlFor="undefined"
         >
           Item 1
         </label>
@@ -234,14 +227,13 @@ exports[`renders a group of 3 checkboxes, with error as expected  1`] = `
           aria-describedby=""
           checked={false}
           className="govuk-checkboxes__input"
-          id="test-checkbox-1"
-          name="test-checkbox"
+          id="undefined-1"
           type="checkbox"
           value={false}
         />
         <label
           className="govuk-label govuk-checkboxes__label"
-          htmlFor="test-checkbox-1"
+          htmlFor="undefined-1"
         >
           Item 2
         </label>
@@ -253,14 +245,13 @@ exports[`renders a group of 3 checkboxes, with error as expected  1`] = `
           aria-describedby=""
           checked={false}
           className="govuk-checkboxes__input"
-          id="test-checkbox-2"
-          name="test-checkbox"
+          id="undefined-2"
           type="checkbox"
           value={false}
         />
         <label
           className="govuk-label govuk-checkboxes__label"
-          htmlFor="test-checkbox-2"
+          htmlFor="undefined-2"
         >
           Item 3
         </label>
@@ -297,14 +288,13 @@ exports[`renders a group of 3 checkboxes, with legend 'heading'  1`] = `
           aria-describedby=""
           checked={false}
           className="govuk-checkboxes__input"
-          id="test-checkbox"
-          name="test-checkbox"
+          id="undefined"
           type="checkbox"
           value={false}
         />
         <label
           className="govuk-label govuk-checkboxes__label"
-          htmlFor="test-checkbox"
+          htmlFor="undefined"
         >
           Item 1
         </label>
@@ -316,14 +306,13 @@ exports[`renders a group of 3 checkboxes, with legend 'heading'  1`] = `
           aria-describedby=""
           checked={false}
           className="govuk-checkboxes__input"
-          id="test-checkbox-1"
-          name="test-checkbox"
+          id="undefined-1"
           type="checkbox"
           value={false}
         />
         <label
           className="govuk-label govuk-checkboxes__label"
-          htmlFor="test-checkbox-1"
+          htmlFor="undefined-1"
         >
           Item 2
         </label>
@@ -335,14 +324,13 @@ exports[`renders a group of 3 checkboxes, with legend 'heading'  1`] = `
           aria-describedby=""
           checked={false}
           className="govuk-checkboxes__input"
-          id="test-checkbox-2"
-          name="test-checkbox"
+          id="undefined-2"
           type="checkbox"
           value={false}
         />
         <label
           className="govuk-label govuk-checkboxes__label"
-          htmlFor="test-checkbox-2"
+          htmlFor="undefined-2"
         >
           Item 3
         </label>

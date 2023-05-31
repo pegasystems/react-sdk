@@ -384,9 +384,11 @@ const updateRedirectUri = (aMgr, sRedirectUri) => {
       // do nothing
     }
   }
-  authConfig.redirectUri = sRedirectUri;
-  sessionStorage.setItem("rsdk_CI", JSON.stringify(authConfig));
-  aMgr.reloadConfig();
+  if(authConfig){
+    authConfig.redirectUri = sRedirectUri;
+    sessionStorage.setItem("rsdk_CI", JSON.stringify(authConfig));
+    aMgr.reloadConfig();
+  }
 };
 
 
@@ -518,7 +520,11 @@ export const loginIfNecessary = (appName, noMainRedirect=false, deferLogin=false
         window.location.href = window.location.pathname;
       });
     });
+  }else{
+    gbLoginInProgress = false;
+    sessionStorage.removeItem("rsdk_loggingIn");
   }
+
   if( !deferLogin && (!gbLoginInProgress || isLoginExpired()) ) {
     initOAuth(false);
     return getAuthMgr(false).then(() => {

@@ -6,8 +6,8 @@ export function isEmptyObject(obj: Object): Boolean {
 export function processQueryParams(){
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const portal = urlParams.get("portalVal");
-  const locale = urlParams.get("localeVal");
+  const portal = urlParams.get("portal");
+  const locale = urlParams.get("locale");
 
   if (portal) {
     sessionStorage.setItem("rsdk_portalName", portal);

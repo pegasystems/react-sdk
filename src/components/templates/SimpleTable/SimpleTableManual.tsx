@@ -184,8 +184,8 @@ export default function SimpleTableManual(props) {
   };
 
   function generateRowsData() {
-    // if dataPageName property value exists then make a datapage fetch call and get the list of data.
-    if (dataPageName) {
+    // if referenceList is empty and dataPageName property value exists then make a datapage fetch call and get the list of data.
+    if (!referenceList.length && dataPageName) {
       getDataPage(dataPageName, parameters, context).then(listData => {
         const data = formatRowsData(listData);
         myRows = data;

@@ -45,7 +45,7 @@ export default function Assignment(props) {
   const [errorSummary, setErrorSummary] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Array<OrderedErrorMessage>>([]);
 
-  const isOnlyOneField = useIsOnlyField(children);
+  const isOnlyOneField = useIsOnlyField();
   const containerName = thePConn.getDataObject().caseInfo.assignments[0].name;
 
 

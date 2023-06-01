@@ -13,6 +13,7 @@ import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '../../../helpers
 import EmbeddedSwatch from '../EmbeddedSwatch';
 import { compareSdkPCoreVersions } from '../../../helpers/versionHelpers';
 import { getSdkConfig } from '../../../helpers/config_access';
+import { processQueryParams } from '../../../helpers/common-utils';
 
 
 // declare var gbLoggedIn: boolean;
@@ -21,6 +22,7 @@ import { getSdkConfig } from '../../../helpers/config_access';
 
 declare const PCore: any;
 declare const myLoadMashup: any;
+declare const myUpdateLocale: any;
 
 const useStyles = makeStyles((theme) => ({
   embedTopRibbon: {
@@ -380,12 +382,19 @@ export default function EmbeddedTopLevel() {
     // load the Mashup and handle the onPCoreEntry response that establishes the
     //  top level Pega root element (likely a RootContainer)
 
+    const locale = sessionStorage.getItem("rsdk_locale");
+    if( locale ){
+      myUpdateLocale(locale);
+    }
+
     myLoadMashup("pega-root", false);   // this is defined in bootstrap shell that's been loaded already
   }
 
 
   // One time (initialization) subscriptions and related unsubscribe
   useEffect(() => {
+
+    processQueryParams();
 
     getSdkConfig().then( sdkConfig => {
       const sdkConfigAuth = sdkConfig.authConfig;

@@ -1,31 +1,20 @@
-import React, { useEffect, useMemo }  from 'react';
+import React, { useEffect }  from 'react';
 import ReactDOM from "react-dom";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import { useLocation } from 'react-router-dom';
 import StoreContext from "../../bridge/Context/StoreContext";
 import createPConnectComponent from "../../bridge/react_pconnect";
 import { SdkConfigAccess } from '../../helpers/config_access';
 import { compareSdkPCoreVersions } from '../../helpers/versionHelpers';
 import { loginIfNecessary } from '../../helpers/authManager';
+import { processQueryParams } from '../../helpers/common-utils';
 
 declare const PCore: any;
 declare const myLoadPortal: any;
 declare const myLoadDefaultPortal: any;
-
-function useQuery() {
-  const { search } = useLocation();
-
-  return useMemo(() => new URLSearchParams(search), [search]);
-}
+declare const myUpdateLocale: any;
 
 export default function FullPortal() {
-  const query = useQuery();
-  if (query.get('portal')) {
-    const portalValue: any = query.get('portal');
-    sessionStorage.setItem("rsdk_portalName", portalValue);
-  }
-
   const theme = createTheme({
     // palette: {
     //   primary: {
@@ -137,6 +126,11 @@ export default function FullPortal() {
     // load the Portal and handle the onPCoreEntry response that establishes the
     //  top level Pega root element (likely a RootContainer)
 
+    const locale = sessionStorage.getItem("rsdk_locale");
+    if( locale ){
+      myUpdateLocale(locale);
+    }
+
     const thePortal = SdkConfigAccess.getSdkConfigServer().appPortal;
     const defaultPortal = PCore?.getEnvironmentInfo?.().getDefaultPortal?.();
     const queryPortal = sessionStorage.getItem("rsdk_portalName");
@@ -167,6 +161,8 @@ export default function FullPortal() {
 
   // One time (initialization)
   useEffect(() => {
+
+    processQueryParams();
 
     // Login if needed, without doing an initial main window redirect
     loginIfNecessary("portal", false);

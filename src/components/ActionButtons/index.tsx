@@ -11,7 +11,8 @@ export default function ActionButtons(props) {
 
   return (
     <div className='govuk-button-group govuk-!-padding-top-4'>
-      {arMainButtons.map(mButton => (
+      {arMainButtons.map(mButton => {
+        return mButton.name !== 'Hidden' ?
         <Button
           variant='primary'
           onClick={(e) => {
@@ -22,10 +23,10 @@ export default function ActionButtons(props) {
           attributes={{type:"button"}}
         >
           {mButton.name}
-        </Button>
-      ))}
+        </Button>:null
+})}
       {arSecondaryButtons.map(sButton => (
-         sButton.actionID !== 'back' ?
+         (sButton.actionID !== 'back' && sButton.name!=='Hidden') ?
         <Button
           variant='secondary'
           onClick={(e) => {

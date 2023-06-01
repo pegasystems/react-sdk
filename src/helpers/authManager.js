@@ -521,6 +521,7 @@ export const loginIfNecessary = (appName, noMainRedirect=false, deferLogin=false
       });
     });
   }else{
+    // User may have decided to not complete login screen but rather invoke another url for same app
     gbLoginInProgress = false;
     sessionStorage.removeItem("rsdk_loggingIn");
   }

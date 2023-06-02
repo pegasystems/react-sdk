@@ -19,9 +19,9 @@ export default function DefaultForm(props) {
   const instructionExists = instructionText !== undefined && instructionText !== '';
   const getFormattedInstructionText = () => {
     let text = instructionText.replaceAll('\n<p>&nbsp;</p>\n', '');
-
+    const checkWarningText = 'WARNING!!';
+    if (text.indexOf(checkWarningText) !== -1) {
     // If there is a Warning Text
-    if(text.indexOf('<strong>WARNING!!')){
       const start = text.indexOf('<strong>WARNING!!') + '<strong>WARNING!!'.length + 1;
       const end = text.indexOf('</strong>', start);
       const warningText = text.substring(start, end);
@@ -43,7 +43,7 @@ export default function DefaultForm(props) {
     return text;
   };
 
-  const dfChildren = arChildren.map((kid, idx) => {
+  const dfChildren = arChildren?.map((kid, idx) => {
     let extraProps = {};
     const childPConnect = kid.getPConnect();
     if (

@@ -154,7 +154,7 @@ export default function DefaultForm(props) {
   return (
     <>
       {instructionExists && (
-        <div id='instructions' className='govuk-hint'>
+        <div id='instructions' className='govuk-body'>
           <InstructionComp htmlString={getFormattedInstructionText()} />
         </div>
       )}

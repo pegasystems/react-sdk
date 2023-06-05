@@ -17,6 +17,7 @@ export default function TextInput(props) {
     inputProps,
     fieldMetadata,
     readOnly,
+    disabled,
     name,
     testId
   } = props;
@@ -68,6 +69,7 @@ export default function TextInput(props) {
         id={name}
         onBlur={e => handleChange(e)}
         {...extraProps}
+        disabled={disabled || false}
       />
     </>
   );

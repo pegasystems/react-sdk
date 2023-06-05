@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import FormGroup, { makeErrorId, makeHintId } from '../FormGroup/FormGroup';
 
 export default function TextInput(props) {
-  const { name, errorText, hintText, inputProps = {}, maxLength, id, onBlur } = props;
+  const { name, errorText, hintText, inputProps = {}, maxLength, id, onBlur, disabled } = props;
 
   const inputClasses = `govuk-input ${errorText ? 'govuk-input--error' : ''}`.trim();
 
@@ -32,6 +32,7 @@ export default function TextInput(props) {
         name={name}
         maxLength={maxLength}
         onBlur={onBlur}
+        disabled={disabled}
       ></input>
     </FormGroup>
   );
@@ -43,5 +44,6 @@ TextInput.propTypes = {
   maxLength: PropTypes.number,
   inputProps: PropTypes.object,
   id: PropTypes.string,
+  disabled: PropTypes.bool,
   onBlur: PropTypes.func
 };

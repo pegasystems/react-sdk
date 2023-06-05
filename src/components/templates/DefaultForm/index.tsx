@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React, { createElement } from 'react';
 import PropTypes from 'prop-types';
 import { getInstructions } from '../utils';
@@ -8,7 +9,6 @@ import './DefaultForm.css';
 export default function DefaultForm(props) {
   const { getPConnect, NumCols } = props;
   const instructions = getInstructions(getPConnect(), props.instructions);
-  const instructionText = instructions?.replace(/<\/?[^>]+(>|$)/g, '');
 
   let divClass: string;
 
@@ -41,7 +41,12 @@ export default function DefaultForm(props) {
 
   return (
     <>
-      {instructionText && <div className='psdk-default-form-instruction-text'>{instructionText}</div>}
+      {instructions && (
+        <div className='psdk-default-form-instruction-text'>
+           {/* server performs sanitization method for instructions html content */}
+           <div key="instructions" dangerouslySetInnerHTML={{ __html: instructions }} />
+        </div>
+      )}
       <div className={divClass}>{dfChildren}</div>
     </>
   );

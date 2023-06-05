@@ -43,6 +43,7 @@ export default function DefaultForm(props) {
     <>
       {instructions && (
         <div className='psdk-default-form-instruction-text'>
+           {/* server performs sanitization method for instructions html content */}
            <div key="instructions" dangerouslySetInnerHTML={{ __html: instructions }} />
         </div>
       )}

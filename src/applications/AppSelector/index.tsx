@@ -5,6 +5,7 @@ import ChildBenefitsClaim from '../ChildBenefitsClaim'
 // NOTE: You should update this to be the same value that's in
 //  the src/index.html <base href="value"> to allow the React Router
 //  to identify the paths correctly.
+const baseURL = "/";
 
 // The Main component renders one of the three provided
 // Routes (provided that one matches). Both the /roster
@@ -15,7 +16,8 @@ const AppSelector = () => {
 
   return (
     <Routes>
-      <Route path="*" element={<ChildBenefitsClaim />} />
+      <Route path={`${baseURL}`} element={<ChildBenefitsClaim />} />
+      <Route path={`${baseURL}claim-child-benefit`} element={<ChildBenefitsClaim/>} />
     </Routes>
   )
 

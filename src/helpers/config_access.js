@@ -54,7 +54,7 @@ class ConfigAccess {
   fixupConfigSettings() {
     const oServerConfig = this.sdkConfig["serverConfig"];
     // If not present, then use current root path
-    oServerConfig.sdkContentServerUrl = oServerConfig.sdkContentServerUrl || window.location.origin + window.location.pathname;
+    oServerConfig.sdkContentServerUrl = oServerConfig.sdkContentServerUrl || window.location.origin;
     // Needs a trailing slash so add one if not there
     if( !oServerConfig.sdkContentServerUrl.endsWith('/') ) {
       oServerConfig.sdkContentServerUrl = `${oServerConfig.sdkContentServerUrl}/`;

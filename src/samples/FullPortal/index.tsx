@@ -1,13 +1,14 @@
-import React, { useEffect }  from 'react';
-import ReactDOM from "react-dom";
+import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import StoreContext from "../../bridge/Context/StoreContext";
-import createPConnectComponent from "../../bridge/react_pconnect";
+import StoreContext from '../../bridge/Context/StoreContext';
+import createPConnectComponent from '../../bridge/react_pconnect';
 import { SdkConfigAccess } from '../../helpers/config_access';
 import { compareSdkPCoreVersions } from '../../helpers/versionHelpers';
 import { loginIfNecessary } from '../../helpers/authManager';
 import { processQueryParams } from '../../helpers/common-utils';
+import InvalidPortal from './InvalidPortal';
 
 declare const PCore: any;
 declare const myLoadPortal: any;
@@ -15,6 +16,9 @@ declare const myLoadDefaultPortal: any;
 declare const myUpdateLocale: any;
 
 export default function FullPortal() {
+  const [isInvalidPortal, setIsInvalidPortal] = useState(false);
+  const [portalName, setPortalName] = useState('');
+
   const theme = createTheme({
     // palette: {
     //   primary: {
@@ -43,16 +47,16 @@ export default function FullPortal() {
     // const thePConnObj = <div>the RootComponent</div>;
     const thePConnObj = <PegaConnectObj {...props} />;
 
-    const theComp =
-      <StoreContext.Provider value={{store: PCore.getStore()}} >
+    const theComp = (
+      <StoreContext.Provider value={{ store: PCore.getStore() }}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           {thePConnObj}
-          </ThemeProvider>
-      </StoreContext.Provider>;
+        </ThemeProvider>
+      </StoreContext.Provider>
+    );
 
     return theComp;
-
   }
 
   /**
@@ -60,8 +64,7 @@ export default function FullPortal() {
    * is ready to be rendered
    * @param inRenderObj the initial, top-level PConnect object to render
    */
-   function initialRender(inRenderObj) {
-
+  function initialRender(inRenderObj) {
     // modified from react_root.js render
     const {
       props,
@@ -70,7 +73,7 @@ export default function FullPortal() {
       portalTarget,
       styleSheetTarget
     } = inRenderObj;
-    let target:any = null;
+    let target: any = null;
     if (domContainerID !== null) {
       target = document.getElementById(domContainerID);
     } else if (portalTarget !== null) {
@@ -90,31 +93,23 @@ export default function FullPortal() {
 
     // var theComponent = <div>the Component</div>;
     const theComponent = (
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Component
-            {...props}
-            portalTarget={portalTarget}
-            styleSheetTarget={styleSheetTarget}
-          />;
-        </ThemeProvider>
-      );
-
-    ReactDOM.render(  // was <Component
-      theComponent,
-      target ||
-        document.getElementById("app") ||
-        document.getElementsByTagName(domContainerID)[0]
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Component {...props} portalTarget={portalTarget} styleSheetTarget={styleSheetTarget} />;
+      </ThemeProvider>
     );
 
-  };
-
+    ReactDOM.render(
+      // was <Component
+      theComponent,
+      target || document.getElementById('app') || document.getElementsByTagName(domContainerID)[0]
+    );
+  }
 
   /**
    * kick off the application's portal that we're trying to serve up
    */
-   function startPortal() {
-
+  function startPortal() {
     // NOTE: When loadMashup is complete, this will be called.
     PCore.onPCoreReady(renderObj => {
       // Check that we're seeing the PCore version we expect
@@ -126,57 +121,60 @@ export default function FullPortal() {
     // load the Portal and handle the onPCoreEntry response that establishes the
     //  top level Pega root element (likely a RootContainer)
 
-    const locale = sessionStorage.getItem("rsdk_locale");
-    if( locale ){
+    const locale = sessionStorage.getItem('rsdk_locale');
+    if (locale) {
       myUpdateLocale(locale);
     }
 
     const thePortal = SdkConfigAccess.getSdkConfigServer().appPortal;
     const defaultPortal = PCore?.getEnvironmentInfo?.().getDefaultPortal?.();
-    const queryPortal = sessionStorage.getItem("rsdk_portalName");
+    const queryPortal = sessionStorage.getItem('rsdk_portalName');
     // Note: myLoadPortal and myLoadDefaultPortal are set when bootstrapWithAuthHeader is invoked
-    if ( queryPortal ) {
-      myLoadPortal("pega-root", queryPortal, []);
-    } else if( thePortal ) {
+    if (queryPortal) {
+      myLoadPortal('pega-root', queryPortal, []);
+    } else if (thePortal) {
       // eslint-disable-next-line no-console
       console.log(`Loading specified appPortal: ${thePortal}`);
-      myLoadPortal("pega-root", thePortal, []);
-    }
-    else if( myLoadDefaultPortal && defaultPortal ) {
+      myLoadPortal('pega-root', thePortal, []);
+    } else if (
+      defaultPortal &&
+      SdkConfigAccess.getSdkConfigServer().excludePortals.includes(defaultPortal)
+    ) {
+      setIsInvalidPortal(true);
+      setPortalName(defaultPortal);
+    } else if (myLoadDefaultPortal && defaultPortal) {
       // eslint-disable-next-line no-console
       console.log(`Loading default portal`);
-      myLoadDefaultPortal("pega-root", []);
-    }
-    else {
+      myLoadDefaultPortal('pega-root', []);
+    } else {
       // This path of selecting a portal by enumerating entries within current user's access group's portals list
       // relies on Traditional DX APIs and should be avoided when the Constellation bootstrap supports
       // the loadDefaultPortal API
-      SdkConfigAccess.selectPortal()
-      .then( () => {
+      SdkConfigAccess.selectPortal().then(() => {
         const selPortal = SdkConfigAccess.getSdkConfigServer().appPortal;
-        myLoadPortal("pega-root", selPortal, []);   // this is defined in bootstrap shell that's been loaded already
+        myLoadPortal('pega-root', selPortal, []); // this is defined in bootstrap shell that's been loaded already
       });
     }
   }
 
   // One time (initialization)
   useEffect(() => {
-
     processQueryParams();
 
     // Login if needed, without doing an initial main window redirect
-    loginIfNecessary("portal", false);
+    loginIfNecessary('portal', false);
 
-    document.addEventListener("SdkConstellationReady", () => {
+    document.addEventListener('SdkConstellationReady', () => {
       // start the portal
       startPortal();
     });
   }, []);
 
-  return (
+  return isInvalidPortal ? (
+    <InvalidPortal name={portalName} />
+  ) : (
     <div>
-      {/* <h4>React SDK: /portal</h4> */}
-      <div id="pega-root"></div>
-    </div>)
-
+      <div id='pega-root'></div>
+    </div>
+  );
 }

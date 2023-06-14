@@ -16,8 +16,9 @@ declare const myLoadDefaultPortal: any;
 declare const myUpdateLocale: any;
 
 export default function FullPortal() {
-  const [isInvalidPortal, setIsInvalidPortal] = useState(false);
-  const [portalName, setPortalName] = useState('');
+  const [portalSelectionScreen, setPortalSelectionScreen] = useState(false);
+  const [defaultPortalName, setDefaultPortalName] = useState('');
+  const [availablePortals, setAvailablePortals] = useState<Array<string>>([]);
 
   const theme = createTheme({
     // palette: {
@@ -102,7 +103,9 @@ export default function FullPortal() {
     ReactDOM.render(
       // was <Component
       theComponent,
-      target || document.getElementById('app') || document.getElementsByTagName(domContainerID)[0]
+      target ||
+        document.getElementById('pega-root') ||
+        document.getElementsByTagName(domContainerID)[0]
     );
   }
 
@@ -126,9 +129,10 @@ export default function FullPortal() {
       myUpdateLocale(locale);
     }
 
-    const thePortal = SdkConfigAccess.getSdkConfigServer().appPortal;
+    const { appPortal: thePortal, excludePortals } = SdkConfigAccess.getSdkConfigServer();
     const defaultPortal = PCore?.getEnvironmentInfo?.().getDefaultPortal?.();
     const queryPortal = sessionStorage.getItem('rsdk_portalName');
+
     // Note: myLoadPortal and myLoadDefaultPortal are set when bootstrapWithAuthHeader is invoked
     if (queryPortal) {
       myLoadPortal('pega-root', queryPortal, []);
@@ -136,25 +140,25 @@ export default function FullPortal() {
       // eslint-disable-next-line no-console
       console.log(`Loading specified appPortal: ${thePortal}`);
       myLoadPortal('pega-root', thePortal, []);
-    } else if (
-      defaultPortal &&
-      SdkConfigAccess.getSdkConfigServer().excludePortals.includes(defaultPortal)
-    ) {
-      setIsInvalidPortal(true);
-      setPortalName(defaultPortal);
-    } else if (myLoadDefaultPortal && defaultPortal) {
+    } else if (myLoadDefaultPortal && defaultPortal && !excludePortals.includes(defaultPortal)) {
       // eslint-disable-next-line no-console
       console.log(`Loading default portal`);
       myLoadDefaultPortal('pega-root', []);
     } else {
-      // This path of selecting a portal by enumerating entries within current user's access group's portals list
-      // relies on Traditional DX APIs and should be avoided when the Constellation bootstrap supports
-      // the loadDefaultPortal API
-      SdkConfigAccess.selectPortal().then(() => {
-        const selPortal = SdkConfigAccess.getSdkConfigServer().appPortal;
-        myLoadPortal('pega-root', selPortal, []); // this is defined in bootstrap shell that's been loaded already
+      // eslint-disable-next-line no-console
+      console.log('Loading portal selection screen');
+      setPortalSelectionScreen(true);
+      setDefaultPortalName(defaultPortal);
+      // Getting current user's access group's available portals list other than exluded portals (relies on Traditional DX APIs)
+      SdkConfigAccess.getAvailablePortals().then((portals: Array<string>) => {
+        setAvailablePortals(portals);
       });
     }
+  }
+
+  function loadSelectedPortal(portal) {
+    setPortalSelectionScreen(false);
+    myLoadPortal('app-root', portal, []); // this is defined in bootstrap shell that's been loaded already
   }
 
   // One time (initialization)
@@ -170,8 +174,12 @@ export default function FullPortal() {
     });
   }, []);
 
-  return isInvalidPortal ? (
-    <InvalidPortal name={portalName} />
+  return portalSelectionScreen ? (
+    <InvalidPortal
+      defaultPortal={defaultPortalName}
+      portals={availablePortals}
+      onSelect={loadSelectedPortal}
+    />
   ) : (
     <div>
       <div id='pega-root'></div>

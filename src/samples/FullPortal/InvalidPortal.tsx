@@ -1,7 +1,7 @@
 import React from 'react';
 import { logout } from '../../helpers/authManager';
 
-export default function InvalidPortal({ name }) {
+export default function InvalidPortal({ defaultPortal, portals, onSelect }) {
   const logOff = () => {
     logout().then(() => {
       // Reload the page to kick off the login
@@ -12,8 +12,17 @@ export default function InvalidPortal({ name }) {
   return (
     <div className='portal-load-error'>
       <div>
-        Unable to open portal: <span className='portal-name'>{name}</span> <br />
-        Please authenticate as an end user operator, rather than a developer or an administrator.
+        Default portal ( <span className='portal-name'>{defaultPortal}</span> ) for current operator
+        is not compatible with SDK. <br />
+        <br />
+        Please select one of the portals available to the operator&apos;s access group:
+      </div>
+      <div className='portals-list'>
+        {portals.map(portal => (
+          <div key={portal} className='portal-list-item' onClick={() => onSelect(portal)}>
+            {portal}
+          </div>
+        ))}
       </div>
       <button type='button' className='logout-btn' onClick={logOff}>
         Logout

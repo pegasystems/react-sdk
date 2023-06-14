@@ -185,7 +185,7 @@ export default function AppShell(props) {
           )}
           appInfo={{
             imageSrc: iconURL,
-            appName: localizedVal.getLocaleValue(
+            appName: localizedVal(
               appNameToDisplay,
               '',
               `${portalClass}!PORTAL!${envPortalName}`.toUpperCase()

@@ -3,6 +3,7 @@ import CheckBoxes from '../../BaseComponents/Checkboxes/Checkboxes';
 import handleEvent from '../../../helpers/event-utils';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
+import InstructionComp from '../../../helpers/formatters/ParsedHtml';
 
 export default function Group(props){
   const { children, heading, instructions, readOnly, getPConnect } = props;
@@ -87,6 +88,7 @@ export default function Group(props){
   }
 
   return (<>
+  {instructions && <div id='instructions' className='govuk-body'><InstructionComp htmlString={instructions}/></div>}
   {...children}
   </>);
 }

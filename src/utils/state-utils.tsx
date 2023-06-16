@@ -19,7 +19,6 @@ const connectToState = (mapStateToProps = () => {}) => {
         for (const key in allStateProps) {
           if (
             !shallowEqual(next[key], prev[key]) ||
-            // eslint-disable-next-line no-undef
             (next.routingInfo && !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))
           ) {
             return false;

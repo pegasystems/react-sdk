@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import Button from '../BaseComponents/Button/Button';
 
 export default function ActionButtons(props) {
@@ -10,36 +10,60 @@ export default function ActionButtons(props) {
   }
 
   return (
-    <div className='govuk-button-group govuk-!-padding-top-4'>
-      {arMainButtons.map(mButton => {
-        return mButton.name !== 'Hidden' ?
-        <Button
-          variant='primary'
-          onClick={(e) => {
-            e.target.blur()
-            _onButtonPress(mButton.jsAction, 'primary');
-          }}
-          key={mButton.actionID}
-          attributes={{type:"button"}}
-        >
-          {mButton.name}
-        </Button>:null
-})}
-      {arSecondaryButtons.map(sButton => (
-         (sButton.actionID !== 'back' && sButton.name!=='Hidden') ?
-        <Button
-          variant='secondary'
-          onClick={(e) => {
-            e.target.blur()
-            _onButtonPress(sButton.jsAction, 'secondary');
-          }}
-          key={sButton.actionID}
-          attributes={{type:"button"}}
-        >
-          {sButton.name}
-        </Button>:null
-      ))}
-    </div>
+    <>
+      <div className='govuk-button-group govuk-!-padding-top-4'>
+        {arMainButtons.map(mButton =>
+           mButton.name !== 'Hidden' ? (
+            <Button
+              variant='primary'
+              onClick={e => {
+                e.target.blur();
+                _onButtonPress(mButton.jsAction, 'primary');
+              }}
+              key={mButton.actionID}
+              attributes={{ type: 'button' }}
+            >
+              {mButton.name}
+            </Button>
+          ) : null
+        )}
+        {arSecondaryButtons.map(sButton =>
+          sButton.actionID !== 'back' &&
+          sButton.name !== 'Hidden' &&
+          sButton.name.indexOf('Save') === -1 ? (
+            <Button
+              variant='secondary'
+              onClick={e => {
+                e.target.blur();
+                _onButtonPress(sButton.jsAction, 'secondary');
+              }}
+              key={sButton.actionID}
+              attributes={{ type: 'button' }}
+            >
+              {sButton.name}
+            </Button>
+          ) : null
+        )}
+      </div>
+
+        {arSecondaryButtons.map(sButton =>
+          sButton.actionID !== 'back' &&
+          sButton.name !== 'Hidden' &&
+          sButton.name.indexOf('Save') !== -1 ? (
+            <Button
+            variant='link'
+              onClick={e => {
+                e.target.blur();
+                _onButtonPress(sButton.jsAction, 'secondary');
+              }}
+              key={sButton.actionID}
+              attributes={{ type: 'link' }}
+            >{sButton.name}</Button>
+          ) : null
+        )}
+
+
+    </>
   );
 }
 

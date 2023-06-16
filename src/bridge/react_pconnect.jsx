@@ -1,11 +1,11 @@
-import React, { Children, Component, createElement } from "react";
+import React, { Children, Component, createElement } from 'react';
 // import { render, unmountComponentAtNode } from "react-dom";
-import PropTypes from "prop-types";
-import { connect, shallowEqual } from "react-redux";
+import PropTypes from 'prop-types';
+import { connect, shallowEqual } from 'react-redux';
 // Initial simplification to remove ErrorBoundary
-import ErrorBoundary from "../components/ErrorBoundary";
-import ComponentMap, { LazyMap as LazyComponentMap } from "../components_map";
-import StoreContext from "./Context/StoreContext";
+import ErrorBoundary from '../components/ErrorBoundary';
+import ComponentMap, { LazyMap as LazyComponentMap } from '../components_map';
+import StoreContext from './Context/StoreContext';
 
 // For now, NOT doing lazy loading - needs some work on the loader to work with TypeScript
 // As we add components, we'll need to import them here and add to the switch statement
@@ -23,9 +23,9 @@ import Date from '../components/forms/Date';
 import DateTime from '../components/forms/DateTime';
 import Decimal from '../components/forms/Decimal';
 import DeferLoad from '../components/DeferLoad';
-import Dropdown from "../components/forms/Dropdown";
+import Dropdown from '../components/forms/Dropdown';
 import Email from '../components/forms/Email';
-import FileUtility from "../components/widgets/FileUtility";
+import FileUtility from '../components/widgets/FileUtility';
 import FlowContainer from '../components/FlowContainer';
 import Followers from '../components/widgets/Followers';
 import Integer from '../components/forms/Integer';
@@ -41,7 +41,6 @@ import Stages from '../components/Stages';
 import TextArea from '../components/forms/TextArea';
 import TextContent from '../components/forms/TextContent';
 import TextInput from '../components/forms/TextInput';
-import BackLink from '../components/BaseComponents/BackLink/BackLink';
 import Time from '../components/forms/Time';
 import ToDo from '../components/ToDo';
 import URLComponent from '../components/forms/URL';
@@ -54,17 +53,15 @@ import DataReference from '../components/templates/DataReference';
 import SemanticLink from '../components/forms/SemanticLink';
 import UserReference from '../components/forms/UserReference';
 import ChangeLink from '../components/forms/ChangeLink';
-import Group from '../components/forms/Group'
+import Group from '../components/forms/Group';
 
 const connectRedux = (component, c11nEnv) => {
 
-  // console.log(`in connectRedux: ${component.name}`);
 
   return connect(
     (state, ownProps) => {
       let addProps = {};
       const obj = {};
-
 
       // JA - testing
       // const theCompName = c11nEnv.getComponentName();
@@ -73,9 +70,9 @@ const connectRedux = (component, c11nEnv) => {
       //   debugger;
       // }
 
-      if (typeof component.additionalProps === "object") {
+      if (typeof component.additionalProps === 'object') {
         addProps = c11nEnv.resolveConfigProps(component.additionalProps);
-      } else if (typeof component.additionalProps === "function") {
+      } else if (typeof component.additionalProps === 'function') {
         addProps = c11nEnv.resolveConfigProps(
           component.additionalProps(state, ownProps.getPConnect)
         );
@@ -110,24 +107,33 @@ const connectRedux = (component, c11nEnv) => {
     null,
     {
       context: StoreContext,
-      areStatePropsEqual: (next,prev) => {
+      areStatePropsEqual: (next, prev) => {
         const allStateProps = c11nEnv.getStateProps();
-        for(const key in allStateProps){
+        for (const key in allStateProps) {
           // eslint-disable-next-line no-undef
-          if(!shallowEqual(next[key], prev[key]) || (next.routingInfo && !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))){
+          if (
+            !shallowEqual(next[key], prev[key]) ||
+              // eslint-disable-next-line no-undef
+            (next.routingInfo && !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))
+          ) {
             return false;
           }
         }
         /* TODO For some rawConfig we are not getting routingInfo under allStateProps */
         // eslint-disable-next-line no-undef
-        if('routingInfo' in next && (!shallowEqual(next.routingInfo, prev.routingInfo) || !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))){
+        if (
+          'routingInfo' in next &&
+          (!shallowEqual(next.routingInfo, prev.routingInfo) ||
+            // eslint-disable-next-line no-undef
+            !PCore.isDeepEqual(next.routingInfo, prev.routingInfo))
+        ) {
           return false;
         }
 
         // For CaseSummary (when status === ".pyStatusWork"), we need to compare changes in
         //  primaryFields and secondary Fields
-        if (allStateProps.status === ".pyStatusWork") {
-          for(const key in prev){
+        if (allStateProps.status === '.pyStatusWork') {
+          for (const key in prev) {
             // eslint-disable-next-line no-undef
             if (!PCore.isDeepEqual(next[key], prev[key])) {
               return false;
@@ -141,7 +147,6 @@ const connectRedux = (component, c11nEnv) => {
   )(component);
 };
 
-
 const getComponent = (c11nEnv, declarative) => {
   // PCore is defined in pxBootstrapShell - eventually will be exported in place of constellationCore
   // eslint-disable-next-line no-undef
@@ -152,8 +157,7 @@ const getComponent = (c11nEnv, declarative) => {
   const componentType = (componentObj && componentObj.component) || type;
 
   // JEA - modifying logic before bailing to RootContainer logic to work around async loading problem
-  let component =
-    LazyComponentMap[componentType] /* || window[componentType] */;
+  let component = LazyComponentMap[componentType]; /* || window[componentType] */
 
   // NOTE: Until we get lazy loading working, maintain this for each component we add
   if (component === undefined) {
@@ -300,9 +304,6 @@ const getComponent = (c11nEnv, declarative) => {
         component = TextContent;
         break;
 
-      case 'BackLink':
-        component = BackLink;
-        break;
 
 
       case 'TextInput':
@@ -310,8 +311,8 @@ const getComponent = (c11nEnv, declarative) => {
         break;
 
       case 'RichText':
-      component = TextInput;
-      break;
+        component = TextInput;
+        break;
 
       case 'Time':
         component = Time;
@@ -358,7 +359,7 @@ const getComponent = (c11nEnv, declarative) => {
     }
   } else {
     // eslint-disable-next-line no-console
-    console.log( `getComponent doesn't have an entry for component ${component}`);
+    console.log(`getComponent doesn't have an entry for component ${component}`);
     component = ErrorBoundary;
   }
 
@@ -376,7 +377,6 @@ const getComponent = (c11nEnv, declarative) => {
   return component;
 };
 
-
 /**
  *
  * @param {*} declarative
@@ -384,7 +384,7 @@ const getComponent = (c11nEnv, declarative) => {
  * return type of React.FunctionComponent inspired by:
  * https://stackoverflow.com/questions/64890278/argument-of-type-function-is-not-assignable-to-parameter-of-type-componenttyp
  */
- const createPConnectComponent = (declarative=false) => {
+const createPConnectComponent = (declarative = false) => {
   /**
    * Add TypeScript hinting info via JSdoc syntax...
    * @extends {React.FunctionComponent<Props, State>}
@@ -448,8 +448,8 @@ const getComponent = (c11nEnv, declarative) => {
      */
     processActions() {
       if (this.c11nEnv.isEditable()) {
-        this.c11nEnv.setAction("onChange", this.changeHandler);
-        this.c11nEnv.setAction("onBlur", this.eventHandler);
+        this.c11nEnv.setAction('onChange', this.changeHandler);
+        this.c11nEnv.setAction('onBlur', this.eventHandler);
       }
     }
 
@@ -485,21 +485,14 @@ const getComponent = (c11nEnv, declarative) => {
 
       if (this.c11nEnv.hasChildren()) {
         const children = this.c11nEnv.getChildren() || [];
-        children.forEach((child) => this.addChildren(child));
-        this.configProps.children = Children.toArray(
-          this.configProps.children
-        );
+        children.forEach(child => this.addChildren(child));
+        this.configProps.children = Children.toArray(this.configProps.children);
       }
     }
 
     render() {
       const { hasError } = this.state;
-      const {
-        getPConnect,
-        visibility,
-        additionalProps,
-        ...otherProps
-      } = this.props;
+      const { getPConnect, visibility, additionalProps, ...otherProps } = this.props;
 
       if (visibility === false) {
         return null;
@@ -533,7 +526,7 @@ const getComponent = (c11nEnv, declarative) => {
     // meta: PropTypes.object.isRequired,
     // configObject: PropTypes.object.isRequired,
     getPConnect: PropTypes.func.isRequired,
-    visibility: PropTypes.bool/* .isRequired */,
+    visibility: PropTypes.bool /* .isRequired */,
     additionalProps: PropTypes.shape({
       noLabel: PropTypes.bool,
       readOnly: PropTypes.bool
@@ -544,69 +537,64 @@ const getComponent = (c11nEnv, declarative) => {
   // eslint-disable-next-line react/static-property-placement
   PConnect.defaultProps = {
     additionalProps: {},
-    validatemessage: ""
+    validatemessage: ''
   };
 
   return PConnect;
 };
 
-
 // Move these into SdkConstellationReady so PCore is available
-document.addEventListener("SdkConstellationReady", () => {
-
+document.addEventListener('SdkConstellationReady', () => {
   // eslint-disable-next-line no-undef
   PCore.registerComponentCreator((c11nEnv, additionalProps = {}) => {
     const PConnectComp = createPConnectComponent();
     return (
-        <PConnectComp {
-          ...{
-            ...c11nEnv,
-            ...c11nEnv.getPConnect().getConfigProps(),
-            ...c11nEnv.getPConnect().getActions(),
-            additionalProps
-          }}
-        />
-      );
+      <PConnectComp
+        {...{
+          ...c11nEnv,
+          ...c11nEnv.getPConnect().getConfigProps(),
+          ...c11nEnv.getPConnect().getActions(),
+          additionalProps
+        }}
+      />
+    );
   });
 
   // eslint-disable-next-line no-undef
-  PCore.getAssetLoader().register(
-    "component-loader",
-    async (componentNames = []) => {
-      const promises = [];
-      componentNames.forEach((comp) => {
-        if (/^[A-Z]/.test(comp) && !LazyComponentMap[comp]) {
-          if (!ComponentMap[comp]) {
-            // eslint-disable-next-line no-undef
-            const srcUrl = `${PCore.getAssetLoader().getConstellationServiceUrl()}/v860/${PCore.getAssetLoader().getAppAlias()}/component/${comp}.js`;
-            // eslint-disable-next-line no-undef
-            promises.push(PCore.getAssetLoader().getLoader()(srcUrl, "script"));
-          } else {
-            if (ComponentMap[comp].modules && ComponentMap[comp].modules.length) {
-              ComponentMap[comp].modules.forEach((module) => {
-                LazyComponentMap[comp] = module;
-              });
-            }
-            if (ComponentMap[comp].scripts && ComponentMap[comp].scripts.length) {
-              ComponentMap[comp].scripts.forEach((script) => {
-                promises.push(
-                  // eslint-disable-next-line no-undef
-                  PCore.getAssetLoader().getLoader()(script, "script")
-                );
-              });
-            }
+  PCore.getAssetLoader().register('component-loader', async (componentNames = []) => {
+    const promises = [];
+    componentNames.forEach(comp => {
+      if (/^[A-Z]/.test(comp) && !LazyComponentMap[comp]) {
+        if (!ComponentMap[comp]) {
+          // eslint-disable-next-line no-undef
+          const srcUrl = `${PCore.getAssetLoader().getConstellationServiceUrl()}/v860/${PCore.getAssetLoader().getAppAlias()}/component/${comp}.js`;
+          // eslint-disable-next-line no-undef
+          promises.push(PCore.getAssetLoader().getLoader()(srcUrl, 'script'));
+        } else {
+          if (ComponentMap[comp].modules && ComponentMap[comp].modules.length) {
+            ComponentMap[comp].modules.forEach(module => {
+              LazyComponentMap[comp] = module;
+            });
+          }
+          if (ComponentMap[comp].scripts && ComponentMap[comp].scripts.length) {
+            ComponentMap[comp].scripts.forEach(script => {
+              promises.push(
+                // eslint-disable-next-line no-undef
+                PCore.getAssetLoader().getLoader()(script, 'script')
+              );
+            });
           }
         }
-      });
-      /* Promise.all rejects or accepts all or none. This causes entire component loader to fail
+      }
+    });
+    /* Promise.all rejects or accepts all or none. This causes entire component loader to fail
       in case there is a single failure.
       Using allSettled to allow Promise to be resolved even if there are failed components
       Note : This is a liberty taken at component loader and unwise to be used at
       asset loader which will still use Promise.all
       */
-      await Promise.allSettled(promises);
-    }
-  );
+    await Promise.allSettled(promises);
+  });
 });
 
 export default createPConnectComponent;

@@ -1,10 +1,17 @@
-/* eslint-disable react/no-danger */
 import React, { createElement } from 'react';
 import PropTypes from 'prop-types';
 import { getInstructions } from '../utils';
 import createPConnectComponent from '../../../bridge/react_pconnect';
+import connectToState from '../../../utils/state-utils';
+import { getKeyForMappedField, mapStateToProps } from './utils';
 
 import './DefaultForm.css';
+
+const Child = connectToState(mapStateToProps)(props => {
+  const { key, visibility, ...rest } = props;
+
+  return createElement(createPConnectComponent(), { ...rest, key, visibility });
+});
 
 export default function DefaultForm(props) {
   const { getPConnect, NumCols } = props;
@@ -34,17 +41,14 @@ export default function DefaultForm(props) {
   // to take the children and create components for them, put in an array and pass as the
   // defaultForm kids
   const arChildren = getPConnect().getChildren()[0].getPConnect().getChildren();
-  const dfChildren = arChildren.map((kid, idx) =>
-    // eslint-disable-next-line react/no-array-index-key
-    createElement(createPConnectComponent(), { ...kid, key: idx })
-  );
+  const dfChildren = arChildren.map(kid => <Child key={getKeyForMappedField(kid)} {...kid} />);
 
   return (
     <>
       {instructions && (
         <div className='psdk-default-form-instruction-text'>
-           {/* server performs sanitization method for instructions html content */}
-           <div key="instructions" dangerouslySetInnerHTML={{ __html: instructions }} />
+          {/* server performs sanitization method for instructions html content */}
+          <div key='instructions' dangerouslySetInnerHTML={{ __html: instructions }} />
         </div>
       )}
       <div className={divClass}>{dfChildren}</div>

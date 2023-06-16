@@ -5,6 +5,8 @@ import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 import InstructionComp from '../../../helpers/formatters/ParsedHtml';
 
+declare const PCore : any;
+
 export default function Group(props){
   const { children, heading, instructions, readOnly, getPConnect } = props;
 
@@ -20,6 +22,14 @@ export default function Group(props){
   // working around with this for now
   useEffect(()=>{
     if (stateChanged) {
+      children.forEach(child => {
+        PCore.getMessageManager().clearMessages({
+          property: child.props.getPConnect().getStateProps().value,
+          pageReference: child.props.getPConnect().getPageReference(),
+          context: child.props.getPConnect().getContextName(),
+          type: 'error'
+          })
+      })
       setStateChanged(false);
     }
   }, [stateChanged]);
@@ -53,7 +63,13 @@ export default function Group(props){
         const childPConnect = child.props.getPConnect();
         const resolvedProps = childPConnect.resolveConfigProps(childPConnect.getConfigProps())
         childPConnect.populateAdditionalProps(childPConnect.getConfigProps());
-        errors.push(childPConnect.getStateProps().validatemessage)
+        errors.push(PCore.getMessageManager().getMessages({
+          property: child.props.getPConnect().getStateProps().value,
+          pageReference: child.props.getPConnect().getPageReference(),
+          context: child.props.getPConnect().getContextName(),
+          type: 'error'
+          })[0]?.message
+        );
 
         const formattedPropertyName = childPConnect.getStateProps().value && childPConnect.getStateProps().value.split('.').pop();
         const optionName = `${formattedContext}-${formattedPropertyName}`
@@ -75,13 +91,13 @@ export default function Group(props){
 
       return (<>
         <CheckBoxes
-        optionsList={optionsList}
-        name={`${formattedContext}-group`}
-        onChange={handleChange}
-        label={heading}
-        instructionText={instructions}
-        legendIsHeading={isOnlyField}
-        errorText={errors.join(' ').trim() !== '' ? errors.join(' ').trim() : null}
+          optionsList={optionsList}
+          name={`${formattedContext}-group`}
+          onChange={handleChange}
+          label={heading}
+          instructionText={instructions}
+          legendIsHeading={isOnlyField}
+          errorText={errors.join(' ').trim() !== '' ? errors.join(' ').trim() : null}
         />
       </>);
     }

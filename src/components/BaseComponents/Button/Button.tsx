@@ -31,7 +31,7 @@ export default function Button(props) {
   } else if (variant === 'link') {
     return (
       <div className='govuk-button-group'>
-        <a className='govuk-link govuk-!-padding-top-4' href='#' onClick={onClick} {...attributes}>
+        <a className='govuk-link' href='#' onClick={onClick} {...attributes}>
           {children}
         </a>
       </div>

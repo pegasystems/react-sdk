@@ -45,10 +45,12 @@ export default function DetailsFields(props) {
     // If value is "" then also we would have to get viewMetadata using getReferencedView.
     if (theCompType === 'reference' || value === '') {
       const configObj = thePConn?.getReferencedView();
-      configObj.config.readOnly = theCompType === 'reference';
-      configObj.config.displayMode = 'LABELS_LEFT';
-      const propToUse = { ...thePConn.getInheritedProps() };
-      configObj.config.label = theCompType === 'reference' ? propToUse?.label : label;
+      if(configObj){
+        configObj.config.readOnly = theCompType === 'reference';
+        configObj.config.displayMode = 'LABELS_LEFT';
+        const propToUse = { ...thePConn.getInheritedProps() };
+        configObj.config.label = theCompType === 'reference' ? propToUse?.label : label;
+
       fieldComponents.push({
         type: theCompType,
         label,
@@ -58,6 +60,7 @@ export default function DetailsFields(props) {
           </React.Fragment>
         )
       });
+    }
     } else {
       fieldComponents.push({ type: theCompType, value, label });
     }

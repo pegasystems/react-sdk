@@ -304,7 +304,9 @@ export default function ListView(props) {
             if (!myFormat) {
               myFormat = 'Date';
             }
-            formattedDate = Utils.generateDate(rowData[fieldName], myFormat);
+            if(rowData[fieldName]){
+              formattedDate = Utils.generateDate(rowData[fieldName], myFormat);
+            }
 
             rowData[fieldName] = formattedDate;
             break;

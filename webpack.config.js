@@ -83,6 +83,7 @@ module.exports = (env, argv) => {
   // Enable gzip and brotli compression
   //  Exclude constellation-core and bootstrap-shell files since
   //    client receives these files in gzip and brotli format
+  if (webpackMode === 'production'){
   pluginsToAdd.push(
     new CompressionPlugin({
       filename: '[path][base].gz',
@@ -108,6 +109,7 @@ module.exports = (env, argv) => {
       minRatio: 0.8
     })
   );
+  }
 
   if (webpackMode === 'development') {
     // In development mode, add LiveReload plug

@@ -3,7 +3,7 @@ import React from 'react';
 import DetailsFields from '../../designSystemExtensions/DetailsFields';
 
 export default function Details(props) {
-  const { children } = props;
+  const { children, label, context } = props;
   const arFields: Array<any> = [];
 
   for (const child of children) {
@@ -14,8 +14,12 @@ export default function Details(props) {
     arFields.push(theChildrenOfChild);
   }
 
-  return <DetailsFields fields={arFields[0]} />;
+  return( <>
+    {label && context && <h1 className='govuk-heading-l'>{label}</h1>}
+     <DetailsFields fields={arFields[0]}/>
+  </>)
 }
+
 
 Details.defaultProps = {
   // children: []

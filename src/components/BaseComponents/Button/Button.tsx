@@ -2,7 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function Button(props) {
-  const { disabled, variant, onClick, children, attributes } = props;
+  const {
+    disabled,
+    variant,
+    onClick,
+    children,
+    attributes = {}
+  } = props;
+
+  if(!Object.prototype.hasOwnProperty.call(attributes, 'className')) {attributes.className=''};
 
   if (variant === 'start') {
     return (
@@ -10,7 +18,7 @@ export default function Button(props) {
         href='#'
         role='button'
         draggable='false'
-        className='govuk-button govuk-button--start'
+        className={'govuk-button govuk-button--start'.concat(' ', attributes.className)}
         data-module='govuk-button'
         onClick={onClick}
       >
@@ -50,12 +58,12 @@ export default function Button(props) {
   }
 
   let buttonAttributes = {
-    className: `govuk-button${variant === 'secondary' ? ' govuk-button--secondary' : ''} ${
+    ...attributes,
+    className: `govuk-button ${variant === 'secondary' ? ' govuk-button--secondary' : ''} ${
       disabled ? ' govuk-button--disabled' : ''
-    }`,
+    }`.concat(' ', attributes.className),
     'data-module': 'govuk-button',
-    'data-prevent-double-click': true,
-    ...attributes
+    'data-prevent-double-click': true
   };
 
   if (disabled) {

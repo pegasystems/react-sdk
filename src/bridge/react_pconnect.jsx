@@ -110,7 +110,6 @@ const connectRedux = (component, c11nEnv) => {
       areStatePropsEqual: (next, prev) => {
         const allStateProps = c11nEnv.getStateProps();
         for (const key in allStateProps) {
-          // eslint-disable-next-line no-undef
           if (
             !shallowEqual(next[key], prev[key]) ||
               // eslint-disable-next-line no-undef
@@ -120,7 +119,6 @@ const connectRedux = (component, c11nEnv) => {
           }
         }
         /* TODO For some rawConfig we are not getting routingInfo under allStateProps */
-        // eslint-disable-next-line no-undef
         if (
           'routingInfo' in next &&
           (!shallowEqual(next.routingInfo, prev.routingInfo) ||

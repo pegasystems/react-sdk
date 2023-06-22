@@ -50,7 +50,7 @@ export default function CaseView(props) {
     header,
     subheader,
     children,
-    caseInfo: { availableActions = [], availableProcesses = [], hasNewAttachments }
+    caseInfo: { availableActions = [], availableProcesses = [], hasNewAttachments, caseTypeID = '', caseTypeName = '' }
   } = props;
   const currentCaseID = props.caseInfo.ID;
   let isComponentMounted = true;
@@ -191,6 +191,8 @@ export default function CaseView(props) {
           getPConnect={getPConnect}
           availableActions={availableActions}
           availableProcesses={availableProcesses}
+          caseTypeName={caseTypeName}
+          caseTypeID = {caseTypeID}
         />
       </Box>
     );

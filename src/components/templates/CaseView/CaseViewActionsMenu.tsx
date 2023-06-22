@@ -6,11 +6,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 declare const PCore;
 export default function CaseViewActionsMenu(props) {
-  const { getPConnect, availableActions, availableProcesses } = props;
+  const { getPConnect, availableActions, availableProcesses, caseTypeID, caseTypeName } = props;
   const thePConn = getPConnect();
 
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const localeCategory = 'CaseView';
+  const localeKey = `${caseTypeID}!CASE!${caseTypeName}`.toUpperCase();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -36,7 +37,7 @@ export default function CaseViewActionsMenu(props) {
   availableActions.forEach(action => {
     arMenuItems.push(
       <MenuItem key={action.ID} onClick={() => _actionMenuActionsClick(action)}>
-        {action.name}
+        {localizedVal(action.name, '', localeKey )}
       </MenuItem>
     );
   });
@@ -71,5 +72,7 @@ CaseViewActionsMenu.defaultProps = {
 CaseViewActionsMenu.propTypes = {
   getPConnect: PropTypes.func.isRequired,
   availableActions: PropTypes.arrayOf(PropTypes.object),
-  availableProcesses: PropTypes.arrayOf(PropTypes.any)
+  availableProcesses: PropTypes.arrayOf(PropTypes.any),
+  caseTypeID: PropTypes.string,
+  caseTypeName: PropTypes.string
 };

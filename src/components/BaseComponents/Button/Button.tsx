@@ -39,7 +39,7 @@ export default function Button(props) {
   } else if (variant === 'link') {
     return (
       <div className='govuk-button-group'>
-        <a className='govuk-link' href='#' onClick={onClick} {...attributes}>
+        <a {...attributes} className={'govuk-link'.concat(' ', attributes.className)} href='#' onClick={onClick} >
           {children}
         </a>
       </div>

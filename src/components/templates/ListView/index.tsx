@@ -1001,7 +1001,7 @@ export default function ListView(props) {
               </Grid>
               <Grid item>
                 <TextField
-                  label='Search'
+                  label={ PCore.getLocaleUtils().getLocaleValue('Search', 'Search') }
                   fullWidth
                   variant='outlined'
                   placeholder=''

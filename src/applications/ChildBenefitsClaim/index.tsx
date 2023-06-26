@@ -370,7 +370,7 @@ export default function ChildBenefitsClaim() {
       { showStartPage && <StartPage onStart={startNow} onBack={closeContainer}/>  }
       { showUserPortal && <UserPortal beginClaim={beginClaim}>
         <hr className="govuk-section-break govuk-section-break--m govuk-section-break--visible"></hr>
-        {/* !! NEEDS TRANSLATING  -- title & button content*/}
+        { /* !! NEEDS TRANSLATING  -- title & button content */ }
         <ClaimsList thePConn={pConn}
          data={inprogressClaims}
          title='Claims in progress'

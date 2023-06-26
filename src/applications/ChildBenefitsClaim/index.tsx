@@ -80,7 +80,6 @@ export default function ChildBenefitsClaim() {
   // to display within the claim 'card' in the list. This then sets inprogress claims state value to the list of claims data.
   // This funtion also sets 'isloading' value to true before making d_page calls, and sets it back to false after data claimed.
   function fetchInProgressClaimsData(){
-
     setLoadingInProgressClaims(true);
     let inProgressClaimsData : any = [];
     PCore.getDataPageUtils().getDataAsync('D_ClaimantChBAssignmentList', 'root', {OperatorId: operatorId} ).then(resp => {
@@ -102,7 +101,7 @@ export default function ChildBenefitsClaim() {
   }
 
   function cancelAssignment() {
-    // PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('root/primary'))
+    PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('root/primary'));
     fetchInProgressClaimsData();
     setShowStartPage(false);
     setShowUserPortal(true);
@@ -155,6 +154,15 @@ export default function ChildBenefitsClaim() {
       },
       'continueCase'
     );
+
+    PCore.getPubSubUtils().subscribe(
+      PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CREATE_STAGE_SAVED,
+      () => {
+        cancelAssignment()
+      },
+      'savedCase'
+    );
+
 
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_OPENED,
@@ -362,6 +370,7 @@ export default function ChildBenefitsClaim() {
       { showStartPage && <StartPage onStart={startNow} onBack={closeContainer}/>  }
       { showUserPortal && <UserPortal beginClaim={beginClaim}>
         <hr className="govuk-section-break govuk-section-break--m govuk-section-break--visible"></hr>
+        {/* !! NEEDS TRANSLATING  -- title & button content*/}
         <ClaimsList thePConn={pConn}
          data={inprogressClaims}
          title='Claims in progress'
@@ -381,13 +390,23 @@ export default function ChildBenefitsClaim() {
           }}
         />
         <hr className="govuk-section-break govuk-section-break--m govuk-section-break--visible"></hr>
+        {/* !! NEEDS TRANSLATING  -- title & button content */}
         <ClaimsList thePConn={pConn}
           data={submittedClaims}
           title='Submitted claims'
           options={[{name:'Claim.Child.pyFirstName', label:'Child\'s name'}, {name:'Claim.Child.pyLastName'}, {name:'pyStatusWork'}, {name:'pxCreateDateTime', type:'Date', label:'claim created date'}, {name:'pyID', label:'claim reference'}]}
           loading={loadingsubmittedClaims}
           rowClickAction="OpenCase"
-          buttonContent={<>View claim</>}
+          buttonContent={(rowData) => {
+            let buttonMetadata;
+            const firstName = rowData?.Claim?.Child?.pyFirstName;
+            const lastName = rowData?.Claim?.Child?.pyLastName;
+            if(firstName){
+              buttonMetadata = lastName ? `${firstName} ${lastName}` : firstName;
+            }
+            return <>View claim {buttonMetadata && <span className="govuk-visually-hidden"> for {buttonMetadata}</span>}</>
+          }
+          }
         />
 
     </UserPortal>}

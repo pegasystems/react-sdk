@@ -42,8 +42,6 @@ export default function TextInput(props) {
     return <ReadOnlyDisplay label={label} value={value} />;
   }
 
-  // const maxLength = fieldMetadata?.maxLength;
-
   const extraProps = { testProps: { 'data-test-id': testId } };
 
   const extraInputProps = { onChange, value };

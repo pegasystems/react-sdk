@@ -30,7 +30,6 @@ export default function TextInput(props) {
         {...inputProps}
         id={id}
         name={name}
-        maxLength={maxLength}
         onBlur={onBlur}
         disabled={disabled}
       ></input>

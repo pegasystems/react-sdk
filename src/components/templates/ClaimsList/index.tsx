@@ -2,6 +2,7 @@ import React from 'react';
 import DateFormatter from '../../../helpers/formatters/Date';
 import Button from '../../../components/BaseComponents/Button/Button';
 import PropTypes from "prop-types";
+import { Utils } from '../../../helpers/utils';
 
 declare const PCore: any;
 
@@ -41,7 +42,6 @@ export default function ClaimsList(props){
         return {text:status, tagColour:'grey'};
     }
   }
-
 
   function _rowClick(row: any) {
     const {pzInsKey} = row;
@@ -120,6 +120,7 @@ export default function ClaimsList(props){
                   variant='secondary'
                   onClick={() => {
                     _rowClick(row);
+                    Utils.scrollToTop();
                   }}
                 >
                 {typeof(buttonContent) === 'function' ? buttonContent(row) : buttonContent}

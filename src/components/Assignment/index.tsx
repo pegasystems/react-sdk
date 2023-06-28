@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import AssignmentCard from '../AssignmentCard';
 import MultiStep from '../MultiStep';
+import {Utils} from '../../helpers/utils';
 import useIsOnlyField from '../../helpers/hooks/QuestionDisplayHooks';
 import useAddErrorToPageTitle from '../../helpers/hooks/useAddErrorToPageTitle';
 import ErrorSummary from '../BaseComponents/ErrorSummary/ErrorSummary';
@@ -183,11 +184,7 @@ export default function Assignment(props) {
     });
   }
 
-  function scrollToTop() {
-    const position = document.getElementById('#main-content')?.offsetTop || 0;
-    document.body.scrollTop = position;
-    document.documentElement.scrollTop = position;
-  }
+
 
   function buttonPress(sAction: string, sButtonType: string) {
     setErrorSummary(false);
@@ -199,11 +196,11 @@ export default function Assignment(props) {
 
           navigatePromise
             .then(() => {
-              scrollToTop();
+              Utils.scrollToTop();
               setErrorSummary(false);
             })
             .catch(() => {
-              scrollToTop();
+              Utils.scrollToTop();
               showErrorSummary();
             });
 
@@ -271,11 +268,11 @@ export default function Assignment(props) {
 
           finishPromise
             .then(() => {
-              scrollToTop();
+              Utils.scrollToTop();
               setErrorSummary(false);
             })
             .catch(() => {
-              scrollToTop();
+              Utils.scrollToTop();
               showErrorSummary();
             });
 

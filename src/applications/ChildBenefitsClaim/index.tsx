@@ -12,6 +12,7 @@ import StartPage from './StartPage';
 import ConfirmationPage from './ConfirmationPage';
 import UserPortal from './UserPortal';
 import ClaimsList from '../../components/templates/ClaimsList';
+import setPageTitle from '../../helpers/setPageTitleHelpers';
 
 // declare var gbLoggedIn: boolean;
 // declare var login: Function;
@@ -31,6 +32,10 @@ export default function ChildBenefitsClaim() {
   const [loadingsubmittedClaims, setLoadingSubmittedClaims] = useState(true);
   const [loadinginProgressClaims, setLoadingInProgressClaims] = useState(true);
   let operatorId = '';
+
+  useEffect(()=> {
+    setPageTitle();
+  }, [showStartPage, showUserPortal, bShowPega, bShowResolutionScreen]);
 
   const [inprogressClaims, setInprogressClaims] = useState([]);
   const [submittedClaims, setSubmittedClaims] = useState([]);

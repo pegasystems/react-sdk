@@ -5,6 +5,7 @@ import createPConnectComponent from "../../bridge/react_pconnect";
 import StoreContext from "../../bridge/Context/StoreContext";
 import Utils from '../../helpers/utils';
 import Button from '../../components/BaseComponents/Button/Button';
+import setPageTitle from '../../helpers/setPageTitleHelpers';
 // ViewContainer can emit View
 // import View from '../View';
 
@@ -22,6 +23,10 @@ export default function ViewContainer(props) {
   const { getPConnect, name, mode, limit, loadingInfo, routingInfo } = props;
 
   const { displayOnlyFA } = useContext(StoreContext);
+
+  useEffect(()=>{
+    setPageTitle();
+  }, [])
 
 
   const { CONTAINER_TYPE, APP } = PCore.getConstants();

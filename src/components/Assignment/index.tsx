@@ -9,6 +9,7 @@ import useAddErrorToPageTitle from '../../helpers/hooks/useAddErrorToPageTitle';
 import ErrorSummary from '../BaseComponents/ErrorSummary/ErrorSummary';
 import { DateErrorFormatter } from '../../helpers/formatters/DateErrorFormatter';
 import Button from '../BaseComponents/Button/Button';
+import setPageTitle from '../../helpers/setPageTitleHelpers';
 
 export interface ErrorMessageDetails {
   message: string;
@@ -47,6 +48,10 @@ export default function Assignment(props) {
 
   const isOnlyOneField = useIsOnlyField();
   const containerName = thePConn.getDataObject().caseInfo.assignments[0].name;
+
+  useEffect(() => {
+    setPageTitle();
+  },[children])
 
   function findCurrentIndicies(
     arStepperSteps: Array<any>,

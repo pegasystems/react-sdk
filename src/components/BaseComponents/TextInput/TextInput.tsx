@@ -1,9 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FormGroup, { makeErrorId, makeHintId } from '../FormGroup/FormGroup';
+import HintTextComponent from '../../../helpers/formatters/ParsedHtml';
 
 export default function TextInput(props) {
   const { name, errorText, hintText, inputProps = {}, maxLength, id, onBlur, disabled } = props;
+
+  if (disabled) {
+    return (
+      <>
+        {hintText && (
+          <div id={makeHintId(name)} className='govuk-hint'>
+            <HintTextComponent htmlString={hintText} />
+          </div>
+        )}
+        <span className='govuk-body govuk-!-font-weight-bold'>{inputProps.value}</span><br/>
+      </>
+    );
+  }
 
   const inputClasses = `govuk-input ${errorText ? 'govuk-input--error' : ''}`.trim();
 
@@ -31,7 +45,6 @@ export default function TextInput(props) {
         id={id}
         name={name}
         onBlur={onBlur}
-        disabled={disabled}
       ></input>
     </FormGroup>
   );

@@ -95,7 +95,7 @@ export default function Group(props){
           name={`${formattedContext}-group`}
           onChange={handleChange}
           label={heading}
-          instructionText={instructions}
+          hintText={instructions}
           legendIsHeading={isOnlyField}
           errorText={errors.join(' ').trim() !== '' ? errors.join(' ').trim() : null}
         />
@@ -104,6 +104,7 @@ export default function Group(props){
   }
 
   return (<>
+  {heading && <div id='heading' className='govuk-body'>{heading}</div>}
   {instructions && <div id='instructions' className='govuk-body'><InstructionComp htmlString={instructions}/></div>}
   {...children}
   </>);

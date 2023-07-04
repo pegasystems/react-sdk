@@ -513,7 +513,10 @@ const createPConnectComponent = (declarative = false) => {
       };
 
       // console.log(`react_pconnect: used to return: <this.Control {...finalProps} />`);
-
+      if(getPConnect().isConditionExist() && !additionalProps.liveAttributeAdded){
+        finalProps.additionalProps = {...additionalProps, liveAttributeAdded: true}
+        return <div aria-live='polite'><this.Control {...finalProps} /></div>
+      }
       return <this.Control {...finalProps} />;
     }
   }

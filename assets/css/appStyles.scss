@@ -1,8 +1,7 @@
-@import "node_modules/govuk-frontend/govuk/settings/_media-queries";
-@import "node_modules/govuk-frontend/govuk/helpers/_media-queries";
+@use "node_modules/govuk-frontend/govuk/all";
 
-.app-claimslist-tag{
-  @include govuk-media-query($from: tablet){
+.app-claimslist-tag {
+  @include all.govuk-media-query($from: tablet){
     float:right;
   }
 }

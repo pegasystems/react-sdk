@@ -166,7 +166,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.s[a|c]ss$/,
-          use: [{ loader: 'style-loader' }, { loader: 'css-loader' }, { loader: 'sass-loader' }]
+          use: [{ loader: 'style-loader' }, { loader: 'css-loader' }, {loader:'resolve-url-loader'}, { loader: 'sass-loader' }]
         },
         { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
         {

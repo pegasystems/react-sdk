@@ -12,7 +12,7 @@ import { loginIfNecessary } from '@pega/react-sdk-components/lib/components/help
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../sdk-local-component-map';
 
-declare const PCore: any;
+
 declare const myLoadPortal: any;
 declare const myLoadDefaultPortal: any;
 

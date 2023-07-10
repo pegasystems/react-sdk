@@ -11,7 +11,9 @@
     "noEmit": false,
     "composite": true,
     //"rootDir": "./src",
-    "outDir": "./lib"
+    "outDir": "./lib",
+    // "skipLibCheck" must be true in order to not see errors in the @pega/pcore-pconnect-typedefs files themselves
+    "skipLibCheck": true,
   },
   "files" : [ "./sdk-local-component-map.js"]
 }

@@ -17,14 +17,8 @@ import { getSdkConfig, SdkConfigAccess } from '@pega/react-sdk-components/lib/co
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../../sdk-local-component-map';
 
-
-
-// declare var gbLoggedIn: boolean;
-// declare var login: Function;
-// declare var logout: Function;
-
-declare const PCore: any;
 declare const myLoadMashup: any;
+
 
 const useStyles = makeStyles((theme) => ({
   embedTopRibbon: {

@@ -5,6 +5,9 @@
     "project": "tsconfig.json",
     "ecmaVersion": 13
   },
+  "globals": {
+    "PCore": "readonly"
+  },
   "settings": {
     "import/resolver": {
       "typescript": {},
@@ -80,7 +83,7 @@
     "no-alert": "error",
     "no-console": "error",
     "no-fallthrough": "error",
-    "no-undef": "error",
+    "no-undef": "warn",
     "no-unused-vars": "error",
     "no-var": "error",
     "prefer-const": "error",

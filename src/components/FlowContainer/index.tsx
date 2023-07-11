@@ -128,6 +128,7 @@ export default function FlowContainer(props) {
     if (caseViewMode && caseViewMode === "review") {
       return true;
     }
+    // eslint-disable-next-line sonarjs/prefer-single-boolean-return
     if (caseViewMode && caseViewMode === "perform") {
       return false;
     }
@@ -221,6 +222,7 @@ export default function FlowContainer(props) {
 
     const childCases = ourPConn.getValue(pCoreConstants.CASE_INFO.CHILD_ASSIGNMENTS);
     // const allAssignments = [];
+    // eslint-disable-next-line sonarjs/prefer-single-boolean-return
     if (childCases && childCases.length > 0) {
       return true;
     }

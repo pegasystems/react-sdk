@@ -92,6 +92,7 @@ export const hasAssignments = (pConnect) => {
   const assignments = pConnect.getValue(CASE_INFO.D_CASE_ASSIGNMENTS_RESULTS);
   const childCasesAssignments = getChildCaseAssignments(pConnect);
 
+  // eslint-disable-next-line sonarjs/prefer-single-boolean-return
   if (assignments || childCasesAssignments || isCaseWideLocalAction(pConnect)) {
     return true;
   }

@@ -44,14 +44,14 @@ export default function ClaimsList(props){
   }
 
   function _rowClick(row: any) {
-    const {pzInsKey} = row;
+    const {pzInsKey, pyAssignmentID} = row;
 
     const container = thePConn.getContainerName();
     const target = `root/${container}`;
 
     if( rowClickAction === 'OpenAssignment'){
       const openAssignmentOptions = { containerName: container};
-      PCore.getMashupApi().openAssignment(pzInsKey, target, openAssignmentOptions)
+      PCore.getMashupApi().openAssignment(pyAssignmentID, target, openAssignmentOptions);
       .then(()=>{
         Utils.scrollToTop();
       });

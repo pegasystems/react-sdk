@@ -32,6 +32,10 @@ export default function TextInput(props) {
 
   let readOnlyProp = {}; // Note: empty if NOT ReadOnly
 
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
+
   if (displayMode === 'LABELS_LEFT') {
     return <FieldValueList name={hideLabel ? '' : label} value={value} />;
   }
@@ -49,10 +53,6 @@ export default function TextInput(props) {
   testProp = {
     'data-test-id': testId
   };
-
-  useEffect(() => {
-    setInputValue(value);
-  }, [value]);
 
   function handleChange(event) {
     // update internal value

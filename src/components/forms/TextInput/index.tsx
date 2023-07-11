@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField } from '@material-ui/core';
 import FieldValueList from '../../designSystemExtensions/FieldValueList';
+import handleEvent from '../../../helpers/event-utils';
 
 export default function TextInput(props) {
   const {
+    getPConnect,
     label,
     required,
     disabled,
     value = '',
     validatemessage,
     status,
-    onChange,
-    onBlur,
+    /* onChange, onBlur */
     readOnly,
     testId,
     fieldMetadata,
@@ -19,11 +20,21 @@ export default function TextInput(props) {
     displayMode,
     hideLabel
   } = props;
+
+  const pConn = getPConnect();
+  const actions = pConn.getActionsApi();
+  const propName = pConn.getStateProps().value;
+
   const helperTextToDisplay = validatemessage || helperText;
 
+  const [inputValue, setInputValue] = useState();
   const maxLength = fieldMetadata?.maxLength;
 
   let readOnlyProp = {}; // Note: empty if NOT ReadOnly
+
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   if (displayMode === 'LABELS_LEFT') {
     return <FieldValueList name={hideLabel ? '' : label} value={value} />;
@@ -43,6 +54,15 @@ export default function TextInput(props) {
     'data-test-id': testId
   };
 
+  function handleChange(event) {
+    // update internal value
+    setInputValue(event?.target?.value);
+  }
+
+  function handleBlur() {
+    handleEvent(actions, 'changeNblur', propName, inputValue);
+  }
+
   return (
     <TextField
       fullWidth
@@ -52,11 +72,11 @@ export default function TextInput(props) {
       size='small'
       required={required}
       disabled={disabled}
-      onChange={onChange}
-      onBlur={!readOnly ? onBlur : undefined}
+      onChange={handleChange}
+      onBlur={!readOnly ? handleBlur : undefined}
       error={status === 'error'}
       label={label}
-      value={value}
+      value={inputValue}
       InputProps={{ ...readOnlyProp, inputProps: { maxLength, ...testProp } }}
     />
   );

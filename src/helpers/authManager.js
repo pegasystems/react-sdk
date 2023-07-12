@@ -589,7 +589,7 @@ const signOutAndRedirect = () => {
   })
 }
 
-let el = document.getElementById('signout-btn');
+const el = document.getElementById('signout-btn');
 el.onclick = signOutAndRedirect;
 
 // Callback routine for custom event to ask for updated tokens

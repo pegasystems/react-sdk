@@ -51,7 +51,7 @@ export default function ClaimsList(props){
 
     if( rowClickAction === 'OpenAssignment'){
       const openAssignmentOptions = { containerName: container};
-      PCore.getMashupApi().openAssignment(pyAssignmentID, target, openAssignmentOptions);
+      PCore.getMashupApi().openAssignment(pyAssignmentID, target, openAssignmentOptions)
       .then(()=>{
         Utils.scrollToTop();
       });

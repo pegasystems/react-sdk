@@ -157,15 +157,21 @@ const initOAuth = (bInit) => {
     let sSI = sessionStorage.getItem("rsdk_CI");
     if( sSI ) {
       try {
-          const oSI = JSON.parse(sSI);
-          if( oSI.authorizeUri !== authConfig.authorizeUri ||
-              oSI.appAlias !== authConfig.appAlias ||
-              oSI.clientId !== authConfig.clientId ||
-              oSI.userIdentifier !== authConfig.userIdentifier ||
-              oSI.password !== authConfig.password) {
-              clearAuthMgr();
-              sSI = null;
+        const oSI = JSON.parse(sSI);
+        const aProps = ['authorizeUri', 'appAlias', 'clientId', 'authService', 'userIdentifier'];
+        for( let i = 0; i < aProps.length; i += 1 ) {
+          const prop = aProps[i];
+          const currValue = oSI[prop];
+          const newValue = authConfig[prop];
+          if( currValue !== newValue ) {
+            // eslint-disable-next-line no-console
+            console.warn(`Clearing credentials due to mismatch for property: ${prop};` +
+              `currValue (${currValue}) does not match new desired value (${newValue})`);
+            clearAuthMgr();
+            sSI = null;
+            break;
           }
+        }
       } catch(e) {
         // do nothing
       }

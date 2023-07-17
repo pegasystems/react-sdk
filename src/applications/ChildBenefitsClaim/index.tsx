@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import StoreContext from "../../bridge/Context/StoreContext";
 import createPConnectComponent from "../../bridge/react_pconnect";
 
-import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '../../helpers/authManager';
+import { gbLoggedIn, loginIfNecessary, logout, sdkSetAuthHeader } from '../../helpers/authManager';
 
 import { compareSdkPCoreVersions } from '../../helpers/versionHelpers';
 import { getSdkConfig } from '../../helpers/config_access';
@@ -13,6 +13,7 @@ import ConfirmationPage from './ConfirmationPage';
 import UserPortal from './UserPortal';
 import ClaimsList from '../../components/templates/ClaimsList';
 import setPageTitle from '../../helpers/setPageTitleHelpers';
+import LogoutPopup from '../../components/forms/LogoutPopup';
 
 // declare var gbLoggedIn: boolean;
 // declare var login: Function;
@@ -31,6 +32,7 @@ export default function ChildBenefitsClaim() {
   const [bShowResolutionScreen, setShowResolutionScreen] = useState(false);
   const [loadingsubmittedClaims, setLoadingSubmittedClaims] = useState(true);
   const [loadinginProgressClaims, setLoadingInProgressClaims] = useState(true);
+  const [showSignoutModal, setShowSignoutModal] = useState(false);
   let operatorId = '';
 
   useEffect(()=> {
@@ -351,11 +353,40 @@ export default function ChildBenefitsClaim() {
     };
   }, []);
 
+ function signOutAndRedirect() {
+    logout().then(() => {
+      window.location.href = 'https://www.gov.uk/government/organisations/hm-revenue-customs';
+    });
+  }
+  function handleSignout() {
+    if (bShowPega) {
+      setShowSignoutModal(true);
+    } else {
+      signOutAndRedirect();
+    }
+  }
+  const mainSignoutlink: any = document.getElementById('signout-btn');
+  mainSignoutlink.onclick = handleSignout;
+
+
+
+  const handleStaySignIn = e => {
+    e.preventDefault();
+    setShowSignoutModal(false);
+  };
+
+
   return (
     <>
       <div id='pega-part-of-page'>
         <div id='pega-root'></div>
       </div>
+      <LogoutPopup
+        show={showSignoutModal}
+        hideModal={() => setShowSignoutModal(false)}
+        handleSignoutModal={signOutAndRedirect}
+        handleStaySignIn={handleStaySignIn}
+      />
       { showStartPage && <StartPage onStart={startNow} onBack={closeContainer}/>  }
       { showUserPortal && <UserPortal beginClaim={beginClaim}>
         <hr className="govuk-section-break govuk-section-break--m govuk-section-break--visible"></hr>

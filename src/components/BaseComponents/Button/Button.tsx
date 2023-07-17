@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 export default function Button(props) {
   const {
     disabled,
+    id,
     variant,
     onClick,
     children,
@@ -76,13 +77,14 @@ export default function Button(props) {
 
   return (
     // eslint-disable-next-line react/button-has-type
-    <button {...buttonAttributes} onClick={onClick}>
+    <button {...buttonAttributes} onClick={onClick} id={id}>
       {children}
     </button>
   );
 }
 
 Button.propTypes = {
+  id:PropTypes.string,
   name: PropTypes.string,
   disabled: PropTypes.bool,
   variant: PropTypes.string,

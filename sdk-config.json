@@ -3,24 +3,23 @@
   "authConfig": {
     "authConfig_comment": "Optional Full paths to Infinity server OAuth endpoints (Only needed if using custom OAuth service)",
     "authConfig_comment2": "Optional attributes are: authorize, token, revoke, redirectUri, authService, silentTimeout, iframeLoginUI",
-    "authService": "pega",
+    "authService": "auth0-dev",
 
     "mashupClient_comment": "Client ID and Client secret from the OAuth 2.0 Client Registration record used for mashup use case",
     "mashupClient_comment2": "See SDK Guide for instructions on how to generate and obtain the proper values for the following entries",
-    "mashupClientId": "25795373220702300272",
-    "mashupUserIdentifier": "customer@mediaco",
+    "mashupClientId": "19501985612341573869",
+    "mashupUserIdentifier": "Citizen2@ChildBen",
     "mashupClient_comment3": "Note: mashupPassword requires Base64 encoding",
-    "mashupPassword": "",
+    "mashupPassword": "SEVpYi5AM1BKKkpXZmZwWG94Mloy",
 
     "portalClientId_comment": "Client ID from the OAuth 2.0 Client Registration record used for portal use case",
-    "portalClientId": "25795373220702300272"
+    "portalClientId": "19501985612341573869"
   },
   "serverConfig": {
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
-    "infinityRestServerUrl": "https://localhost:1080/prweb",
-
+    "infinityRestServerUrl": "https://hmrc-adviserui-dt1.pegacloud.net/prweb/",
     "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
-    "appAlias": "",
+    "appAlias": "chb-dev",
 
     "sdkContentServerUrl_comment": "If specified, the given URL will be used. If left blank, window.location.origin will be used.",
     "sdkContentServerUrl": "",

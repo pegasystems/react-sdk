@@ -416,7 +416,7 @@ export default function EmbeddedTopLevel() {
       }
 
       // Login if needed, without doing an initial main window redirect
-      loginIfNecessary("embedded", true);
+      loginIfNecessary("embedded", false);
 
     });
 

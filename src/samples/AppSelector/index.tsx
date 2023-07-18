@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, Route } from 'react-router-dom';
-import EmbeddedTopLevel from "../Embedded/EmbeddedTopLevel";
+// import EmbeddedTopLevel from "../Embedded/EmbeddedTopLevel";
+import EmbeddedTopLevel from '../ChildBenefitsClaim/index';
 import FullPortal from "../FullPortal";
 
 // NOTE: You should update this to be the same value that's in

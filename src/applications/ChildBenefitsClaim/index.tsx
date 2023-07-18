@@ -169,12 +169,15 @@ export default function ChildBenefitsClaim() {
   useEffect(() => {
     // Update visibility of UI when bShowPega changes
     const thePegaPartEl = document.getElementById('pega-part-of-page');
+    const languageToggle = document.getElementById('hmrc-language-toggle');
 
     if (thePegaPartEl) {
       if (bShowPega) {
         thePegaPartEl.style.display = 'block';
+        languageToggle.style.display = 'none';
       } else {
         thePegaPartEl.style.display = 'none';
+        languageToggle.style.display = 'block';
       }
     }
   }, [bShowPega]);

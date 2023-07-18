@@ -1,19 +1,21 @@
-import React from 'react'
-import Button from '../../components/BaseComponents/Button/Button'
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import Button from '../../components/BaseComponents/Button/Button';
 
 const StartPage: React.FC<{onStart: React.MouseEventHandler, onBack: any}> = ({onStart, onBack}) => {
+  const { t } = useTranslation();
   return (
     <>
       <div className='govuk-grid-column-two-thirds'>
-      <Button
-            variant='backlink'
-            onClick={onBack}
-            key='StartPageBacklink'
-            attributes={{ type: 'link' }}
+        <Button
+          variant='backlink'
+          onClick={onBack}
+          key='StartPageBacklink'
+          attributes={{ type: 'link' }}
         />
       </div>
       <div className='govuk-grid-column-two-thirds'>
-        <h1 className='govuk-heading-xl'>Claim Child Benefit</h1>
+        <h1 className='govuk-heading-xl'>{t('CLAIM_CHILD_BENEFIT')}</h1>
         <p className='govuk-body'>
           Use this form to claim Child Benefit if you or your partner are responsible for a child
           who is under 16, or under 20 if they are in{' '}
@@ -75,8 +77,14 @@ const StartPage: React.FC<{onStart: React.MouseEventHandler, onBack: any}> = ({o
           Start now
         </Button>
         <p className='govuk-body'>
-          If you have any questions about Child Benefit, <a
-            href='https://www.gov.uk/government/organisations/hm-revenue-customs/contact/child-benefit' className='govuk-link'>contact the Child Benefit helpline</a>.
+          If you have any questions about Child Benefit,{' '}
+          <a
+            href='https://www.gov.uk/government/organisations/hm-revenue-customs/contact/child-benefit'
+            className='govuk-link'
+          >
+            contact the Child Benefit helpline
+          </a>
+          .
         </p>
         <div className='govuk-!-margin-top-8'>
           <a
@@ -90,8 +98,7 @@ const StartPage: React.FC<{onStart: React.MouseEventHandler, onBack: any}> = ({o
           </a>
         </div>
       </div>
-
-      </>
+    </>
   );
 }
 

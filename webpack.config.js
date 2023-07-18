@@ -57,6 +57,10 @@ module.exports = (env, argv) => {
           to: './'
         },
         {
+          from: './assets/i18n/*',
+          to: './'
+        },
+        {
           from: './node_modules/@pega/constellationjs/dist/bootstrap-shell.js',
           to: './constellation'
         },

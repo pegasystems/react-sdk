@@ -6,6 +6,11 @@ import FieldValueList from '../../designSystemExtensions/FieldValueList';
 import { format } from '../../../helpers/formatters';
 import { dateFormatInfoDefault, getDateFormatInfo} from '../../../helpers/date-format-utils';
 
+// Will return the date string in YYYY-MM-DD format which we'll be POSTing to the server
+function getFormattedDate(date){
+  return `${date.$y.toString()}-${(date.$M + 1).toString().padStart(2, '0')}-${date.$D.toString().padStart(2, '0')}`;
+}
+
 export default function Date(props) {
   const {
     getPConnect,
@@ -60,13 +65,15 @@ export default function Date(props) {
   };
 
   const handleChange = date => {
-    const changeValue = date && date.isValid() ? date.toISOString() : null;
-    onChange({ value: changeValue });
+    if(date && date.isValid()){
+      onChange({ value: getFormattedDate(date) });
+    }
   };
 
   const handleAccept = date => {
-    const changeValue = date && date.isValid() ? date.toISOString() : null;
-    handleEvent(actions, 'changeNblur', propName, changeValue);
+    if(date && date.isValid()){
+      handleEvent(actions, 'changeNblur', propName, getFormattedDate(date));
+    }
   };
 
   return (

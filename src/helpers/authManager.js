@@ -64,7 +64,6 @@ const clearAuthMgr = (bFullReauth=false) => {
   sessionStorage.removeItem("rsdk_TI");
   sessionStorage.removeItem("rsdk_UI");
   sessionStorage.removeItem("rsdk_loggingIn");
-  sessionStorage.removeItem("rsdk_locale");
   gbLoggedIn = false;
   gbLoginInProgress = false;
   forcePopupForReauths(bFullReauth);
@@ -214,7 +213,6 @@ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) =>
   // Set up constellationConfig with data that bootstrapWithAuthHeader expects
   constellationBootConfig.customRendering = true;
   constellationBootConfig.restServerUrl = sdkConfigServer.infinityRestServerUrl;
-
   // NOTE: Needs a trailing slash! So add one if not provided
   if( !sdkConfigServer.sdkContentServerUrl.endsWith('/') ) {
     sdkConfigServer.sdkContentServerUrl = `${sdkConfigServer.sdkContentServerUrl}/`;
@@ -270,47 +268,37 @@ const constellationInit = (authConfig, tokenInfo, authTokenUpdated, fnReauth) =>
     window.myLoadMashup = bootstrapShell.loadMashup;
     window.myLoadPortal = bootstrapShell.loadPortal;
     window.myLoadDefaultPortal = bootstrapShell.loadDefaultPortal;
-    window.myUpdateLocale = bootstrapShell.updateLocale;
 
-    bootstrapShell
-      .bootstrapWithAuthHeader(constellationBootConfig, 'shell')
-      .then(() => {
-        // eslint-disable-next-line no-console
-        console.log('Bootstrap successful!');
-        gbC11NBootstrapInProgress = false;
+    bootstrapShell.bootstrapWithAuthHeader(constellationBootConfig, 'shell').then(() => {
+      // eslint-disable-next-line no-console
+      console.log('Bootstrap successful!');
+      gbC11NBootstrapInProgress = false;
 
-        const locale = sessionStorage.getItem('rsdk_locale') || 'en-GB';
+      // Setup listener for the reauth event
+      if( tokenInfo ) {
         // eslint-disable-next-line no-undef
-        window.PCore.getEnvironmentInfo().setLocale(locale);
-
-        // Setup listener for the reauth event
-        if (tokenInfo) {
+        PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_FULL_REAUTH, fnReauth, "authFullReauth");
+      } else {
+        // customReauth event introduced with 8.8
+        // eslint-disable-next-line no-undef
+        const sEvent = PCore.getConstants().PUB_SUB_EVENTS.EVENT_CUSTOM_REAUTH;
+        if( sEvent ) {
           // eslint-disable-next-line no-undef
-          PCore.getPubSubUtils().subscribe( PCore.getConstants().PUB_SUB_EVENTS.EVENT_FULL_REAUTH,
-            fnReauth,
-            'authFullReauth'
-          );
-        } else {
-          // customReauth event introduced with 8.8
-          // eslint-disable-next-line no-undef
-          const sEvent = PCore.getConstants().PUB_SUB_EVENTS.EVENT_CUSTOM_REAUTH;
-          if (sEvent) {
-            // eslint-disable-next-line no-undef
-            PCore.getPubSubUtils().subscribe(sEvent, fnReauth, 'doReauth');
-          }
+          PCore.getPubSubUtils().subscribe(sEvent, fnReauth, "doReauth");
         }
+      }
 
-        // Fire SdkConstellationReady event so bridge and app route can do expected post PCore initializations
-        const event = new CustomEvent('SdkConstellationReady', {});
-        document.dispatchEvent(event);
-      })
-      .catch(e => {
-        // Assume error caught is because token is not valid and attempt a full reauth
-        // eslint-disable-next-line no-console
-        console.error(`Constellation JS Engine bootstrap failed. ${e}`);
-        gbC11NBootstrapInProgress = false;
-        fnReauth();
-      });
+      // Fire SdkConstellationReady event so bridge and app route can do expected post PCore initializations
+      const event = new CustomEvent('SdkConstellationReady', {});
+      document.dispatchEvent(event);
+    })
+    .catch( e => {
+      // Assume error caught is because token is not valid and attempt a full reauth
+      // eslint-disable-next-line no-console
+      console.error(`Constellation JS Engine bootstrap failed. ${e}`);
+      gbC11NBootstrapInProgress = false;
+      fnReauth();
+    })
   });
   /* Ends here */
 };
@@ -552,8 +540,6 @@ export const authIsMainRedirect = () => {
 // Passive update where just session storage is updated so can be used on a window refresh
 export const authTokenUpdated = (tokenInfo ) => {
   sessionStorage.setItem("rsdk_TI", JSON.stringify(tokenInfo));
-  // Set default language as english on login
-  sessionStorage.setItem('rsdk_locale', "en-GB");
 };
 
 export const logout = () => {

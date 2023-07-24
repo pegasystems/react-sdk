@@ -55,7 +55,7 @@ export default function Dropdown(props) {
   const localeContext = metaData?.datasource?.tableType === 'DataPage' ? 'datapage' : 'associated';
   const localeClass = localeContext === 'datapage' ? '@baseclass' : className;
   const localeName = localeContext === 'datapage' ? metaData?.datasource?.name : refName;
-  const localePath = localeContext === 'datapage' ? displayName : '';
+  const localePath = localeContext === 'datapage' ? displayName : localeName;
 
   let readOnlyProp = {};
 

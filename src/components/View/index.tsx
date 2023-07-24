@@ -28,7 +28,8 @@ import OneColumnPage from '../templates/OneColumnPage';
 import InlineDashboardPage from '../templates/InlineDashboardPage';
 import DetailsSubTabs from '../templates/Details/SubTabs';
 import TwoColumnTab from '../templates/TwoColumnTab';
-import CheckAnswers from '../templates/CheckAnswers'
+import CheckAnswers from '../templates/CheckAnswers';
+import MimicASentence from '../templates/MimicASentence';
 
 import './View.css';
 //
@@ -167,6 +168,10 @@ export default function View(props) {
       case 'HMRC_ODX_CheckAnswers':
         ViewTemplate = CheckAnswers;
         break;
+
+        case 'HMRC_ODX_MimicASentence':
+          ViewTemplate = MimicASentence;
+          break;
 
       default:
         // eslint-disable-next-line no-console

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FormGroup, { makeErrorId, makeHintId } from '../FormGroup/FormGroup';
-import HintTextComponent from '../../../helpers/formatters/ParsedHtml';
+import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 
 export default function TextInput(props) {
   const { name, errorText, hintText, inputProps = {}, maxLength, id, onBlur, disabled } = props;

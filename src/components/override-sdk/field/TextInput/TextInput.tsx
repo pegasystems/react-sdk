@@ -1,6 +1,6 @@
 import React from 'react';
 import GDSTextInput from '../../../BaseComponents/TextInput/TextInput';
-import useIsOnlyField from '../../../../helpers/hooks/QuestionDisplayHooks';
+import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';

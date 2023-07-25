@@ -4,6 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const LiveReloadPlugin = require('@kooneko/livereload-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const zlib = require('zlib');
 
 module.exports = (env, argv) => {
@@ -37,6 +38,14 @@ module.exports = (env, argv) => {
         {
           from: './node_modules/@pega/react-sdk-components/lib/components/helpers/auth.js', /* New SDK packaging has moved auth.js into node_modules */
           to: './'
+        },
+        {
+          from: './node_modules/govuk-frontend/govuk/assets/images',
+          to: 'assets/images/'
+        },
+        {
+          from: './node_modules/govuk-frontend/govuk/assets/fonts',
+          to: 'assets/fonts/'
         },
         {
           from: './assets/icons/*',
@@ -79,34 +88,45 @@ module.exports = (env, argv) => {
     })
   );
 
+  // config minicssExtract plugin, used to store a production copy of generated css
+  pluginsToAdd.push(
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "./assets/appStyles.css"
+    }),
+  )
+
   // Enable gzip and brotli compression
   //  Exclude constellation-core and bootstrap-shell files since
   //    client receives these files in gzip and brotli format
-  pluginsToAdd.push(
-    new CompressionPlugin({
-      filename: '[path][base].gz',
-      algorithm: 'gzip',
-      test: /\.js$|\.ts$|\.css$|\.html$/,
-      exclude: /constellation-core.*.js|bootstrap-shell.js/,
-      threshold: 10240,
-      minRatio: 0.8
-    })
-  );
-  pluginsToAdd.push(
-    new CompressionPlugin({
-      filename: '[path][base].br',
-      algorithm: 'brotliCompress',
-      test: /\.(js|ts|css|html|svg)$/,
-      exclude: /constellation-core.*.js|bootstrap-shell.js/,
-      compressionOptions: {
-        params: {
-          [zlib.constants.BROTLI_PARAM_QUALITY]: 11
-        }
-      },
-      threshold: 10240,
-      minRatio: 0.8
-    })
-  );
+  if(webpackMode === 'production'){
+    pluginsToAdd.push(
+      new CompressionPlugin({
+        filename: '[path][base].gz',
+        algorithm: 'gzip',
+        test: /\.js$|\.ts$|\.css$|\.html$/,
+        exclude: /constellation-core.*.js|bootstrap-shell.js/,
+        threshold: 10240,
+        minRatio: 0.8
+      })
+    );
+    pluginsToAdd.push(
+      new CompressionPlugin({
+        filename: '[path][base].br',
+        algorithm: 'brotliCompress',
+        test: /\.(js|ts|css|html|svg)$/,
+        exclude: /constellation-core.*.js|bootstrap-shell.js/,
+        compressionOptions: {
+          params: {
+            [zlib.constants.BROTLI_PARAM_QUALITY]: 11
+          }
+        },
+        threshold: 10240,
+        minRatio: 0.8
+      })
+    );
+  }
 
   if (webpackMode === 'development') {
     // In development mode, add LiveReload plug
@@ -164,7 +184,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.s[a|c]ss$/,
-          use: [{ loader: 'style-loader' }, { loader: 'css-loader' }, { loader: 'sass-loader' }]
+          use: [{loader: MiniCssExtractPlugin.loader}, { loader: 'css-loader' }, { loader: 'sass-loader' } ]
         },
         { test: /\.(png|gif|jpg|cur)$/i, loader: 'url-loader', options: { limit: 8192 } },
         {

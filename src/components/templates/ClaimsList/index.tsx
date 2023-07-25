@@ -2,7 +2,7 @@ import React from 'react';
 import DateFormatter from '@pega/react-sdk-components/lib/components/helpers/formatters/Date';
 import Button from '../../../components/BaseComponents/Button/Button';
 import PropTypes from "prop-types";
-import { Utils } from '../../../helpers/utils';
+import { Utils } from '../../helpers/utils';
 
 declare const PCore: any;
 

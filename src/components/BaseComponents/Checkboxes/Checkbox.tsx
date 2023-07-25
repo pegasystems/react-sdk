@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeItemId, makeHintId } from '../FormGroup/FormGroup';
-import HintTextComponent from '../../../helpers/formatters/ParsedHtml';
+import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 
 export default function Checkbox({ item, index, name, inputProps= {}, onChange, onBlur }) {
   const itemClasses = 'govuk-checkboxes__item';

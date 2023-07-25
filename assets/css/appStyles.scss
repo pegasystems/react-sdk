@@ -1,0 +1,18 @@
+@use "node_modules/govuk-frontend/govuk/all";
+@import "../../node_modules/hmrc-frontend/hmrc/hmrc-frontend-5.41.0.min.css";
+
+.app-claimslist-tag {
+  @include all.govuk-media-query($from: tablet){
+    float:right;
+  }
+}
+
+.app-claimslist .govuk-summary-list__row:last-child{
+  border-bottom: 0;
+}
+
+.signout-modal{
+  position: absolute;
+  top: 10%;
+  left: 88%;
+}

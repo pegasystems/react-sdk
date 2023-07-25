@@ -1,29 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormHelperText
-} from '@material-ui/core';
+import React from 'react';
+import GDSCheckboxes from '../../../BaseComponents/Checkboxes/Checkboxes';
+import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks'
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
-import FieldValueList from '@pega/react-sdk-components/lib/components/designSystemExtension/FieldValueList';
+import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
 export default function CheckboxComponent(props) {
   const {
     getPConnect,
-    label,
-    value = false,
-    readOnly,
-    testId,
-    required,
-    status,
-    helperText,
+    name,
+    inputProps,
     validatemessage,
-    displayMode,
-    hideLabel
+    hintText,
+    label,
+    readOnly,
+    value,
+    testId,
   } = props;
-  const helperTextToDisplay = validatemessage || helperText;
+
+  const isOnlyField = useIsOnlyField();
 
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();
@@ -31,50 +25,31 @@ export default function CheckboxComponent(props) {
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps().value;
 
-  const [checked, setChecked] = useState(false);
-  useEffect(() => {
-    // This update theSelectedButton which will update the UI to show the selected button correctly
-    setChecked(value);
-  }, [value]);
-
-  if (displayMode === 'LABELS_LEFT') {
-    return <FieldValueList name={hideLabel ? '' : label} value={value} />;
-  }
-
-  if (displayMode === 'STACKED_LARGE_VAL') {
-    return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
+  if(readOnly){
+      return (<ReadOnlyDisplay value={value?props.trueLabel:props.falseLabel} label={caption}/>)
   }
 
   const handleChange = event => {
     handleEvent(actionsApi, 'changeNblur', propName, event.target.checked);
   };
 
-  const handleBlur = event => {
-    thePConn.getValidationApi().validate(event.target.checked);
-  };
+  const optionsList = [{checked: value, label: caption, hintText: " ", readOnly:false, name, onChange:handleChange}]
 
-  let theCheckbox = <Checkbox color='primary' />;
-
-  if (readOnly) {
-    // Workaround for lack of InputProps readOnly from https://github.com/mui-org/material-ui/issues/17043
-    //  Also note that we need to turn off the onChange call in the FormControlLabel wrapper, too. See below!
-    theCheckbox = <Checkbox value={value || false} onChange={handleChange} readOnly={readOnly} />;
-  }
+  const extraProps= {testProps:{'data-test-id':testId}};
 
   return (
-    <FormControl required={required} error={status === 'error'}>
-      <FormGroup>
-        <FormControlLabel
-          control={theCheckbox}
-          checked={checked}
-          onChange={!readOnly ? handleChange : undefined}
-          onBlur={!readOnly ? handleBlur : undefined}
-          label={caption}
-          labelPlacement='end'
-          data-test-id={testId}
-        />
-      </FormGroup>
-      <FormHelperText>{helperTextToDisplay}</FormHelperText>
-    </FormControl>
+    <>
+      <GDSCheckboxes
+        inputProps={...inputProps}
+        name={name}
+        label={label}
+        optionsList={optionsList}
+        legendIsHeading={isOnlyField}
+        errorText={validatemessage}
+        hintText={hintText}
+        onChange={handleChange}
+        {...extraProps}
+      />
+    </>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ConditionalWrapper from '../../../helpers/formatters/ConditionalWrapper';
-import HintTextComponent from '../../../helpers/formatters/ParsedHtml';
+import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
+import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 
 export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, children, fieldsetElementProps, testProps}){
 

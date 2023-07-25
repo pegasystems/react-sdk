@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FieldSet from '../FormGroup/FieldSet';
-import HintTextComponent from '../../../helpers/formatters/ParsedHtml';
+import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 
 // TODO Consider solution to allow for a text divider and/or catch all option, as described here: https://design-system.service.gov.uk/components/radios/divider/index.html
 

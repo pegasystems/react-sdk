@@ -13,7 +13,7 @@ import StartPage from './StartPage';
 import ConfirmationPage from './ConfirmationPage';
 import UserPortal from './UserPortal';
 import ClaimsList from '../../components/templates/ClaimsList';
-import setPageTitle from '../../helpers/setPageTitleHelpers';
+import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../sdk-local-component-map';

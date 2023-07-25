@@ -48,7 +48,7 @@ export default function RadioButtons(props) {
   const localeContext = metaData?.datasource?.tableType === 'DataPage' ? 'datapage' : 'associated';
   const localeClass = localeContext === 'datapage' ? '@baseclass' : className;
   const localeName = localeContext === 'datapage' ? metaData?.datasource?.name : configProperty;
-  const localePath = localeContext === 'datapage' ? displayName : '';
+  const localePath = localeContext === 'datapage' ? displayName : localeName;
 
   // theOptions will be an array of JSON objects that are literally key/value pairs.
   //  Ex: [ {key: "Basic", value: "Basic"} ]

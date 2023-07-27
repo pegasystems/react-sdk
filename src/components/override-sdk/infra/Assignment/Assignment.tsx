@@ -49,8 +49,11 @@ export default function Assignment(props) {
   const [errorMessages, setErrorMessages] = useState<Array<OrderedErrorMessage>>([]);
 
   const isOnlyOneField = useIsOnlyField();
-  const containerName = thePConn.getDataObject().caseInfo.assignments[0].name;
 
+  let containerName;
+  if(thePConn.getDataObject().caseInfo?.assignments && thePConn.getDataObject().caseInfo?.assignments.length > 0){
+    containerName = thePConn.getDataObject().caseInfo?.assignments[0].name;
+  }
   useEffect(() => {
     setPageTitle();
   },[children])

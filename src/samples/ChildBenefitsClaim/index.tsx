@@ -289,6 +289,7 @@ export default function ChildBenefitsClaim() {
       initialRender(renderObj);
       operatorId = (PCore.getEnvironmentInfo().getOperatorIdentifier());
       setLoadingSubmittedClaims(true);
+      sessionStorage.removeItem("rsdk_popup");
       // @ts-ignore
       PCore.getDataPageUtils().getDataAsync('D_ClaimantSubmittedChBCases', 'root', {OperatorId: operatorId} ).then(resp => setSubmittedClaims(resp.data.slice(0,10))).finally(()=>setLoadingSubmittedClaims(false));
       fetchInProgressClaimsData();

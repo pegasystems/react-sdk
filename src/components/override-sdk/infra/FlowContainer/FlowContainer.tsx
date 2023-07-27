@@ -4,7 +4,8 @@ import React, { useState, useEffect, useContext, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardHeader, Avatar, Typography } from '@material-ui/core';
-import { Utils } from '../../../helpers/utils';
+import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
+import AppUtils from '../../../helpers/utils';
 import { Alert } from '@material-ui/lab';
 
 import ToDo from '@pega/react-sdk-components/lib/components/widget/ToDo';
@@ -15,9 +16,7 @@ import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 import { addContainerItem, getToDoAssignments, showBanner } from '@pega/react-sdk-components/lib/components/infra/Containers/FlowContainer/helpers';
-import { isEmptyObject } from '@pega/react-sdk-components/lib/helpers/common-utils'
-/common-utils';
-import {utils} from '../../../helpers/utils';
+// import { isEmptyObject } from '@pega/react-sdk-components/lib/components/helpers/common-utils'
 
 // Remove this and use "real" PCore type once .d.ts is fixed (currently shows 3 errors)
 declare const PCore: any;
@@ -55,7 +54,7 @@ export default function FlowContainer(props) {
   const { TODO } = pCoreConstants;
   const todo_headerText = 'To do';
 
-  const Assignment = utils.getComponentFromComponentMap('Assignment');
+  const Assignment = AppUtils.getComponentFromComponentMap('Assignment');
 
   const { getPConnect, routingInfo } = props;
 
@@ -336,7 +335,7 @@ export default function FlowContainer(props) {
       PCore.getPubSubUtils().publish('assignmentFinished');
 
       // debugger;
-      setCheckSvg(Utils.getImageSrc('check', Utils.getSDKStaticConentUrl()));
+      // setCheckSvg(Utils.getImageSrc('check', Utils.getSDKStaticConentUrl()));
     } else {
       // debugger;
       setHasCaseMessages(false);
@@ -364,8 +363,8 @@ export default function FlowContainer(props) {
           currentOrder.length > 0 &&
           currentItems[key] &&
           currentItems[key].view &&
-          type === 'single' &&
-          !isEmptyObject(currentItems[key].view)
+          type === 'single' // &&
+          // !isEmptyObject(currentItems[key].view)
         ) {
           const currentItem = currentItems[key];
           const rootView = currentItem.view;
@@ -443,17 +442,14 @@ export default function FlowContainer(props) {
               </MuiPickersUtilsProvider>
             </Card>
           ) : (
-            <Card className={classes.root}>
-              <Typography variant='h6'>{containerName}</Typography>
+            <div>
               {instructionText !== '' ? (
                 <Typography variant='caption'>{instructionText}</Typography>
               ) : null}
-              <MuiPickersUtilsProvider utils={DayjsUtils}>
                 <Assignment getPConnect={getPConnect} itemKey={itemKey}>
                   {arNewChildrenAsReact}
                 </Assignment>
-              </MuiPickersUtilsProvider>
-            </Card>
+            </div>
           )
         ) : (
           <div>

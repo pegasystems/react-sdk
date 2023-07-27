@@ -3,13 +3,19 @@
 import FieldCheckbox from './src/components/override-sdk/field/Checkbox/';
 import FieldTextInput from './src/components/override-sdk/field/TextInput/';
 import FieldDate from './src/components/override-sdk/field/Date/';
-import CheckAnswers from './src/components/custom-sdk/field/ChangeLink/';
-import ChangeLink from './src/components/custom-sdk/template/CheckAnswers/';
+import CheckAnswers from './src/components/custom-sdk/template/CheckAnswers/';
+import ChangeLink from './src/components/custom-sdk/field/ChangeLink/';
 import FieldRadioButtons from './src/components/override-sdk/field/RadioButtons/';
 import TemplateDefaultForm from './src/components/override-sdk/template/DefaultForm/';
 import InfraAssignmentCard from './src/components/override-sdk/infra/AssignmentCard/';
 import InfraActionButtons from './src/components/override-sdk/infra/ActionButtons/';
 import InfraAssignment from './src/components/override-sdk/infra/Assignment/';
+import InfraFlowContainer from './src/components/override-sdk/infra/FlowContainer/';
+import FieldPhone from './src/components/override-sdk/field/Phone/';
+import InfraView from './src/components/override-sdk/infra/View/';
+import TemplateCaseView from './src/components/override-sdk/template/CaseView/';
+import FieldDropdown from './src/components/override-sdk/field/Dropdown/';
+import TemplateFieldGroupTemplate from './src/components/override-sdk/template/FieldGroupTemplate/';
 /*import end - DO NOT REMOVE*/
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -27,6 +33,12 @@ const localSdkComponentMap = {
   "AssignmentCard" : InfraAssignmentCard,
   "ActionButtons" : InfraActionButtons,
   "Assignment" : InfraAssignment,
+  "FlowContainer" : InfraFlowContainer,
+  "HMRC_ODX_PhoneNumber" : FieldPhone,
+  "View" : InfraView,
+  "CaseView" : TemplateCaseView,
+  "Dropdown" : FieldDropdown,
+  "Group" : TemplateFieldGroupTemplate,
 /*map end - DO NOT REMOVE*/
 };
 

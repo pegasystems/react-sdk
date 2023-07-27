@@ -3,7 +3,7 @@
   "authConfig": {
     "authConfig_comment": "Optional Full paths to Infinity server OAuth endpoints (Only needed if using custom OAuth service)",
     "authConfig_comment2": "Optional attributes are: authorize, token, revoke, redirectUri, authService, silentTimeout, iframeLoginUI",
-    "authService": "auth0",
+    "authService": "auth0-dev",
 
     "mashupClient_comment": "Client ID and Client secret from the OAuth 2.0 Client Registration record used for mashup use case",
     "mashupClient_comment2": "See SDK Guide for instructions on how to generate and obtain the proper values for the following entries",
@@ -19,7 +19,7 @@
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
     "infinityRestServerUrl": "https://hmrc-adviserui-dt1.pegacloud.net/prweb/",
     "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
-    "appAlias": "chb",
+    "appAlias": "chb-dev",
 
     "sdkContentServerUrl_comment": "If specified, the given URL will be used. If left blank, window.location.origin will be used.",
     "sdkContentServerUrl": "",

@@ -22,7 +22,7 @@ export default function Assignment(props) {
   const actionsAPI = thePConn.getActionsApi();
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const localeCategory = 'Assignment';
-
+  const localeReference = `${getPConnect().getCaseInfo().getClassName()}!CASE!${getPConnect().getCaseInfo().getName()}`.toUpperCase();
   // store off bound functions to above pointers
   const finishAssignment = actionsAPI.finishAssignment.bind(actionsAPI);
   const navigateToStep = actionsAPI.navigateToStep.bind(actionsAPI);
@@ -94,7 +94,13 @@ export default function Assignment(props) {
             setIsVertical(false);
           }
 
-          setArNavigationSteps(JSON.parse(JSON.stringify(oCaseInfo.navigation.steps)));
+          const steps = JSON.parse(JSON.stringify(oCaseInfo?.navigation?.steps));
+          steps.forEach(step => {
+            if (step.name) {
+              step.name = PCore.getLocaleUtils().getLocaleValue(name, undefined, localeReference)
+            }
+          });
+          setArNavigationSteps(steps);
           setArCurrentStepIndicies(
             findCurrentIndicies(arNavigationSteps, arCurrentStepIndicies, 0)
           );

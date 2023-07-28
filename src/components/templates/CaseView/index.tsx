@@ -65,6 +65,7 @@ export default function CaseView(props) {
 
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const localeCategory = 'CaseView';
+  const localeKey = `${caseTypeID}!CASE!${caseTypeName}`.toUpperCase();
 
   /**
    *
@@ -214,7 +215,7 @@ export default function CaseView(props) {
                 className={classes.caseViewHeader}
                 title={
                   <Typography variant='h6' component='div'>
-                    {header}
+                    {PCore.getLocaleUtils().getLocaleValue(header, '', localeKey)}
                   </Typography>
                 }
                 subheader={

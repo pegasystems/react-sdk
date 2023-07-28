@@ -34,7 +34,7 @@ export default function Group(props){
     }
   }, [stateChanged]);
 
-  if(children.length > 0){
+  if(children?.length > 0){
     const handleChange = (event, propName) => {
       handleEvent(actionsApi, 'changeNblur', propName, event.target.checked);
       setStateChanged(true);
@@ -106,7 +106,7 @@ export default function Group(props){
   return (<>
   {heading && <div id='heading' className='govuk-body'>{heading}</div>}
   {instructions && <div id='instructions' className='govuk-body'><InstructionComp htmlString={instructions}/></div>}
-  {...children}
+  {children}
   </>);
 }
 

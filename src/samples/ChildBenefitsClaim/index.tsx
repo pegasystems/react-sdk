@@ -14,9 +14,12 @@ import ConfirmationPage from './ConfirmationPage';
 import UserPortal from './UserPortal';
 import ClaimsList from '../../components/templates/ClaimsList';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
+import signoutHandler from '../../components/helpers/signout';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../sdk-local-component-map';
+
+
 
 // declare var gbLoggedIn: boolean;
 // declare var login: Function;
@@ -287,9 +290,15 @@ export default function ChildBenefitsClaim() {
       establishPCoreSubscriptions();
       setShowAppName(true);
       initialRender(renderObj);
+
       operatorId = (PCore.getEnvironmentInfo().getOperatorIdentifier());
+
+      const el = document.getElementById('signout-btn');
+      if(el){
+        el.onclick = signoutHandler;
+      }
+
       setLoadingSubmittedClaims(true);
-      sessionStorage.removeItem("rsdk_popup");
       // @ts-ignore
       PCore.getDataPageUtils().getDataAsync('D_ClaimantSubmittedChBCases', 'root', {OperatorId: operatorId} ).then(resp => setSubmittedClaims(resp.data.slice(0,10))).finally(()=>setLoadingSubmittedClaims(false));
       fetchInProgressClaimsData();

@@ -97,7 +97,7 @@ export default function Assignment(props) {
           const steps = JSON.parse(JSON.stringify(oCaseInfo?.navigation?.steps));
           steps.forEach(step => {
             if (step.name) {
-              step.name = PCore.getLocaleUtils().getLocaleValue(step.name, undefined, localeReference)
+              step.name = PCore.getLocaleUtils().getLocaleValue(step.name, undefined, localeReference);
             }
           });
           setArNavigationSteps(steps);

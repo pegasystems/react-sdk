@@ -17,6 +17,7 @@ import TemplateCaseView from './src/components/override-sdk/template/CaseView/';
 import FieldDropdown from './src/components/override-sdk/field/Dropdown/';
 import TemplateFieldGroupTemplate from './src/components/override-sdk/template/FieldGroupTemplate/';
 import TemplateDetails from './src/components/override-sdk/template/Details/';
+import InfraViewContainer from './src/components/override-sdk/infra/ViewContainer/';
 /*import end - DO NOT REMOVE*/
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -41,6 +42,7 @@ const localSdkComponentMap = {
   "Dropdown" : FieldDropdown,
   "Group" : TemplateFieldGroupTemplate,
   "Details" : TemplateDetails,
+  "ViewContainer" : InfraViewContainer,
 /*map end - DO NOT REMOVE*/
 };
 

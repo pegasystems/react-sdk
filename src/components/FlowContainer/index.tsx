@@ -81,6 +81,8 @@ export default function FlowContainer(props) {
   const [bShowConfirm, setShowConfirm] = useState(false);
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const localeCategory = 'Messages';
+  const caseInfo = getPConnect().getCaseInfo();
+  const localeReference = `${caseInfo?.getClassName()}!CASE!${caseInfo.getName()}`.toUpperCase();
 
   const classes = useStyles();
 
@@ -173,7 +175,7 @@ export default function FlowContainer(props) {
 
     if (bLoadChildren && oWorkData) {
       // debugger;
-      setContainerName(oWorkData.caseInfo.assignments?.[0].name);
+      setContainerName(localizedVal(oWorkData.caseInfo.assignments?.[0].name, undefined, localeReference));
     }
 
     // debugger;
@@ -399,7 +401,7 @@ export default function FlowContainer(props) {
           // check if have oWorkData, there are times due to timing of state change, when this
           // may not be available
           if (oWorkData) {
-            setContainerName(getActiveViewLabel() || oWorkData.caseInfo.assignments?.[0].name);
+            setContainerName(localizedVal(getActiveViewLabel() || oWorkData.caseInfo.assignments?.[0].name, undefined, localeReference));
           }
         }
       }

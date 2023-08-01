@@ -11,6 +11,7 @@ import { DateErrorFormatter } from '../../../helpers/formatters/DateErrorFormatt
 import Button from '../../../BaseComponents/Button/Button';
 import setPageTitle from '../../../helpers/setPageTitleHelpers';
 import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+
 export interface ErrorMessageDetails {
   message: string;
   fieldId: string;

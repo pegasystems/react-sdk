@@ -18,6 +18,7 @@ const AppSelector = () => {
   return (
       <div>
         <Switch>
+          {/* eslint-disable-next-line */}
           <Route exact path={`${baseURL}`} component={EmbeddedTopLevel} />
           <Route path="*" component={EmbeddedTopLevel} />
         </Switch>

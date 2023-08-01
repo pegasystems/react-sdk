@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, createElement } from "react";
+import React, { useEffect, useState, useContext, createElement, Fragment } from "react";
 import PropTypes from "prop-types";
 import { Box, CircularProgress } from "@material-ui/core";
 import createPConnectComponent from "@pega/react-sdk-components/lib/bridge/react_pconnect";
@@ -142,10 +142,10 @@ export default function ViewContainer(props) {
                 const configObject = PCore.createPConnect(config);
                 // Add in displayOnlyFA if prop is on ViewContainer
                 if (displayOnlyFA) {
-                    configObject["displayOnlyFA"] = true;
+                    configObject.displayOnlyFA = true;
                 }
                 setRootComponent(configObject);
-                return (React.createElement(React.Fragment, { key: theBuildName },
+                return (createElement(Fragment, { key: theBuildName },
                     <>{!PCore.getStore().getState().data[routingInfo.accessedOrder[0]].caseInfo.status.startsWith('Open') &&
                         <Button
                         variant='backlink'
@@ -160,14 +160,14 @@ export default function ViewContainer(props) {
                     }
                     {componentVisible && root}
                     </>,
-                    loadingInfo && React.createElement(Box, { textAlign: "center" },
-                        React.createElement(CircularProgress, null))));
+                    loadingInfo && createElement(Box, { textAlign: "center" },
+                        createElement(CircularProgress, null))));
             }
         }
     }
     // fall through return if insufficient routingInfo
-    return (React.createElement(React.Fragment, { key: theBuildName }, loadingInfo && React.createElement(Box, { textAlign: "center" },
-        React.createElement(CircularProgress, null))));
+    return (createElement(Fragment, { key: theBuildName }, loadingInfo && createElement(Box, { textAlign: "center" },
+        createElement(CircularProgress, null))));
 }
 ViewContainer.defaultProps = {
     getPConnect: null,
@@ -185,4 +185,4 @@ ViewContainer.propTypes = {
     mode: PropTypes.string,
     limit: PropTypes.number
 };
-//# sourceMappingURL=ViewContainer.js.map
+// # sourceMappingURL=ViewContainer.js.map

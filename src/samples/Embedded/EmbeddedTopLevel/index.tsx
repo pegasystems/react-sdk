@@ -1,5 +1,6 @@
 /* eslint-disable react/button-has-type */
-import React, { useState, useEffect } from 'react';
+// @ts-nocheck - TypeScript type checking to be added soon
+import React,{ useState, useEffect } from 'react';
 import { render } from "react-dom";
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,7 +13,7 @@ import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '@pega/react-sdk-
 
 import EmbeddedSwatch from '../EmbeddedSwatch';
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
-import { getSdkConfig, SdkConfigAccess } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../../sdk-local-component-map';

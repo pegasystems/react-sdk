@@ -92,7 +92,7 @@ export default function ClaimsList(props){
                     }
                     return (
                         <div className='govuk-heading-m' key={field.name} aria-label={field.label}>
-                          <a>{response}</a>
+                          {response}
                         </div>
                     );
 

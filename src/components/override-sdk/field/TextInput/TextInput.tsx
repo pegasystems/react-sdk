@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import GDSTextInput from '../../../BaseComponents/TextInput/TextInput';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
@@ -22,6 +22,7 @@ export default function TextInput(props) {
     testId
   } = props;
 
+  const[ErrorMessage] = useState(validatemessage)
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
 
@@ -59,7 +60,7 @@ export default function TextInput(props) {
           ...extraInputProps
         }}
         hintText={helperText}
-        errorText={validatemessage}
+        errorText={ErrorMessage}
         label={label}
         labelIsHeading={isOnlyField}
         name={name}

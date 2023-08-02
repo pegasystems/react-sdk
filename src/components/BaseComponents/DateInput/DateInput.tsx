@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import FormGroup, {makeErrorId, makeHintId} from '../FormGroup/FormGroup';
 import FieldSet from '../FormGroup/FieldSet'
 
 export default function DateInput(props){
 
-  const {name, errorText, hintText, value ,onChangeDay, onChangeMonth, onChangeYear, testId, inputProps={}} = props;  
+  const {name, errorText, hintText, value ,onChangeDay, onChangeMonth, onChangeYear, testId, inputProps={}} = props;
   let {errorProps} = props;
+  const { t } = useTranslation();
 
   if(!errorProps){
     errorProps = {};
@@ -28,9 +30,9 @@ export default function DateInput(props){
   }
 
   // NOTE - Calculating outside of JSX incase of future translation requirements
-  const dayLabel = "Day";
-  const monthLabel = "Month";
-  const yearLabel = "Year"
+  const dayLabel = t('Day');
+  const monthLabel = t('Month');
+  const yearLabel = t('Year');
 
   // TODO - Handle Autocomplete settings (if always required)
   // TODO - Investigate if possible to set error class per input depending on error message (e.g. if only year is missing, only error style year input)
@@ -59,7 +61,7 @@ export default function DateInput(props){
             />
           </FormGroup>
         </div>
-        <div className="govuk-date-input__item">   
+        <div className="govuk-date-input__item">
           <FormGroup name={`${name}-year`} label={yearLabel} labelIsHeading={false} extraLabelClasses="govuk-date-input__label">
             <input className={[inputClasses, widthClass(4), errorClass(errorProps?.specificError?.year)].join(' ')}
               id={`${name}-year`} name={`${name}-year`} type="text"

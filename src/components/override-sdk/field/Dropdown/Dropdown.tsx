@@ -27,6 +27,7 @@ export default function Dropdown(props) {
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [displayValue, setDisplayValue] = useState();
   const isOnlyField = useIsOnlyField();
+  const[ErrorMessage] = useState(validatemessage)
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
@@ -56,7 +57,7 @@ export default function Dropdown(props) {
       <Select
         label={label}
         hintText={helperText}
-        errorText={validatemessage}
+        errorText={ErrorMessage}
         labelIsHeading={isOnlyField}
         onChange={handleChange}
         value={value}

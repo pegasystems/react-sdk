@@ -294,6 +294,13 @@ export default function ChildBenefitsClaim() {
       compareSdkPCoreVersions();
       establishPCoreSubscriptions();
       setShowAppName(true);
+
+      /* const locale = sessionStorage.getItem('rsdk_locale') || 'en-GB';
+      // eslint-disable-next-line no-undef
+      PCore.getEnvironmentInfo().setLocale(locale);
+      // Set default language as english on login
+      sessionStorage.setItem('rsdk_locale', 'en-GB');
+*/
       initialRender(renderObj);
 
       operatorId = PCore.getEnvironmentInfo().getOperatorIdentifier();

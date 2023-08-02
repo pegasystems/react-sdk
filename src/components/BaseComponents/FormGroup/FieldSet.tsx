@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 
 export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, children, fieldsetElementProps, testProps}){
-
-  const formGroupDivClasses = `govuk-form-group ${errorText?'govuk-form-group--error':""}`.trim();
+  const[ErrorMessage] = useState(errorText)
+  const formGroupDivClasses = `govuk-form-group ${ErrorMessage?'govuk-form-group--error':""}`.trim();
   const legendClasses = `govuk-fieldset__legend ${(legendIsHeading) ?"govuk-fieldset__legend--l":""}`.trim();
 
   // TODO Reconsider how to generate hintID and errorID for aria-described by
@@ -13,7 +13,7 @@ export default function FieldSet({legendIsHeading=true, label, name, errorText, 
   const hintID = `${name}-hint`;
   const errorID = `${name}-error`;
   if (hintText) {describedByIDs.push(hintID)};
-  if (errorText) {describedByIDs.push(errorID)};
+  if (ErrorMessage) {describedByIDs.push(errorID)};
 
 
   return (
@@ -32,7 +32,7 @@ export default function FieldSet({legendIsHeading=true, label, name, errorText, 
           />
         </legend>
         {hintText && <div id={hintID} className="govuk-hint"> <HintTextComponent htmlString={hintText}/></div>}
-        {errorText  && <p id={errorID} className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{errorText}</p> }
+        {ErrorMessage  && <p id={errorID} className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{ErrorMessage}</p> }
         {children}
     </fieldset>
   </div>

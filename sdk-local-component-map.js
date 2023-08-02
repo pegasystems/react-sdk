@@ -18,6 +18,7 @@ import FieldDropdown from './src/components/override-sdk/field/Dropdown/';
 import TemplateFieldGroupTemplate from './src/components/override-sdk/template/FieldGroupTemplate/';
 import TemplateDetails from './src/components/override-sdk/template/Details/';
 import InfraViewContainer from './src/components/override-sdk/infra/ViewContainer/';
+import MimicASentence from './src/components/custom-sdk/template/MimicASentence/'
 /*import end - DO NOT REMOVE*/
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -29,6 +30,7 @@ const localSdkComponentMap = {
   "Date" : FieldDate,
   "HMRC_ODX_CheckAnswers" : CheckAnswers,
   "HMRC_ODX_ChangeLink" : ChangeLink,
+  "HMRC_ODX_MimicASentence" : MimicASentence,
   "RadioButtons" : FieldRadioButtons,
   "DefaultForm" : TemplateDefaultForm,
   "Assignment" : InfraAssignment,

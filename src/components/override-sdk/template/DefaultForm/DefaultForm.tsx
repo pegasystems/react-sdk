@@ -1,5 +1,5 @@
 import React, { createElement } from 'react';
-
+import { useTranslation } from 'react-i18next';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import InstructionComp from '../../../helpers/formatters/ParsedHtml';
@@ -9,6 +9,7 @@ export default function DefaultForm(props) {
   const { getPConnect, readOnly, additionalProps } = props;
 
   const isOnlyField = useIsOnlyField();
+  const { t } = useTranslation();
 
   // repoint the children because they are in a region and we need to not render the region
   // to take the children and create components for them, put in an array and pass as the
@@ -19,20 +20,21 @@ export default function DefaultForm(props) {
   const instructionExists = instructionText !== undefined && instructionText !== '';
   const getFormattedInstructionText = () => {
     let text = instructionText.replaceAll('\n<p>&nbsp;</p>\n', '');
-    const checkWarningText = 'WARNING!!';
-    if (text.indexOf(checkWarningText) !== -1) {
+    const warning  = t('WARNING');
+    if (text.indexOf(`${warning}!!`) !== -1) {
     // If there is a Warning Text
-      const start = text.indexOf('<strong>WARNING!!') + '<strong>WARNING!!'.length + 1;
+      const warningStr = `<strong>${warning}!!`;
+      const start = text.indexOf(warningStr) + warningStr.length + 1;
       const end = text.indexOf('</strong>', start);
       const warningText = text.substring(start, end);
 
-      const start1 = text.indexOf('<strong>WARNING!!');
+      const start1 = text.indexOf(warningStr);
       const end1 = text.indexOf('</strong>', start1) + '</strong>'.length;
       const stringToBeReplaced = text.substring(start1, end1);
       const stringToReplace = `<div class="govuk-warning-text">
       <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
       <strong class="govuk-warning-text__text">
-        <span class="govuk-warning-text__assistive">Warning</span>
+        <span class="govuk-warning-text__assistive">${warning}</span>
         ${warningText}
       </strong>
     </div>`;

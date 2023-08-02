@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 export default function Button(props) {
   const {
@@ -10,6 +11,8 @@ export default function Button(props) {
     children,
     attributes = {}
   } = props;
+
+  const { t } = useTranslation();
 
   if(!Object.prototype.hasOwnProperty.call(attributes, 'className')) {attributes.className=''};
 
@@ -53,7 +56,7 @@ export default function Button(props) {
         {...attributes}
         className='govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-8'
       >
-        Back{children}
+        {t('BACK')}{children}
       </a>
     );
   }

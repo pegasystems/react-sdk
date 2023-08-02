@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-// import { createRoot } from 'react-dom/client';
 import { render } from "react-dom";
+import { useTranslation } from 'react-i18next';
 
 import StoreContext from "@pega/react-sdk-components/lib/bridge/Context/StoreContext";
 import createPConnectComponent from "@pega/react-sdk-components/lib/bridge/react_pconnect";
@@ -18,7 +18,7 @@ import signoutHandler from '../../components/helpers/signout';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../sdk-local-component-map';
-import LogoutPopup from '../../../components/forms/LogoutPopup';
+import LogoutPopup from '../../components/BaseComponents/LogoutPopup';
 
 
 // declare var gbLoggedIn: boolean;
@@ -39,6 +39,7 @@ export default function ChildBenefitsClaim() {
   const [loadingsubmittedClaims, setLoadingSubmittedClaims] = useState(true);
   const [loadinginProgressClaims, setLoadingInProgressClaims] = useState(true);
   const [showSignoutModal, setShowSignoutModal] = useState(false);
+  const { t } = useTranslation();
   let operatorId = '';
 
   useEffect(()=> {
@@ -421,7 +422,7 @@ export default function ChildBenefitsClaim() {
         { /* !! NEEDS TRANSLATING  -- title & button content */ }
         <ClaimsList thePConn={pConn}
          data={inprogressClaims}
-         title='Claims in progress'
+         title=  {t("CLAIMS_IN_PROGRESS")}
          options={[{name:'Claim.Child.pyFirstName', label:'Childs\' name'}, {name:'Claim.Child.pyLastName'}, {name:'pyStatusWork'}, {name:'pxCreateDateTime', type:'Date', label:'claim created date'}, {name:'pyID', label:'claim reference'}]}
          loading={loadinginProgressClaims}
          rowClickAction="OpenAssignment"
@@ -433,7 +434,7 @@ export default function ChildBenefitsClaim() {
             buttonMetadata = lastName ? `${firstName} ${lastName}` : firstName;
           }
           return (
-           <>Continue claim <span className="govuk-visually-hidden"> for {buttonMetadata}</span></>
+           <>{t("CONTINUE_CLAIM")} <span className="govuk-visually-hidden"> for {buttonMetadata}</span></>
            )
           }}
         />
@@ -441,7 +442,7 @@ export default function ChildBenefitsClaim() {
         {/* !! NEEDS TRANSLATING  -- title & button content */}
         <ClaimsList thePConn={pConn}
           data={submittedClaims}
-          title='Submitted claims'
+          title=  {t("SUBMITTED_CLAIMS")}
           options={[{name:'Claim.Child.pyFirstName', label:'Child\'s name'}, {name:'Claim.Child.pyLastName'}, {name:'pyStatusWork'}, {name:'pxCreateDateTime', type:'Date', label:'claim created date'}, {name:'pyID', label:'claim reference'}]}
           loading={loadingsubmittedClaims}
           rowClickAction="OpenCase"
@@ -452,7 +453,7 @@ export default function ChildBenefitsClaim() {
             if(firstName){
               buttonMetadata = lastName ? `${firstName} ${lastName}` : firstName;
             }
-            return <>View claim {buttonMetadata && <span className="govuk-visually-hidden"> for {buttonMetadata}</span>}</>
+            return <>{t("VIEW_CLAIM")}  {buttonMetadata && <span className="govuk-visually-hidden"> for {buttonMetadata}</span>}</>
           }
           }
         />

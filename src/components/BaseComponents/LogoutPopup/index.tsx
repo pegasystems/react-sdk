@@ -2,22 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Modal from '../Modal/Modal';
 import Button from '../Button/Button';
+import { useTranslation } from 'react-i18next';
 
 export default function LogoutPopup(props) {
   const { hideModal, handleSignoutModal, handleStaySignIn } = props;
+  const { t } = useTranslation();
 
   return (
     <Modal show={props.show} handleClose={hideModal}>
       <div>
         <h1 id='govuk-timeout-heading' className='govuk-heading-m push--top'>
-          You’re about to signed out
+          {t('YOU_ARE_ABOUT_TO_SIGNOUT')}
         </h1>
         <p className='govuk-body' aria-hidden='true'>
-          You still need to save your progress. If you sign out without saving, your progress will
-          be lost.
+          {t('YOU_STILL_NEED_TO_SAVE_YOUR_PROGRESS')}
         </p>
         <p className='govuk-body' aria-hidden='true'>
-          To save your progress, select the &apos;Save and come back later&apos; link.
+          {t('TO_SAVE_YOUR_PROGRESS')}
         </p>
         <div className='govuk-button-group govuk-!-padding-top-4'>
           <Button

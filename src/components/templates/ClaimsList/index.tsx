@@ -3,11 +3,13 @@ import DateFormatter from '@pega/react-sdk-components/lib/components/helpers/for
 import Button from '../../../components/BaseComponents/Button/Button';
 import PropTypes from "prop-types";
 import { Utils } from '../../helpers/utils';
+import { useTranslation } from 'react-i18next';
 
 declare const PCore: any;
 
 export default function ClaimsList(props){
   const { thePConn, data, options, title, loading, rowClickAction, buttonContent} = props;
+  const { t } = useTranslation();
 
   /* Property Resolver */
   const resolveProperty = (source, propertyName) => {
@@ -33,11 +35,11 @@ export default function ClaimsList(props){
   const statusMapping = (status) => {
     switch(status){
       case 'Open-InProgress':
-        return {text:'In Progress', tagColour:'grey'};
+        return { text: t('IN_PROGRESS'), tagColour: 'grey' };
       case 'Pending-CBS':
-        return {text:'Claim Received', tagColour:'blue'};
+        return {text: t("CLAIM_RECEIVED"), tagColour:'blue'};
       case 'Resolved-Completed':
-        return {text:'Completed', tagColour:''};
+        return {text: t("COMPLETED"), tagColour:''};
       default:
         return {text:status, tagColour:'grey'};
     }
@@ -66,7 +68,7 @@ export default function ClaimsList(props){
   let tableContent = <></>;
 
   if(loading){
-    tableContent = <tr><td><h2 className='govuk-heading-m'>Checking for claims...</h2></td></tr>
+    tableContent = <tr><td><h2 className='govuk-heading-m'>{t("CHECKING_FOR_CLAIMS")}</h2></td></tr>
   }
   else if( data.length > 0 ) {
     tableContent = data.map(row => {

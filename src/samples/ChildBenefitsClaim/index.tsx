@@ -18,7 +18,7 @@ import signoutHandler from '../../components/helpers/signout';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../sdk-local-component-map';
-
+import LogoutPopup from '../../../components/forms/LogoutPopup';
 
 
 // declare var gbLoggedIn: boolean;
@@ -38,6 +38,7 @@ export default function ChildBenefitsClaim() {
   const [bShowResolutionScreen, setShowResolutionScreen] = useState(false);
   const [loadingsubmittedClaims, setLoadingSubmittedClaims] = useState(true);
   const [loadinginProgressClaims, setLoadingInProgressClaims] = useState(true);
+  const [showSignoutModal, setShowSignoutModal] = useState(false);
   let operatorId = '';
 
   useEffect(()=> {
@@ -384,11 +385,36 @@ export default function ChildBenefitsClaim() {
     };
   }, []);
 
+
+  function handleSignout() {
+    if (bShowPega) {
+      setShowSignoutModal(true);
+    } else {
+      signoutHandler();
+    }
+  }
+
+  const mainSignoutlink: any = document.getElementById('signout-btn');
+  mainSignoutlink.onclick = handleSignout;
+
+  const handleStaySignIn = e => {
+    e.preventDefault();
+    setShowSignoutModal(false);
+  };
+
+
+
   return (
     <>
       <div id='pega-part-of-page'>
         <div id='pega-root'></div>
       </div>
+      <LogoutPopup
+        show={showSignoutModal}
+        hideModal={() => setShowSignoutModal(false)}
+        handleSignoutModal={signoutHandler}
+        handleStaySignIn={handleStaySignIn}
+      />
       { showStartPage && <StartPage onStart={startNow} onBack={closeContainer}/>  }
       { showUserPortal && <UserPortal beginClaim={beginClaim}>
         <hr className="govuk-section-break govuk-section-break--m govuk-section-break--visible"></hr>

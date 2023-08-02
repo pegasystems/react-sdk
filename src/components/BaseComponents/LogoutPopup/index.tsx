@@ -27,11 +27,11 @@ export default function LogoutPopup(props) {
             attributes={{className:'govuk-button govuk-button--warning'}}
             onClick={handleSignoutModal}
           >
-            Sign out
+            {t('SIGN-OUT')}
           </Button>
 
           <a id='modal-staysignin-btn' className='govuk-link ' href='#' onClick={handleStaySignIn}>
-            Stay signed in
+            {t('STAY_SIGNED_IN')}
           </a>
         </div>
       </div>

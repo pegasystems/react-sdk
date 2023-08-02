@@ -83,6 +83,10 @@ module.exports = (env, argv) => {
           to() {
             return Promise.resolve('constellation/prerequisite/[name].[ext]');
           }
+        },
+        {
+          from: './assets/i18n/*',
+          to: './'
         }
       ]
     })

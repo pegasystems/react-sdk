@@ -78,7 +78,7 @@
     "@loadable/component": "^5.13.1",
     "@pega/configs": "^0.4.0",
     "@pega/cspell-config": "^0.4.0",
-    "@pega/dx-component-builder-sdk": "~8.23.15",
+    "@pega/dx-component-builder-sdk": "~8.23.16",
     "@pega/eslint-config": "^0.4.0",
     "@pega/pcore-pconnect-typedefs": "latest",
     "@pega/prettier-config": "^0.4.0",

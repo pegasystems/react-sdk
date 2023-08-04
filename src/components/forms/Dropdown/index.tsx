@@ -60,11 +60,19 @@ export default function Dropdown(props) {
   let readOnlyProp = {};
 
   if (displayMode === 'LABELS_LEFT') {
-    return <FieldValueList name={hideLabel ? '' : label} value={value} />;
+    return <FieldValueList name={hideLabel ? '' : label} value={thePConn.getLocalizedValue(
+      value,
+      localePath,
+      thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+    )} />;
   }
 
   if (displayMode === 'STACKED_LARGE_VAL') {
-    return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
+    return <FieldValueList name={hideLabel ? '' : label} value={thePConn.getLocalizedValue(
+      value,
+      localePath,
+      thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+    )} variant='stacked' />;
   }
 
   if (readOnly) {
@@ -99,7 +107,11 @@ export default function Dropdown(props) {
       onChange={!readOnly ? handleChange : undefined}
       error={status === 'error'}
       label={label}
-      value={value === '' && !readOnly ? placeholder : value}
+      value={value === '' && !readOnly ? placeholder : thePConn.getLocalizedValue(
+      value,
+      localePath,
+      thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+    )}
       select
       InputProps={{ ...readOnlyProp, ...testProp }}
     >

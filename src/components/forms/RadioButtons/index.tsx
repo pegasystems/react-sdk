@@ -60,11 +60,19 @@ export default function RadioButtons(props) {
   }, [value]);
 
   if (displayMode === 'LABELS_LEFT') {
-    return <FieldValueList name={hideLabel ? '' : label} value={value} />;
+    return <FieldValueList name={hideLabel ? '' : label} value={thePConn.getLocalizedValue(
+      value,
+      localePath,
+      thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+    )} />;
   }
 
   if (displayMode === 'STACKED_LARGE_VAL') {
-    return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
+    return <FieldValueList name={hideLabel ? '' : label} value={thePConn.getLocalizedValue(
+      value,
+      localePath,
+      thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+    )} variant='stacked' />;
   }
 
   const handleChange = event => {
@@ -79,7 +87,11 @@ export default function RadioButtons(props) {
     <FormControl error={status === 'error'} required={required}>
       <FormLabel component='legend'>{label}</FormLabel>
       <RadioGroup
-        value={theSelectedButton}
+        value={thePConn.getLocalizedValue(
+          theSelectedButton,
+          localePath,
+          thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+        )}
         onChange={handleChange}
         onBlur={!readOnly ? handleBlur : undefined}
         row={inline}
@@ -87,7 +99,11 @@ export default function RadioButtons(props) {
         {theOptions.map(theOption => {
           return (
             <FormControlLabel
-              value={theOption.key}
+              value={thePConn.getLocalizedValue(
+                theOption.key,
+                localePath,
+                thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+              )}
               key={theOption.key}
               label={thePConn.getLocalizedValue(
                 theOption.value,

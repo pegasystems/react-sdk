@@ -63,7 +63,7 @@
       "subtype": "",
       "description": "",
       "icon": "",
-      "lintAction": "block"
+      "lintAction": "show"
     },
 
     "componentTemplates": {

@@ -87,11 +87,7 @@ export default function RadioButtons(props) {
     <FormControl error={status === 'error'} required={required}>
       <FormLabel component='legend'>{label}</FormLabel>
       <RadioGroup
-        value={thePConn.getLocalizedValue(
-          theSelectedButton,
-          localePath,
-          thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
-        )}
+        value={theSelectedButton}
         onChange={handleChange}
         onBlur={!readOnly ? handleBlur : undefined}
         row={inline}
@@ -99,11 +95,7 @@ export default function RadioButtons(props) {
         {theOptions.map(theOption => {
           return (
             <FormControlLabel
-              value={thePConn.getLocalizedValue(
-                theOption.key,
-                localePath,
-                thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
-              )}
+              value={theOption.key}
               key={theOption.key}
               label={thePConn.getLocalizedValue(
                 theOption.value,

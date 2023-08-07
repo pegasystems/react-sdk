@@ -96,8 +96,11 @@ Refer to our [guidelines for contributors](./docs/CONTRIBUTING.md) if you are in
 ## Additional Resources
 
 * [**KeyReleaseUpdates.md**](./node_modules/@pega/react-sdk-components/lib/doc/KeyReleaseUpdates.md): A summary of the latest updates to the **@pega/react-sdk-components** and
-**@pega/react-sdk-overrides** used by the React SDK can be found in
-[react-sdk-components KeyReleaseUpdates.md](./node_modules/@pega/react-sdk-components/lib/doc/KeyReleaseUpdates.md).
+**@pega/react-sdk-overrides** used by the React SDK can be found in the
+[react-sdk-components package's **KeyReleaseUpdates.md**](./node_modules/@pega/react-sdk-components/lib/doc/KeyReleaseUpdates.md).
+  * To see if there are updates in the @pega/react-sdk-components and
+  @pega/react-sdk-overrides packages published in a newer version than is
+currently installed, you can check the [package's main GitHub repo's **KeyReleaseUpdates.md**](https://github.com/pegasystems/react-sdk-components/blob/master/packages/react-sdk-components/doc/KeyReleaseUpdates.md).
 * [**Material UI**](https://v4.mui.com/)
 * [**Constellation SDKs Documentation**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html)
 * [**Troubleshooting Constellation SDKs**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/troubleshooting-constellation-sdks.html)

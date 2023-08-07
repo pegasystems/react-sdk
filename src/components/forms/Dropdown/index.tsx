@@ -107,11 +107,7 @@ export default function Dropdown(props) {
       onChange={!readOnly ? handleChange : undefined}
       error={status === 'error'}
       label={label}
-      value={value === '' && !readOnly ? placeholder : thePConn.getLocalizedValue(
-      value,
-      localePath,
-      thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
-    )}
+      value={value === '' && !readOnly ? placeholder : value}
       select
       InputProps={{ ...readOnlyProp, ...testProp }}
     >

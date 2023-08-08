@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import FocusTrap from 'focus-trap-react';
 import '../../../../assets/css/appStyles.scss';
 
 export default function Modal(props) {
@@ -21,14 +22,17 @@ export default function Modal(props) {
     show && (
       <>
         <div className='hmrc-timeout-overlay'></div>
-        <div className={showHideClassName} tabIndex={-1} role='dialog' aria-modal='true' id={id}>
-          <section>
-            <a className='govuk-link signout-modal' href='#' onClick={handleClose}>
-              {t('Close')}
-            </a>
-            {children}
-          </section>
-        </div>
+        <FocusTrap>
+          <div className={showHideClassName} tabIndex={-1} role='dialog' aria-modal='true' id={id}>
+            <section>
+              {children}
+              <a className='govuk-link signout-modal' href='#' onClick={handleClose}>
+                {t('Close')}
+                <span className='govuk-visually-hidden'> {t('SIGN_OUT_MESSAGE')}</span>
+              </a>
+            </section>
+          </div>
+        </FocusTrap>
       </>
     )
   );

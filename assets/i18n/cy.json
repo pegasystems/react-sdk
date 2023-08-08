@@ -70,5 +70,6 @@
   "Month": "Mis",
   "Year": "Blwyddyn",
   "Close": "Close",
-  "OPENS_IN_NEW_TAB" : "(yn agor tab newydd)"
+  "OPENS_IN_NEW_TAB" : "(yn agor tab newydd)",
+  "SIGN_OUT_MESSAGE":"this sign out message"
 }

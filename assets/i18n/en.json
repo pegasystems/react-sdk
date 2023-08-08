@@ -69,5 +69,7 @@
   "Day": "Day",
   "Month": "Month",
   "Year": "year",
-  "Close": "Close"
+  "Close": "Close",
+  "OPENS_IN_NEW_TAB" : "(opens in new tab)",
+  "SIGN_OUT_MESSAGE":"this sign out message"
 }

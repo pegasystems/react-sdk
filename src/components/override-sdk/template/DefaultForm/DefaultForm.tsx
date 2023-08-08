@@ -1,4 +1,4 @@
-import React, { createElement } from 'react';
+import React, { createElement, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
@@ -18,6 +18,24 @@ export default function DefaultForm(props) {
   let hasSingleChildWhichIsReference = false;
   const instructionText = props.instructions === 'none' ? '' : props.instructions;
   const instructionExists = instructionText !== undefined && instructionText !== '';
+
+  const settingTargetForAnchorTag = () => {
+    const instructionDiv = document.getElementById('instructions');
+    const keyText = t('OPENS_IN_NEW_TAB');
+    const elementsArr = instructionDiv.querySelectorAll('a');
+    for(const ele of elementsArr){
+      if(ele.innerHTML.includes(keyText)){
+        ele.setAttribute('target', '_blank');
+      }
+    }
+  }
+
+  useEffect(()=>{
+    if(instructionExists){
+      settingTargetForAnchorTag();
+    }
+  },[instructionExists])
+
   const getFormattedInstructionText = () => {
     let text = instructionText.replaceAll('\n<p>&nbsp;</p>\n', '');
     const warning  = t('WARNING');

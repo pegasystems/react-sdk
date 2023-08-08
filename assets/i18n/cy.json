@@ -69,5 +69,6 @@
   "Day": "Diwrnod",
   "Month": "Mis",
   "Year": "Blwyddyn",
-  "Close": "Close"
+  "Close": "Close",
+  "OPENS_IN_NEW_TAB" : "(yn agor tab newydd)"
 }

@@ -40,6 +40,8 @@ export default function ClaimsList(props){
         return {text: t("CLAIM_RECEIVED"), tagColour:'blue'};
       case 'Resolved-Completed':
         return {text: t("COMPLETED"), tagColour:''};
+      case 'Pending-ManualInvestigation':
+        return { text: t('COMPLETED'), tagColour: '' };
       default:
         return {text:status, tagColour:'grey'};
     }

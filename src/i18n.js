@@ -9,7 +9,7 @@ i18n
     lng: sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en',
     backend: {
       /* translation file path */
-      loadPath: '/assets/i18n/{{lng}}.json'
+      loadPath: `${window.location.pathname}assets/i18n/{{lng}}.json`
     },
     fallbackLng: 'en',
     debug: false,

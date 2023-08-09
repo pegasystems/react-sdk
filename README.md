@@ -15,9 +15,9 @@ The following list shows some of the key features and changes in this release:
 - Updated the lint settings in the DX Component Builder to enable publishing custom components with lint errors or warnings. You can modify the lint setting (lintAction) in the sdk-config.json file from “show” to “block” to disable publishing components with lint errors or warnings.   
 
 - Updated support for the following npm packages: 
-  -- @pega/react-sdk-components: v8.23.11
-  -- @pega/react-sdk-overrides: v8.23.11
-  -- @pega/dx-component-builder-sdk: v8.23.16 
+  - @pega/react-sdk-components: v8.23.11
+  - @pega/react-sdk-overrides: v8.23.11
+  - @pega/dx-component-builder-sdk: v8.23.16 
 
 For more information about the react-sdk-components and react-sdk-overrides packages, and enhancements and bug fixes in the packages click [here](https://github.com/pegasystems/react-sdk-components/blob/master/packages/react-sdk-components/doc/KeyReleaseUpdates.md).  
 

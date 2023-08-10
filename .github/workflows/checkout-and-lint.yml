@@ -1,7 +1,17 @@
 name: Checkout and lint
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+      - 'release/**'
+
+  pull_request:
+    branches:
+      - main
+      - 'release/**'
 
 jobs:
   build:
@@ -18,6 +28,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+          # speed actions run https://github.com/actions/setup-node#caching-global-packages-data
+          cache: 'npm'
       - name: Install dependencies and run lint
         run: npm run build:dev:ci
-      - run: npm run lint
+      - name: Run linter
+        run: npm run lint

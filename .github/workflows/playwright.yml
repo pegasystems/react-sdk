@@ -1,18 +1,30 @@
 name: Playwright Tests
 on:
+  workflow_dispatch:
+
   push:
-    branches: [ main, master ]
+    branches:
+      - main
+      - 'release/**'
+
   pull_request:
-    branches: [ main, master ]
+    branches:
+      - main
+      - 'release/**'
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    strategy:
+        matrix:
+          node-version: [18.13]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
-        node-version: '18.13'
+        node-version: ${{ matrix.node-version }}
+        # speed actions run https://github.com/actions/setup-node#caching-global-packages-data
+        cache: 'npm'
     - name: Install dependencies
       run: npm run build:dev:ci
     - name: Install Playwright

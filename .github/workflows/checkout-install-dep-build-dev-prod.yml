@@ -40,6 +40,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+          # speed actions run https://github.com/actions/setup-node#caching-global-packages-data
+          cache: 'npm'
       - name: Install dependencies
         run: npm run build:dev:ci
       - name: Run build:dev

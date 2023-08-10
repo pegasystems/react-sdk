@@ -6,7 +6,7 @@ This (**main** branch) is the latest version of the React SDK. It is intended to
 
 This version of the **React SDK** provides many new features that are documented here:
 
-[What's new in the SDK?](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/whats-new-sdk.html) and also outlined below:
+[What's new in the SDK?](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html) and also outlined below:
 
 The following list shows some of the key features and changes in this release:
 

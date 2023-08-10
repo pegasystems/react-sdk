@@ -1,20 +1,25 @@
 <p align="center"><img width=60% src="docs/media/ReactSDK-Logo.png">
 
-# React SDK - Release Announcement
+# React SDK - Release Announcement - v8.23.11
 
 This (**main** branch) is the latest version of the React SDK. It is intended to be used with **Infinity 8.8.0+**. If you need to use **Infinity 8.7.***, please use the **release/8.8.10** branch instead of this **main** branch.
 
 This version of the **React SDK** provides many new features that are documented here:
 
-[What's new in the SDK?](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/whats-new-sdk.html) and also outlined below:
+[What's new in the SDK?](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html) and also outlined below:
 
-The following list shows some of the key features and changes in this release:
-- Constellation DX component builder integration to enable creating custom components and overriding Pega (requires Infinity 8.8.3 or higher) components using the SDK. For more information, see [Using the integrated DX component builder](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/using-dx-component-builder.html).
-- Storybook integration to mock and test components in isolation. For more information, see [Storybook integration](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/using-dx-component-builder.html#ref-sdk-dx-component-builder-integration__section_j3h_fnj_2xb).
-- Component management capabilities, such as build, publish, and delete components. For more information, see [Managing components](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/managing-components.html).
-- Updated authentication and authorization module. For more information, see [Authentication and authorization](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/authentication-authorization.html).
-- Updated src directory structure to house component code based on component category (custom and override) and component type (field, template, and widget). For more information, see [Updated files](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/using-dx-component-builder.html#ref-sdk-dx-component-builder-integration__section_d1d_1vc_xwb).
-- Updated sdk-config.json file with component configuration attributes, such as dxcbConfig. For more information, see [dxcbConfig](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/configuring-sdk-config-json.html#configuring-the-sdk-config-json-con__section_gng_ttk_cxb).
+The following list shows some of the key features and changes in this 8.23.11 release:
+
+- Added localization support. You can now implement localization in your custom and overridden SDK components.
+
+- Updated the lint settings in the DX Component Builder to enable publishing custom components with lint errors or warnings. You can modify the lint setting (lintAction) in the sdk-config.json file from “show” to “block” to disable publishing components with lint errors or warnings.
+
+- Updated support for the following npm packages:
+  - @pega/react-sdk-components: v8.23.11
+  - @pega/react-sdk-overrides: v8.23.11
+  - @pega/dx-component-builder-sdk: v8.23.16
+
+For more information about the react-sdk-components and react-sdk-overrides packages, and enhancements and bug fixes in the packages, click [here](https://github.com/pegasystems/react-sdk-components/blob/master/packages/react-sdk-components/doc/KeyReleaseUpdates.md).
 
 ---
 
@@ -96,8 +101,11 @@ Refer to our [guidelines for contributors](./docs/CONTRIBUTING.md) if you are in
 ## Additional Resources
 
 * [**KeyReleaseUpdates.md**](./node_modules/@pega/react-sdk-components/lib/doc/KeyReleaseUpdates.md): A summary of the latest updates to the **@pega/react-sdk-components** and
-**@pega/react-sdk-overrides** used by the React SDK can be found in
-[react-sdk-components KeyReleaseUpdates.md](./node_modules/@pega/react-sdk-components/lib/doc/KeyReleaseUpdates.md).
+**@pega/react-sdk-overrides** used by the React SDK can be found in the
+[react-sdk-components package's **KeyReleaseUpdates.md**](./node_modules/@pega/react-sdk-components/lib/doc/KeyReleaseUpdates.md).
+  * To see if there are updates in the @pega/react-sdk-components and
+  @pega/react-sdk-overrides packages published in a newer version than is
+currently installed, you can check the [package's main GitHub repo's **KeyReleaseUpdates.md**](https://github.com/pegasystems/react-sdk-components/blob/master/packages/react-sdk-components/doc/KeyReleaseUpdates.md).
 * [**Material UI**](https://v4.mui.com/)
 * [**Constellation SDKs Documentation**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html)
 * [**Troubleshooting Constellation SDKs**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/troubleshooting-constellation-sdks.html)

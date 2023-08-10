@@ -1,6 +1,6 @@
 <p align="center"><img width=60% src="docs/media/ReactSDK-Logo.png">
 
-# React SDK - Release Announcement
+# React SDK - Release Announcement - v8.23.11
 
 This (**main** branch) is the latest version of the React SDK. It is intended to be used with **Infinity 8.8.0+**. If you need to use **Infinity 8.7.***, please use the **release/8.8.10** branch instead of this **main** branch.
 
@@ -8,7 +8,7 @@ This version of the **React SDK** provides many new features that are documented
 
 [What's new in the SDK?](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html) and also outlined below:
 
-The following list shows some of the key features and changes in this release:
+The following list shows some of the key features and changes in this 8.23.11 release:
 
 - Added localization support. You can now implement localization in your custom and overridden SDK components.
 

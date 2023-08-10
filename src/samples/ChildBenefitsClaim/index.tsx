@@ -9,6 +9,12 @@ import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '@pega/react-sdk-
 
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+
+import AppHeader from '../../components/AppComponents/AppHeader';
+import AppFooter from '../../components/AppComponents/AppFooter';
+import LanguageToggle from '../../components/AppComponents/LanguageToggle';
+import LogoutPopup from '../../components/AppComponents/LogoutPopup';
+
 import StartPage from './StartPage';
 import ConfirmationPage from './ConfirmationPage';
 import UserPortal from './UserPortal';
@@ -18,7 +24,6 @@ import signoutHandler from '../../components/helpers/signout';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../sdk-local-component-map';
-import LogoutPopup from '../../components/BaseComponents/LogoutPopup';
 
 
 // declare var gbLoggedIn: boolean;
@@ -405,71 +410,75 @@ export default function ChildBenefitsClaim() {
     }
   }
 
-  const mainSignoutlink: any = document.getElementById('signout-btn');
-  mainSignoutlink.onclick = handleSignout;
-
   const handleStaySignIn = e => {
     e.preventDefault();
     setShowSignoutModal(false);
   };
 
-
-
   return (
     <>
-      <div id='pega-part-of-page'>
-        <div id='pega-root'></div>
+      <AppHeader signOut={handleSignout} appname={t("CLAIM_CHILD_BENEFIT")} />
+      <div className="govuk-width-container">
+
+        <LanguageToggle />
+        <div id='pega-part-of-page'>
+          <div id='pega-root'></div>
+        </div>
+
+        {showStartPage && <StartPage onStart={startNow} onBack={closeContainer} />}
+
+        {showUserPortal && <UserPortal beginClaim={beginClaim}>
+          <hr className="govuk-section-break govuk-section-break--m govuk-section-break--visible"></hr>
+          { /* !! NEEDS TRANSLATING  -- title & button content */ }
+          <ClaimsList thePConn={pConn}
+          data={inprogressClaims}
+          title=  {t("CLAIMS_IN_PROGRESS")}
+          options={[{name:'Claim.Child.pyFirstName', label:t("CHILDS_NAME")}, {name:'Claim.Child.pyLastName'}, {name:'pyStatusWork'}, {name:'pxCreateDateTime', type:'Date', label:t("CLAIMS_CREATED_DATE")}, {name:'pyID', label:t("CLAIMS_REFERENCE")}]}
+          loading={loadinginProgressClaims}
+          rowClickAction="OpenAssignment"
+          buttonContent={(rowData) => {
+            let buttonMetadata = t("NEW_CHILD");
+            const firstName = rowData?.Claim?.Child?.pyFirstName;
+            const lastName = rowData?.Claim?.Child?.pyLastName;
+            if(firstName){
+              buttonMetadata = lastName ? `${firstName} ${lastName}` : firstName;
+            }
+            return (
+            <>{t("CONTINUE_CLAIM")} <span className="govuk-visually-hidden"> {t("FOR")} {buttonMetadata}</span></>
+            )
+            }}
+          />
+          <hr className="govuk-section-break govuk-section-break--m govuk-section-break--visible"></hr>
+          {/* !! NEEDS TRANSLATING  -- title & button content */}
+          <ClaimsList thePConn={pConn}
+            data={submittedClaims}
+            title=  {t("SUBMITTED_CLAIMS")}
+            options={[{name:'Claim.Child.pyFirstName', label:t("CHILDS_NAME")}, {name:'Claim.Child.pyLastName'}, {name:'pyStatusWork'}, {name:'pxCreateDateTime', type:'Date', label:t("CLAIMS_CREATED_DATE")}, {name:'pyID', label:t("CLAIMS_REFERENCE")}]}
+            loading={loadingsubmittedClaims}
+            rowClickAction="OpenCase"
+            buttonContent={(rowData) => {
+              let buttonMetadata;
+              const firstName = rowData?.Claim?.Child?.pyFirstName;
+              const lastName = rowData?.Claim?.Child?.pyLastName;
+              if(firstName){
+                buttonMetadata = lastName ? `${firstName} ${lastName}` : firstName;
+              }
+              return <>{t("VIEW_CLAIM")}  {buttonMetadata && <span className="govuk-visually-hidden"> {t("FOR")} {buttonMetadata}</span>}</>
+            }
+            }
+          />
+      </UserPortal>}
+
+      {bShowResolutionScreen && <ConfirmationPage />}
       </div>
+
       <LogoutPopup
         show={showSignoutModal}
         hideModal={() => setShowSignoutModal(false)}
         handleSignoutModal={signoutHandler}
         handleStaySignIn={handleStaySignIn}
       />
-      { showStartPage && <StartPage onStart={startNow} onBack={closeContainer}/>  }
-      { showUserPortal && <UserPortal beginClaim={beginClaim}>
-        <hr className="govuk-section-break govuk-section-break--m govuk-section-break--visible"></hr>
-        { /* !! NEEDS TRANSLATING  -- title & button content */ }
-        <ClaimsList thePConn={pConn}
-         data={inprogressClaims}
-         title=  {t("CLAIMS_IN_PROGRESS")}
-         options={[{name:'Claim.Child.pyFirstName', label:'Childs\' name'}, {name:'Claim.Child.pyLastName'}, {name:'pyStatusWork'}, {name:'pxCreateDateTime', type:'Date', label:'claim created date'}, {name:'pyID', label:'claim reference'}]}
-         loading={loadinginProgressClaims}
-         rowClickAction="OpenAssignment"
-         buttonContent={(rowData) => {
-          let buttonMetadata = 'a new child';
-          const firstName = rowData?.Claim?.Child?.pyFirstName;
-          const lastName = rowData?.Claim?.Child?.pyLastName;
-          if(firstName){
-            buttonMetadata = lastName ? `${firstName} ${lastName}` : firstName;
-          }
-          return (
-           <>{t("CONTINUE_CLAIM")} <span className="govuk-visually-hidden"> for {buttonMetadata}</span></>
-           )
-          }}
-        />
-        <hr className="govuk-section-break govuk-section-break--m govuk-section-break--visible"></hr>
-        {/* !! NEEDS TRANSLATING  -- title & button content */}
-        <ClaimsList thePConn={pConn}
-          data={submittedClaims}
-          title=  {t("SUBMITTED_CLAIMS")}
-          options={[{name:'Claim.Child.pyFirstName', label:'Child\'s name'}, {name:'Claim.Child.pyLastName'}, {name:'pyStatusWork'}, {name:'pxCreateDateTime', type:'Date', label:'claim created date'}, {name:'pyID', label:'claim reference'}]}
-          loading={loadingsubmittedClaims}
-          rowClickAction="OpenCase"
-          buttonContent={(rowData) => {
-            let buttonMetadata;
-            const firstName = rowData?.Claim?.Child?.pyFirstName;
-            const lastName = rowData?.Claim?.Child?.pyLastName;
-            if(firstName){
-              buttonMetadata = lastName ? `${firstName} ${lastName}` : firstName;
-            }
-            return <>{t("VIEW_CLAIM")}  {buttonMetadata && <span className="govuk-visually-hidden"> for {buttonMetadata}</span>}</>
-          }
-          }
-        />
-
-    </UserPortal>}
-      {bShowResolutionScreen && <ConfirmationPage />}
+      <AppFooter/>
     </>
   );
 }

@@ -16,12 +16,12 @@ const baseURL = "/";
 const AppSelector = () => {
 
   return (
-      <div>
-        <Switch>
-          <Route exact path={`${baseURL}`} component={EmbeddedTopLevel} />
-          <Route path="*" component={EmbeddedTopLevel} />
-        </Switch>
-    </div>
+    <>
+      <Switch>
+        <Route exact path={`${baseURL}`} component={EmbeddedTopLevel} />
+        <Route path="*" component={EmbeddedTopLevel} />
+      </Switch>
+    </>
   )
 
 };

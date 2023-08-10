@@ -54,7 +54,7 @@ export default function Button(props) {
         href='#'
         onClick={onClick}
         {...attributes}
-        className='govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-8'
+        className='govuk-back-link'
       >
         {t('BACK')}{children}
       </a>

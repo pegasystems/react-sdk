@@ -8,9 +8,6 @@ import ErrorBoundary from '@pega/react-sdk-components/lib/components/infra/Error
 
 import { getAllFields } from '@pega/react-sdk-components/lib/components/helpers/template-utils';
 
-// Need to import any templates that we might render
-
-import './View.css';
 //
 // WARNING:  It is not expected that this file should be modified.  It is part of infrastructure code that works with
 // Redux and creation/update of Redux containers and PConnect.  Modifying this code could have undesireable results and

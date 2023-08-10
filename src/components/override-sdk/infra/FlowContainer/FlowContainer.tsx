@@ -422,7 +422,7 @@ export default function FlowContainer(props) {
   const bShowBanner = showBanner(getPConnect);
 
   return (
-    <div style={{ textAlign: 'left' }} id={buildName} className='psdk-flow-container-top'>
+    <div id={buildName}>
       {!bShowConfirm &&
         (!todo_showTodo ? (
           !displayOnlyFA ? (

@@ -15,9 +15,15 @@ export default function Details(props) {
     arFields.push(theChildrenOfChild);
   }
 
-  return( <>
-    {label && context && <h1 className='govuk-heading-l'>{label}</h1>}
-     <DetailsFields fields={arFields[0]}/>
+  return (<>
+    <main className="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+      <div className="govuk-grid-row">
+        <div className='govuk-grid-column-two-thirds'>
+          {label && context && <h1 className='govuk-heading-l'>{label}</h1>}
+          <DetailsFields fields={arFields[0]}/>
+        </div>
+      </div>
+    </main>
   </>)
 }
 

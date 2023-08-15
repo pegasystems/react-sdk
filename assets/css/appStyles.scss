@@ -1,5 +1,6 @@
 @import "node_modules/govuk-frontend/govuk/all";
-@import "../../node_modules/hmrc-frontend/hmrc/hmrc-frontend-5.44.0.min.css";
+@import "node_modules/hmrc-frontend/hmrc/components/header/_header.scss";
+@import "node_modules/hmrc-frontend/hmrc/components/language-select/_language-select.scss";
 
 .app-claimslist-tag {
   @include govuk-media-query($from: tablet){

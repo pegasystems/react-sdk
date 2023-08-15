@@ -13,11 +13,7 @@ i18n
     },
     fallbackLng: 'en',
     debug: false,
-    keySeparator: false,
-    interpolation: {
-      escapeValue: false,
-      formatSeparator: ','
-    },
+    returnNull: false,
     react: {
       wait: true,
       useSuspense: false,

@@ -18,7 +18,7 @@ const AppSelector = () => {
   return (
     <>
       <Switch>
-        <Route exact path={`${baseURL}`} component={EmbeddedTopLevel} />
+        <Route exact path={baseURL} component={EmbeddedTopLevel} />
         <Route path="*" component={EmbeddedTopLevel} />
       </Switch>
     </>

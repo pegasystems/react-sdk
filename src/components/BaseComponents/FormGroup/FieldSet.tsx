@@ -1,10 +1,19 @@
-import React, {useState} from 'react';
+
+import React, {useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 
 export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, children, fieldsetElementProps, testProps}){
-  const[ErrorMessage] = useState(errorText)
+  const[ErrorMessage,setErrorMessage] = useState(errorText);
+
+  useEffect(()=>{
+
+    if(errorText){
+    setErrorMessage(errorText)
+    }
+
+  },[errorText])
   const formGroupDivClasses = `govuk-form-group ${ErrorMessage?'govuk-form-group--error':""}`.trim();
   const legendClasses = `govuk-fieldset__legend ${(legendIsHeading) ?"govuk-fieldset__legend--l":""}`.trim();
 

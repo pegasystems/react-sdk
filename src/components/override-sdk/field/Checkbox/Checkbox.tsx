@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import GDSCheckboxes from '../../../BaseComponents/Checkboxes/Checkboxes';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks'
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
@@ -18,7 +18,15 @@ export default function CheckboxComponent(props) {
   } = props;
 
   const isOnlyField = useIsOnlyField();
-  const[ErrorMessage] = useState(validatemessage)
+  const[errorMessage,setErrorMessage] = useState(validatemessage);
+
+  useEffect(()=>{
+
+    if(validatemessage){
+    setErrorMessage(validatemessage)
+    }
+
+  },[validatemessage])
 
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();
@@ -46,7 +54,7 @@ export default function CheckboxComponent(props) {
         label={label}
         optionsList={optionsList}
         legendIsHeading={isOnlyField}
-        errorText={ErrorMessage}
+        errorText={errorMessage}
         hintText={hintText}
         onChange={handleChange}
         {...extraProps}

@@ -91,15 +91,20 @@ export default function Date(props) {
 
   // PM - Handlers for each part of date inputs, update state for each respectively
   //      0 pad for ISOString compatibilitiy, with conditions to allow us to clear the fields
-  const handleChangeDay = dayChange => {
+
+
+ const  handleChangeDay = dayChange => {
     setDay(dayChange.target.value);
   };
+
   const handleChangeMonth = monthChange => {
     setMonth(monthChange.target.value);
-  };
-  const handleChangeYear = yearChange => {
+  }
+
+  const  handleChangeYear = yearChange => {
     setYear(yearChange.target.value);
   };
+
 
   if (readOnly) {
     return <ReadOnlyDisplay label={label} value={new global.Date(value).toLocaleDateString()} />;

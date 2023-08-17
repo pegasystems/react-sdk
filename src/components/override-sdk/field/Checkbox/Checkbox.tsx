@@ -29,6 +29,7 @@ export default function CheckboxComponent(props) {
   },[validatemessage])
 
   const thePConn = getPConnect();
+  const hidePageLabel = useIsOnlyField(thePConn);
   const theConfigProps = thePConn.getConfigProps();
   const { caption } = theConfigProps;
   const actionsApi = thePConn.getActionsApi();
@@ -53,7 +54,7 @@ export default function CheckboxComponent(props) {
         name={name}
         label={label}
         optionsList={optionsList}
-        legendIsHeading={isOnlyField}
+        legendIsHeading={hidePageLabel}
         errorText={errorMessage}
         hintText={hintText}
         onChange={handleChange}

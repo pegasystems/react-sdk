@@ -91,5 +91,12 @@
   "FOOTER_LISCENSE_P1": "All content is available under the ",
   "FOOTER_LISCENSE_LINK": "Open Government Licence v3.0",
   "FOOTER_LISCENSE_P2": ", except where otherwise stated",
-  "COPYRIGHT": "© Crown copyright"
+  "COPYRIGHT": "© Crown copyright",
+
+  "COOKIES_PAGE_P1" : "Cookies are small files saved on your phone, tablet or computer when you visit a website.",
+  "COOKIES_PAGE_P2" :  "We use the following cookies to make this site works and collect information about how you use our service.",
+  "ESSENTIAL_COOKIES" : "Essential Cookies",
+  "ESSENTIAL_COOKIES_P1" : "Essential cookies keep your information secure whilst you use this service. We do not need to ask permission to use them.",
+  "COOKIES_PAGE_P3" : "*A table will be provided to name and describe each cookie*",
+  "COOKIE_PURPOSE": "NAME PURPOSE EXPIRES"
 }

@@ -33,9 +33,12 @@ export default function TextInput(props) {
   // TODO - Handle input types (password, email, numeric) - Or investigate if these should be separate components, or can simple be handled by inputProps
   // TODO - Handle autocomplete settings
 
-  inputProps['aria-describedby'] = `${errorText ? makeErrorId(name) : ''} ${
+  const describedByIDs = `${errorText ? makeErrorId(name) : ''} ${
     hintText ? makeHintId(name) : ''
   }`.trim();
+  if(describedByIDs.length !== 0){
+    inputProps['aria-describedby'] = describedByIDs;
+  }
 
   return (
     <FormGroup {...props}>

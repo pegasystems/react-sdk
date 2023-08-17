@@ -12,12 +12,17 @@ export default function RadioButtons(props) {
     useSmallRadios ? 'gobuk-radios--small' : ''
   }`.trim();
 
+
   return (
     <FieldSet {...props}>
       <div className={radioDivClasses} data-module='govuk-radios'>
         {options.map((option, index) => {
           const itemId = `${name}${index > 0 ? `-${index}` : ''}`.trim();
           const itemHintId = `${itemId}-item-hint`;
+          let ariaDescBy = {};
+          if(option.hintText){
+            ariaDescBy = {['aria-describedby'] : itemHintId};
+          }
           return (
             <div key={`${name}_${option.value}`} className='govuk-radios__item'>
               <input
@@ -28,7 +33,7 @@ export default function RadioButtons(props) {
                 onChange={onChange}
                 value={option.value}
                 defaultChecked={option.value === value}
-                aria-describedby={option.hintText ? itemHintId : undefined}
+                {...ariaDescBy}
               />
               <label className='govuk-label govuk-radios__label' htmlFor={itemId}>
                 {option.label}

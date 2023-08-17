@@ -8,8 +8,11 @@ export default function Checkbox({ item, index, name, inputProps= {}, onChange, 
   const checkboxItemClasses = 'govuk-checkboxes__input';
   const hintTextClasses = `govuk-hint govuk-checkboxes__hint`;
   const labelClasses = `govuk-label govuk-checkboxes__label`;
-  const describedbyIds = `${item.hintText?makeHintId(name):""}`.trim()
-  inputProps['aria-describedby'] = item.hintText ? describedbyIds : ''
+  const describedbyIds = `${item.hintText?makeHintId(name):""}`.trim();
+  if(item.hintText){
+    inputProps['aria-describedby'] = describedbyIds;
+  }
+
 
 
   return (

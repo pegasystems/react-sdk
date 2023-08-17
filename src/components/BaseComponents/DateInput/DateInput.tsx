@@ -37,7 +37,12 @@ export default function DateInput(props){
   // TODO - Handle Autocomplete settings (if always required)
   // TODO - Investigate if possible to set error class per input depending on error message (e.g. if only year is missing, only error style year input)
 
-  inputProps["aria-describedby"] = `${errorText?makeErrorId(name):""} ${hintText?makeHintId(name):""}`.trim();
+
+  const describedbyIds = `${errorText?makeErrorId(name):""} ${hintText?makeHintId(name):""}`.trim();
+  if(describedbyIds.length !== 0){
+    inputProps["aria-describedby"] = describedbyIds;
+  }
+
 
   const extraProps= {testProps:{'data-test-id':testId}};
 

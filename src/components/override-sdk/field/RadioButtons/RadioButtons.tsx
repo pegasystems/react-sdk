@@ -18,7 +18,6 @@ export default function RadioButtons(props) {
     testId
   } = props;
 
-  const isOnlyField = useIsOnlyField();
   const[errorMessage,setErrorMessage] = useState(validatemessage);
 
   useEffect(()=>{

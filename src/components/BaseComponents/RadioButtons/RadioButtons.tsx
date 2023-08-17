@@ -21,7 +21,7 @@ export default function RadioButtons(props) {
           const itemHintId = `${itemId}-item-hint`;
           let ariaDescBy = {};
           if(option.hintText){
-            ariaDescBy = {['aria-describedby'] : itemHintId};
+            ariaDescBy = {'aria-describedby' : itemHintId};
           }
           return (
             <div key={`${name}_${option.value}`} className='govuk-radios__item'>

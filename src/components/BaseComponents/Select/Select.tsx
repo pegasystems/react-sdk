@@ -7,7 +7,7 @@ export default function Select(props){
   const {name, onChange, value, children, errorText, hintText} = props;
 
   const describedbyIds = `${errorText?makeErrorId(name):""} ${hintText?makeHintId(name):""}`.trim();
-  const ariaDescBy = describedbyIds.length !== 0 ? {['aria-describedby'] : describedbyIds} : {};
+  const ariaDescBy = describedbyIds.length !== 0 ? {'aria-describedby' : describedbyIds} : {};
 
   return(
     <FormGroup {...props}>

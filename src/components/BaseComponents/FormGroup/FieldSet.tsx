@@ -23,9 +23,7 @@ export default function FieldSet({legendIsHeading=true, label, name, errorText, 
   const errorID = `${name}-error`;
   if (hintText) {describedByIDs.push(hintID)};
   if (ErrorMessage) {describedByIDs.push(errorID)};
-  const ariaDescBy = describedByIDs.length !== 0 ? {['aria-describedby'] : describedByIDs.join(' ')} : {};
-
-
+  const ariaDescBy = describedByIDs.length !== 0 ? {'aria-describedby' : describedByIDs.join(' ')} : {};
 
   return (
     <div className={formGroupDivClasses} {...testProps}>

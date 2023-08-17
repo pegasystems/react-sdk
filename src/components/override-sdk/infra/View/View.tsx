@@ -60,8 +60,6 @@ export default function View(props) {
       // This is the node_modules version of react_pconnect!
       const theLocalComponent = SdkComponentMap.getLocalComponentMap()[template];
       if (theLocalComponent !== undefined) {
-        // eslint-disable-next-line no-console
-        console.log(`View component found ${template}: Local`);
         ViewTemplate = theLocalComponent;
       } else {
         const thePegaProvidedComponent = SdkComponentMap.getPegaProvidedComponentMap()[template];

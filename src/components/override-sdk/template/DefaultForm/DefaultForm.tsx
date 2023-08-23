@@ -8,7 +8,7 @@ import InstructionComp from '../../../helpers/formatters/ParsedHtml';
 export default function DefaultForm(props) {
   const { getPConnect, readOnly, additionalProps } = props;
 
-  const hidePageLabel = useIsOnlyField(getPConnect());
+  const isOnlyField = useIsOnlyField();
   const { t } = useTranslation();
 
   // repoint the children because they are in a region and we need to not render the region
@@ -35,16 +35,6 @@ export default function DefaultForm(props) {
       settingTargetForAnchorTag();
     }
   },[instructionExists])
-
-  useEffect( () => {
-    PCore.getPubSubUtils().subscribe(
-      'expressLocalActionSubmit',
-      () => {
-        getPConnect().setValue('.HidePageLabel', false);
-      },
-      'actionSubmit'
-    );
-  }, []);
 
   const getFormattedInstructionText = () => {
     let text = instructionText.replaceAll('\n<p>&nbsp;</p>\n', '');
@@ -77,7 +67,7 @@ export default function DefaultForm(props) {
     let extraProps = {};
     const childPConnect = kid.getPConnect();
     if (
-      hidePageLabel &&
+      isOnlyField &&
       !instructionExists &&
       childPConnect.getConfigProps().readOnly !== true &&
       idx === 0

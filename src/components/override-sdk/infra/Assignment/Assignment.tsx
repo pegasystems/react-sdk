@@ -44,7 +44,7 @@ export default function Assignment(props) {
   const [errorSummary, setErrorSummary] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Array<OrderedErrorMessage>>([]);
 
-  const hidePageLabel = useIsOnlyField(thePConn);
+  const isOnlyOneField = useIsOnlyField();
 
   let containerName;
   if(thePConn.getDataObject().caseInfo?.assignments && thePConn.getDataObject().caseInfo?.assignments.length > 0){
@@ -119,16 +119,6 @@ export default function Assignment(props) {
       bodyfocus.focus();
     }
   }, [children]);
-
-  useEffect( () => {
-    PCore.getPubSubUtils().subscribe(
-      'expressLocalActionSubmit',
-      () => {
-        getPConnect().setValue('.HidePageLabel', false);
-      },
-      'actionSubmit'
-    );
-  }, []);
 
   useAddErrorToPageTitle(errorMessages.length > 0);
 
@@ -276,7 +266,7 @@ export default function Assignment(props) {
           {errorSummary && errorMessages.length > 0 && (
             <ErrorSummary errors={errorMessages.map(item => item.message)} />
           )}
-          {!hidePageLabel && <h1 className='govuk-heading-l'>{containerName}</h1>}
+          {!isOnlyOneField && <h1 className='govuk-heading-l'>{containerName}</h1>}
           <form>
             <AssignmentCard
               getPConnect={getPConnect}

@@ -5,7 +5,7 @@
 
 /* Retaining this code for future change in implementation of single question pages. */
 
-export default function useIsOnlyField(thePConn:any=null){
-    const hidePageLabel = PCore.getStoreValue('.HidePageLabel', 'caseInfo.content', `${thePConn.getContextName()}`);
-    return hidePageLabel;
+
+export default function useIsOnlyField(){
+    return false;
 }

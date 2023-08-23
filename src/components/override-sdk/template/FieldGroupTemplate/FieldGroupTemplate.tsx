@@ -14,7 +14,7 @@ export default function Group(props){
   const actionsApi = thePConn.getActionsApi();
   const [stateChanged, setStateChanged] = useState(false);
 
-  const hidePageLabel = useIsOnlyField(thePConn);
+  const isOnlyField = useIsOnlyField();
 
   const formattedContext = thePConn.options.pageReference ? thePConn.options.pageReference.split('.').pop() : '';
 
@@ -96,7 +96,7 @@ export default function Group(props){
           onChange={handleChange}
           label={heading}
           hintText={instructions}
-          legendIsHeading={hidePageLabel}
+          legendIsHeading={isOnlyField}
           errorText={errors.join(' ').trim() !== '' ? errors.join(' ').trim() : null}
         />
       </>);

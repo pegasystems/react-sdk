@@ -26,6 +26,7 @@ export default function Dropdown(props) {
 
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [displayValue, setDisplayValue] = useState();
+  const isOnlyField = useIsOnlyField();
   const[errorMessage,setErrorMessage] = useState(validatemessage);
 
   useEffect(()=>{

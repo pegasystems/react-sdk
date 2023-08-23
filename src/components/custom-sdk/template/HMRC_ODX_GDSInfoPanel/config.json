@@ -22,6 +22,11 @@
       "format": "TEXT"
     },
     {
+      "name": "panelText",
+      "label": "Panel text",
+      "format": "TEXT"
+    },
+    {
       "name": "panelLink",
       "label": "Panel link",
       "format": "TEXT"

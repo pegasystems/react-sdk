@@ -43,6 +43,7 @@ export const BaseYourOrgRequiredDxilDetailsRegion = () => {
     label: "Details Region",
     showLabel: true,
     panelHeader: "SDK - We were unable to verify your child's details",
+    panelText: "INFO_UNVERIFIED_CHILD",
     panelLink: "https://design-system.service.gov.uk/components/notification-banner/",
     panelType: "1",
     getPConnect: () => {

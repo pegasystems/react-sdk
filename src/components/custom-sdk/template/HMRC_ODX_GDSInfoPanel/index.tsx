@@ -11,7 +11,7 @@ import StyledYourOrgRequiredDxilDetailsWrapper from "./styles";
 // props passed in combination of props from property panel (config.json) and run time props from Constellation
 // any default values in config.pros should be set in defaultProps at bottom of this file
 export default function HmrcOdxGdsInfoPanel(props) {
-  const { panelType, panelHeader, panelLink, getPConnect } = props;
+  const { panelType, panelHeader, panelText, panelLink, getPConnect } = props;
 
   const { t } = useTranslation();
   // Set display mode prop and re-create the children so this part of the dom tree renders
@@ -31,14 +31,14 @@ export default function HmrcOdxGdsInfoPanel(props) {
   let panelTitle;
   switch (panelType) {
     case '1':
-      panelTitle = t('INFORMATION');
+      panelTitle = t('GDS_INFO_INFORMATION');
       break;
     case '2':
-      panelTitle = t('WARNING');
+      panelTitle = t('GDS_INFO_WARNING');
       break;
     default:
     case '3':
-      panelTitle = t("SUCCESS");
+      panelTitle = t("GDS_INFO_SUCCESS");
       break;
   }
 
@@ -52,7 +52,7 @@ export default function HmrcOdxGdsInfoPanel(props) {
       <div className="govuk-notification-banner__content">
         { panelHeader !== '' &&
           <h3 className="govuk-notification-banner__heading">
-            {panelHeader}
+            {t(panelHeader)}
           </h3>
         }
       {children.map((child, i) => (
@@ -60,6 +60,7 @@ export default function HmrcOdxGdsInfoPanel(props) {
           {child.props.value}
         </p>
         ))}
+        {t(panelText)}
         { panelLink !== '' &&
           <a className="govuk-notification-banner__link" href={ panelLink }>More information</a>
         }

@@ -310,10 +310,6 @@ export default function ChildBenefitsClaim() {
 
       operatorId = PCore.getEnvironmentInfo().getOperatorIdentifier();
 
-      const el = document.getElementById('signout-btn');
-      if(el){
-        el.onclick = signoutHandler;
-      }
 
       setLoadingSubmittedClaims(true);
       // @ts-ignore
@@ -417,7 +413,7 @@ export default function ChildBenefitsClaim() {
 
   return (
     <>
-      <AppHeader signOut={handleSignout} appname={t("CLAIM_CHILD_BENEFIT")} />
+      <AppHeader handleSignout={handleSignout} appname={t("CLAIM_CHILD_BENEFIT")} />
       <div className="govuk-width-container">
 
         <LanguageToggle />

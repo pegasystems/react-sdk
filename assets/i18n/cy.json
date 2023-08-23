@@ -98,5 +98,11 @@
   "ESSENTIAL_COOKIES" : "Cwcis Hanfodol",
   "ESSENTIAL_COOKIES_P1" : "Mae cwcis hanfodol yn cadw eich gwybodaeth yn ddiogel tra byddwch yn defnyddio’r gwasanaeth hwn. Nid oes angen i ni ofyn am ganiatâd i’w defnyddio",
   "COOKIES_PAGE_P3" : "*Bydd tabl yn cael ei ddarparu a fydd yn enwi a disgrifio pob cwci*",
-  "COOKIE_PURPOSE": "ENW PWRPAS YN DOD I BEN"
+  "COOKIE_PURPOSE": "ENW PWRPAS YN DOD I BEN",
+
+  "GDS_INFO_INFORMATION": "CY - Information",
+  "GDS_INFO_SUCCESS": "CY - Success",
+  "GDS_INFO_WARNING": "CY - Warning",
+  "GDS_INFO_INFO_UNVERIFIED_CHILD_HEADER": "CY - We were unable to verify your child's details",
+  "GDS_INFO_INFO_UNVERIFIED_CHILD": "CY - Check that the details you entered match their birth certificate. If you've just registered their birth, try again in 24 hours"
 }

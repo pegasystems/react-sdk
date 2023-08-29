@@ -51,7 +51,7 @@ export default function ClaimsList(props){
     const {pzInsKey, pyAssignmentID} = row;
 
     const container = thePConn.getContainerName();
-    const target = `root/${container}`;
+    const target = `${PCore.getConstants().APP.APP}/${container}`;
 
     if( rowClickAction === 'OpenAssignment'){
       const openAssignmentOptions = { containerName: container};

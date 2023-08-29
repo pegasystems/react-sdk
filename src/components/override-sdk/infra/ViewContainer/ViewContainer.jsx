@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Box, CircularProgress } from "@material-ui/core";
 import createPConnectComponent from "@pega/react-sdk-components/lib/bridge/react_pconnect";
 import StoreContext from "@pega/react-sdk-components/lib/bridge/Context/StoreContext";
-import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
+import { isEmptyObject } from '@pega/react-sdk-components/lib/components/helpers/common-utils';
 import Button from '../../../BaseComponents/Button/Button';
 import setPageTitle from '../../../helpers/setPageTitleHelpers';
 
@@ -127,7 +127,7 @@ export default function ViewContainer(props) {
             componentVisible = visible || componentVisible;
             if (items[key] &&
                 items[key].view &&
-                !Utils.isEmptyObject(items[key].view)) {
+                !isEmptyObject(items[key].view)) {
                 const latestItem = items[key];
                 const rootView = latestItem.view;
                 const { context, name: viewName } = rootView.config;

@@ -2,20 +2,17 @@
 /* eslint-disable camelcase */
 import React, { useState, useEffect, useContext, createElement } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import { Card, CardHeader, Avatar, Typography } from '@material-ui/core';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import AppUtils from '../../../helpers/utils';
 import { Alert } from '@material-ui/lab';
-
-import ToDo from '@pega/react-sdk-components/lib/components/widget/ToDo';
 
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-import { addContainerItem, getToDoAssignments, showBanner } from '@pega/react-sdk-components/lib/components/infra/Containers/FlowContainer/helpers';
+import { addContainerItem, showBanner } from '@pega/react-sdk-components/lib/components/infra/Containers/FlowContainer/helpers';
 // import { isEmptyObject } from '@pega/react-sdk-components/lib/components/helpers/common-utils'
 
 // Remove this and use "real" PCore type once .d.ts is fixed (currently shows 3 errors)
@@ -28,31 +25,8 @@ declare const PCore: any;
 // is totally at your own risk.
 //
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    paddingRight: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-    paddingTop: theme.spacing(1.5),
-    paddingBottom: theme.spacing(1.5),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },
-  alert: {
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1)
-  },
-  avatar: {
-    backgroundColor: theme.palette.primary.light,
-    color: theme.palette.getContrastText(theme.palette.primary.light)
-  }
-}));
-
 export default function FlowContainer(props) {
   const pCoreConstants = PCore.getConstants();
-  const { TODO } = pCoreConstants;
-  const todo_headerText = 'To do';
 
   const Assignment = AppUtils.getComponentFromComponentMap('Assignment');
 
@@ -67,10 +41,6 @@ export default function FlowContainer(props) {
   const [arNewChildren, setArNewChildren] = useState<Array<any>>(thePConn.getChildren());
   const [arNewChildrenAsReact, setArNewChildrenAsReact] = useState<Array<any>>([]);
 
-  const [todo_showTodo, setShowTodo] = useState(false);
-  const [todo_caseInfoID, setCaseInfoID] = useState('');
-  const [todo_showTodoList, setShowTodoList] = useState(false);
-  const [todo_datasource, setTodoDatasource] = useState({});
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const [todo_context, setTodoContext] = useState('');
 
@@ -85,8 +55,6 @@ export default function FlowContainer(props) {
   const [bShowConfirm, setShowConfirm] = useState(false);
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const localeCategory = 'Messages';
-
-  const classes = useStyles();
 
   function initContainer() {
     const ourPConn = getPConnect();
@@ -122,20 +90,7 @@ export default function FlowContainer(props) {
     return `${context.toUpperCase()}/${viewContainerName.toUpperCase()}`;
   }
 
-  function getTodoVisibility() {
-    const caseViewMode = getPConnect().getValue('context_data.caseViewMode');
-    if (caseViewMode && caseViewMode === 'review') {
-      return true;
-    }
-    // eslint-disable-next-line sonarjs/prefer-single-boolean-return
-    if (caseViewMode && caseViewMode === 'perform') {
-      return false;
-    }
-
-    return true;
-  }
-
-  function initComponent(bLoadChildren: boolean) {
+    function initComponent(bLoadChildren: boolean) {
     const ourPConn = getPConnect();
 
     // when true, update arChildren from pConn, otherwise, arChilren will be updated in updateSelf()
@@ -152,9 +107,6 @@ export default function FlowContainer(props) {
     // const child0_getPConnect = arNewChildren[0].getPConnect();
 
     // this.templateName$ = this.configProps$["template"];
-
-    // debugger;
-    setShowTodo(getTodoVisibility());
 
     // create pointers to functions
     // const containerMgr = ourPConn.getContainerManager();
@@ -292,31 +244,10 @@ export default function FlowContainer(props) {
     }
 
     const caseViewMode = thePConn.getValue('context_data.caseViewMode');
-    const { CASE_INFO: CASE_CONSTS } = pCoreConstants;
-    if (caseViewMode && caseViewMode === 'review') {
-      setTimeout(() => {
-        // updated for 8.7 - 30-Mar-2022
-        const todoAssignments = getToDoAssignments(thePConn);
-        if (todoAssignments && todoAssignments.length > 0) {
-          setCaseInfoID(thePConn.getValue(CASE_CONSTS.CASE_INFO_ID));
-          setTodoDatasource({ source: todoAssignments });
-        }
-        setShowTodo(true);
-        setShowTodoList(false);
-      }, 100);
-
+    if (caseViewMode && caseViewMode === 'review' || (caseViewMode && caseViewMode === 'perform' && window.sessionStorage.getItem('okToInitFlowContainer') === 'true')) {
       // in React, when cancel is called, somehow the constructor for flowContainer is called which
       // does init/add of containers.  This mimics that
       initContainer();
-    } else if (caseViewMode && caseViewMode === 'perform') {
-      // perform
-      // debugger;
-      setShowTodo(false);
-
-      // this is different than Angular SDK, as we need to initContainer if root container reloaded
-      if (window.sessionStorage.getItem('okToInitFlowContainer') === 'true') {
-        initContainer();
-      }
     }
 
     // if have caseMessage show message and end
@@ -424,13 +355,12 @@ export default function FlowContainer(props) {
   return (
     <div id={buildName}>
       {!bShowConfirm &&
-        (!todo_showTodo ? (
-          !displayOnlyFA ? (
-            <Card className={classes.root}>
+        !displayOnlyFA ? (
+            <Card>
               <CardHeader
                 title={<Typography variant='h6'>{containerName}</Typography>}
                 subheader={`Task in ${caseId} \u2022 Priority ${urgency}`}
-                avatar={<Avatar className={classes.avatar}>{operatorInitials}</Avatar>}
+                avatar={<Avatar >{operatorInitials}</Avatar>}
               ></CardHeader>
               {instructionText !== '' ? (
                 <Typography variant='caption'>{instructionText}</Typography>
@@ -451,23 +381,9 @@ export default function FlowContainer(props) {
                 </Assignment>
             </div>
           )
-        ) : (
-          <div>
-            <ToDo
-              key={Math.random()}
-              getPConnect={getPConnect}
-              caseInfoID={todo_caseInfoID}
-              datasource={todo_datasource}
-              showTodoList={todo_showTodoList}
-              headerText={todo_headerText}
-              type={TODO}
-              context={todo_context}
-              itemKey={itemKey}
-            ></ToDo>
-          </div>
-        ))}
+      }
       {bHasCaseMessages && (
-        <div className={classes.alert}>
+        <div>
           <Alert severity='success'>{caseMessages}</Alert>
         </div>
       )}

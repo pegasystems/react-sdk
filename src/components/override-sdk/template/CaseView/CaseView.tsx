@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-boolean-value */
-
+// @ts-nocheck - TypeScript type checking to be added soon
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
@@ -56,7 +56,7 @@ export default function CaseView(props) {
   const currentCaseID = props.caseInfo.ID;
   let isComponentMounted = true;
 
-  const { displayOnlyFA } = useContext(StoreContext);
+  const { displayOnlyFA } = useContext<any>(StoreContext);
 
   const thePConn = getPConnect();
 

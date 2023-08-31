@@ -1,0 +1,70 @@
+{
+  "name": "HMRC_ODX_GDSInfoPanel",
+  "label": "GDS Info Panel",
+  "description": "View template for displaying content in a GDS panel format",
+  "organization": "HMRC",
+  "version": "1.0.0",
+  "library": "ODX",
+  "allowedApplications": [],
+  "componentKey": "HMRC_ODX_GDSInfoPanel",
+  "type": "Template",
+  "subtype": "FORM",
+  "icon": "TwoColumn.svg",
+  "properties": [
+    {
+      "name": "A",
+      "label": "Region A",
+      "format": "CONTENTPICKER"
+    },
+    {
+      "name": "panelHeader",
+      "label": "Panel header",
+      "format": "TEXT"
+    },
+    {
+      "name": "panelText",
+      "label": "Panel text",
+      "format": "TEXT"
+    },
+    {
+      "name": "panelLink",
+      "label": "Panel link",
+      "format": "TEXT"
+    },
+    {
+      "format": "SELECT",
+      "name": "panelType",
+      "label": "Panel type",
+      "defaultValue": "1",
+      "source": [
+        { "key": "1", "value": "Information" },
+        { "key": "2", "value": "Warning" },
+        { "key": "3", "value": "Success" }
+      ]
+    },
+    {
+      "label": "Conditions",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "required",
+          "label": "Required",
+          "format": "REQUIRED",
+          "saveToReference": true
+        },
+        {
+          "name": "disabled",
+          "label": "Disabled",
+          "format": "DISABLED",
+          "saveToReference": true
+        },
+        {
+          "name": "visibility",
+          "label": "Visibility",
+          "format": "VISIBILITY",
+          "saveToReference": true
+        }
+      ]
+    }
+  ]
+}

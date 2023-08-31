@@ -19,6 +19,7 @@ import TemplateFieldGroupTemplate from './src/components/override-sdk/template/F
 import TemplateDetails from './src/components/override-sdk/template/Details/';
 import InfraViewContainer from './src/components/override-sdk/infra/ViewContainer/';
 import MimicASentence from './src/components/custom-sdk/template/MimicASentence/'
+import HmrcOdxGdsInfoPanel from './src/components/custom-sdk/template/HMRC_ODX_GDSInfoPanel/';
 /*import end - DO NOT REMOVE*/
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -45,6 +46,7 @@ const localSdkComponentMap = {
   "Group" : TemplateFieldGroupTemplate,
   "Details" : TemplateDetails,
   "ViewContainer" : InfraViewContainer,
+  "HMRC_ODX_GDSInfoPanel" : HmrcOdxGdsInfoPanel,
 /*map end - DO NOT REMOVE*/
 };
 

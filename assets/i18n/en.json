@@ -98,5 +98,11 @@
   "ESSENTIAL_COOKIES" : "Essential Cookies",
   "ESSENTIAL_COOKIES_P1" : "Essential cookies keep your information secure whilst you use this service. We do not need to ask permission to use them.",
   "COOKIES_PAGE_P3" : "*A table will be provided to name and describe each cookie*",
-  "COOKIE_PURPOSE": "NAME PURPOSE EXPIRES"
+  "COOKIE_PURPOSE": "NAME PURPOSE EXPIRES",
+
+  "GDS_INFO_INFORMATION": "Information",
+  "GDS_INFO_SUCCESS": "Success",
+  "GDS_INFO_WARNING": "Warning",
+  "GDS_INFO_INFO_UNVERIFIED_CHILD_HEADER": "We were unable to verify your child's details",
+  "GDS_INFO_INFO_UNVERIFIED_CHILD": "Check that the details you entered match their birth certificate. If you've just registered their birth, try again in 24 hours"
 }

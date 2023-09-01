@@ -4,7 +4,8 @@ import Button from '../../../BaseComponents/Button/Button';
 
 export default function ActionButtons(props) {
   const { arMainButtons, arSecondaryButtons, onButtonPress } = props;
-
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+  const localeCategory = 'Assignment';
   function _onButtonPress(sAction: string, sButtonType: string) {
     onButtonPress(sAction, sButtonType);
   }
@@ -23,7 +24,7 @@ export default function ActionButtons(props) {
               key={mButton.actionID}
               attributes={{ type: 'button' }}
             >
-              {mButton.name}
+              {localizedVal(mButton.name, localeCategory)}
             </Button>
           ) : null
         )}
@@ -40,7 +41,7 @@ export default function ActionButtons(props) {
               key={sButton.actionID}
               attributes={{ type: 'button' }}
             >
-              {sButton.name}
+              {localizedVal(sButton.name, localeCategory)}
             </Button>
           ) : null
         )}
@@ -58,7 +59,7 @@ export default function ActionButtons(props) {
               }}
               key={sButton.actionID}
               attributes={{ type: 'link' }}
-            >{sButton.name}</Button>
+            >{localizedVal(sButton.name, localeCategory)}</Button>
           ) : null
         )}
 

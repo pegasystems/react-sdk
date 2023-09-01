@@ -32,6 +32,9 @@ export default function Assignment(props) {
   const AssignmentCard = SdkComponentMap.getLocalComponentMap()['AssignmentCard'] ? SdkComponentMap.getLocalComponentMap()['AssignmentCard'] : SdkComponentMap.getPegaProvidedComponentMap()['AssignmentCard'];
 
   const actionsAPI = thePConn.getActionsApi();
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+  const localeCategory = 'Assignment';
+  const localeReference = `${getPConnect().getCaseInfo().getClassName()}!CASE!${getPConnect().getCaseInfo().getName()}`.toUpperCase();
 
   // store off bound functions to above pointers
   const finishAssignment = actionsAPI.finishAssignment.bind(actionsAPI);
@@ -264,9 +267,9 @@ export default function Assignment(props) {
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
           {errorSummary && errorMessages.length > 0 && (
-            <ErrorSummary errors={errorMessages.map(item => item.message)} />
+            <ErrorSummary errors={errorMessages.map(item => localizedVal(item.message, localeCategory, localeReference))} />
           )}
-          {!isOnlyOneField && <h1 className='govuk-heading-l'>{containerName}</h1>}
+          {!isOnlyOneField && <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>}
           <form>
             <AssignmentCard
               getPConnect={getPConnect}

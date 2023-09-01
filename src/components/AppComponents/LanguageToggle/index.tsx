@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 declare const PCore: any;
+
 const LanguageToggle = () => {
   const { i18n } = useTranslation();
   let lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
@@ -12,9 +13,14 @@ const LanguageToggle = () => {
     e.preventDefault();
     lang = e.currentTarget.getAttribute('lang');
     setSelectedLang(lang);
-    sessionStorage.setItem('rsdk_locale', `${lang}-GB`);
+    sessionStorage.setItem('rsdk_locale', `${lang}_GB`);
     i18n.changeLanguage(lang);
-    PCore.getEnvironmentInfo().setLocale(`${lang}-GB`);
+    PCore.getEnvironmentInfo().setLocale(`${lang}_GB`);
+
+    //This cleares the generic fields localisation values and attempts to 'refetch' them, as they do not do this
+    // manually after locale is updated
+    PCore.getLocaleUtils().resetLocaleStore();
+    PCore.getLocaleUtils().loadLocaleResources([PCore.getLocaleUtils().GENERIC_BUNDLE_KEY, '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE'])
   };
 
   return (

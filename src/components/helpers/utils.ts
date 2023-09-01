@@ -6,11 +6,6 @@ export class Utils {
     document.body.scrollTop = position;
     document.documentElement.scrollTop = position;
   }
-
-  static getComponentFromComponentMap(componentType){
-    return SdkComponentMap.getLocalComponentMap()[componentType] ? SdkComponentMap.getLocalComponentMap()[componentType] : SdkComponentMap.getPegaProvidedComponentMap()[componentType];
-  }
-
 }
 
 export default Utils;

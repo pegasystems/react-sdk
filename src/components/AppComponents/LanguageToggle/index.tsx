@@ -17,7 +17,7 @@ const LanguageToggle = () => {
     i18n.changeLanguage(lang);
     PCore.getEnvironmentInfo().setLocale(`${lang}_GB`);
 
-    //This cleares the generic fields localisation values and attempts to 'refetch' them, as they do not do this
+    // This cleares the generic fields localisation values and attempts to 'refetch' them, as they do not do this
     // manually after locale is updated
     PCore.getLocaleUtils().resetLocaleStore();
     PCore.getLocaleUtils().loadLocaleResources([PCore.getLocaleUtils().GENERIC_BUNDLE_KEY, '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE'])

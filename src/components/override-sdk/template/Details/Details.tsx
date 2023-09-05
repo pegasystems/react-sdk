@@ -25,7 +25,7 @@ export default function Details(props) {
     <main className="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
       <div className="govuk-grid-row">
         <div className='govuk-grid-column-two-thirds'>
-          {label && context && <h1 className='govuk-heading-l'>{localizedVal(label, localeCategory /*,localeReference*/)} details</h1>}
+          {label && context && <h1 className='govuk-heading-l'>{localizedVal(label, localeCategory /* ,localeReference */)} details</h1>}
           <DetailsFields fields={arFields[0]}/>
         </div>
       </div>

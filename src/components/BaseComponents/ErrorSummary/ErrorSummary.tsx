@@ -5,6 +5,8 @@ export default function ErrorSummary(props) {
   const { errors } = props;
 
   const errorSummaryRef = useRef<any>(null);
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+  const localeCategory = 'Messages';
 
   useEffect( () => {
     if(errorSummaryRef && errorSummaryRef?.current){
@@ -28,7 +30,7 @@ export default function ErrorSummary(props) {
           <ul className='govuk-list govuk-error-summary__list'>
               {errors.map(error => {
                 return <li key={error.fieldId}>
-                  <a href={`#${error.fieldId}`} onClick={onClick}>{error.message}</a>
+                  <a href={`#${error.fieldId}`} onClick={onClick}>{localizedVal(error.message, localeCategory /* ,localeReference */)}</a>
                 </li>
               })}
           </ul>

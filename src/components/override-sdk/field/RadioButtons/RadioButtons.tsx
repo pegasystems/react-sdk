@@ -16,7 +16,8 @@ export default function RadioButtons(props) {
     readOnly,
     value,
     name,
-    testId
+    testId,
+    fieldMetadata
   } = props;
 
   const isOnlyField = useIsOnlyField();
@@ -31,10 +32,27 @@ export default function RadioButtons(props) {
   },[validatemessage])
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();
+  const className = thePConn.getCaseInfo().getClassName();
   // theOptions will be an array of JSON objects that are literally key/value pairs.
   //  Ex: [ {key: "Basic", value: "Basic"} ]
   const theOptions = Utils.getOptionList(theConfigProps, thePConn.getDataObject());
   const selectedOption = theOptions.find(option => option.key === value);
+
+  let configProperty = thePConn.getRawMetadata()?.config?.value || '';
+  configProperty = configProperty.startsWith('@P') ? configProperty.substring(3) : configProperty;
+  configProperty = configProperty.startsWith('.') ? configProperty.substring(1) : configProperty;
+
+  const metaData = Array.isArray(fieldMetadata)
+    ? fieldMetadata.filter(field => field?.classID === className)[0]
+    : fieldMetadata;
+  let displayName = metaData?.datasource?.propertyForDisplayText;
+  displayName = displayName?.slice(displayName.lastIndexOf('.') + 1);
+  const localeContext = metaData?.datasource?.tableType === 'DataPage' ? 'datapage' : 'associated';
+  const localeClass = localeContext === 'datapage' ? '@baseclass' : className;
+  const localeName = localeContext === 'datapage' ? metaData?.datasource?.name : configProperty;
+  const localePath = localeContext === 'datapage' ? displayName : localeName;
+
+
 
   let displayValue = null;
   if(selectedOption && selectedOption.value){
@@ -42,7 +60,11 @@ export default function RadioButtons(props) {
   }
 
   if(readOnly){
-    return <ReadOnlyDisplay label={label} value={displayValue} />
+    return <ReadOnlyDisplay label={label} value={thePConn.getLocalizedValue(
+      displayValue,
+      localePath,
+      thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+      )} />
   }
 
   const extraProps= {testProps:{'data-test-id':testId}};
@@ -60,7 +82,14 @@ export default function RadioButtons(props) {
       label={label}
       onChange={handleChange}
       legendIsHeading={isOnlyField}
-      options={theOptions.map(option => {return {value:option.key, label:option.value}})}
+      options={theOptions.map(option => {return {
+        value:option.key,
+        label:thePConn.getLocalizedValue(
+        option.value,
+        localePath,
+        thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+        )}
+      })}
       displayInline={theOptions.length === 2}
       hintText={helperText}
       instructionText={instructionText}

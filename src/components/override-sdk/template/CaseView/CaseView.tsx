@@ -51,7 +51,13 @@ export default function CaseView(props) {
     header,
     subheader,
     children,
-    caseInfo: { availableActions = [], availableProcesses = [], hasNewAttachments }
+    caseInfo: {
+      availableActions = [],
+      availableProcesses = [],
+      hasNewAttachments,
+      caseTypeID = '',
+      caseTypeName = ''
+    }
   } = props;
   const currentCaseID = props.caseInfo.ID;
   let isComponentMounted = true;
@@ -63,12 +69,12 @@ export default function CaseView(props) {
   const classes = useStyles();
 
   const editAction = availableActions.find((action) => action.ID === 'pyUpdateCaseDetails');
-
+  const localeKey = `${caseTypeID}!CASE!${caseTypeName}`.toUpperCase();
   /**
    *
    * @param inName the metadata <em>name</em> that will cause a region to be returned
    */
-   function getChildRegionByName(inName: string): any {
+  function getChildRegionByName(inName: string): any {
 
     for (const child of children) {
       const theMetadataType: string = child.props.getPConnect().getRawMetadata()['type'].toLowerCase();
@@ -194,7 +200,7 @@ export default function CaseView(props) {
           <div hidden={true} id="current-caseID">{currentCaseID}</div>
           <Card className={classes.root} >
             <CardHeader className={classes.caseViewHeader}
-              title={<Typography variant="h6" component="div">{header}</Typography>}
+              title={<Typography variant="h6" component="div">{PCore.getLocaleUtils().getLocaleValue(header, '', localeKey)}</Typography>}
               subheader={<Typography variant="body1" component="div" id="caseId">{subheader}</Typography>}
               avatar={
                 <Avatar className={classes.caseViewIconBox} variant="square">

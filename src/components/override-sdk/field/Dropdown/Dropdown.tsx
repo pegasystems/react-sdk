@@ -21,13 +21,22 @@ export default function Dropdown(props) {
     helperText,
     label,
     readOnly,
-    name
+    name,
+    fieldMetadata
   } = props;
 
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [displayValue, setDisplayValue] = useState();
   const isOnlyField = useIsOnlyField();
   const[errorMessage,setErrorMessage] = useState(validatemessage);
+
+
+  const thePConn = getPConnect();
+  const actionsApi = thePConn.getActionsApi();
+
+  const propName = thePConn.getStateProps().value;
+  const className = thePConn.getCaseInfo().getClassName();
+  const refName = propName?.slice(propName.lastIndexOf('.') + 1);
 
   useEffect(()=>{
 
@@ -37,10 +46,6 @@ export default function Dropdown(props) {
 
   },[validatemessage])
 
-  const thePConn = getPConnect();
-  const actionsApi = thePConn.getActionsApi();
-
-  const propName = thePConn.getStateProps().value;
 
   useEffect(() => {
     const optionsList = [...Utils.getOptionList(props, getPConnect().getDataObject())];
@@ -51,13 +56,28 @@ export default function Dropdown(props) {
     setOptions(optionsList);
   }, [datasource, value]);
 
+  const metaData = Array.isArray(fieldMetadata)
+    ? fieldMetadata.filter(field => field?.classID === className)[0]
+    : fieldMetadata;
+
+  let displayName = metaData?.datasource?.propertyForDisplayText;
+  displayName = displayName?.slice(displayName.lastIndexOf('.') + 1);
+  const localeContext = metaData?.datasource?.tableType === 'DataPage' ? 'datapage' : 'associated';
+  const localeClass = localeContext === 'datapage' ? '@baseclass' : className;
+  const localeName = localeContext === 'datapage' ? metaData?.datasource?.name : refName;
+  const localePath = localeContext === 'datapage' ? displayName : localeName;
+
   const handleChange = evt => {
     const selectedValue = evt.target.value === placeholder ? '' : evt.target.value;
     handleEvent(actionsApi, 'changeNblur', propName, selectedValue);
   };
 
   if(readOnly){
-    return <ReadOnlyDisplay label={label} value={displayValue} />
+    return <ReadOnlyDisplay label={label} value={thePConn.getLocalizedValue(
+      displayValue,
+      localePath,
+      thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+    )} />
   }
 
   return (
@@ -77,7 +97,11 @@ export default function Dropdown(props) {
         {options.map(option => {
           return (
             <option key={option.key} value={option.key}>
-              {option.value}
+              {thePConn.getLocalizedValue(
+                option.value,
+                localePath,
+                thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+              )}
             </option>
           );
         })}

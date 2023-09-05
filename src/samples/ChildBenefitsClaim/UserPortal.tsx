@@ -8,7 +8,7 @@ export default function UserPortal(props) {
 
   return (
     <>
-    <main className="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+      <main className="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
         <div className="govuk-grid-row">
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-xl'>{t('YOUR_CLAIM_APPLICATIONS')}</h1>

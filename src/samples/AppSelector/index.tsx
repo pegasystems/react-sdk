@@ -1,28 +1,36 @@
 import React from "react";
 import { Switch, Route } from 'react-router-dom';
 // import EmbeddedTopLevel from "../Embedded/EmbeddedTopLevel";
-import EmbeddedTopLevel from '../ChildBenefitsClaim/index';
+import ChildBenefitsClaim from '../ChildBenefitsClaim/index';
+import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
+import { initReactI18next } from 'react-i18next';
+import Backend from 'i18next-http-backend';
+import i18n from 'i18next';
 
-// NOTE: You should update this to be the same value that's in
-//  the src/index.html <base href="value"> to allow the React Router
-//  to identify the paths correctly.
-const baseURL = "/";
-
-// The Main component renders one of the three provided
-// Routes (provided that one matches). Both the /roster
-// and /schedule routes will match any pathname that starts
-// with /roster or /schedule. The / route will only match
-// when the pathname is exactly the string "/"
 const AppSelector = () => {
+  i18n
+    .use(Backend)
+    .use(initReactI18next)
+    .init({
+      lng: sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en',
+      backend: {
+        /* translation file path */
+        loadPath: `assets/i18n/{{lng}}.json`
+      },
+      fallbackLng: 'en',
+      debug: false,
+      returnNull: false,
+      react: {
+        useSuspense: false,
+      }
+    });
 
   return (
-    <>
-      <Switch>
-        <Route exact path={baseURL} component={EmbeddedTopLevel} />
-        <Route path="*" component={EmbeddedTopLevel} />
-      </Switch>
-    </>
-  )
+    <Switch>
+      <Route exact path='/' component={ChildBenefitsClaim} />
+      <Route path='/cookies' component={CookiePage} />
+    </Switch>
+  );
 
 };
 

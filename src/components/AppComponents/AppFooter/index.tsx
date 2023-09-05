@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 export default function AppFooter() {
   const { t } = useTranslation();
@@ -16,14 +17,14 @@ export default function AppFooter() {
               </a>
             </li>
             <li className="govuk-footer__inline-list-item">
-              <a className="govuk-footer__link" href="#">
+              <Link to="/#" className="govuk-footer__link">
                 {t("ACCESSIBILITY")}
-              </a>
+              </Link>
             </li>
             <li className="govuk-footer__inline-list-item">
-              <a className="govuk-footer__link" href="/cookies">
+              <Link to="/cookies" className="govuk-footer__link">
                 {t("COOKIES")}
-              </a>
+              </Link>
             </li>
             <li className="govuk-footer__inline-list-item">
               <a className="govuk-footer__link" href="https://www.tax.service.gov.uk/help/terms-and-conditions">

@@ -108,7 +108,7 @@
   "COOKIE_JSESSIONID_DESCRIPTION": "Used to identify the visitor’s session information related to the HMRC service being accessed.",
   "COOKIE_FIND_OUT_MORE": "Find out more about cookies on HMRC services",
 
-  "GDS_INFO_INFORMATION": "Information",
+  "GDS_INFO_IMPORTANT": "Important",
   "GDS_INFO_SUCCESS": "Success",
   "GDS_INFO_WARNING": "Warning",
   "GDS_INFO_INFO_UNVERIFIED_CHILD_HEADER": "We were unable to verify your child's details",

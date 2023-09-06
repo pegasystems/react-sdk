@@ -31,7 +31,7 @@ export default function HmrcOdxGdsInfoPanel(props) {
   let panelTitle;
   switch (panelType) {
     case '1':
-      panelTitle = t('GDS_INFO_INFORMATION');
+      panelTitle = t('GDS_INFO_IMPORTANT');
       break;
     case '2':
       panelTitle = t('GDS_INFO_WARNING');

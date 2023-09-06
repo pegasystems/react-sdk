@@ -37,7 +37,7 @@
       "label": "Panel type",
       "defaultValue": "1",
       "source": [
-        { "key": "1", "value": "Information" },
+        { "key": "1", "value": "Important" },
         { "key": "2", "value": "Warning" },
         { "key": "3", "value": "Success" }
       ]

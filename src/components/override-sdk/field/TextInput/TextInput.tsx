@@ -19,7 +19,8 @@ export default function TextInput(props) {
     readOnly,
     disabled,
     name,
-    testId
+    testId,
+    configAlternateDesignSystem
   } = props;
 
   const[errorMessage,setErrorMessage] = useState(validatemessage);
@@ -58,6 +59,10 @@ export default function TextInput(props) {
   // TODO Investigate more robust way to check if we should display as password
   if (fieldMetadata?.displayAs === 'pxPassword') {
     extraInputProps['type'] = 'password';
+  }
+
+  if (configAlternateDesignSystem?.autocomplete) {
+    extraInputProps['autoComplete'] = configAlternateDesignSystem.autocomplete;
   }
 
   return (

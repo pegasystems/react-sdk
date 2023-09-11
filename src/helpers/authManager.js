@@ -18,6 +18,8 @@ let usePopupForRestOfSession = sessionStorage.getItem("rsdk_popup") === "1";
 let gbC11NBootstrapInProgress = false;
 // Some non Pega OAuth 2.0 Authentication in use (Basic or Custom for service package)
 let gbCustomAuth = false;
+// To keep track the time of last re-auth attempt
+let startOfFullRefresh = 0;
 
 /*
  * Set to use popup experience for rest of session
@@ -460,12 +462,14 @@ export const login = (bFullReauth=false) => {
         aMgr.login().then(token => {
             processTokenOnLogin(token);
             // getUserInfo();
+            startOfFullRefresh = 0;
             resolve(token.access_token);
         }).catch( (e) => {
             gbLoginInProgress = false;
             sessionStorage.removeItem("rsdk_loggingIn");
             // eslint-disable-next-line no-console
             console.log(e);
+            startOfFullRefresh = 0;
             reject(e);
         });
       });
@@ -611,16 +615,20 @@ export const authUpdateTokens = (token) => {
 // Initiate a full OAuth re-authorization (any refresh token has also expired).
 export const authFullReauth = () => {
   const bHandleHere = true; // Other alternative is to raise an event and have someone else handle it
-
-  if( bHandleHere ) {
-    // Don't want to do a full clear of authMgr as will loose sessionIndex.  Rather just clear the tokens
-    clearAuthMgr(true);
-    login(true);
-  } else {
-    // Fire the SdkFullReauth event to indicate a new token is needed (PCore.getAuthUtils.setTokens method
-    //  should be used to communicate the new token to Constellation JS Engine.
-    const event = new CustomEvent('SdkFullReauth', { detail: authUpdateTokens });
-    document.dispatchEvent(event);
+  const currTime = Date.now();
+  // We'll refrain from re-authenticating until the current authentication attempt has aged by at least 5 minutes if there is one.
+  if( !startOfFullRefresh || currTime - parseInt(startOfFullRefresh, 10) <= 300000 ){
+    startOfFullRefresh = Date.now();
+    if( bHandleHere ) {
+      // Don't want to do a full clear of authMgr as will loose sessionIndex.  Rather just clear the tokens
+      clearAuthMgr(true);
+      login(true);
+    } else {
+      // Fire the SdkFullReauth event to indicate a new token is needed (PCore.getAuthUtils.setTokens method
+      //  should be used to communicate the new token to Constellation JS Engine.
+      const event = new CustomEvent('SdkFullReauth', { detail: authUpdateTokens });
+      document.dispatchEvent(event);
+    }
   }
 };
 

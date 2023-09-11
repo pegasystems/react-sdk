@@ -41,7 +41,7 @@ export default function Accessibility() {
                             <h1 className="govuk-heading-l">
                                 {t("ACCESSIBILITY_HEADING_1")}
                             </h1>
-                            <p className='govuk-heading-m'>
+                            <p className='govuk-body-l'>
                                 {t("ACCESSIBILITY_HEADING_2")}
                             </p>
                             <p className='govuk-body'>{t("ACCESSIBILITY_P_1")}</p>

@@ -40,8 +40,10 @@ export default function Date(props) {
   const handleDateChange = () => {
     let isoDate;
     if (year || month || day) {
-      isoDate = `${year}-${month.toString().length === 1 ? `0${month}` : month}-${
-        day.toString().length === 1 ? `0${day}` : day
+      const trimMonth = month.replace(/\s/g, '');
+      const trimDay = day.replace(/\s/g, '');
+      isoDate = `${year.replace(/\s/g, '')}-${trimMonth.toString().length === 1 ? `0${trimMonth}` : trimMonth}-${
+        trimDay.toString().length === 1 ? `0${trimDay}` : trimDay
       }`;
     } else {
       isoDate = '';

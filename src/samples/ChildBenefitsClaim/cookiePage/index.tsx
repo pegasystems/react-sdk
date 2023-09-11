@@ -4,15 +4,18 @@ import AppHeader from '../../../components/AppComponents/AppHeader';
 import AppFooter from '../../../components/AppComponents/AppFooter';
 import LanguageToggle from '../../../components/AppComponents/LanguageToggle';
 import CookiePageTable from './CookiePageTable';
+import signoutHandler from '../../../components/helpers/signout';
+import {Utils} from '../../../components/helpers/utils';
 
 const FIND_OUT_MORE_URL = "https://www.tax.service.gov.uk/help/cookie-details";
 
 export default function CookiePage() {
   const { t } = useTranslation();
+  Utils.scrollToTop();
 
   return (
     <>
-      <AppHeader appname={t("CLAIM_CHILD_BENEFIT")} />
+      <AppHeader appname={t("CLAIM_CHILD_BENEFIT")}  handleSignout={signoutHandler} />
       <div className="govuk-width-container">
         <LanguageToggle />
         <main className="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">

@@ -12,48 +12,48 @@ export default function AppFooter() {
           <h2 className="govuk-visually-hidden">Support links</h2>
           <ul className="govuk-footer__inline-list">
             <li className="govuk-footer__inline-list-item">
-              <a className="govuk-footer__link" href="https://www.gov.uk/government/publications/data-protection-act-dpa-information-hm-revenue-and-customs-hold-about-you">
-                {t("PRIVACY")}
+              <a className="govuk-footer__link" href="https://www.gov.uk/government/publications/data-protection-act-dpa-information-hm-revenue-and-customs-hold-about-you" target="_blank" rel="noreferrer">
+                {t("PRIVACY")} {t("OPENS_IN_NEW_TAB")}
               </a>
             </li>
             <li className="govuk-footer__inline-list-item">
-              <Link to="/#" className="govuk-footer__link">
-                {t("ACCESSIBILITY")}
+              <Link to="/accessibility" className="govuk-footer__link" target="_blank">
+                {t("ACCESSIBILITY")} {t("OPENS_IN_NEW_TAB")}
               </Link>
             </li>
             <li className="govuk-footer__inline-list-item">
-              <Link to="/cookies" className="govuk-footer__link">
-                {t("COOKIES")}
+              <Link to="/cookies" className="govuk-footer__link" target="_blank">
+                {t("COOKIES")} {t("OPENS_IN_NEW_TAB")}
               </Link>
             </li>
             <li className="govuk-footer__inline-list-item">
-              <a className="govuk-footer__link" href="https://www.tax.service.gov.uk/help/terms-and-conditions">
-                {t("TERMS_CONDITIONS")}
+              <a className="govuk-footer__link" href="https://www.tax.service.gov.uk/help/terms-and-conditions" target="_blank" rel="noreferrer">
+                {t("TERMS_CONDITIONS")} {t("OPENS_IN_NEW_TAB")}
               </a>
             </li>
             <li className="govuk-footer__inline-list-item">
-              <a className="govuk-footer__link" href="https://www.gov.uk/government/collections/child-benefit-forms">
-                {t("CHB_FORMS_GUIDANCE")}
+              <a className="govuk-footer__link" href="https://www.gov.uk/government/collections/child-benefit-forms" target="_blank" rel="noreferrer">
+                {t("CHB_FORMS_GUIDANCE")} {t("OPENS_IN_NEW_TAB")}
               </a>
             </li>
             <li className="govuk-footer__inline-list-item">
-              <a className="govuk-footer__link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact">
-                {t("CONTACT")}
+              <a className="govuk-footer__link" href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact" target="_blank" rel="noreferrer">
+                {t("CONTACT")} {t("OPENS_IN_NEW_TAB")}
               </a>
             </li>
             <li className="govuk-footer__inline-list-item">
-              <a className="govuk-footer__link" href="https://www.gov.uk/help">
-                {t("HELP")}
+              <a className="govuk-footer__link" href="https://www.gov.uk/help" target="_blank" rel="noreferrer">
+                {t("HELP")} {t("OPENS_IN_NEW_TAB")}
               </a>
             </li>
             <li className="govuk-footer__inline-list-item">
-              <a className="govuk-footer__link" href="https://www.gov.uk/cymraeg">
-                {t("CYMRAEG")}
+              <a className="govuk-footer__link" href="https://www.gov.uk/cymraeg" target="_blank" rel="noreferrer">
+                {t("CYMRAEG")} {t("OPENS_IN_NEW_TAB")}
               </a>
             </li>
             <li className="govuk-footer__inline-list-item">
               <a className="govuk-footer__link" href="https://www.tax.service.gov.uk/contact/report-technical-problem" target="_blank" rel="noreferrer">
-                {t("PAGE_NOT_WORKING_PROPERLY")}{t("OPENS_IN_NEW_TAB")}
+                {t("PAGE_NOT_WORKING_PROPERLY")}
               </a>
             </li>
           </ul>
@@ -80,7 +80,7 @@ export default function AppFooter() {
         <div className="govuk-footer__meta-item">
           <a
             className="govuk-footer__link govuk-footer__copyright-logo"
-            href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">{t("COPYRIGHT")}</a>
+            href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/" target="_blank" rel="noreferrer">{t("COPYRIGHT")}</a>
         </div>
       </div>
     </div>

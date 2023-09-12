@@ -617,7 +617,7 @@ export const authUpdateTokens = (token) => {
 export const authFullReauth = () => {
   const bHandleHere = true; // Other alternative is to raise an event and have someone else handle it
   const currTime = Date.now();
-  // We'll refrain from re-authenticating until the current authentication attempt has aged by at least 5 minutes if there is one.
+  // We'll refrain from re-authenticating until the reauthIgnoreInterval elapsed.
   if( !startOfFullRefresh || currTime - parseInt(startOfFullRefresh, 10) <= reauthIgnoreInterval ){
     startOfFullRefresh = Date.now();
     if( bHandleHere ) {

@@ -20,6 +20,7 @@ let gbC11NBootstrapInProgress = false;
 let gbCustomAuth = false;
 // To keep track the time of last re-auth attempt
 let startOfFullRefresh = 0;
+const reauthIgnoreInterval = 300000;
 
 /*
  * Set to use popup experience for rest of session
@@ -617,7 +618,7 @@ export const authFullReauth = () => {
   const bHandleHere = true; // Other alternative is to raise an event and have someone else handle it
   const currTime = Date.now();
   // We'll refrain from re-authenticating until the current authentication attempt has aged by at least 5 minutes if there is one.
-  if( !startOfFullRefresh || currTime - parseInt(startOfFullRefresh, 10) <= 300000 ){
+  if( !startOfFullRefresh || currTime - parseInt(startOfFullRefresh, 10) <= reauthIgnoreInterval ){
     startOfFullRefresh = Date.now();
     if( bHandleHere ) {
       // Don't want to do a full clear of authMgr as will loose sessionIndex.  Rather just clear the tokens

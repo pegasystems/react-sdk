@@ -27,7 +27,7 @@ export default function UserPortal(props) {
             <div className='govuk-grid-column-two-thirds'>
               <>{children}</>
               <>
-                <p className='govuk-heading-m'>{t('MAKE_A_CLAIM')}</p>
+                <h3 className='govuk-heading-m' id="subsection-title">{t('MAKE_A_CLAIM')}</h3>
                 <p className='govuk-body'>{t('USE_THIS_SERVICE')}</p>
                 <Button
                   attributes={{ className: 'govuk' }}

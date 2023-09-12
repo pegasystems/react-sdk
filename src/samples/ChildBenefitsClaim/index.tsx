@@ -25,15 +25,9 @@ import signoutHandler from '../../components/helpers/signout';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../sdk-local-component-map';
+import { checkCookie, setCookie } from '../../components/helpers/cookie';
 
-
-// declare var gbLoggedIn: boolean;
-// declare var login: Function;
-// declare var logout: Function;
-
-// declare const PCore: any;
 declare const myLoadMashup: any;
-
 
 export default function ChildBenefitsClaim() {
   const [pConn, setPConn] = useState<any>(null);
@@ -77,9 +71,6 @@ export default function ChildBenefitsClaim() {
     setShowStartPage(false);
     setShowPega(false);
     setShowResolutionScreen(true);
-
-    // PCore.getMashupApi().openPage('SubmittedClaims', 'HMRC-Chb-UIPages', 'root/primary_1');
-
   }
 
   function closeContainer(){
@@ -88,7 +79,6 @@ export default function ChildBenefitsClaim() {
     setShowUserPortal(true);
     setShowResolutionScreen(false);
   }
-
 
   // Calls data page to fetch in progress claims, then for each result (limited to first 10), calls D_Claim to get extra details about each 'assignment'
   // to display within the claim 'card' in the list. This then sets inprogress claims state value to the list of claims data.
@@ -105,10 +95,8 @@ export default function ChildBenefitsClaim() {
     });
   };
 
-
   function cancelAssignment() {
     // PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext(`${PCore.getConstants().APP.APP}/primary`), {skipDirtyCheck :true});
-
     fetchInProgressClaimsData();
     setShowStartPage(false);
     setShowUserPortal(true);
@@ -117,7 +105,6 @@ export default function ChildBenefitsClaim() {
   }
 
   function establishPCoreSubscriptions() {
-
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
       () => {
@@ -170,7 +157,6 @@ export default function ChildBenefitsClaim() {
       'savedCase'
     );
 
-
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_OPENED,
       () => {
@@ -213,15 +199,6 @@ export default function ChildBenefitsClaim() {
   // from react_root.js with some modifications
   function RootComponent(props) {
     const PegaConnectObj = createPConnectComponent();
-
-    // remove from Provider to work around compiler error for now: context={StoreContext}
-    // return (
-    //   <Provider store={PCore.getStore()} context={StoreContext} >
-    //     <PegaConnectObj {...props} />
-    //   </Provider>
-    // );
-
-
     const thePConnObj = <PegaConnectObj {...props} />;
 
     // NOTE: For Embedded mode, we add in displayOnlyFA and isMashup to our React context
@@ -244,7 +221,6 @@ export default function ChildBenefitsClaim() {
    */
   function initialRender(inRenderObj) {
     // loadMashup does its own thing so we don't need to do much/anything here
-
     // // modified from react_root.js render
     const {
       props,
@@ -302,9 +278,6 @@ export default function ChildBenefitsClaim() {
       establishPCoreSubscriptions();
       setShowAppName(true);
 
-      // Register our deviceID header
-      PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', 'PLACEHOLDER_DEVICEID');
-
       // TODO : Consider refactoring 'en_GB' reference as this may need to be set elsewhere
       PCore.getEnvironmentInfo().setLocale(sessionStorage.getItem('rsdk_locale') || 'en_GB');
       PCore.getLocaleUtils().loadLocaleResources([PCore.getLocaleUtils().GENERIC_BUNDLE_KEY, '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE']);
@@ -312,6 +285,22 @@ export default function ChildBenefitsClaim() {
 
       operatorId = PCore.getEnvironmentInfo().getOperatorIdentifier();
 
+      /* Functionality to set the device id in the header for use in CIP.
+      Device id is unique and will be stored on the user device / browser cookie */
+      const COOKIE_PEGAODXDI = 'pegaodxdi';
+      let deviceID = checkCookie(COOKIE_PEGAODXDI);
+      if (deviceID) {
+        setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
+        PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
+      } else {
+        PCore.getDataPageUtils()
+        .getPageDataAsync('D_UserSession', 'root' )
+        .then(res => {
+          deviceID = res.DeviceId;
+          setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
+          PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
+        });
+      }
 
       setLoadingSubmittedClaims(true);
       // @ts-ignore
@@ -322,10 +311,7 @@ export default function ChildBenefitsClaim() {
         })
         .finally(()=>setLoadingSubmittedClaims(false));
       fetchInProgressClaimsData();
-
-
     });
-
 
     // Initialize the SdkComponentMap (local and pega-provided)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
@@ -338,8 +324,7 @@ export default function ChildBenefitsClaim() {
     //  top level Pega root element (likely a RootContainer)
 
     myLoadMashup('pega-root', false); // this is defined in bootstrap shell that's been loaded already
-
-    }
+  }
 
   // One time (initialization) subscriptions and related unsubscribe
   useEffect(() => {
@@ -401,9 +386,7 @@ export default function ChildBenefitsClaim() {
         'assignmentFinished'
       ); */
     };
-
   }, []);
-
 
   function handleSignout() {
     if (bShowPega) {

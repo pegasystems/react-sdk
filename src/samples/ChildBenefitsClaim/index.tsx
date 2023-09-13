@@ -406,7 +406,7 @@ export default function ChildBenefitsClaim() {
       <AppHeader handleSignout={handleSignout} appname={t("CLAIM_CHILD_BENEFIT")} />
       <div className="govuk-width-container">
 
-        <LanguageToggle />
+        <LanguageToggle PegaApp="true"/>
         <div id='pega-part-of-page'>
           <div id='pega-root'></div>
         </div>

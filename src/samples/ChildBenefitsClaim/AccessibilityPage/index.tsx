@@ -4,7 +4,6 @@ import AppHeader from '../../../components/AppComponents/AppHeader';
 import AppFooter from '../../../components/AppComponents/AppFooter';
 import LanguageToggle from '../../../components/AppComponents/LanguageToggle';
 import { useTranslation } from 'react-i18next';
-import signoutHandler from '../../../components/helpers/signout';
 import {Utils} from '../../../components/helpers/utils';
 
 export default function Accessibility() {
@@ -32,7 +31,7 @@ export default function Accessibility() {
 
     return (
         <>
-            <AppHeader appname={t("CLAIM_CHILD_BENEFIT")} handleSignout={signoutHandler} />
+            <AppHeader appname={t("CLAIM_CHILD_BENEFIT")}/>
               <div className="govuk-width-container">
                 <LanguageToggle />
                 <main className="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">

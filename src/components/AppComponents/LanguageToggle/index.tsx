@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 
 declare const PCore: any;
 
-const LanguageToggle = () => {
+const LanguageToggle = (props) => {
+  const { PegaApp } = props;
   const { i18n } = useTranslation();
   let lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
   const [selectedLang, setSelectedLang] = useState(lang);
@@ -15,12 +16,14 @@ const LanguageToggle = () => {
     setSelectedLang(lang);
     sessionStorage.setItem('rsdk_locale', `${lang}_GB`);
     i18n.changeLanguage(lang);
-    PCore.getEnvironmentInfo().setLocale(`${lang}_GB`);
+    if (PegaApp) {
+      PCore.getEnvironmentInfo().setLocale(`${lang}_GB`);
 
-    // This cleares the generic fields localisation values and attempts to 'refetch' them, as they do not do this
-    // manually after locale is updated
-    PCore.getLocaleUtils().resetLocaleStore();
-    PCore.getLocaleUtils().loadLocaleResources([PCore.getLocaleUtils().GENERIC_BUNDLE_KEY, '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE'])
+      // This cleares the generic fields localisation values and attempts to 'refetch' them, as they do not do this
+      // manually after locale is updated
+      PCore.getLocaleUtils().resetLocaleStore();
+      PCore.getLocaleUtils().loadLocaleResources([PCore.getLocaleUtils().GENERIC_BUNDLE_KEY, '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE']);
+    }
   };
 
   return (

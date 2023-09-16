@@ -27,6 +27,7 @@ declare const PCore: any;
 
 export default function FlowContainer(props) {
   const pCoreConstants = PCore.getConstants();
+  const PCoreVersion = PCore.getPCoreVersion();
 
   const Assignment =  getComponentFromMap("Assignment");
 
@@ -177,21 +178,26 @@ export default function FlowContainer(props) {
     const assignmentsList: Array<any> = ourPConn.getValue(
       pCoreConstants.CASE_INFO.D_CASE_ASSIGNMENTS_RESULTS
     );
-    const thisOperator = PCore.getEnvironmentInfo().getOperatorIdentifier();
+
+    const isEmbedded = window.location.href.includes('embedded');
+    let bAssignmentsForThisOperator = false;
+
     // 8.7 includes assignments in Assignments List that may be assigned to
     //  a different operator. So, see if there are any assignments for
     //  the current operator
-    let bAssignmentsForThisOperator = false;
-
+    if (PCoreVersion?.includes('8.7') || isEmbedded) {
+      const thisOperator = PCore.getEnvironmentInfo().getOperatorIdentifier();
+      for (const assignment of assignmentsList) {
+        if (assignment['assigneeInfo']['ID'] === thisOperator) {
+          bAssignmentsForThisOperator = true;
+        }
+      }
+    } else {
+      bAssignmentsForThisOperator = true;
+    }
     // Bail out if there isn't an assignmentsList
     if (!assignmentsList) {
       return bHasAssignments;
-    }
-
-    for (const assignment of assignmentsList) {
-      if (assignment['assigneeInfo']['ID'] === thisOperator) {
-        bAssignmentsForThisOperator = true;
-      }
     }
 
     const bHasChildCaseAssignments = hasChildCaseAssignments();

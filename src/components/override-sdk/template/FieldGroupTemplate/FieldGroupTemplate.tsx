@@ -57,9 +57,11 @@ export default function Group(props){
         return (<ReadOnlyDisplay value={valuesList} label={heading}/>)
       }
 
-      let firstOptionPropertyName = null
+      let firstOptionPropertyName = null;
+      let exlcusiveOption = null;
 
-      const optionsList = children.map( child => {
+      const optionsList = [];
+      children.forEach( child => {
         const childPConnect = child.props.getPConnect();
         const resolvedProps = childPConnect.resolveConfigProps(childPConnect.getConfigProps())
         childPConnect.populateAdditionalProps(childPConnect.getConfigProps());
@@ -72,20 +74,26 @@ export default function Group(props){
         );
 
         const formattedPropertyName = childPConnect.getStateProps().value && childPConnect.getStateProps().value.split('.').pop();
-        const optionName = `${formattedContext}-${formattedPropertyName}`
+        const optionName = `${formattedContext}` // -${formattedPropertyName}`
 
         // Points error summary link to first checkbox in group
         if(!firstOptionPropertyName) {firstOptionPropertyName = formattedPropertyName}
         const fieldId = `${formattedContext}-${firstOptionPropertyName}`
         childPConnect.setStateProps({fieldId});
 
-        return {
-            checked: resolvedProps.value,
-            label: resolvedProps.caption,
-            hintText: resolvedProps.helperText,
-            readOnly: resolvedProps.readOnly,
-            name: optionName,
-            onChange: event => handleChange(event, childPConnect.getStateProps().value),
+        const option = {
+          checked: resolvedProps.value,
+          label: resolvedProps.caption,
+          hintText: resolvedProps.helperText,
+          readOnly: resolvedProps.readOnly,
+          name: optionName,
+          onChange: event => handleChange(event, childPConnect.getStateProps().value),
+        }
+
+        if(option.label.toLowerCase().includes('none of these apply')){
+          exlcusiveOption = option;
+        } else {
+          optionsList.push(option);
         }
       })
 
@@ -98,6 +106,7 @@ export default function Group(props){
           hintText={instructions}
           legendIsHeading={isOnlyField}
           errorText={errors.join(' ').trim() !== '' ? errors.join(' ').trim() : null}
+          exclusiveOption={exlcusiveOption}
         />
       </>);
     }

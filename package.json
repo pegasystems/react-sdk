@@ -69,7 +69,7 @@
     "i18next-http-backend": "^2.2.1",
     "lodash.isequal": "^4.5.0",
     "material-ui-phone-number": "^2.2.6",
-    "react": "^16.13.1",
+    "react": "^16.14.0",
     "react-datepicker": "^4.8.0",
     "react-dom": "^16.13.1",
     "react-i18next": "^13.0.2",

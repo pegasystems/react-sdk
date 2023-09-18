@@ -19,6 +19,10 @@ export default function ClaimsList(props){
       case 'Pending-CBS':
       case 'Resolved-Completed':
       case 'Pending-ManualInvestigation':
+      case 'Pending - verify documentation':
+      case 'Pending-awaiting documentation':
+      case 'Pending-VerifyDocumentation':
+      case 'Pending-AwaitingDocumentation':
         return {text: t('CLAIM_RECEIVED'), tagColour:'purple'};
       default:
         return {text:status, tagColour:'grey'};
@@ -73,7 +77,7 @@ export default function ClaimsList(props){
         additionalChildren.forEach(child =>{
           const newChild = {
             firstName : child.name,
-            lastName : item.Claim.Child.pyLastName,
+            lastName : ' ',
             dob : DateFormatter.Date(child.dob, { format: 'DD/MM/YYYY' })
           }
           claimItem.children.push(newChild);

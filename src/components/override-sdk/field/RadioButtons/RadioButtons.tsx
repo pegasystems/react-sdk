@@ -20,7 +20,7 @@ export default function RadioButtons(props) {
     fieldMetadata
   } = props;
 
-  const isOnlyField = useIsOnlyField();
+  const isOnlyField = useIsOnlyField(props.displayOrder);
   const[errorMessage,setErrorMessage] = useState(validatemessage);
 
   useEffect(()=>{

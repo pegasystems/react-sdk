@@ -17,7 +17,7 @@ export default function CheckboxComponent(props) {
     testId,
   } = props;
 
-  const isOnlyField = useIsOnlyField();
+  const isOnlyField = useIsOnlyField(props.displayOrder);
   const[errorMessage,setErrorMessage] = useState(validatemessage);
 
   useEffect(()=>{

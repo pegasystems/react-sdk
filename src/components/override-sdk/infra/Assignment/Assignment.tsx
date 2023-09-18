@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 import {Utils} from '../../../helpers/utils';
-import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 import ErrorSummary from '../../../BaseComponents/ErrorSummary/ErrorSummary';
 import { DateErrorFormatter } from '../../../helpers/formatters/DateErrorFormatter';
 import Button from '../../../BaseComponents/Button/Button';
 import setPageTitle from '../../../helpers/setPageTitleHelpers';
 import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import {HMRCAppContext} from '../../../helpers/HMRCAppContext';
+
 
 export interface ErrorMessageDetails {
   message: string;
@@ -44,18 +45,32 @@ export default function Assignment(props) {
   const cancelCreateStageAssignment = actionsAPI.cancelCreateStageAssignment.bind(actionsAPI);
   // const showPage = actionsAPI.showPage.bind(actionsAPI);
 
+  /* APP STATE - PM IN PROGRESS */
+
+  const [singleQuestionPage, setSingleQuestionPage] = useState(false);
+
+  const [DFStack, setDFStack] = useState([]);
+
+  /* ******************** */
   const [errorSummary, setErrorSummary] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Array<OrderedErrorMessage>>([]);
 
-  const isOnlyOneField = useIsOnlyField();
+  const _containerName =  getPConnect().getContainerName();
+  const context = getPConnect().getContextName();
+  const containerID = PCore.getContainerUtils().getContainerAccessOrder(`${context}/${_containerName}`).at(-1)
+  useEffect(() => {
+    setPageTitle();
+    // Set the assignment level singleQuestionpage value for 'original' logic handling
+    setSingleQuestionPage(PCore.getFormUtils().getEditableFields(containerID).length === 1);
+    // Reset the DFStack array when assignment page updates
+    setDFStack([]);
+  },[children])
 
   let containerName;
   if(thePConn.getDataObject().caseInfo?.assignments && thePConn.getDataObject().caseInfo?.assignments.length > 0){
     containerName = thePConn.getDataObject().caseInfo?.assignments[0].name;
   }
-  useEffect(() => {
-    setPageTitle();
-  },[children])
+
 
   useEffect(() => {
     if (children && children.length > 0) {
@@ -75,11 +90,9 @@ export default function Assignment(props) {
     }
   }, [children]);
 
-  const _containerName =  getPConnect().getContainerName();
+
   function checkErrorMessages() {
     let errorStateProps = [];
-    const context = getPConnect().getContextName();
-    const containerID = PCore.getContainerUtils().getContainerAccessOrder(`${context}/${_containerName}`).at(-1)
     errorStateProps = PCore.getFormUtils().getEditableFields(containerID).reduce( (acc, o) => {
 
     const fieldC11nEnv = o.fieldC11nEnv;
@@ -249,49 +262,63 @@ export default function Assignment(props) {
   }, [actionButtons]);
 
   return (
-    <div id='Assignment'>
-      {arSecondaryButtons?.map(sButton =>
-        sButton['name'] === 'Previous' ? (
-          <Button
-            variant='backlink'
-            onClick={e => {
-              e.target.blur();
-              _onButtonPress(sButton['jsAction'], 'secondary');
-            }}
-            key={sButton['actionID']}
-            attributes={{ type: 'link' }}
-          ></Button>
-        ) : null
-        )}
-      <main className="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-two-thirds">
-          {errorSummary && errorMessages.length > 0 && (
-            <ErrorSummary errors={errorMessages.map(item => localizedVal(item.message, localeCategory, localeReference))} />
+    <HMRCAppContext.Provider value={{
+        singleQuestionPage,
+        setAssignmentSingleQuestionPage: (value) => {
+          if(value && !containerName.toLowerCase().includes('check your answer')) setSingleQuestionPage(value);
+        },
+        SingleQuestionDisplayDFStack: DFStack,
+        SingleQuestionDisplayDFStackPush: (DFName) => {if(!DFStack.includes(DFName)) {
+          const extendedList = DFStack;
+          extendedList.push(DFName);
+          setDFStack(extendedList)
+        }}
+
+      }}>
+      <div id='Assignment'>
+        {arSecondaryButtons?.map(sButton =>
+          sButton['name'] === 'Previous' ? (
+            <Button
+              variant='backlink'
+              onClick={e => {
+                e.target.blur();
+                _onButtonPress(sButton['jsAction'], 'secondary');
+              }}
+              key={sButton['actionID']}
+              attributes={{ type: 'link' }}
+            ></Button>
+          ) : null
           )}
-          {!isOnlyOneField && <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>}
-          <form>
-            <AssignmentCard
-              getPConnect={getPConnect}
-              itemKey={itemKey}
-              actionButtons={actionButtons}
-              onButtonPress={buttonPress}
+        <main className="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
+          <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+            {errorSummary && errorMessages.length > 0 && (
+              <ErrorSummary errors={errorMessages.map(item => localizedVal(item.message, localeCategory, localeReference))} />
+            )}
+            {!singleQuestionPage && <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>}
+            <form>
+              <AssignmentCard
+                getPConnect={getPConnect}
+                itemKey={itemKey}
+                actionButtons={actionButtons}
+                onButtonPress={buttonPress}
+              >
+                {children}
+              </AssignmentCard>
+            </form>
+            <a
+              href='https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit'
+              className='govuk-link'
+              rel='noreferrer noopener'
+              target='_blank'
             >
-              {children}
-            </AssignmentCard>
-          </form>
-          <a
-            href='https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit'
-            className='govuk-link'
-            rel='noreferrer noopener'
-            target='_blank'
-          >
-            {`${t("ASK_HMRC_ONLINE")} ${t("OPENS_IN_NEW_TAB")}`}
-          </a>
+              {`${t("ASK_HMRC_ONLINE")} ${t("OPENS_IN_NEW_TAB")}`}
+            </a>
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </HMRCAppContext.Provider>
   );
 }
 
@@ -308,3 +335,6 @@ Assignment.defaultProps = {
   isCreateStage: false
   // buildName: null
 };
+
+
+export { HMRCAppContext };

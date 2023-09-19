@@ -78,7 +78,8 @@ export default function DefaultForm(props) {
       isOnlyField &&
       !instructionExists &&
       childPConnect.getConfigProps().readOnly !== true &&
-      idx === 0
+      idx === 0 &&
+      !configAlternateDesignSystem?.hidePageLabel
     ) {
       childPConnect.setInheritedProp(
         'label',

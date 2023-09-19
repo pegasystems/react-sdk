@@ -4,7 +4,7 @@ const _DateErrorFormatter = (message, propertyName) => {
   const dateRegExp = /(\d*-\d*-\d*)/;
   const matchedDates = message.match(dateRegExp);
   const originalDate = matchedDates?.length > 0 ? matchedDates[0] : null;
-  const targets = []
+  const targets = [];
 
   if(originalDate){
      const [year, month, day] = originalDate.split('-');
@@ -37,6 +37,7 @@ const _DateErrorFormatter = (message, propertyName) => {
 }
 
 export const DateErrorFormatter = (message, propertyName) => {
+  if (propertyName === ' ') propertyName = i18n.t('DATE_OF_BIRTH');
   return _DateErrorFormatter(message, propertyName).message;
 }
 

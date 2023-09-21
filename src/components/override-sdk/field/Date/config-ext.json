@@ -6,5 +6,20 @@
   "subtype": "Date",
   "componentKey" : "Date",
   "properties": [
+    {
+      "format": "SELECT",
+      "name": "autocomplete",
+      "label": "Autocomplete attribute",
+      "defaultValue": "",
+      "placeholder": "Does this field require an autocomplete value assigned to it?",
+      "required": false,
+      "helperText": "Autocomplete attributes allow browsers to complete information which has been provided before on any site.  This assists users when completing forms.  Please add the relevant autocomplete value if required.",
+      "source": [
+        { "key": "bday", "value": "bday" },
+        { "key": "bday-day", "value": "bday-day" },
+        { "key": "bday-month", "value": "bday-month" },
+        { "key": "bday-year", "value": "bday-year" }
+      ]
+    }
   ]
 }

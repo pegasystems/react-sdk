@@ -1,0 +1,59 @@
+{
+  "name": "HMRC_ODX_GDSSummaryCard",
+  "label": "GDS Summary Card",
+  "description": "Summary view of related data presented in a GDS pattern",
+  "organization": "HMRC",
+  "version": "0.0.1",
+  "library": "ODX",
+  "allowedApplications": [],
+  "componentKey": "HMRC_ODX_GDSSummaryCard",
+  "type": "Template",
+  "subtype": "FORM",
+  "icon": "TwoColumn.svg",
+  "properties": [
+    {
+      "name": "A",
+      "label": "Region A",
+      "format": "CONTENTPICKER"
+    },
+    {
+      "name": "B",
+      "label": "Region B",
+      "format": "CONTENTPICKER"
+    },
+    {
+      "label": "Conditions",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "required",
+          "label": "Required",
+          "format": "REQUIRED",
+          "saveToReference": true
+        },
+        {
+          "name": "disabled",
+          "label": "Disabled",
+          "format": "DISABLED",
+          "saveToReference": true
+        },
+        {
+          "name": "visibility",
+          "label": "Visibility",
+          "format": "VISIBILITY",
+          "saveToReference": true
+        }
+      ]
+    },
+    {
+      "format": "SELECT",
+      "name": "useType",
+      "label": "Use Type",
+      "defaultValue": "1",
+      "source": [
+        { "key": "1", "value": "Multi Child List" }
+       
+      ]
+    }
+  ]
+}

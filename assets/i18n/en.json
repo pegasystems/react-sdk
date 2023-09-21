@@ -140,6 +140,11 @@
   "GDS_INFO_WARNING": "Warning",
   "GDS_INFO_INFO_UNVERIFIED_CHILD_HEADER": "We were unable to verify your child's details",
   "GDS_INFO_INFO_UNVERIFIED_CHILD": "Check that the details you entered match their birth certificate. If you've just registered their birth, try again in 24 hours",
+
+  "GDS_INFO_CHILDREN": "Children",
+  "GDS_INFO_ITEM_CHILD": "Child",
+  "GDS_ACTION_REMOVE": "Remove",
+  "GDS_ACTION_CHANGE": "Change",
   "CLEAR_DATA": "Clear data",
   "ACCESSIBILITY_HEADING_1": "Accessibility statement for Claim Child Benefit service",
   "ACCESSIBILITY_HEADING_2": "This accessibility statement explains how accessible this service is, what to do if you have difficulty using it, and how to report accessibility problems with the service.",

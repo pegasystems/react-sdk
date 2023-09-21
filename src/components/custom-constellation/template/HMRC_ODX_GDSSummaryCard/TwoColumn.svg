@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="70px" viewBox="0 0 100 70" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>2-col  icon</title>
+    <g id="Views" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard-Copy-2" transform="translate(-198.000000, -207.000000)">
+            <g id="2-col--icon" transform="translate(198.000000, 207.000000)">
+                <rect id="bg" stroke="#A5A8BC" stroke-width="0.5" fill="#E7E9EB" x="0.25" y="0.25" width="99.5" height="69.5"></rect>
+                <g id="white" transform="translate(3.000000, 3.000000)" fill="#FFFFFF">
+                    <rect id="Rectangle" x="0" y="0" width="94" height="66.5"></rect>
+                </g>
+                <g id="gray" transform="translate(6.000000, 6.000000)" fill="#8084A7">
+                    <rect id="Rectangle" x="0" y="0" width="42" height="7.8"></rect>
+                    <rect id="Rectangle-Copy-18" x="0" y="11.7" width="42" height="7.8"></rect>
+                    <rect id="Rectangle-Copy-19" x="0" y="23.4" width="42" height="7.8"></rect>
+                    <rect id="Rectangle-Copy-20" x="0" y="35.1" width="42" height="7.8"></rect>
+                    <rect id="Rectangle-Copy-21" x="0" y="46.8" width="42" height="7.8"></rect>
+                    <rect id="Rectangle-Copy-22" x="0" y="58.5" width="42" height="5"></rect>
+                    <rect id="Rectangle-Copy" x="46" y="2.66453526e-15" width="42" height="7.8"></rect>
+                    <rect id="Rectangle-Copy-27" x="46" y="11.7" width="42" height="7.8"></rect>
+                    <rect id="Rectangle-Copy-26" x="46" y="23.4" width="42" height="7.8"></rect>
+                    <rect id="Rectangle-Copy-25" x="46" y="35.1" width="42" height="7.8"></rect>
+                    <rect id="Rectangle-Copy-24" x="46" y="46.8" width="42" height="7.8"></rect>
+                    <rect id="Rectangle-Copy-23" x="46" y="58.5" width="42" height="5"></rect>
+                </g>
+                <g id="labels" transform="translate(16.000000, 11.000000)">
+                    <circle id="Oval-Copy-3" fill="#FFFFFF" cx="10.5" cy="10.8076923" r="10.5"></circle>
+                    <text id="A" font-family="OpenSans-Semibold, Open Sans" font-size="11" font-weight="500" fill="#56566F">
+                        <tspan x="6.75" y="14">A</tspan>
+                    </text>
+                    <circle id="Oval-Copy-4" fill="#FFFFFF" cx="56.5" cy="10.8076923" r="10.5"></circle>
+                    <text id="B" font-family="OpenSans-Semibold, Open Sans" font-size="11" font-weight="500" fill="#56566F">
+                        <tspan x="52.75" y="14">B</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

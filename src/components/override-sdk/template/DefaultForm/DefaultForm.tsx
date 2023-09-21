@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import InstructionComp from '../../../helpers/formatters/ParsedHtml';
+import './DefaultForm.css';
 
 import {HMRCAppContext, DefaultFormContext}  from '../../../helpers/HMRCAppContext';
 
@@ -18,6 +19,11 @@ export default function DefaultForm(props) {
   setAssignmentSingleQuestionPage(configAlternateDesignSystem?.hidePageLabel);
   const isOnlyField = useIsOnlyField();
   const { t } = useTranslation();
+  let cssClassHook = "";
+
+  if (configAlternateDesignSystem?.cssClassHook) {
+    cssClassHook = configAlternateDesignSystem.cssClassHook;
+  }
 
   // repoint the children because they are in a region and we need to not render the region
   // to take the children and create components for them, put in an array and pass as the
@@ -181,6 +187,18 @@ export default function DefaultForm(props) {
   }
 
   return (
+    // <>
+    //   <div className={cssClassHook}>
+    //     {instructionExists && (
+    //       <div id='instructions' className='govuk-body'>
+    //         <InstructionComp htmlString={getFormattedInstructionText()} />
+    //       </div>
+    //     )}
+    //     {dfChildren}
+    //   </div>
+    // </>
+  
+    <div className={cssClassHook}>
     <DefaultFormContext.Provider value={{displayAsSingleQuestion: configAlternateDesignSystem?.hidePageLabel, DFName: props.localeReference}}>
       {instructionExists && (
         <p id='instructions' className='govuk-body'>
@@ -189,5 +207,6 @@ export default function DefaultForm(props) {
       )}
       {dfChildren}
     </DefaultFormContext.Provider>
+    </div>
   );
 }

@@ -1,30 +1,65 @@
-.psdk-default-form-one-column {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: calc(1rem);
+/***** CSS styles specific to default form hooks                   *****/
+/***** added through extended Pega properties                      *****/
+/***** 1. u-childSummary - used on child summary screen            *****/
+/***** 2. u-childRemove - used on the confirm child removal screen *****/
+
+
+/* FORM HOOK - u-childSummary */
+
+.u-childSummary .govuk-form-group fieldset {
+  display: none;
 }
 
-.psdk-default-form-two-column {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: calc(1rem);
+.u-childSummary .MuiGrid-container {
+  counter-reset: item-counter;
 }
 
-.psdk-default-form-three-column {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: calc(1rem);
+.u-childSummary .MuiGrid-item {
+  counter-increment: item-counter;
 }
 
-.psdk-default-form-two-column .grid-column {
-  grid-column: 1 / span 2;
+.u-childSummary .MuiGrid-item h2.govuk-summary-card__title:after {
+  content: counter(item-counter);
+  margin-left: 8px;
 }
 
-.psdk-default-form-three-column .grid-column {
-  grid-column: 1 / span 3;
+.u-childSummary .MuiGrid-item b {
+  display: none;
 }
 
-.psdk-default-form-instruction-text{
-  padding-top: 0.625rem;
-  padding-bottom: 0.625rem;
+.u-childSummary .MuiGrid-item br {
+  display: none;
+}
+
+
+/* FORM HOOK - u-childRemove */
+
+.u-childRemove .govuk-main-wrapper {
+  padding-top: 0;
+}
+
+.u-childRemove + .govuk-button-group button:not(.govuk-button--secondary) {
+  background-color: #d4351c;
+  box-shadow: 0 2px 0 #55150b;
+}
+
+.u-childRemove + .govuk-button-group button:not(.govuk-button--secondary):hover {
+  background-color: #aa2a16;
+}
+
+.u-childRemove .govuk-summary-list__row {
+  display: block;
+}
+
+.u-childRemove .MuiTypography-body2 {
+  font-size: 1rem;
+}
+
+.u-childRemove .govuk-grid-column-two-thirds {
+  max-width: 630px;
+  width: 100%;
+}
+
+.u-childRemove .govuk-summary-list__key {
+  width: 210px;
 }

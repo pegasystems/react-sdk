@@ -1,17 +1,17 @@
 import React from 'react';
 import TextInput from '../TextInput';
 
+interface InputProps {
+  type: string;
+  onChange: Function;
+  autoComplete?: string; // Make autocomplete optional
+}
+
 export default function Phone(props) {
   const {
     onChange,
+    autocomplete
   } = props;
-
-  /*
-  let testProp = {};
-  testProp = {
-    'data-test-id': testId
-  };
-  */
 
   const handleChange = inputVal => {
     let phoneValue = inputVal && inputVal.replace(/\D+/g, '');
@@ -19,19 +19,21 @@ export default function Phone(props) {
     onChange({ value: phoneValue });
   };
 
+  const inputProps: InputProps = {
+    type: 'tel',
+    onChange: handleChange,
+  };
+
+  // Conditionally add the autocomplete prop if it's not blank
+  if (autocomplete !== '') {
+    inputProps.autoComplete = autocomplete;
+  }
+
   return (
 
     <TextInput
       {...props}
-      inputProps={{
-          type:'tel',
-          onChange:handleChange,
-          /*
-            TODO enable if always relevant
-            autocomplete="tel"
-          */
-        }
-      }
+      inputProps={inputProps}
     />
   );
 }

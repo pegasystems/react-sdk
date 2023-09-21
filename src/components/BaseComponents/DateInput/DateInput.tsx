@@ -6,7 +6,7 @@ import FieldSet from '../FormGroup/FieldSet'
 
 export default function DateInput(props){
 
-  const {name, errorText, hintText, value ,onChangeDay, onChangeMonth, onChangeYear, testId, inputProps={}} = props;
+  const { name, errorText, hintText, value ,onChangeDay, onChangeMonth, onChangeYear, testId, inputProps={}, autoComplete} = props;
   let {errorProps} = props;
   const { t } = useTranslation();
 
@@ -43,6 +43,14 @@ export default function DateInput(props){
     inputProps["aria-describedby"] = describedbyIds;
   }
 
+  let acDay = "";
+  let acMonth = "";
+  let acYear = "";
+  if(autoComplete === "bday"){
+    acDay = "bday-day";
+    acMonth = "bday-month";
+    acYear = "bday-year";
+  }
 
   const extraProps= {testProps:{'data-test-id':testId}};
 
@@ -54,7 +62,8 @@ export default function DateInput(props){
             <input className={[inputClasses, widthClass(2), errorClass(errorProps?.specificError?.day)].join(' ')}
               id={`${name}-day`} name={`${name}-day`} type="text"
               inputMode="numeric" value={value?.day}
-              onChange={onChangeDay} />
+              onChange={onChangeDay}
+              autoComplete={acDay || undefined}/>
           </FormGroup>
         </div>
         <div className="govuk-date-input__item">
@@ -63,6 +72,7 @@ export default function DateInput(props){
               id={`${name}-month`} name={`${name}-month`} type="text"
               inputMode="numeric" value={value?.month}
               onChange={onChangeMonth}
+              autoComplete={acMonth || undefined}
             />
           </FormGroup>
         </div>
@@ -72,6 +82,7 @@ export default function DateInput(props){
               id={`${name}-year`} name={`${name}-year`} type="text"
               inputMode="numeric" value={value?.year}
               onChange={onChangeYear}
+              autoComplete={acYear || undefined}
             />
           </FormGroup>
         </div>

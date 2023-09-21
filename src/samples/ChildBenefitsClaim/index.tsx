@@ -39,6 +39,7 @@ export default function ChildBenefitsClaim() {
   const [loadingsubmittedClaims, setLoadingSubmittedClaims] = useState(true);
   const [loadinginProgressClaims, setLoadingInProgressClaims] = useState(true);
   const [showSignoutModal, setShowSignoutModal] = useState(false);
+
   const { t } = useTranslation();
   let operatorId = '';
 
@@ -435,6 +436,7 @@ export default function ChildBenefitsClaim() {
       </UserPortal>}
 
       {bShowResolutionScreen && <ConfirmationPage />}
+
       </div>
 
       <LogoutPopup

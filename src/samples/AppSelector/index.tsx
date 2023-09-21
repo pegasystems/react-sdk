@@ -28,7 +28,7 @@ const AppSelector = () => {
 
   return (
     <Switch>
-      <Route exact path='/' component={ChildBenefitsClaim} />
+      <Route exact path='/' component={ChildBenefitsClaim}/>
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
     </Switch>

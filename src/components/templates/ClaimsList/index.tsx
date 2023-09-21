@@ -72,6 +72,7 @@ export default function ClaimsList(props){
             </Button>),
         status : statusMapping(item.pyStatusWork)
       };
+
       if(item.Claim.ChildrenJSON){
         const additionalChildren = extractChildren(item.Claim.ChildrenJSON);
         additionalChildren.forEach(child =>{

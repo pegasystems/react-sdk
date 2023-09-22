@@ -10,7 +10,6 @@ import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '@pega/react-sdk-
 
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
-
 import AppHeader from '../../components/AppComponents/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 import LanguageToggle from '../../components/AppComponents/LanguageToggle';
@@ -21,11 +20,11 @@ import ConfirmationPage from './ConfirmationPage';
 import UserPortal from './UserPortal';
 import ClaimsList from '../../components/templates/ClaimsList';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
-import signoutHandler from '../../components/helpers/signout';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../sdk-local-component-map';
 import { checkCookie, setCookie } from '../../components/helpers/cookie';
+
 
 declare const myLoadMashup: any;
 
@@ -39,6 +38,7 @@ export default function ChildBenefitsClaim() {
   const [loadingsubmittedClaims, setLoadingSubmittedClaims] = useState(true);
   const [loadinginProgressClaims, setLoadingInProgressClaims] = useState(true);
   const [showSignoutModal, setShowSignoutModal] = useState(false);
+  const [authType, setAuthType] = useState('gg');
 
   const { t } = useTranslation();
   let operatorId = '';
@@ -331,6 +331,7 @@ export default function ChildBenefitsClaim() {
   useEffect(() => {
     getSdkConfig().then(sdkConfig => {
       const sdkConfigAuth = sdkConfig.authConfig;
+      setAuthType(sdkConfigAuth.authService);
       if (!sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === 'Basic') {
         // Service package to use custom auth with Basic
         const sB64 = window.btoa(
@@ -363,6 +364,10 @@ export default function ChildBenefitsClaim() {
       startMashup();
     });
 
+    document.addEventListener('SdkLoggedOut', () => {
+      window.location.href = 'https://www.gov.uk/government/organisations/hm-revenue-customs';
+    });
+
     // Subscriptions can't be done until onPCoreReady.
     //  So we subscribe there. But unsubscribe when this
     //  component is unmounted (in function returned from this effect)
@@ -389,11 +394,27 @@ export default function ChildBenefitsClaim() {
     };
   }, []);
 
+  function signOut() {
+  //  const authService = authType === 'gg' ? 'GovGateway' : (authType === 'gg-dev' ? 'GovGateway-Dev' : authType);
+    let authService
+    if(authType && authType === 'gg'){
+      authService = 'GovGateway'
+    }else if(authType && authType === 'gg-dev'){
+      authService = 'GovGateway-Dev'
+    }
+    
+     // @ts-ignore
+        PCore.getDataPageUtils().getPageDataAsync('D_AuthServiceLogout','root',{AuthService: authService}).then({
+          logout();
+        });
+
+  }
+
   function handleSignout() {
     if (bShowPega) {
       setShowSignoutModal(true);
     } else {
-      signoutHandler();
+      signOut();
     }
   }
 
@@ -442,7 +463,7 @@ export default function ChildBenefitsClaim() {
       <LogoutPopup
         show={showSignoutModal}
         hideModal={() => setShowSignoutModal(false)}
-        handleSignoutModal={signoutHandler}
+        handleSignoutModal={signOut}
         handleStaySignIn={handleStaySignIn}
       />
       <AppFooter/>

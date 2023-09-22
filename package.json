@@ -39,6 +39,7 @@
     "test": "node ./scripts/playwright-message.js && playwright test --project=chromium MediaCo/portal MediaCo/embedded",
     "test:headed": "playwright test --headed --project=chromium MediaCo/portal MediaCo/embedded",
     "test-report": "playwright show-report tests/playwright-report",
+    "test:functional": "jest --runInBand tests/functional/dxcb --detectOpenHandles --coverage",
 
     "_comment_internal_SDK_scripts": "The following commands are for internal use and are intended to be called only from public scripts above",
     "_internal-build-dev-only": "echo \"building...\" && webpack --mode=development && npm run _internal-copy-index",

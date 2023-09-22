@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "experimentalDecorators": true,
+    "strict": true,
+    "sourceMap": true,
+    "module": "es2020",
+    "target": "es2020",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "allowJs": true,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
+  }
+}

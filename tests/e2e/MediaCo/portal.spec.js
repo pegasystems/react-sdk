@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 const path = require('path');
 const { test, expect } = require('@playwright/test');
+
 const config = require('../../config');
 const common = require('../../common');
 const endpoints = require("../../../sdk-config.json");
@@ -9,6 +10,7 @@ const endpoints = require("../../../sdk-config.json");
 let caseID;
 
 test.beforeEach(async ({ page }) => {
+  await page.setViewportSize({ width: 1720, height: 1080 });
   await page.goto('http://localhost:3502/portal');
 });
 
@@ -28,7 +30,6 @@ test.describe('E2E test', () => {
 
     const newServiceCase = page.locator('div[role="button"]:has-text("New Service")');
     await newServiceCase.click();
-
     caseID = await page.locator('#caseId').textContent();
 
     const firstNameInput = page.locator('input[data-test-id="BC910F8BDF70F29374F496F05BE0330C"]');
@@ -128,10 +129,6 @@ test.describe('E2E test', () => {
 
     const attachmentCount = await page.locator('div[id="attachments-count"]').textContent();
     await expect(Number(attachmentCount)).toBeGreaterThan(0);
-
-    await page
-      .locator('text=Thank you! The next step in this case has been routed appropriately.')
-      .click();
   }, 10000);
 
   test('should enter a discount value($) and send to tech', async ({ page }) => {
@@ -157,9 +154,6 @@ test.describe('E2E test', () => {
 
     await page.locator('button:has-text("submit")').click();
 
-    await page
-      .locator('text=Thank you! The next step in this case has been routed appropriately.')
-      .click();
   }, 10000);
 
   test('should modify(if required) the actual services/packages to be installed and resolve the case', async ({

@@ -14,7 +14,7 @@ export default function Group(props) {
   const actionsApi = thePConn.getActionsApi();
   const [stateChanged, setStateChanged] = useState(false);
 
-  const isOnlyField = useIsOnlyField(props.displayOrder);
+  const {isOnlyField} = useIsOnlyField(props.displayOrder);
 
   const formattedContext = thePConn.options.pageReference ? thePConn.options.pageReference.split('.').pop() : '';
 

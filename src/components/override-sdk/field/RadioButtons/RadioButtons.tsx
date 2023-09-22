@@ -9,7 +9,6 @@ import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDis
 export default function RadioButtons(props) {
   const {
     getPConnect,
-    label,
     validatemessage,
     helperText,
     instructionText,
@@ -20,7 +19,10 @@ export default function RadioButtons(props) {
     fieldMetadata
   } = props;
 
-  const isOnlyField = useIsOnlyField(props.displayOrder);
+  let label = props.label;
+  const {isOnlyField, overrideLabel} = useIsOnlyField(props.displayOrder);
+  if(isOnlyField) label = overrideLabel.trim() ? overrideLabel : label;
+
   const[errorMessage,setErrorMessage] = useState(validatemessage);
 
   useEffect(()=>{

@@ -9,7 +9,7 @@ import { DateErrorFormatter } from '../../../helpers/formatters/DateErrorFormatt
 import Button from '../../../BaseComponents/Button/Button';
 import setPageTitle from '../../../helpers/setPageTitleHelpers';
 import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import {HMRCAppContext} from '../../../helpers/HMRCAppContext';
+import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 
 
 export interface ErrorMessageDetails {
@@ -45,13 +45,8 @@ export default function Assignment(props) {
   const cancelCreateStageAssignment = actionsAPI.cancelCreateStageAssignment.bind(actionsAPI);
   // const showPage = actionsAPI.showPage.bind(actionsAPI);
 
-  /* APP STATE - PM IN PROGRESS */
 
-  const [singleQuestionPage, setSingleQuestionPage] = useState(false);
-
-  const [DFStack, setDFStack] = useState([]);
-
-  /* ******************** */
+  const isOnlyField  = useIsOnlyField().isOnlyField;
   const [errorSummary, setErrorSummary] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Array<OrderedErrorMessage>>([]);
 
@@ -60,10 +55,6 @@ export default function Assignment(props) {
   const containerID = PCore.getContainerUtils().getContainerAccessOrder(`${context}/${_containerName}`).at(-1)
   useEffect(() => {
     setPageTitle();
-    // Set the assignment level singleQuestionpage value for 'original' logic handling
-    setSingleQuestionPage(PCore.getFormUtils().getEditableFields(containerID).length === 1);
-    // Reset the DFStack array when assignment page updates
-    setDFStack([]);
   },[children])
 
   let containerName;
@@ -262,19 +253,7 @@ export default function Assignment(props) {
   }, [actionButtons]);
 
   return (
-    <HMRCAppContext.Provider value={{
-        singleQuestionPage,
-        setAssignmentSingleQuestionPage: (value) => {
-          if(value && !containerName.toLowerCase().includes('check your answer')) setSingleQuestionPage(value);
-        },
-        SingleQuestionDisplayDFStack: DFStack,
-        SingleQuestionDisplayDFStackPush: (DFName) => {if(!DFStack.includes(DFName)) {
-          const extendedList = DFStack;
-          extendedList.push(DFName);
-          setDFStack(extendedList)
-        }}
-
-      }}>
+    <>
       <div id='Assignment'>
         {arSecondaryButtons?.map(sButton =>
           sButton['name'] === 'Previous' ? (
@@ -295,7 +274,7 @@ export default function Assignment(props) {
             {errorSummary && errorMessages.length > 0 && (
               <ErrorSummary errors={errorMessages.map(item => localizedVal(item.message, localeCategory, localeReference))} />
             )}
-            {!singleQuestionPage && <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>}
+            {(!isOnlyField || containerName.toLowerCase().includes('check your answer')) && <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>}
             <form>
               <AssignmentCard
                 getPConnect={getPConnect}
@@ -318,7 +297,7 @@ export default function Assignment(props) {
           </div>
         </main>
       </div>
-    </HMRCAppContext.Provider>
+    </>
   );
 }
 
@@ -335,6 +314,3 @@ Assignment.defaultProps = {
   isCreateStage: false
   // buildName: null
 };
-
-
-export { HMRCAppContext };

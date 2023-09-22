@@ -13,14 +13,16 @@ export default function CheckboxComponent(props) {
     inputProps,
     validatemessage,
     hintText,
-    label,
     readOnly,
     value,
     testId,
   } = props;
-
-  const isOnlyField = useIsOnlyField();
-  const [errorMessage,setErrorMessage] = useState(validatemessage);
+  
+  let label = props.label;
+  const {isOnlyField, overrideLabel} = useIsOnlyField(props.displayOrder);
+  if(isOnlyField) label = overrideLabel.trim() ? overrideLabel : label;
+  
+  const[errorMessage,setErrorMessage] = useState(validatemessage);
   const [showDeclaration, setShowDeclaration] = useState(false);
   const [declaration, setDeclaration] = useState({text1: '', text2:'', warning1: ''});
 

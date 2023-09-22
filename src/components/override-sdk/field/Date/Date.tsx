@@ -13,7 +13,6 @@ declare const global;
 export default function Date(props) {
   const {
     getPConnect,
-    label,
     value = '',
     validatemessage,
     helperText,
@@ -24,7 +23,9 @@ export default function Date(props) {
   } = props;
   const pConn = getPConnect();
 
-  const isOnlyField = useIsOnlyField(props.displayOrder);
+  let label = props.label;
+  const {isOnlyField, overrideLabel} = useIsOnlyField(props.displayOrder);
+  if(isOnlyField) label = overrideLabel.trim() ? overrideLabel : label;
 
   // PM - Set up state for each input field, either the value we received from pega, or emtpy
   const [day, setDay] = useState(value ? value.split('-')[2] : '');

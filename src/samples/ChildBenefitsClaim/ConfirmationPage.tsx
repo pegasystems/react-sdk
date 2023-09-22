@@ -10,7 +10,6 @@ const ConfirmationPage = () => {
   const [documentList, setDocumentList] = useState(``);
   const [isBornAbroadOrAdopted, setIsBornAbroadOrAdopted] = useState(false);
   const [returnSlipContent, setReturnSlipContent] = useState();
-  const [loading, setLoading] = useState(true);
   const caseID = PCore.getStoreValue('.key', '' , 'app/primary_1');
   const docIDForDocList = 'CR0003';
   const docIDForReturnSlip = 'CR0002';
@@ -19,7 +18,6 @@ const ConfirmationPage = () => {
     PCore.getDataPageUtils().getPageDataAsync('D_DocumentContent', 'root', {DocumentID: docIDForDocList, Locale: PCore.getEnvironmentInfo().locale.replaceAll('-','_'), CaseID: caseID}).then(listData => {
       if(listData.DocumentContentHTML.includes("data-bornabroad='true'") || listData.DocumentContentHTML.includes("data-adopted='true'")){
         setIsBornAbroadOrAdopted(true);
-        setLoading(false);
       }
       setDocumentList(listData.DocumentContentHTML);
     }).catch(err => {
@@ -41,9 +39,7 @@ const ConfirmationPage = () => {
     myWindow.document.write(returnSlipContent);
   }
 
-  if(loading){
-    return null;
-  } else {
+  
     if(isBornAbroadOrAdopted){
       return (
         <main className="govuk-main-wrapper" id="main-content" role="main">
@@ -73,8 +69,7 @@ const ConfirmationPage = () => {
           </div>
         </main>
       );
-    }
-
+    } else {
     return (
       <main className="govuk-main-wrapper" id="main-content" role="main">
         <div className="govuk-grid-row">
@@ -92,8 +87,6 @@ const ConfirmationPage = () => {
       </main>
     );
   }
-
-
 };
 
 export default ConfirmationPage;

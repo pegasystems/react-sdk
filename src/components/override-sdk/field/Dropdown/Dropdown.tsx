@@ -19,7 +19,6 @@ export default function Dropdown(props) {
     datasource = [],
     validatemessage,
     helperText,
-    label,
     readOnly,
     name,
     fieldMetadata
@@ -27,7 +26,9 @@ export default function Dropdown(props) {
 
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [displayValue, setDisplayValue] = useState();
-  const isOnlyField = useIsOnlyField();
+  let label = props.label;
+  const {isOnlyField, overrideLabel} = useIsOnlyField(props.displayOrder);
+  if(isOnlyField) label = overrideLabel.trim() ? overrideLabel : label;
   const[errorMessage,setErrorMessage] = useState(validatemessage);
 
 

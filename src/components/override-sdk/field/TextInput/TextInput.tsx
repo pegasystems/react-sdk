@@ -8,7 +8,6 @@ import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event
 export default function TextInput(props) {
   const {
     getPConnect,
-    label,
     value = '',
     placeholder,
     validatemessage,
@@ -44,7 +43,9 @@ export default function TextInput(props) {
     }
   };
 
-  const isOnlyField = useIsOnlyField();
+  let label = props.label;
+  const {isOnlyField, overrideLabel} = useIsOnlyField(props.displayOrder);
+  if(isOnlyField) label = overrideLabel.trim() ? overrideLabel : label;
 
   const maxLength = fieldMetadata?.maxLength;
 

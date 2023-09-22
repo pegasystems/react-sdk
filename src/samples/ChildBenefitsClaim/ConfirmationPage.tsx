@@ -64,7 +64,7 @@ const ConfirmationPage = () => {
               <h3 className='govuk-heading-m'>{t('TRACK_YOUR_APPLICATION')}</h3>
               <p className='govuk-body'> {t('YOU_CAN_CHECK_STATUS_USING_THE_LINK')} </p>
               <p className='govuk-body'><a href='#'>{t('RETURN_TO_HOMEPAGE')}</a></p>
-              <p className='govuk-body'><a href='#'>{t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')} </a>{t('TAKES_30_SECONDS')}</p>
+              <p className='govuk-body'><a href='https://www.tax.service.gov.uk/feedback/ODXCHB' className="govuk-link" target="_blank" rel="noreferrer">{t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')} </a>{t('TAKES_30_SECONDS')}</p>
             </div>
           </div>
         </main>
@@ -79,9 +79,8 @@ const ConfirmationPage = () => {
             </div>
             <h2 className='govuk-heading-m'> {t("WHAT_HAPPENS_NEXT")}</h2>
             <p className='govuk-body'> {t("WE_HAVE_SENT_YOUR_APPLICATION")}</p>
-            <p className='govuk-body'>
-            {t("WE_WILL_TELL_YOU_IN_14_DAYS")}
-            </p>
+            <p className='govuk-body'> {t("WE_WILL_TELL_YOU_IN_14_DAYS")}</p>
+            <p className='govuk-body'><a href='https://www.tax.service.gov.uk/feedback/ODXCHB' className="govuk-link" target="_blank" rel="noreferrer">{t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')} </a>{t('TAKES_30_SECONDS')}</p>
           </div>
         </div>
       </main>

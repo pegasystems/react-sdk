@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 import { useTranslation } from 'react-i18next';
+import {Utils} from '../../../components/helpers/utils';
 
 export default function AppHeader(props) {
   const { handleSignout, appname } = props;
   const { t } = useTranslation();
+  const [referrerURL, setReferrerURL] = useState<string>(null);
+  const [hmrcURL, setHmrcURL] = useState<string>(null);
+
+  useEffect(() => {
+    const getReferrerURL = async () => {
+      const { serverConfig: { sdkContentServerUrl, sdkHmrcURL } } = await getSdkConfig();
+      setReferrerURL(sdkContentServerUrl);
+      setHmrcURL(sdkHmrcURL);
+    }
+    getReferrerURL();
+    Utils.scrollToTop();
+  }, []);
 
   return (
     <>
@@ -43,7 +57,11 @@ export default function AppHeader(props) {
               {t("BETA")}
             </strong>
             <span className="govuk-phase-banner__text">
-              {t("NEW_SERVICE")}
+              {t("NEW_SERVICE")} - {t("BANNER_FEEDBACK_1")}&nbsp;
+              <a className="govuk-link" href={`${hmrcURL}contact/beta-feedback?service=463&referrerUrl=${referrerURL}`}>
+                {t("BANNER_FEEDBACK_LINK")} 
+              </a>&nbsp;
+              {t("BANNER_FEEDBACK_2")}.
             </span>
           </p>
         </div>

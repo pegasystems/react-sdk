@@ -403,10 +403,8 @@ export default function ChildBenefitsClaim() {
     }else if(authType && authType === 'gg-dev'){
       authService = 'GovGateway-Dev'
     }
-    
-     // @ts-ignore
-    PCore.getDataPageUtils().getPageDataAsync('D_AuthServiceLogout','root',{AuthService: authService}).then(() => {
-      logout().then(() => { });
+    PCore.getDataPageUtils().getPageDataAsync('D_AuthServiceLogout', 'root', { AuthService: authService }).then(() => {
+      logout().then(() => { })
     });
   }
 

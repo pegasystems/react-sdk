@@ -10,6 +10,7 @@ import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '@pega/react-sdk-
 
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import { logout } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 import AppHeader from '../../components/AppComponents/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 import LanguageToggle from '../../components/AppComponents/LanguageToggle';
@@ -404,10 +405,9 @@ export default function ChildBenefitsClaim() {
     }
     
      // @ts-ignore
-        PCore.getDataPageUtils().getPageDataAsync('D_AuthServiceLogout','root',{AuthService: authService}).then({
-          logout();
-        });
-
+    PCore.getDataPageUtils().getPageDataAsync('D_AuthServiceLogout','root',{AuthService: authService}).then(() => {
+      logout().then(() => { });
+    });
   }
 
   function handleSignout() {

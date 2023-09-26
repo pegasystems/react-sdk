@@ -1,7 +1,5 @@
 import {createContext} from 'react';
 
-
-
 const DefaultFormContext = createContext({
   // Is this Default Form set to display as single question?
   displayAsSingleQuestion: false,
@@ -11,5 +9,8 @@ const DefaultFormContext = createContext({
   OverrideLabelValue: ''
 });
 
+const ReadOnlyDefaultFormContext = createContext({
+  hasBeenWrapped: false
+})
 
-export default DefaultFormContext;
+export {DefaultFormContext, ReadOnlyDefaultFormContext}

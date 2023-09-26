@@ -111,6 +111,12 @@ export default function Group(props) {
       </>);
     }
 
+    if(readOnly){
+      return (<>
+        {children}
+      </>)
+    }
+
     return (<>
       {heading && <div id='heading' className='govuk-body'>{heading}</div>}
       {instructions && instructions !== 'none' && <div id='instructions' className='govuk-body'><InstructionComp htmlString={instructions} /></div>}

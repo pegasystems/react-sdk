@@ -1,15 +1,18 @@
-import React, { createElement, useEffect } from 'react';
+import React, { createElement, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import InstructionComp from '../../../helpers/formatters/ParsedHtml';
 import './DefaultForm.css';
 
-import DefaultFormContext  from '../../../helpers/HMRCAppContext';
+import { DefaultFormContext, ReadOnlyDefaultFormContext }  from '../../../helpers/HMRCAppContext';
+import ConditionalWrapper from '../../../helpers/formatters/ConditionalWrapper';
 
 // import './DefaultForm.css';
 
 export default function DefaultForm(props) {
   const { getPConnect, readOnly, additionalProps, configAlternateDesignSystem } = props;
+
+  const {hasBeenWrapped} = useContext(ReadOnlyDefaultFormContext);
 
   const { t } = useTranslation();
   let cssClassHook = "";
@@ -170,7 +173,7 @@ export default function DefaultForm(props) {
       const allrefs = childGroup.every(
         child => child.props.getPConnect().getMetadata().type === 'reference'
       );
-      if (additionalProps.hasBeenWrapped || allrefs) {
+      if (hasBeenWrapped || allrefs) {
         return <React.Fragment key={key}>{childGroup}</React.Fragment>;
       }
 
@@ -179,24 +182,33 @@ export default function DefaultForm(props) {
       );
 
       return (
-        <dl className='govuk-summary-list' key={key}>
-          {childGroup}
-        </dl>
+        <ReadOnlyDefaultFormContext.Provider value={{hasBeenWrapped: true}}>
+          <dl className='govuk-summary-list' key={key}>
+            {childGroup}
+          </dl>
+        </ReadOnlyDefaultFormContext.Provider>
       );
     });
   }
 
   return (        
-    <div className={cssClassHook}>
-    <DefaultFormContext.Provider value={{displayAsSingleQuestion: configAlternateDesignSystem?.hidePageLabel, DFName: props.localeReference, OverrideLabelValue: getPConnect().getDataObject().caseInfo.assignments[0].name }}>
+    <ConditionalWrapper
+      condition = {!!cssClassHook}
+      wrapper = {child => {      
+        return (<div className={cssClassHook}>
+          {child}
+        </div>)        
+      }}
+      childrenToWrap = {
+        <DefaultFormContext.Provider value={{displayAsSingleQuestion: configAlternateDesignSystem?.hidePageLabel, DFName: props.localeReference, OverrideLabelValue: getPConnect().getDataObject().caseInfo.assignments[0].name }}>
 
-      {instructionExists && (
-        <p id='instructions' className='govuk-body'>
-          <InstructionComp htmlString={getFormattedInstructionText()} />
-        </p>
-      )}
-      {dfChildren}
-    </DefaultFormContext.Provider>
-    </div>
+        {instructionExists && (
+          <p id='instructions' className='govuk-body'>
+            <InstructionComp htmlString={getFormattedInstructionText()} />
+          </p>
+        )}
+        {dfChildren}
+      </DefaultFormContext.Provider>
+      } />
   );
 }

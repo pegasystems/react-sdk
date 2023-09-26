@@ -1,6 +1,6 @@
 {
   "name": "react-sdk",
-  "version": "8.23.11",
+  "version": "8.23.12",
   "private": true,
   "scripts": {
     "_comment_SDK_install_build_run_commands": "The following are public commands to clean, install, build, and run the SDK",
@@ -55,7 +55,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@material-ui/pickers": "^3.3.10",
-    "@pega/constellationjs": "SDK-8.8.3",
+    "@pega/constellationjs": "SDK-8.23.0",
     "@pega/cosmos-react-core": "^3.0.1",
     "@pega/cosmos-react-work": "^3.0.1",
     "@pega/react-sdk-components": "file:pega-react-sdk-components-8.23.12-20230922.tgz",

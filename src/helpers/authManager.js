@@ -616,12 +616,13 @@ export const authUpdateTokens = (token) => {
 export const authFullReauth = () => {
   const bHandleHere = true; // Other alternative is to raise an event and have someone else handle it
   const reauthIgnoreInterval = 300000;  // 5 minutes
+  const currTime = Date.now();
 
   // Avoid trying to do multiple full reauthentications at once (may result in multiple login popup windows)
-  if( startOfFullReauth > 0 && (Date.now() - startOfFullReauth <= reauthIgnoreInterval) ) {
+  if( startOfFullReauth > 0 && (currTime - startOfFullReauth <= reauthIgnoreInterval) ) {
     return;
   }
-  startOfFullReauth = Date.now();
+  startOfFullReauth = currTime;
 
   if( bHandleHere ) {
     // Don't want to do a full clear of authMgr as will loose sessionIndex.  Rather just clear the tokens

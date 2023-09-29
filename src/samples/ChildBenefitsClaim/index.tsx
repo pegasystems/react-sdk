@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import StoreContext from "@pega/react-sdk-components/lib/bridge/Context/StoreContext";
 import createPConnectComponent from "@pega/react-sdk-components/lib/bridge/react_pconnect";
 
-import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '@pega/react-sdk-components/lib/components/helpers/authManager';
+import { sdkIsLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
@@ -191,7 +191,7 @@ export default function ChildBenefitsClaim() {
     // If not logged in, we used to prompt for login. Now moved up to TopLevelApp
     // If logged in, make the Triple Play Options visible
 
-    if (!gbLoggedIn) {
+    if (!sdkIsLoggedIn()) {
       // login();     // Login now handled at TopLevelApp
     } else {
       setShowUserPortal(true);

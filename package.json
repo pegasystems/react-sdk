@@ -54,7 +54,7 @@
     "@pega/constellationjs": "SDK-8.8.3",
     "@pega/cosmos-react-core": "^3.0.1",
     "@pega/cosmos-react-work": "^3.0.1",
-    "@pega/react-sdk-components": "~8.23.11",
+    "@pega/react-sdk-components": "file:pega-react-sdk-components-8.23.11.tgz",
     "@types/styled-components": "^5.1.26",
     "@unicef/material-ui-currency-textfield": "^0.8.6",
     "dayjs": "^1.10.6",
@@ -87,7 +87,7 @@
     "@pega/eslint-config": "^0.4.0",
     "@pega/pcore-pconnect-typedefs": "0.0.6",
     "@pega/prettier-config": "^0.4.0",
-    "@pega/react-sdk-overrides": "~8.23.11",
+    "@pega/react-sdk-overrides": "file:pega-react-sdk-overrides-8.23.12.tgz",
     "@pega/stylelint-config": "^0.4.0",
     "@pega/tsconfig": "^0.4.0",
     "@playwright/test": "^1.28.0",
@@ -142,7 +142,8 @@
     "update-browserslist-db": "^1.0.10",
     "webpack": "^5.76.0",
     "webpack-cli": "^4.5.0",
-    "webpack-dev-server": "^4.7.4"
+    "webpack-dev-server": "^4.7.4",
+    "null-loader": "^4.0.1"
   },
   "browser": {
     "[module-name]": false

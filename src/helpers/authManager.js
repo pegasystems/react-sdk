@@ -63,6 +63,7 @@ const clearAuthMgr = (bFullReauth=false) => {
   }
   if( !bFullReauth ) {
     sessionStorage.removeItem("rsdk_CI");
+    startOfFullReauth = 0;
   }
   sessionStorage.removeItem("rsdk_TI");
   sessionStorage.removeItem("rsdk_UI");
@@ -615,14 +616,12 @@ export const authUpdateTokens = (token) => {
 // Initiate a full OAuth re-authorization (any refresh token has also expired).
 export const authFullReauth = () => {
   const bHandleHere = true; // Other alternative is to raise an event and have someone else handle it
-  const reauthIgnoreInterval = 300000;  // 5 minutes
-  const currTime = Date.now();
 
   // Avoid trying to do multiple full reauthentications at once (may result in multiple login popup windows)
-  if( startOfFullReauth > 0 && (currTime - startOfFullReauth <= reauthIgnoreInterval) ) {
+  if( startOfFullReauth > 0 ) {
     return;
   }
-  startOfFullReauth = currTime;
+  startOfFullReauth = Date.now();
 
   if( bHandleHere ) {
     // Don't want to do a full clear of authMgr as will loose sessionIndex.  Rather just clear the tokens

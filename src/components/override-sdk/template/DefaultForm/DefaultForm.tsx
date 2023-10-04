@@ -1,7 +1,8 @@
-import React, { createElement, useEffect, useContext } from 'react';
+import React, { createElement, useEffect, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import InstructionComp from '../../../helpers/formatters/ParsedHtml';
+import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import './DefaultForm.css';
 
 import { DefaultFormContext, ReadOnlyDefaultFormContext }  from '../../../helpers/HMRCAppContext';
@@ -13,6 +14,7 @@ export default function DefaultForm(props) {
   const { getPConnect, readOnly, additionalProps, configAlternateDesignSystem } = props;
 
   const {hasBeenWrapped} = useContext(ReadOnlyDefaultFormContext);
+  const [SingleQuestionPage, setSingleQuestionPage] = useState(false);
 
   const { t } = useTranslation();
   let cssClassHook = "";
@@ -21,26 +23,33 @@ export default function DefaultForm(props) {
     cssClassHook = configAlternateDesignSystem.cssClassHook;
   }
 
+  const singleQuestionPage = useIsOnlyField().isOnlyField || configAlternateDesignSystem?.hidePageLabel;
+
   // repoint the children because they are in a region and we need to not render the region
   // to take the children and create components for them, put in an array and pass as the
   // defaultForm kids
   const arChildren = getPConnect().getChildren()[0].getPConnect().getChildren();
   let hasSingleChildWhichIsReference = false;
-  const instructionText = props.instructions === 'none' ||props.instructions === null ? '' : props.instructions;
+  const instructionText = props.instructions === 'none' || props.instructions === null ? '' : props.instructions;
   const instructionExists = instructionText !== undefined && instructionText !== '';
 
   const settingTargetForAnchorTag = () => {
     const instructionDiv = document.getElementById('instructions');
     const keyText = t('OPENS_IN_NEW_TAB');
-    const elementsArr = instructionDiv.querySelectorAll('a');
-    for(const ele of elementsArr){
-      if(ele.innerHTML.includes(keyText)){
-        ele.setAttribute('target', '_blank');
+    if(instructionDiv){
+      const elementsArr = instructionDiv.querySelectorAll('a');      
+      for(const ele of elementsArr){
+        if(ele.innerHTML.includes(keyText)){
+          ele.setAttribute('target', '_blank');
+        }
       }
     }
-  }
+  }  
+
+  const {isOnlyField} = useIsOnlyField();
 
   useEffect(() => {
+    setSingleQuestionPage(isOnlyField);
     if(configAlternateDesignSystem?.hidePageLabel){
       PCore.getStore().dispatch({type:'SET_PROPERTY', payload:{
         "reference": "displayAsSingleQuestion",
@@ -66,6 +75,9 @@ export default function DefaultForm(props) {
   },[instructionExists])
 
   const getFormattedInstructionText = () => {
+    if(!instructionExists){
+      return null;
+    }
     let text = instructionText.replaceAll('\n<p>&nbsp;</p>\n', '');
     const warning  = t('WARNING');
     if (text.indexOf(`${warning}!!`) !== -1) {
@@ -173,7 +185,7 @@ export default function DefaultForm(props) {
       const allrefs = childGroup.every(
         child => child.props.getPConnect().getMetadata().type === 'reference'
       );
-      if (hasBeenWrapped || allrefs) {
+      if (additionalProps.hasBeenWrapped || allrefs) {
         return <React.Fragment key={key}>{childGroup}</React.Fragment>;
       }
 
@@ -182,14 +194,17 @@ export default function DefaultForm(props) {
       );
 
       return (
-        <ReadOnlyDefaultFormContext.Provider value={{hasBeenWrapped: true}}>
-          <dl className='govuk-summary-list' key={key}>
-            {childGroup}
-          </dl>
-        </ReadOnlyDefaultFormContext.Provider>
+        <dl className='govuk-summary-list' key={key}>
+          {childGroup}
+        </dl>
       );
     });
   }
+
+  let nestedInstructionText = null;
+  if(instructionExists) { nestedInstructionText = getFormattedInstructionText()}
+  else if(instructionText) { nestedInstructionText = instructionText}
+     
 
   return (        
     <ConditionalWrapper
@@ -200,15 +215,22 @@ export default function DefaultForm(props) {
         </div>)        
       }}
       childrenToWrap = {
-        <DefaultFormContext.Provider value={{displayAsSingleQuestion: configAlternateDesignSystem?.hidePageLabel, DFName: props.localeReference, OverrideLabelValue: getPConnect().getDataObject().caseInfo.assignments[0].name }}>
+      <DefaultFormContext.Provider value={
+        { 
+          displayAsSingleQuestion: configAlternateDesignSystem?.hidePageLabel,
+          DFName: props.localeReference,
+          OverrideLabelValue: getPConnect().getDataObject().caseInfo.assignments[0].name, 
+          instructionText: getFormattedInstructionText() as string
+        }}>
 
-        {instructionExists && (
+        {instructionExists && !singleQuestionPage &&
           <p id='instructions' className='govuk-body'>
-            <InstructionComp htmlString={getFormattedInstructionText()} />
+            <InstructionComp htmlString={getFormattedInstructionText()} />  
           </p>
-        )}
+        }
         {dfChildren}
       </DefaultFormContext.Provider>
       } />
+ 
   );
 }

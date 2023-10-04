@@ -46,7 +46,7 @@ export default function Assignment(props) {
   // const showPage = actionsAPI.showPage.bind(actionsAPI);
 
 
-  const isOnlyFieldDetails  = useIsOnlyField(null, children);//.isOnlyField;
+  const isOnlyFieldDetails  = useIsOnlyField(null, children);// .isOnlyField;
   const [errorSummary, setErrorSummary] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Array<OrderedErrorMessage>>([]);
 

@@ -1,30 +1,24 @@
-import React, { createElement, useEffect, useContext, useState } from 'react';
+import React, { createElement, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import InstructionComp from '../../../helpers/formatters/ParsedHtml';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import './DefaultForm.css';
 
-import { DefaultFormContext, ReadOnlyDefaultFormContext }  from '../../../helpers/HMRCAppContext';
+import { DefaultFormContext }  from '../../../helpers/HMRCAppContext';
 import ConditionalWrapper from '../../../helpers/formatters/ConditionalWrapper';
 
 // import './DefaultForm.css';
 
 export default function DefaultForm(props) {
   const { getPConnect, readOnly, additionalProps, configAlternateDesignSystem } = props;
-
-  const {hasBeenWrapped} = useContext(ReadOnlyDefaultFormContext);
-  const [SingleQuestionPage, setSingleQuestionPage] = useState(false);
-
   const { t } = useTranslation();
   let cssClassHook = "";
 
   if (configAlternateDesignSystem?.cssClassHook) {
     cssClassHook = configAlternateDesignSystem.cssClassHook;
   }
-
-  const singleQuestionPage = useIsOnlyField().isOnlyField || configAlternateDesignSystem?.hidePageLabel;
-
+  const [singleQuestionPage, setSingleQuestionPage] = useState(useIsOnlyField().isOnlyField || configAlternateDesignSystem?.hidePageLabel);
   // repoint the children because they are in a region and we need to not render the region
   // to take the children and create components for them, put in an array and pass as the
   // defaultForm kids
@@ -200,11 +194,11 @@ export default function DefaultForm(props) {
       );
     });
   }
-
+/* 
   let nestedInstructionText = null;
   if(instructionExists) { nestedInstructionText = getFormattedInstructionText()}
   else if(instructionText) { nestedInstructionText = instructionText}
-     
+*/     
 
   return (        
     <ConditionalWrapper

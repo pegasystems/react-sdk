@@ -62,7 +62,6 @@ export default function Assignment(props) {
     containerName = thePConn.getDataObject().caseInfo?.assignments[0].name;
   }
 
-
   useEffect(() => {
     if (children && children.length > 0) {
       // debugger;

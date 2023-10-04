@@ -6,6 +6,7 @@ import {
   DateErrorFormatter,
   DateErrorTargetFields
 } from '../../../helpers/formatters/DateErrorFormatter';
+import { GBdate } from '../../../helpers/utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 
 declare const global;
@@ -108,6 +109,10 @@ export default function Date(props) {
   const  handleChangeYear = yearChange => {
     setYear(yearChange.target.value);
   };
+
+  if(props.disabled){
+    return <span className='govuk-body govuk-!-font-weight-bold'>{GBdate(value)}</span>
+  }
 
 
   if (readOnly) {

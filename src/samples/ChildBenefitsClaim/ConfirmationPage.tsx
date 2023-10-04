@@ -49,7 +49,7 @@ const ConfirmationPage = () => {
         <div className="govuk-grid-row">
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
-              <h1 className='govuk-panel__title'> {t("APPLICATION_COMPLETE")}</h1>
+              <h1 className='govuk-panel__title'> {t("APPLICATION_RECEIVED")}</h1>
               <div className='govuk-panel__body govuk-!-font-size-27'>{t('POST_YOUR_SUPPORTING_DOCUMENTS')}</div>
             </div>
             <h2 className='govuk-heading-m'> {t('WHAT_YOU_NEED_TO_DO_NOW')} </h2>
@@ -75,7 +75,7 @@ const ConfirmationPage = () => {
         <div className="govuk-grid-row">
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
-              <h1 className='govuk-panel__title'> {t("APPLICATION_COMPLETE")}</h1>
+              <h1 className='govuk-panel__title'> {t("APPLICATION_RECEIVED")}</h1>
             </div>
             <h2 className='govuk-heading-m'> {t("WHAT_HAPPENS_NEXT")}</h2>
             <p className='govuk-body'> {t("WE_HAVE_SENT_YOUR_APPLICATION")}</p>

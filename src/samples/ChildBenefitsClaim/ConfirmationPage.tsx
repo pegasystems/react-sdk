@@ -64,9 +64,6 @@ const ConfirmationPage = () => {
               NE88 1ZD
             </p>
             <p className='govuk-body'> {t('WE_NORMALLY_RETURN_DOCUMENTS_WITHIN')} </p>
-            <h3 className='govuk-heading-m'>{t('TRACK_YOUR_APPLICATION')}</h3>
-            <p className='govuk-body'> {t('YOU_CAN_CHECK_STATUS_USING_THE_LINK')} </p>
-            <p className='govuk-body'><a href='#'>{t('RETURN_TO_HOMEPAGE')}</a></p>
             <p className='govuk-body'><a href='https://www.tax.service.gov.uk/feedback/ODXCHB' className="govuk-link" target="_blank" rel="noreferrer">{t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')} </a>{t('TAKES_30_SECONDS')}</p>
           </div>
         </div>

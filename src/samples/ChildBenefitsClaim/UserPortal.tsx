@@ -21,7 +21,7 @@ export default function UserPortal(props) {
               <li><span className='govuk-body'>{t('CLAIMS_THAT_ARE_IN_PROGRESS')}</span></li>
               <li><span className='govuk-body'>{t('CLAIMS_THAT_ARE_SUBMITTED')}</span></li>
             </ul>
-            <hr className="govuk-section-break govuk-section-break--xl govuk-section-break--visible"></hr>
+            <hr className="govuk-section-break govuk-section-break--xl govuk-section-break--visible" aria-hidden></hr>
 
             {/* Claims list */}
             <div className='govuk-grid-column-two-thirds'>

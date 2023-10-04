@@ -118,7 +118,7 @@ export default function Accessibility() {
                             <p className='govuk-body'>{t("ACCESSIBILITY_P_25")}</p>
                             <p className="govuk-body">
                                 <a className="govuk-link" href={`${hmrcURL}contact/report-technical-problem?newTab=true&service=463&referrerUrl=${referrerURL}`} rel="noreferrer" target="_blank">
-                                    {t("ACCESSIBILITY_ANCHOR_10")}
+                                    {t("ACCESSIBILITY_ANCHOR_10")} {t('OPENS_IN_NEW_TAB')}
                                 </a>
                             </p>
                         </div>

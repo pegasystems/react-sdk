@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import DateFormatter from '@pega/react-sdk-components/lib/components/helpers/formatters/Date';
 import Button from '../../../components/BaseComponents/Button/Button';
 import PropTypes from "prop-types";
-import { Utils, GBdate} from '../../helpers/utils';
+import { scrollToTop, GBdate} from '../../helpers/utils';
 import { useTranslation } from 'react-i18next';
 
 declare const PCore: any;
@@ -39,12 +39,12 @@ export default function ClaimsList(props){
       const openAssignmentOptions = { containerName: container};
       PCore.getMashupApi().openAssignment(pyAssignmentID, target, openAssignmentOptions)
       .then(()=>{
-        Utils.scrollToTop();
+        scrollToTop();
       });
     } else if ( rowClickAction === 'OpenCase'){
       PCore.getMashupApi().openCase(pzInsKey, target, {pageName:'SummaryClaim'})
       .then(()=>{
-        Utils.scrollToTop();
+        scrollToTop();
       });
     }
   }

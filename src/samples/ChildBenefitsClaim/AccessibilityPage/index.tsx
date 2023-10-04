@@ -4,7 +4,7 @@ import AppHeader from '../../../components/AppComponents/AppHeader';
 import AppFooter from '../../../components/AppComponents/AppFooter';
 import LanguageToggle from '../../../components/AppComponents/LanguageToggle';
 import { useTranslation } from 'react-i18next';
-import {Utils} from '../../../components/helpers/utils';
+import { scrollToTop } from '../../../components/helpers/utils';
 
 export default function Accessibility() {
   const { t } = useTranslation();
@@ -18,7 +18,7 @@ export default function Accessibility() {
       setHmrcURL(sdkHmrcURL);
     }
     getReferrerURL();
-    Utils.scrollToTop();
+    scrollToTop();
   }, []);
 
     const makeList = (listNumber: number, entries: number) => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-import {Utils} from '../../../helpers/utils';
+import { scrollToTop } from '../../../helpers/utils';
 import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 import ErrorSummary from '../../../BaseComponents/ErrorSummary/ErrorSummary';
 import { DateErrorFormatter } from '../../../helpers/formatters/DateErrorFormatter';
@@ -154,11 +154,11 @@ export default function Assignment(props) {
 
           navigatePromise
             .then(() => {
-              Utils.scrollToTop();
+              scrollToTop();
               setErrorSummary(false);
             })
             .catch(() => {
-              Utils.scrollToTop();
+              scrollToTop();
               showErrorSummary();
             });
 
@@ -226,11 +226,11 @@ export default function Assignment(props) {
 
           finishPromise
             .then(() => {
-              Utils.scrollToTop();
+              scrollToTop();
               setErrorSummary(false);
             })
             .catch(() => {
-              Utils.scrollToTop();
+              scrollToTop();
               showErrorSummary();
             });
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 import { useTranslation } from 'react-i18next';
-import {Utils} from '../../../components/helpers/utils';
+import { scrollToTop } from '../../../components/helpers/utils';
 
 export default function AppHeader(props) {
   const { handleSignout, appname } = props;
@@ -16,7 +16,7 @@ export default function AppHeader(props) {
       setHmrcURL(sdkHmrcURL);
     }
     getReferrerURL();
-    Utils.scrollToTop();
+    scrollToTop();
   }, []);
 
   return (

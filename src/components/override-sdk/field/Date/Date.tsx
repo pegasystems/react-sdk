@@ -110,7 +110,7 @@ export default function Date(props) {
     setYear(yearChange.target.value);
   };
 
-  if(props.disabled){
+  if(props.disabled && value.length > 9){
     return <span className='govuk-body govuk-!-font-weight-bold'>{GBdate(value)}</span>
   }
 

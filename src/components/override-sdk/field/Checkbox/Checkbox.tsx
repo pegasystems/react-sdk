@@ -3,8 +3,6 @@ import GDSCheckboxes from '../../../BaseComponents/Checkboxes/Checkboxes';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks'
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
-import ParsedHTML from '../../../helpers/formatters/ParsedHtml';
-
 
 export default function CheckboxComponent(props) {
   const {
@@ -23,26 +21,6 @@ export default function CheckboxComponent(props) {
   if(isOnlyField) label = overrideLabel.trim() ? overrideLabel : label;
   
   const[errorMessage,setErrorMessage] = useState(validatemessage);
-  const [showDeclaration, setShowDeclaration] = useState(false);
-  const [declaration, setDeclaration] = useState({text1: '', text2:'', warning1: ''});
-
-  useEffect(()=>{
-    if(name ==='Claim-Declaration'){
-      setShowDeclaration(true);
-    }
-  },[])
-
-  useEffect(()=>{
-    if(showDeclaration){
-      const declarationText1 = PCore.getStoreValue('.DeclarationText1', 'caseInfo.content.Claim', 'app/primary_1');
-      const declarationText2 = PCore.getStoreValue('.DeclarationText2', 'caseInfo.content.Claim', 'app/primary_1');
-      const declarationWarning1 = PCore.getStoreValue('.DeclarationWarning1', 'caseInfo.content.Claim', 'app/primary_1');
-      setDeclaration({
-        text1: declarationText1,
-        text2: declarationText2,
-        warning1: declarationWarning1, });
-    }
-  },[showDeclaration])
 
   useEffect(()=>{
 
@@ -72,11 +50,6 @@ export default function CheckboxComponent(props) {
 
   return (
     <>
-      {declaration.text1 && (
-        <p id='declarationText1' className='govuk-body'>
-          <ParsedHTML htmlString={declaration.text1}/>
-        </p>
-      )}
       <GDSCheckboxes
         inputProps={...inputProps}
         name={name}
@@ -88,16 +61,6 @@ export default function CheckboxComponent(props) {
         onChange={handleChange}
         {...extraProps}
       />
-      {declaration.text2 && (
-        <p id='declarationText2' className='govuk-body'>
-          <ParsedHTML htmlString={declaration.text2}/>
-        </p>
-      )}
-      {declaration.warning1 && (
-        <p id='declarationWarning1' className='govuk-body'>
-          <ParsedHTML htmlString={declaration.warning1}/>
-        </p>
-      )}
     </>
   );
 }

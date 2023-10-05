@@ -29,6 +29,8 @@ export default function UserPortal(props) {
               <>
                 <h3 className='govuk-heading-m' id="subsection-title">{t('MAKE_A_CLAIM')}</h3>
                 <p className='govuk-body'>{t('USE_THIS_SERVICE')}</p>
+                <p className='govuk-body'>{t('WE_MAY_CALL_YOU')}</p>
+                
                 <Button
                   attributes={{ className: 'govuk' }}
                   onClick={beginClaim}

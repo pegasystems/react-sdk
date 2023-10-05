@@ -49,6 +49,7 @@
 
 .u-childRemove .govuk-summary-list__row {
   display: block;
+  font-family:  "GDS Transport", "Roboto", "Helvetica", "Arial", "sans-serif";
 }
 
 .u-childRemove .MuiTypography-body2 {

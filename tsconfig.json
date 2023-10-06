@@ -12,6 +12,12 @@
     "allowJs": true,
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+
+    // Declare all ambient type declarations here for VSCode.
+    // Override with only specific types for other configurations.
+
+    "typeRoots": ["node_modules/@types", "typings"],
+
   }
 }

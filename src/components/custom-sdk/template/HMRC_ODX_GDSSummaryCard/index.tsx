@@ -24,7 +24,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
   const [formElms, setFormElms] = useState<Array<ReactNode>>([]); // Initialize as an empty array of React Nodes
  
 
-  let itemName = (useType === 1) ? t('GDS_INFO_ITEM_CHILD') : '';
+  const itemName = (useType === 1) ? t('GDS_INFO_ITEM_CHILD') : '';
  
   const [childName, setChildName] = useState(itemName);
   useEffect(() => {

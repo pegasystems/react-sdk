@@ -13,28 +13,30 @@ export default function Modal(props) {
 
   useEffect(() => {
     if (show) {
-      const a: any = document.getElementById('modal-id');
+      const a: any = document.getElementById(id);
       a.focus();
     }
   }, [show]);
 
   return (
-    show && (
+    <>
+    {show && (
       <>
         <div className='hmrc-timeout-overlay'></div>
         <FocusTrap>
           <div className={showHideClassName} tabIndex={-1} role='dialog' aria-modal='true' id={id}>
             <section>
               {children}
-              <a className='govuk-link signout-modal' href='#' onClick={handleClose}>
+              {handleClose && <a className='govuk-link signout-modal' href='#' onClick={handleClose}>
                 {t('Close')}
                 <span className='govuk-visually-hidden'> {t('SIGN_OUT_MESSAGE')}</span>
-              </a>
+              </a>}
             </section>
           </div>
         </FocusTrap>
       </>
-    )
+    )}
+  </>
   );
 }
 

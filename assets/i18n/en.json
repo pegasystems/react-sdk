@@ -250,5 +250,8 @@
   "ACCESSIBILITY_LIST_3_22": "The check your answers pages have not descriptive, generic page headings and reused on every section. This fails WCAG 2.1 success criterion 2.4.6 Headings and Labels. This will be fixed by 18 December 2023",
   "ACCESSIBILITY_LIST_3_23": "The address, name, telephone and date of birth fields are missing autocomplete attributes which means users will be unable to use the browser's saved data to populate these fields easily. This fails WCAG 2.1 success criterion 1.3.5 Identify Input Purpose. This will be fixed by 18 December 2023",
   "ACCESSIBILITY_LIST_3_24": "The missing error summary. This fails WCAG 2.1 success criterion 4.1.3 Status Messages. This will be fixed by 18 December 2023",
-  "ACCESSIBILITY_LIST_3_25": "The service is missing save options on the 'What are the bank details that Child Benefit can be paid to?' and 'What are the details of the child you want to claim for?' pages. This fails WCAG 2.1 success criterion 4.1.3 Status Messages. This will be fixed by 18 December 2023"
+  "ACCESSIBILITY_LIST_3_25": "The service is missing save options on the 'What are the bank details that Child Benefit can be paid to?' and 'What are the details of the child you want to claim for?' pages. This fails WCAG 2.1 success criterion 4.1.3 Status Messages. This will be fixed by 18 December 2023",
+  "YOU_ARE_ABOUT_TO_BE_SIGNEDOUT": "You're about to be signed out",
+  "FOR_YOUR_SECURITY_WE_WILL_SIGN_YOU_OUT": "For your security, we will sign you out in",
+  "2_MINUTES": "2 minutes"
 }

@@ -14,7 +14,7 @@ export default function TextInput(props) {
             <HintTextComponent htmlString={hintText} />
           </div>
         )}
-        <span className='govuk-body govuk-!-font-weight-bold'>{inputProps.value}</span><br/>
+        <span className='govuk-body govuk-!-font-weight-bold read-only'>{inputProps.value}</span><br/>
       </>
     );
   }

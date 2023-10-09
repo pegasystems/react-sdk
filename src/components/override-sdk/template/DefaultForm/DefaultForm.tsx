@@ -68,6 +68,15 @@ export default function DefaultForm(props) {
   }, []);
 
   useEffect(()=>{
+    const roText = document.getElementsByClassName('read-only');
+    if(roText.length > 1){
+      const lastRoText = roText[roText.length-1];
+      lastRoText.classList.add('display-inline-block');
+      lastRoText.classList.add('govuk-!-margin-bottom-4') ;
+    }    
+  },[])
+
+  useEffect(()=>{
     if(instructionExists){
       settingTargetForAnchorTag();
     }

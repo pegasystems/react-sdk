@@ -323,8 +323,9 @@ export default function ChildBenefitsClaim() {
 
       // Fetches timeout length config
       getSdkConfig().then( sdkConfig => {  
-        milisecondsTilWarning = sdkConfig.timeoutConfig.secondsTilWarning * 1000
-        milisecondsTilSignout = sdkConfig.timeoutConfig.secondsTilLogout * 1000
+        // TODO - fall back to default value is no value in sdk config
+        if(sdkConfig.timeoutConfig.secondsTilWarning) milisecondsTilWarning = sdkConfig.timeoutConfig.secondsTilWarning * 1000;
+        if(sdkConfig.timeoutConfig.secondsTimSignout) milisecondsTilSignout = sdkConfig.timeoutConfig.secondsTilLogout * 1000
       }).finally(() => {        
         // Subscribe to any store change to reset timeout counter
         PCore.getStore().subscribe(() => staySignedIn(setShowTimeoutModal, false));

@@ -45,10 +45,9 @@ export default function DefaultForm(props) {
     }
   }  
 
-  const {isOnlyField} = useIsOnlyField();
+  const isOnlyFieldDetails = useIsOnlyField();
 
   useEffect(() => {
-    setSingleQuestionPage(isOnlyField);
     if(configAlternateDesignSystem?.hidePageLabel){
       PCore.getStore().dispatch({type:'SET_PROPERTY', payload:{
         "reference": "displayAsSingleQuestion",
@@ -66,6 +65,10 @@ export default function DefaultForm(props) {
         "isArrayDeepMerge": true
     }})}})
   }, []);
+
+  useEffect(() => {    
+    setSingleQuestionPage(isOnlyFieldDetails.isOnlyField);
+  }, [isOnlyFieldDetails]);
 
   useEffect(()=>{
     const roText = document.getElementsByClassName('read-only');
@@ -239,7 +242,7 @@ export default function DefaultForm(props) {
           instructionText: getFormattedInstructionText() as string
         }}>
 
-        {instructionExists && (
+        {instructionExists && !singleQuestionPage && (
           <p id='instructions' className='govuk-body'>
             <ParsedHTML htmlString={getFormattedInstructionText()} />
           </p>

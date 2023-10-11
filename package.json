@@ -54,7 +54,7 @@
     "@pega/constellationjs": "SDK-8.8.3",
     "@pega/cosmos-react-core": "^3.0.1",
     "@pega/cosmos-react-work": "^3.0.1",
-    "@pega/react-sdk-components": "file:pega-react-sdk-components-23.1.11.tgz",
+    "@pega/react-sdk-components": "file:pega-react-sdk-components-23.1.12.tgz",
     "@types/styled-components": "^5.1.26",
     "@unicef/material-ui-currency-textfield": "^0.8.6",
     "dayjs": "^1.10.6",

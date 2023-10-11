@@ -22,7 +22,6 @@ export default function DefaultForm(props) {
   if (configAlternateDesignSystem?.cssClassHook) {
     cssClassHook = configAlternateDesignSystem.cssClassHook;
   }
-  // eslint-disable-next-line
   const [singleQuestionPage, setSingleQuestionPage] = useState(useIsOnlyField().isOnlyField || configAlternateDesignSystem?.hidePageLabel);
   // repoint the children because they are in a region and we need to not render the region
   // to take the children and create components for them, put in an array and pass as the
@@ -45,10 +44,9 @@ export default function DefaultForm(props) {
     }
   }  
 
-  const {isOnlyField} = useIsOnlyField();
+  const isOnlyFieldDetails = useIsOnlyField();
 
   useEffect(() => {
-    setSingleQuestionPage(isOnlyField);
     if(configAlternateDesignSystem?.hidePageLabel){
       PCore.getStore().dispatch({type:'SET_PROPERTY', payload:{
         "reference": "displayAsSingleQuestion",
@@ -66,6 +64,10 @@ export default function DefaultForm(props) {
         "isArrayDeepMerge": true
     }})}})
   }, []);
+
+  useEffect(() => {    
+    setSingleQuestionPage(isOnlyFieldDetails.isOnlyField);
+  }, [isOnlyFieldDetails]);
 
   useEffect(()=>{
     const roText = document.getElementsByClassName('read-only');
@@ -239,7 +241,7 @@ export default function DefaultForm(props) {
           instructionText: getFormattedInstructionText() as string
         }}>
 
-        {instructionExists && (
+        {instructionExists && !singleQuestionPage && (
           <p id='instructions' className='govuk-body'>
             <ParsedHTML htmlString={getFormattedInstructionText()} />
           </p>

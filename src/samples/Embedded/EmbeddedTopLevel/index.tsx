@@ -419,14 +419,14 @@ export default function EmbeddedTopLevel() {
         sdkSetAuthHeader( `Basic ${sB64}`);
       }
 
+      document.addEventListener("SdkConstellationReady", () => {
+        // start the portal
+        startMashup();
+      });
+
       // Login if needed, without doing an initial main window redirect
-      loginIfNecessary("embedded", true);
+      loginIfNecessary({appName:"embedded", mainRedirect:false});
 
-    });
-
-    document.addEventListener("SdkConstellationReady", () => {
-      // start the portal
-      startMashup();
     });
 
 

@@ -6,12 +6,17 @@
     "sourceMap": true,
     "module": "es2020",
     "target": "es2020",
-    "lib": [ "es2021" ],
+    "lib": [ "es2021", "dom" ],
     "moduleResolution": "node",
     "jsx": "react",
     "allowJs": true,
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+
+    // Need to specify typeRoots to find the types and types to constrain
+    //  where to look in @pega (to only get pcore-pconnect-typedefs)
+    "typeRoots": ["node_modules/@types", "node_modules/@pega"],
+    "types": [ "jest", "@testing-library/jest-dom", "pcore-pconnect-typedefs" ],
   }
 }

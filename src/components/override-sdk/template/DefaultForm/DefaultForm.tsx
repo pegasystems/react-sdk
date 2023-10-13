@@ -33,7 +33,7 @@ export default function DefaultForm(props) {
   // If the parent Default Form has instruction text passed through, append it here so that it is not 
   // lost in nested default forms  
   if(passedThroughInstructionText){
-    instructionText = instructionText ? passedThroughInstructionText + ' ' + instructionText : passedThroughInstructionText;
+    instructionText = instructionText ? `${passedThroughInstructionText} ${instructionText}` : passedThroughInstructionText;
   }
   const instructionExists = instructionText !== undefined && instructionText !== '';
 

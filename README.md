@@ -24,6 +24,10 @@ Therefore, in the coming weeks, we will be introducing separate React SDK releas
 * The release **SDK-R v8.8.20** is only compatible with Pega Infinity 8.8.
   * If you are currently using Pega Infinity 8.8 with React SDK 8.23.11, you should prepare to update your SDK to SDK-R v8.8.20 to take advantage of the latest SDK enhancements and fixes.
 
+Information about these new releases will be included on this
+[React SDK updates](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html) page which details all of
+the React SDK releases.
+
 <br>
 
 <hr>

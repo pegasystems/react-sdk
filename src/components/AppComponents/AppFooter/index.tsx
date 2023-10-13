@@ -66,11 +66,6 @@ export default function AppFooter() {
                 {t("CYMRAEG")} {t("OPENS_IN_NEW_TAB")}
               </a>
             </li>
-            <li className="govuk-footer__inline-list-item">
-              <a className="govuk-footer__link" href={`${hmrcURL}contact/report-technical-problem?newTab=true&service=463&referrerUrl=${referrerURL}`} rel="noreferrer" target="_blank">
-                  {t("PAGE_NOT_WORKING_PROPERLY")} {t("OPENS_IN_NEW_TAB")}
-              </a>
-            </li>
           </ul>
           <svg
             aria-hidden="true"

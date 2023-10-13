@@ -1,10 +1,25 @@
-import React from 'react';
+import React,{ useEffect, useState } from 'react';
 import Button from '../../components/BaseComponents/Button/Button';
 import { useTranslation } from 'react-i18next';
+import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+
 
 export default function UserPortal(props) {
   const { beginClaim, children } = props;
   const { t } = useTranslation();
+
+  const [referrerURL, setReferrerURL] = useState<string>(null);
+  const [hmrcURL, setHmrcURL] = useState<string>(null);
+
+  useEffect(() => {
+    const getReferrerURL = async () => {
+      const { serverConfig: { sdkContentServerUrl, sdkHmrcURL } } = await getSdkConfig();
+      setReferrerURL(sdkContentServerUrl);
+      setHmrcURL(sdkHmrcURL);
+    }
+    getReferrerURL();
+    // scrollToTop();
+  }, []);
 
   return (
     <>
@@ -53,6 +68,10 @@ export default function UserPortal(props) {
                   <li><span className='govuk-body'>{t('THE_HIGH_INCOME_CHB_TAX_CHARGE')}</span></li>
                   <li><span className='govuk-body'>{t('ANY_CHANGE_OF_CIRCUMSTANCE')}</span></li>
                 </ul>
+                <br/>
+                <a className="govuk-link" href={`${hmrcURL}contact/report-technical-problem?newTab=true&service=463&referrerUrl=${referrerURL}`} rel="noreferrer" target="_blank">
+                  {t("PAGE_NOT_WORKING_PROPERLY")} {t("OPENS_IN_NEW_TAB")}
+                </a>
               </>
             </div>
           </div>

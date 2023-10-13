@@ -323,7 +323,6 @@ export default function ChildBenefitsClaim() {
 
       // Fetches timeout length config
       getSdkConfig().then( sdkConfig => {  
-        // TODO - fall back to default value is no value in sdk config
         if(sdkConfig.timeoutConfig.secondsTilWarning) milisecondsTilWarning = sdkConfig.timeoutConfig.secondsTilWarning * 1000;
         if(sdkConfig.timeoutConfig.secondsTimSignout) milisecondsTilSignout = sdkConfig.timeoutConfig.secondsTilLogout * 1000
       }).finally(() => {        

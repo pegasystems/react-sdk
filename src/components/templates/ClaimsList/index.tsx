@@ -37,10 +37,12 @@ export default function ClaimsList(props){
 
     if( rowClickAction === 'OpenAssignment'){
       const openAssignmentOptions = { containerName: container};
+      console.log('payload',pyAssignmentID, target, openAssignmentOptions)
       PCore.getMashupApi().openAssignment(pyAssignmentID, target, openAssignmentOptions)
       .then(()=>{
+        console.log('call');
         scrollToTop();
-      });
+      }).catch(err => console.log('Error : ',err));
     } else if ( rowClickAction === 'OpenCase'){
       PCore.getMashupApi().openCase(pzInsKey, target, {pageName:'SummaryClaim'})
       .then(()=>{

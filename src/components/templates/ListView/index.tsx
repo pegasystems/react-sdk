@@ -947,16 +947,19 @@ export default function ListView(props) {
   const processColumnValue = (column, value) => {
     let val;
     const type = column.type;
+    let theDateFormatInfo;
+    let theFormat;
+    let theCurrencyOptions;
     switch (type) {
       case 'Date':
       case 'DateTime':
-        const theDateFormatInfo = getDateFormatInfo();
-        const theFormat = (type === 'DateTime') ? `${theDateFormatInfo.dateFormatStringLong} hh:mm a` : theDateFormatInfo.dateFormatStringLong;
+        theDateFormatInfo = getDateFormatInfo();
+        theFormat = (type === 'DateTime') ? `${theDateFormatInfo.dateFormatStringLong} hh:mm a` : theDateFormatInfo.dateFormatStringLong;
         val = format(value, column.type, { format: theFormat });
       break;
 
       case 'Currency':
-        const theCurrencyOptions = getCurrencyOptions(PCore?.getEnvironmentInfo()?.getLocale());
+        theCurrencyOptions = getCurrencyOptions(PCore?.getEnvironmentInfo()?.getLocale());
         val = format(value, column.type, theCurrencyOptions);
       break;
 

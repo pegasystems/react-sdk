@@ -40,6 +40,10 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { filterData } from '../../templates/SimpleTable/helpers';
 import './ListView.css';
 import useInit from './hooks'
+import { getDateFormatInfo } from '../../../helpers/date-format-utils';
+import { getCurrencyOptions } from '../../forms/Currency/currency-utils';
+import { format } from '../../../helpers/formatters/';
+
 
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
 declare const PCore: any;
@@ -272,52 +276,6 @@ export default function ListView(props) {
     });
 
     return arReturn;
-  }
-
-  function updateData(listData: Array<any>, fieldData: Array<any>): Array<any> {
-    const returnList: Array<any> = new Array<any>();
-    listData?.forEach(row => {
-      // copy
-      const rowData = JSON.parse(JSON.stringify(row));
-
-      fieldData.forEach(field => {
-        const config = field.config;
-        let fieldName;
-        let formattedDate;
-        let myFormat;
-
-        switch (field.type) {
-          case 'Date':
-            fieldName = config.name;
-            myFormat = config.formatter;
-            if (!myFormat) {
-              myFormat = 'Date';
-            }
-            formattedDate = Utils.generateDate(rowData[fieldName], myFormat);
-
-            rowData[fieldName] = formattedDate;
-            break;
-
-          case 'DateTime':
-            fieldName = config.name;
-            myFormat = config.formatter;
-            if (!myFormat) {
-              myFormat = 'DateTime-Long';
-            }
-            formattedDate = Utils.generateDateTime(rowData[fieldName], myFormat);
-
-            rowData[fieldName] = formattedDate;
-            break;
-
-          default:
-            break;
-        }
-      });
-
-      returnList.push(rowData);
-    });
-
-    return returnList;
   }
 
   function getMyColumnList(arCols: Array<any>): Array<string> {
@@ -594,7 +552,7 @@ export default function ListView(props) {
     const usingDataResults = getUsingData(tableDataResults);
 
     // store globally, so can be searched, filtered, etc.
-    myRows = updateData(usingDataResults, fields);
+    myRows = usingDataResults;
     myDisplayColmnnList = getMyColumnList(myColumns);
 
     // At this point, if we have data ready to render and haven't been asked
@@ -932,7 +890,7 @@ export default function ListView(props) {
 
   function _listTitle() {
     const defaultTitle = 'List';
-    let title = resolvedConfigProps.title ? resolvedConfigProps.title : defaultTitle;
+    let title = resolvedConfigProps.title || resolvedConfigProps?.label || defaultTitle;
     const inheritedProps = resolvedConfigProps?.inheritedProps;
 
     // Let any title in resolvedConfigProps that isn't the default take precedence
@@ -985,6 +943,28 @@ export default function ListView(props) {
     getPConnect()
       ?.getListActions()
       ?.setSelectedRows([reqObj]);
+  };
+
+  const processColumnValue = (column, value) => {
+    let val;
+    const type = column.type;
+    switch (type) {
+      case 'Date':
+      case 'DateTime':
+        const theDateFormatInfo = getDateFormatInfo();
+        const theFormat = (type === 'DateTime') ? `${theDateFormatInfo.dateFormatStringLong} hh:mm a` : theDateFormatInfo.dateFormatStringLong;
+        val = format(value, column.type, { format: theFormat });
+      break;
+
+      case 'Currency':
+        const theCurrencyOptions = getCurrencyOptions(PCore?.getEnvironmentInfo()?.getLocale());
+        val = format(value, column.type, theCurrencyOptions);
+      break;
+
+      default:
+        val = column.format && typeof value === 'number' ? column.format(value) : value;
+    }
+    return val;
   };
 
   return (
@@ -1168,9 +1148,7 @@ export default function ListView(props) {
                                     key={column.id}
                                     align={column.align}
                                   >
-                                    {column.format && typeof value === 'number'
-                                      ? column.format(value)
-                                      : value}
+                                    {processColumnValue(column, value)}
                                   </TableCell>
                                 );
                               })}

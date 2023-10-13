@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import ActionButtons from "../ActionButtons";
 
 export default function AssignmentCard(props) {
-  const { children, actionButtons, onButtonPress} = props;
+  const { children, actionButtons, onButtonPress, getPConnect} = props;
 
   const [arMainButtons, setArMainButtons] = useState([]);
   const [arSecondaryButtons, setArSecondaryButtons] = useState([]);
@@ -24,7 +24,7 @@ export default function AssignmentCard(props) {
     <>
       {children}
       {
-        arMainButtons && arSecondaryButtons && <ActionButtons arMainButtons={arMainButtons} arSecondaryButtons={arSecondaryButtons} onButtonPress={buttonPress}></ActionButtons>
+        arMainButtons && arSecondaryButtons && <ActionButtons arMainButtons={arMainButtons} arSecondaryButtons={arSecondaryButtons} onButtonPress={buttonPress} getPConnect={getPConnect}></ActionButtons>
       }
     </>
   )

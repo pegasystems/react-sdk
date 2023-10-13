@@ -1,5 +1,33 @@
 <p align="center"><img width=60% src="docs/media/ReactSDK-Logo.png">
 
+
+
+# <span style="color: red">COMING SOON: Release 23.1.10 and Release 8.8.20</span>
+
+**_New features in both releases_**:
+* **type definition support, DX Component Builder improvements, enhanced token storage/security, easier configuration, bug fixes**
+
+As Pega Infinity&trade; and Constellation UI architecture evolve, the
+Constellation SDKs (including the React SDK) need to evolve with them.
+Until now, we have been able to support both Infinity 8.8 and the Infinity '23
+(the latest Infinity version) with the same React SDK code - Release 8.23.11
+
+However, staying aligned with the Infinity and Constellation versions has led
+to additional configuration tweaks that have made getting started with the
+React SDK more error prone than we want.
+
+Therefore, in the coming weeks, we will be introducing separate React SDK releases for Infinity '23 and Infinity 8.8 environments:
+
+* Release **SDK-R v23.1.10** is only compatible with Pega Infinity '23.
+  * If you are currently using Pega Infinity '23 with React SDK v8.23.11, you should prepare to update your SDK to SDK-R v23.1.0 to take advantage of the latest SDK enhancements and fixes.
+
+* The release **SDK-R v8.8.20** is only compatible with Pega Infinity 8.8.
+  * If you are currently using Pega Infinity 8.8 with React SDK 8.23.11, you should prepare to update your SDK to SDK-R v8.8.20 to take advantage of the latest SDK enhancements and fixes.
+
+<br>
+
+<hr>
+
 # React SDK - Release Announcement - v8.23.11
 
 This (**main** branch) is the latest version of the React SDK. It is intended to be used with **Infinity 8.8.0+**. If you need to use **Infinity 8.7.***, please use the **release/8.8.10** branch instead of this **main** branch.

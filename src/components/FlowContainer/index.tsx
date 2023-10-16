@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 import React, { useState, useEffect, useContext, createElement } from 'react';
 import PropTypes from 'prop-types';
@@ -435,38 +436,37 @@ export default function FlowContainer(props) {
     <div style={{ textAlign: 'left' }} id={buildName} className='psdk-flow-container-top'>
       {!bShowConfirm &&
         (!todo_showTodo ? (
-          <>
-            {displayPageMessages()}
-            {!displayOnlyFA ? (
-              <Card className={classes.root}>
-                <CardHeader
-                  title={<Typography variant='h6'>{containerName}</Typography>}
-                  subheader={`Task in ${caseId} \u2022 Priority ${urgency}`}
-                  avatar={<Avatar className={classes.avatar}>{operatorInitials}</Avatar>}
-                ></CardHeader>
-                {instructionText !== '' ? (
-                  <Typography variant='caption'>{instructionText}</Typography>
-                ) : null}
-                <MuiPickersUtilsProvider utils={DayjsUtils}>
-                  <Assignment getPConnect={getPConnect} itemKey={itemKey}>
-                    {arNewChildrenAsReact}
-                  </Assignment>
-                </MuiPickersUtilsProvider>
-              </Card>
-            ) : (
-              <Card className={classes.root}>
-                <Typography variant='h6'>{containerName}</Typography>
-                {instructionText !== '' ? (
-                  <Typography variant='caption'>{instructionText}</Typography>
-                ) : null}
-                <MuiPickersUtilsProvider utils={DayjsUtils}>
-                  <Assignment getPConnect={getPConnect} itemKey={itemKey}>
-                    {arNewChildrenAsReact}
-                  </Assignment>
-                </MuiPickersUtilsProvider>
-              </Card>
-            )}
-          </>
+          !displayOnlyFA ? (
+            <Card className={classes.root}>
+              <CardHeader
+                title={<Typography variant='h6'>{containerName}</Typography>}
+                subheader={`Task in ${caseId} \u2022 Priority ${urgency}`}
+                avatar={<Avatar className={classes.avatar}>{operatorInitials}</Avatar>}
+              ></CardHeader>
+              {displayPageMessages()}
+              {instructionText !== '' ? (
+                <Typography variant='caption'>{instructionText}</Typography>
+              ) : null}
+              <MuiPickersUtilsProvider utils={DayjsUtils}>
+                <Assignment getPConnect={getPConnect} itemKey={itemKey}>
+                  {arNewChildrenAsReact}
+                </Assignment>
+              </MuiPickersUtilsProvider>
+            </Card>
+          ) : (
+            <Card className={classes.root}>
+              <Typography variant='h6'>{containerName}</Typography>
+              {displayPageMessages()}
+              {instructionText !== '' ? (
+                <Typography variant='caption'>{instructionText}</Typography>
+              ) : null}
+              <MuiPickersUtilsProvider utils={DayjsUtils}>
+                <Assignment getPConnect={getPConnect} itemKey={itemKey}>
+                  {arNewChildrenAsReact}
+                </Assignment>
+              </MuiPickersUtilsProvider>
+            </Card>
+          )
         ) : (
           <div>
             <ToDo

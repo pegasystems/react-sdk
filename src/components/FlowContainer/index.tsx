@@ -17,6 +17,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 import { addContainerItem, getToDoAssignments, showBanner } from './helpers';
 import { isEmptyObject } from '../../helpers/common-utils';
+import AlertBanner from '../designSystemExtensions/AlertBanner';
 
 declare const PCore;
 
@@ -52,7 +53,7 @@ export default function FlowContainer(props) {
   const { TODO } = pCoreConstants;
   const todo_headerText = 'To do';
 
-  const { getPConnect, routingInfo } = props;
+  const { getPConnect, routingInfo, pageMessages } = props;
 
   const { displayOnlyFA } = useContext(StoreContext);
 
@@ -420,39 +421,53 @@ export default function FlowContainer(props) {
 
   const bShowBanner = showBanner(getPConnect);
 
+  const displayPageMessages = () => {
+    let hasBanner = false;
+    const messages = pageMessages
+      ? pageMessages.map(msg => localizedVal(msg.message, 'Messages'))
+      : pageMessages;
+    hasBanner = messages && messages.length > 0;
+    return (
+      hasBanner && <AlertBanner id='flowContainerBanner' variant='urgent' messages={messages} />
+    );
+  };
+
   return (
     <div style={{ textAlign: 'left' }} id={buildName} className='psdk-flow-container-top'>
       {!bShowConfirm &&
         (!todo_showTodo ? (
-          !displayOnlyFA ? (
-            <Card className={classes.root}>
-              <CardHeader
-                title={<Typography variant='h6'>{containerName}</Typography>}
-                subheader={`Task in ${caseId} \u2022 Priority ${urgency}`}
-                avatar={<Avatar className={classes.avatar}>{operatorInitials}</Avatar>}
-              ></CardHeader>
-              {instructionText !== '' ? (
-                <Typography variant='caption'>{instructionText}</Typography>
-              ) : null}
-              <MuiPickersUtilsProvider utils={DayjsUtils}>
-                <Assignment getPConnect={getPConnect} itemKey={itemKey}>
-                  {arNewChildrenAsReact}
-                </Assignment>
-              </MuiPickersUtilsProvider>
-            </Card>
-          ) : (
-            <Card className={classes.root}>
-              <Typography variant='h6'>{containerName}</Typography>
-              {instructionText !== '' ? (
-                <Typography variant='caption'>{instructionText}</Typography>
-              ) : null}
-              <MuiPickersUtilsProvider utils={DayjsUtils}>
-                <Assignment getPConnect={getPConnect} itemKey={itemKey}>
-                  {arNewChildrenAsReact}
-                </Assignment>
-              </MuiPickersUtilsProvider>
-            </Card>
-          )
+          <>
+            {displayPageMessages()}
+            {!displayOnlyFA ? (
+              <Card className={classes.root}>
+                <CardHeader
+                  title={<Typography variant='h6'>{containerName}</Typography>}
+                  subheader={`Task in ${caseId} \u2022 Priority ${urgency}`}
+                  avatar={<Avatar className={classes.avatar}>{operatorInitials}</Avatar>}
+                ></CardHeader>
+                {instructionText !== '' ? (
+                  <Typography variant='caption'>{instructionText}</Typography>
+                ) : null}
+                <MuiPickersUtilsProvider utils={DayjsUtils}>
+                  <Assignment getPConnect={getPConnect} itemKey={itemKey}>
+                    {arNewChildrenAsReact}
+                  </Assignment>
+                </MuiPickersUtilsProvider>
+              </Card>
+            ) : (
+              <Card className={classes.root}>
+                <Typography variant='h6'>{containerName}</Typography>
+                {instructionText !== '' ? (
+                  <Typography variant='caption'>{instructionText}</Typography>
+                ) : null}
+                <MuiPickersUtilsProvider utils={DayjsUtils}>
+                  <Assignment getPConnect={getPConnect} itemKey={itemKey}>
+                    {arNewChildrenAsReact}
+                  </Assignment>
+                </MuiPickersUtilsProvider>
+              </Card>
+            )}
+          </>
         ) : (
           <div>
             <ToDo

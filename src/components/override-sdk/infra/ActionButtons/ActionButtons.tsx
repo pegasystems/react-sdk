@@ -3,22 +3,12 @@ import PropTypes from 'prop-types';
 import Button from '../../../BaseComponents/Button/Button';
 
 export default function ActionButtons(props) {
-  const { arMainButtons, arSecondaryButtons, onButtonPress, getPConnect } = props;
+  const { arMainButtons, arSecondaryButtons, onButtonPress } = props;
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const localeCategory = 'Assignment';
   function _onButtonPress(sAction: string, sButtonType: string) {
     onButtonPress(sAction, sButtonType);
   }
-
-  const containerManger = getPConnect().getContainerManager();
-  const resetContainer = () => {
-    containerManger.resetContainers({
-      context:"app",
-      name:"primary",
-      containerItems: ["app/primary_1"]
-    });
-  }
-
 
   return (
     <>
@@ -47,7 +37,6 @@ export default function ActionButtons(props) {
               onClick={e => {
                 e.target.blur();
                 _onButtonPress(sButton.jsAction, 'secondary');
-                resetContainer();
               }}
               key={sButton.actionID}
               attributes={{ type: 'button' }}
@@ -67,7 +56,6 @@ export default function ActionButtons(props) {
               onClick={e => {
                 e.target.blur();
                 _onButtonPress(sButton.jsAction, 'secondary');
-                resetContainer();
               }}
               key={sButton.actionID}
               attributes={{ type: 'link' }}
@@ -84,7 +72,6 @@ ActionButtons.propTypes = {
   arMainButtons: PropTypes.array,
   arSecondaryButtons: PropTypes.array,
   onButtonPress: PropTypes.func,
-  getPConnect: PropTypes.func
   // buildName: PropTypes.string
 };
 

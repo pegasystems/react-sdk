@@ -12,6 +12,7 @@ export default function DefaultForm(props) {
 
   const {hasBeenWrapped} = useContext(ReadOnlyDefaultFormContext); // eslint-disable-line
   const {DFName} = useContext(DefaultFormContext);
+  const {instructionText: passedThroughInstructionText} = useContext(DefaultFormContext);
 
   const [declaration, setDeclaration] = useState({text1: '', warning1: ''});
   const containerName = getPConnect().getDataObject().caseInfo.assignments[0].name;
@@ -28,7 +29,12 @@ export default function DefaultForm(props) {
   // defaultForm kids
   const arChildren = getPConnect().getChildren()[0].getPConnect().getChildren();
   let hasSingleChildWhichIsReference = false;
-  const instructionText = props.instructions === 'none' || props.instructions === null ? '' : props.instructions;
+  let instructionText = props.instructions === 'none' || props.instructions === null ? '' : props.instructions;
+  // If the parent Default Form has instruction text passed through, append it here so that it is not 
+  // lost in nested default forms  
+  if(passedThroughInstructionText){
+    instructionText = instructionText ? `${passedThroughInstructionText} ${instructionText}` : passedThroughInstructionText;
+  }
   const instructionExists = instructionText !== undefined && instructionText !== '';
 
   const settingTargetForAnchorTag = () => {

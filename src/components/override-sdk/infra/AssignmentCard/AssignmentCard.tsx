@@ -33,7 +33,6 @@ export default function AssignmentCard(props) {
 AssignmentCard.propTypes = {
   children: PropTypes.node.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
-  // eslint-disable-next-line react/no-unused-prop-types
   itemKey: PropTypes.string,
   actionButtons: PropTypes.object,
   onButtonPress: PropTypes.func

@@ -21,7 +21,7 @@ export default function RadioButtons(props) {
 
   let label = props.label;
   const {isOnlyField, overrideLabel} = useIsOnlyField(props.displayOrder);
-  if(isOnlyField) label = overrideLabel.trim() ? overrideLabel : label;
+  if(isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
 
   const[errorMessage,setErrorMessage] = useState(validatemessage);
 

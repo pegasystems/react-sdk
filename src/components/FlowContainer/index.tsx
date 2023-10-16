@@ -17,6 +17,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 import { addContainerItem, getToDoAssignments, showBanner } from './helpers';
 import { isEmptyObject } from '../../helpers/common-utils';
+import AlertBanner from '../designSystemExtensions/AlertBanner';
 
 declare const PCore;
 
@@ -52,7 +53,7 @@ export default function FlowContainer(props) {
   const { TODO } = pCoreConstants;
   const todo_headerText = 'To do';
 
-  const { getPConnect, routingInfo } = props;
+  const { getPConnect, routingInfo, pageMessages } = props;
 
   const { displayOnlyFA } = useContext(StoreContext);
 
@@ -420,6 +421,17 @@ export default function FlowContainer(props) {
 
   const bShowBanner = showBanner(getPConnect);
 
+  const displayPageMessages = () => {
+    let hasBanner = false;
+    const messages = pageMessages
+      ? pageMessages.map(msg => localizedVal(msg.message, 'Messages'))
+      : pageMessages;
+    hasBanner = messages && messages.length > 0;
+    return (
+      hasBanner && <AlertBanner id='flowContainerBanner' variant='urgent' messages={messages} />
+    );
+  };
+
   return (
     <div style={{ textAlign: 'left' }} id={buildName} className='psdk-flow-container-top'>
       {!bShowConfirm &&
@@ -431,6 +443,7 @@ export default function FlowContainer(props) {
                 subheader={`Task in ${caseId} \u2022 Priority ${urgency}`}
                 avatar={<Avatar className={classes.avatar}>{operatorInitials}</Avatar>}
               ></CardHeader>
+              {displayPageMessages()}
               {instructionText !== '' ? (
                 <Typography variant='caption'>{instructionText}</Typography>
               ) : null}
@@ -443,6 +456,7 @@ export default function FlowContainer(props) {
           ) : (
             <Card className={classes.root}>
               <Typography variant='h6'>{containerName}</Typography>
+              {displayPageMessages()}
               {instructionText !== '' ? (
                 <Typography variant='caption'>{instructionText}</Typography>
               ) : null}
@@ -491,6 +505,5 @@ FlowContainer.propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   name: PropTypes.string,
   routingInfo: PropTypes.objectOf(PropTypes.any),
-  // eslint-disable-next-line react/no-unused-prop-types
   pageMessages: PropTypes.arrayOf(PropTypes.any)
 };

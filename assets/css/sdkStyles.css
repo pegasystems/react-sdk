@@ -45,3 +45,7 @@ body {
   vertical-align: top;
   padding: 0px;
 }
+
+#flowContainerBanner {
+  padding: 10px 0;
+}

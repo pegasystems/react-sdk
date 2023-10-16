@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 /* eslint-disable camelcase */
 import React, { useState, useEffect, useContext, createElement } from 'react';
 import PropTypes from 'prop-types';
@@ -506,6 +505,5 @@ FlowContainer.propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   name: PropTypes.string,
   routingInfo: PropTypes.objectOf(PropTypes.any),
-  // eslint-disable-next-line react/no-unused-prop-types
   pageMessages: PropTypes.arrayOf(PropTypes.any)
 };

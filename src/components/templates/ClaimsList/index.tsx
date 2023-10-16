@@ -29,6 +29,15 @@ export default function ClaimsList(props){
     }
   }
 
+  const containerManger = thePConn.getContainerManager();
+  const resetContainer = () => {
+    containerManger.resetContainers({
+      context:"app",
+      name:"primary",
+      containerItems: ["app/primary_1"]
+    });
+  }
+
   function _rowClick(row: any) {
     const {pzInsKey, pyAssignmentID} = row;
 
@@ -36,11 +45,12 @@ export default function ClaimsList(props){
     const target = `${PCore.getConstants().APP.APP}/${container}`;
 
     if( rowClickAction === 'OpenAssignment'){
+      resetContainer();
       const openAssignmentOptions = { containerName: container};
       PCore.getMashupApi().openAssignment(pyAssignmentID, target, openAssignmentOptions)
       .then(()=>{
         scrollToTop();
-      });
+      }).catch(err => console.log('Error : ',err)); // eslint-disable-line no-console
     } else if ( rowClickAction === 'OpenCase'){
       PCore.getMashupApi().openCase(pzInsKey, target, {pageName:'SummaryClaim'})
       .then(()=>{

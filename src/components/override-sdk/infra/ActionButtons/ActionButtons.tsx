@@ -71,7 +71,7 @@ export default function ActionButtons(props) {
 ActionButtons.propTypes = {
   arMainButtons: PropTypes.array,
   arSecondaryButtons: PropTypes.array,
-  onButtonPress: PropTypes.func
+  onButtonPress: PropTypes.func,
   // buildName: PropTypes.string
 };
 

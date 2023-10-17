@@ -6,16 +6,8 @@ import { scrollToTop } from '../../../components/helpers/utils';
 
 export default function AppFooter() {
   const { t } = useTranslation();
-  const [referrerURL, setReferrerURL] = useState<string>(null);
-  const [hmrcURL, setHmrcURL] = useState<string>(null);
 
   useEffect(() => {
-    const getReferrerURL = async () => {
-      const { serverConfig: { sdkContentServerUrl, sdkHmrcURL } } = await getSdkConfig();
-      setReferrerURL(sdkContentServerUrl);
-      setHmrcURL(sdkHmrcURL);
-    }
-    getReferrerURL();
     scrollToTop();
   }, []);
 

@@ -18,8 +18,9 @@ export default function ClaimsList(props){
         return { text: t('IN_PROGRESS'), tagColour: 'blue' };
       case 'Pending-CBS':
       case 'Resolved-Completed':
+      case 'Resolved-Rejected':
       case 'Pending-ManualInvestigation':
-      case 'Pending - verify documentation':
+      case 'Pending-verify documentation':
       case 'Pending-awaiting documentation':
       case 'Pending-VerifyDocumentation':
       case 'Pending-AwaitingDocumentation':

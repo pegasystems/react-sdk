@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { scrollToTop } from '../../../components/helpers/utils';

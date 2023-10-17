@@ -22,6 +22,7 @@ export default function ClaimsList(props){
       case 'Pending - verify documentation':
       case 'Pending-awaiting documentation':
       case 'Pending-VerifyDocumentation':
+      case 'Pending-SystemError':
       case 'Pending-AwaitingDocumentation':
         return {text: t('CLAIM_RECEIVED'), tagColour:'purple'};
       default:

@@ -399,7 +399,7 @@ export default function EmbeddedTopLevel() {
   // One time (initialization) subscriptions and related unsubscribe
   useEffect(() => {
 
-    getSdkConfig().then( sdkConfig => {
+    getSdkConfig().then( (sdkConfig:any) => {
       const sdkConfigAuth = sdkConfig.authConfig;
 
       if( !sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === "Basic" ) {
@@ -419,16 +419,15 @@ export default function EmbeddedTopLevel() {
         sdkSetAuthHeader( `Basic ${sB64}`);
       }
 
+      document.addEventListener("SdkConstellationReady", () => {
+        // start the portal
+        startMashup();
+      });
+
       // Login if needed, without doing an initial main window redirect
-      loginIfNecessary("embedded", false);
+      loginIfNecessary({appName:"embedded", mainRedirect:false});
 
     });
-
-    document.addEventListener("SdkConstellationReady", () => {
-      // start the portal
-      startMashup();
-    });
-
 
     // Subscriptions can't be done until onPCoreReady.
     //  So we subscribe there. But unsubscribe when this

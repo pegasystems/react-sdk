@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import DateFormatter from '@pega/react-sdk-components/lib/components/helpers/formatters/Date';
 import Button from '../../../components/BaseComponents/Button/Button';
 import PropTypes from "prop-types";
-import { Utils, GBdate} from '../../helpers/utils';
+import { scrollToTop, GBdate} from '../../helpers/utils';
 import { useTranslation } from 'react-i18next';
 
 declare const PCore: any;
@@ -29,6 +29,15 @@ export default function ClaimsList(props){
     }
   }
 
+  const containerManger = thePConn.getContainerManager();
+  const resetContainer = () => {
+    containerManger.resetContainers({
+      context:"app",
+      name:"primary",
+      containerItems: ["app/primary_1"]
+    });
+  }
+
   function _rowClick(row: any) {
     const {pzInsKey, pyAssignmentID} = row;
 
@@ -36,15 +45,16 @@ export default function ClaimsList(props){
     const target = `${PCore.getConstants().APP.APP}/${container}`;
 
     if( rowClickAction === 'OpenAssignment'){
+      resetContainer();
       const openAssignmentOptions = { containerName: container};
       PCore.getMashupApi().openAssignment(pyAssignmentID, target, openAssignmentOptions)
       .then(()=>{
-        Utils.scrollToTop();
-      });
+        scrollToTop();
+      }).catch(err => console.log('Error : ',err)); // eslint-disable-line no-console
     } else if ( rowClickAction === 'OpenCase'){
       PCore.getMashupApi().openCase(pzInsKey, target, {pageName:'SummaryClaim'})
       .then(()=>{
-        Utils.scrollToTop();
+        scrollToTop();
       });
     }
   }

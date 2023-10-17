@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import {Utils} from '../../../components/helpers/utils';
+import { scrollToTop } from '../../../components/helpers/utils';
 
 export default function AppFooter() {
   const { t } = useTranslation();
@@ -16,7 +16,7 @@ export default function AppFooter() {
       setHmrcURL(sdkHmrcURL);
     }
     getReferrerURL();
-    Utils.scrollToTop();
+    scrollToTop();
   }, []);
 
   return (
@@ -68,7 +68,7 @@ export default function AppFooter() {
             </li>
             <li className="govuk-footer__inline-list-item">
               <a className="govuk-footer__link" href={`${hmrcURL}contact/report-technical-problem?newTab=true&service=463&referrerUrl=${referrerURL}`} rel="noreferrer" target="_blank">
-                  {t("PAGE_NOT_WORKING_PROPERLY")}
+                  {t("PAGE_NOT_WORKING_PROPERLY")} {t("OPENS_IN_NEW_TAB")}
               </a>
             </li>
           </ul>

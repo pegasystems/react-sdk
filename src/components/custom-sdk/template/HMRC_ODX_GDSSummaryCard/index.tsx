@@ -4,8 +4,8 @@ import { Grid} from '@pega/cosmos-react-core';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { GBdate } from '../../../helpers/utils';
-
 import StyledHmrcOdxGdsSummaryCardWrapper from './styles';
+import NotificationBanner from '../../../BaseComponents/NotificationBanner/NotificationBanner';
 
 export default function HmrcOdxGdsSummaryCard(props) {
   const {
@@ -17,36 +17,50 @@ export default function HmrcOdxGdsSummaryCard(props) {
   } = props;
 
   const containerItemID = getPConnect().getContextName();
-
+  const [singleChild, setSingleChild] = useState(false);
   const { t } = useTranslation();
 
   const nCols = parseInt( NumCols,8 );
   const [formElms, setFormElms] = useState<Array<ReactNode>>([]); // Initialize as an empty array of React Nodes
-
-  let itemName;
-  if(useType === 1) {
-    itemName = t('GDS_INFO_ITEM_CHILD');
-  }
-
+  const itemName = (useType === 1) ? t('GDS_INFO_ITEM_CHILD') : '';
+  const [childName, setChildName] = useState(itemName);
   useEffect(() => {
     const elms : Array<string> = [];
     let finalELms : Array<string> = [];
     const region = children[0] ? children[0].props.getPConnect() : null;
-
     if (region?.getChildren()) {
       region.getChildren().forEach(child => {
         child.getPConnect().setInheritedProp('readOnly', true);
         elms.push(child.getPConnect().getComponent());
         finalELms = elms.slice(0, -1);
       });
-
-      setFormElms(finalELms);
-
-    }
+      setFormElms(finalELms);  
+     }
   }, [children[0]]);
 
+
+  useEffect(()=>{
+    formElms.forEach((field) =>{ 
+     if((field as any)?.props?.label === 'First Name'  || (field as any)?.props?.label === 'Enw cyntaf'){
+        setChildName((field as any)?.props?.value)
+      }
+    })
+   
+},[formElms])
+
+
+
    const handleOnClick = (action: string) => {
-    switch (action) {
+    const childCount = (PCore.getStoreValue(".Claim.Children","caseInfo.content","app/primary_1")?.length)
+    if(childCount === 1){
+     if(action ===  t('GDS_ACTION_REMOVE')){
+      setSingleChild(true);
+      return
+     }
+    }else{
+      setSingleChild(false);
+    }
+     switch (action) {
       case t('GDS_ACTION_REMOVE'):
         getPConnect().setValue(".UserActions", "Remove");
         getPConnect().getActionsApi().finishAssignment(containerItemID);
@@ -58,7 +72,10 @@ export default function HmrcOdxGdsSummaryCard(props) {
       default:
         break;
     }
+  
+  
   };
+  
 
   return (
     <StyledHmrcOdxGdsSummaryCardWrapper>
@@ -69,16 +86,17 @@ export default function HmrcOdxGdsSummaryCard(props) {
           gap: 2
         }}
       >
+       {singleChild && <NotificationBanner/>}
         <div className="govuk-summary-card">
           <div className="govuk-summary-card__title-wrapper">
             <h2 className="govuk-summary-card__title">{itemName}</h2>
             <ul className="govuk-summary-card__actions">
               <li className="govuk-summary-card__action"> <a className="govuk-link" href="#" onClick={() => handleOnClick(t('GDS_ACTION_REMOVE'))}>
-                  {t('GDS_ACTION_REMOVE')}<span className="govuk-visually-hidden"> {itemName}</span>
+                  {t('GDS_ACTION_REMOVE')}<span className="govuk-visually-hidden"> {childName}</span>
                 </a>
               </li>
               <li className="govuk-summary-card__action"> <a className="govuk-link" href="#" onClick={() => handleOnClick(t('GDS_ACTION_CHANGE'))}>
-                  {t('GDS_ACTION_CHANGE')}<span className="govuk-visually-hidden"> {itemName}</span>
+                  {t('GDS_ACTION_CHANGE')}<span className="govuk-visually-hidden"> {childName}</span>
                 </a>
               </li>
             </ul>
@@ -86,8 +104,10 @@ export default function HmrcOdxGdsSummaryCard(props) {
           <div className="govuk-summary-card__content">
             <dl className='govuk-summary-list'>
               {formElms.map((field, index) => {
+           
 
                 let formattedValue = "";
+             
 
                 formattedValue = ((field as any)?.props?.label === 'Date of birth' || (field as any)?.props?.label === 'Dyddiad geni')? // TODO: Need to make more robust
                   GBdate((field as any)?.props?.value)
@@ -105,6 +125,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
                         {formattedValue}
                       </dd>
                     </div>
+                   
                   </Fragment>
                 );
               })}

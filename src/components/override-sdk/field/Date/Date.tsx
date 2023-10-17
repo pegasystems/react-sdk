@@ -6,6 +6,7 @@ import {
   DateErrorFormatter,
   DateErrorTargetFields
 } from '../../../helpers/formatters/DateErrorFormatter';
+import { GBdate } from '../../../helpers/utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 
 declare const global;
@@ -25,7 +26,7 @@ export default function Date(props) {
 
   let label = props.label;
   const {isOnlyField, overrideLabel} = useIsOnlyField(props.displayOrder);
-  if(isOnlyField) label = overrideLabel.trim() ? overrideLabel : label;
+  if(isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
 
   // PM - Set up state for each input field, either the value we received from pega, or emtpy
   const [day, setDay] = useState(value ? value.split('-')[2] : '');
@@ -108,6 +109,10 @@ export default function Date(props) {
   const  handleChangeYear = yearChange => {
     setYear(yearChange.target.value);
   };
+
+  if(props.disabled && value.length > 9){
+    return <span className='govuk-body govuk-!-font-weight-bold'>{GBdate(value)}</span>
+  }
 
 
   if (readOnly) {

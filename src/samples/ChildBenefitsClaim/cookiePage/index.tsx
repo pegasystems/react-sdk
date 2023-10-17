@@ -4,13 +4,13 @@ import AppHeader from '../../../components/AppComponents/AppHeader';
 import AppFooter from '../../../components/AppComponents/AppFooter';
 import LanguageToggle from '../../../components/AppComponents/LanguageToggle';
 import CookiePageTable from './CookiePageTable';
-import {Utils} from '../../../components/helpers/utils';
+import { scrollToTop } from '../../../components/helpers/utils';
 
 const FIND_OUT_MORE_URL = "https://www.tax.service.gov.uk/help/cookie-details";
 
 export default function CookiePage() {
   const { t } = useTranslation();
-  Utils.scrollToTop();
+  scrollToTop();
 
   return (
     <>

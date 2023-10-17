@@ -1,4 +1,4 @@
-import {useContext} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import {DefaultFormContext} from '../../helpers/HMRCAppContext';
 /**
  * Helper hook for handling instances where there is only one field presented in the current view.
@@ -8,33 +8,41 @@ import {DefaultFormContext} from '../../helpers/HMRCAppContext';
 /* Retaining this code for future change in implementation of single question pages. */
 
 
-export default function useIsOnlyField(callerDisplayOrder = null){
+export default function useIsOnlyField(callerDisplayOrder = null, refreshTrigger = null){
     const DFContext = useContext(DefaultFormContext);
-    const returnObj = {isOnlyField: false, overrideLabel: ''};
+    const defaultOnlyFieldDetails = {isOnlyField: false, overrideLabel: ''};
+    const [onlyFieldDetails, setOnlyFieldDetails] = useState({isOnlyField: false, overrideLabel: ''})
+    
+
+    useEffect(() => {
 
     if (PCore.getStoreValue('displayAsSingleQuestion', '', 'app') && DFContext.DFName === -1){
-        returnObj.isOnlyField = true;
-        return returnObj;
+        defaultOnlyFieldDetails.isOnlyField = true;
+        setOnlyFieldDetails(defaultOnlyFieldDetails);
     }
+    
 
     // Checks to see if the closest parent default form of the current element is in the SingleQuestionDisplayDFStack
     // If it is, display this element as if it's a single field IF it's the first element in the form. (Driven by the display order it has been given)
     if(DFContext.displayAsSingleQuestion){
-        returnObj.isOnlyField = callerDisplayOrder === "0" ? DFContext.displayAsSingleQuestion : false;
+        defaultOnlyFieldDetails.isOnlyField = callerDisplayOrder === "0" ? DFContext.displayAsSingleQuestion : false;
     }
     // Otherwise, use the Assignment context's singleQuestion page value, to fall back to the original logic (checking number of editable fields);
     else {
-        returnObj.overrideLabel = DFContext.OverrideLabelValue;
+        defaultOnlyFieldDetails.overrideLabel = DFContext.OverrideLabelValue;
         const editableFieldsCount = PCore.getFormUtils().getEditableFields(PCore.getContainerUtils().getActiveContainerItemContext('app/primary_1/workarea')).length;
 
         if(editableFieldsCount === 1){
-            returnObj.isOnlyField = true;
+            defaultOnlyFieldDetails.isOnlyField = true;
         } else if (DFContext.DFName !== -1) {
-            returnObj.isOnlyField = false;
+            defaultOnlyFieldDetails.isOnlyField = false;
         } else {
-            returnObj.isOnlyField = PCore.getStoreValue('displayAsSingleQuestion', '', 'app');
+            defaultOnlyFieldDetails.isOnlyField = !!PCore.getStoreValue('displayAsSingleQuestion', '', 'app');
         }
 
     }
-    return returnObj;
+    setOnlyFieldDetails(defaultOnlyFieldDetails);
+    }, [refreshTrigger])
+    
+    return onlyFieldDetails;
 }

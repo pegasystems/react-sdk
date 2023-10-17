@@ -4,6 +4,7 @@ import React from 'react';
 // import { TextField } from '@material-ui/core';
 import FieldValueList from '@pega/react-sdk-components/lib/components/designSystemExtension/FieldValueList';
 import PropTypes from 'prop-types';
+import { scrollToTop } from '../../../helpers/utils';
 
 
 import StyledHmrcOdxGdsButtonWrapper from './styles';
@@ -63,12 +64,11 @@ export default function HmrcOdxGdsButton(props: any) {
     e.preventDefault();
     getPConnect().setValue(".AddToList", "Yes");
     getPConnect().getActionsApi().finishAssignment(containerItemID);
-
   };
 
   return (
     <StyledHmrcOdxGdsButtonWrapper>
-      <Button type="submit" name={label} variant="secondary" onClick={handleOnClick}>
+      <Button type="submit" name={label} variant="secondary" onClick={(e)=>{handleOnClick(e); scrollToTop();}}>
         Add another child
       </Button>
      {/* <TextField

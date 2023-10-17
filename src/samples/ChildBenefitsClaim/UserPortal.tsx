@@ -21,7 +21,7 @@ export default function UserPortal(props) {
               <li><span className='govuk-body'>{t('CLAIMS_THAT_ARE_IN_PROGRESS')}</span></li>
               <li><span className='govuk-body'>{t('CLAIMS_THAT_ARE_SUBMITTED')}</span></li>
             </ul>
-            <hr className="govuk-section-break govuk-section-break--xl govuk-section-break--visible"></hr>
+            <hr className="govuk-section-break govuk-section-break--xl govuk-section-break--visible" aria-hidden></hr>
 
             {/* Claims list */}
             <div className='govuk-grid-column-two-thirds'>
@@ -29,6 +29,8 @@ export default function UserPortal(props) {
               <>
                 <h3 className='govuk-heading-m' id="subsection-title">{t('MAKE_A_CLAIM')}</h3>
                 <p className='govuk-body'>{t('USE_THIS_SERVICE')}</p>
+                <p className='govuk-body'>{t('WE_MAY_CALL_YOU')}</p>
+                
                 <Button
                   attributes={{ className: 'govuk' }}
                   onClick={beginClaim}

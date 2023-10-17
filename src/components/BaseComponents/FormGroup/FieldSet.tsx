@@ -1,14 +1,18 @@
 
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
+import { DefaultFormContext } from '../../helpers/HMRCAppContext';
+import InstructionComp from '../../helpers/formatters/ParsedHtml';
 
 export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, children, fieldsetElementProps, testProps}){
   const[ErrorMessage,setErrorMessage] = useState(errorText);
 
-  useEffect(()=>{
+  const {instructionText} = useContext(DefaultFormContext);
+  
 
+  useEffect(()=>{
     if(errorText){
     setErrorMessage(errorText)
     }
@@ -33,9 +37,16 @@ export default function FieldSet({legendIsHeading=true, label, name, errorText, 
             condition={legendIsHeading}
             wrapper={ child => {
                       return (
-                      <h1 className="govuk-fieldset__heading">
-                        {child}
-                      </h1>)}
+                      <>
+                        <h1 className="govuk-fieldset__heading">                        
+                          {child}
+                        </h1>
+                        {instructionText && (
+                          <p id='instructions' className='govuk-body'>
+                            <InstructionComp htmlString={instructionText} />
+                          </p>
+                        )}                      
+                      </>)}
                     }
             childrenToWrap={label}
           />

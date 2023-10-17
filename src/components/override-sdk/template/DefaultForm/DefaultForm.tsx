@@ -10,7 +10,7 @@ import './DefaultForm.css';
 export default function DefaultForm(props) {
   const { getPConnect, readOnly, additionalProps, configAlternateDesignSystem } = props;
 
-  const {hasBeenWrapped} = useContext(ReadOnlyDefaultFormContext); // eslint-disable-line
+  const {hasBeenWrapped} = useContext(ReadOnlyDefaultFormContext);
   const {DFName} = useContext(DefaultFormContext);
   const {instructionText: passedThroughInstructionText} = useContext(DefaultFormContext);
 

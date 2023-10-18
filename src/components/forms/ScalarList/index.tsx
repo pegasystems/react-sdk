@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import FieldValueList from '../../designSystemExtensions/FieldValueList';
 import PropTypes from 'prop-types';
@@ -7,8 +8,8 @@ function CommaSeparatedList(props) {
 
   return (
     <ul style={{ padding: '0', margin: '0' }}>
-      {items.map((value) => {
-        return <span>{value}</span>;
+      {items.map((value, index) => {
+        return <span key={index}>{value}</span>;
       })}
     </ul>
   );

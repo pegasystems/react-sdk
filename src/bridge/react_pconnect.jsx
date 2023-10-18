@@ -55,6 +55,7 @@ import UserReference from '../components/forms/UserReference';
 import Confirmation from '../components/templates/Confirmation';
 import BannerPage from '../components/templates/BannerPage';
 import QuickCreate from '../components/widgets/QuickCreate';
+import ScalarList from '../components/forms/ScalarList';
 
 const isClassIDCompare = (key, prev) => {
   return !(key === 'classID' && !prev[key]);
@@ -296,6 +297,10 @@ const getComponent = c11nEnv => {
 
       case 'RootContainer':
         component = RootContainer;
+        break;
+
+      case 'ScalarList':
+        component = ScalarList;
         break;
 
       case 'SimpleTable':

@@ -1,0 +1,21 @@
+{
+  "name": "ScalarList",
+  "type": "Field",
+  "properties": [
+    {
+      "component": "$this.componentType",
+      "format": "COMPONENTDEFINITION"
+    },
+    {
+      "label": "List settings",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "filter",
+          "label": "Filter by",
+          "format": "SCALARLISTFILTER"
+        }
+      ]
+    }
+  ]
+}

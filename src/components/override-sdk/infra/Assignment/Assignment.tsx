@@ -303,7 +303,7 @@ export default function Assignment(props) {
               rel='noreferrer noopener'
               target='_blank'
             >
-              {t("ASK_HMRC_ONLINE")} ${t("OPENS_IN_NEW_TAB")}
+              {t("ASK_HMRC_ONLINE")} {t("OPENS_IN_NEW_TAB")}
             </a><br/><br/>
             <a className="govuk-link" href={`${hmrcURL}contact/report-technical-problem?newTab=true&service=463&referrerUrl=${referrerURL}`} rel="noreferrer" target="_blank">
                 {t("PAGE_NOT_WORKING_PROPERLY")} {t("OPENS_IN_NEW_TAB")}

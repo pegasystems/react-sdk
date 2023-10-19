@@ -11,7 +11,9 @@ const ConfirmationPage = () => {
   const [isBornAbroadOrAdopted, setIsBornAbroadOrAdopted] = useState(false);
   const [returnSlipContent, setReturnSlipContent] = useState();
   const [loading, setLoading] = useState(true);
-  const caseID = PCore.getStoreValue('.ID', 'caseInfo' , 'app/primary_1');
+  
+  const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
+  const caseID = PCore.getStoreValue('.ID', 'caseInfo' , context);
   const docIDForDocList = 'CR0003';
   const docIDForReturnSlip = 'CR0002';
 

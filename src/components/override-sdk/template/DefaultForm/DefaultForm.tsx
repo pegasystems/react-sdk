@@ -92,8 +92,9 @@ export default function DefaultForm(props) {
 
   useEffect(()=>{
     if(containerName === 'Declaration'){
-      const declarationText1 = PCore.getStoreValue('.DeclarationText1', 'caseInfo.content.Claim', 'app/primary_1');
-      const declarationWarning1 = PCore.getStoreValue('.DeclarationWarning1', 'caseInfo.content.Claim', 'app/primary_1');
+      const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
+      const declarationText1 = PCore.getStoreValue('.DeclarationText1', 'caseInfo.content.Claim', context);
+      const declarationWarning1 = PCore.getStoreValue('.DeclarationWarning1', 'caseInfo.content.Claim', context);
       setDeclaration({text1 : declarationText1, warning1: declarationWarning1});
     }
   },[])

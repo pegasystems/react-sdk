@@ -32,10 +32,11 @@ export default function ClaimsList(props){
 
   const containerManger = thePConn.getContainerManager();
   const resetContainer = () => {
+    const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
     containerManger.resetContainers({
       context:"app",
-      name:"primary",
-      containerItems: ["app/primary_1"]
+      name:"primary",     
+      containerItems: [context]
     });
   }
 

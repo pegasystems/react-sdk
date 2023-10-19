@@ -30,7 +30,8 @@ export default function useIsOnlyField(callerDisplayOrder = null, refreshTrigger
     // Otherwise, use the Assignment context's singleQuestion page value, to fall back to the original logic (checking number of editable fields);
     else {
         defaultOnlyFieldDetails.overrideLabel = DFContext.OverrideLabelValue;
-        const editableFieldsCount = PCore.getFormUtils().getEditableFields(PCore.getContainerUtils().getActiveContainerItemContext('app/primary_1/workarea')).length;
+        const context =  PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
+        const editableFieldsCount = PCore.getFormUtils().getEditableFields(PCore.getContainerUtils().getActiveContainerItemContext(`${context}/workarea`)).length;
 
         if(editableFieldsCount === 1){
             defaultOnlyFieldDetails.isOnlyField = true;

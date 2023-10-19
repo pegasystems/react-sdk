@@ -50,8 +50,12 @@ export default function HmrcOdxGdsSummaryCard(props) {
 
 
 
-   const handleOnClick = (action: string) => {     
-    const childCount = (PCore.getStoreValue(".Claim.Children","caseInfo.content","app/primary_1")?.length)
+
+const handleOnClick = (action: string) => {
+    const containerName = getPConnect().getContainerName();
+    const context =  PCore.getContainerUtils().getActiveContainerItemContext(`${PCore.getConstants().APP.APP}/${containerName}`);
+    const childCount = (PCore.getStoreValue(".Claim.Children","caseInfo.content",context)?.length)
+
     if(childCount === 1){
      if(action ===  t('GDS_ACTION_REMOVE')){
       setSingleChild(true);

@@ -10,7 +10,7 @@ import './DefaultForm.css';
 export default function DefaultForm(props) {
   const { getPConnect, readOnly, additionalProps, configAlternateDesignSystem } = props;
 
-  const {hasBeenWrapped} = useContext(ReadOnlyDefaultFormContext); // eslint-disable-line
+  const {hasBeenWrapped} = useContext(ReadOnlyDefaultFormContext);
   const {DFName} = useContext(DefaultFormContext);
   const {instructionText: passedThroughInstructionText} = useContext(DefaultFormContext);
 
@@ -92,8 +92,9 @@ export default function DefaultForm(props) {
 
   useEffect(()=>{
     if(containerName === 'Declaration'){
-      const declarationText1 = PCore.getStoreValue('.DeclarationText1', 'caseInfo.content.Claim', 'app/primary_1');
-      const declarationWarning1 = PCore.getStoreValue('.DeclarationWarning1', 'caseInfo.content.Claim', 'app/primary_1');
+      const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
+      const declarationText1 = PCore.getStoreValue('.DeclarationText1', 'caseInfo.content.Claim', context);
+      const declarationWarning1 = PCore.getStoreValue('.DeclarationWarning1', 'caseInfo.content.Claim', context);
       setDeclaration({text1 : declarationText1, warning1: declarationWarning1});
     }
   },[])
@@ -209,7 +210,7 @@ export default function DefaultForm(props) {
       const allrefs = childGroup.every(
         child => child.props.getPConnect().getMetadata().type === 'reference'
       );
-      if (additionalProps.hasBeenWrapped || allrefs) {
+      if (hasBeenWrapped || allrefs) {
         return <React.Fragment key={key}>{childGroup}</React.Fragment>;
       }
 
@@ -218,9 +219,11 @@ export default function DefaultForm(props) {
       );
 
       return (
-        <dl className='govuk-summary-list' key={key}>
-          {childGroup}
-        </dl>
+        <ReadOnlyDefaultFormContext.Provider value={{hasBeenWrapped: true}}>
+          <dl className='govuk-summary-list' key={key}>
+            {childGroup}
+          </dl>
+        </ReadOnlyDefaultFormContext.Provider>
       );
     });
   }

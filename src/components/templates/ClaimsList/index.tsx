@@ -18,10 +18,12 @@ export default function ClaimsList(props){
         return { text: t('IN_PROGRESS'), tagColour: 'blue' };
       case 'Pending-CBS':
       case 'Resolved-Completed':
+      case 'Resolved-Rejected':
       case 'Pending-ManualInvestigation':
-      case 'Pending - verify documentation':
+      case 'Pending-verify documentation':
       case 'Pending-awaiting documentation':
       case 'Pending-VerifyDocumentation':
+      case 'Pending-SystemError':
       case 'Pending-AwaitingDocumentation':
         return {text: t('CLAIM_RECEIVED'), tagColour:'purple'};
       default:
@@ -31,10 +33,11 @@ export default function ClaimsList(props){
 
   const containerManger = thePConn.getContainerManager();
   const resetContainer = () => {
+    const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
     containerManger.resetContainers({
       context:"app",
-      name:"primary",
-      containerItems: ["app/primary_1"]
+      name:"primary",     
+      containerItems: [context]
     });
   }
 
@@ -70,16 +73,15 @@ export default function ClaimsList(props){
         claimRef : item.pyID,
         dateCreated : DateFormatter.Date(item.pxCreateDateTime, { format: 'DD/MM/YYYY' }),
         children : [],
-        actionButton : buttonContent === t("VIEW_CLAIM") ? '' :
-          (<Button
-              attributes={{className:'govuk-!-margin-top-4 govuk-!-margin-bottom-4'}}
-              variant='secondary'
-              onClick={() => {
-                _rowClick(item);
-              }}
-            >
-              {buttonContent}
-            </Button>),
+        actionButton : <Button
+        attributes={{className:'govuk-!-margin-top-4 govuk-!-margin-bottom-4'}}
+        variant='secondary'
+        onClick={() => {
+          _rowClick(item);
+        }}
+      >
+        {buttonContent}
+      </Button>,
         status : statusMapping(item.pyStatusWork)
       };
 

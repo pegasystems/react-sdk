@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import CheckBoxes from '../../../BaseComponents/Checkboxes/Checkboxes';
+import FieldSet from '../../../BaseComponents/FormGroup/FieldSet';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
@@ -34,15 +34,10 @@ export default function Group(props) {
     }
   }, [stateChanged]);
 
-  if (children?.length > 0) {
-    const handleChange = (event, propName) => {
-      handleEvent(actionsApi, 'changeNblur', propName, event.target.checked);
-      setStateChanged(true);
-    };
+  if (children?.length > 0) {     
 
     const errors = [""];
-    if (children[0].props?.getPConnect().getMetadata().type === 'Checkbox') {
-
+    if (children[0].props?.getPConnect().getMetadata().type === 'Checkbox') { 
       if (readOnly) {
         const valuesList = children.filter((child) => {
           const childPConnect = child.props.getPConnect();
@@ -57,11 +52,28 @@ export default function Group(props) {
         return (<ReadOnlyDisplay value={valuesList} label={heading} />);
       }
 
-      let firstOptionPropertyName = null;
-      let exlcusiveOption = null;
+      // Builds onChange handlers for exclusive options to clear relevant checkboxes
+      let exclusiveOptionPropName;
+      const nonExclusivePropNames = [];
+      const unCheckExclusive = () => {
+        if(exclusiveOptionPropName){
+          handleEvent(actionsApi, 'changeNblur', exclusiveOptionPropName, '');
+          setStateChanged(true);
+        }
+      };
+  
+      const unCheckNonExlcusives = () => { 
+        if(exclusiveOptionPropName && nonExclusivePropNames){
+          nonExclusivePropNames.forEach((propName) => {
+            handleEvent(actionsApi, 'changeNblur', propName, '');
+          })           
+          setStateChanged(true);
+        }
+      }
 
-      const optionsList = [];
-      children.forEach(child => {
+
+      let firstOptionPropertyName = null;
+      children.forEach((child, index) => {
         const childPConnect = child.props.getPConnect();
         const resolvedProps = childPConnect.resolveConfigProps(childPConnect.getConfigProps());
         childPConnect.populateAdditionalProps(childPConnect.getConfigProps());
@@ -72,43 +84,35 @@ export default function Group(props) {
           type: 'error'
         })[0]?.message
         );
-
+        
         const formattedPropertyName = childPConnect.getStateProps().value && childPConnect.getStateProps().value.split('.').pop();
-        const optionName = `${formattedContext}`; // -${formattedPropertyName}`
-
+        
         // Points error summary link to first checkbox in group
         if (!firstOptionPropertyName) { firstOptionPropertyName = formattedPropertyName; }
         const fieldId = `${formattedContext}-${firstOptionPropertyName}`;
-        childPConnect.setStateProps({ fieldId });
+        childPConnect.setStateProps({ fieldId });   
+        
+        // Register additonal props used for exclusive field handling (used in CheckBox overidden component) 
+        childPConnect.registerAdditionalProps({ exclusiveOptionChangeHandler: unCheckExclusive, index});                 
 
-        const option = {
-          checked: resolvedProps.value,
-          label: resolvedProps.caption,
-          hintText: resolvedProps.helperText,
-          readOnly: resolvedProps.readOnly,
-          name: optionName,
-          onChange: event => handleChange(event, childPConnect.getStateProps().value),
-        };
-
-        if (option.label.toLowerCase().includes('none of these apply')) {
-          exlcusiveOption = option;
+        if (resolvedProps.caption.toLowerCase().includes('none of these apply')) { 
+          exclusiveOptionPropName=childPConnect.getStateProps().value;
+          childPConnect.registerAdditionalProps({ exclusiveOption: true,
+            exclusiveOptionChangeHandler: unCheckNonExlcusives
+            });          
         } else {
-          optionsList.push(option);
+          nonExclusivePropNames.push(childPConnect.getStateProps().value);
         }
       });
 
-      return (<>
-        <CheckBoxes
-          optionsList={optionsList}
-          name={`${formattedContext}-group`}
-          onChange={handleChange}
-          label={heading}
-          hintText={instructions}
-          legendIsHeading={isOnlyField}
-          errorText={errors.join(' ').trim() !== '' ? errors.join(' ').trim() : null}
-          exclusiveOption={exlcusiveOption}
-        />
-      </>);
+      const checkboxClasses = `govuk-checkboxes`;
+      return (
+        <FieldSet hintText={instructions} label={heading} legendIsHeading={isOnlyField} errorText={errors.join(' ').trim() !== '' ? errors.join(' ').trim() : null} {...props}>
+          <div className={checkboxClasses} data-module="govuk-checkboxes">
+            {children}
+          </div>
+        </FieldSet>
+      )
     }
 
     if(readOnly){

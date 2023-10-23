@@ -19,7 +19,7 @@ React SDK more error prone than we want.
 Therefore, in the coming weeks, we will be introducing separate React SDK releases for Infinity '23 and Infinity 8.8 environments:
 
 * Release **SDK-R v23.1.10** is only compatible with Pega Infinity '23.
-  * If you are currently using Pega Infinity '23 with React SDK v8.23.11, you should prepare to update your SDK to SDK-R v23.1.0 to take advantage of the latest SDK enhancements and fixes.
+  * If you are currently using Pega Infinity '23 with React SDK v8.23.11, you should prepare to update your SDK to SDK-R v23.1.0 to take advantage of the latest SDK enhancements and fixes. If using Pega Infinity 8.8, continue using SDK-R v8.23.11 or SDK-R v8.23.10 (they support Pega Infinity 8.8.* and 23.1.*), or update to SDK-R 8.8.20, it supports Pega Infinity 8.8 only and includes all enhancements in SDK-R v8.23.11 and SDK-R v8.23.10.
 
 * The release **SDK-R v8.8.20** is only compatible with Pega Infinity 8.8.
   * If you are currently using Pega Infinity 8.8 with React SDK 8.23.11, you should prepare to update your SDK to SDK-R v8.8.20 to take advantage of the latest SDK enhancements and fixes.

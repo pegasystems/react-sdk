@@ -45,7 +45,9 @@
     "_internal-build-prod-only": "echo \"building...\" && webpack --mode=production && npm run _internal-copy-index",
     "_internal-check-node-version": "node scripts/check-node-version",
     "_internal-copy-index": "shx cp dist/index.html dist/simpleportal.html && shx cp dist/index.html dist/portal.html && shx cp dist/index.html dist/fullportal.html && shx cp dist/index.html dist/embedded.html",
-    "_internal-install-sdk": "echo \"installing...\" && npm install --loglevel notice"
+    "_internal-install-sdk": "echo \"installing...\" && npm install --loglevel notice",
+    "_internal-test-functional": "npm run test:functional:local --prefix node_modules/@pega/dx-component-builder-sdk"
+
 
   },
   "dependencies": {

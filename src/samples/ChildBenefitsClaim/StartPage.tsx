@@ -1,12 +1,16 @@
 import React from 'react';
 import Button from '../../components/BaseComponents/Button/Button';
 import { useTranslation } from 'react-i18next';
+import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
+
 
 const StartPage: React.FC<{ onStart: React.MouseEventHandler; onBack: any }> = ({
   onStart,
   onBack
 }) => {
   const { t } = useTranslation();
+  const {referrerURL, hmrcURL} = useHMRCExternalLinks();
+
   return (
     <>
       <Button
@@ -78,7 +82,7 @@ const StartPage: React.FC<{ onStart: React.MouseEventHandler; onBack: any }> = (
                 className='govuk-link hmrc-report-technical-issue '
                 rel='noreferrer noopener'
                 target='_blank'
-                href='https://www.tax.service.gov.uk/contact/report-technical-problem?newTab=true&amp;service=claim-child-benefit&amp;referrerUrl=https%3A%2F%2Fwww.tax.service.gov.uk%2Ffill-online%2Fclaim-child-benefit%2F'
+                href={`${hmrcURL}contact/report-technical-problem?newTab=true&service=463&referrerUrl=${referrerURL}`}
               >
                 {t('PAGE_NOT_WORKING_PROPERLY')} {t("OPENS_IN_NEW_TAB")}
               </a>

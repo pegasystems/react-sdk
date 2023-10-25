@@ -1,25 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import React from 'react';
 import AppHeader from '../../../components/AppComponents/AppHeader';
 import AppFooter from '../../../components/AppComponents/AppFooter';
 import LanguageToggle from '../../../components/AppComponents/LanguageToggle';
 import { useTranslation } from 'react-i18next';
-import { scrollToTop } from '../../../components/helpers/utils';
+import useHMRCExternalLinks from '../../../components/helpers/hooks/HMRCExternalLinks';
 
 export default function Accessibility() {
   const { t } = useTranslation();
-  const [referrerURL, setReferrerURL] = useState<string>(null);
-  const [hmrcURL, setHmrcURL] = useState<string>(null);
-
-  useEffect(() => {
-    const getReferrerURL = async () => {
-      const { serverConfig: { sdkContentServerUrl, sdkHmrcURL } } = await getSdkConfig();
-      setReferrerURL(sdkContentServerUrl);
-      setHmrcURL(sdkHmrcURL);
-    }
-    getReferrerURL();
-    scrollToTop();
-  }, []);
+  const {referrerURL, hmrcURL} = useHMRCExternalLinks();
 
     const makeList = (listNumber: number, entries: number) => {
         const output = [];

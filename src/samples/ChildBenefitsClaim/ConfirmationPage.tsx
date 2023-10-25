@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ParsedHTML from '../../components/helpers/formatters/ParsedHtml';
+import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 
 declare const PCore : any;
 
@@ -11,6 +12,7 @@ const ConfirmationPage = () => {
   const [isBornAbroadOrAdopted, setIsBornAbroadOrAdopted] = useState(false);
   const [returnSlipContent, setReturnSlipContent] = useState();
   const [loading, setLoading] = useState(true);
+  const {referrerURL, hmrcURL} = useHMRCExternalLinks();
   
   const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
   const caseID = PCore.getStoreValue('.ID', 'caseInfo' , context);
@@ -72,6 +74,17 @@ const ConfirmationPage = () => {
             </p>
             <p className='govuk-body'> {t('WE_NORMALLY_RETURN_DOCUMENTS_WITHIN')} </p>
             <p className='govuk-body'><a href='https://www.tax.service.gov.uk/feedback/ODXCHB' className="govuk-link" target="_blank" rel="noreferrer">{t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')} </a>{t('TAKES_30_SECONDS')}</p>
+            <div className='govuk-!-margin-top-8'>
+              <a
+                lang='en'
+                className='govuk-link hmrc-report-technical-issue '
+                rel='noreferrer noopener'
+                target='_blank'
+                href={`${hmrcURL}contact/report-technical-problem?newTab=true&service=463&referrerUrl=${referrerURL}`}
+              >
+                {t('PAGE_NOT_WORKING_PROPERLY')} {t("OPENS_IN_NEW_TAB")}
+              </a>
+            </div>
           </div>
         </div>
       </main>
@@ -88,6 +101,17 @@ const ConfirmationPage = () => {
             <p className='govuk-body'> {t("WE_HAVE_SENT_YOUR_APPLICATION")}</p>
             <p className='govuk-body'> {t("WE_WILL_TELL_YOU_IN_14_DAYS")}</p>
             <p className='govuk-body'><a href='https://www.tax.service.gov.uk/feedback/ODXCHB' className="govuk-link" target="_blank" rel="noreferrer">{t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')} </a>{t('TAKES_30_SECONDS')}</p>
+            <div className='govuk-!-margin-top-8'>
+              <a
+                lang='en'
+                className='govuk-link hmrc-report-technical-issue '
+                rel='noreferrer noopener'
+                target='_blank'
+                href={`${hmrcURL}contact/report-technical-problem?newTab=true&service=463&referrerUrl=${referrerURL}`}
+              >
+                {t('PAGE_NOT_WORKING_PROPERLY')} {t("OPENS_IN_NEW_TAB")}
+              </a>
+            </div>
           </div>
         </div>
       </main>

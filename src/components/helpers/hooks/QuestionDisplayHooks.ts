@@ -30,10 +30,11 @@ export default function useIsOnlyField(callerDisplayOrder = null, refreshTrigger
     // Otherwise, use the Assignment context's singleQuestion page value, to fall back to the original logic (checking number of editable fields);
     else {
         defaultOnlyFieldDetails.overrideLabel = DFContext.OverrideLabelValue;
+        const pageHasNoneEditableField = PCore.getStoreValue('pageHasNonEdtiableField', '', 'app');
         const context =  PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
         const editableFieldsCount = PCore.getFormUtils().getEditableFields(PCore.getContainerUtils().getActiveContainerItemContext(`${context}/workarea`)).length;
 
-        if(editableFieldsCount === 1){
+        if(editableFieldsCount === 1 && !pageHasNoneEditableField){
             defaultOnlyFieldDetails.isOnlyField = true;
         } else if (DFContext.DFName !== -1) {
             defaultOnlyFieldDetails.isOnlyField = false;
@@ -47,3 +48,24 @@ export default function useIsOnlyField(callerDisplayOrder = null, refreshTrigger
     
     return onlyFieldDetails;
 }
+
+function registerNonEditableField(nonEditableCondition = true) { 
+    useEffect(() => {
+        if(nonEditableCondition && !PCore.getStoreValue('pageHasNonEdtiableField', '', 'app')){      
+            PCore.getStore().dispatch({type:'SET_PROPERTY', payload:{
+            "reference": "pageHasNonEdtiableField",
+            "value": true,
+            "context": "app",
+            "isArrayDeepMerge": true}})
+            return () => {
+            PCore.getStore().dispatch({type:'SET_PROPERTY', payload:{
+                "reference": "pageHasNonEdtiableField",
+                "value": false,
+                "context": "app",
+                "isArrayDeepMerge": true}})
+            }
+        }
+    }, [])
+}
+ 
+export { registerNonEditableField }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react';
+import { registerNonEditableField } from '../../../helpers/hooks/QuestionDisplayHooks';
 import PropTypes from 'prop-types';
 
 // Duplicated runtime code from Constellation Design System Component
@@ -9,6 +10,8 @@ export default function HmrcOdxMimicASentence(props) {
   const { children } = props;
 
   const [formElms, setFormElms] = useState<Array<React.ReactElement>>([]);
+
+  registerNonEditableField();
 
   useEffect(() => {
     const elms:Array<React.ReactElement> = [];

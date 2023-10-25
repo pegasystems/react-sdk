@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import GDSTextInput from '../../../BaseComponents/TextInput/TextInput';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
+import { registerNonEditableField } from '../../../helpers/hooks/QuestionDisplayHooks';
 
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 
@@ -23,6 +24,8 @@ export default function TextInput(props) {
   } = props;
 
   const[errorMessage,setErrorMessage] = useState(validatemessage);
+
+  registerNonEditableField(!!disabled);
 
   useEffect(()=>{
 

@@ -11,14 +11,14 @@ export default function setPageTitle(){
     // set up an interval to keep checking until we have only one H1, and then set the page title with the remaining H1
     // This assumes we follow the best practice to only display one h1 on the page, and simply works around the 'gap' when our main
     // page updates to hide/show components.
-    if(document.getElementsByTagName('h1').length > 1){
+    if(document.getElementsByTagName('h1').length > 1 || document.getElementsByTagName('h1')[0] === undefined){
       const setPageTitleInterval = setInterval(
         () => {
           if(document.getElementsByTagName('h1').length === 1){
             clearInterval(setPageTitleInterval);
             setPageTitle();
           }
-        }, 500)
+        }, 200)
     }
 
     const pageHeading = i18n.t(document.getElementsByTagName('h1')[0]?.innerText);
@@ -28,8 +28,8 @@ export default function setPageTitle(){
     const serviceName = i18n.t("CLAIM_CHILD_BENEFIT");
 
   if(pageHeading){
-  document.title = `${pageHeading} - ${serviceName} - GOV.UK`
+    document.title = `${pageHeading} - ${serviceName} - GOV.UK`
   } else {
-  document.title = `${serviceName} - GOV.UK`;
+    document.title = `${serviceName} - GOV.UK`;
   }
 }

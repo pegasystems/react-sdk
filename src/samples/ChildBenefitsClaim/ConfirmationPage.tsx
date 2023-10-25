@@ -17,6 +17,11 @@ const ConfirmationPage = () => {
   const docIDForDocList = 'CR0003';
   const docIDForReturnSlip = 'CR0002';
 
+  useEffect(()=> {
+    document.getElementById('pega-part-of-page').innerHTML = '';
+    document.title = t('APPLICATION_RECEIVED');
+  }, []);
+
   useEffect(()=>{
     PCore.getDataPageUtils().getPageDataAsync('D_DocumentContent', 'root', {DocumentID: docIDForDocList, Locale: PCore.getEnvironmentInfo().locale.replaceAll('-','_'), CaseID: caseID}).then(listData => {
       if(listData.DocumentContentHTML.includes("data-bornabroad='true'") || listData.DocumentContentHTML.includes("data-adopted='true'")){

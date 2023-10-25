@@ -129,9 +129,7 @@ export default function ClaimsList(props){
               {claimItem.actionButton}
             </dt>
             <dd className='govuk-summary-list__actions govuk-!-width-one-half'>
-              <a href='#' className='govuk-link'>
-                <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>{claimItem.status.text}</strong>
-              </a>
+              <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>{claimItem.status.text}</strong>            
             </dd>
           </div>
         </dl>

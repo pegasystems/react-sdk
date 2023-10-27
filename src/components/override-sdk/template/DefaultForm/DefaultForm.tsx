@@ -231,7 +231,7 @@ export default function DefaultForm(props) {
           displayAsSingleQuestion: configAlternateDesignSystem?.hidePageLabel,
           DFName: props.localeReference,
           OverrideLabelValue: containerName, 
-          instructionText: getFormattedInstructionText() as string
+          instructionText: (instructionExists && !singleQuestionPage) ? null : getFormattedInstructionText() as string
         }}>
 
         {instructionExists && !singleQuestionPage && (

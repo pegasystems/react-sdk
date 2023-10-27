@@ -24,6 +24,7 @@ import UserPortal from './UserPortal';
 import ClaimsList from '../../components/templates/ClaimsList';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
+import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../sdk-local-component-map';
@@ -37,6 +38,7 @@ let signoutTimeout = null;
 // Sets default timeouts (13 mins for warning, 115 seconds for sign out after warning shows)
 let milisecondsTilSignout = 115 * 1000;
 let milisecondsTilWarning = 780 * 1000;
+
 
 // Starts the timeout for warning, after set time shows the modal and starts signout timer
 function initTimeout(setShowTimeoutModal){  
@@ -71,13 +73,16 @@ export default function ChildBenefitsClaim() {
   const [loadingsubmittedClaims, setLoadingSubmittedClaims] = useState(true);
   const [loadinginProgressClaims, setLoadingInProgressClaims] = useState(true);
   const [showSignoutModal, setShowSignoutModal] = useState(false);
-  const [showTimeoutModal, setShowTimeoutModal] = useState(false)
+  const [showTimeoutModal, setShowTimeoutModal] = useState(false);
+  const [serviceNotAvailable, setServiceNotAvailable] = useState(false)
   const [authType, setAuthType] = useState('gg'); 
   const {referrerURL, hmrcURL} = useHMRCExternalLinks();
   const history = useHistory();
 
   const { t } = useTranslation();
   let operatorId = '';
+  
+
   
   useEffect(()=> {
     setPageTitle();
@@ -111,7 +116,15 @@ export default function ChildBenefitsClaim() {
     setShowStartPage(true);
     setShowUserPortal(false);
   }
-
+  function returnToPortalPage() {
+  
+    staySignedIn(setShowTimeoutModal);
+    setShowStartPage(false);
+    setShowUserPortal(true);
+    setShowPega(false);
+    setShowResolutionScreen(false);
+    setServiceNotAvailable(false);
+  }
   function assignmentFinished() {
     setShowStartPage(false);
     setShowPega(false);
@@ -153,7 +166,28 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
       () => {
+
         assignmentFinished();
+       
+      },
+      'assignmentFinished'
+    );
+    PCore.getPubSubUtils().subscribe(
+      "assignmentFinished",
+      () => {
+
+        setShowStartPage(false);
+        setShowUserPortal(false);
+        setShowPega(false);
+        const containername = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
+        const context =  PCore.getContainerUtils().getActiveContainerItemName(`${containername}/workarea`);
+        const status =  (PCore.getStoreValue(".pyStatusWork","caseInfo.content",context))
+        if(status === "Resolved-Discarded"){
+      
+        setServiceNotAvailable(true);
+      
+        PCore.getContainerUtils().closeContainerItem(context);
+        }
       },
       'assignmentFinished'
     );
@@ -187,6 +221,7 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_CREATED,
       () => {
+      
         setShowStartPage(false);
         setShowUserPortal(false);
         setShowPega(true);
@@ -276,6 +311,7 @@ export default function ChildBenefitsClaim() {
     } = inRenderObj;
 
     const thePConn = props.getPConnect();
+   
     setPConn(thePConn);
 
     let target: any = null;
@@ -380,6 +416,7 @@ export default function ChildBenefitsClaim() {
     //  top level Pega root element (likely a RootContainer)
 
     myLoadMashup('pega-root', false); // this is defined in bootstrap shell that's been loaded already
+  
   }
 
   // One time (initialization) subscriptions and related unsubscribe
@@ -503,6 +540,8 @@ export default function ChildBenefitsClaim() {
             </a>
           </div>
         </div>
+ 
+        {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage}/>}
 
         {showStartPage && <StartPage onStart={startNow} onBack={closeContainer} />}
 

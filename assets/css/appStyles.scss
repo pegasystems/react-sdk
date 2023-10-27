@@ -23,3 +23,8 @@
 .display-inline-block{
   display: inline-block;
 }
+
+/* Used to improve visual display of CYA pages after BUG-7232 changes. May be removed after CYA page rework */
+.govuk-summary-list:not(.govuk-summary-list:has(+:not(.govuk-summary-list))):not(:last-of-type){
+  margin-bottom: 0px;
+}

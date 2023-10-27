@@ -28,7 +28,6 @@ export default function DefaultForm(props) {
   // to take the children and create components for them, put in an array and pass as the
   // defaultForm kids
   const arChildren = getPConnect().getChildren()[0].getPConnect().getChildren();
-  let hasSingleChildWhichIsReference = false;
   let instructionText = props.instructions === 'none' || props.instructions === null ? '' : props.instructions;
   // If the parent Default Form has instruction text passed through, append it here so that it is not 
   // lost in nested default forms  
@@ -165,68 +164,53 @@ export default function DefaultForm(props) {
   // Used when read only to avoid creating individual <dl> wrappers for individual fields, and to enable the correct wrapping of read only field
   // in a <dl> when a label is being shown (as this needs to be displayed outside of the <dl> wrapper)
   const batchChildren = children => {
-    let ind = 0;
     const groupedChildren: any = [];
-
     let group: any = [];
 
-    children.forEach(child => {
-      if (
-        children.length > 1 &&
-        child.props.getPConnect().getMetadata().type === 'reference' &&
-        ind !== 0 &&
-        child.props.getPConnect().getInheritedProps().showLabel
-      ) {
+    children.forEach(child => {      
+      // If there's only one child, and it's reference, we don't want to wrap it and can stop processing
+      if(children.length === 1 && child.props.getPConnect().getMetadata().type === 'reference'){        
+        groupedChildren.push({wrapWithDl: false, group:[child]})
+        return;
+      }
+
+      // otherwise, for each non reference, add to a group    
+      if (child.props.getPConnect().getMetadata().type === 'reference') {
         if (group.length > 0) {
-          groupedChildren.push(group);
-        }
-        groupedChildren.push([child]);
-        group = [];
-        ind += 1;
-        return;
-      }
+          groupedChildren.push({wrapWithDl: true, group});          
+        } 
+        group = []; 
+        groupedChildren.push({wrapWithDl: false, group:[child]});
+      } else {
+        group.push(child)        
+      }            
+    })
 
-      group.push(child);
-      ind += 1;
-    });
     if (group.length > 0) {
-      groupedChildren.push(group);
+      groupedChildren.push({wrapWithDl: true, group})
+      group = [];
     }
-    return groupedChildren;
-  };
-
-  hasSingleChildWhichIsReference =
-    dfChildren?.length === 1 &&
-    dfChildren[0].props.getPConnect().getMetadata().type === 'reference';
-
-  if (readOnly && !hasSingleChildWhichIsReference) {
+    return groupedChildren;    
+  } 
+  
+  if (readOnly) {
     return batchChildren(dfChildren).map((childGroup, index) => {
-      if (childGroup.length < 1) {
-        return;
-      }
-
       const key = `${getPConnect().getMetadata().name}-${index}`;
-
-      const allrefs = childGroup.every(
-        child => child.props.getPConnect().getMetadata().type === 'reference'
-      );
-      if (hasBeenWrapped || allrefs) {
-        return <React.Fragment key={key}>{childGroup}</React.Fragment>;
-      }
-
-      childGroup.forEach(child =>
-        child.props.getPConnect().setStateProps({ hasBeenWrapped: true })
-      );
-
       return (
-        <ReadOnlyDefaultFormContext.Provider value={{hasBeenWrapped: true}}>
-          <dl className='govuk-summary-list' key={key}>
-            {childGroup}
+      <ConditionalWrapper 
+        condition={childGroup.wrapWithDl && !hasBeenWrapped}
+        wrapper={children => 
+          <ReadOnlyDefaultFormContext.Provider value={{hasBeenWrapped: true}}>
+          <dl className='govuk-summary-list'>
+            {children}
           </dl>
-        </ReadOnlyDefaultFormContext.Provider>
-      );
-    });
-  }
+        </ReadOnlyDefaultFormContext.Provider>}
+        childrenToWrap={childGroup.group}
+        key={key}
+      ></ConditionalWrapper>)
+
+    })
+  }  
 /* 
   let nestedInstructionText = null;
   if(instructionExists) { nestedInstructionText = getFormattedInstructionText()}
@@ -269,5 +253,6 @@ export default function DefaultForm(props) {
       </DefaultFormContext.Provider>
       } />
  
-  );
-}
+  ); 
+} 
+  

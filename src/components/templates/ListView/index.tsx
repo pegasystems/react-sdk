@@ -1014,7 +1014,7 @@ export default function ListView(props) {
             </Grid>
           )}
           <>
-            {bInForm ? (
+            {!bInForm ? (
               <TableContainer className={classes.tableInForm}>
                 <Table stickyHeader aria-label='sticky table'>
                   <TableHead>

@@ -38,11 +38,10 @@ import { Radio } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import { filterData } from '../../templates/SimpleTable/helpers';
 import './ListView.css';
-import useInit from './hooks'
+import useInit from './hooks';
 import { getDateFormatInfo } from '../../../helpers/date-format-utils';
 import { getCurrencyOptions } from '../../forms/Currency/currency-utils';
 import { format } from '../../../helpers/formatters/';
-
 
 const SELECTION_MODE = { SINGLE: 'single', MULTI: 'multi' };
 declare const PCore: any;
@@ -59,8 +58,19 @@ let sortColumnId: any;
 const filterByColumns: Array<any> = [];
 
 export default function ListView(props) {
-  const { getPConnect, bInForm } = props;
-  const { globalSearch, referenceList, rowClickAction, selectionMode, referenceType, payload, parameters, compositeKeys, showDynamicFields, presets } = props;
+  const { getPConnect, bInForm = true } = props;
+  const {
+    globalSearch,
+    referenceList,
+    /* rowClickAction, */
+    selectionMode,
+    referenceType,
+    payload,
+    parameters,
+    compositeKeys,
+    showDynamicFields,
+    presets
+  } = props;
   const ref = useRef({}).current;
   const cosmosTableRef = useRef();
   // List component context
@@ -101,7 +111,7 @@ export default function ListView(props) {
 
   // Will contain the list of columns specific for an instance
   let columnList: any = useRef([]);
-  let dashboardFilterPayload: any ;
+  let dashboardFilterPayload: any;
   // Will be sent in the dashboardFilterPayload
   let selectParam: Array<any> = [];
 
@@ -235,7 +245,7 @@ export default function ListView(props) {
         field.type === 'Currency' ||
         false;
       headerRow.disablePadding = false;
-      headerRow.label =  presetFields[index].config.label;
+      headerRow.label = presetFields[index].config.label;
       if (colIndex > -1) {
         headerRow.classID = fields[colIndex].classID;
       }
@@ -264,11 +274,12 @@ export default function ListView(props) {
       const record = arTableData?.length > 0 ? arTableData[0] : '';
       if (typeof record === 'object' && !('pyGUID' in record) && !('pyID' in record)) {
         // eslint-disable-next-line no-console
-        console.error('pyGUID or pyID values are mandatory to select the required row from the list');
+        console.error(
+          'pyGUID or pyID values are mandatory to select the required row from the list'
+        );
       }
     }
     const arReturn = arTableData?.map((data: any) => {
-
       const row = data;
 
       return row;
@@ -353,7 +364,7 @@ export default function ListView(props) {
       validFilter = true;
       /** Below are the 2 cases for- Text & Date-Range filter types where we'll construct filter data which will be sent in the dashboardFilterPayload
        * In Constellation DX Components, through Repeating Structures they might be using several APIs to do it. We're doing it here
-      */
+       */
       if (isDateRange) {
         const dateRelationalOp = filter?.AND ? 'AND' : 'OR';
         dashboardFilterPayload.query.filter.filterConditions = {
@@ -362,11 +373,13 @@ export default function ListView(props) {
           [`T${index++}`]: { ...filter[relationalOp][1].condition }
         };
         if (dashboardFilterPayload.query.filter.logic) {
-          dashboardFilterPayload.query.filter.logic = `${dashboardFilterPayload.query.filter.logic} ${relationalOp} (T${
-            index - 2
-          } ${dateRelationalOp} T${index - 1})`;
+          dashboardFilterPayload.query.filter.logic = `${
+            dashboardFilterPayload.query.filter.logic
+          } ${relationalOp} (T${index - 2} ${dateRelationalOp} T${index - 1})`;
         } else {
-          dashboardFilterPayload.query.filter.logic = `(T${index - 2} ${relationalOp} T${index - 1})`;
+          dashboardFilterPayload.query.filter.logic = `(T${index - 2} ${relationalOp} T${
+            index - 1
+          })`;
         }
 
         dashboardFilterPayload.query.select = selectParam;
@@ -377,9 +390,9 @@ export default function ListView(props) {
         };
 
         if (dashboardFilterPayload.query.filter.logic) {
-          dashboardFilterPayload.query.filter.logic = `${dashboardFilterPayload.query.filter.logic} ${relationalOp} T${
-            index - 1
-          }`;
+          dashboardFilterPayload.query.filter.logic = `${
+            dashboardFilterPayload.query.filter.logic
+          } ${relationalOp} T${index - 1}`;
         } else {
           dashboardFilterPayload.query.filter.logic = `T${index - 1}`;
         }
@@ -431,18 +444,20 @@ export default function ListView(props) {
     if (payload) {
       query = payload.query;
     } else if (fields?.length && meta.isQueryable) {
-      query = {select: fields};
+      query = { select: fields };
     } else if (dashboardFilterPayload) {
       query = dashboardFilterPayload.query;
     }
     const context = getPConnect().getContextName();
-    return PCore.getDataPageUtils().getDataAsync(
-      referenceList,
-      context,
-      payload ? payload.dataViewParameters : dataViewParameters,
-      null,
-      query
-    );
+    return !bInForm
+      ? PCore.getDataApiUtils().getData(referenceList, payload)
+      : PCore.getDataPageUtils().getDataAsync(
+          referenceList,
+          context,
+          payload ? payload.dataViewParameters : dataViewParameters,
+          null,
+          query
+        );
   }
 
   const buildSelect = (fieldDefs, colId, patchQueryFields = [], compositeKeys = []) => {
@@ -481,18 +496,22 @@ export default function ListView(props) {
     return listFields;
   };
 
-  const addItemKeyInSelect = (
-    fieldDefs,
-    itemKey,
-    select,
-    compositeKeys
-  ) => {
+  const addItemKeyInSelect = (fieldDefs, itemKey, select, compositeKeys) => {
     const elementFound = getField(fieldDefs, itemKey);
 
-    if (itemKey && !elementFound && Array.isArray(select) && !(compositeKeys !== null && compositeKeys?.length) && !select.find(sel => sel.field === itemKey)) {
-      return [...select, {
-        field: itemKey
-      }];
+    if (
+      itemKey &&
+      !elementFound &&
+      Array.isArray(select) &&
+      !(compositeKeys !== null && compositeKeys?.length) &&
+      !select.find(sel => sel.field === itemKey)
+    ) {
+      return [
+        ...select,
+        {
+          field: itemKey
+        }
+      ];
     }
 
     return select;
@@ -514,7 +533,9 @@ export default function ListView(props) {
   async function fetchDataFromServer() {
     let bCallSetRowsColumns = true;
     const { fieldDefs, itemKey, patchQueryFields } = meta;
-    let listFields = fieldDefs ? buildSelect(fieldDefs, undefined, patchQueryFields, compositeKeys) : [];
+    let listFields = fieldDefs
+      ? buildSelect(fieldDefs, undefined, patchQueryFields, compositeKeys)
+      : [];
     listFields = addItemKeyInSelect(fieldDefs, itemKey, listFields, compositeKeys);
     const workListJSON = await fetchAllData(listFields);
 
@@ -524,7 +545,7 @@ export default function ListView(props) {
     // this is an unresovled version of this.fields$, need unresolved, so can get the property reference
     const columnFields = componentConfig.presets[0].children[0].children;
 
-    const tableDataResults = workListJSON['data'];
+    const tableDataResults = !bInForm ? workListJSON['data'].data : workListJSON['data'];
 
     const myColumns = getHeaderCells(columnFields, fieldDefs, fields);
 
@@ -637,17 +658,17 @@ export default function ListView(props) {
       });
   }
 
-  function _rowClick(row: any) {
-    // eslint-disable-next-line sonarjs/no-small-switch
-    switch (rowClickAction) {
-      case 'openAssignment':
-        openAssignment(row);
-        break;
+  // function _rowClick(row: any) {
+  //   // eslint-disable-next-line sonarjs/no-small-switch
+  //   switch (rowClickAction) {
+  //     case 'openAssignment':
+  //       openAssignment(row);
+  //       break;
 
-      default:
-        break;
-    }
-  }
+  //     default:
+  //       break;
+  //   }
+  // }
 
   function openWork(row) {
     const { pxRefObjectKey } = row;
@@ -855,7 +876,7 @@ export default function ListView(props) {
   }
 
   function _listViewClick(row, column) {
-    const name = column.id
+    const name = column.id;
     if (column.displayAsLink) {
       const { pxObjClass } = row;
       let { pzInsKey } = row;
@@ -884,7 +905,6 @@ export default function ListView(props) {
           break;
       }
     }
-
   }
 
   function _listTitle() {
@@ -913,14 +933,12 @@ export default function ListView(props) {
       const index = response.findIndex(element => element[rowID] === value);
       const selectedRow = response[index];
       compositeKeys.forEach(element => {
-        reqObj[element] = selectedRow[element]
+        reqObj[element] = selectedRow[element];
       });
     } else {
       reqObj[rowID] = value;
     }
-    getPConnect()
-      ?.getListActions?.()
-      ?.setSelectedRows([reqObj]);
+    getPConnect()?.getListActions?.()?.setSelectedRows([reqObj]);
     setSelectedValue(value);
   };
 
@@ -932,16 +950,14 @@ export default function ListView(props) {
       const index = response.findIndex(element => element[rowID] === value);
       const selectedRow = response[index];
       compositeKeys.forEach(element => {
-        reqObj[element] = selectedRow[element]
+        reqObj[element] = selectedRow[element];
       });
       reqObj['$selected'] = checked;
     } else {
       reqObj[rowID] = value;
       reqObj['$selected'] = checked;
     }
-    getPConnect()
-      ?.getListActions()
-      ?.setSelectedRows([reqObj]);
+    getPConnect()?.getListActions()?.setSelectedRows([reqObj]);
   };
 
   const processColumnValue = (column, value) => {
@@ -954,14 +970,17 @@ export default function ListView(props) {
       case 'Date':
       case 'DateTime':
         theDateFormatInfo = getDateFormatInfo();
-        theFormat = (type === 'DateTime') ? `${theDateFormatInfo.dateFormatStringLong} hh:mm a` : theDateFormatInfo.dateFormatStringLong;
+        theFormat =
+          type === 'DateTime'
+            ? `${theDateFormatInfo.dateFormatStringLong} hh:mm a`
+            : theDateFormatInfo.dateFormatStringLong;
         val = format(value, column.type, { format: theFormat });
-      break;
+        break;
 
       case 'Currency':
         theCurrencyOptions = getCurrencyOptions(PCore?.getEnvironmentInfo()?.getLocale());
         val = format(value, column.type, theCurrencyOptions);
-      break;
+        break;
 
       default:
         val = column.format && typeof value === 'number' ? column.format(value) : value;
@@ -983,12 +1002,12 @@ export default function ListView(props) {
               </Grid>
               <Grid item>
                 <TextField
-                  label={ PCore.getLocaleUtils().getLocaleValue('Search', 'Search') }
+                  label={PCore.getLocaleUtils().getLocaleValue('Search', 'Search')}
                   fullWidth
                   variant='outlined'
                   placeholder=''
                   size='small'
-                  id="search"
+                  id='search'
                   onChange={_onSearch}
                 />
               </Grid>
@@ -1038,12 +1057,7 @@ export default function ListView(props) {
                       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                       .map(row => {
                         return (
-                          <TableRow
-                            key={row.pxRefObjectInsName || row.pyID}
-                            onClick={() => {
-                              _rowClick(row);
-                            }}
-                          >
+                          <TableRow key={row.pxRefObjectInsName || row.pyID}>
                             {arColumns.map(column => {
                               const value = row[column.id];
                               return (
@@ -1117,12 +1131,7 @@ export default function ListView(props) {
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map(row => {
                           return (
-                            <TableRow
-                              key={row[rowID]}
-                              onClick={() => {
-                                _rowClick(row);
-                              }}
-                            >
+                            <TableRow key={row[rowID]}>
                               {selectionMode === SELECTION_MODE.SINGLE && (
                                 <TableCell>
                                   <Radio
@@ -1286,8 +1295,7 @@ export default function ListView(props) {
   );
 }
 
-ListView.defaultProps = {
-};
+ListView.defaultProps = {};
 
 ListView.propTypes = {
   getPConnect: PropTypes.func.isRequired

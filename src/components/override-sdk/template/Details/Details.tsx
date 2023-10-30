@@ -1,10 +1,11 @@
 import React from 'react';
 import DetailsFields from '@pega/react-sdk-components/lib/components/designSystemExtension/DetailsFields';
+import MainWrapper from '../../../BaseComponents/MainWrapper';
 import ConditionalWrapper from '../../../helpers/formatters/ConditionalWrapper';
 
 
 export default function Details(props) {
-  const { children, label, context } = props;
+  const { children, label, context, readOnly } = props;
   const arFields: Array<any> = [];
 
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
@@ -27,16 +28,8 @@ export default function Details(props) {
   return (
     // Conditionally wrap in main wrapper only if we are not in a case with and open status (i.e. we are in a finished case, viewing the claim summary)
     <ConditionalWrapper    
-      condition={!PCore.getStore().getState().data[containerName].caseInfo?.status.startsWith('Open')}
-      wrapper = {childrenForWrap =>        
-      <main className="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">
-        <div className="govuk-grid-row">
-          <div className='govuk-grid-column-two-thirds'>
-            {childrenForWrap}
-          </div>
-        </div>
-      </main>
-      }
+      condition={!PCore.getStore().getState().data[containerName].caseInfo?.status.startsWith('Open') && !readOnly}
+      wrapper = {childrenForWrap => <MainWrapper>{childrenForWrap}</MainWrapper>}
       childrenToWrap={
         <>        
           {label && context && <h1 className='govuk-heading-l'>{localizedVal(label, localeCategory /* ,localeReference */)} details</h1>}

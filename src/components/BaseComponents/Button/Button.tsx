@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
@@ -13,8 +13,16 @@ export default function Button(props) {
   } = props;
 
   const { t } = useTranslation();
+  const [pointerState, setPointerState] = useState<Object>({});
 
   if(!Object.prototype.hasOwnProperty.call(attributes, 'className')) {attributes.className=''};
+
+  useEffect(()=>{
+    // eslint-disable-next-line no-prototype-builtins
+    if(pointerState.hasOwnProperty('pointerEvents')){
+      setTimeout(() => setPointerState({}), 200);
+    }
+  },[pointerState])
 
   if (variant === 'start') {
     return (
@@ -52,7 +60,12 @@ export default function Button(props) {
     return (
       <a
         href='#'
-        onClick={onClick}
+        style={pointerState}
+        onClick={(e) => {
+          setPointerState({pointerEvents: 'none'});
+          onClick(e);
+        }}
+          
         {...attributes}
         className='govuk-back-link'
       >

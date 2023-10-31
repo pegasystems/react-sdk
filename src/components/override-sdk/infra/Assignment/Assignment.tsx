@@ -64,7 +64,6 @@ export default function Assignment(props) {
 
   useEffect(() => {
     if (children && children.length > 0) {
-      // debugger;
 
       const oWorkItem = children[0].props.getPConnect();
       const oWorkData = oWorkItem.getDataObject();

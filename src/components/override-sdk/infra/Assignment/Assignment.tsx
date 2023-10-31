@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { scrollToTop } from '../../../helpers/utils';
 import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 import ErrorSummary from '../../../BaseComponents/ErrorSummary/ErrorSummary';
-import { DateErrorFormatter } from '../../../helpers/formatters/DateErrorFormatter';
+import { DateErrorFormatter, DateErrorTargetFields } from '../../../helpers/formatters/DateErrorFormatter';
 import Button from '../../../BaseComponents/Button/Button';
 import setPageTitle from '../../../helpers/setPageTitleHelpers';
 import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
@@ -94,9 +94,20 @@ export default function Assignment(props) {
       type: 'error'
       })[0]?.message;
     if(validatemessage){
-      const fieldId = fieldC11nEnv.getStateProps().fieldId || fieldComponent.props.name;
-      if(fieldC11nEnv.meta.type === 'Date')
-      validatemessage = DateErrorFormatter(validatemessage, fieldC11nEnv.resolveConfigProps(fieldC11nEnv.getMetadata().config).label);
+      let fieldId = fieldC11nEnv.getStateProps().fieldId || fieldComponent.props.name;
+      if(fieldC11nEnv.meta.type === 'Date'){
+         const propertyName = fieldComponent.props.name ;
+         const DateErrorTargetFieldId = DateErrorTargetFields(validatemessage);
+         fieldId = `${propertyName}-day`;
+         if(DateErrorTargetFieldId.includes(`month`)){
+          fieldId = `${propertyName}-month`;
+         }else if(DateErrorTargetFieldId.includes(`year`)){
+          fieldId = `${propertyName}-year`;
+         }
+         validatemessage = DateErrorFormatter(validatemessage,fieldC11nEnv.resolveConfigProps(fieldC11nEnv.getMetadata().config).label);
+        
+      }
+     
     acc.push({message:{
       message: validatemessage,
       fieldId},

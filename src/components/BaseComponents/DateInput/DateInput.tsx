@@ -55,7 +55,7 @@ export default function DateInput(props){
   const extraProps= {testProps:{'data-test-id':testId}};
 
   return(
-    <FieldSet {...props} fieldsetElementProps={{role:"group"}} {...extraProps} >
+    <FieldSet {...props} fieldsetElementProps={{role:"group"}} {...extraProps}>
       <div className="govuk-date-input" id={name}>
         <div className="govuk-date-input__item">
           <FormGroup name={`${name}-day`} label={dayLabel} labelIsHeading={false} extraLabelClasses="govuk-date-input__label">
@@ -63,7 +63,8 @@ export default function DateInput(props){
               id={`${name}-day`} name={`${name}-day`} type="text"
               inputMode="numeric" value={value?.day}
               onChange={onChangeDay}
-              autoComplete={acDay || undefined}/>
+              autoComplete={acDay || undefined}
+            />
           </FormGroup>
         </div>
         <div className="govuk-date-input__item">
@@ -73,6 +74,7 @@ export default function DateInput(props){
               inputMode="numeric" value={value?.month}
               onChange={onChangeMonth}
               autoComplete={acMonth || undefined}
+             
             />
           </FormGroup>
         </div>

@@ -1,5 +1,5 @@
-import React, {createElement} from 'react';
-
+import React, {createElement, Fragment} from 'react';
+import MainWrapper from '../../../BaseComponents/MainWrapper';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect'
 import ConditionalWrapper from '../../../helpers/formatters/ConditionalWrapper';
 
@@ -34,11 +34,10 @@ export default function Details(props) {
     // Conditionally wrap in main wrapper only if we are not in a case with and open status (i.e. we are in a finished case, viewing the claim summary)
     <ConditionalWrapper
       condition={!PCore.getStore().getState().data[containerName].caseInfo?.status.startsWith('Open') && !Object.getOwnPropertyNames(inheritedConfig).length}
-      condition={!PCore.getStore().getState().data[containerName].caseInfo?.status.startsWith('Open') && !readOnly}
       wrapper = {childrenForWrap => <MainWrapper>{childrenForWrap}</MainWrapper>}
       childrenToWrap={
         <>        
-          {label && context && <h1 className='govuk-heading-l'>{localizedVal(label, localeCategory /* ,localeReference */)} details</h1>}
+          {label && context && <h1 className='govuk-heading-l'>{localizedVal(label, localeCategory /* ,localeReference */)} details</h1>}          
           {children} 
         </> 
       }></ConditionalWrapper>                

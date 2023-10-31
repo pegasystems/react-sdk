@@ -28,3 +28,7 @@
 .govuk-summary-list:not(.govuk-summary-list:has(+:not(.govuk-summary-list))):not(:last-of-type){
   margin-bottom: 0px;
 }
+
+.govuk-font-global{
+  font-family: "GDS Transport", arial, sans-serif;
+}

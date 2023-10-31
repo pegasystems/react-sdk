@@ -1,13 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import ListView from '../ListView';
 
 export default function ListPage(props) {
-
-  return (
-    <ListView  {...props}></ListView>
-  )
+  // special case for ListView - add in a prop
+  const listViewProps = { ...props, bInForm: false };
+  return <ListView {...listViewProps}></ListView>;
 }
 
 ListPage.defaultProps = {

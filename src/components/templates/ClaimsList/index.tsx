@@ -73,15 +73,16 @@ export default function ClaimsList(props){
         claimRef : item.pyID,
         dateCreated : DateFormatter.Date(item.pxCreateDateTime, { format: 'DD/MM/YYYY' }),
         children : [],
-        actionButton : <Button
-        attributes={{className:'govuk-!-margin-top-4 govuk-!-margin-bottom-4'}}
-        variant='secondary'
-        onClick={() => {
-          _rowClick(item);
-        }}
-      >
-        {buttonContent}
-      </Button>,
+        actionButton : buttonContent === t("VIEW_CLAIM") ? '' :
+          (<Button
+              attributes={{className:'govuk-!-margin-top-4 govuk-!-margin-bottom-4'}}
+              variant='secondary'
+              onClick={() => {
+                _rowClick(item);
+              }}
+            >
+              {buttonContent}
+            </Button>),
         status : statusMapping(item.pyStatusWork)
       };
 

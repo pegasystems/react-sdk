@@ -11,8 +11,8 @@ The SDK-R v23.1.10 and v8.8.20 releases allow React SDK users to to take advanta
 [SDK enhancements and fixes noted in **What's New in the SDK?**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html) including:
 
 * Added the use of **TypeScript typedefs** (from @pega/pcore-pconnect-typedefs) to SDK components.
-For more information, see [Using type definitions - update link when published](https://pega-dev.zoominsoftware.io/bundle/constellation-sdk/page/constellation-sdks/sdks/type-definitions-constellation-sdks.html)
-* Updated Cosmos support to cosmos 3 (for custom Constellation components).
+For more information, see [Using type definitions](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/type-definitions-constellation-sdks.html)
+* Updated Cosmos support to cosmos 3-8.8 and 4-23.1 (for custom Constellation components).
 * Enhanced security including token storage and item obfuscation support.
 * Bug fixes.
 * Full set of merged PRs can be found in the [react-sdk-components GitHub repo list of merged PRs](https://github.com/pegasystems/react-sdk-components/pulls?q=is%3Apr+is%3Amerged+base%3Amaster+). This release includes all PRs related to the release/8.8.20 branch between (and including) PRs #166 and #202.

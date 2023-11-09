@@ -3,6 +3,12 @@
 <hr />
 <h1 style="color: red">IMPORTANT – PLEASE READ!</h1>
 
+<h3>On <strong>November 08, 2023</strong>, there has been a <strong>significant update</strong> to the React SDK <strong>release/8.8.20</strong> branch. The previous <strong>release/8.8.10</strong> branch is superceded and we advise you to migrate to the <strong>release/8.8.20</strong> branch.
+</h3>
+
+<hr />
+<h1 style="color: red">IMPORTANT – PLEASE READ!</h1>
+
 <h3>On <strong>April 24, 2023</strong>, there has been a <strong>significant update</strong> to the React SDK <strong>main</strong> branch. The previous <strong>main</strong> branch was moved to <u>this</u> <strong>release/8.8.10</strong> branch.
 </h3>
 

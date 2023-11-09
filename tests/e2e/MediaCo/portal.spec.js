@@ -11,7 +11,7 @@ let caseID;
 
 test.beforeEach(async ({ page }) => {
   await page.setViewportSize({ width: 1720, height: 1080 });
-  await page.goto('http://localhost:3502/portal');
+  await page.goto('http://localhost:3502/portal', { waitUntil: 'networkidle' });
 });
 
 test.describe('E2E test', () => {
@@ -120,13 +120,21 @@ test.describe('E2E test', () => {
     const PCoreVersion = await page.evaluate(() => window.PCore.getPCoreVersion());
 
     await Promise.all([
-      page.waitForResponse(`${endpoints.serverConfig.infinityRestServerUrl}${endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ""}/api/application/v2/cases/${currentCaseID}/attachments${PCoreVersion.includes('8.23') ? '?includeThumbnail=false' : ''}`)
+      page.waitForResponse(
+        `${endpoints.serverConfig.infinityRestServerUrl}${
+          endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ''
+        }/api/application/v2/attachments/upload`
+      )
     ]);
 
     await page.locator('button:has-text("submit")').click();
 
     await Promise.all([
-      page.waitForResponse(`${endpoints.serverConfig.infinityRestServerUrl}${endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ""}/api/application/v2/cases/${currentCaseID}/attachments`),
+      page.waitForResponse(
+        `${endpoints.serverConfig.infinityRestServerUrl}${
+          endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ''
+        }/api/application/v2/cases/${currentCaseID}/attachments${PCoreVersion.includes('8.23.0') ? '?includeThumbnail=false' : ''}`
+      )
     ]);
 
     const attachmentCount = await page.locator('div[id="attachments-count"]').textContent();
@@ -155,6 +163,8 @@ test.describe('E2E test', () => {
     await mgrDiscountInput.type('20');
 
     await page.locator('button:has-text("submit")').click();
+
+    await expect(page.locator('text="Thank you! The next step in this case has been routed appropriately."')).toBeVisible();
 
   }, 10000);
 

@@ -9,7 +9,7 @@ import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles
 import StoreContext from "@pega/react-sdk-components/lib/bridge/Context/StoreContext";
 import createPConnectComponent from "@pega/react-sdk-components/lib/bridge/react_pconnect";
 
-import { gbLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '@pega/react-sdk-components/lib/components/helpers/authManager';
+import { sdkIsLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 
 import EmbeddedSwatch from '../EmbeddedSwatch';
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
@@ -174,7 +174,7 @@ export default function EmbeddedTopLevel() {
     const theTopLevelRibbon = document.getElementById("embedded-top-level-ribbon");
 
     if (theTopLevelEl) {
-      if (bShowTriplePlayOptions && gbLoggedIn) {
+      if (bShowTriplePlayOptions && sdkIsLoggedIn()) {
         // Only show when user is logged in and we're supposed to show it
         theTopLevelEl.style.display = "block";
         if (theTopLevelRibbon) { theTopLevelRibbon.style.display = "flex"; }
@@ -211,7 +211,7 @@ export default function EmbeddedTopLevel() {
     const theTopLevelEl = document.getElementById("embedded-top-level-resolution");
     const theTopLevelRibbon = document.getElementById("embedded-top-level-ribbon");
 
-    if (bShowResolutionScreen && gbLoggedIn) {
+    if (bShowResolutionScreen && sdkIsLoggedIn()) {
         // Only show when user is logged in and we're supposed to show it
         if (theTopLevelEl) { theTopLevelEl.style.display = "block" };
         if (theTopLevelRibbon) { theTopLevelRibbon.style.display = "flex"; }
@@ -227,7 +227,7 @@ export default function EmbeddedTopLevel() {
     // If not logged in, we used to prompt for login. Now moved up to TopLevelApp
     // If logged in, make the Triple Play Options visible
 
-    if (!gbLoggedIn) {
+    if (!sdkIsLoggedIn()) {
       // login();     // Login now handled at TopLevelApp
     } else {
       setShowTriplePlayOptions(true);
@@ -419,14 +419,14 @@ export default function EmbeddedTopLevel() {
         sdkSetAuthHeader( `Basic ${sB64}`);
       }
 
+      document.addEventListener("SdkConstellationReady", () => {
+        // start the portal
+        startMashup();
+      });
+
       // Login if needed, without doing an initial main window redirect
-      loginIfNecessary("embedded", true);
+      loginIfNecessary({appName:"embedded", mainRedirect:false});
 
-    });
-
-    document.addEventListener("SdkConstellationReady", () => {
-      // start the portal
-      startMashup();
     });
 
 

@@ -16,7 +16,8 @@
 
     // Need to specify typeRoots to find the types and types to constrain
     //  where to look in @pega (to only get pcore-pconnect-typedefs)
-    "typeRoots": ["node_modules/@types", "node_modules/@pega"],
+    //  NOTE: need to point to relative path to node_modules (../)
+    "typeRoots": ["../node_modules/@types", "../node_modules/@pega"],
     "types": [ "jest", "@testing-library/jest-dom", "pcore-pconnect-typedefs" ],
   }
 }

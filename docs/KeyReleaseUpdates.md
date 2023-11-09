@@ -1,6 +1,6 @@
 ## 08-November-2023 - Developer exepreience improvements
 <br />
-<h3>On <strong>November 08, 2023</strong>, a <strong>significant update</strong> to the React SDK <strong>main</strong> branch was completed.</h3>
+<h3>On <strong>November 08, 2023</strong>, a <strong>significant update</strong> to the React SDK <strong>main and release/8.8.20</strong> branches was completed.</h3>
 <br />
 
 1. Added the use of **TypeScript typedefs** (from @pega/pcore-pconnect-typedefs) to SDK components.

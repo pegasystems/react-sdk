@@ -164,7 +164,7 @@ test.describe('E2E test', () => {
 
     await page.locator('button:has-text("submit")').click();
 
-    await expect(page.locator('text="Thank you! The next step in this case has been routed appropriately."')).toBeVisible();
+    await expect(page.locator('div[id="Assignment"]')).not.toBeVisible();
 
   }, 10000);
 

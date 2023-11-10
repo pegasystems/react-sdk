@@ -24,7 +24,7 @@ export default function LogoutPopup(props) {
           <Button
             type='button'
             id='modal-signout-btn'
-            attributes={{ className: 'govuk-button govuk-button--warning' }}
+            attributes={{ className: 'govuk-button' }}
             onClick={handleSignoutModal}
           >
             {t('SIGN-OUT')}

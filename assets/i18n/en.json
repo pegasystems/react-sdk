@@ -255,7 +255,7 @@
   "FOR_YOUR_SECURITY_WE_WILL_SIGN_YOU_OUT": "For your security, we will sign you out in",
   "2_MINUTES": "2 minutes",
   "NOTIFICATION_BANNER_HEADER": "Important",
-  "NOTIFICATION_BANNER_CONTENT": "There must be at least one child on the claim",
+  "NOTIFICATION_BANNER_CONTENT": "There must be at least one child on the claim. Please amend this child's details instead.",
   "SERVICE_NOT_AVAILABLE": "Sorry, there is a problem with the service",
   "COME_BACK_LATER": "You can try again or come back later",
   "RETURN_TO_THE_HOMEPAGE": "Return to the homepage"

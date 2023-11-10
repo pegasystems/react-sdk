@@ -28,11 +28,7 @@ export default function TextInput(props) {
   registerNonEditableField(!!disabled);
 
   useEffect(()=>{
-
-    if(validatemessage){
     setErrorMessage(validatemessage)
-    }
-
   },[validatemessage])
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();

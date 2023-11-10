@@ -30,6 +30,12 @@ export default function TextInput(props) {
     } else return inputClasses;
   };
 
+  const keyHandler = (e)=> {
+    if(e.key === 'Enter'){   
+       e.preventDefault();
+    }
+  };
+
   // TODO - Handle input types (password, email, numeric) - Or investigate if these should be separate components, or can simple be handled by inputProps
   // TODO - Handle autocomplete settings
 
@@ -48,6 +54,7 @@ export default function TextInput(props) {
         id={id}
         name={name}
         onBlur={onBlur}
+        onKeyDown={keyHandler}
       ></input>
     </FormGroup>
   );

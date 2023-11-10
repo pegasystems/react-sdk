@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { scrollToTop } from '../../../helpers/utils';
-import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 import ErrorSummary from '../../../BaseComponents/ErrorSummary/ErrorSummary';
 import { DateErrorFormatter, DateErrorTargetFields } from '../../../helpers/formatters/DateErrorFormatter';
 import Button from '../../../BaseComponents/Button/Button';
@@ -54,8 +53,8 @@ export default function Assignment(props) {
   const context = getPConnect().getContextName();
   const containerID = PCore.getContainerUtils().getContainerAccessOrder(`${context}/${_containerName}`).at(-1)
   useEffect(() => {
-    setPageTitle();
-  },[children])
+    setPageTitle(errorMessages.length > 0);
+  },[children, errorMessages])
 
   let containerName;
   if(thePConn.getDataObject().caseInfo?.assignments && thePConn.getDataObject().caseInfo?.assignments.length > 0){
@@ -135,8 +134,6 @@ export default function Assignment(props) {
       bodyfocus.focus();
     }
   }, [children]);
-
-  useAddErrorToPageTitle(errorMessages.length > 0);
 
   function showErrorSummary() {
     setErrorMessages([]);

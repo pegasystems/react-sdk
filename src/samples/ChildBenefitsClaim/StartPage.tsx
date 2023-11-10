@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '../../components/BaseComponents/Button/Button';
 import { useTranslation } from 'react-i18next';
 import MainWrapper from '../../components/BaseComponents/MainWrapper';
+import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 
 
 const StartPage: React.FC<{ onStart: React.MouseEventHandler; onBack: any }> = ({
@@ -9,6 +10,10 @@ const StartPage: React.FC<{ onStart: React.MouseEventHandler; onBack: any }> = (
   onBack
 }) => {
   const { t } = useTranslation();
+
+  useEffect(()=>{
+    setPageTitle();
+  },[])
 
   return (
     <>

@@ -120,21 +120,23 @@ export default function ChildBenefitsClaim() {
     setShowStartPage(false);
     setShowUserPortal(true);
     setShowPega(false);
+    PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
     setShowResolutionScreen(false);
     setServiceNotAvailable(false);
   }
   function assignmentFinished() {
     setShowStartPage(false);
     setShowPega(false);
+    PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
     setShowResolutionScreen(true);
   }
 
-  function closeContainer(){
-    setShowPega(false);
-    setShowStartPage(false);
-    setShowUserPortal(true);
-    setShowResolutionScreen(false);
-  }
+  // function closeContainer(){
+  //   setShowPega(false);
+  //   setShowStartPage(false);
+  //   setShowUserPortal(true);
+  //   setShowResolutionScreen(false);
+  // }
 
   // Calls data page to fetch in progress claims, then for each result (limited to first 10), calls D_Claim to get extra details about each 'assignment'
   // to display within the claim 'card' in the list. This then sets inprogress claims state value to the list of claims data.
@@ -152,11 +154,11 @@ export default function ChildBenefitsClaim() {
   };
 
   function cancelAssignment() {
-    // PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext(`${PCore.getConstants().APP.APP}/primary`), {skipDirtyCheck :true});
     fetchInProgressClaimsData();
     setShowStartPage(false);
-    setShowUserPortal(true);
     setShowPega(false);
+    setShowUserPortal(true);
+    PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
     setShowResolutionScreen(false);
   }
 
@@ -198,13 +200,13 @@ export default function ChildBenefitsClaim() {
       'cancelAssignment'
     );
 
-    PCore.getPubSubUtils().subscribe(
-      PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
-      () => {
-        closeContainer();
-      },
-      'closeContainer'
-    );
+    // PCore.getPubSubUtils().subscribe(
+    //   PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
+    //   () => {
+    //     closeContainer();
+    //   },
+    //   'closeContainer'
+    // );
 
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.ASSIGNMENT_OPENED,
@@ -530,7 +532,7 @@ export default function ChildBenefitsClaim() {
  
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage}/>}
 
-        {showStartPage && <StartPage onStart={startNow} onBack={closeContainer} />}
+        {showStartPage && <StartPage onStart={startNow} onBack={() => {showUserPortal(true);}} />}
 
         {showUserPortal && <UserPortal beginClaim={beginClaim}>
 

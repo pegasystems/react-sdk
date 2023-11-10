@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '../../components/BaseComponents/Button/Button';
 import { useTranslation } from 'react-i18next';
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
-
+import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 
 export default function UserPortal(props) {
   const { beginClaim, children } = props;
   const { t } = useTranslation();
   const {referrerURL, hmrcURL} = useHMRCExternalLinks();
+
+  useEffect(()=>{
+    setPageTitle();
+  },[])
 
   return (
     <>

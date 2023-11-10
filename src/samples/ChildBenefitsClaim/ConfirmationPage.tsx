@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ParsedHTML from '../../components/helpers/formatters/ParsedHtml';
 import MainWrapper from '../../components/BaseComponents/MainWrapper';
+import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 
 declare const PCore : any;
 
@@ -19,8 +20,7 @@ const ConfirmationPage = () => {
   const docIDForReturnSlip = 'CR0002';
 
   useEffect(()=> {
-    document.getElementById('pega-part-of-page').innerHTML = '';
-    document.title = t('APPLICATION_RECEIVED');
+    setPageTitle();
   }, []);
 
   useEffect(()=>{

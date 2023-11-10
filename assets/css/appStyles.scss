@@ -33,6 +33,12 @@
   font-family: "GDS Transport", arial, sans-serif;
 }
 
+span.govuk-body.govuk-\!-font-weight-bold.read-only:last-of-type{
+  padding-bottom: 10px;
+  display:inline-block;
+}
+
 .sectionDivStyle .content {
   align-items: flex-start;
 }
+

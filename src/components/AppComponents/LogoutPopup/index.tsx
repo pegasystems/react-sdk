@@ -12,7 +12,7 @@ export default function LogoutPopup(props) {
     <Modal show={props.show} handleClose={hideModal} id={id}>
       <div>
         <h1 id='govuk-timeout-heading' className='govuk-heading-m push--top'>
-          {t('YOU_ARE_ABOUT_TO_SIGNOUT')}
+          {t('YOU_ARE_ABOUT_TO_SIGN_OUT')}
         </h1>
         <p className='govuk-body'>
           {t('YOU_STILL_NEED_TO_SAVE_YOUR_PROGRESS')}

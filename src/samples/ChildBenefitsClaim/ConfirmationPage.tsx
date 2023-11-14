@@ -6,7 +6,7 @@ import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 
 declare const PCore : any;
 
-const ConfirmationPage = () => {
+const ConfirmationPage = ({caseId}) => {
 
   const { t } = useTranslation();
   const [documentList, setDocumentList] = useState(``);
@@ -14,17 +14,16 @@ const ConfirmationPage = () => {
   const [returnSlipContent, setReturnSlipContent] = useState();
   const [loading, setLoading] = useState(true);
   
-  const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
-  const caseID = PCore.getStoreValue('.ID', 'caseInfo' , context);
   const docIDForDocList = 'CR0003';
   const docIDForReturnSlip = 'CR0002';
+  const locale = PCore.getEnvironmentInfo().locale.replaceAll('-','_');
 
   useEffect(()=> {
     setPageTitle();
   }, []);
 
   useEffect(()=>{
-    PCore.getDataPageUtils().getPageDataAsync('D_DocumentContent', 'root', {DocumentID: docIDForDocList, Locale: PCore.getEnvironmentInfo().locale.replaceAll('-','_'), CaseID: caseID}).then(listData => {
+    PCore.getDataPageUtils().getPageDataAsync('D_DocumentContent', 'root', {DocumentID: docIDForDocList, Locale: locale, CaseID: caseId}).then(listData => {
       if(listData.DocumentContentHTML.includes("data-bornabroad='true'") || listData.DocumentContentHTML.includes("data-adopted='true'")){
         setIsBornAbroadOrAdopted(true);
       }
@@ -35,7 +34,7 @@ const ConfirmationPage = () => {
       console.error(err);
     });
 
-    PCore.getDataPageUtils().getPageDataAsync('D_DocumentContent', 'root', {DocumentID: docIDForReturnSlip, Locale: PCore.getEnvironmentInfo().locale.replaceAll('-','_'), CaseID: caseID}).then(pageData => {
+    PCore.getDataPageUtils().getPageDataAsync('D_DocumentContent', 'root', {DocumentID: docIDForReturnSlip, Locale: locale, CaseID: caseId}).then(pageData => {
       setReturnSlipContent(pageData.DocumentContentHTML);
     }).catch(err => {
       // eslint-disable-next-line no-console

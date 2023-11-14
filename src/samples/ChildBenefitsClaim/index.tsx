@@ -75,6 +75,7 @@ export default function ChildBenefitsClaim() {
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const [serviceNotAvailable, setServiceNotAvailable] = useState(false)
   const [authType, setAuthType] = useState('gg'); 
+  const [caseId, setCaseId] = useState('');
   const history = useHistory();
 
   const { t } = useTranslation();
@@ -85,6 +86,9 @@ export default function ChildBenefitsClaim() {
   useEffect(()=> {
     setPageTitle();
   }, [showStartPage, showUserPortal, bShowPega, bShowResolutionScreen]);
+
+  
+  
 
   const [inprogressClaims, setInprogressClaims] = useState([]);
   const [submittedClaims, setSubmittedClaims] = useState([]);
@@ -127,6 +131,9 @@ export default function ChildBenefitsClaim() {
   function assignmentFinished() {
     setShowStartPage(false);
     setShowPega(false);
+    const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
+    const caseID = PCore.getStoreValue('.ID', 'caseInfo' , context);
+    setCaseId(caseID);
     PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
     setShowResolutionScreen(true);
   }
@@ -221,7 +228,6 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_CREATED,
       () => {
-      
         setShowStartPage(false);
         setShowUserPortal(false);
         setShowPega(true);
@@ -555,7 +561,7 @@ export default function ChildBenefitsClaim() {
 
       </UserPortal>}
 
-      {bShowResolutionScreen && <ConfirmationPage />}
+      {bShowResolutionScreen && <ConfirmationPage caseId={caseId} />}
 
       </div>
 

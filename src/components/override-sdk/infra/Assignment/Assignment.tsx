@@ -278,7 +278,7 @@ export default function Assignment(props) {
             {errorSummary && errorMessages.length > 0 && (
               <ErrorSummary errors={errorMessages.map(item => localizedVal(item.message, localeCategory, localeReference))} />
             )}
-            {(!isOnlyFieldDetails.isOnlyField || containerName.toLowerCase().includes('check your answer')) && <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>}
+            {(!isOnlyFieldDetails.isOnlyField || containerName.toLowerCase().includes('check your answer') || containerName.toLowerCase().includes('declaration')) && <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>}
             <form>
               <AssignmentCard
                 getPConnect={getPConnect}

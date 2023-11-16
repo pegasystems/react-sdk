@@ -42,3 +42,6 @@ span.govuk-body.govuk-\!-font-weight-bold.read-only:last-of-type{
   align-items: flex-start;
 }
 
+div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type~br{
+  display:none
+}

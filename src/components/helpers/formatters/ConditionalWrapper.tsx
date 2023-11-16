@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-export default function ConditionalWrapper ({ condition, wrapper, childrenToWrap, key=null}: {condition:boolean, wrapper:Function, childrenToWrap:any, key?:any}) {
+export default function ConditionalWrapper ({ condition, wrapper, childrenToWrap}: {condition:boolean, wrapper:Function, childrenToWrap:any}) {
   return (
       condition ? wrapper(childrenToWrap) : childrenToWrap          
   )

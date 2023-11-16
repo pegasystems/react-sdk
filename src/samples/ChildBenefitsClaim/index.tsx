@@ -78,6 +78,39 @@ export default function ChildBenefitsClaim() {
   const [caseId, setCaseId] = useState('');
   const history = useHistory();
 
+  function resetAppDisplay(){
+    setShowStartPage(false);
+    setShowUserPortal(false);
+    setShowResolutionScreen(false);
+    setShowPega(false);
+    setServiceNotAvailable(false);
+  }
+
+  function displayPega() {
+    resetAppDisplay();
+    setShowPega(true);
+  }
+
+  function displayUserPortal(){
+    resetAppDisplay();
+    setShowUserPortal(true);
+  }
+
+  function displayStartPage(){
+    resetAppDisplay();
+    setShowStartPage(true);
+  }
+  
+  function displayServiceNotAvailable(){
+    resetAppDisplay();
+    setServiceNotAvailable(true);
+  }
+
+  function displayResolutionScreen(){
+    resetAppDisplay();
+    setShowResolutionScreen(true);
+  }
+
   const { t } = useTranslation();
   let operatorId = '';
   
@@ -100,8 +133,7 @@ export default function ChildBenefitsClaim() {
   }
 
   function createCase() { 
-    setShowStartPage(false);
-    setShowPega(true);
+    displayPega();
     PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP);
   }
 
@@ -115,35 +147,26 @@ export default function ChildBenefitsClaim() {
   function beginClaim() {
     // Added to ensure that clicking begin claim restarts timeout
     staySignedIn(setShowTimeoutModal);
-    setShowStartPage(true);
-    setShowUserPortal(false);
+    displayStartPage();
   }
   function returnToPortalPage() {
   
     staySignedIn(setShowTimeoutModal);
-    setShowStartPage(false);
-    setShowUserPortal(true);
-    setShowPega(false);
+    displayUserPortal();
     PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
-    setShowResolutionScreen(false);
-    setServiceNotAvailable(false);
+    
   }
   function assignmentFinished() {
-    setShowStartPage(false);
-    setShowPega(false);
+    displayResolutionScreen();    
     const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
     const caseID = PCore.getStoreValue('.ID', 'caseInfo' , context);
     setCaseId(caseID);
     PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
-    setShowResolutionScreen(true);
   }
 
-  // function closeContainer(){
-  //   setShowPega(false);
-  //   setShowStartPage(false);
-  //   setShowUserPortal(true);
-  //   setShowResolutionScreen(false);
-  // }
+   function closeContainer(){
+    displayUserPortal();
+   }
 
   // Calls data page to fetch in progress claims, then for each result (limited to first 10), calls D_Claim to get extra details about each 'assignment'
   // to display within the claim 'card' in the list. This then sets inprogress claims state value to the list of claims data.
@@ -162,11 +185,8 @@ export default function ChildBenefitsClaim() {
 
   function cancelAssignment() {
     fetchInProgressClaimsData();
-    setShowStartPage(false);
-    setShowPega(false);
-    setShowUserPortal(true);
+    displayUserPortal();
     PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
-    setShowResolutionScreen(false);
   }
 
   function establishPCoreSubscriptions() {
@@ -182,7 +202,6 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       "assignmentFinished",
       () => {
-
         setShowStartPage(false);
         setShowUserPortal(false);
         setShowPega(false);
@@ -191,7 +210,7 @@ export default function ChildBenefitsClaim() {
         const status =  (PCore.getStoreValue(".pyStatusWork","caseInfo.content",context))
         if(status === "Resolved-Discarded"){
       
-        setServiceNotAvailable(true);
+        displayServiceNotAvailable();
       
         PCore.getContainerUtils().closeContainerItem(context);
         }
@@ -207,20 +226,18 @@ export default function ChildBenefitsClaim() {
       'cancelAssignment'
     );
 
-    // PCore.getPubSubUtils().subscribe(
-    //   PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
-    //   () => {
-    //     closeContainer();
-    //   },
-    //   'closeContainer'
-    // );
+     PCore.getPubSubUtils().subscribe(
+       PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
+       () => {
+     closeContainer();
+       },
+       'closeContainer'
+     );
 
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.ASSIGNMENT_OPENED,
       () => {
-        setShowStartPage(false);
-        setShowUserPortal(false);
-        setShowPega(true);
+        displayPega();
       },
       'continueAssignment'
     );
@@ -228,9 +245,7 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_CREATED,
       () => {
-        setShowStartPage(false);
-        setShowUserPortal(false);
-        setShowPega(true);
+        displayPega();
       },
       'continueCase'
     );
@@ -246,9 +261,7 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_OPENED,
       () => {
-        setShowStartPage(false);
-        setShowUserPortal(false);
-        setShowPega(true);
+        displayPega();
       },
       'continueCase'
     );
@@ -475,7 +488,7 @@ export default function ChildBenefitsClaim() {
         PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
         'cancelAssignment'
       );
-      /* PCore?.getPubSubUtils().unsubscribe(
+      PCore?.getPubSubUtils().unsubscribe(
         PCore.getConstants().PUB_SUB_EVENTS.ASSIGNMENT_OPENED,
         'continueAssignment'
       );
@@ -488,7 +501,7 @@ export default function ChildBenefitsClaim() {
       PCore?.getPubSubUtils().unsubscribe(
         PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
         'assignmentFinished'
-      ); */
+      );
     };
   }, []);
 

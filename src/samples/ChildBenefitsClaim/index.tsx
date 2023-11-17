@@ -83,7 +83,7 @@ export default function ChildBenefitsClaim() {
     setShowUserPortal(false);
     setShowResolutionScreen(false);
     setShowPega(false);
-    setServiceNotAvailable(false);
+  //  setServiceNotAvailable(false);
   }
 
   function displayPega() {
@@ -102,7 +102,7 @@ export default function ChildBenefitsClaim() {
   }
   
   function displayServiceNotAvailable(){
-    resetAppDisplay();
+   resetAppDisplay();
     setServiceNotAvailable(true);
   }
 
@@ -152,6 +152,7 @@ export default function ChildBenefitsClaim() {
   function returnToPortalPage() {
   
     staySignedIn(setShowTimeoutModal);
+    setServiceNotAvailable(false);
     displayUserPortal();
     PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
     

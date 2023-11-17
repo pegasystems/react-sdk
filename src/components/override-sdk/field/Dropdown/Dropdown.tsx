@@ -40,11 +40,8 @@ export default function Dropdown(props) {
   const refName = propName?.slice(propName.lastIndexOf('.') + 1);
 
   useEffect(()=>{
-
-    if(validatemessage){
     setErrorMessage(validatemessage)
-    }
-
+  
   },[validatemessage])
 
 

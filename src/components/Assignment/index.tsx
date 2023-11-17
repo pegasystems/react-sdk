@@ -9,6 +9,8 @@ import CloseIcon from '@material-ui/icons/Close';
 
 declare const PCore: any;
 
+// a change
+
 export default function Assignment(props) {
   const { getPConnect, children, itemKey, isInModal, banners } = props;
   const thePConn = getPConnect();
@@ -140,7 +142,7 @@ export default function Assignment(props) {
           const navigatePromise = navigateToStep('previous', itemKey);
 
           navigatePromise
-            .then(() => {})
+            .then(() => { })
             .catch(() => {
               showToast(`${localizedVal('Navigation failed!', localeCategory)}`);
             });
@@ -210,7 +212,7 @@ export default function Assignment(props) {
           const finishPromise = finishAssignment(itemKey);
 
           finishPromise
-            .then(() => {})
+            .then(() => { })
             .catch(() => {
               showToast(`${localizedVal('Submit failed!', localeCategory)}`);
             });

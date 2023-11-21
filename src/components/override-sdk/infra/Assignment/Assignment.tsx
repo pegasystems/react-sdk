@@ -182,9 +182,11 @@ export default function Assignment(props) {
                 .getCaseInfo()
                 .c11nEnv.getValue(PCore.getConstants().CASE_INFO.CASE_TYPE_ID);
               onSaveActionSuccess({ caseType, caseID, assignmentID });
+              scrollToTop();
               setErrorSummary(false);
             })
             .catch(() => {
+              scrollToTop();
               showErrorSummary();
             });
 
@@ -201,9 +203,11 @@ export default function Assignment(props) {
             cancelPromise
               .then(data => {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
+                scrollToTop();
                 setErrorSummary(false);
               })
               .catch(() => {
+                scrollToTop();
                 showErrorSummary();
               });
           } else {
@@ -212,9 +216,11 @@ export default function Assignment(props) {
             cancelPromise
               .then(data => {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
+                scrollToTop();
                 setErrorSummary(false);
               })
               .catch(() => {
+                scrollToTop();
                 showErrorSummary();
               });
           }

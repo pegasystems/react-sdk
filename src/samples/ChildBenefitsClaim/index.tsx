@@ -553,7 +553,7 @@ export default function ChildBenefitsClaim() {
  
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage}/>}
 
-        {showStartPage && <StartPage onStart={startNow} onBack={() => {showUserPortal(true);}} />}
+        {showStartPage && <StartPage onStart={startNow} onBack={displayUserPortal} />}
 
         {showUserPortal && <UserPortal beginClaim={beginClaim}>
 

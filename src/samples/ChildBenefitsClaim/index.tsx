@@ -28,6 +28,7 @@ import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvaila
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../sdk-local-component-map';
 import { checkCookie, setCookie } from '../../components/helpers/cookie';
+import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 
 declare const myLoadMashup: any;
 
@@ -74,9 +75,13 @@ export default function ChildBenefitsClaim() {
   const [showSignoutModal, setShowSignoutModal] = useState(false);
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const [serviceNotAvailable, setServiceNotAvailable] = useState(false)
+  const [shutterServicePage,setShutterServicePage] = useState(false);
   const [authType, setAuthType] = useState('gg'); 
   const [caseId, setCaseId] = useState('');
   const history = useHistory();
+  // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
+  const featureID = "ChB"
+  const featureType = "Service"
 
   function resetAppDisplay(){
     setShowStartPage(false);
@@ -120,8 +125,7 @@ export default function ChildBenefitsClaim() {
     setPageTitle();
   }, [showStartPage, showUserPortal, bShowPega, bShowResolutionScreen]);
 
-  
-  
+
 
   const [inprogressClaims, setInprogressClaims] = useState([]);
   const [submittedClaims, setSubmittedClaims] = useState([]);
@@ -267,6 +271,7 @@ export default function ChildBenefitsClaim() {
       'continueCase'
     );
   }
+  
 
   useEffect(() => {
     // Update visibility of UI when bShowPega changes
@@ -432,6 +437,22 @@ export default function ChildBenefitsClaim() {
     // eslint-disable-next-line no-console
     console.log(`SdkComponentMap initialized`);
     })
+    PCore.getDataPageUtils().getPageDataAsync('D_ShutterLookup', 'root',{
+      FeatureID: featureID,
+      FeatureType: featureType}).then(resp => {
+      const isShuttered = resp.Shuttered;
+      if(isShuttered){
+        setShutterServicePage(true);
+        resetAppDisplay();
+      }
+      else{
+        setShutterServicePage(false);
+        displayUserPortal();
+     }
+      }).catch(err => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
 
     // load the Mashup and handle the onPCoreEntry response that establishes the
     //  top level Pega root element (likely a RootContainer)
@@ -550,6 +571,7 @@ export default function ChildBenefitsClaim() {
         <div id='pega-part-of-page'>
           <div id='pega-root'></div>
         </div>
+        {shutterServicePage && <ShutterServicePage/>}
  
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage}/>}
 

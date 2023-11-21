@@ -86,12 +86,19 @@ export default function Assignment(props) {
     const fieldC11nEnv = o.fieldC11nEnv;
     const fieldStateProps = fieldC11nEnv.getStateProps();
     const fieldComponent = fieldC11nEnv.getComponent();
-    let validatemessage = PCore.getMessageManager().getMessages({
+    const errorVal =  PCore.getMessageManager().getMessages({
       property: fieldStateProps.value,
       pageReference: fieldC11nEnv.getPageReference(),
       context: containerID,
       type: 'error'
-      })[0]?.message;
+    });
+    let validatemessage = "";
+    if(errorVal.length > 0){
+      errorVal.forEach(element => {
+      validatemessage = validatemessage + (validatemessage.length>0 ? ". " : "") + element.message;
+      });
+    }
+
     if(validatemessage){
       let fieldId = fieldC11nEnv.getStateProps().fieldId || fieldComponent.props.name;
       if(fieldC11nEnv.meta.type === 'Date'){

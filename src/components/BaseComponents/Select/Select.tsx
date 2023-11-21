@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FormGroup, {makeHintId, makeErrorId} from '../FormGroup/FormGroup';
+import {makeHintId, makeErrorId} from '../FormGroup/FormGroup';
+import FieldSet from '../FormGroup/FieldSet';
 
 export default function Select(props){
 
@@ -10,16 +11,16 @@ export default function Select(props){
   const ariaDescBy = describedbyIds.length !== 0 ? {'aria-describedby' : describedbyIds} : {};
 
   return(
-    <FormGroup {...props}>
+    <FieldSet {...props}>
         <select className="govuk-select" id={name} name={name} onChange={onChange} value={value} {...ariaDescBy}>
           {children}
         </select>
-    </FormGroup>
+    </FieldSet>
   )
 }
 
 Select.propTypes = {
-  ...FormGroup.propTypes,
+  ...FieldSet.propTypes,
   name: PropTypes.string,
   children: PropTypes.node,
   onChange: PropTypes.func,

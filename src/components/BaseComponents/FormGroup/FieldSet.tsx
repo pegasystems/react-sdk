@@ -6,7 +6,7 @@ import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 import { DefaultFormContext } from '../../helpers/HMRCAppContext';
 import InstructionComp from '../../helpers/formatters/ParsedHtml';
 
-export default function FieldSet({legendIsHeading=true, label, name, errorText, hintText, children, fieldsetElementProps, testProps}){
+export default function FieldSet({legendIsHeading=false, label, name, errorText, hintText, children, fieldsetElementProps, testProps}){
   const[ErrorMessage,setErrorMessage] = useState(errorText);
 
   const {instructionText} = useContext(DefaultFormContext);

@@ -7,13 +7,9 @@ export default function ShutterServicePage() {
    const { t } = useTranslation();
   return (
     <MainWrapper>
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-two-thirds">
-            <h1 className="govuk-heading-l">{t('SHUTTER_SERVICE_UNAVAILABLE')}</h1>
-            <p className="govuk-body">{t('SHUTTER_USE_SERVICE_LATER_MESSAGE')}</p>
-          </div>
-        </div>
-        </MainWrapper>
+     <h1 className="govuk-heading-l">{t('SHUTTER_SERVICE_UNAVAILABLE')}</h1>
+     <p className="govuk-body">{t('SHUTTER_USE_SERVICE_LATER_MESSAGE')}</p>
+    </MainWrapper>
   );
 }
 

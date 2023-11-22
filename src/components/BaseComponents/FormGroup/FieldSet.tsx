@@ -32,22 +32,11 @@ export default function FieldSet({legendIsHeading=false, label, name, errorText,
         <legend className={legendClasses}>
           <ConditionalWrapper
             condition={legendIsHeading}
-            wrapper={ child => {
-                      return (
-                      <>
-                        <h1 className="govuk-fieldset__heading">                        
-                          {child}
-                        </h1>
-                        {instructionText && (
-                          <p id='instructions' className='govuk-body'>
-                            <InstructionComp htmlString={instructionText} />
-                          </p>
-                        )}                      
-                      </>)}
-                    }
+            wrapper={ child => <h1 className="govuk-fieldset__heading">{child}</h1>}
             childrenToWrap={label}
           />
         </legend>
+        {instructionText &&  legendIsHeading && <p id='instructions' className='govuk-body'><InstructionComp htmlString={instructionText} /></p>}  
         {hintText && <div id={hintID} className="govuk-hint"> <HintTextComponent htmlString={hintText}/></div>}
         {ErrorMessage  && <p id={errorID} className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{ErrorMessage}</p> }
         {children}

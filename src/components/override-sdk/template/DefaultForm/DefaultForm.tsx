@@ -26,7 +26,7 @@ export default function DefaultForm(props) {
   if (configAlternateDesignSystem?.cssClassHook) {
     cssClassHook = configAlternateDesignSystem.cssClassHook;
   }
-  const [singleQuestionPage, setSingleQuestionPage] = useState(useIsOnlyField().isOnlyField || configAlternateDesignSystem?.hidePageLabel);
+  const [singleQuestionPage, setSingleQuestionPage] = useState(false);
   // repoint the children because they are in a region and we need to not render the region
   // to take the children and create components for them, put in an array and pass as the
   // defaultForm kids
@@ -61,8 +61,11 @@ export default function DefaultForm(props) {
         "value": true,
         "context": "app",
         "isArrayDeepMerge": true
-    }})
-  };
+      }});
+      setSingleQuestionPage(true);
+    }else{
+      setSingleQuestionPage(isOnlyFieldDetails.isOnlyField);
+    }
     return (() => {
       if(configAlternateDesignSystem?.hidePageLabel){
       PCore.getStore().dispatch({type:'SET_PROPERTY', payload:{
@@ -71,10 +74,6 @@ export default function DefaultForm(props) {
         "context": "app",
         "isArrayDeepMerge": true
     }})}})
-  }, []);
-
-  useEffect(() => {    
-    setSingleQuestionPage(isOnlyFieldDetails.isOnlyField);
   }, [isOnlyFieldDetails]);
 
   useEffect(()=>{
@@ -214,12 +213,7 @@ export default function DefaultForm(props) {
       ></ConditionalWrapper>)
 
     })
-  }  
-/* 
-  let nestedInstructionText = null;
-  if(instructionExists) { nestedInstructionText = getFormattedInstructionText()}
-  else if(instructionText) { nestedInstructionText = instructionText}
-*/     
+  }     
 
   return (        
     <ConditionalWrapper

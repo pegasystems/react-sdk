@@ -14,7 +14,7 @@ function makeItemId(index, identifier) {
 }
 
 export default function FormGroup({
-  labelIsHeading = true,
+  labelIsHeading = false,
   label,
   errorText,
   hintText,

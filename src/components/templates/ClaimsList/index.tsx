@@ -73,7 +73,7 @@ export default function ClaimsList(props){
         claimRef : item.pyID,
         dateCreated : DateFormatter.Date(item.pxCreateDateTime, { format: 'DD/MM/YYYY' }),
         children : [],
-        actionButton : buttonContent === t("VIEW_CLAIM") ? '' :
+        actionButton :
           (<Button
               attributes={{className:'govuk-!-margin-top-4 govuk-!-margin-bottom-4'}}
               variant='secondary'

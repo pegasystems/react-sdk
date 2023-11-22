@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { scrollToTop } from '../../../helpers/utils';
-import useAddErrorToPageTitle from '../../../helpers/hooks/useAddErrorToPageTitle';
 import ErrorSummary from '../../../BaseComponents/ErrorSummary/ErrorSummary';
 import { DateErrorFormatter, DateErrorTargetFields } from '../../../helpers/formatters/DateErrorFormatter';
 import Button from '../../../BaseComponents/Button/Button';
@@ -54,8 +53,8 @@ export default function Assignment(props) {
   const context = getPConnect().getContextName();
   const containerID = PCore.getContainerUtils().getContainerAccessOrder(`${context}/${_containerName}`).at(-1)
   useEffect(() => {
-    setPageTitle();
-  },[children])
+    setPageTitle(errorMessages.length > 0);
+  },[children, errorMessages])
 
   let containerName;
   if(thePConn.getDataObject().caseInfo?.assignments && thePConn.getDataObject().caseInfo?.assignments.length > 0){
@@ -87,12 +86,19 @@ export default function Assignment(props) {
     const fieldC11nEnv = o.fieldC11nEnv;
     const fieldStateProps = fieldC11nEnv.getStateProps();
     const fieldComponent = fieldC11nEnv.getComponent();
-    let validatemessage = PCore.getMessageManager().getMessages({
+    const errorVal =  PCore.getMessageManager().getMessages({
       property: fieldStateProps.value,
       pageReference: fieldC11nEnv.getPageReference(),
       context: containerID,
       type: 'error'
-      })[0]?.message;
+    });
+    let validatemessage = "";
+    if(errorVal.length > 0){
+      errorVal.forEach(element => {
+      validatemessage = validatemessage + (validatemessage.length>0 ? ". " : "") + element.message;
+      });
+    }
+
     if(validatemessage){
       let fieldId = fieldC11nEnv.getStateProps().fieldId || fieldComponent.props.name;
       if(fieldC11nEnv.meta.type === 'Date'){
@@ -135,8 +141,6 @@ export default function Assignment(props) {
       bodyfocus.focus();
     }
   }, [children]);
-
-  useAddErrorToPageTitle(errorMessages.length > 0);
 
   function showErrorSummary() {
     setErrorMessages([]);
@@ -185,9 +189,11 @@ export default function Assignment(props) {
                 .getCaseInfo()
                 .c11nEnv.getValue(PCore.getConstants().CASE_INFO.CASE_TYPE_ID);
               onSaveActionSuccess({ caseType, caseID, assignmentID });
+              scrollToTop();
               setErrorSummary(false);
             })
             .catch(() => {
+              scrollToTop();
               showErrorSummary();
             });
 
@@ -204,9 +210,11 @@ export default function Assignment(props) {
             cancelPromise
               .then(data => {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
+                scrollToTop();
                 setErrorSummary(false);
               })
               .catch(() => {
+                scrollToTop();
                 showErrorSummary();
               });
           } else {
@@ -215,9 +223,11 @@ export default function Assignment(props) {
             cancelPromise
               .then(data => {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
+                scrollToTop();
                 setErrorSummary(false);
               })
               .catch(() => {
+                scrollToTop();
                 showErrorSummary();
               });
           }
@@ -281,7 +291,7 @@ export default function Assignment(props) {
             {errorSummary && errorMessages.length > 0 && (
               <ErrorSummary errors={errorMessages.map(item => localizedVal(item.message, localeCategory, localeReference))} />
             )}
-            {(!isOnlyFieldDetails.isOnlyField || containerName.toLowerCase().includes('check your answer')) && <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>}
+            {(!isOnlyFieldDetails.isOnlyField || containerName.toLowerCase().includes('check your answer') || containerName.toLowerCase().includes('declaration')) && <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>}
             <form>
               <AssignmentCard
                 getPConnect={getPConnect}

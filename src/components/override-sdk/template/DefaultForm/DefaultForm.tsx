@@ -14,8 +14,11 @@ export default function DefaultForm(props) {
   const {DFName} = useContext(DefaultFormContext);
   const {instructionText: passedThroughInstructionText} = useContext(DefaultFormContext);
 
-  const [declaration, setDeclaration] = useState({text1: '', warning1: ''});
-  const containerName = getPConnect().getDataObject().caseInfo?.assignments[0]?.name;
+  const [declaration, setDeclaration] = useState({text1: '', warning1: ''});  
+  let  containerName = null;
+  if(getPConnect().getDataObject().caseInfo?.assignments){
+    containerName = getPConnect().getDataObject().caseInfo?.assignments[0].name;
+  }
 
   const { t } = useTranslation();
   let cssClassHook = "";

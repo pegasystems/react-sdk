@@ -1,14 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import GDSCheckbox from '../../../BaseComponents/Checkboxes/Checkbox';
 // import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks'
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
+import { DefaultFormContext }  from '../../../helpers/HMRCAppContext';
 
 export default function CheckboxComponent(props) {
+  const {OverrideLabelValue} = useContext(DefaultFormContext);
+  
   const {
     getPConnect,
     inputProps,
-    // validatemessage,
+    validatemessage,
     hintText,
     readOnly,
     value
@@ -23,17 +26,15 @@ export default function CheckboxComponent(props) {
   // relevant handler (mainly - non-exclusive checkboxes should have a handler that clears the exclusive option ,
   // and exclusive option will need a different handler to clear all other items )
   const {exclusiveOption, exclusiveOptionChangeHandler = () => {}, index} = getPConnect().getConfigProps();
-  
+  // const {isOnlyField, overrideLabel} = useIsOnlyField(props.displayOrder);
   /* retaining for future reference, incase changes need to be reverted
-  const {isOnlyField, overrideLabel} = useIsOnlyField(props.displayOrder);
+ 
   if(isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label; */
   
-  /* const[errorMessage,setErrorMessage] = useState(validatemessage);
-  useEffect(()=>{
-    if(validatemessage){
-    setErrorMessage(validatemessage)
-    }
-  },[validatemessage]) */
+//    const[errorMessage,setErrorMessage] = useState(validatemessage);
+//   useEffect(()=>{
+//     setErrorMessage(validatemessage)
+//  },[validatemessage]) 
   
   // build name for id, allows for error message navigation to field
   const propertyContext = getPConnect().options.pageReference ? getPConnect().options.pageReference.split('.').pop() : '';
@@ -58,7 +59,27 @@ export default function CheckboxComponent(props) {
   return (
     <>    
       {exclusiveOption && <div className="govuk-checkboxes__divider">or</div>}
-      <GDSCheckbox
+
+      {/* If its the declaration view then group the checkboxes separately so the error message is assigned correctly */}
+      {OverrideLabelValue.trim().toLowerCase() === 'declaration' ? (
+        <div className={`govuk-form-group ${validatemessage ? 'govuk-form-group--error' : ''}`}>
+          {validatemessage && <p id={`${name}-error`} className="govuk-error-message">
+            <span className="govuk-visually-hidden">Error:</span> {validatemessage}
+          </p>}
+          <GDSCheckbox
+          item={{checked: value, label: caption, readOnly:false, hintText}}
+          index={index}
+          name={name}
+          inputProps={...inputProps}
+          onChange={(evt) => {
+            handleChange(evt)
+            exclusiveOptionChangeHandler();                
+          }}
+          key={name}
+              />
+        </div>
+      ) : (
+        <GDSCheckbox
         item={{checked: value, label: caption, readOnly:false, hintText}}
         index={index}
         name={name}
@@ -69,6 +90,7 @@ export default function CheckboxComponent(props) {
         }}
         key={name}
             />
+      )}
     </>
   );
 }

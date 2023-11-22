@@ -63,7 +63,7 @@ export default function Date(props) {
   }, [day, month, year]);
 
   useEffect(() => {
-    if (validatemessage) {
+   // if (validatemessage) {
       setEditedValidateMessage(
         DateErrorFormatter(
           validatemessage,
@@ -91,7 +91,7 @@ export default function Date(props) {
         }
       }
       setSpecificErrors(specificError);
-    }
+   // }
   }, [validatemessage]);
 
   // PM - Handlers for each part of date inputs, update state for each respectively

@@ -37,7 +37,7 @@ export default function Details(props) {
       wrapper = {childrenForWrap => <MainWrapper>{childrenForWrap}</MainWrapper>}
       childrenToWrap={
         <>        
-          {label && context && <h1 className='govuk-heading-l'>{localizedVal(label, localeCategory /* ,localeReference */)} details</h1>}          
+          {label && context && <h1 className='govuk-heading-l'>{localizedVal(label, localeCategory /* ,localeReference */)} details</h1>} 
           {children} 
         </> 
       }></ConditionalWrapper>                

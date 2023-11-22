@@ -28,6 +28,7 @@ import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvaila
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../sdk-local-component-map';
 import { checkCookie, setCookie } from '../../components/helpers/cookie';
+import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 
 declare const myLoadMashup: any;
 
@@ -74,8 +75,46 @@ export default function ChildBenefitsClaim() {
   const [showSignoutModal, setShowSignoutModal] = useState(false);
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const [serviceNotAvailable, setServiceNotAvailable] = useState(false)
+  const [shutterServicePage,setShutterServicePage] = useState(false);
   const [authType, setAuthType] = useState('gg'); 
+  const [caseId, setCaseId] = useState('');
   const history = useHistory();
+  // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
+  const featureID = "ChB"
+  const featureType = "Service"
+
+  function resetAppDisplay(){
+    setShowStartPage(false);
+    setShowUserPortal(false);
+    setShowResolutionScreen(false);
+    setShowPega(false);
+  //  setServiceNotAvailable(false);
+  }
+
+  function displayPega() {
+    resetAppDisplay();
+    setShowPega(true);
+  }
+
+  function displayUserPortal(){
+    resetAppDisplay();
+    setShowUserPortal(true);
+  }
+
+  function displayStartPage(){
+    resetAppDisplay();
+    setShowStartPage(true);
+  }
+  
+  function displayServiceNotAvailable(){
+   resetAppDisplay();
+    setServiceNotAvailable(true);
+  }
+
+  function displayResolutionScreen(){
+    resetAppDisplay();
+    setShowResolutionScreen(true);
+  }
 
   const { t } = useTranslation();
   let operatorId = '';
@@ -85,6 +124,8 @@ export default function ChildBenefitsClaim() {
   useEffect(()=> {
     setPageTitle();
   }, [showStartPage, showUserPortal, bShowPega, bShowResolutionScreen]);
+
+
 
   const [inprogressClaims, setInprogressClaims] = useState([]);
   const [submittedClaims, setSubmittedClaims] = useState([]);
@@ -96,8 +137,7 @@ export default function ChildBenefitsClaim() {
   }
 
   function createCase() { 
-    setShowStartPage(false);
-    setShowPega(true);
+    displayPega();
     PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP);
   }
 
@@ -111,30 +151,27 @@ export default function ChildBenefitsClaim() {
   function beginClaim() {
     // Added to ensure that clicking begin claim restarts timeout
     staySignedIn(setShowTimeoutModal);
-    setShowStartPage(true);
-    setShowUserPortal(false);
+    displayStartPage();
   }
   function returnToPortalPage() {
   
     staySignedIn(setShowTimeoutModal);
-    setShowStartPage(false);
-    setShowUserPortal(true);
-    setShowPega(false);
-    setShowResolutionScreen(false);
     setServiceNotAvailable(false);
+    displayUserPortal();
+    PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
+    
   }
   function assignmentFinished() {
-    setShowStartPage(false);
-    setShowPega(false);
-    setShowResolutionScreen(true);
+    displayResolutionScreen();    
+    const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
+    const caseID = PCore.getStoreValue('.ID', 'caseInfo' , context);
+    setCaseId(caseID);
+    PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
   }
 
-  function closeContainer(){
-    setShowPega(false);
-    setShowStartPage(false);
-    setShowUserPortal(true);
-    setShowResolutionScreen(false);
-  }
+   function closeContainer(){
+    displayUserPortal();
+   }
 
   // Calls data page to fetch in progress claims, then for each result (limited to first 10), calls D_Claim to get extra details about each 'assignment'
   // to display within the claim 'card' in the list. This then sets inprogress claims state value to the list of claims data.
@@ -152,12 +189,9 @@ export default function ChildBenefitsClaim() {
   };
 
   function cancelAssignment() {
-    // PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext(`${PCore.getConstants().APP.APP}/primary`), {skipDirtyCheck :true});
     fetchInProgressClaimsData();
-    setShowStartPage(false);
-    setShowUserPortal(true);
-    setShowPega(false);
-    setShowResolutionScreen(false);
+    displayUserPortal();
+    PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
   }
 
   function establishPCoreSubscriptions() {
@@ -173,7 +207,6 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       "assignmentFinished",
       () => {
-
         setShowStartPage(false);
         setShowUserPortal(false);
         setShowPega(false);
@@ -182,7 +215,7 @@ export default function ChildBenefitsClaim() {
         const status =  (PCore.getStoreValue(".pyStatusWork","caseInfo.content",context))
         if(status === "Resolved-Discarded"){
       
-        setServiceNotAvailable(true);
+        displayServiceNotAvailable();
       
         PCore.getContainerUtils().closeContainerItem(context);
         }
@@ -198,20 +231,18 @@ export default function ChildBenefitsClaim() {
       'cancelAssignment'
     );
 
-    PCore.getPubSubUtils().subscribe(
-      PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
-      () => {
-        closeContainer();
-      },
-      'closeContainer'
-    );
+     PCore.getPubSubUtils().subscribe(
+       PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
+       () => {
+     closeContainer();
+       },
+       'closeContainer'
+     );
 
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.ASSIGNMENT_OPENED,
       () => {
-        setShowStartPage(false);
-        setShowUserPortal(false);
-        setShowPega(true);
+        displayPega();
       },
       'continueAssignment'
     );
@@ -219,10 +250,7 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_CREATED,
       () => {
-      
-        setShowStartPage(false);
-        setShowUserPortal(false);
-        setShowPega(true);
+        displayPega();
       },
       'continueCase'
     );
@@ -238,13 +266,12 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_OPENED,
       () => {
-        setShowStartPage(false);
-        setShowUserPortal(false);
-        setShowPega(true);
+        displayPega();
       },
       'continueCase'
     );
   }
+  
 
   useEffect(() => {
     // Update visibility of UI when bShowPega changes
@@ -370,6 +397,7 @@ export default function ChildBenefitsClaim() {
 
       // TODO : Consider refactoring 'en_GB' reference as this may need to be set elsewhere
       PCore.getEnvironmentInfo().setLocale(sessionStorage.getItem('rsdk_locale') || 'en_GB');
+      PCore.getLocaleUtils().resetLocaleStore();
       PCore.getLocaleUtils().loadLocaleResources([PCore.getLocaleUtils().GENERIC_BUNDLE_KEY, '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE']);
       initialRender(renderObj);
 
@@ -409,6 +437,22 @@ export default function ChildBenefitsClaim() {
     // eslint-disable-next-line no-console
     console.log(`SdkComponentMap initialized`);
     })
+    PCore.getDataPageUtils().getPageDataAsync('D_ShutterLookup', 'root',{
+      FeatureID: featureID,
+      FeatureType: featureType}).then(resp => {
+      const isShuttered = resp.Shuttered;
+      if(isShuttered){
+        setShutterServicePage(true);
+        resetAppDisplay();
+      }
+      else{
+        setShutterServicePage(false);
+        displayUserPortal();
+     }
+      }).catch(err => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
 
     // load the Mashup and handle the onPCoreEntry response that establishes the
     //  top level Pega root element (likely a RootContainer)
@@ -467,7 +511,7 @@ export default function ChildBenefitsClaim() {
         PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
         'cancelAssignment'
       );
-      /* PCore?.getPubSubUtils().unsubscribe(
+      PCore?.getPubSubUtils().unsubscribe(
         PCore.getConstants().PUB_SUB_EVENTS.ASSIGNMENT_OPENED,
         'continueAssignment'
       );
@@ -480,7 +524,7 @@ export default function ChildBenefitsClaim() {
       PCore?.getPubSubUtils().unsubscribe(
         PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
         'assignmentFinished'
-      ); */
+      );
     };
   }, []);
 
@@ -527,10 +571,11 @@ export default function ChildBenefitsClaim() {
         <div id='pega-part-of-page'>
           <div id='pega-root'></div>
         </div>
+        {shutterServicePage && <ShutterServicePage/>}
  
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage}/>}
 
-        {showStartPage && <StartPage onStart={startNow} onBack={closeContainer} />}
+        {showStartPage && <StartPage onStart={startNow} onBack={displayUserPortal} />}
 
         {showUserPortal && <UserPortal beginClaim={beginClaim}>
 
@@ -553,7 +598,7 @@ export default function ChildBenefitsClaim() {
 
       </UserPortal>}
 
-      {bShowResolutionScreen && <ConfirmationPage />}
+      {bShowResolutionScreen && <ConfirmationPage caseId={caseId} />}
 
       </div>
 

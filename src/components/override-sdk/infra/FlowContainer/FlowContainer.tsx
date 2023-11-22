@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardHeader, Avatar, Typography } from '@material-ui/core';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-import { Alert } from '@material-ui/lab';
+// import { Alert } from '@material-ui/lab';
 
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
@@ -45,8 +45,8 @@ export default function FlowContainer(props) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const [todo_context, setTodoContext] = useState('');
 
-  const [caseMessages, setCaseMessages] = useState('');
-  const [bHasCaseMessages, setHasCaseMessages] = useState(false);
+  // const [caseMessages, setCaseMessages] = useState('');
+ // const [bHasCaseMessages,setHasCaseMessages] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const [checkSvg, setCheckSvg] = useState('');
 
@@ -54,8 +54,8 @@ export default function FlowContainer(props) {
   const [containerName, setContainerName] = useState('');
   const [buildName, setBuildName] = useState('');
   const [bShowConfirm, setShowConfirm] = useState(false);
-  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
-  const localeCategory = 'Messages';
+ // const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+ // const localeCategory = 'Messages';
 
   function initContainer() {
     const ourPConn = getPConnect();
@@ -257,15 +257,16 @@ export default function FlowContainer(props) {
     }
 
     // if have caseMessage show message and end
-    const theCaseMessages = localizedVal(thePConn.getValue('caseMessages'), localeCategory);
+   // const theCaseMessages = localizedVal(thePConn.getValue('caseMessages'), localeCategory);
 
-    if (theCaseMessages || !hasAssignments()) {
+   // if (theCaseMessages || !hasAssignments()) {
+      if ( !hasAssignments()) {
       // Temp fix for 8.7 change: confirmationNote no longer coming through in caseMessages$.
       // So, if we get here and caseMessages$ is empty, use default value in DX API response
-      setCaseMessages(
-        theCaseMessages || localizedVal('Thank you! The next step in this case has been routed appropriately.', localeCategory)
-      );
-      setHasCaseMessages(true);
+      // setCaseMessages(
+      //   theCaseMessages || localizedVal('Thank you! The next step in this case has been routed appropriately.', localeCategory)
+      // );
+    //  setHasCaseMessages(true);
       setShowConfirm(true);
 
       // publish this "assignmentFinished" for mashup, need to get approved as a standard
@@ -275,7 +276,7 @@ export default function FlowContainer(props) {
       // setCheckSvg(Utils.getImageSrc('check', Utils.getSDKStaticConentUrl()));
     } else {
       // debugger;
-      setHasCaseMessages(false);
+     // setHasCaseMessages(false);
       setShowConfirm(false);
     }
 
@@ -388,11 +389,11 @@ export default function FlowContainer(props) {
             </div>
           )
       }
-      {bHasCaseMessages && (
+      {/* {bHasCaseMessages && (
         <div>
           <Alert severity='success'>{caseMessages}</Alert>
         </div>
-      )}
+      )} */}
       {bShowConfirm && bShowBanner && <div>{arNewChildrenAsReact}</div>}
     </div>
   );

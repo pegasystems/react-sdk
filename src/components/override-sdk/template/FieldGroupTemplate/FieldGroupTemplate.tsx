@@ -122,7 +122,7 @@ export default function Group(props) {
     }
 
     return (<>
-      {heading && <div id='heading' className='govuk-body'>{heading}</div>}
+      {heading && <div id='heading' className='govuk-hint'>{heading}</div>}
       {instructions && instructions !== 'none' && <div id='instructions' className='govuk-body'><InstructionComp htmlString={instructions} /></div>}
       {children}
     </>);

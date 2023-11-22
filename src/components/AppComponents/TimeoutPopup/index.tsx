@@ -26,7 +26,7 @@ export default function TimeoutPopup(props){
     <Modal show={show} id='timeout-popup'>
         <div>
             <h1 id='govuk-timeout-heading' className='govuk-heading-m push--top'>
-                {t('YOU_ARE_ABOUT_TO_BE_SIGNEDOUT')}
+                {t('YOU_ARE_ABOUT_TO_SIGN_OUT')}
             </h1>
             <p className='govuk-body'>
                 {t('FOR_YOUR_SECURITY_WE_WILL_SIGN_YOU_OUT')} <span className="govuk-!-font-weight-bold">{t('2_MINUTES')}</span>

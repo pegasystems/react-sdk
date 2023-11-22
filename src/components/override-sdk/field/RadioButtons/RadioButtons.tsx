@@ -15,6 +15,7 @@ export default function RadioButtons(props) {
     readOnly,
     value,
     name,
+    
     testId,
     fieldMetadata
   } = props;
@@ -24,14 +25,10 @@ export default function RadioButtons(props) {
   if(isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
 
   const[errorMessage,setErrorMessage] = useState(validatemessage);
-
   useEffect(()=>{
-
-    if(validatemessage){
     setErrorMessage(validatemessage)
-    }
-
   },[validatemessage])
+ 
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();
   const className = thePConn.getCaseInfo().getClassName();

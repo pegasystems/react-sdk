@@ -7,6 +7,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
+// a change
+
 declare const PCore: any;
 
 export default function Assignment(props) {
@@ -140,7 +142,7 @@ export default function Assignment(props) {
           const navigatePromise = navigateToStep('previous', itemKey);
 
           navigatePromise
-            .then(() => {})
+            .then(() => { })
             .catch(() => {
               showToast(`${localizedVal('Navigation failed!', localeCategory)}`);
             });
@@ -210,7 +212,7 @@ export default function Assignment(props) {
           const finishPromise = finishAssignment(itemKey);
 
           finishPromise
-            .then(() => {})
+            .then(() => { })
             .catch(() => {
               showToast(`${localizedVal('Submit failed!', localeCategory)}`);
             });

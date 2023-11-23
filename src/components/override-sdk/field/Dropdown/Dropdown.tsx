@@ -79,12 +79,11 @@ export default function Dropdown(props) {
   }
 
   return (
-    <>
       <Select
         label={label}
         hintText={helperText}
         errorText={errorMessage}
-        labelIsHeading={isOnlyField}
+        legendIsHeading={isOnlyField}
         onChange={handleChange}
         value={value}
         name={name}
@@ -104,6 +103,5 @@ export default function Dropdown(props) {
           );
         })}
       </Select>
-    </>
   );
 }

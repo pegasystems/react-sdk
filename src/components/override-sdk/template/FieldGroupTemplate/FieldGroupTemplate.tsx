@@ -122,9 +122,11 @@ export default function Group(props) {
     }
 
     return (<>
-      {heading && <div id='heading' className='govuk-hint'>{heading}</div>}
-      {instructions && instructions !== 'none' && <div id='instructions' className='govuk-body'><InstructionComp htmlString={instructions} /></div>}
+    <FieldSet hintText={instructions} label={heading} legendIsHeading={isOnlyField} errorText={errors.join(' ').trim() !== '' ? errors.join(' ').trim() : null} {...props}>
+      {/* {heading && <div id='heading' className='govuk-hint'>{heading}</div>}
+      {instructions && instructions !== 'none' && <div id='instructions' className='govuk-body'><InstructionComp htmlString={instructions} /></div>} */}
       {children}
+      </FieldSet>
     </>);
   }
   return null;

@@ -17,6 +17,9 @@ export default function FieldSet({legendIsHeading=false, label, name, errorText,
   },[errorText])
   const formGroupDivClasses = `govuk-form-group ${ErrorMessage?'govuk-form-group--error':""}`.trim();
   const legendClasses = ` ${(legendIsHeading) ?"govuk-fieldset__legend govuk-fieldset__legend--l":"govuk-label govuk-label--m"}`.trim();
+  const hintTextExists = !(['none', '', null, undefined].includes(hintText));
+  console.log(hintTextExists);
+
 
   // TODO Reconsider how to generate hintID and errorID for aria-described by
   const describedByIDs : Array<string> = [];
@@ -37,7 +40,7 @@ export default function FieldSet({legendIsHeading=false, label, name, errorText,
           />
         </legend>
         {instructionText &&  legendIsHeading && <p id='instructions' className='govuk-body'><InstructionComp htmlString={instructionText} /></p>}  
-        {hintText && <div id={hintID} className="govuk-hint"> <HintTextComponent htmlString={hintText}/></div>}
+        {hintTextExists && <div id={hintID} className="govuk-hint"> <HintTextComponent htmlString={hintText}/></div>}
         {ErrorMessage  && <p id={errorID} className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{ErrorMessage}</p> }
         {children}
     </fieldset>

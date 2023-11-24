@@ -154,6 +154,8 @@ test.describe('E2E test', () => {
 
     await page.locator('button:has-text("submit")').click();
 
+    await expect(page.locator('div[id="Assignment"]')).not.toBeVisible();
+
   }, 10000);
 
   test('should modify(if required) the actual services/packages to be installed and resolve the case', async ({

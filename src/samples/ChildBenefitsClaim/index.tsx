@@ -39,9 +39,8 @@ let signoutTimeout = null;
 let milisecondsTilSignout = 115 * 1000;
 let milisecondsTilWarning = 780 * 1000;
 
-
 // Starts the timeout for warning, after set time shows the modal and starts signout timer
-function initTimeout(setShowTimeoutModal){  
+function initTimeout(setShowTimeoutModal){
   applicationTimeout = setTimeout(
     () => {
       setShowTimeoutModal(true)
@@ -49,6 +48,7 @@ function initTimeout(setShowTimeoutModal){
     },
     milisecondsTilWarning
   ); 
+  console.warn("Init Timeout Set")
 }
 
 // Clears exisiting timeouts, sends 'ping' to pega to keep session alive and then initiates the timout
@@ -119,7 +119,12 @@ export default function ChildBenefitsClaim() {
   const { t } = useTranslation();
   let operatorId = '';
   
-
+  // On page render reset the timeout functionality. 
+  useEffect(()=>{
+    clearTimeout(applicationTimeout);  
+    clearTimeout(signoutTimeout);
+    initTimeout(setShowTimeoutModal)
+  },[applicationTimeout, signoutTimeout, setShowTimeoutModal,initTimeout])
   
   useEffect(()=> {
     setPageTitle();

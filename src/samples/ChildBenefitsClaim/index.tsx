@@ -47,8 +47,7 @@ function initTimeout(setShowTimeoutModal){
       signoutTimeout = setTimeout(() => { logout() }, milisecondsTilSignout);
     },
     milisecondsTilWarning
-  ); 
-  console.warn("Init Timeout Set")
+  );
 }
 
 // Clears exisiting timeouts, sends 'ping' to pega to keep session alive and then initiates the timout

@@ -118,11 +118,13 @@ export default function ChildBenefitsClaim() {
   const { t } = useTranslation();
   let operatorId = '';
   
-  // On page render reset the timeout functionality. 
+  // On render reset the timeout functionality.
   useEffect(()=>{
-    clearTimeout(applicationTimeout);  
-    clearTimeout(signoutTimeout);
-    initTimeout(setShowTimeoutModal)
+    initTimeout(setShowTimeoutModal);
+    return () => {
+      clearTimeout(applicationTimeout);
+      clearTimeout(signoutTimeout);
+    }
   },[applicationTimeout, signoutTimeout, setShowTimeoutModal,initTimeout])
   
   useEffect(()=> {

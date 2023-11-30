@@ -62,10 +62,13 @@ export default function Assignment(props) {
   }, [children])
 
   useEffect(() => {
-     setTimeout(()=>{ 
+     const updateErrorTimeOut = setTimeout(()=>{ 
         setPageTitle(errorMessages.length > 0);  
      }, 400);
-  },[children, errorMessages])
+     return ()=>{
+      clearTimeout(updateErrorTimeOut);
+     }
+  },[errorMessages])
 
   let containerName;
   if(thePConn.getDataObject().caseInfo?.assignments && thePConn.getDataObject().caseInfo?.assignments.length > 0){

@@ -52,8 +52,19 @@ export default function Assignment(props) {
   const _containerName =  getPConnect().getContainerName();
   const context = getPConnect().getContextName();
   const containerID = PCore.getContainerUtils().getContainerAccessOrder(`${context}/${_containerName}`).at(-1)
+  
+  // Fetches and filters any validatemessages on fields on the page, ordering them correctly based on the display order set in DefaultForm.
+  // Also adds the relevant fieldID for each field to allow error summary links to move focus when clicked. This process uses the
+  // name prop on the input field in most cases, however where there is a deviation (for example, in Date component, where the first field
+  // has -day appended), a fieldId stateprop will be defined and this will be used instead.
   useEffect(() => {
-    setPageTitle(errorMessages.length > 0);
+    checkErrorMessages();
+  }, [children])
+
+  useEffect(() => {
+     setTimeout(()=>{ 
+        setPageTitle(errorMessages.length > 0);  
+     }, 400);
   },[children, errorMessages])
 
   let containerName;
@@ -125,15 +136,6 @@ export default function Assignment(props) {
     errorStateProps.sort((a:OrderedErrorMessage, b:OrderedErrorMessage)=>{return a.displayOrder > b.displayOrder ? 1:-1})
     setErrorMessages([...errorStateProps]);
   }
-
-  // Fetches and filters any validatemessages on fields on the page, ordering them correctly based on the display order set in DefaultForm.
-  // Also adds the relevant fieldID for each field to allow error summary links to move focus when clicked. This process uses the
-  // name prop on the input field in most cases, however where there is a deviation (for example, in Date component, where the first field
-  // has -day appended), a fieldId stateprop will be defined and this will be used instead.
-  useEffect(() => {
-    checkErrorMessages();
-    //
-  }, [children])
 
   useEffect(() => {
     if (!errorSummary) {
@@ -250,9 +252,9 @@ export default function Assignment(props) {
             })
             .catch(() => {
               scrollToTop();
-              showErrorSummary();
+              showErrorSummary();             
             });
-
+          
           break;
         }
 

@@ -125,7 +125,7 @@ export default function ChildBenefitsClaim() {
       clearTimeout(applicationTimeout);
       clearTimeout(signoutTimeout);
     }
-  },[applicationTimeout, signoutTimeout, setShowTimeoutModal,initTimeout])
+  },[])
   
   useEffect(()=> {
     setPageTitle();

@@ -101,6 +101,17 @@ export default function DefaultForm(props) {
     }
   },[])
 
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // Perform actions before the component unloads
+      PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
   const getFormattedInstructionText = () => {
     if(!instructionExists){
       return null;

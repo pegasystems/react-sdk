@@ -2,12 +2,14 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 
+
 export default function WarningText(props) {
    const {date} = props;
-   const currentDate = new Date(date).toLocaleDateString('en-GB', {
+   const parts = date.split('/')
+   const currentDate = new Date(parts[2], parts[1] - 1, parts[0]).toLocaleDateString('en-GB', {
     day: "numeric",
-  month: "short",
-  year: "numeric"
+    month: "long",
+    year: "numeric",
   })
    const { t } = useTranslation();
  

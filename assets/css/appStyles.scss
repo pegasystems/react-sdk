@@ -46,7 +46,4 @@ span.govuk-body.govuk-\!-font-weight-bold.read-only:last-of-type{
 div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type~br{
   display:none;
 }
-.govuk-summary-list:not(.govuk-summary-list:has(+ :not(.govuk-summary-list))):not(:last-of-type){
-
-}
 

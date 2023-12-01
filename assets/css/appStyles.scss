@@ -27,6 +27,7 @@
 /* Used to improve visual display of CYA pages after BUG-7232 changes. May be removed after CYA page rework */
 .govuk-summary-list:not(.govuk-summary-list:has(+:not(.govuk-summary-list))):not(:last-of-type){
   margin-bottom: 0px;
+  display:inline-block;
 }
 
 .govuk-font-global{
@@ -43,5 +44,9 @@ span.govuk-body.govuk-\!-font-weight-bold.read-only:last-of-type{
 }
 
 div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type~br{
-  display:none
+  display:none;
 }
+.govuk-summary-list:not(.govuk-summary-list:has(+ :not(.govuk-summary-list))):not(:last-of-type){
+
+}
+

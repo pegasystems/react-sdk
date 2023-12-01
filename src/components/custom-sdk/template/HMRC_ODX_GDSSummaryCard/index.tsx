@@ -90,7 +90,7 @@ const handleOnClick = (action: string) => {
           gap: 2
         }}
       >
-       {singleChild && <NotificationBanner/>}
+       {singleChild && <NotificationBanner content={t('NOTIFICATION_BANNER_CONTENT')}/>}
         <div className="govuk-summary-card">
           <div className="govuk-summary-card__title-wrapper">
             <h2 className="govuk-summary-card__title">{itemName}</h2>

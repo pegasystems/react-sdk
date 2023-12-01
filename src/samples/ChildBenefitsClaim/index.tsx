@@ -30,6 +30,7 @@ import localSdkComponentMap from '../../../sdk-local-component-map';
 import { checkCookie, setCookie } from '../../components/helpers/cookie';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 
+
 declare const myLoadMashup: any;
 
 /* Time out modal functionality */
@@ -78,6 +79,7 @@ export default function ChildBenefitsClaim() {
   const [shutterServicePage,setShutterServicePage] = useState(false);
   const [authType, setAuthType] = useState('gg'); 
   const [caseId, setCaseId] = useState('');
+  const [showPortalBanner, setShowPortalBanner] = useState(false);
   const history = useHistory();
   // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
   const featureID = "ChB"
@@ -161,11 +163,14 @@ export default function ChildBenefitsClaim() {
     PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
     
   }
-  function assignmentFinished() {
-    displayResolutionScreen();    
+  function getClaimsCaseID(){
     const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
     const caseID = PCore.getStoreValue('.ID', 'caseInfo' , context);
     setCaseId(caseID);
+  }
+  function assignmentFinished() {
+    displayResolutionScreen();    
+    getClaimsCaseID();
     PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
   }
 
@@ -189,7 +194,9 @@ export default function ChildBenefitsClaim() {
   };
 
   function cancelAssignment() {
+    
     fetchInProgressClaimsData();
+    getClaimsCaseID();
     displayUserPortal();
     PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
   }
@@ -227,6 +234,8 @@ export default function ChildBenefitsClaim() {
       PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
       () => {
         cancelAssignment();
+        setShowPortalBanner(true);
+
       },
       'cancelAssignment'
     );
@@ -258,7 +267,8 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CREATE_STAGE_SAVED,
       () => {
-        cancelAssignment()
+        cancelAssignment();
+        setShowPortalBanner(true);
       },
       'savedCase'
     );
@@ -577,7 +587,8 @@ export default function ChildBenefitsClaim() {
 
         {showStartPage && <StartPage onStart={startNow} onBack={displayUserPortal} />}
 
-        {showUserPortal && <UserPortal beginClaim={beginClaim}>
+        {showUserPortal && <UserPortal beginClaim={beginClaim}  showPortalBanner={ showPortalBanner}>
+       
 
           {!loadinginProgressClaims && inprogressClaims.length !== 0 && (
             <ClaimsList
@@ -586,6 +597,7 @@ export default function ChildBenefitsClaim() {
               title={t("CLAIMS_IN_PROGRESS")}
               rowClickAction="OpenAssignment"
               buttonContent={t("CONTINUE_CLAIM")}
+              caseId = {caseId}
           />)}
 
           {!loadingsubmittedClaims && submittedClaims.length !== 0 && (

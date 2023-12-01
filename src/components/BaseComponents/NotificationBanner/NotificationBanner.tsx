@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next';
 
 import '../../../../assets/css/appStyles.scss';
 
-export default function NotificationBanner() {
- 
+export default function NotificationBanner(props) {
 
+ const {content} = props;
   const { t } = useTranslation();
 
  
@@ -21,7 +21,9 @@ export default function NotificationBanner() {
   </div>
   <div className="govuk-notification-banner__content">
     <p className="govuk-notification-banner__heading">
-    {t('NOTIFICATION_BANNER_CONTENT')}
+    {/* {t('NOTIFICATION_BANNER_CONTENT')} */}
+    {content}
+  
     </p>
   </div>
 </div>

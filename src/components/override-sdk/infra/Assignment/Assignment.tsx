@@ -9,6 +9,7 @@ import setPageTitle from '../../../helpers/setPageTitleHelpers';
 import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import MainWrapper from '../../../BaseComponents/MainWrapper';
+import ShutterServicePage from '../../../../components/AppComponents/ShutterServicePage';
 
 
 export interface ErrorMessageDetails {
@@ -48,6 +49,7 @@ export default function Assignment(props) {
   const isOnlyFieldDetails  = useIsOnlyField(null, children);// .isOnlyField;
   const [errorSummary, setErrorSummary] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Array<OrderedErrorMessage>>([]);
+  const [serviceShuttered, setServiceShuttered] = useState(false);
 
   const _containerName =  getPConnect().getContainerName();
   const context = getPConnect().getContextName();
@@ -152,6 +154,30 @@ export default function Assignment(props) {
     checkErrorMessages();
     setErrorSummary(true);
   }
+
+  function isServiceShuttered() {
+    let featureID = "Chb";
+    let featureType = "Service";
+
+    PCore.getDataPageUtils().getPageDataAsync('D_ShutterLookup', 'root',{
+      FeatureID: featureID,
+      FeatureType: featureType}).then(resp => {
+      const isShuttered = resp.Shuttered;
+      if(isShuttered){
+        setServiceShuttered(true);
+      }
+      else{
+        setServiceShuttered(false);
+     }
+      }).catch(err => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
+  }
+
+  useEffect(()=>{
+    isServiceShuttered();
+  },[])
 
   function onSaveActionSuccess(data) {
     actionsAPI.cancelAssignment(itemKey).then(() => {
@@ -278,6 +304,7 @@ export default function Assignment(props) {
 
   return (
     <>
+    {!serviceShuttered && (
       <div id='Assignment'>
         {arSecondaryButtons?.map(sButton =>
           sButton['name'] === 'Previous' ? (
@@ -317,6 +344,8 @@ export default function Assignment(props) {
             </a><br/><br/>
           </MainWrapper>
       </div>
+      )}
+      {serviceShuttered && <ShutterServicePage />}
     </>
   );
 }

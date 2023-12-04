@@ -26,11 +26,9 @@ export default function Assignment(props) {
   const { getPConnect, children, itemKey, isCreateStage } = props;
   const thePConn = getPConnect();
   const [arSecondaryButtons, setArSecondaryButtons] = useState([]);
-  const [actionButtons, setActionButtons] = useState<any>({});
-  const [stateChange, setStateChange] = useState(false);
+  const [actionButtons, setActionButtons] = useState<any>({});  
   const { t } = useTranslation();
-
-  PCore.getStore().subscribe(() => setStateChange(true));
+  
 
   const AssignmentCard = SdkComponentMap.getLocalComponentMap()['AssignmentCard'] ? SdkComponentMap.getLocalComponentMap()['AssignmentCard'] : SdkComponentMap.getPegaProvidedComponentMap()['AssignmentCard'];
 
@@ -47,11 +45,8 @@ export default function Assignment(props) {
   const cancelCreateStageAssignment = actionsAPI.cancelCreateStageAssignment.bind(actionsAPI);
   // const showPage = actionsAPI.showPage.bind(actionsAPI);
 
-  useEffect( () => {
-    stateChange && setStateChange(false);
-  }, [stateChange])
-
-  const isOnlyFieldDetails  = useIsOnlyField(null, [children, stateChange]);// .isOnlyField;
+  
+  const isOnlyFieldDetails  = useIsOnlyField(null, children);// .isOnlyField;
   const [errorSummary, setErrorSummary] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Array<OrderedErrorMessage>>([]);
 

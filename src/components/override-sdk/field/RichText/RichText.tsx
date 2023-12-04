@@ -1,7 +1,5 @@
-import React, { useRef } from 'react';
-import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
-
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import React from 'react';
+// import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps'
 import InstructionComp from '../../../helpers/formatters/ParsedHtml';
 import { registerNonEditableField } from '../../../helpers/hooks/QuestionDisplayHooks';
@@ -12,28 +10,21 @@ interface RichTextProps extends PConnFieldProps {
 }
 
 export default function RichText(props: RichTextProps) {
-  // Get emitted components from map (so we can get any override that may exist)
-  //const FieldValueList = getComponentFromMap('FieldValueList');
-  //const RichTextEditor = getComponentFromMap('RichTextEditor');
-
   registerNonEditableField(true);
 
-  const { getPConnect, value, placeholder, validatemessage, label, hideLabel, helperText, testId, displayMode, additionalProps } = props;
-  const pConn = getPConnect();
-  const editorRef: any = useRef(null);
+  const { value } = props;
+ 
 
   let { readOnly, required, disabled } = props;
   [readOnly, required, disabled] = [readOnly, required, disabled].map((prop) => prop === true || (typeof prop === 'string' && prop === 'true'));
 
-  const helperTextToDisplay = validatemessage || helperText;
-
-  /*if (displayMode === 'LABELS_LEFT') {
+  /* if (displayMode === 'LABELS_LEFT') {
     return <FieldValueList name={hideLabel ? '' : label} value={value} />;
   }
 
   if (displayMode === 'STACKED_LARGE_VAL') {
     return <FieldValueList name={hideLabel ? '' : label} value={value} variant="stacked" />;
-  }*/
+  } */
 
   let richTextComponent;
 
@@ -46,7 +37,7 @@ export default function RichText(props: RichTextProps) {
     );
   } else {
     // Rich Text editable component
-    const actionsApi = pConn.getActionsApi();
+    /* const actionsApi = pConn.getActionsApi();
     let status = '';
     if (validatemessage !== '') {
       status = 'error';
@@ -68,7 +59,7 @@ export default function RichText(props: RichTextProps) {
         const property = pConn.getStateProps()["value"];
         handleEvent(actionsApi, 'changeNblur', property, editorValue);
       }
-    };
+    }; */
 
 
     // Component returns value of field, (parsed if it is html) as readonly block - as no requirement for editable RichText as of US-9579

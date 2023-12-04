@@ -52,9 +52,15 @@ export default function Assignment(props) {
   const _containerName =  getPConnect().getContainerName();
   const context = getPConnect().getContextName();
   const containerID = PCore.getContainerUtils().getContainerAccessOrder(`${context}/${_containerName}`).at(-1)
+
   useEffect(() => {
-    setPageTitle(errorMessages.length > 0);
-  },[children, errorMessages])
+     const updateErrorTimeOut = setTimeout(()=>{ 
+        setPageTitle(errorMessages.length > 0);  
+     }, 500);
+     return ()=>{
+      clearTimeout(updateErrorTimeOut);
+     }
+  },[errorMessages])
 
   let containerName;
   if(thePConn.getDataObject().caseInfo?.assignments && thePConn.getDataObject().caseInfo?.assignments.length > 0){
@@ -132,7 +138,6 @@ export default function Assignment(props) {
   // has -day appended), a fieldId stateprop will be defined and this will be used instead.
   useEffect(() => {
     checkErrorMessages();
-    //
   }, [children])
 
   useEffect(() => {
@@ -250,9 +255,9 @@ export default function Assignment(props) {
             })
             .catch(() => {
               scrollToTop();
-              showErrorSummary();
+              showErrorSummary();             
             });
-
+          
           break;
         }
 

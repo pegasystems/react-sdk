@@ -30,6 +30,7 @@ import localSdkComponentMap from '../../../sdk-local-component-map';
 import { checkCookie, setCookie } from '../../components/helpers/cookie';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 
+
 declare const myLoadMashup: any;
 
 /* Time out modal functionality */
@@ -39,16 +40,15 @@ let signoutTimeout = null;
 let milisecondsTilSignout = 115 * 1000;
 let milisecondsTilWarning = 780 * 1000;
 
-
 // Starts the timeout for warning, after set time shows the modal and starts signout timer
-function initTimeout(setShowTimeoutModal){  
+function initTimeout(setShowTimeoutModal){
   applicationTimeout = setTimeout(
     () => {
       setShowTimeoutModal(true)
       signoutTimeout = setTimeout(() => { logout() }, milisecondsTilSignout);
     },
     milisecondsTilWarning
-  ); 
+  );
 }
 
 // Clears exisiting timeouts, sends 'ping' to pega to keep session alive and then initiates the timout
@@ -78,6 +78,7 @@ export default function ChildBenefitsClaim() {
   const [shutterServicePage,setShutterServicePage] = useState(false);
   const [authType, setAuthType] = useState('gg'); 
   const [caseId, setCaseId] = useState('');
+  const [showPortalBanner, setShowPortalBanner] = useState(false);
   const history = useHistory();
   // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
   const featureID = "ChB"
@@ -119,7 +120,14 @@ export default function ChildBenefitsClaim() {
   const { t } = useTranslation();
   let operatorId = '';
   
-
+  // On render reset the timeout functionality.
+  useEffect(()=>{
+    initTimeout(setShowTimeoutModal);
+    return () => {
+      clearTimeout(applicationTimeout);
+      clearTimeout(signoutTimeout);
+    }
+  },[])
   
   useEffect(()=> {
     setPageTitle();
@@ -161,12 +169,15 @@ export default function ChildBenefitsClaim() {
     PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
     
   }
-  function assignmentFinished() {  
+  function getClaimsCaseID(){
     const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
     const caseID = PCore.getStoreValue('.ID', 'caseInfo' , context);
     setCaseId(caseID);
-    PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});    
-    displayResolutionScreen();  
+  }
+  function assignmentFinished() {
+    displayResolutionScreen();    
+    getClaimsCaseID();
+    PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
   }
 
    function closeContainer(){
@@ -189,7 +200,9 @@ export default function ChildBenefitsClaim() {
   };
 
   function cancelAssignment() {
+    
     fetchInProgressClaimsData();
+    getClaimsCaseID();
     displayUserPortal();
     PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
   }
@@ -227,6 +240,8 @@ export default function ChildBenefitsClaim() {
       PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
       () => {
         cancelAssignment();
+        setShowPortalBanner(true);
+
       },
       'cancelAssignment'
     );
@@ -258,7 +273,8 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CREATE_STAGE_SAVED,
       () => {
-        cancelAssignment()
+        cancelAssignment();
+        setShowPortalBanner(true);
       },
       'savedCase'
     );
@@ -577,7 +593,8 @@ export default function ChildBenefitsClaim() {
 
         {showStartPage && <StartPage onStart={startNow} onBack={displayUserPortal} />}
 
-        {showUserPortal && <UserPortal beginClaim={beginClaim}>
+        {showUserPortal && <UserPortal beginClaim={beginClaim}  showPortalBanner={ showPortalBanner}>
+       
 
           {!loadinginProgressClaims && inprogressClaims.length !== 0 && (
             <ClaimsList
@@ -586,6 +603,7 @@ export default function ChildBenefitsClaim() {
               title={t("CLAIMS_IN_PROGRESS")}
               rowClickAction="OpenAssignment"
               buttonContent={t("CONTINUE_CLAIM")}
+              caseId = {caseId}
           />)}
 
           {!loadingsubmittedClaims && submittedClaims.length !== 0 && (

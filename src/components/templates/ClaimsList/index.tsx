@@ -120,7 +120,7 @@ export default function ClaimsList(props){
       {claims.length > 1 && <h3 className='govuk-heading-s'>{t('CHILDREN_ADDED')}</h3>}
       {claims.map(claimItem =>
     
-        <div className='govuk-summary-list' key={claimItem.claimRef}>
+        <div className='govuk-summary-list inline-block-warning' key={claimItem.claimRef}>
          {!caseId?.includes(claimItem.claimRef) && <WarningText date ={claimItem.dateCreated}/>}
           <div className='govuk-summary-list__row'>
             <dt className='govuk-summary-list__key'>

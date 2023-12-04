@@ -11,8 +11,7 @@ import {DefaultFormContext} from '../../helpers/HMRCAppContext';
 export default function useIsOnlyField(callerDisplayOrder = null, refreshTrigger = null){
     const DFContext = useContext(DefaultFormContext);
     const defaultOnlyFieldDetails = {isOnlyField: false, overrideLabel: ''};
-    const [onlyFieldDetails, setOnlyFieldDetails] = useState({isOnlyField: false, overrideLabel: ''})
-    
+    const [onlyFieldDetails, setOnlyFieldDetails] = useState({isOnlyField: false, overrideLabel: ''})    
 
     useEffect(() => {
 
@@ -21,7 +20,6 @@ export default function useIsOnlyField(callerDisplayOrder = null, refreshTrigger
         setOnlyFieldDetails(defaultOnlyFieldDetails);
     }
     
-
     // Checks to see if the closest parent default form of the current element is in the SingleQuestionDisplayDFStack
     // If it is, display this element as if it's a single field IF it's the first element in the form. (Driven by the display order it has been given)
     if(DFContext.displayAsSingleQuestion){

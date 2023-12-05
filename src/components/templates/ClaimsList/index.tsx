@@ -72,7 +72,6 @@ export default function ClaimsList(props){
       const claimItem = {
         claimRef : item.pyID,
         dateCreated : DateFormatter.Date(item.pxCreateDateTime, { format: 'DD/MM/YYYY' }),
-       // dateUpdated: DateFormatter.Date(item.pxUpdateDateTime, { format: 'DD/MM/YYYY' }),
        dateUpdated: item.pxUpdateDateTime,
         children : [],
         actionButton :

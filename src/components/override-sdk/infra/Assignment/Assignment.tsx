@@ -175,9 +175,10 @@ export default function Assignment(props) {
       });
   }
 
+  // Runs the 'isServiceShuttered' everytime the children are updated. 
   useEffect(()=>{
     isServiceShuttered();
-  },[])
+  },[children])
 
   function onSaveActionSuccess(data) {
     actionsAPI.cancelAssignment(itemKey).then(() => {

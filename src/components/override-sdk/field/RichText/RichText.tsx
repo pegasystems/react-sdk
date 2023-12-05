@@ -7,12 +7,13 @@ import { registerNonEditableField } from '../../../helpers/hooks/QuestionDisplay
 interface RichTextProps extends PConnFieldProps {
   // If any, enter additional props that only exist on TextArea here
   additionalProps?: object;
+  name: string;
 }
 
 export default function RichText(props: RichTextProps) {
   registerNonEditableField(true);
 
-  const { value } = props;
+  const { value, name } = props;
  
 
   let { readOnly, required, disabled } = props;
@@ -31,9 +32,9 @@ export default function RichText(props: RichTextProps) {
   if (readOnly) {
     // Rich Text read-only component    
     richTextComponent = (
-      <>
+      <div id={`${name}-hint`} className="govuk-hint">      
         <InstructionComp htmlString={value}></InstructionComp>
-      </>
+      </div>
     );
   } else {
     // Rich Text editable component
@@ -64,7 +65,9 @@ export default function RichText(props: RichTextProps) {
 
     // Component returns value of field, (parsed if it is html) as readonly block - as no requirement for editable RichText as of US-9579
     richTextComponent = (        
-      <InstructionComp htmlString={value}></InstructionComp>        
+      <div id={`${name}-hint`} className="govuk-hint">      
+        <InstructionComp htmlString={value}></InstructionComp>
+      </div>        
     );
     // TODO - Add implementation of Editable Rich Text component (Unsure whether this would simply be text area, or full richtext)
     /* richTextComponent = (        

@@ -76,6 +76,8 @@ export default function Assignment(props) {
       const oWorkData = oWorkItem.getDataObject();
       const oData = thePConn.getDataObject();
 
+      console.log(oData);
+
       if (oWorkData?.caseInfo && oWorkData.caseInfo.assignments !== null) {
         const oCaseInfo = oData.caseInfo;
 
@@ -159,9 +161,11 @@ export default function Assignment(props) {
     let featureID = "Chb";
     let featureType = "Service";
 
+    // PCore.getDataPageUtils().getPageDataAsync('D_ShutterLookup', 'root',{FeatureID: "Chb", FeatureType: "Service"}, {invalidateCache: true})
+
     PCore.getDataPageUtils().getPageDataAsync('D_ShutterLookup', 'root',{
       FeatureID: featureID,
-      FeatureType: featureType}).then(resp => {
+      FeatureType: featureType}, {invalidateCache: true}).then(resp => {
       const isShuttered = resp.Shuttered;
       if(isShuttered){
         setServiceShuttered(true);

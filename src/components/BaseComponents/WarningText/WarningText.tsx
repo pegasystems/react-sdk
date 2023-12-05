@@ -1,16 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-
+import DateFormatter from '@pega/react-sdk-components/lib/components/helpers/formatters/Date';
 
 
 export default function WarningText(props) {
    const {date} = props;
-   const parts = date.split('/')
-   const currentDate = new Date(parts[2], parts[1] - 1, parts[0]).toLocaleDateString('en-GB', {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  })
+  const currentDate = DateFormatter.Date(date, { format: 'DD MMM YYYY' });
    const { t } = useTranslation();
  
   return (

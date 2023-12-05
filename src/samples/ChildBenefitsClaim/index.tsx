@@ -174,10 +174,10 @@ export default function ChildBenefitsClaim() {
     const caseID = PCore.getStoreValue('.ID', 'caseInfo' , context);
     setCaseId(caseID);
   }
-  function assignmentFinished() {
-    displayResolutionScreen();    
+  function assignmentFinished() { 
     getClaimsCaseID();
     PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
+    displayResolutionScreen();
   }
 
    function closeContainer(){

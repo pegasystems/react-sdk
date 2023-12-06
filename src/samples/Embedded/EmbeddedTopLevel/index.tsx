@@ -1,25 +1,22 @@
 /* eslint-disable react/button-has-type */
 // @ts-nocheck - TypeScript type checking to be added soon
-import React,{ useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { render } from "react-dom";
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { sdkIsLoggedIn, loginIfNecessary, sdkSetAuthHeader, sdkSetCustomTokenParamsCB, getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 
 import StoreContext from "@pega/react-sdk-components/lib/bridge/Context/StoreContext";
 import createPConnectComponent from "@pega/react-sdk-components/lib/bridge/react_pconnect";
 
-import { sdkIsLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '@pega/react-sdk-components/lib/components/helpers/authManager';
-
 import EmbeddedSwatch from '../EmbeddedSwatch';
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
-import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../../sdk-local-component-map';
 
 declare const myLoadMashup: any;
-
 
 const useStyles = makeStyles((theme) => ({
   embedTopRibbon: {
@@ -281,8 +278,8 @@ export default function EmbeddedTopLevel() {
     // const thePConnObj = <div>the RootComponent</div>;
     const thePConnObj = <PegaConnectObj {...props} />;
 
-    // NOTE: For Embedded mode, we add in displayOnlyFA and isMashup to our React context
-    //  so the values are available to any component that may need it.
+    // NOTE: For Embedded mode, we add in displayOnlyFA to our React context
+    //  so it is available to any component that may need it.
     // VRS: Attempted to remove displayOnlyFA but it presently handles various components which
     //  SDK does not yet support, so all those need to be fixed up before it can be removed. To
     //  be done in a future sprint.
@@ -304,7 +301,7 @@ export default function EmbeddedTopLevel() {
    * is ready to be rendered
    * @param inRenderObj the initial, top-level PConnect object to render
    */
-   function initialRender(inRenderObj) {
+  function initialRender(inRenderObj) {
 
     // loadMashup does its own thing so we don't need to do much/anything here
 
@@ -365,7 +362,7 @@ export default function EmbeddedTopLevel() {
   /**
    * kick off the application's portal that we're trying to serve up
    */
-   function startMashup() {
+  function startMashup() {
 
     // NOTE: When loadMashup is complete, this will be called.
     PCore.onPCoreReady(renderObj => {
@@ -399,7 +396,7 @@ export default function EmbeddedTopLevel() {
   // One time (initialization) subscriptions and related unsubscribe
   useEffect(() => {
 
-    getSdkConfig().then( sdkConfig => {
+    getSdkConfig().then( (sdkConfig:any) => {
       const sdkConfigAuth = sdkConfig.authConfig;
 
       if( !sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === "Basic" ) {
@@ -417,6 +414,14 @@ export default function EmbeddedTopLevel() {
         // Service package to use custom auth with Basic
         const sB64 = window.btoa(`${sdkConfigAuth.mashupUserIdentifier}:${window.atob(sdkConfigAuth.mashupPassword)}:${sISOTime}`);
         sdkSetAuthHeader( `Basic ${sB64}`);
+      }
+
+      if( sdkConfigAuth.customAuthType === "CustomIdentifier" ) {
+        // Use custom bearer with specific custom parameter to set the desired operator via
+        //  a userIdentifier property.  (Caution: highly insecure...being used for simple demonstration)
+        sdkSetCustomTokenParamsCB(() => {
+          return {"userIdentifier": sdkConfigAuth.mashupUserIdentifier };
+        });
       }
 
       document.addEventListener("SdkConstellationReady", () => {
@@ -466,11 +471,11 @@ export default function EmbeddedTopLevel() {
 
       const options = {
         pageName: 'pyEmbedAssignment',
-        startingFields: {
-          Package: sLevel
-        }
+        startingFields: mashupCaseType === "DIXL-MediaCo-Work-NewService" ?
+          {
+            Package: sLevel
+          } : {}
       };
-      // @ts-ignore
       PCore.getMashupApi().createCase(mashupCaseType, PCore.getConstants().APP.APP, options).then(() => {
         // eslint-disable-next-line no-console
         console.log('createCase rendering is complete');

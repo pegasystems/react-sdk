@@ -42,6 +42,9 @@ let milisecondsTilWarning = 780 * 1000;
 
 // Starts the timeout for warning, after set time shows the modal and starts signout timer
 function initTimeout(setShowTimeoutModal){
+  clearTimeout(applicationTimeout);  
+  clearTimeout(signoutTimeout); 
+
   applicationTimeout = setTimeout(
     () => {
       setShowTimeoutModal(true)
@@ -52,9 +55,8 @@ function initTimeout(setShowTimeoutModal){
 }
 
 // Clears exisiting timeouts, sends 'ping' to pega to keep session alive and then initiates the timout
-function staySignedIn(setShowTimeoutModal, refreshSignin = true){
-  clearTimeout(applicationTimeout);  
-  clearTimeout(signoutTimeout);  
+function staySignedIn(setShowTimeoutModal, refreshSignin = true){ 
+
   if(refreshSignin){
     PCore.getDataPageUtils().getDataAsync('D_ClaimantWorkAssignmentChBCases', 'root');
   }
@@ -120,20 +122,9 @@ export default function ChildBenefitsClaim() {
   const { t } = useTranslation();
   let operatorId = '';
   
-  // On render reset the timeout functionality.
-  useEffect(()=>{
-    initTimeout(setShowTimeoutModal);
-    return () => {
-      clearTimeout(applicationTimeout);
-      clearTimeout(signoutTimeout);
-    }
-  },[])
-  
   useEffect(()=> {
     setPageTitle();
   }, [showStartPage, showUserPortal, bShowPega, bShowResolutionScreen]);
-
-
 
   const [inprogressClaims, setInprogressClaims] = useState([]);
   const [submittedClaims, setSubmittedClaims] = useState([]);

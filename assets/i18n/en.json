@@ -261,8 +261,8 @@
   "RETURN_TO_THE_HOMEPAGE": "Return to the homepage",
   "SHUTTER_SERVICE_UNAVAILABLE": "Sorry, the service is unavailable",
   "SHUTTER_USE_SERVICE_LATER_MESSAGE": "You will be able to use the service later.",
-  "PORTAL_WARNING_TEXT": "We have saved your progress on the",
+  "PORTAL_WARNING_TEXT": "We saved your progress on",
   "PORTAL_WARNING_TEXT2": "and will store your information for 28 days.",
-  "PORTAL_NOTIFICATION_BANNER_CONTENT": "We saved your progress. We'll store your information for 28 days."
+  "PORTAL_NOTIFICATION_BANNER_CONTENT": "We saved your progress and will store your information for 28 days."
 
 }

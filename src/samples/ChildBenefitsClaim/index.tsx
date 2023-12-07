@@ -40,7 +40,7 @@ let signoutTimeout = null;
 let milisecondsTilSignout = 115 * 1000;
 let milisecondsTilWarning = 780 * 1000;
 
-// Starts the timeout for warning, after set time shows the modal and starts signout timer
+// Clears any existing timeouts and starts the timeout for warning, after set time shows the modal and starts signout timer
 function initTimeout(setShowTimeoutModal){
   clearTimeout(applicationTimeout);  
   clearTimeout(signoutTimeout); 
@@ -54,7 +54,7 @@ function initTimeout(setShowTimeoutModal){
   );
 }
 
-// Clears exisiting timeouts, sends 'ping' to pega to keep session alive and then initiates the timout
+// Sends 'ping' to pega to keep session alive and then initiates the timout
 function staySignedIn(setShowTimeoutModal, refreshSignin = true){ 
 
   if(refreshSignin){

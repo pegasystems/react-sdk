@@ -12,7 +12,7 @@ export default function DefaultForm(props) {
 
   const {hasBeenWrapped} = useContext(ReadOnlyDefaultFormContext);
   const {DFName} = useContext(DefaultFormContext);
-  const {instructionText: passedThroughInstructionText} = useContext(DefaultFormContext);
+  const {instructionText: passedThroughInstructionText, displayAsSingleQuestion} = useContext(DefaultFormContext);
 
   const [declaration, setDeclaration] = useState({text1: '', warning1: ''});  
   let  containerName = null;
@@ -55,7 +55,7 @@ export default function DefaultForm(props) {
   const isOnlyFieldDetails = useIsOnlyField();
 
   useEffect(() => {
-    if(configAlternateDesignSystem?.hidePageLabel){
+    if(displayAsSingleQuestion || configAlternateDesignSystem?.hidePageLabel){
       PCore.getStore().dispatch({type:'SET_PROPERTY', payload:{
         "reference": "displayAsSingleQuestion",
         "value": true,
@@ -67,7 +67,7 @@ export default function DefaultForm(props) {
       setSingleQuestionPage(isOnlyFieldDetails.isOnlyField);
     }
     return (() => {
-      if(configAlternateDesignSystem?.hidePageLabel){
+      if(displayAsSingleQuestion || configAlternateDesignSystem?.hidePageLabel){
       PCore.getStore().dispatch({type:'SET_PROPERTY', payload:{
         "reference": "displayAsSingleQuestion",
         "value": false,
@@ -244,7 +244,7 @@ export default function DefaultForm(props) {
       childrenToWrap = {
       <DefaultFormContext.Provider value={
         { 
-          displayAsSingleQuestion: configAlternateDesignSystem?.hidePageLabel,
+          displayAsSingleQuestion: displayAsSingleQuestion || configAlternateDesignSystem?.hidePageLabel,
           DFName: props.localeReference,
           OverrideLabelValue: containerName, 
           instructionText: (instructionExists && !singleQuestionPage) ? null : getFormattedInstructionText() as string

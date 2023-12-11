@@ -100,6 +100,7 @@
     "@storybook/addon-links": "^6.5.16",
     "@storybook/addon-storysource": "^6.5.16",
     "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/preset-scss": "^1.0.3",
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^6.5.16",
     "@testing-library/jest-dom": "^5.16.5",

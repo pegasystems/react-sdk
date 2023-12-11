@@ -88,7 +88,7 @@
     "@pega/cspell-config": "^0.4.0",
     "@pega/dx-component-builder-sdk": "~8.23.16",
     "@pega/eslint-config": "^0.4.0",
-    "@pega/pcore-pconnect-typedefs": "0.0.6",
+    "@pega/pcore-pconnect-typedefs": "1.0.0",
     "@pega/prettier-config": "^0.4.0",
     "@pega/react-sdk-overrides": "file:pega-react-sdk-overrides-23.1.10.tgz",
     "@pega/stylelint-config": "^0.4.0",

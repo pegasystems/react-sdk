@@ -1,0 +1,30 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "../src/components/custom-constellation/**/**/*.ts",
+    "../src/components/custom-constellation/**/**/*.tsx",
+    "../src/components/custom-constellation/**/**/*.js",
+    "../src/components/custom-constellation/**/**/*.jsx"
+    // "../src/components/override-sdk/**/**/*.ts",
+    // "../src/components/override-sdk/**/**/*.tsx",
+    // "../src/components/override-sdk/**/**/*.js",
+    // "../src/components/override-sdk/**/**/*.jsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "../src/**/*.stories.ts",
+    "../src/**/*.stories.tsx",
+    "../src/**/*.stories.js",
+    "../src/**/*.stories.jsx"
+  ],
+  "compilerOptions": {
+    "noEmit": false,
+    "composite": true,
+    "outDir": "../lib",
+    "rootDir": "../",
+    "allowSyntheticDefaultImports": true,
+    // "skipLibCheck" must be true in order to not see errors in the @pega/pcore-pconnect-typedefs files themselves
+    "skipLibCheck": true
+  },
+  "files": ["../node_modules/react-i18next/dist/commonjs/index.js"]
+}

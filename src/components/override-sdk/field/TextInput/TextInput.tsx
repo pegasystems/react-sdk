@@ -34,6 +34,7 @@ export default function TextInput(props) {
   const actionsApi = thePConn.getActionsApi();
 
   const propName = thePConn.getStateProps().value;
+  const formattedPropertyName = name || propName?.split('.')?.pop();
 
   const handleChange = evt => {
     if (name === 'content-pyPostalCode') {
@@ -76,9 +77,9 @@ export default function TextInput(props) {
         errorText={errorMessage}
         label={label}
         labelIsHeading={isOnlyField}
-        name={name}
+        name={formattedPropertyName}
         maxLength={maxLength}
-        id={name}
+        id={formattedPropertyName}
         onBlur={e => handleChange(e)}
         {...extraProps}
         disabled={disabled || false}

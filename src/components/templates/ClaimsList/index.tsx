@@ -131,8 +131,8 @@ export default function ClaimsList(props){
            
                 <p key={child.firstName}>
                   {child.firstName && child.lastName && `${child.firstName} ${child.lastName}`}
-                  {child.dob && <><br/><span className='govuk-!-font-weight-regular'>{`${t('DATE_OF_BIRTH')} ${child.dob}`}</span><br/></>}
-                  <span className='govuk-!-font-weight-regular'>{t('CREATED_DATE')} {claimItem.dateCreated}</span>
+                  {child.dob && <><br/><span className='govuk-!-font-weight-regular'>{t('DATE_OF_BIRTH')}<br/>{child.dob}</span><br/></>}
+                  <span className='govuk-!-font-weight-regular'>{t('CREATED_DATE')}<br/>{claimItem.dateCreated}</span>
                 </p>
               )}
               {claimItem.actionButton}

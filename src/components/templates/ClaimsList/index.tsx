@@ -115,13 +115,14 @@ export default function ClaimsList(props){
 
   return (
     <>
-    
+      
       {claims.length !== 0 && <h2 className='govuk-heading-m'>{title}</h2>}
     
-      {claims.length > 1 && <h3 className='govuk-heading-s'>{t('CHILDREN_ADDED')}</h3>}
+      {/* {claims.length > 1 && <h3 className='govuk-heading-s'>{t('CHILDREN_ADDED')}</h3>} */}
       {claims.map(claimItem =>
-    
-        <div className='govuk-summary-list inline-block-warning' key={claimItem.claimRef}>
+
+      <div>
+        {/* <div className='govuk-summary-list inline-block-warning' key={claimItem.claimRef}>
          {!caseId?.includes(claimItem.claimRef) &&( claimItem?.status?.text === 'In Progress' || claimItem?.status?.text === 'AR WAITH')  && <WarningText date ={claimItem?.dateUpdated}/>}
           <div className='govuk-summary-list__row'>
             <dt className='govuk-summary-list__key'>
@@ -131,7 +132,7 @@ export default function ClaimsList(props){
            
                 <p key={child.firstName}>
                   {child.firstName && child.lastName && `${child.firstName} ${child.lastName}`}
-                  {child.dob && <><br/><span className='govuk-!-font-weight-regular'>{t('DATE_OF_BIRTH')}<br/>{child.dob}</span><br/></>}
+                  {child.dob && <><br/><span className='govuk-!-font-weight-regular'><br/>{child.dob}</span><br/></>}
                   <span className='govuk-!-font-weight-regular'>{t('CREATED_DATE')}<br/>{claimItem.dateCreated}</span>
                 </p>
               )}
@@ -141,8 +142,53 @@ export default function ClaimsList(props){
               <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>{claimItem.status.text}</strong>            
             </dd>
           </div>
+        </div> */}
+
+        <div>
+        {!caseId?.includes(claimItem.claimRef) &&( claimItem?.status?.text === 'In Progress' || claimItem?.status?.text === 'AR WAITH')  && <WarningText date ={claimItem?.dateUpdated}/>}
+        
+        {/* TODO: Logic for when this title should / should not show */}
+        {claimItem.children.length > 0  && <h3 className='govuk-heading-s'>{t('CHILDREN_ADDED')}</h3>}
+
+        <dl className='govuk-summary-list'>
+          {claimItem.children.map((child, index) =>
+              <>
+                <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
+                  {/* TODO: TITLE NEEDS TRANSLATION?  */}
+                  {child.firstName &&
+                    <>
+                      <dt className='govuk-summary-list__key'>Child name</dt>
+                      <dd className='govuk-summary-list__value govuk-!-width-one-half'>{child.firstName} {child.lastName}</dd>
+                    </>
+                  }
+                  {/* ONLY SHOW IF CHILD IN ARRAY IS 0 INDEX */}
+                  {index === 0 &&
+                    <dd className='govuk-summary-list__actions govuk-!-width-one-half'>
+                      <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>{claimItem.status.text}</strong>            
+                    </dd>
+                  }
+                </div>
+
+                {child.dob &&
+                  <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
+                    {/* TODO: TITLE NEEDS TRANSLATION?  */}
+                    <dt className="govuk-summary-list__key">{t('DATE_OF_BIRTH')}</dt>
+                    <dd className="govuk-summary-list__value">{child.dob}</dd>
+                  </div>
+                }
+              </>
+            
+            
+          )}
+        </dl>
+        {claimItem.actionButton}
+
         </div>
-  )}
+      
+      </div>
+
+      )}
+     
     </>
   )
 }

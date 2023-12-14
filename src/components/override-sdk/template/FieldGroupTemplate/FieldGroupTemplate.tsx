@@ -56,7 +56,8 @@ export default function Group(props) {
       const nonExclusivePropNames = [];
       const unCheckExclusive = () => {
         if(exclusiveOptionPropName){
-          handleEvent(actionsApi, 'changeNblur', exclusiveOptionPropName, '');
+          const defaultValue: any = false;
+          handleEvent(actionsApi, 'changeNblur', exclusiveOptionPropName, defaultValue);
           setStateChanged(true);
         }
       };
@@ -64,7 +65,8 @@ export default function Group(props) {
       const unCheckNonExlcusives = () => { 
         if(exclusiveOptionPropName && nonExclusivePropNames){
           nonExclusivePropNames.forEach((propName) => {
-            handleEvent(actionsApi, 'changeNblur', propName, '');
+            const defaultValue: any = false;
+            handleEvent(actionsApi, 'changeNblur', propName, defaultValue);
           })           
           setStateChanged(true);
         }

@@ -110,7 +110,8 @@ export default function Assignment(props) {
     }
 
     if(validatemessage){
-      let fieldId = fieldC11nEnv.getStateProps().fieldId || fieldComponent.props.name;
+      const formattedPropertyName = fieldC11nEnv?.getStateProps()?.value?.split('.')?.pop();
+      let fieldId = fieldC11nEnv.getStateProps().fieldId || fieldComponent.props.name || formattedPropertyName;
       if(fieldC11nEnv.meta.type === 'Date'){
          const propertyName = fieldComponent.props.name ;
          const DateErrorTargetFieldId = DateErrorTargetFields(validatemessage);

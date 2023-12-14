@@ -72,6 +72,7 @@ export default function ClaimsList(props){
       const claimItem = {
         claimRef : item.pyID,
         dateCreated : DateFormatter.Date(item.pxCreateDateTime, { format: 'DD/MM/YYYY' }),
+       dateUpdated: item.pxUpdateDateTime,
         children : [],
         actionButton :
           (<Button
@@ -121,7 +122,7 @@ export default function ClaimsList(props){
       {claims.map(claimItem =>
     
         <div className='govuk-summary-list inline-block-warning' key={claimItem.claimRef}>
-         {!caseId?.includes(claimItem.claimRef) && <WarningText date ={claimItem.dateCreated}/>}
+         {!caseId?.includes(claimItem.claimRef) &&( claimItem?.status?.text === 'In Progress' || claimItem?.status?.text === 'AR WAITH')  && <WarningText date ={claimItem?.dateUpdated}/>}
           <div className='govuk-summary-list__row'>
             <dt className='govuk-summary-list__key'>
           

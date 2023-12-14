@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import GDSCheckbox from '../../../BaseComponents/Checkboxes/Checkbox';
 // import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks'
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
@@ -31,10 +31,11 @@ export default function CheckboxComponent(props) {
  
   if(isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label; */
   
-//    const[errorMessage,setErrorMessage] = useState(validatemessage);
-//   useEffect(()=>{
-//     setErrorMessage(validatemessage)
-//  },[validatemessage]) 
+   const[errorMessage,setErrorMessage] = useState(validatemessage);
+  useEffect(()=>{
+    if(validatemessage.length>0)
+    setErrorMessage(validatemessage)
+ },[validatemessage]) 
   
   // build name for id, allows for error message navigation to field
   const propertyContext = getPConnect().options.pageReference ? getPConnect().options.pageReference.split('.').pop() : '';
@@ -62,9 +63,9 @@ export default function CheckboxComponent(props) {
 
       {/* If its the declaration view then group the checkboxes separately so the error message is assigned correctly */}
       {OverrideLabelValue.trim().toLowerCase() === 'declaration' ? (
-        <div className={`govuk-form-group ${validatemessage ? 'govuk-form-group--error' : ''}`}>
-          {validatemessage && <p id={`${name}-error`} className="govuk-error-message">
-            <span className="govuk-visually-hidden">Error:</span> {validatemessage}
+        <div className={`govuk-form-group ${errorMessage ? 'govuk-form-group--error' : ''}`}>
+          {errorMessage && <p id={`${name}-error`} className="govuk-error-message">
+            <span className="govuk-visually-hidden">Error:</span> {errorMessage}
           </p>}
           <GDSCheckbox
           item={{checked: value, label: caption, readOnly:false, hintText}}

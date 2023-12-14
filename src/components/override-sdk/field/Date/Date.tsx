@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useLayoutEffect, useEffect, useContext } from 'react';
 import DateInput from '../../../BaseComponents/DateInput/DateInput';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
@@ -8,6 +8,7 @@ import {
 } from '../../../helpers/formatters/DateErrorFormatter';
 import { GBdate } from '../../../helpers/utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
+import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
 
 declare const global;
 
@@ -38,7 +39,7 @@ export default function Date(props) {
 
   const actionsApi = getPConnect().getActionsApi();
   const propName = getPConnect().getStateProps().value;
-
+  const {errorMsgs} = useContext(ErrorMsgContext)
   // PM - Create ISODate string (as expected by onChange) and pass to onchange value, adding 0 padding here for day and month to comply with isostring format.
   const handleDateChange = () => {
     let isoDate;
@@ -63,7 +64,8 @@ export default function Date(props) {
   }, [day, month, year]);
 
   useEffect(() => {
-   // if (validatemessage) {
+   const found = errorMsgs.find((element) => (element.message.fieldId.startsWith(name)));
+   if(!found) {
       setEditedValidateMessage(
         DateErrorFormatter(
           validatemessage,
@@ -91,8 +93,8 @@ export default function Date(props) {
         }
       }
       setSpecificErrors(specificError);
-   // }
-  }, [validatemessage]);
+   }
+  }, [validatemessage,errorMsgs]);
 
   // PM - Handlers for each part of date inputs, update state for each respectively
   //      0 pad for ISOString compatibilitiy, with conditions to allow us to clear the fields

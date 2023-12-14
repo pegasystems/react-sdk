@@ -12,8 +12,14 @@ const DefaultFormContext = createContext({
   instructionText: ''
 });
 
+const ErrorMsgContext = createContext({
+  // Is this Default Form set to display as single question?
+  errorMsgs: [],
+  
+});
+
 const ReadOnlyDefaultFormContext = createContext({
   hasBeenWrapped: false
 })
 
-export {DefaultFormContext, ReadOnlyDefaultFormContext}
+export {DefaultFormContext, ReadOnlyDefaultFormContext,ErrorMsgContext}

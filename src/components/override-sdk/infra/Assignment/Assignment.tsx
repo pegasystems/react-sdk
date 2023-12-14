@@ -9,6 +9,7 @@ import setPageTitle from '../../../helpers/setPageTitleHelpers';
 import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import MainWrapper from '../../../BaseComponents/MainWrapper';
+import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
 
 
 export interface ErrorMessageDetails {
@@ -276,6 +277,7 @@ export default function Assignment(props) {
       setArSecondaryButtons(actionButtons.secondary);
     }
   }, [actionButtons]);
+  
 
   return (
     <>
@@ -297,16 +299,24 @@ export default function Assignment(props) {
             {errorSummary && errorMessages.length > 0 && (
               <ErrorSummary errors={errorMessages.map(item => localizedVal(item.message, localeCategory, localeReference))} />
             )}
+            {/* {children[0].props.errorMessagess = errorMessages} */}
             {(!isOnlyFieldDetails.isOnlyField || containerName.toLowerCase().includes('check your answer') || containerName.toLowerCase().includes('declaration')) && <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>}
             <form>
-              <AssignmentCard
+              <ErrorMsgContext.Provider value={
+                {
+                  errorMsgs:errorMessages
+                }
+              }>
+                 <AssignmentCard
                 getPConnect={getPConnect}
                 itemKey={itemKey}
                 actionButtons={actionButtons}
                 onButtonPress={buttonPress}
+                errorMsgs={errorMessages}
               >
                 {children}
               </AssignmentCard>
+              </ErrorMsgContext.Provider>
             </form>
             <a
               href='https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit'

@@ -3,19 +3,25 @@ import React, {useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
-import { DefaultFormContext } from '../../helpers/HMRCAppContext';
+import { DefaultFormContext, ErrorMsgContext } from '../../helpers/HMRCAppContext';
 import InstructionComp from '../../helpers/formatters/ParsedHtml';
 
 export default function FieldSet({legendIsHeading=false, label, name, errorText, hintText, children, fieldsetElementProps, testProps}){
-  const[ErrorMessage,setErrorMessage] = useState(errorText);
+ 
 
   const {instructionText} = useContext(DefaultFormContext);
   
+  const {errorMsgs} = useContext(ErrorMsgContext);
+  console.log(errorMsgs);
+  const [errM,setErr] = useState(errorText);
 
   useEffect(()=>{
-    setErrorMessage(errorText)
-  },[errorText])
-  const formGroupDivClasses = `govuk-form-group ${ErrorMessage?'govuk-form-group--error':""}`.trim();
+    const found = errorMsgs.find((element) => element.message.fieldId === name);
+    if(!found){
+      setErr(errorText);
+    }
+  },[errorText,errorMsgs])
+  const formGroupDivClasses = `govuk-form-group ${errM?'govuk-form-group--error':""}`.trim();
   const legendClasses = ` ${(legendIsHeading) ?"govuk-fieldset__legend govuk-fieldset__legend--l":"govuk-label govuk-label--m"}`.trim();
   const hintTextExists = !(['none', '', null, undefined].includes(hintText));
 
@@ -24,7 +30,7 @@ export default function FieldSet({legendIsHeading=false, label, name, errorText,
   const hintID = `${name}-hint`;
   const errorID = `${name}-error`;
   if (hintText) {describedByIDs.push(hintID)};
-  if (ErrorMessage) {describedByIDs.push(errorID)};
+  if (errM) {describedByIDs.push(errorID)};
   const ariaDescBy = describedByIDs.length !== 0 ? {'aria-describedby' : describedByIDs.join(' ')} : {};
 
   return (
@@ -39,7 +45,7 @@ export default function FieldSet({legendIsHeading=false, label, name, errorText,
         </legend>
         {instructionText &&  legendIsHeading && <p id='instructions' className='govuk-body'><InstructionComp htmlString={instructionText} /></p>}  
         {hintTextExists && <div id={hintID} className="govuk-hint"> <HintTextComponent htmlString={hintText}/></div>}
-        {ErrorMessage  && <p id={errorID} className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{ErrorMessage}</p> }
+        {errM  && <p id={errorID} className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{errM}</p> }
         {children}
     </fieldset>
   </div>

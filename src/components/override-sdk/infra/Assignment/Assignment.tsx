@@ -76,8 +76,6 @@ export default function Assignment(props) {
       const oWorkData = oWorkItem.getDataObject();
       const oData = thePConn.getDataObject();
 
-      console.log(oData);
-
       if (oWorkData?.caseInfo && oWorkData.caseInfo.assignments !== null) {
         const oCaseInfo = oData.caseInfo;
 
@@ -162,11 +160,14 @@ export default function Assignment(props) {
     let featureID = "Chb";
     let featureType = "Service";
 
+    console.log('Shutter function');
+
     // PCore.getDataPageUtils().getPageDataAsync('D_ShutterLookup', 'root',{FeatureID: "Chb", FeatureType: "Service"}, {invalidateCache: true})
 
     PCore.getDataPageUtils().getPageDataAsync('D_ShutterLookup', 'root',{
       FeatureID: featureID,
-      FeatureType: featureType}, {invalidateCache: true}).then(resp => {
+      FeatureType: featureType}).then(resp => {
+      console.log(resp);  
       const isShuttered = resp.Shuttered;
       if(isShuttered){
         setServiceShuttered(true);
@@ -178,10 +179,30 @@ export default function Assignment(props) {
         // eslint-disable-next-line no-console
         console.error(err);
       });
+
+      // https://hmrc-adviserui-dt1.pegacloud.net/prweb/app/chb-dev/api/application/v2/data_views/D_ShutterLookup?dataViewParameters=%7B%22FeatureID%22:%22ChB%22,%22FeatureType%22:%22Service%22%7D
+
+      const url =  'https://hmrc-adviserui-dt1.pegacloud.net/prweb/app/chb-dev/api/application/v2/data_views/D_ShutterLookup?dataViewParameters=%7B%22FeatureID%22:%22ChB%22,%22FeatureType%22:%22Service%22%7D';
+      const options = 'GET';
+
+      const invokePromise = getPConnect().getActionsApi().invoke(url, options); 
+      invokePromise.then((resp) => {
+        console.log(resp.data.Shuttered);
+        // invoke success handling
+      }).catch(err => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
   }
 
   // Runs the 'isServiceShuttered' everytime the children are updated. 
   useEffect(()=>{
+    // const isServiceShutteredCheck = setTimeout(()=>{
+    //   isServiceShuttered();
+    // }, 500);
+    // return ()=>{
+    //   clearTimeout(isServiceShutteredCheck)
+    // }
     isServiceShuttered();
   },[children])
 

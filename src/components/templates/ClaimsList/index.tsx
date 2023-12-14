@@ -157,7 +157,7 @@ export default function ClaimsList(props){
                   {/* TODO: TITLE NEEDS TRANSLATION?  */}
                   {child.firstName &&
                     <>
-                      <dt className='govuk-summary-list__key'>Child name</dt>
+                      <dt className='govuk-summary-list__key'>{t('CHILD_NAME')}</dt>
                       <dd className='govuk-summary-list__value govuk-!-width-one-half'>{child.firstName} {child.lastName}</dd>
                     </>
                   }
@@ -171,14 +171,15 @@ export default function ClaimsList(props){
 
                 {child.dob &&
                   <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
-                    {/* TODO: TITLE NEEDS TRANSLATION?  */}
                     <dt className="govuk-summary-list__key">{t('DATE_OF_BIRTH')}</dt>
                     <dd className="govuk-summary-list__value">{child.dob}</dd>
                   </div>
                 }
+                <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
+                  <dt className="govuk-summary-list__key">{t('CREATED_DATE')}</dt>
+                  <dd className="govuk-summary-list__value">{claimItem.dateCreated}</dd>    
+                </div>
               </>
-            
-            
           )}
         </dl>
         {claimItem.actionButton}

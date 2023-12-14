@@ -154,7 +154,6 @@ export default function ClaimsList(props){
           {claimItem.children.map((child, index) =>
               <>
                 <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
-                  {/* TODO: TITLE NEEDS TRANSLATION?  */}
                   {child.firstName &&
                     <>
                       <dt className='govuk-summary-list__key'>{t('CHILD_NAME')}</dt>

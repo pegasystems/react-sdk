@@ -12,15 +12,15 @@ export default function FieldSet({legendIsHeading=false, label, name, errorText,
   const {instructionText} = useContext(DefaultFormContext);
   
   const {errorMsgs} = useContext(ErrorMsgContext);
-  const [errM,setErr] = useState(errorText);
+  const [errMessage,setErrorMessage] = useState(errorText);
 
   useEffect(()=>{
     const found = errorMsgs.find((element) => element.message.fieldId === name);
     if(!found){
-      setErr(errorText);
+      setErrorMessage(errorText);
     }
   },[errorText,errorMsgs])
-  const formGroupDivClasses = `govuk-form-group ${errM?'govuk-form-group--error':""}`.trim();
+  const formGroupDivClasses = `govuk-form-group ${errMessage?'govuk-form-group--error':""}`.trim();
   const legendClasses = ` ${(legendIsHeading) ?"govuk-fieldset__legend govuk-fieldset__legend--l":"govuk-label govuk-label--m"}`.trim();
   const hintTextExists = !(['none', '', null, undefined].includes(hintText));
 
@@ -29,7 +29,7 @@ export default function FieldSet({legendIsHeading=false, label, name, errorText,
   const hintID = `${name}-hint`;
   const errorID = `${name}-error`;
   if (hintText) {describedByIDs.push(hintID)};
-  if (errM) {describedByIDs.push(errorID)};
+  if (errMessage) {describedByIDs.push(errorID)};
   const ariaDescBy = describedByIDs.length !== 0 ? {'aria-describedby' : describedByIDs.join(' ')} : {};
 
   return (
@@ -44,7 +44,7 @@ export default function FieldSet({legendIsHeading=false, label, name, errorText,
         </legend>
         {instructionText &&  legendIsHeading && <p id='instructions' className='govuk-body'><InstructionComp htmlString={instructionText} /></p>}  
         {hintTextExists && <div id={hintID} className="govuk-hint"> <HintTextComponent htmlString={hintText}/></div>}
-        {errM  && <p id={errorID} className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{errM}</p> }
+        {errMessage  && <p id={errorID} className="govuk-error-message"><span className="govuk-visually-hidden">Error:</span>{errMessage}</p> }
         {children}
     </fieldset>
   </div>

@@ -27,16 +27,16 @@ export default function FormGroup({
 }) {
 
   const {errorMsgs} = useContext(ErrorMsgContext);
-  const [errM,setErr] = useState(errorText);
+  const [errMessage,setErrorMessage] = useState(errorText);
   useEffect(()=>{
     const found = errorMsgs.find((element) => (element.message.fieldId === id) || (element.message.fieldId.startsWith(name)));
     if(!found){
-      setErr(errorText);
+      setErrorMessage(errorText);
     }
   },[errorText,errorMsgs])
 
   const formGroupDivClasses = `govuk-form-group ${
-    errM ? 'govuk-form-group--error' : ''
+    errMessage ? 'govuk-form-group--error' : ''
   }`.trim();
   const labelClasses = `govuk-label ${
     labelIsHeading ? 'govuk-label--l' : ''
@@ -60,10 +60,10 @@ export default function FormGroup({
           <HintTextComponent htmlString={hintText}/>
         </div>
       )}
-      {errM && (
+      {errMessage && (
         <p id={makeErrorId(name)} className='govuk-error-message'>
           <span className='govuk-visually-hidden'>Error:</span>
-          {errM}
+          {errMessage}
         </p>
       )}
       {children}

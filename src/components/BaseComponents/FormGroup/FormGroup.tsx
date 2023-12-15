@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 import { ErrorMsgContext } from '../../helpers/HMRCAppContext';
+import { checkErrorMsgs } from '../../helpers/utils';
 
 function makeHintId(identifier) {
   return `${identifier}-hint`;
@@ -29,7 +30,7 @@ export default function FormGroup({
   const {errorMsgs} = useContext(ErrorMsgContext);
   const [errMessage,setErrorMessage] = useState(errorText);
   useEffect(()=>{
-    const found = errorMsgs.find((element) => (element.message.fieldId === id) || (element.message.fieldId.startsWith(name)));
+    const found = checkErrorMsgs(errorMsgs,id,name)
     if(!found){
       setErrorMessage(errorText);
     }

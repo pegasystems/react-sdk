@@ -5,6 +5,7 @@ import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 import { DefaultFormContext, ErrorMsgContext } from '../../helpers/HMRCAppContext';
 import InstructionComp from '../../helpers/formatters/ParsedHtml';
+import { checkErrorMsgs } from '../../helpers/utils';
 
 export default function FieldSet({legendIsHeading=false, label, name, errorText, hintText, children, fieldsetElementProps, testProps}){
  
@@ -15,7 +16,7 @@ export default function FieldSet({legendIsHeading=false, label, name, errorText,
   const [errMessage,setErrorMessage] = useState(errorText);
 
   useEffect(()=>{
-    const found = errorMsgs.find((element) => element.message.fieldId === name);
+    const found = checkErrorMsgs(errorMsgs,name)
     if(!found){
       setErrorMessage(errorText);
     }

@@ -299,7 +299,6 @@ export default function Assignment(props) {
             {errorSummary && errorMessages.length > 0 && (
               <ErrorSummary errors={errorMessages.map(item => localizedVal(item.message, localeCategory, localeReference))} />
             )}
-            {/* {children[0].props.errorMessagess = errorMessages} */}
             {(!isOnlyFieldDetails.isOnlyField || containerName.toLowerCase().includes('check your answer') || containerName.toLowerCase().includes('declaration')) && <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>}
             <form>
               <ErrorMsgContext.Provider value={

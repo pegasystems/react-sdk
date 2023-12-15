@@ -4,6 +4,7 @@ import GDSCheckbox from '../../../BaseComponents/Checkboxes/Checkbox';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 import { DefaultFormContext, ErrorMsgContext }  from '../../../helpers/HMRCAppContext';
+import { checkErrorMsgs } from '../../../helpers/utils';
 
 export default function CheckboxComponent(props) {
   const {OverrideLabelValue} = useContext(DefaultFormContext);
@@ -42,7 +43,8 @@ export default function CheckboxComponent(props) {
   const name = `${propertyContext}-${propertyName}`;
 
   useEffect(()=>{
-    const found = errorMsgs.find((element) => (element.message.fieldId === id) || (element.message.fieldId.startsWith(name)));
+    const found = checkErrorMsgs(errorMsgs,name)
+    //const found = errorMsgs.find((element) => (element.message.fieldId === id) || (element.message.fieldId.startsWith(name)));
     if(!found){
       setErrorMessage(validatemessage);
     }

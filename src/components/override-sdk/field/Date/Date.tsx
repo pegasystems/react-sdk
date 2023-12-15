@@ -8,7 +8,7 @@ import {
 } from '../../../helpers/formatters/DateErrorFormatter';
 import { GBdate } from '../../../helpers/utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
-import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
+
 
 declare const global;
 
@@ -33,13 +33,15 @@ export default function Date(props) {
   const [day, setDay] = useState(value ? value.split('-')[2] : '');
   const [month, setMonth] = useState(value ? value.split('-')[1] : '');
   const [year, setYear] = useState(value ? value.split('-')[0] : '');
-  const [editedValidateMessage, setEditedValidateMessage] = useState(validatemessage);
+  const [editedValidateMessage, setEditedValidateMessage] = useState( DateErrorFormatter(
+    validatemessage,
+    getPConnect().resolveConfigProps(getPConnect().getMetadata().config).label
+  ));
   const [specificErrors, setSpecificErrors] = useState<any>(null);
 
 
   const actionsApi = getPConnect().getActionsApi();
   const propName = getPConnect().getStateProps().value;
-  const {errorMsgs} = useContext(ErrorMsgContext)
   // PM - Create ISODate string (as expected by onChange) and pass to onchange value, adding 0 padding here for day and month to comply with isostring format.
   const handleDateChange = () => {
     let isoDate;
@@ -64,15 +66,9 @@ export default function Date(props) {
   }, [day, month, year]);
 
   useEffect(() => {
-   const found = errorMsgs.find((element) => (element.message.fieldId.startsWith(name)));
-   if(!found) {
-      setEditedValidateMessage(
-        DateErrorFormatter(
-          validatemessage,
-          getPConnect().resolveConfigProps(getPConnect().getMetadata().config).label
-        )
-      );
-
+    setEditedValidateMessage(
+      validatemessage
+     );
       const errorTargets = DateErrorTargetFields(validatemessage);
       let specificError: any = null;
       if (errorTargets.length > 0)
@@ -93,8 +89,8 @@ export default function Date(props) {
         }
       }
       setSpecificErrors(specificError);
-   }
-  }, [validatemessage,errorMsgs]);
+   
+  }, [validatemessage]);
 
   // PM - Handlers for each part of date inputs, update state for each respectively
   //      0 pad for ISOString compatibilitiy, with conditions to allow us to clear the fields

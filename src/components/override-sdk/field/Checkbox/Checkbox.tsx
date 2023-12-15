@@ -16,7 +16,6 @@ export default function CheckboxComponent(props) {
     hintText,
     readOnly,
     value,
-    id
   } = props;
   
   // let label = props.label;
@@ -43,8 +42,7 @@ export default function CheckboxComponent(props) {
   const name = `${propertyContext}-${propertyName}`;
 
   useEffect(()=>{
-    const found = checkErrorMsgs(errorMsgs,name)
-    //const found = errorMsgs.find((element) => (element.message.fieldId === id) || (element.message.fieldId.startsWith(name)));
+    const found = checkErrorMsgs(errorMsgs,name);
     if(!found){
       setErrorMessage(validatemessage);
     }

@@ -34,19 +34,20 @@ export default function CheckboxComponent(props) {
   
    const[errorMessage,setErrorMessage] = useState(validatemessage);
    const {errorMsgs} = useContext(ErrorMsgContext);
-  useEffect(()=>{
-    const found = errorMsgs.find((element) => (element.message.fieldId === id) || (element.message.fieldId.startsWith(name)));
-    if(!found){
-      setErrorMessage(validatemessage);
-    }
- },[errorMsgs,validatemessage]) 
+   
   
   // build name for id, allows for error message navigation to field
   const propertyContext = getPConnect().options.pageReference ? getPConnect().options.pageReference.split('.').pop() : '';
   const propertyName = getPConnect().getStateProps().value.split('.').pop()
   const name = `${propertyContext}-${propertyName}`;
-  
 
+  useEffect(()=>{
+    const found = errorMsgs.find((element) => (element.message.fieldId === id) || (element.message.fieldId.startsWith(name)));
+    if(!found){
+      setErrorMessage(validatemessage);
+    }
+ },[errorMsgs,validatemessage])
+ 
   const thePConn = getPConnect();
   const theConfigProps = thePConn.getConfigProps();
   const { caption } = theConfigProps;

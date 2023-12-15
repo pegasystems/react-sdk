@@ -12,7 +12,6 @@ export default function FieldSet({legendIsHeading=false, label, name, errorText,
   const {instructionText} = useContext(DefaultFormContext);
   
   const {errorMsgs} = useContext(ErrorMsgContext);
-  console.log(errorMsgs);
   const [errM,setErr] = useState(errorText);
 
   useEffect(()=>{

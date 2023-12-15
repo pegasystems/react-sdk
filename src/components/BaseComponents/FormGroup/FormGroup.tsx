@@ -27,7 +27,6 @@ export default function FormGroup({
 }) {
 
   const {errorMsgs} = useContext(ErrorMsgContext);
-  console.log(errorMsgs);
   const [errM,setErr] = useState(errorText);
   useEffect(()=>{
     const found = errorMsgs.find((element) => (element.message.fieldId === id) || (element.message.fieldId.startsWith(name)));

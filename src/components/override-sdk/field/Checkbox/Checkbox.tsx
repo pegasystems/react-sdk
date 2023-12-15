@@ -3,7 +3,7 @@ import GDSCheckbox from '../../../BaseComponents/Checkboxes/Checkbox';
 // import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks'
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
-import { DefaultFormContext }  from '../../../helpers/HMRCAppContext';
+import { DefaultFormContext, ErrorMsgContext }  from '../../../helpers/HMRCAppContext';
 
 export default function CheckboxComponent(props) {
   const {OverrideLabelValue} = useContext(DefaultFormContext);
@@ -14,7 +14,8 @@ export default function CheckboxComponent(props) {
     validatemessage,
     hintText,
     readOnly,
-    value
+    value,
+    id
   } = props;
   
   // let label = props.label;
@@ -32,10 +33,13 @@ export default function CheckboxComponent(props) {
   if(isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label; */
   
    const[errorMessage,setErrorMessage] = useState(validatemessage);
+   const {errorMsgs} = useContext(ErrorMsgContext);
   useEffect(()=>{
-    if(validatemessage.length>0)
-    setErrorMessage(validatemessage)
- },[validatemessage]) 
+    const found = errorMsgs.find((element) => (element.message.fieldId === id) || (element.message.fieldId.startsWith(name)));
+    if(!found){
+      setErrorMessage(validatemessage);
+    }
+ },[errorMsgs,validatemessage]) 
   
   // build name for id, allows for error message navigation to field
   const propertyContext = getPConnect().options.pageReference ? getPConnect().options.pageReference.split('.').pop() : '';

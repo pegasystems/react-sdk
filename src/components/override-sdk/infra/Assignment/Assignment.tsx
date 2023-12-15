@@ -129,7 +129,6 @@ export default function Assignment(props) {
     return acc;
   }, [] );
 
-    errorStateProps.sort((a:OrderedErrorMessage, b:OrderedErrorMessage)=>{return a.displayOrder > b.displayOrder ? 1:-1})
     setErrorMessages([...errorStateProps]);
   }
 

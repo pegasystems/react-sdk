@@ -25,89 +25,86 @@ export default function Accessibility() {
                 <LanguageToggle />
                 <MainWrapper>
                     <h1 className="govuk-heading-l">
-                        {t("ACCESSIBILITY_HEADING_1")}
+                        {t("ACCESSIBLITY_STATEMENT_FOR_CHB_SERVICE")}
                     </h1>
                     <p className='govuk-body-l'>
-                        {t("ACCESSIBILITY_HEADING_2")}
+                        {t("THIS_AS_EXPLAINS_HOW")}
                     </p>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_1")}</p>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_2")}</p>
-                    <h1 className="govuk-heading-l">
-                        {t("ACCESSIBILITY_HEADING_3")}
-                    </h1>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_3")}</p>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_4")}</p>
+                    <p className='govuk-body'>{t("THIS_SERVICE_IS_A_PART_GOVUK_WEBSITE")}<a href="https://www.gov.uk/help/accessibility-statement">{t("SEPARATE_AS_FOR_MAIN_GOVUK_WEBSITE")} {t("OPENS_IN_NEW_TAB")}</a>.</p>
+                    <p className='govuk-body'>{t("THIS_PAGE_CONTAINS_INFO_ABOUT_CHB_SERVICE")}</p>
+                    
+                    
+                    <h2 className="govuk-heading-l">
+                        {t("USING_THIS_SERVICE")}
+                    </h2>
+                    <p className='govuk-body'>{t("USE_THIS_FORM_TO_CLAIM")}{t("USE_THIS_FORM_TO_CLAIM_CONTD")}</p>
+                    <p className='govuk-body'>{t("THIS_IS_RUN_BY_HMRC")}</p>
                     <ul className="govuk-list govuk-list--bullet">
                         {makeList(1, 5)}
                     </ul>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_5")}</p>
+                    <p className='govuk-body'>{t("WE_HAVE_MADE_TEXTS_SIMPLER")}</p>
                     <p className='govuk-body'>
-                        <a className="govuk-link" href="https://mcmw.abilitynet.org.uk/">{t("ACCESSIBILITY_ANCHOR_1")}</a>
-                        {t("ACCESSIBILITY_P_6")}
+                        <a className="govuk-link" href="https://mcmw.abilitynet.org.uk/">{t("ABILITYNET_HAS_ADVICE")} {t("OPENS_IN_NEW_TAB")}</a> {t("MAKING_YOUR_DEVICE_EASIER")}
                     </p>
-                    <h1 className="govuk-heading-l">
-                        {t("ACCESSIBILITY_P_7")}
-                    </h1>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_8")} <a className="govuk-link" href="https://www.w3.org/TR/WCAG21/">{t("ACCESSIBILITY_ANCHOR_2")}</a>.</p>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_9")}</p>
-                    <ul className="govuk-list govuk-list--bullet">
-                        {makeList(2, 27)}
-                    </ul>
-                    <h1 className="govuk-heading-l">
-                        {t("ACCESSIBILITY_HEADING_4")}
-                    </h1>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_10")} <a className="govuk-link" href="https://www.gov.uk/get-help-hmrc-extra-support">{t("ACCESSIBILITY_ANCHOR_3")}</a> {t("ACCESSIBILITY_P_11")}</p>
-                    <h1 className="govuk-heading-l">
-                        {t("ACCESSIBILITY_HEADING_5")}
-                    </h1>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_12")} <a className="govuk-link" href={`${hmrcURL}contact/accessibility?service=463&referrerUrl=${referrerURL}`}>{t("ACCESSIBILITY_ANCHOR_4")}</a>.</p>
-                    <h1 className="govuk-heading-l">
-                        {t("ACCESSIBILITY_HEADING_6")}
-                    </h1>
+                    
+                    
+                    <h2 className="govuk-heading-l">
+                        {t("HOW_ACCESSIBLE_THIS_SERVICE_IS")}
+                    </h2>
+                    <p className='govuk-body'>{t("SERVICE_IS_NONCOMPLIANT")} <a className="govuk-link" href="https://www.w3.org/TR/WCAG21/">{t("WEB_CONTENT_ACCESSIBILITY_VERSION")} {t("OPENS_IN_NEW_TAB")}</a>. {t("THIS_SERVICE_HAS_NOT_YET_BEEN_CHECKED")}</p>
+                    
+                    
+                    <h2 className="govuk-heading-l">
+                        {t("WHAT_TO_DO_IF_YOU_HAVE_DIFFICULTY_USING_THIS")}
+                    </h2>
+                    <p className='govuk-body'>{t("YOU_CAN")} <a className="govuk-link" href="https://www.gov.uk/get-help-hmrc-extra-support">{t("CONTACT_HMRC_FOR_EXTRA_SUPPORT")} {t("OPENS_IN_NEW_TAB")}</a> {t("IF_YOU_NEED_HELP_WITH_AUDIORECORDING_BRAILLE_ETC")}</p>
+                    
+                    
+                    <h2 className="govuk-heading-l">
+                        {t("REPORTING_ACCESSIBILITY_PROBLEMS_WITH_THIS_SERVICE")}
+                    </h2>
+                    <p className='govuk-body'>{t("WE_ARE_ALWAYS_LOOKING_TO_IMPROVE")} <a className="govuk-link" href={`${hmrcURL}contact/accessibility?service=463&referrerUrl=${referrerURL}`}>{t("REPORT_THE_ACCESSIBILITY_PROBLEM")} {t("OPENS_IN_NEW_TAB")}</a>.</p>
+                    
+                    
+                    <h2 className="govuk-heading-l">
+                        {t("IF_YOU_ARE_NOT_HAPPY")}
+                    </h2>
                     <p className='govuk-body'>
-                        {t("ACCESSIBILITY_P_13")}
-                        <a className="govuk-link" href="https://www.equalityadvisoryservice.com/">{t("ACCESSIBILITY_ANCHOR_5")}</a>
-                        {t("ACCESSIBILITY_P_14")}
-                        <a className="govuk-link" href="https://www.equalityni.org/Home">{t("ACCESSIBILITY_ANCHOR_6")}</a>
-                        {t("ACCESSIBILITY_P_15")}
+                        {t("EHRC_ENFORCES_ACCESSIBILITY_REGULATIONS")}
+                        <a className="govuk-link" href="https://www.equalityadvisoryservice.com/">{t("CONTACT_THE_EASS")} {t("OPENS_IN_NEW_TAB")}</a>
+                        {t("OR_THE")}
+                        <a className="govuk-link" href="https://www.equalityni.org/Home">{t("ECNI")} {t("OPENS_IN_NEW_TAB")}</a>
+                        {t("IF_YOU_LIVE_IN_NORTHERN_IRELAND")}
                     </p>
-                    <h1 className="govuk-heading-l">
-                        {t("ACCESSIBILITY_HEADING_7")}
-                    </h1>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_16")}</p>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_17")}</p>
+                    
+                    
+                    <h2 className="govuk-heading-l">
+                        {t("CONTACTING_US_BY")}
+                    </h2>
+                    <p className='govuk-body'>{t("FOR_HEARING_IMPAIRED")}</p>
+                    <p className='govuk-body'>{t("BRITISH_SIGN_LANGUGAE")}</p>
                     <p className='govuk-body'>
-                        {t("ACCESSIBILITY_P_18")}
-                        <a className="govuk-link" href="https://www.gov.uk/get-help-hmrc-extra-support">{t("ACCESSIBILITY_ANCHOR_7")}</a>
+                        {t("FIND_OUT")}
+                        <a className="govuk-link" href="https://www.gov.uk/get-help-hmrc-extra-support">{t("HOW_TO_GET_EXTRA_SUPPORT")} {t("OPENS_IN_NEW_TAB")}</a>
                     </p>
-                    <h1 className="govuk-heading-l">
-                        {t("ACCESSIBILITY_HEADING_8")}
-                    </h1>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_19")}</p>
+                    
+                    
+                    <h2 className="govuk-heading-l">
+                        {t("TECHNICAL_INFO_ABOUT_THIS_SERVICE")}
+                    </h2>
+                    <p className='govuk-body'>{t("HMRC_IS_COMMITTED_TO_MAKING_THIS_ACCESSIBLE")}</p>
                     <p className='govuk-body'>
-                        {t("ACCESSIBILITY_P_20")}
-                        <a className="govuk-link" href="https://www.w3.org/TR/WCAG21/">{t("ACCESSIBILITY_ANCHOR_8")}</a>
-                        {t("ACCESSIBILITY_P_21")}
+                        {t("SERVICE_IS_NONCOMPLIANT")}
+                        <a className="govuk-link" href="https://www.w3.org/TR/WCAG21/">{t("WEB_CONTENT_ACCESSIBILITY_VERSION")} {t("OPENS_IN_NEW_TAB")}</a>
+                        {t("DUE_TO_THESE_NONCOMPLIANCES")}
                     </p>
-                    <ol className="govuk-list govuk-list--number">
-                        {makeList(3, 26)}
-                    </ol>
+                    <p className='govuk-body'>{t("IT_HAS_NOT_BEEN_TESTED")}</p>
 
-                    <h1 className="govuk-heading-l">
-                        {t("ACCESSIBILITY_HEADING_9")}
-                    </h1>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_22")}</p>
-                    <p className='govuk-body'>
-                        {t("ACCESSIBILITY_P_23")}
-                        <a className="govuk-link" href="https://www.digitalaccessibilitycentre.org/">{t("ACCESSIBILITY_ANCHOR_9")}</a>
-                        {t("ACCESSIBILITY_P_24")}
-                    </p>
-                    <p className='govuk-body'>{t("ACCESSIBILITY_P_25")}</p>
-                    <p className="govuk-body">
-                        <a className="govuk-link" href={`${hmrcURL}contact/report-technical-problem?newTab=true&service=463&referrerUrl=${referrerURL}`} rel="noreferrer" target="_blank">
-                            {t("ACCESSIBILITY_ANCHOR_10")} {t('OPENS_IN_NEW_TAB')}
-                        </a>
-                    </p>
+                    <h2 className="govuk-heading-l">
+                        {t("HOW_WE_TESTED_THIS")}
+                    </h2>
+                    <p className='govuk-body'>{t("THIS_SERVICE_HAS_NOT_BEEN_TESTED")}</p>
+                    <p className='govuk-body'>{t("PREPARED_AND_LAST_UPDATED")}</p>
                 </MainWrapper>
             </div>
             <AppFooter />

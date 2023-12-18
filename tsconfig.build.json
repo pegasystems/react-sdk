@@ -1,6 +1,12 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["./src/components/**/*.ts", "./src/components/**/*.tsx", "./src/components/**/*.js", "./src/components/**/*.jsx"],
+  "include": [
+    "./src/components/**/*.ts",
+    "./src/components/**/*.tsx",
+    "./src/components/**/*.js",
+    "./src/components/**/*.jsx",
+    "./node_modules/react-i18next/dist/commonjs/index.js"
+  ],
   "exclude": [
     "./src/**/*.stories.ts",
     "./src/**/*.stories.tsx",
@@ -13,7 +19,7 @@
     //"rootDir": "./src",
     "outDir": "./lib",
     // "skipLibCheck" must be true in order to not see errors in the @pega/pcore-pconnect-typedefs files themselves
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
-  "files" : [ "./sdk-local-component-map.js"]
+  "files": ["./sdk-local-component-map.js"]
 }

@@ -123,8 +123,8 @@ export default function ClaimsList(props) {
     <>
       {claims.length !== 0 && <h2 className='govuk-heading-m'>{title}</h2>}
 
-      {claims.map(claimItem => (
-        <>
+      {claims.map((claimItem, index) => (
+        <React.Fragment key={index.toString()}>
           {!caseId?.includes(claimItem.claimRef) &&
             (claimItem?.status?.text === 'In Progress' ||
               claimItem?.status?.text === 'AR WAITH') && (
@@ -138,7 +138,7 @@ export default function ClaimsList(props) {
 
           <dl className='govuk-summary-list'>
             {claimItem.children.map((child, index) => (
-              <>
+              <React.Fragment key={index.toString()}>
                 <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
                   {child.firstName && (
                     <>
@@ -195,7 +195,7 @@ export default function ClaimsList(props) {
                     </dd>
                   </div>
                 )}
-              </>
+              </React.Fragment>
             ))}
           </dl>
           {claimItem.actionButton}
@@ -203,7 +203,7 @@ export default function ClaimsList(props) {
             className='govuk-section-break govuk-section-break--xl govuk-section-break--visible'
             aria-hidden='true'
           ></hr>
-        </>
+        </React.Fragment>
       ))}
     </>
   );

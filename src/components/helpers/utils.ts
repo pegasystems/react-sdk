@@ -10,6 +10,6 @@ export const GBdate = (date) => {
   return d.length > 1 ? `${d[2]}/${d[1]}/${d[0]}` : date;
 }
 
-export const checkErrorMsgs = (errorMsgs=[],id="",name="") => {
-  return (errorMsgs.find((element) => (element.message.fieldId === id) || (element.message.fieldId.startsWith(name))));
+export const checkErrorMsgs = (errorMsgs=[],fieldIdentity="",fieldElement="") => {
+  return (errorMsgs.find((element) => (element.message.fieldId === fieldIdentity) || (element.message.fieldId.startsWith(fieldElement))));
 }

@@ -14,6 +14,7 @@ import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import MainWrapper from '../../../BaseComponents/MainWrapper';
 import ShutterServicePage from '../../../../components/AppComponents/ShutterServicePage';
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
 
 export interface ErrorMessageDetails {
   message: string;
@@ -151,9 +152,6 @@ export default function Assignment(props) {
         return acc;
       }, []);
 
-    errorStateProps.sort((a: OrderedErrorMessage, b: OrderedErrorMessage) => {
-      return a.displayOrder > b.displayOrder ? 1 : -1;
-    });
     setErrorMessages([...errorStateProps]);
   }
 
@@ -367,14 +365,21 @@ export default function Assignment(props) {
               </h1>
             )}
             <form>
-              <AssignmentCard
-                getPConnect={getPConnect}
-                itemKey={itemKey}
-                actionButtons={actionButtons}
-                onButtonPress={buttonPress}
+              <ErrorMsgContext.Provider
+                value={{
+                  errorMsgs: errorMessages
+                }}
               >
-                {children}
-              </AssignmentCard>
+                <AssignmentCard
+                  getPConnect={getPConnect}
+                  itemKey={itemKey}
+                  actionButtons={actionButtons}
+                  onButtonPress={buttonPress}
+                  errorMsgs={errorMessages}
+                >
+                  {children}
+                </AssignmentCard>
+              </ErrorMsgContext.Provider>
             </form>
             <a
               href='https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit'

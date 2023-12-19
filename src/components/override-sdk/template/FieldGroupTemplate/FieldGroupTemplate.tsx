@@ -94,9 +94,11 @@ export default function Group(props) {
         childPConnect.setStateProps({ fieldId });   
         
         // Register additonal props used for exclusive field handling (used in CheckBox overidden component) 
-        childPConnect.registerAdditionalProps({ exclusiveOptionChangeHandler: unCheckExclusive, index});                 
-
-        if (resolvedProps.caption.toLowerCase().includes('none of these apply')) { 
+        childPConnect.registerAdditionalProps({ exclusiveOptionChangeHandler: unCheckExclusive, index});   
+        
+        const arrayExclusiveOptions = ['none of these apply', 'none of the above'];
+        
+        if (arrayExclusiveOptions.includes(resolvedProps.caption.toLowerCase())) { 
           exclusiveOptionPropName=childPConnect.getStateProps().value;
           childPConnect.registerAdditionalProps({ exclusiveOption: true,
             exclusiveOptionChangeHandler: unCheckNonExlcusives

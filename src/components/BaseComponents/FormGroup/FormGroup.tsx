@@ -26,15 +26,14 @@ export default function FormGroup({
   children,
   testProps = {}
 }) {
-
-  const {errorMsgs} = useContext(ErrorMsgContext);
-  const [errMessage,setErrorMessage] = useState(errorText);
-  useEffect(()=>{
-    const found = checkErrorMsgs(errorMsgs,id,name)
-    if(!found){
+  const { errorMsgs } = useContext(ErrorMsgContext);
+  const [errMessage, setErrorMessage] = useState(errorText);
+  useEffect(() => {
+    const found = checkErrorMsgs(errorMsgs, id, name);
+    if (!found) {
       setErrorMessage(errorText);
     }
-  },[errorText,errorMsgs])
+  }, [errorText, errorMsgs]);
 
   const formGroupDivClasses = `govuk-form-group ${
     errMessage ? 'govuk-form-group--error' : ''
@@ -58,7 +57,7 @@ export default function FormGroup({
       />
       {hintText && (
         <div id={makeHintId(name)} className='govuk-hint'>
-          <HintTextComponent htmlString={hintText}/>
+          <HintTextComponent htmlString={hintText} />
         </div>
       )}
       {errMessage && (

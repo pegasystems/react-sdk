@@ -203,7 +203,7 @@ export default function Assignment(props) {
   useEffect(() => {
     getSdkConfig().then(sdkConfig => {
       const url = new URL(
-        `${sdkConfig.serverConfig.infinityRestServerUrl}/app/chb-dev/api/application/v2/data_views/D_ShutterLookup`
+        `${sdkConfig.serverConfig.infinityRestServerUrl}/app/${sdkConfig.serverConfig.appAlias}/api/application/v2/data_views/D_ShutterLookup`
       );
       setShutterPageUrl(url.href);
     });

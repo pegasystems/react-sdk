@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
+import { ErrorMsgContext } from '../../helpers/HMRCAppContext';
+import { checkErrorMsgs } from '../../helpers/utils';
 
 function makeHintId(identifier) {
   return `${identifier}-hint`;
@@ -24,9 +26,17 @@ export default function FormGroup({
   children,
   testProps = {}
 }) {
+  const { errorMsgs } = useContext(ErrorMsgContext);
+  const [errMessage, setErrorMessage] = useState(errorText);
+  useEffect(() => {
+    const found = checkErrorMsgs(errorMsgs, id, name);
+    if (!found) {
+      setErrorMessage(errorText);
+    }
+  }, [errorText, errorMsgs]);
 
   const formGroupDivClasses = `govuk-form-group ${
-    errorText ? 'govuk-form-group--error' : ''
+    errMessage ? 'govuk-form-group--error' : ''
   }`.trim();
   const labelClasses = `govuk-label ${
     labelIsHeading ? 'govuk-label--l' : ''
@@ -47,13 +57,13 @@ export default function FormGroup({
       />
       {hintText && (
         <div id={makeHintId(name)} className='govuk-hint'>
-          <HintTextComponent htmlString={hintText}/>
+          <HintTextComponent htmlString={hintText} />
         </div>
       )}
-      {errorText && (
+      {errMessage && (
         <p id={makeErrorId(name)} className='govuk-error-message'>
           <span className='govuk-visually-hidden'>Error:</span>
-          {errorText}
+          {errMessage}
         </p>
       )}
       {children}

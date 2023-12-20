@@ -1,4 +1,4 @@
-import {createContext} from 'react';
+import { createContext } from 'react';
 
 const DefaultFormContext = createContext({
   // Is this Default Form set to display as single question?
@@ -12,8 +12,12 @@ const DefaultFormContext = createContext({
   instructionText: ''
 });
 
+const ErrorMsgContext = createContext({
+  errorMsgs: []
+});
+
 const ReadOnlyDefaultFormContext = createContext({
   hasBeenWrapped: false
-})
+});
 
-export {DefaultFormContext, ReadOnlyDefaultFormContext}
+export { DefaultFormContext, ReadOnlyDefaultFormContext, ErrorMsgContext };

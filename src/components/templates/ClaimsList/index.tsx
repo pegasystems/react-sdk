@@ -79,6 +79,7 @@ export default function ClaimsList(props) {
         dateCreated: DateFormatter.Date(item.pxCreateDateTime, { format: 'DD/MM/YYYY' }),
         dateUpdated: item.pxUpdateDateTime,
         children: [],
+        childrenAdded: item.Claim.Child.pyFirstName != null ? true : false,
         actionButton: (
           <Button
             attributes={{ className: 'govuk-!-margin-top-4 govuk-!-margin-bottom-4' }}
@@ -131,73 +132,63 @@ export default function ClaimsList(props) {
               <WarningText date={claimItem?.dateUpdated} />
             )}
 
-          {/* TODO: Logic for when this title should / should not show */}
-          {claimItem.children.length > 0 && (
-            <h3 className='govuk-heading-s'>{t('CHILDREN_ADDED')}</h3>
-          )}
+          {claimItem.childrenAdded && <h3 className='govuk-heading-s'>{t('CHILDREN_ADDED')}</h3>}
 
-          <dl className='govuk-summary-list'>
-            {claimItem.children.map((child, index) => (
+          {claimItem.childrenAdded &&
+            claimItem.children.map((child, index) => (
               <React.Fragment key={index.toString()}>
-                <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
-                  {child.firstName && (
-                    <>
+                <dl className='govuk-summary-list'>
+                  <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
+                    {child.firstName && (
+                      <>
+                        <dt className='govuk-summary-list__key govuk-!-width-one-third'>
+                          {t('CHILD_NAME')}
+                        </dt>
+                        <dd className='govuk-summary-list__value govuk-!-width-one-third'>
+                          {child.firstName} {child.lastName}
+                        </dd>
+                      </>
+                    )}
+                    {/* ONLY SHOW IF CHILD IN ARRAY IS 0 INDEX AND IS ACTUAL CHILD */}
+                    {index === 0 && (
+                      <dd className='govuk-summary-list__actions govuk-!-width-one-third'>
+                        <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>
+                          {claimItem.status.text}
+                        </strong>
+                      </dd>
+                    )}
+                  </div>
+                  {child.dob && (
+                    <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
                       <dt className='govuk-summary-list__key govuk-!-width-one-third'>
-                        {t('CHILD_NAME')}
+                        {t('DATE_OF_BIRTH')}
                       </dt>
                       <dd className='govuk-summary-list__value govuk-!-width-one-third'>
-                        {child.firstName} {child.lastName}
+                        {child.dob}
                       </dd>
-                    </>
+                    </div>
                   )}
-                  {/* ONLY SHOW IF CHILD IN ARRAY IS 0 INDEX AND IS ACTUAL CHILD */}
-                  {index === 0 && child.firstName && (
-                    <dd className='govuk-summary-list__actions govuk-!-width-one-third'>
-                      <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>
-                        {claimItem.status.text}
-                      </strong>
-                    </dd>
-                  )}
-                </div>
-
-                {child.dob && (
-                  <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
-                    <dt className='govuk-summary-list__key govuk-!-width-one-third'>
-                      {t('DATE_OF_BIRTH')}
-                    </dt>
-                    <dd className='govuk-summary-list__value govuk-!-width-one-third'>
-                      {child.dob}
-                    </dd>
-                  </div>
-                )}
-                {child.firstName && (
-                  <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
-                    <dt className='govuk-summary-list__key govuk-!-width-one-third'>
-                      {t('CREATED_DATE')}
-                    </dt>
-                    <dd className='govuk-summary-list__value govuk-!-width-one-third'>
-                      {claimItem.dateCreated}
-                    </dd>
-                  </div>
-                )}
-                {!child.firstName && (
-                  <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
-                    <dt className='govuk-summary-list__key govuk-!-width-one-third'>
-                      {t('CREATED_DATE')}
-                    </dt>
-                    <dd className='govuk-summary-list__value govuk-!-width-one-third'>
-                      {claimItem.dateCreated}
-                    </dd>
-                    <dd className='govuk-summary-list__actions govuk-!-width-one-third'>
-                      <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>
-                        {claimItem.status.text}
-                      </strong>
-                    </dd>
-                  </div>
-                )}
+                </dl>
               </React.Fragment>
             ))}
+          <dl className='govuk-summary-list'>
+            <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
+              <dt className='govuk-summary-list__key govuk-!-width-one-third'>
+                {t('CREATED_DATE')}
+              </dt>
+              <dd className='govuk-summary-list__value govuk-!-width-one-third'>
+                {claimItem.dateCreated}
+              </dd>
+              <dd className='govuk-summary-list__actions govuk-!-width-one-third'>
+                {!claimItem.childrenAdded && (
+                  <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>
+                    {claimItem.status.text}
+                  </strong>
+                )}
+              </dd>
+            </div>
           </dl>
+
           {claimItem.actionButton}
           <hr
             className='govuk-section-break govuk-section-break--xl govuk-section-break--visible'

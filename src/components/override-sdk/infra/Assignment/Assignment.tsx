@@ -3,13 +3,16 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { scrollToTop } from '../../../helpers/utils';
 import ErrorSummary from '../../../BaseComponents/ErrorSummary/ErrorSummary';
-import { DateErrorFormatter, DateErrorTargetFields } from '../../../helpers/formatters/DateErrorFormatter';
+import {
+  DateErrorFormatter,
+  DateErrorTargetFields
+} from '../../../helpers/formatters/DateErrorFormatter';
 import Button from '../../../BaseComponents/Button/Button';
 import setPageTitle from '../../../helpers/setPageTitleHelpers';
 import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import MainWrapper from '../../../BaseComponents/MainWrapper';
-
+import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
 
 export interface ErrorMessageDetails {
   message: string;
@@ -29,12 +32,16 @@ export default function Assignment(props) {
   const [actionButtons, setActionButtons] = useState<any>({});
   const { t } = useTranslation();
 
-  const AssignmentCard = SdkComponentMap.getLocalComponentMap()['AssignmentCard'] ? SdkComponentMap.getLocalComponentMap()['AssignmentCard'] : SdkComponentMap.getPegaProvidedComponentMap()['AssignmentCard'];
+  const AssignmentCard = SdkComponentMap.getLocalComponentMap()['AssignmentCard']
+    ? SdkComponentMap.getLocalComponentMap()['AssignmentCard']
+    : SdkComponentMap.getPegaProvidedComponentMap()['AssignmentCard'];
 
   const actionsAPI = thePConn.getActionsApi();
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const localeCategory = 'Assignment';
-  const localeReference = `${getPConnect().getCaseInfo().getClassName()}!CASE!${getPConnect().getCaseInfo().getName()}`.toUpperCase();
+  const localeReference = `${getPConnect().getCaseInfo().getClassName()}!CASE!${getPConnect()
+    .getCaseInfo()
+    .getName()}`.toUpperCase();
 
   // store off bound functions to above pointers
   const finishAssignment = actionsAPI.finishAssignment.bind(actionsAPI);
@@ -44,32 +51,35 @@ export default function Assignment(props) {
   const cancelCreateStageAssignment = actionsAPI.cancelCreateStageAssignment.bind(actionsAPI);
   // const showPage = actionsAPI.showPage.bind(actionsAPI);
 
-
-  const isOnlyFieldDetails  = useIsOnlyField(null, children);// .isOnlyField;
+  const isOnlyFieldDetails = useIsOnlyField(null, children); // .isOnlyField;
   const [errorSummary, setErrorSummary] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Array<OrderedErrorMessage>>([]);
 
-  const _containerName =  getPConnect().getContainerName();
+  const _containerName = getPConnect().getContainerName();
   const context = getPConnect().getContextName();
-  const containerID = PCore.getContainerUtils().getContainerAccessOrder(`${context}/${_containerName}`).at(-1)
+  const containerID = PCore.getContainerUtils()
+    .getContainerAccessOrder(`${context}/${_containerName}`)
+    .at(-1);
 
   useEffect(() => {
-     const updateErrorTimeOut = setTimeout(()=>{ 
-        setPageTitle(errorMessages.length > 0);  
-     }, 500);
-     return ()=>{
+    const updateErrorTimeOut = setTimeout(() => {
+      setPageTitle(errorMessages.length > 0);
+    }, 500);
+    return () => {
       clearTimeout(updateErrorTimeOut);
-     }
-  },[errorMessages])
+    };
+  }, [errorMessages]);
 
   let containerName;
-  if(thePConn.getDataObject().caseInfo?.assignments && thePConn.getDataObject().caseInfo?.assignments.length > 0){
+  if (
+    thePConn.getDataObject().caseInfo?.assignments &&
+    thePConn.getDataObject().caseInfo?.assignments.length > 0
+  ) {
     containerName = thePConn.getDataObject().caseInfo?.assignments[0].name;
   }
 
   useEffect(() => {
     if (children && children.length > 0) {
-
       const oWorkItem = children[0].props.getPConnect();
       const oWorkData = oWorkItem.getDataObject();
       const oData = thePConn.getDataObject();
@@ -84,52 +94,60 @@ export default function Assignment(props) {
     }
   }, [children]);
 
-
   function checkErrorMessages() {
     let errorStateProps = [];
-    errorStateProps = PCore.getFormUtils().getEditableFields(containerID).reduce( (acc, o) => {
+    errorStateProps = PCore.getFormUtils()
+      .getEditableFields(containerID)
+      .reduce((acc, o) => {
+        const fieldC11nEnv = o.fieldC11nEnv;
+        const fieldStateProps = fieldC11nEnv.getStateProps();
+        const fieldComponent = fieldC11nEnv.getComponent();
+        const errorVal = PCore.getMessageManager().getMessages({
+          property: fieldStateProps.value,
+          pageReference: fieldC11nEnv.getPageReference(),
+          context: containerID,
+          type: 'error'
+        });
+        let validatemessage = '';
+        if (errorVal.length > 0) {
+          errorVal.forEach(element => {
+            validatemessage =
+              validatemessage + (validatemessage.length > 0 ? '. ' : '') + element.message;
+          });
+        }
 
-    const fieldC11nEnv = o.fieldC11nEnv;
-    const fieldStateProps = fieldC11nEnv.getStateProps();
-    const fieldComponent = fieldC11nEnv.getComponent();
-    const errorVal =  PCore.getMessageManager().getMessages({
-      property: fieldStateProps.value,
-      pageReference: fieldC11nEnv.getPageReference(),
-      context: containerID,
-      type: 'error'
-    });
-    let validatemessage = "";
-    if(errorVal.length > 0){
-      errorVal.forEach(element => {
-      validatemessage = validatemessage + (validatemessage.length>0 ? ". " : "") + element.message;
-      });
-    }
+        if (validatemessage) {
+          const formattedPropertyName = fieldC11nEnv?.getStateProps()?.value?.split('.')?.pop();
+          let fieldId =
+            fieldC11nEnv.getStateProps().fieldId ||
+            fieldComponent.props.name ||
+            formattedPropertyName;
+          if (fieldC11nEnv.meta.type === 'Date') {
+            const propertyName = fieldComponent.props.name;
+            const DateErrorTargetFieldId = DateErrorTargetFields(validatemessage);
+            fieldId = `${propertyName}-day`;
+            if (DateErrorTargetFieldId.includes(`month`)) {
+              fieldId = `${propertyName}-month`;
+            } else if (DateErrorTargetFieldId.includes(`year`)) {
+              fieldId = `${propertyName}-year`;
+            }
+            validatemessage = DateErrorFormatter(
+              validatemessage,
+              fieldC11nEnv.resolveConfigProps(fieldC11nEnv.getMetadata().config).label
+            );
+          }
 
-    if(validatemessage){
-      const formattedPropertyName = fieldC11nEnv?.getStateProps()?.value?.split('.')?.pop();
-      let fieldId = fieldC11nEnv.getStateProps().fieldId || fieldComponent.props.name || formattedPropertyName;
-      if(fieldC11nEnv.meta.type === 'Date'){
-         const propertyName = fieldComponent.props.name ;
-         const DateErrorTargetFieldId = DateErrorTargetFields(validatemessage);
-         fieldId = `${propertyName}-day`;
-         if(DateErrorTargetFieldId.includes(`month`)){
-          fieldId = `${propertyName}-month`;
-         }else if(DateErrorTargetFieldId.includes(`year`)){
-          fieldId = `${propertyName}-year`;
-         }
-         validatemessage = DateErrorFormatter(validatemessage,fieldC11nEnv.resolveConfigProps(fieldC11nEnv.getMetadata().config).label);
-        
-      }
-     
-    acc.push({message:{
-      message: validatemessage,
-      fieldId},
-      displayOrder:fieldComponent.props.displayOrder});
-    }
-    return acc;
-  }, [] );
+          acc.push({
+            message: {
+              message: validatemessage,
+              fieldId
+            },
+            displayOrder: fieldComponent.props.displayOrder
+          });
+        }
+        return acc;
+      }, []);
 
-    errorStateProps.sort((a:OrderedErrorMessage, b:OrderedErrorMessage)=>{return a.displayOrder > b.displayOrder ? 1:-1})
     setErrorMessages([...errorStateProps]);
   }
 
@@ -139,7 +157,7 @@ export default function Assignment(props) {
   // has -day appended), a fieldId stateprop will be defined and this will be used instead.
   useEffect(() => {
     checkErrorMessages();
-  }, [children])
+  }, [children]);
 
   useEffect(() => {
     if (!errorSummary) {
@@ -256,16 +274,15 @@ export default function Assignment(props) {
             })
             .catch(() => {
               scrollToTop();
-              showErrorSummary();             
+              showErrorSummary();
             });
-          
+
           break;
         }
 
         default:
           break;
       }
-
     }
   }
   function _onButtonPress(sAction: string, sButtonType: string) {
@@ -292,31 +309,48 @@ export default function Assignment(props) {
               attributes={{ type: 'link' }}
             ></Button>
           ) : null
+        )}
+        <MainWrapper>
+          {errorSummary && errorMessages.length > 0 && (
+            <ErrorSummary
+              errors={errorMessages.map(item =>
+                localizedVal(item.message, localeCategory, localeReference)
+              )}
+            />
           )}
-          <MainWrapper>
-            {errorSummary && errorMessages.length > 0 && (
-              <ErrorSummary errors={errorMessages.map(item => localizedVal(item.message, localeCategory, localeReference))} />
-            )}
-            {(!isOnlyFieldDetails.isOnlyField || containerName.toLowerCase().includes('check your answer') || containerName.toLowerCase().includes('declaration')) && <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>}
-            <form>
+          {(!isOnlyFieldDetails.isOnlyField ||
+            containerName.toLowerCase().includes('check your answer') ||
+            containerName.toLowerCase().includes('declaration')) && (
+            <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>
+          )}
+          <form>
+            <ErrorMsgContext.Provider
+              value={{
+                errorMsgs: errorMessages
+              }}
+            >
               <AssignmentCard
                 getPConnect={getPConnect}
                 itemKey={itemKey}
                 actionButtons={actionButtons}
                 onButtonPress={buttonPress}
+                errorMsgs={errorMessages}
               >
                 {children}
               </AssignmentCard>
-            </form>
-            <a
-              href='https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit'
-              className='govuk-link'
-              rel='noreferrer noopener'
-              target='_blank'
-            >
-              {t("ASK_HMRC_ONLINE")} {t("OPENS_IN_NEW_TAB")}
-            </a><br/><br/>
-          </MainWrapper>
+            </ErrorMsgContext.Provider>
+          </form>
+          <a
+            href='https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit'
+            className='govuk-link'
+            rel='noreferrer noopener'
+            target='_blank'
+          >
+            {t('ASK_HMRC_ONLINE')} {t('OPENS_IN_NEW_TAB')}
+          </a>
+          <br />
+          <br />
+        </MainWrapper>
       </div>
     </>
   );

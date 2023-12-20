@@ -12,6 +12,8 @@ import setPageTitle from '../../../helpers/setPageTitleHelpers';
 import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import MainWrapper from '../../../BaseComponents/MainWrapper';
+import ShutterServicePage from '../../../../components/AppComponents/ShutterServicePage';
+import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
 
 export interface ErrorMessageDetails {
@@ -54,6 +56,8 @@ export default function Assignment(props) {
   const isOnlyFieldDetails = useIsOnlyField(null, children); // .isOnlyField;
   const [errorSummary, setErrorSummary] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Array<OrderedErrorMessage>>([]);
+  const [shutterPageUrl, setShutterPageUrl] = useState('');
+  const [serviceShuttered, setServiceShuttered] = useState(false);
 
   const _containerName = getPConnect().getContainerName();
   const context = getPConnect().getContextName();
@@ -171,6 +175,40 @@ export default function Assignment(props) {
     checkErrorMessages();
     setErrorSummary(true);
   }
+
+  function isServiceShuttered() {
+    const featureID = 'ChB';
+    const featureType = 'Service';
+
+    const parameters = new URLSearchParams(
+      `{FeatureID: ${featureID}, FeatureType: ${featureType}}`
+    );
+
+    const url = `${shutterPageUrl}?dataViewParameters=${parameters}`;
+
+    const invokePromise = getPConnect().getActionsApi().invoke(url, 'GET');
+
+    invokePromise
+      .then(resp => {
+        const isShuttered = resp.data.Shuttered;
+        setServiceShuttered(isShuttered);
+      })
+      .catch(err => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
+  }
+
+  // Runs the is service shuttered function and sets the shutter rest api url when the view changes
+  useEffect(() => {
+    getSdkConfig().then(sdkConfig => {
+      const url = new URL(
+        `${sdkConfig.serverConfig.infinityRestServerUrl}/app/${sdkConfig.serverConfig.appAlias}/api/application/v2/data_views/D_ShutterLookup`
+      );
+      setShutterPageUrl(url.href);
+    });
+    isServiceShuttered();
+  }, [children, shutterPageUrl]);
 
   function onSaveActionSuccess(data) {
     actionsAPI.cancelAssignment(itemKey).then(() => {
@@ -296,62 +334,67 @@ export default function Assignment(props) {
 
   return (
     <>
-      <div id='Assignment'>
-        {arSecondaryButtons?.map(sButton =>
-          sButton['name'] === 'Previous' ? (
-            <Button
-              variant='backlink'
-              onClick={e => {
-                e.target.blur();
-                _onButtonPress(sButton['jsAction'], 'secondary');
-              }}
-              key={sButton['actionID']}
-              attributes={{ type: 'link' }}
-            ></Button>
-          ) : null
-        )}
-        <MainWrapper>
-          {errorSummary && errorMessages.length > 0 && (
-            <ErrorSummary
-              errors={errorMessages.map(item =>
-                localizedVal(item.message, localeCategory, localeReference)
-              )}
-            />
+      {!serviceShuttered && (
+        <div id='Assignment'>
+          {arSecondaryButtons?.map(sButton =>
+            sButton['name'] === 'Previous' ? (
+              <Button
+                variant='backlink'
+                onClick={e => {
+                  e.target.blur();
+                  _onButtonPress(sButton['jsAction'], 'secondary');
+                }}
+                key={sButton['actionID']}
+                attributes={{ type: 'link' }}
+              ></Button>
+            ) : null
           )}
-          {(!isOnlyFieldDetails.isOnlyField ||
-            containerName.toLowerCase().includes('check your answer') ||
-            containerName.toLowerCase().includes('declaration')) && (
-            <h1 className='govuk-heading-l'>{localizedVal(containerName, '', localeReference)}</h1>
-          )}
-          <form>
-            <ErrorMsgContext.Provider
-              value={{
-                errorMsgs: errorMessages
-              }}
-            >
-              <AssignmentCard
-                getPConnect={getPConnect}
-                itemKey={itemKey}
-                actionButtons={actionButtons}
-                onButtonPress={buttonPress}
-                errorMsgs={errorMessages}
+          <MainWrapper>
+            {errorSummary && errorMessages.length > 0 && (
+              <ErrorSummary
+                errors={errorMessages.map(item =>
+                  localizedVal(item.message, localeCategory, localeReference)
+                )}
+              />
+            )}
+            {(!isOnlyFieldDetails.isOnlyField ||
+              containerName.toLowerCase().includes('check your answer') ||
+              containerName.toLowerCase().includes('declaration')) && (
+              <h1 className='govuk-heading-l'>
+                {localizedVal(containerName, '', localeReference)}
+              </h1>
+            )}
+            <form>
+              <ErrorMsgContext.Provider
+                value={{
+                  errorMsgs: errorMessages
+                }}
               >
-                {children}
-              </AssignmentCard>
-            </ErrorMsgContext.Provider>
-          </form>
-          <a
-            href='https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit'
-            className='govuk-link'
-            rel='noreferrer noopener'
-            target='_blank'
-          >
-            {t('ASK_HMRC_ONLINE')} {t('OPENS_IN_NEW_TAB')}
-          </a>
-          <br />
-          <br />
-        </MainWrapper>
-      </div>
+                <AssignmentCard
+                  getPConnect={getPConnect}
+                  itemKey={itemKey}
+                  actionButtons={actionButtons}
+                  onButtonPress={buttonPress}
+                  errorMsgs={errorMessages}
+                >
+                  {children}
+                </AssignmentCard>
+              </ErrorMsgContext.Provider>
+            </form>
+            <a
+              href='https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit'
+              className='govuk-link'
+              rel='noreferrer noopener'
+              target='_blank'
+            >
+              {t('ASK_HMRC_ONLINE')} {t('OPENS_IN_NEW_TAB')}
+            </a>
+            <br />
+            <br />
+          </MainWrapper>
+        </div>
+      )}
+      {serviceShuttered && <ShutterServicePage />}
     </>
   );
 }

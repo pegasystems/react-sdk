@@ -141,30 +141,37 @@ export default function ClaimsList(props) {
                   <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
                     {child.firstName && (
                       <>
-                        <dt className='govuk-summary-list__key govuk-!-width-one-third'>
+                        <dt className='govuk-summary-list__key govuk-!-width-one-third govuk-!-padding-bottom-0'>
                           {t('CHILD_NAME')}
                         </dt>
-                        <dd className='govuk-summary-list__value govuk-!-width-one-third'>
+                        <dd className='govuk-summary-list__value govuk-!-width-one-third govuk-!-padding-bottom-0'>
                           {child.firstName} {child.lastName}
                         </dd>
                       </>
                     )}
-                    {/* ONLY SHOW IF CHILD IN ARRAY IS 0 INDEX AND IS ACTUAL CHILD */}
                     {index === 0 && (
-                      <dd className='govuk-summary-list__actions govuk-!-width-one-third'>
+                      <dd className='govuk-summary-list__actions govuk-!-width-one-third govuk-!-padding-bottom-0'>
                         <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>
                           {claimItem.status.text}
                         </strong>
                       </dd>
                     )}
+                    {index != 0 && (
+                      <dd className='govuk-summary-list__actions govuk-!-width-one-third govuk-!-padding-bottom-0'>
+                        <span className='govuk-visually-hidden'>No action</span>
+                      </dd>
+                    )}
                   </div>
                   {child.dob && (
                     <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
-                      <dt className='govuk-summary-list__key govuk-!-width-one-third'>
+                      <dt className='govuk-summary-list__key govuk-!-width-one-third govuk-!-padding-bottom-0'>
                         {t('DATE_OF_BIRTH')}
                       </dt>
-                      <dd className='govuk-summary-list__value govuk-!-width-one-third'>
+                      <dd className='govuk-summary-list__value govuk-!-width-one-third govuk-!-padding-bottom-0'>
                         {child.dob}
+                      </dd>
+                      <dd className='govuk-summary-list__value govuk-!-width-one-third govuk-!-padding-bottom-0'>
+                        <span className='govuk-visually-hidden'>No action</span>
                       </dd>
                     </div>
                   )}

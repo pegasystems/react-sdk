@@ -1,51 +1,51 @@
-@import "node_modules/govuk-frontend/govuk/all";
-@import "node_modules/hmrc-frontend/hmrc/components/header/_header.scss";
-@import "node_modules/hmrc-frontend/hmrc/components/language-select/_language-select.scss";
-@import "node_modules/hmrc-frontend/hmrc/components/timeout-dialog/_timeout-dialog.scss";
-
+@import 'node_modules/govuk-frontend/govuk/all';
+@import 'node_modules/hmrc-frontend/hmrc/components/header/_header.scss';
+@import 'node_modules/hmrc-frontend/hmrc/components/language-select/_language-select.scss';
+@import 'node_modules/hmrc-frontend/hmrc/components/timeout-dialog/_timeout-dialog.scss';
 
 .app-claimslist-tag {
-  @include govuk-media-query($from: tablet){
-    float:right;
+  @include govuk-media-query($from: tablet) {
+    float: right;
   }
 }
 
-.app-claimslist .govuk-summary-list__row:last-child{
+.app-claimslist .govuk-summary-list__row:last-child {
   border-bottom: 0;
 }
 
-.signout-modal{
+.signout-modal {
   position: absolute;
   top: 10%;
   left: 88%;
 }
 
-.display-inline-block{
+.display-inline-block {
   display: inline-block;
 }
 
 /* Used to improve visual display of CYA pages after BUG-7232 changes. May be removed after CYA page rework */
-.govuk-summary-list:not(.govuk-summary-list:has(+:not(.govuk-summary-list))):not(:last-of-type){
+#Assignment
+  .govuk-summary-list:not(.govuk-summary-list:has(+ :not(.govuk-summary-list))):not(:last-of-type) {
   margin-bottom: 0px;
 }
 
-.govuk-font-global{
-  font-family: "GDS Transport", arial, sans-serif;
+.govuk-font-global {
+  font-family: 'GDS Transport', arial, sans-serif;
 }
 
-span.govuk-body.govuk-\!-font-weight-bold.read-only:last-of-type{
+span.govuk-body.govuk-\!-font-weight-bold.read-only:last-of-type {
   padding-bottom: 10px;
-  display:inline-block;
+  display: inline-block;
 }
 
 .sectionDivStyle .content {
   align-items: flex-start;
 }
 
-div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type~br{
-  display:none;
+div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
+  display: none;
 }
 
-.inline-block-warning{
+.inline-block-warning {
   display: inline-block;
 }

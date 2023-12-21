@@ -314,7 +314,7 @@ export default function UnAuthChildBenefitsClaim() {
     if (!sdkIsLoggedIn()) {
       // login();     // Login now handled at TopLevelApp
     } else {
-      setShowUserPortal(true);
+      setShowUserPortal(false);
     }
   }, [bShowAppName]);
 
@@ -486,6 +486,8 @@ export default function UnAuthChildBenefitsClaim() {
     getSdkConfig().then(sdkConfig => {
       const sdkConfigAuth = sdkConfig.authConfig;
       setAuthType(sdkConfigAuth.uAuthService);
+      sdkConfigAuth.authService = sdkConfigAuth.uAuthService;
+
       if (!sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === 'Basic') {
         // Service package to use custom auth with Basic
         const sB64 = window.btoa(
@@ -586,7 +588,8 @@ export default function UnAuthChildBenefitsClaim() {
         signoutHandler={() => logout()}
       />
 
-      <AppHeader handleSignout={handleSignout} appname={t('CLAIM_CHILD_BENEFIT')} />
+      {/* <AppHeader handleSignout={handleSignout} appname={t('CLAIM_CHILD_BENEFIT')} /> */}
+      <AppHeader handleSignout={handleSignout} appname='Claim un Auth Journey Test' />
       <div className='govuk-width-container'>
         <LanguageToggle PegaApp='true' />
         <div id='pega-part-of-page'>

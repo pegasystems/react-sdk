@@ -7,6 +7,7 @@ import i18n from 'i18next';
 import ChildBenefitsClaim from '../ChildBenefitsClaim/index';
 import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
 import Accessibility from '../ChildBenefitsClaim/AccessibilityPage';
+import UnAuthChildBenefitsClaim from "../UnAuthChildBenefitsClaim";
 
 const AppSelector = () => {
   i18n
@@ -28,7 +29,8 @@ const AppSelector = () => {
 
   return (
     <Switch>
-      <Route exact path='/' component={ChildBenefitsClaim}/>
+      <Route exact path='/' component={ChildBenefitsClaim} />
+      <Route exact path='/ua' component={UnAuthChildBenefitsClaim}/>
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
     </Switch>

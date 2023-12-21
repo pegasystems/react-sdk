@@ -6,7 +6,7 @@ import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import NotificationBanner from '../../components/BaseComponents/NotificationBanner/NotificationBanner';
 
 export default function UaUserPortal(props) {
-  const { beginClaim, children, showPortalBanner } = props;
+  const { beginClaim, showPortalBanner } = props;
   const { t } = useTranslation();
   const { referrerURL, hmrcURL } = useHMRCExternalLinks();
 
@@ -22,7 +22,8 @@ export default function UaUserPortal(props) {
         )}
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-xl'>{t('YOUR_CLAIM_APPLICATIONS')}</h1>
+            {/* <h1 className='govuk-heading-xl'>{t('YOUR_CLAIM_APPLICATIONS')}</h1> */}
+            <h1 className='govuk-heading-xl'>Your UnAuth Claim App</h1>
           </div>
         </div>
         <div className='govuk-grid-row'>
@@ -43,7 +44,7 @@ export default function UaUserPortal(props) {
 
             {/* Claims list */}
             <div className='govuk-grid-column-two-thirds'>
-              <>{children}</>
+              {/* <>{children}</> */}
               <>
                 <h2 className='govuk-heading-m' id='subsection-title'>
                   {t('MAKE_A_CLAIM')}

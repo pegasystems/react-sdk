@@ -1,3 +1,6 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/jsx-no-constructed-context-values */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -132,9 +135,7 @@ export default function FullPortal() {
       compareSdkPCoreVersions();
 
       // Initialize the SdkComponentMap (local and pega-provided)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
       getSdkComponentMap(localSdkComponentMap).then((theComponentMap: any) => {
-        // eslint-disable-next-line no-console
         console.log(`SdkComponentMap initialized`);
 
         // Don't call initialRender until SdkComponentMap is fully initialized
@@ -153,15 +154,12 @@ export default function FullPortal() {
     if (queryPortal) {
       myLoadPortal('pega-root', queryPortal, []);
     } else if (thePortal) {
-      // eslint-disable-next-line no-console
       console.log(`Loading specified appPortal: ${thePortal}`);
       myLoadPortal('pega-root', thePortal, []);
     } else if (myLoadDefaultPortal && defaultPortal && !excludePortals.includes(defaultPortal)) {
-      // eslint-disable-next-line no-console
       console.log(`Loading default portal`);
       myLoadDefaultPortal('pega-root', []);
     } else {
-      // eslint-disable-next-line no-console
       console.log('Loading portal selection screen');
       setPortalSelectionScreen(true);
       setDefaultPortalName(defaultPortal);

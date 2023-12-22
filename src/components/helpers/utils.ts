@@ -15,3 +15,8 @@ export const checkErrorMsgs = (errorMsgs = [], fieldIdentity = '', fieldElement 
       element.message.fieldId === fieldIdentity || element.message.fieldId.startsWith(fieldElement)
   );
 };
+
+export const shouldRemoveFormTagForReadOnly = (pageName: string) => {
+  const arrContainerNamesFormNotRequired = ['Your date of birth'];
+  return arrContainerNamesFormNotRequired.includes(pageName);
+};

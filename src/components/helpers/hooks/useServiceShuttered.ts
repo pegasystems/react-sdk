@@ -31,7 +31,6 @@ export default function ServiceShuttered() {
         console.error(err);
       });
   }
-  // }
 
   // Runs the is service shuttered function and sets the shutter rest api url when the view changes
   useEffect(() => {

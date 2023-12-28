@@ -91,7 +91,6 @@ export default function ChildBenefitsClaim() {
     setShowUserPortal(false);
     setShowResolutionScreen(false);
     setShowPega(false);
-  //  setServiceNotAvailable(false);
   }
 
   function displayPega() {
@@ -110,7 +109,6 @@ export default function ChildBenefitsClaim() {
   }
   
   function displayServiceNotAvailable(){
-   resetAppDisplay();
     setServiceNotAvailable(true);
   }
 
@@ -218,7 +216,7 @@ export default function ChildBenefitsClaim() {
         const context =  PCore.getContainerUtils().getActiveContainerItemName(`${containername}/workarea`);
         const status =  (PCore.getStoreValue(".pyStatusWork","caseInfo.content",context))
         if(status === "Resolved-Discarded"){
-      
+
         displayServiceNotAvailable();
       
         PCore.getContainerUtils().closeContainerItem(context);

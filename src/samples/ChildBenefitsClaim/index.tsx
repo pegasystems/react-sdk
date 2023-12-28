@@ -91,7 +91,6 @@ export default function ChildBenefitsClaim() {
     setShowUserPortal(false);
     setShowResolutionScreen(false);
     setShowPega(false);
-  //  setServiceNotAvailable(false);
   }
 
   function displayPega() {
@@ -110,7 +109,6 @@ export default function ChildBenefitsClaim() {
   }
   
   function displayServiceNotAvailable(){
-   resetAppDisplay();
     setServiceNotAvailable(true);
   }
 
@@ -199,6 +197,7 @@ export default function ChildBenefitsClaim() {
   }
 
   function establishPCoreSubscriptions() {
+    console.log("....Starting...",  new Date().getTime())
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
       () => {
@@ -218,7 +217,8 @@ export default function ChildBenefitsClaim() {
         const context =  PCore.getContainerUtils().getActiveContainerItemName(`${containername}/workarea`);
         const status =  (PCore.getStoreValue(".pyStatusWork","caseInfo.content",context))
         if(status === "Resolved-Discarded"){
-      
+
+        console.log("assignmentFinished", new Date().getTime())
         displayServiceNotAvailable();
       
         PCore.getContainerUtils().closeContainerItem(context);

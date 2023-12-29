@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import Button from '../../components/BaseComponents/Button/Button';
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import NotificationBanner from '../../components/BaseComponents/NotificationBanner/NotificationBanner';
@@ -40,7 +41,6 @@ const ProgressPage = (props: { onStart: any; showPortalBanner: any }) => {
                         href='https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit'
                         className='govuk-link'
                         rel='noreferrer noopener'
-                        onClick={onStart}
                       >
                         {t('YOUR_DETAILS')}
                       </a>
@@ -94,6 +94,10 @@ const ProgressPage = (props: { onStart: any; showPortalBanner: any }) => {
                 </ul>
               </li>
             </ol>
+
+            <Button variant='start' onClick={onStart}>
+              {t('START_NOW')}
+            </Button>
 
             <div className='govuk-!-margin-top-8'>
               <a

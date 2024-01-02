@@ -8,7 +8,11 @@ export default function ServiceShuttered() {
     try {
       const status = await getServiceShutteredStatus();
       setServiceShuttered(status);
-    } catch {}
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+      setServiceShuttered(false);
+    }
   }
 
   useEffect(() => {

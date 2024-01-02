@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { scrollToTop } from '../../../helpers/utils';
+import { getServiceShutteredStatus, scrollToTop } from '../../../helpers/utils';
 import ErrorSummary from '../../../BaseComponents/ErrorSummary/ErrorSummary';
 import {
   DateErrorFormatter,
@@ -57,6 +57,7 @@ export default function Assignment(props) {
   const isOnlyFieldDetails = useIsOnlyField(null, children); // .isOnlyField;
   const [errorSummary, setErrorSummary] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Array<OrderedErrorMessage>>([]);
+  const [serviceShutteredStatus, setServiceShutteredStatus] = useState(serviceShuttered);
 
   const _containerName = getPConnect().getContainerName();
   const context = getPConnect().getContextName();
@@ -184,7 +185,7 @@ export default function Assignment(props) {
     });
   }
 
-  function buttonPress(sAction: string, sButtonType: string) {
+  async function buttonPress(sAction: string, sButtonType: string) {
     setErrorSummary(false);
 
     if (sButtonType === 'secondary') {
@@ -268,18 +269,22 @@ export default function Assignment(props) {
       // eslint-disable-next-line sonarjs/no-small-switch
       switch (sAction) {
         case 'finishAssignment': {
-          const finishPromise = finishAssignment(itemKey);
+          const serviceShutteredStatus = await getServiceShutteredStatus();
+          if (serviceShutteredStatus) {
+            setServiceShutteredStatus(serviceShutteredStatus);
+          } else {
+            const finishPromise = finishAssignment(itemKey);
 
-          finishPromise
-            .then(() => {
-              scrollToTop();
-              setErrorSummary(false);
-            })
-            .catch(() => {
-              scrollToTop();
-              showErrorSummary();
-            });
-
+            finishPromise
+              .then(() => {
+                scrollToTop();
+                setErrorSummary(false);
+              })
+              .catch(() => {
+                scrollToTop();
+                showErrorSummary();
+              });
+          }
           break;
         }
 
@@ -299,7 +304,7 @@ export default function Assignment(props) {
 
   return (
     <>
-      {!serviceShuttered && (
+      {!serviceShutteredStatus && (
         <div id='Assignment'>
           {arSecondaryButtons?.map(sButton =>
             sButton['name'] === 'Previous' ? (
@@ -359,7 +364,7 @@ export default function Assignment(props) {
           </MainWrapper>
         </div>
       )}
-      {serviceShuttered && <ShutterServicePage />}
+      {serviceShutteredStatus && <ShutterServicePage />}
     </>
   );
 }

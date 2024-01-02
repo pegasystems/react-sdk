@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { scrollToTop, shouldRemoveFormTagForReadOnly } from '../../../helpers/utils';
+import {
+  getServiceShutteredStatus,
+  scrollToTop,
+  shouldRemoveFormTagForReadOnly
+} from '../../../helpers/utils';
 import ErrorSummary from '../../../BaseComponents/ErrorSummary/ErrorSummary';
 import {
   DateErrorFormatter,
@@ -13,8 +17,8 @@ import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/s
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import MainWrapper from '../../../BaseComponents/MainWrapper';
 import ShutterServicePage from '../../../../components/AppComponents/ShutterServicePage';
-import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
+import useServiceShuttered from '../../../helpers/hooks/useServiceShuttered';
 
 export interface ErrorMessageDetails {
   message: string;
@@ -33,6 +37,7 @@ export default function Assignment(props) {
   const [arSecondaryButtons, setArSecondaryButtons] = useState([]);
   const [actionButtons, setActionButtons] = useState<any>({});
   const { t } = useTranslation();
+  const { serviceShuttered } = useServiceShuttered();
 
   const AssignmentCard = SdkComponentMap.getLocalComponentMap()['AssignmentCard']
     ? SdkComponentMap.getLocalComponentMap()['AssignmentCard']
@@ -56,8 +61,7 @@ export default function Assignment(props) {
   const isOnlyFieldDetails = useIsOnlyField(null, children); // .isOnlyField;
   const [errorSummary, setErrorSummary] = useState(false);
   const [errorMessages, setErrorMessages] = useState<Array<OrderedErrorMessage>>([]);
-  const [shutterPageUrl, setShutterPageUrl] = useState('');
-  const [serviceShuttered, setServiceShuttered] = useState(false);
+  const [serviceShutteredStatus, setServiceShutteredStatus] = useState(serviceShuttered);
 
   const _containerName = getPConnect().getContainerName();
   const context = getPConnect().getContextName();
@@ -176,40 +180,6 @@ export default function Assignment(props) {
     setErrorSummary(true);
   }
 
-  function isServiceShuttered() {
-    const featureID = 'ChB';
-    const featureType = 'Service';
-
-    const parameters = new URLSearchParams(
-      `{FeatureID: ${featureID}, FeatureType: ${featureType}}`
-    );
-
-    const url = `${shutterPageUrl}?dataViewParameters=${parameters}`;
-
-    const invokePromise = getPConnect().getActionsApi().invoke(url, 'GET');
-
-    invokePromise
-      .then(resp => {
-        const isShuttered = resp.data.Shuttered;
-        setServiceShuttered(isShuttered);
-      })
-      .catch(err => {
-        // eslint-disable-next-line no-console
-        console.error(err);
-      });
-  }
-
-  // Runs the is service shuttered function and sets the shutter rest api url when the view changes
-  useEffect(() => {
-    getSdkConfig().then(sdkConfig => {
-      const url = new URL(
-        `${sdkConfig.serverConfig.infinityRestServerUrl}/app/${sdkConfig.serverConfig.appAlias}/api/application/v2/data_views/D_ShutterLookup`
-      );
-      setShutterPageUrl(url.href);
-    });
-    isServiceShuttered();
-  }, [children, shutterPageUrl]);
-
   function onSaveActionSuccess(data) {
     actionsAPI.cancelAssignment(itemKey).then(() => {
       PCore.getPubSubUtils().publish(
@@ -219,7 +189,7 @@ export default function Assignment(props) {
     });
   }
 
-  function buttonPress(sAction: string, sButtonType: string) {
+  async function buttonPress(sAction: string, sButtonType: string) {
     setErrorSummary(false);
 
     if (sButtonType === 'secondary') {
@@ -303,18 +273,22 @@ export default function Assignment(props) {
       // eslint-disable-next-line sonarjs/no-small-switch
       switch (sAction) {
         case 'finishAssignment': {
-          const finishPromise = finishAssignment(itemKey);
+          const shutteredStatus = await getServiceShutteredStatus();
+          if (shutteredStatus) {
+            setServiceShutteredStatus(shutteredStatus);
+          } else {
+            const finishPromise = finishAssignment(itemKey);
 
-          finishPromise
-            .then(() => {
-              scrollToTop();
-              setErrorSummary(false);
-            })
-            .catch(() => {
-              scrollToTop();
-              showErrorSummary();
-            });
-
+            finishPromise
+              .then(() => {
+                scrollToTop();
+                setErrorSummary(false);
+              })
+              .catch(() => {
+                scrollToTop();
+                showErrorSummary();
+              });
+          }
           break;
         }
 
@@ -355,7 +329,7 @@ export default function Assignment(props) {
   const shouldRemoveFormTag = shouldRemoveFormTagForReadOnly(containerName);
   return (
     <>
-      {!serviceShuttered && (
+      {!serviceShutteredStatus && (
         <div id='Assignment'>
           {arSecondaryButtons?.map(sButton =>
             sButton['name'] === 'Previous' ? (
@@ -399,7 +373,7 @@ export default function Assignment(props) {
           </MainWrapper>
         </div>
       )}
-      {serviceShuttered && <ShutterServicePage />}
+      {serviceShutteredStatus && <ShutterServicePage />}
     </>
   );
 }

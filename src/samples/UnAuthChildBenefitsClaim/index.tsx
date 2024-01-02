@@ -8,7 +8,6 @@ import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreCon
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 
 import {
-  sdkIsLoggedIn,
   loginIfNecessary,
   sdkSetAuthHeader
 } from '@pega/react-sdk-components/lib/components/helpers/authManager';
@@ -21,10 +20,7 @@ import AppFooter from '../../components/AppComponents/AppFooter';
 import LanguageToggle from '../../components/AppComponents/LanguageToggle';
 import LogoutPopup from '../../components/AppComponents/LogoutPopup';
 
-import UaStartPage from './UaStartPage';
-import UaConfirmationPage from './UaConfirmationPage';
-import UaUserPortal from './UaUserPortal';
-import ClaimsList from '../../components/templates/ClaimsList';
+import ProgressPage from './ProgressPage';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
@@ -64,23 +60,18 @@ function staySignedIn(setShowTimeoutModal, refreshSignin = true) {
   setShowTimeoutModal(false);
   initTimeout(setShowTimeoutModal);
 }
-/* ******************************* */
 
 export default function UnAuthChildBenefitsClaim() {
   const [pConn, setPConn] = useState<any>(null);
   const [bShowPega, setShowPega] = useState(false);
   const [showStartPage, setShowStartPage] = useState(false);
   const [showUserPortal, setShowUserPortal] = useState(false);
-  const [bShowAppName, setShowAppName] = useState(false);
   const [bShowResolutionScreen, setShowResolutionScreen] = useState(false);
-  const [loadingsubmittedClaims, setLoadingSubmittedClaims] = useState(true);
-  const [loadinginProgressClaims, setLoadingInProgressClaims] = useState(true);
   const [showSignoutModal, setShowSignoutModal] = useState(false);
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const [serviceNotAvailable, setServiceNotAvailable] = useState(false);
   const [shutterServicePage, setShutterServicePage] = useState(false);
   const [authType, setAuthType] = useState('gg');
-  const [caseId, setCaseId] = useState('');
   const [showPortalBanner, setShowPortalBanner] = useState(false);
   const history = useHistory();
   // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
@@ -92,7 +83,6 @@ export default function UnAuthChildBenefitsClaim() {
     setShowUserPortal(false);
     setShowResolutionScreen(false);
     setShowPega(false);
-    //  setServiceNotAvailable(false);
   }
 
   function displayPega() {
@@ -103,11 +93,6 @@ export default function UnAuthChildBenefitsClaim() {
   function displayUserPortal() {
     resetAppDisplay();
     setShowUserPortal(true);
-  }
-
-  function displayStartPage() {
-    resetAppDisplay();
-    setShowStartPage(true);
   }
 
   function displayServiceNotAvailable() {
@@ -121,14 +106,10 @@ export default function UnAuthChildBenefitsClaim() {
   }
 
   const { t } = useTranslation();
-  let operatorId = '';
 
   useEffect(() => {
     setPageTitle();
   }, [showStartPage, showUserPortal, bShowPega, bShowResolutionScreen]);
-
-  const [inprogressClaims, setInprogressClaims] = useState([]);
-  const [submittedClaims, setSubmittedClaims] = useState([]);
 
   function doRedirectDone() {
     history.push('/ua');
@@ -148,11 +129,6 @@ export default function UnAuthChildBenefitsClaim() {
     }
   }
 
-  function beginClaim() {
-    // Added to ensure that clicking begin claim restarts timeout
-    staySignedIn(setShowTimeoutModal);
-    displayStartPage();
-  }
   function returnToPortalPage() {
     staySignedIn(setShowTimeoutModal);
     setServiceNotAvailable(false);
@@ -162,15 +138,8 @@ export default function UnAuthChildBenefitsClaim() {
       { skipDirtyCheck: true }
     );
   }
-  function getClaimsCaseID() {
-    const context = PCore.getContainerUtils().getActiveContainerItemName(
-      `${PCore.getConstants().APP.APP}/primary`
-    );
-    const caseID = PCore.getStoreValue('.ID', 'caseInfo', context);
-    setCaseId(caseID);
-  }
+
   function assignmentFinished() {
-    getClaimsCaseID();
     PCore.getContainerUtils().closeContainerItem(
       PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
       { skipDirtyCheck: true }
@@ -182,26 +151,7 @@ export default function UnAuthChildBenefitsClaim() {
     displayUserPortal();
   }
 
-  // Calls data page to fetch in progress claims, then for each result (limited to first 10), calls D_Claim to get extra details about each 'assignment'
-  // to display within the claim 'card' in the list. This then sets inprogress claims state value to the list of claims data.
-  // This funtion also sets 'isloading' value to true before making d_page calls, and sets it back to false after data claimed.
-  function fetchInProgressClaimsData() {
-    setLoadingInProgressClaims(true);
-    let inProgressClaimsData: any = [];
-    // @ts-ignore
-    PCore.getDataPageUtils()
-      .getDataAsync('D_ClaimantWorkAssignmentChBCases', 'root')
-      .then(resp => {
-        resp = resp.data.slice(0, 10);
-        inProgressClaimsData = resp;
-        setInprogressClaims(inProgressClaimsData);
-        setLoadingInProgressClaims(false);
-      });
-  }
-
   function cancelAssignment() {
-    fetchInProgressClaimsData();
-    getClaimsCaseID();
     displayUserPortal();
     PCore.getContainerUtils().closeContainerItem(
       PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
@@ -306,25 +256,10 @@ export default function UnAuthChildBenefitsClaim() {
     }
   }, [bShowPega]);
 
-  useEffect(() => {
-    // Update when bShowAppName changes
-    // If not logged in, we used to prompt for login. Now moved up to TopLevelApp
-    // If logged in, make the Triple Play Options visible
-
-    if (!sdkIsLoggedIn()) {
-      // login();     // Login now handled at TopLevelApp
-    } else {
-      setShowUserPortal(false);
-    }
-  }, [bShowAppName]);
-
-  // from react_root.js with some modifications
   function RootComponent(props) {
     const PegaConnectObj = createPConnectComponent();
     const thePConnObj = <PegaConnectObj {...props} />;
 
-    // NOTE: For Embedded mode, we add in displayOnlyFA and isMashup to our React context
-    // so the values are available to any component that may need it.
     const theComp = (
       <StoreContext.Provider
         value={{ store: PCore.getStore(), displayOnlyFA: true, isMashup: true }}
@@ -377,12 +312,6 @@ export default function UnAuthChildBenefitsClaim() {
 
     // Initial render of component passed in (which should be a RootContainer)
     render(<React.Fragment>{theComponent}</React.Fragment>, target);
-
-    /* const root = render(target); // createRoot(container!) if you use TypeScript
-    root.render(<>{theComponent}</>); */
-
-    // Initial render to show that we have a PConnect and can render in the target location
-    // render( <div>EmbeddedTopLevel initialRender in {domContainerID} with PConn of {componentName}</div>, target);
   }
 
   /**
@@ -394,8 +323,6 @@ export default function UnAuthChildBenefitsClaim() {
       // Check that we're seeing the PCore version we expect
       compareSdkPCoreVersions();
       establishPCoreSubscriptions();
-      setShowAppName(true);
-
       // Fetches timeout length config
       getSdkConfig()
         .then(sdkConfig => {
@@ -419,8 +346,6 @@ export default function UnAuthChildBenefitsClaim() {
       ]);
       initialRender(renderObj);
 
-      operatorId = PCore.getEnvironmentInfo().getOperatorIdentifier();
-
       /* Functionality to set the device id in the header for use in CIP.
       Device id is unique and will be stored on the user device / browser cookie */
       const COOKIE_PEGAODXDI = 'pegaodxdi';
@@ -437,16 +362,6 @@ export default function UnAuthChildBenefitsClaim() {
             PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
           });
       }
-
-      setLoadingSubmittedClaims(true);
-      // @ts-ignore
-      PCore.getDataPageUtils()
-        .getDataAsync('D_ClaimantSubmittedChBCases', 'root', { OperatorId: operatorId })
-        .then(resp => {
-          setSubmittedClaims(resp.data.slice(0, 10));
-        })
-        .finally(() => setLoadingSubmittedClaims(false));
-      fetchInProgressClaimsData();
     });
 
     // Initialize the SdkComponentMap (local and pega-provided)
@@ -510,7 +425,6 @@ export default function UnAuthChildBenefitsClaim() {
         );
         sdkSetAuthHeader(`Basic ${sB64}`);
       }
-
       // Login if needed, without doing an initial main window redirect
       loginIfNecessary({ appName: 'embedded', mainRedirect: true, redirectDoneCB: doRedirectDone });
     });
@@ -551,7 +465,6 @@ export default function UnAuthChildBenefitsClaim() {
   }, []);
 
   function signOut() {
-    //  const authService = authType === 'gg' ? 'GovGateway' : (authType === 'gg-dev' ? 'GovGateway-Dev' : authType);
     let authService;
     if (authType && authType === 'gg') {
       authService = 'GovGateway';
@@ -565,15 +478,7 @@ export default function UnAuthChildBenefitsClaim() {
       });
   }
 
-  function handleSignout() {
-    if (bShowPega) {
-      setShowSignoutModal(true);
-    } else {
-      signOut();
-    }
-  }
-
-  const handleStaySignIn = e => {
+  const handleStaySignIn = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setShowSignoutModal(false);
     // Extends manual signout popup 'stay signed in' to reset the automatic timeout timer also
@@ -588,8 +493,7 @@ export default function UnAuthChildBenefitsClaim() {
         signoutHandler={() => logout()}
       />
 
-      {/* <AppHeader handleSignout={handleSignout} appname={t('CLAIM_CHILD_BENEFIT')} /> */}
-      <AppHeader handleSignout={handleSignout} appname='Claim un Auth Journey Test' />
+      <AppHeader appname={t('CLAIM_CHILD_BENEFIT')} />
       <div className='govuk-width-container'>
         <LanguageToggle PegaApp='true' />
         <div id='pega-part-of-page'>
@@ -599,34 +503,7 @@ export default function UnAuthChildBenefitsClaim() {
 
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
 
-        {showStartPage && <UaStartPage onStart={startNow} onBack={displayUserPortal} />}
-
-        {showUserPortal && (
-          <UaUserPortal beginClaim={beginClaim} showPortalBanner={showPortalBanner}>
-            {!loadinginProgressClaims && inprogressClaims.length !== 0 && (
-              <ClaimsList
-                thePConn={pConn}
-                data={inprogressClaims}
-                title={t('CLAIMS_IN_PROGRESS')}
-                rowClickAction='OpenAssignment'
-                buttonContent={t('CONTINUE_CLAIM')}
-                caseId={caseId}
-              />
-            )}
-
-            {!loadingsubmittedClaims && submittedClaims.length !== 0 && (
-              <ClaimsList
-                thePConn={pConn}
-                data={submittedClaims}
-                title={t('SUBMITTED_CLAIMS')}
-                rowClickAction='OpenCase'
-                buttonContent={t('VIEW_CLAIM')}
-              />
-            )}
-          </UaUserPortal>
-        )}
-
-        {bShowResolutionScreen && <UaConfirmationPage caseId={caseId} />}
+        <ProgressPage onStart={startNow} showPortalBanner={showPortalBanner}></ProgressPage>
       </div>
 
       <LogoutPopup

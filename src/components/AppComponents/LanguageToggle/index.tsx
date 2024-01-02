@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 declare const PCore: any;
@@ -8,9 +8,8 @@ const LanguageToggle = (props) => {
   const { i18n } = useTranslation();
   let lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
   const [selectedLang, setSelectedLang] = useState(lang);
-  // i18n.changeLanguage(lang);
 
-  const changeLanguage = e => {
+  const changeLanguage = (e) => {
     e.preventDefault();
     lang = e.currentTarget.getAttribute('lang');
     setSelectedLang(lang);
@@ -18,13 +17,14 @@ const LanguageToggle = (props) => {
     i18n.changeLanguage(lang);
     if (PegaApp) {
       PCore.getEnvironmentInfo().setLocale(`${lang}_GB`);
-
-      // This cleares the generic fields localisation values and attempts to 'refetch' them, as they do not do this
-      // manually after locale is updated
       PCore.getLocaleUtils().resetLocaleStore();
       PCore.getLocaleUtils().loadLocaleResources([PCore.getLocaleUtils().GENERIC_BUNDLE_KEY, '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE']);
     }
   };
+
+  useEffect(() => {
+    document.documentElement.lang = selectedLang;
+  }, [selectedLang]);
 
   return (
     <nav id='hmrc-language-toggle' className='hmrc-language-select' aria-label='Language switcher'>

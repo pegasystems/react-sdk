@@ -79,7 +79,7 @@ export default function ClaimsList(props) {
         dateCreated: DateFormatter.Date(item.pxCreateDateTime, { format: 'DD/MM/YYYY' }),
         dateUpdated: item.pxUpdateDateTime,
         children: [],
-        childrenAdded: item.Claim.Child.pyFirstName != null ? true : false,
+        childrenAdded: item.Claim.Child.pyFirstName !== null,
         actionButton: (
           <Button
             attributes={{ className: 'govuk-!-margin-top-4 govuk-!-margin-bottom-4' }}
@@ -156,7 +156,7 @@ export default function ClaimsList(props) {
                         </strong>
                       </dd>
                     )}
-                    {index != 0 && (
+                    {index !== 0 && (
                       <dd className='govuk-summary-list__actions govuk-!-width-one-third govuk-!-padding-bottom-0'>
                         <span className='govuk-visually-hidden'>No action</span>
                       </dd>

@@ -18,6 +18,11 @@ export const checkErrorMsgs = (errorMsgs = [], fieldIdentity = '', fieldElement 
   );
 };
 
+export const shouldRemoveFormTagForReadOnly = (pageName: string) => {
+  const arrContainerNamesFormNotRequired = ['Your date of birth'];
+  return arrContainerNamesFormNotRequired.includes(pageName);
+};
+
 export const getServiceShutteredStatus = async (): Promise<boolean> => {
   interface ResponseType {
     data: { Shuttered: boolean };

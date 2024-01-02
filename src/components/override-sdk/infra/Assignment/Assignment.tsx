@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { getServiceShutteredStatus, scrollToTop } from '../../../helpers/utils';
+import {
+  getServiceShutteredStatus,
+  scrollToTop,
+  shouldRemoveFormTagForReadOnly
+} from '../../../helpers/utils';
 import ErrorSummary from '../../../BaseComponents/ErrorSummary/ErrorSummary';
 import {
   DateErrorFormatter,
@@ -269,9 +273,9 @@ export default function Assignment(props) {
       // eslint-disable-next-line sonarjs/no-small-switch
       switch (sAction) {
         case 'finishAssignment': {
-          const serviceShutteredStatus = await getServiceShutteredStatus();
-          if (serviceShutteredStatus) {
-            setServiceShutteredStatus(serviceShutteredStatus);
+          const shutteredStatus = await getServiceShutteredStatus();
+          if (shutteredStatus) {
+            setServiceShutteredStatus(shutteredStatus);
           } else {
             const finishPromise = finishAssignment(itemKey);
 
@@ -302,6 +306,27 @@ export default function Assignment(props) {
     }
   }, [actionButtons]);
 
+  function renderAssignmentCard() {
+    return (
+      <ErrorMsgContext.Provider
+        value={{
+          errorMsgs: errorMessages
+        }}
+      >
+        <AssignmentCard
+          getPConnect={getPConnect}
+          itemKey={itemKey}
+          actionButtons={actionButtons}
+          onButtonPress={buttonPress}
+          errorMsgs={errorMessages}
+        >
+          {children}
+        </AssignmentCard>
+      </ErrorMsgContext.Provider>
+    );
+  }
+
+  const shouldRemoveFormTag = shouldRemoveFormTagForReadOnly(containerName);
   return (
     <>
       {!serviceShutteredStatus && (
@@ -334,23 +359,7 @@ export default function Assignment(props) {
                 {localizedVal(containerName, '', localeReference)}
               </h1>
             )}
-            <form>
-              <ErrorMsgContext.Provider
-                value={{
-                  errorMsgs: errorMessages
-                }}
-              >
-                <AssignmentCard
-                  getPConnect={getPConnect}
-                  itemKey={itemKey}
-                  actionButtons={actionButtons}
-                  onButtonPress={buttonPress}
-                  errorMsgs={errorMessages}
-                >
-                  {children}
-                </AssignmentCard>
-              </ErrorMsgContext.Provider>
-            </form>
+            {shouldRemoveFormTag ? renderAssignmentCard() : <form>{renderAssignmentCard()}</form>}
             <a
               href='https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit'
               className='govuk-link'

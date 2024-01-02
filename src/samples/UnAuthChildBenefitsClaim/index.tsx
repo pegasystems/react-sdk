@@ -1,13 +1,16 @@
 // @ts-nocheck - TypeScript type checking to be added soon
 import React, { useState, useEffect } from 'react';
-import { render } from "react-dom";
+import { render } from 'react-dom';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import StoreContext from "@pega/react-sdk-components/lib/bridge/Context/StoreContext";
-import createPConnectComponent from "@pega/react-sdk-components/lib/bridge/react_pconnect";
+import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
+import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 
-import { sdkIsLoggedIn, loginIfNecessary, sdkSetAuthHeader } from '@pega/react-sdk-components/lib/components/helpers/authManager';
+import {
+  loginIfNecessary,
+  sdkSetAuthHeader
+} from '@pega/react-sdk-components/lib/components/helpers/authManager';
 
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
@@ -17,10 +20,7 @@ import AppFooter from '../../components/AppComponents/AppFooter';
 import LanguageToggle from '../../components/AppComponents/LanguageToggle';
 import LogoutPopup from '../../components/AppComponents/LogoutPopup';
 
-import StartPage from './StartPage';
-import ConfirmationPage from './ConfirmationPage';
-import UserPortal from './UserPortal';
-import ClaimsList from '../../components/templates/ClaimsList';
+import ProgressPage from './ProgressPage';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
@@ -29,7 +29,6 @@ import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helper
 import localSdkComponentMap from '../../../sdk-local-component-map';
 import { checkCookie, setCookie } from '../../components/helpers/cookie';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
-
 
 declare const myLoadMashup: any;
 
@@ -41,52 +40,45 @@ let milisecondsTilSignout = 115 * 1000;
 let milisecondsTilWarning = 780 * 1000;
 
 // Clears any existing timeouts and starts the timeout for warning, after set time shows the modal and starts signout timer
-function initTimeout(setShowTimeoutModal){
-  clearTimeout(applicationTimeout);  
-  clearTimeout(signoutTimeout); 
+function initTimeout(setShowTimeoutModal) {
+  clearTimeout(applicationTimeout);
+  clearTimeout(signoutTimeout);
 
-  applicationTimeout = setTimeout(
-    () => {
-      setShowTimeoutModal(true)
-      signoutTimeout = setTimeout(() => { logout() }, milisecondsTilSignout);
-    },
-    milisecondsTilWarning
-  );
+  applicationTimeout = setTimeout(() => {
+    setShowTimeoutModal(true);
+    signoutTimeout = setTimeout(() => {
+      logout();
+    }, milisecondsTilSignout);
+  }, milisecondsTilWarning);
 }
 
 // Sends 'ping' to pega to keep session alive and then initiates the timout
-function staySignedIn(setShowTimeoutModal, refreshSignin = true){ 
-
-  if(refreshSignin){
+function staySignedIn(setShowTimeoutModal, refreshSignin = true) {
+  if (refreshSignin) {
     PCore.getDataPageUtils().getDataAsync('D_ClaimantWorkAssignmentChBCases', 'root');
   }
   setShowTimeoutModal(false);
   initTimeout(setShowTimeoutModal);
 }
-/* ******************************* */
 
-export default function ChildBenefitsClaim() {
+export default function UnAuthChildBenefitsClaim() {
   const [pConn, setPConn] = useState<any>(null);
   const [bShowPega, setShowPega] = useState(false);
   const [showStartPage, setShowStartPage] = useState(false);
   const [showUserPortal, setShowUserPortal] = useState(false);
-  const [bShowAppName, setShowAppName] = useState(false);
   const [bShowResolutionScreen, setShowResolutionScreen] = useState(false);
-  const [loadingsubmittedClaims, setLoadingSubmittedClaims] = useState(true);
-  const [loadinginProgressClaims, setLoadingInProgressClaims] = useState(true);
   const [showSignoutModal, setShowSignoutModal] = useState(false);
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
-  const [serviceNotAvailable, setServiceNotAvailable] = useState(false)
-  const [shutterServicePage,setShutterServicePage] = useState(false);
-  const [authType, setAuthType] = useState('gg'); 
-  const [caseId, setCaseId] = useState('');
+  const [serviceNotAvailable, setServiceNotAvailable] = useState(false);
+  const [shutterServicePage, setShutterServicePage] = useState(false);
+  const [authType, setAuthType] = useState('gg');
   const [showPortalBanner, setShowPortalBanner] = useState(false);
   const history = useHistory();
   // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
-  const featureID = "ChB"
-  const featureType = "Service"
+  const featureID = 'ChB';
+  const featureType = 'Service';
 
-  function resetAppDisplay(){
+  function resetAppDisplay() {
     setShowStartPage(false);
     setShowUserPortal(false);
     setShowResolutionScreen(false);
@@ -98,42 +90,34 @@ export default function ChildBenefitsClaim() {
     setShowPega(true);
   }
 
-  function displayUserPortal(){
+  function displayUserPortal() {
     resetAppDisplay();
     setShowUserPortal(true);
   }
 
-  function displayStartPage(){
+  function displayServiceNotAvailable() {
     resetAppDisplay();
-    setShowStartPage(true);
-  }
-  
-  function displayServiceNotAvailable(){
     setServiceNotAvailable(true);
   }
 
-  function displayResolutionScreen(){
+  function displayResolutionScreen() {
     resetAppDisplay();
     setShowResolutionScreen(true);
   }
 
   const { t } = useTranslation();
-  let operatorId = '';
-  
-  useEffect(()=> {
+
+  useEffect(() => {
     setPageTitle();
   }, [showStartPage, showUserPortal, bShowPega, bShowResolutionScreen]);
 
-  const [inprogressClaims, setInprogressClaims] = useState([]);
-  const [submittedClaims, setSubmittedClaims] = useState([]);
-
   function doRedirectDone() {
-    history.push('/');
+    history.push('/ua');
     // appName and mainRedirect params have to be same as earlier invocation
-    loginIfNecessary({appName:'embedded', mainRedirect:true});
+    loginIfNecessary({ appName: 'embedded', mainRedirect: true });
   }
 
-  function createCase() { 
+  function createCase() {
     displayPega();
     PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP);
   }
@@ -145,81 +129,61 @@ export default function ChildBenefitsClaim() {
     }
   }
 
-  function beginClaim() {
-    // Added to ensure that clicking begin claim restarts timeout
-    staySignedIn(setShowTimeoutModal);
-    displayStartPage();
-  }
   function returnToPortalPage() {
-  
     staySignedIn(setShowTimeoutModal);
     setServiceNotAvailable(false);
     displayUserPortal();
-    PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
-    
+    PCore.getContainerUtils().closeContainerItem(
+      PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
+      { skipDirtyCheck: true }
+    );
   }
-  function getClaimsCaseID(){
-    const context = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
-    const caseID = PCore.getStoreValue('.ID', 'caseInfo' , context);
-    setCaseId(caseID);
-  }
-  function assignmentFinished() { 
-    getClaimsCaseID();
-    PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
+
+  function assignmentFinished() {
+    PCore.getContainerUtils().closeContainerItem(
+      PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
+      { skipDirtyCheck: true }
+    );
     displayResolutionScreen();
   }
 
-   function closeContainer(){
+  function closeContainer() {
     displayUserPortal();
-   }
-
-  // Calls data page to fetch in progress claims, then for each result (limited to first 10), calls D_Claim to get extra details about each 'assignment'
-  // to display within the claim 'card' in the list. This then sets inprogress claims state value to the list of claims data.
-  // This funtion also sets 'isloading' value to true before making d_page calls, and sets it back to false after data claimed.
-  function fetchInProgressClaimsData(){
-    setLoadingInProgressClaims(true);
-    let inProgressClaimsData : any = [];
-    // @ts-ignore
-    PCore.getDataPageUtils().getDataAsync('D_ClaimantWorkAssignmentChBCases', 'root').then(resp => {
-      resp = resp.data.slice(0,10);
-      inProgressClaimsData = resp;
-      setInprogressClaims(inProgressClaimsData);
-      setLoadingInProgressClaims(false);
-    });
-  };
+  }
 
   function cancelAssignment() {
-    
-    fetchInProgressClaimsData();
-    getClaimsCaseID();
     displayUserPortal();
-    PCore.getContainerUtils().closeContainerItem(PCore.getContainerUtils().getActiveContainerItemContext('app/primary'), {skipDirtyCheck:true});
+    PCore.getContainerUtils().closeContainerItem(
+      PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
+      { skipDirtyCheck: true }
+    );
   }
 
   function establishPCoreSubscriptions() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
       () => {
-
         assignmentFinished();
-       
       },
       'assignmentFinished'
     );
     PCore.getPubSubUtils().subscribe(
-      "assignmentFinished",
+      'assignmentFinished',
       () => {
         setShowStartPage(false);
         setShowUserPortal(false);
         setShowPega(false);
-        const containername = PCore.getContainerUtils().getActiveContainerItemName(`${PCore.getConstants().APP.APP}/primary`);
-        const context =  PCore.getContainerUtils().getActiveContainerItemName(`${containername}/workarea`);
-        const status =  (PCore.getStoreValue(".pyStatusWork","caseInfo.content",context))
-        if(status === "Resolved-Discarded"){
+        const containername = PCore.getContainerUtils().getActiveContainerItemName(
+          `${PCore.getConstants().APP.APP}/primary`
+        );
+        const context = PCore.getContainerUtils().getActiveContainerItemName(
+          `${containername}/workarea`
+        );
+        const status = PCore.getStoreValue('.pyStatusWork', 'caseInfo.content', context);
+        if (status === 'Resolved-Discarded') {
+          displayServiceNotAvailable();
 
-        displayServiceNotAvailable();
-      
-        PCore.getContainerUtils().closeContainerItem(context);
+          PCore.getContainerUtils().closeContainerItem(context);
         }
       },
       'assignmentFinished'
@@ -230,18 +194,17 @@ export default function ChildBenefitsClaim() {
       () => {
         cancelAssignment();
         setShowPortalBanner(true);
-
       },
       'cancelAssignment'
     );
 
-     PCore.getPubSubUtils().subscribe(
-       PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
-       () => {
-     closeContainer();
-       },
-       'closeContainer'
-     );
+    PCore.getPubSubUtils().subscribe(
+      PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
+      () => {
+        closeContainer();
+      },
+      'closeContainer'
+    );
 
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.ASSIGNMENT_OPENED,
@@ -276,7 +239,6 @@ export default function ChildBenefitsClaim() {
       'continueCase'
     );
   }
-  
 
   useEffect(() => {
     // Update visibility of UI when bShowPega changes
@@ -294,25 +256,10 @@ export default function ChildBenefitsClaim() {
     }
   }, [bShowPega]);
 
-  useEffect(() => {
-    // Update when bShowAppName changes
-    // If not logged in, we used to prompt for login. Now moved up to TopLevelApp
-    // If logged in, make the Triple Play Options visible
-
-    if (!sdkIsLoggedIn()) {
-      // login();     // Login now handled at TopLevelApp
-    } else {
-      setShowUserPortal(true);
-    }
-  }, [bShowAppName]);
-
-  // from react_root.js with some modifications
   function RootComponent(props) {
     const PegaConnectObj = createPConnectComponent();
     const thePConnObj = <PegaConnectObj {...props} />;
 
-    // NOTE: For Embedded mode, we add in displayOnlyFA and isMashup to our React context
-    // so the values are available to any component that may need it.
     const theComp = (
       <StoreContext.Provider
         value={{ store: PCore.getStore(), displayOnlyFA: true, isMashup: true }}
@@ -341,7 +288,7 @@ export default function ChildBenefitsClaim() {
     } = inRenderObj;
 
     const thePConn = props.getPConnect();
-   
+
     setPConn(thePConn);
 
     let target: any = null;
@@ -364,18 +311,7 @@ export default function ChildBenefitsClaim() {
     );
 
     // Initial render of component passed in (which should be a RootContainer)
-    render(
-      <React.Fragment>
-        {theComponent}
-      </React.Fragment>,
-      target
-    )
-
-    /* const root = render(target); // createRoot(container!) if you use TypeScript
-    root.render(<>{theComponent}</>); */
-
-    // Initial render to show that we have a PConnect and can render in the target location
-    // render( <div>EmbeddedTopLevel initialRender in {domContainerID} with PConn of {componentName}</div>, target);
+    render(<React.Fragment>{theComponent}</React.Fragment>, target);
   }
 
   /**
@@ -387,26 +323,28 @@ export default function ChildBenefitsClaim() {
       // Check that we're seeing the PCore version we expect
       compareSdkPCoreVersions();
       establishPCoreSubscriptions();
-      setShowAppName(true);
-
       // Fetches timeout length config
-      getSdkConfig().then( sdkConfig => {  
-        if(sdkConfig.timeoutConfig.secondsTilWarning) milisecondsTilWarning = sdkConfig.timeoutConfig.secondsTilWarning * 1000;
-        if(sdkConfig.timeoutConfig.secondsTilLogout) milisecondsTilSignout = sdkConfig.timeoutConfig.secondsTilLogout * 1000
-      }).finally(() => {        
-        // Subscribe to any store change to reset timeout counter
-        PCore.getStore().subscribe(() => staySignedIn(setShowTimeoutModal, false));
-        initTimeout(setShowTimeoutModal);
-      })
-            
+      getSdkConfig()
+        .then(sdkConfig => {
+          if (sdkConfig.timeoutConfig.secondsTilWarning)
+            milisecondsTilWarning = sdkConfig.timeoutConfig.secondsTilWarning * 1000;
+          if (sdkConfig.timeoutConfig.secondsTilLogout)
+            milisecondsTilSignout = sdkConfig.timeoutConfig.secondsTilLogout * 1000;
+        })
+        .finally(() => {
+          // Subscribe to any store change to reset timeout counter
+          PCore.getStore().subscribe(() => staySignedIn(setShowTimeoutModal, false));
+          initTimeout(setShowTimeoutModal);
+        });
 
       // TODO : Consider refactoring 'en_GB' reference as this may need to be set elsewhere
       PCore.getEnvironmentInfo().setLocale(sessionStorage.getItem('rsdk_locale') || 'en_GB');
       PCore.getLocaleUtils().resetLocaleStore();
-      PCore.getLocaleUtils().loadLocaleResources([PCore.getLocaleUtils().GENERIC_BUNDLE_KEY, '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE']);
+      PCore.getLocaleUtils().loadLocaleResources([
+        PCore.getLocaleUtils().GENERIC_BUNDLE_KEY,
+        '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE'
+      ]);
       initialRender(renderObj);
-
-      operatorId = PCore.getEnvironmentInfo().getOperatorIdentifier();
 
       /* Functionality to set the device id in the header for use in CIP.
       Device id is unique and will be stored on the user device / browser cookie */
@@ -417,44 +355,37 @@ export default function ChildBenefitsClaim() {
         PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
       } else {
         PCore.getDataPageUtils()
-        .getPageDataAsync('D_UserSession', 'root' )
-        .then(res => {
-          deviceID = res.DeviceId;
-          setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
-          PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
-        });
+          .getPageDataAsync('D_UserSession', 'root')
+          .then(res => {
+            deviceID = res.DeviceId;
+            setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
+            PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
+          });
       }
-
-      setLoadingSubmittedClaims(true);
-      // @ts-ignore
-      PCore.getDataPageUtils()
-        .getDataAsync('D_ClaimantSubmittedChBCases', 'root', {OperatorId: operatorId} )
-        .then(resp => {
-          setSubmittedClaims(resp.data.slice(0,10));
-        })
-        .finally(()=>setLoadingSubmittedClaims(false));
-      fetchInProgressClaimsData();
     });
 
     // Initialize the SdkComponentMap (local and pega-provided)
     // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-    getSdkComponentMap(localSdkComponentMap).then( (theComponentMap: any) => {
-    // eslint-disable-next-line no-console
-    console.log(`SdkComponentMap initialized`);
-    })
-    PCore.getDataPageUtils().getPageDataAsync('D_ShutterLookup', 'root',{
-      FeatureID: featureID,
-      FeatureType: featureType}).then(resp => {
-      const isShuttered = resp.Shuttered;
-      if(isShuttered){
-        setShutterServicePage(true);
-        resetAppDisplay();
-      }
-      else{
-        setShutterServicePage(false);
-        displayUserPortal();
-     }
-      }).catch(err => {
+    getSdkComponentMap(localSdkComponentMap).then((theComponentMap: any) => {
+      // eslint-disable-next-line no-console
+      console.log(`SdkComponentMap initialized`);
+    });
+    PCore.getDataPageUtils()
+      .getPageDataAsync('D_ShutterLookup', 'root', {
+        FeatureID: featureID,
+        FeatureType: featureType
+      })
+      .then(resp => {
+        const isShuttered = resp.Shuttered;
+        if (isShuttered) {
+          setShutterServicePage(true);
+          resetAppDisplay();
+        } else {
+          setShutterServicePage(false);
+          displayUserPortal();
+        }
+      })
+      .catch(err => {
         // eslint-disable-next-line no-console
         console.error(err);
       });
@@ -463,14 +394,15 @@ export default function ChildBenefitsClaim() {
     //  top level Pega root element (likely a RootContainer)
 
     myLoadMashup('pega-root', false); // this is defined in bootstrap shell that's been loaded already
-  
   }
 
   // One time (initialization) subscriptions and related unsubscribe
   useEffect(() => {
     getSdkConfig().then(sdkConfig => {
       const sdkConfigAuth = sdkConfig.authConfig;
-      setAuthType(sdkConfigAuth.authService);
+      setAuthType(sdkConfigAuth.uAuthService);
+      sdkConfigAuth.authService = sdkConfigAuth.uAuthService;
+
       if (!sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === 'Basic') {
         // Service package to use custom auth with Basic
         const sB64 = window.btoa(
@@ -493,7 +425,6 @@ export default function ChildBenefitsClaim() {
         );
         sdkSetAuthHeader(`Basic ${sB64}`);
       }
-
       // Login if needed, without doing an initial main window redirect
       loginIfNecessary({ appName: 'embedded', mainRedirect: true, redirectDoneCB: doRedirectDone });
     });
@@ -534,27 +465,20 @@ export default function ChildBenefitsClaim() {
   }, []);
 
   function signOut() {
-  //  const authService = authType === 'gg' ? 'GovGateway' : (authType === 'gg-dev' ? 'GovGateway-Dev' : authType);
-    let authService
-    if(authType && authType === 'gg'){
-      authService = 'GovGateway'
-    }else if(authType && authType === 'gg-dev'){
-      authService = 'GovGateway-Dev'
+    let authService;
+    if (authType && authType === 'gg') {
+      authService = 'GovGateway';
+    } else if (authType && authType === 'gg-dev') {
+      authService = 'GovGateway-Dev';
     }
-    PCore.getDataPageUtils().getPageDataAsync('D_AuthServiceLogout', 'root', { AuthService: authService }).then(() => {
-      logout().then(() => { })
-    });
+    PCore.getDataPageUtils()
+      .getPageDataAsync('D_AuthServiceLogout', 'root', { AuthService: authService })
+      .then(() => {
+        logout().then(() => {});
+      });
   }
 
-  function handleSignout() {
-    if (bShowPega) {
-      setShowSignoutModal(true);
-    } else {
-      signOut();
-    }
-  }
-
-  const handleStaySignIn = e => {
+  const handleStaySignIn = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setShowSignoutModal(false);
     // Extends manual signout popup 'stay signed in' to reset the automatic timeout timer also
@@ -563,50 +487,23 @@ export default function ChildBenefitsClaim() {
 
   return (
     <>
-      <TimeoutPopup 
+      <TimeoutPopup
         show={showTimeoutModal}
-        staySignedinHandler={() => staySignedIn(setShowTimeoutModal)} 
+        staySignedinHandler={() => staySignedIn(setShowTimeoutModal)}
         signoutHandler={() => logout()}
       />
-      
-      <AppHeader handleSignout={handleSignout} appname={t("CLAIM_CHILD_BENEFIT")} />
-      <div className="govuk-width-container">
 
-        <LanguageToggle PegaApp="true"/>
+      <AppHeader appname={t('CLAIM_CHILD_BENEFIT')} />
+      <div className='govuk-width-container'>
+        <LanguageToggle PegaApp='true' />
         <div id='pega-part-of-page'>
           <div id='pega-root'></div>
         </div>
-        {shutterServicePage && <ShutterServicePage/>}
- 
-        {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage}/>}
+        {shutterServicePage && <ShutterServicePage />}
 
-        {showStartPage && <StartPage onStart={startNow} onBack={displayUserPortal} />}
+        {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
 
-        {showUserPortal && <UserPortal beginClaim={beginClaim}  showPortalBanner={ showPortalBanner}>
-       
-
-          {!loadinginProgressClaims && inprogressClaims.length !== 0 && (
-            <ClaimsList
-              thePConn={pConn}
-              data={inprogressClaims}
-              title={t("CLAIMS_IN_PROGRESS")}
-              rowClickAction="OpenAssignment"
-              buttonContent={t("CONTINUE_CLAIM")}
-              caseId = {caseId}
-          />)}
-
-          {!loadingsubmittedClaims && submittedClaims.length !== 0 && (
-            <ClaimsList thePConn={pConn}
-              data={submittedClaims}
-              title=  {t("SUBMITTED_CLAIMS")}
-              rowClickAction="OpenCase"
-              buttonContent={t("VIEW_CLAIM")}
-          />)}
-
-      </UserPortal>}
-
-      {bShowResolutionScreen && <ConfirmationPage caseId={caseId} />}
-
+        <ProgressPage onStart={startNow} showPortalBanner={showPortalBanner}></ProgressPage>
       </div>
 
       <LogoutPopup
@@ -615,7 +512,7 @@ export default function ChildBenefitsClaim() {
         handleSignoutModal={signOut}
         handleStaySignIn={handleStaySignIn}
       />
-      <AppFooter/>
+      <AppFooter />
     </>
   );
 }

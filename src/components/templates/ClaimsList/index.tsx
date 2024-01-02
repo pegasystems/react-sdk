@@ -124,8 +124,8 @@ export default function ClaimsList(props) {
     <>
       {claims.length !== 0 && <h2 className='govuk-heading-m'>{title}</h2>}
 
-      {claims.map((claimItem, index) => (
-        <React.Fragment key={index.toString()}>
+      {claims.map(claimItem => (
+        <React.Fragment key={claimItem.claimRef}>
           {!caseId?.includes(claimItem.claimRef) &&
             (claimItem?.status?.text === 'In Progress' ||
               claimItem?.status?.text === 'AR WAITH') && (
@@ -136,7 +136,7 @@ export default function ClaimsList(props) {
 
           {claimItem.childrenAdded &&
             claimItem.children.map((child, index) => (
-              <React.Fragment key={index.toString()}>
+              <React.Fragment key={claimItem.claimRef}>
                 <dl className='govuk-summary-list'>
                   <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
                     {child.firstName && (

@@ -170,9 +170,6 @@ export default function ClaimsList(props) {
                       <dd className='govuk-summary-list__value govuk-!-width-one-third govuk-!-padding-bottom-0'>
                         {child.dob}
                       </dd>
-                      <dd className='govuk-summary-list__value govuk-!-width-one-third govuk-!-padding-bottom-0'>
-                        <span className='govuk-visually-hidden'>No action</span>
-                      </dd>
                     </div>
                   )}
                 </dl>

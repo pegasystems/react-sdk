@@ -113,12 +113,52 @@ export default function ClaimsList(props) {
       }
       claimsData.push(claimItem);
     });
+
     return claimsData;
   }
 
   useEffect(() => {
     setClaims([...getClaims()]);
   }, [data]);
+
+  function renderChildDetails(claimItem) {
+    return claimItem.children.map((child, index) => (
+      <dl className='govuk-summary-list' key={Math.random()}>
+        <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
+          {child.firstName && (
+            <>
+              <dt className='govuk-summary-list__key govuk-!-width-one-third govuk-!-padding-bottom-0'>
+                {t('CHILD_NAME')}
+              </dt>
+              <dd className='govuk-summary-list__value govuk-!-width-one-third govuk-!-padding-bottom-0'>
+                {child.firstName} {child.lastName}
+              </dd>
+              <dd className='govuk-summary-list__actions govuk-!-width-one-third govuk-!-padding-bottom-0'>
+                {/* If this is the first entry add the status */}
+                {index === 0 ? (
+                  <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>
+                    {claimItem.status.text}
+                  </strong>
+                ) : (
+                  index !== 0 && <span className='govuk-visually-hidden'>No action</span>
+                )}
+              </dd>
+            </>
+          )}
+        </div>
+        {child.dob && (
+          <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
+            <dt className='govuk-summary-list__key govuk-!-width-one-third govuk-!-padding-bottom-0'>
+              {t('DATE_OF_BIRTH')}
+            </dt>
+            <dd className='govuk-summary-list__value govuk-!-width-one-third govuk-!-padding-bottom-0'>
+              {child.dob}
+            </dd>
+          </div>
+        )}
+      </dl>
+    ));
+  }
 
   return (
     <>
@@ -134,47 +174,8 @@ export default function ClaimsList(props) {
 
           {claimItem.childrenAdded && <h3 className='govuk-heading-s'>{t('CHILDREN_ADDED')}</h3>}
 
-          {claimItem.childrenAdded &&
-            claimItem.children.map((child, index) => (
-              <React.Fragment key={claimItem.claimRef}>
-                <dl className='govuk-summary-list'>
-                  <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
-                    {child.firstName && (
-                      <>
-                        <dt className='govuk-summary-list__key govuk-!-width-one-third govuk-!-padding-bottom-0'>
-                          {t('CHILD_NAME')}
-                        </dt>
-                        <dd className='govuk-summary-list__value govuk-!-width-one-third govuk-!-padding-bottom-0'>
-                          {child.firstName} {child.lastName}
-                        </dd>
-                      </>
-                    )}
-                    {index === 0 && (
-                      <dd className='govuk-summary-list__actions govuk-!-width-one-third govuk-!-padding-bottom-0'>
-                        <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>
-                          {claimItem.status.text}
-                        </strong>
-                      </dd>
-                    )}
-                    {index !== 0 && (
-                      <dd className='govuk-summary-list__actions govuk-!-width-one-third govuk-!-padding-bottom-0'>
-                        <span className='govuk-visually-hidden'>No action</span>
-                      </dd>
-                    )}
-                  </div>
-                  {child.dob && (
-                    <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
-                      <dt className='govuk-summary-list__key govuk-!-width-one-third govuk-!-padding-bottom-0'>
-                        {t('DATE_OF_BIRTH')}
-                      </dt>
-                      <dd className='govuk-summary-list__value govuk-!-width-one-third govuk-!-padding-bottom-0'>
-                        {child.dob}
-                      </dd>
-                    </div>
-                  )}
-                </dl>
-              </React.Fragment>
-            ))}
+          {claimItem.childrenAdded && renderChildDetails(claimItem)}
+
           <dl className='govuk-summary-list'>
             <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
               <dt className='govuk-summary-list__key govuk-!-width-one-third'>

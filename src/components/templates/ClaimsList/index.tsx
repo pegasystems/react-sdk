@@ -140,7 +140,7 @@ export default function ClaimsList(props) {
                     {claimItem.status.text}
                   </strong>
                 ) : (
-                  index !== 0 && <span className='govuk-visually-hidden'>No action</span>
+                  <span className='govuk-visually-hidden'>No action</span>
                 )}
               </dd>
             </>

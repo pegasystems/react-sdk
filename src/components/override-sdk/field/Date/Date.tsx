@@ -66,7 +66,12 @@ export default function Date(props) {
   }, [day, month, year]);
 
   useEffect(() => {
-    setEditedValidateMessage(validatemessage);
+    setEditedValidateMessage(
+      DateErrorFormatter(
+        validatemessage,
+        getPConnect().resolveConfigProps(getPConnect().getMetadata().config).label
+      )
+    );
     const errorTargets = DateErrorTargetFields(validatemessage);
     let specificError: any = null;
     if (errorTargets.length > 0)

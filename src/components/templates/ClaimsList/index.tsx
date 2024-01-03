@@ -123,7 +123,7 @@ export default function ClaimsList(props) {
 
   function renderChildDetails(claimItem) {
     return claimItem.children.map((child, index) => (
-      <dl className='govuk-summary-list' key={Math.random()}>
+      <dl className='govuk-summary-list' key={child.firstName}>
         <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
           <dt className='govuk-summary-list__key govuk-!-width-one-third govuk-!-padding-bottom-0'>
             {t('CHILD_NAME')}

@@ -125,26 +125,22 @@ export default function ClaimsList(props) {
     return claimItem.children.map((child, index) => (
       <dl className='govuk-summary-list' key={Math.random()}>
         <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>
-          {child.firstName && (
-            <>
-              <dt className='govuk-summary-list__key govuk-!-width-one-third govuk-!-padding-bottom-0'>
-                {t('CHILD_NAME')}
-              </dt>
-              <dd className='govuk-summary-list__value govuk-!-width-one-third govuk-!-padding-bottom-0'>
-                {child.firstName} {child.lastName}
-              </dd>
-              <dd className='govuk-summary-list__actions govuk-!-width-one-third govuk-!-padding-bottom-0'>
-                {/* If this is the first entry add the status */}
-                {index === 0 ? (
-                  <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>
-                    {claimItem.status.text}
-                  </strong>
-                ) : (
-                  <span className='govuk-visually-hidden'>No action</span>
-                )}
-              </dd>
-            </>
-          )}
+          <dt className='govuk-summary-list__key govuk-!-width-one-third govuk-!-padding-bottom-0'>
+            {t('CHILD_NAME')}
+          </dt>
+          <dd className='govuk-summary-list__value govuk-!-width-one-third govuk-!-padding-bottom-0'>
+            {child.firstName} {child.lastName}
+          </dd>
+          <dd className='govuk-summary-list__actions govuk-!-width-one-third govuk-!-padding-bottom-0'>
+            {/* If this is the first entry add the status */}
+            {index === 0 ? (
+              <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>
+                {claimItem.status.text}
+              </strong>
+            ) : (
+              <span className='govuk-visually-hidden'>No action</span>
+            )}
+          </dd>
         </div>
         {child.dob && (
           <div className='govuk-summary-list__row govuk-summary-list__row--no-border'>

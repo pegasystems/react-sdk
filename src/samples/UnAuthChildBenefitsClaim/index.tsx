@@ -29,6 +29,7 @@ import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helper
 import localSdkComponentMap from '../../../sdk-local-component-map';
 import { checkCookie, setCookie } from '../../components/helpers/cookie';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
+import NewPage from './NewPage';
 
 declare const myLoadMashup: any;
 
@@ -73,6 +74,9 @@ export default function UnAuthChildBenefitsClaim() {
   const [shutterServicePage, setShutterServicePage] = useState(false);
   const [authType, setAuthType] = useState('gg');
   const [showPortalBanner, setShowPortalBanner] = useState(false);
+
+  const [showNewPage, setShowNewPage] = useState(false);
+
   const history = useHistory();
   // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
   const featureID = 'ChB';
@@ -124,9 +128,12 @@ export default function UnAuthChildBenefitsClaim() {
 
   function startNow() {
     // Check if PConn is created, and create case if it is
-    if (pConn) {
-      createCase();
-    }
+    // if (pConn) {
+    //   createCase();
+    // }
+    displayPega();
+    setShowNewPage(true);
+    console.log('starting')
   }
 
   function returnToPortalPage() {
@@ -264,7 +271,8 @@ export default function UnAuthChildBenefitsClaim() {
       <StoreContext.Provider
         value={{ store: PCore.getStore(), displayOnlyFA: true, isMashup: true }}
       >
-        {thePConnObj}
+        {/* {thePConnObj} */}
+        <NewPage/>
       </StoreContext.Provider>
     );
 
@@ -504,6 +512,7 @@ export default function UnAuthChildBenefitsClaim() {
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
 
         <ProgressPage onStart={startNow} showPortalBanner={showPortalBanner}></ProgressPage>
+        {showNewPage && <NewPage/>}
       </div>
 
       <LogoutPopup

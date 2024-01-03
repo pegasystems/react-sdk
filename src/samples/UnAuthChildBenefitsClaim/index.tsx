@@ -56,7 +56,7 @@ function initTimeout(setShowTimeoutModal) {
 // Sends 'ping' to pega to keep session alive and then initiates the timout
 function staySignedIn(setShowTimeoutModal, refreshSignin = true) {
   if (refreshSignin) {
-    PCore.getDataPageUtils().getDataAsync('D_ClaimantWorkAssignmentChBCases', 'root');
+    PCore.getDataPageUtils().getDataAsync('D_ClaimUnauthClaimStatusBySessionID', 'root');
   }
   setShowTimeoutModal(false);
   initTimeout(setShowTimeoutModal);
@@ -131,7 +131,7 @@ export default function UnAuthChildBenefitsClaim() {
     // if (pConn) {
     //   createCase();
     // }
-    displayPega();
+    // displayPega();
     setShowNewPage(true);
     console.log('starting')
   }
@@ -511,8 +511,10 @@ export default function UnAuthChildBenefitsClaim() {
 
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
 
-        <ProgressPage onStart={startNow} showPortalBanner={showPortalBanner}></ProgressPage>
         {showNewPage && <NewPage/>}
+
+        {!showNewPage && <ProgressPage onStart={startNow} showPortalBanner={showPortalBanner}></ProgressPage>}
+        
       </div>
 
       <LogoutPopup

@@ -25,6 +25,7 @@ export default function ClaimsList(props) {
       case 'Pending-VerifyDocumentation':
       case 'Pending-SystemError':
       case 'Pending-AwaitingDocumentation':
+      case 'Pending-Disallowance':
         return { text: t('CLAIM_RECEIVED'), tagColour: 'purple' };
       default:
         return { text: status, tagColour: 'grey' };
@@ -113,7 +114,6 @@ export default function ClaimsList(props) {
       }
       claimsData.push(claimItem);
     });
-
     return claimsData;
   }
 

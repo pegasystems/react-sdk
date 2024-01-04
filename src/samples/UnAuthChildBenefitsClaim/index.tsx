@@ -55,14 +55,14 @@ function initTimeout(setShowTimeoutModal) {
 // Sends 'ping' to pega to keep session alive and then initiates the timout
 function staySignedIn(setShowTimeoutModal, refreshSignin = true) {
   if (refreshSignin) {
-    PCore.getDataPageUtils().getDataAsync('D_ClaimantWorkAssignmentChBCases', 'root');
+    PCore.getDataPageUtils().getDataAsync('D_GetUnauthClaimStatusBySessionID', 'root');
   }
   setShowTimeoutModal(false);
   initTimeout(setShowTimeoutModal);
 }
 
 function fetchClaimsData() {
-  PCore.getDataPageUtils().getDataAsync('D_ClaimantWorkAssignmentChBCases', 'root').then(
+  PCore.getDataPageUtils().getDataAsync('D_GetUnauthClaimStatusBySessionID', 'root').then(
     res => {
       console.log(res);
     }

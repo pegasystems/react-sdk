@@ -29,7 +29,6 @@ import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helper
 import localSdkComponentMap from '../../../sdk-local-component-map';
 import { checkCookie, setCookie } from '../../components/helpers/cookie';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
-import NewPage from './NewPage';
 
 declare const myLoadMashup: any;
 
@@ -56,17 +55,24 @@ function initTimeout(setShowTimeoutModal) {
 // Sends 'ping' to pega to keep session alive and then initiates the timout
 function staySignedIn(setShowTimeoutModal, refreshSignin = true) {
   if (refreshSignin) {
-    PCore.getDataPageUtils().getDataAsync('D_ClaimUnauthClaimStatusBySessionID', 'root');
+    PCore.getDataPageUtils().getDataAsync('D_ClaimantWorkAssignmentChBCases', 'root');
   }
   setShowTimeoutModal(false);
   initTimeout(setShowTimeoutModal);
 }
 
+function fetchClaimsData() {
+  PCore.getDataPageUtils().getDataAsync('D_ClaimantWorkAssignmentChBCases', 'root').then(
+    res => {
+      console.log(res);
+    }
+  )
+}
+
 export default function UnAuthChildBenefitsClaim() {
   const [pConn, setPConn] = useState<any>(null);
   const [bShowPega, setShowPega] = useState(false);
-  const [showStartPage, setShowStartPage] = useState(false);
-  const [showUserPortal, setShowUserPortal] = useState(false);
+  const [showStartPage, setShowStartPage] = useState(true);
   const [bShowResolutionScreen, setShowResolutionScreen] = useState(false);
   const [showSignoutModal, setShowSignoutModal] = useState(false);
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
@@ -74,46 +80,16 @@ export default function UnAuthChildBenefitsClaim() {
   const [shutterServicePage, setShutterServicePage] = useState(false);
   const [authType, setAuthType] = useState('gg');
   const [showPortalBanner, setShowPortalBanner] = useState(false);
-
-  const [showNewPage, setShowNewPage] = useState(false);
-
   const history = useHistory();
   // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
   const featureID = 'ChB';
   const featureType = 'Service';
 
-  function resetAppDisplay() {
-    setShowStartPage(false);
-    setShowUserPortal(false);
-    setShowResolutionScreen(false);
-    setShowPega(false);
-  }
-
-  function displayPega() {
-    resetAppDisplay();
-    setShowPega(true);
-  }
-
-  function displayUserPortal() {
-    resetAppDisplay();
-    setShowUserPortal(true);
-  }
-
-  function displayServiceNotAvailable() {
-    resetAppDisplay();
-    setServiceNotAvailable(true);
-  }
-
-  function displayResolutionScreen() {
-    resetAppDisplay();
-    setShowResolutionScreen(true);
-  }
-
   const { t } = useTranslation();
 
   useEffect(() => {
     setPageTitle();
-  }, [showStartPage, showUserPortal, bShowPega, bShowResolutionScreen]);
+  }, [showStartPage, bShowPega, bShowResolutionScreen]);
 
   function doRedirectDone() {
     history.push('/ua');
@@ -121,49 +97,54 @@ export default function UnAuthChildBenefitsClaim() {
     loginIfNecessary({ appName: 'embedded', mainRedirect: true });
   }
 
+  function resetAppDisplay() {
+    setShowStartPage(false);
+    setShowResolutionScreen(false);
+    setServiceNotAvailable(false);
+    setShowPega(false);
+  }
+
   function createCase() {
-    displayPega();
+    // displayPega();
+    resetAppDisplay();
+    setShowPega(true);
     PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP);
   }
 
   function startNow() {
     // Check if PConn is created, and create case if it is
-    // if (pConn) {
-    //   createCase();
-    // }
-    // displayPega();
-    setShowNewPage(true);
-    console.log('starting')
+    if (pConn) {
+      createCase();
+    }
+    setShowStartPage(false);
   }
+
 
   function returnToPortalPage() {
     staySignedIn(setShowTimeoutModal);
-    setServiceNotAvailable(false);
-    displayUserPortal();
-    PCore.getContainerUtils().closeContainerItem(
-      PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
-      { skipDirtyCheck: true }
-    );
+    resetAppDisplay();
+    setShowStartPage(true);
+    closeContainer();
   }
 
   function assignmentFinished() {
-    PCore.getContainerUtils().closeContainerItem(
-      PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
-      { skipDirtyCheck: true }
-    );
-    displayResolutionScreen();
+    closeContainer();
+    resetAppDisplay();
+    setShowResolutionScreen(true);
   }
 
   function closeContainer() {
-    displayUserPortal();
-  }
-
-  function cancelAssignment() {
-    displayUserPortal();
     PCore.getContainerUtils().closeContainerItem(
       PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
       { skipDirtyCheck: true }
     );
+  }
+
+  function cancelAssignment() {
+    closeContainer();
+    // displayUserPortal();
+    resetAppDisplay();
+    setShowStartPage(true);
   }
 
   function establishPCoreSubscriptions() {
@@ -177,9 +158,7 @@ export default function UnAuthChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       'assignmentFinished',
       () => {
-        setShowStartPage(false);
-        setShowUserPortal(false);
-        setShowPega(false);
+        resetAppDisplay();
         const containername = PCore.getContainerUtils().getActiveContainerItemName(
           `${PCore.getConstants().APP.APP}/primary`
         );
@@ -188,8 +167,7 @@ export default function UnAuthChildBenefitsClaim() {
         );
         const status = PCore.getStoreValue('.pyStatusWork', 'caseInfo.content', context);
         if (status === 'Resolved-Discarded') {
-          displayServiceNotAvailable();
-
+          setServiceNotAvailable(true);
           PCore.getContainerUtils().closeContainerItem(context);
         }
       },
@@ -216,7 +194,8 @@ export default function UnAuthChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.ASSIGNMENT_OPENED,
       () => {
-        displayPega();
+        resetAppDisplay();
+        setShowPega(true);
       },
       'continueAssignment'
     );
@@ -224,7 +203,9 @@ export default function UnAuthChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_CREATED,
       () => {
-        displayPega();
+        // displayPega();
+        resetAppDisplay();
+        setShowPega(true);
       },
       'continueCase'
     );
@@ -241,7 +222,9 @@ export default function UnAuthChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_OPENED,
       () => {
-        displayPega();
+        // displayPega();
+        resetAppDisplay();
+        setShowPega(true);
       },
       'continueCase'
     );
@@ -271,8 +254,7 @@ export default function UnAuthChildBenefitsClaim() {
       <StoreContext.Provider
         value={{ store: PCore.getStore(), displayOnlyFA: true, isMashup: true }}
       >
-        {/* {thePConnObj} */}
-        <NewPage/>
+        {thePConnObj}
       </StoreContext.Provider>
     );
 
@@ -331,6 +313,8 @@ export default function UnAuthChildBenefitsClaim() {
       // Check that we're seeing the PCore version we expect
       compareSdkPCoreVersions();
       establishPCoreSubscriptions();
+      
+
       // Fetches timeout length config
       getSdkConfig()
         .then(sdkConfig => {
@@ -343,6 +327,7 @@ export default function UnAuthChildBenefitsClaim() {
           // Subscribe to any store change to reset timeout counter
           PCore.getStore().subscribe(() => staySignedIn(setShowTimeoutModal, false));
           initTimeout(setShowTimeoutModal);
+          fetchClaimsData();
         });
 
       // TODO : Consider refactoring 'en_GB' reference as this may need to be set elsewhere
@@ -386,11 +371,12 @@ export default function UnAuthChildBenefitsClaim() {
       .then(resp => {
         const isShuttered = resp.Shuttered;
         if (isShuttered) {
-          setShutterServicePage(true);
           resetAppDisplay();
+          setShutterServicePage(true);
         } else {
           setShutterServicePage(false);
-          displayUserPortal();
+          resetAppDisplay();
+          setShowStartPage(true);
         }
       })
       .catch(err => {
@@ -511,10 +497,7 @@ export default function UnAuthChildBenefitsClaim() {
 
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
 
-        {showNewPage && <NewPage/>}
-
-        {!showNewPage && <ProgressPage onStart={startNow} showPortalBanner={showPortalBanner}></ProgressPage>}
-        
+        {showStartPage && <ProgressPage onStart={startNow} showPortalBanner={showPortalBanner}></ProgressPage>}
       </div>
 
       <LogoutPopup

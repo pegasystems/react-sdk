@@ -62,11 +62,12 @@ function staySignedIn(setShowTimeoutModal, refreshSignin = true) {
 }
 
 function fetchClaimsData() {
-  PCore.getDataPageUtils().getDataAsync('D_GetUnauthClaimStatusBySessionID', 'root').then(
-    res => {
-      console.log(res);
-    }
-  )
+  PCore.getDataPageUtils()
+    .getDataAsync('D_GetUnauthClaimStatusBySessionID', 'root')
+    .then(res => {
+      // eslint-disable-next-line no-console
+      console.log('res: ', res);
+    });
 }
 
 export default function UnAuthChildBenefitsClaim() {
@@ -119,6 +120,12 @@ export default function UnAuthChildBenefitsClaim() {
     setShowStartPage(false);
   }
 
+  function closeContainer() {
+    PCore.getContainerUtils().closeContainerItem(
+      PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
+      { skipDirtyCheck: true }
+    );
+  }
 
   function returnToPortalPage() {
     staySignedIn(setShowTimeoutModal);
@@ -131,13 +138,6 @@ export default function UnAuthChildBenefitsClaim() {
     closeContainer();
     resetAppDisplay();
     setShowResolutionScreen(true);
-  }
-
-  function closeContainer() {
-    PCore.getContainerUtils().closeContainerItem(
-      PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
-      { skipDirtyCheck: true }
-    );
   }
 
   function cancelAssignment() {
@@ -313,7 +313,6 @@ export default function UnAuthChildBenefitsClaim() {
       // Check that we're seeing the PCore version we expect
       compareSdkPCoreVersions();
       establishPCoreSubscriptions();
-      
 
       // Fetches timeout length config
       getSdkConfig()
@@ -497,7 +496,9 @@ export default function UnAuthChildBenefitsClaim() {
 
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
 
-        {showStartPage && <ProgressPage onStart={startNow} showPortalBanner={showPortalBanner}></ProgressPage>}
+        {showStartPage && (
+          <ProgressPage onStart={startNow} showPortalBanner={showPortalBanner}></ProgressPage>
+        )}
       </div>
 
       <LogoutPopup

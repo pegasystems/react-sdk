@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react';
 import { getServiceShutteredStatus } from '../utils';
 
-export default function ServiceShuttered() {
-  const [serviceShuttered, setServiceShuttered] = useState(false);
-
-  async function isServiceShuttered() {
-    try {
-      const status = await getServiceShutteredStatus();
-      setServiceShuttered(status);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-      setServiceShuttered(false);
-    }
-  }
+export default function useServiceShuttered(): boolean | null {
+  const [serviceShuttered, setServiceShuttered] = useState<boolean | null>(null);
 
   useEffect(() => {
+    const isServiceShuttered = async () => {
+      try {
+        const status = await getServiceShutteredStatus();
+        setServiceShuttered(status);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        setServiceShuttered(false);
+      }
+    };
+
     isServiceShuttered();
   }, []);
 
-  return { serviceShuttered };
+  return serviceShuttered;
 }

@@ -41,7 +41,8 @@ export const getServiceShutteredStatus = async (): Promise<boolean> => {
 
     const url = `${urlConfig}?dataViewParameters=${parameters}`;
     const { invokeCustomRestApi } = PCore.getRestClient();
-    return invokeCustomRestApi(url, {
+    // eslint-disable-next-line @typescript-eslint/return-await
+    return await invokeCustomRestApi(url, {
       method: 'GET'
     })
       .then((response: ResponseType) => {

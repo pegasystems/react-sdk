@@ -281,9 +281,9 @@ export default function DefaultForm(props) {
           }}
         >
           {instructionExists && !singleQuestionPage && (
-            <p id='instructions' className='govuk-body'>
+            <div id='instructions' className='govuk-body'>
               <ParsedHTML htmlString={getFormattedInstructionText()} />
-            </p>
+            </div>
           )}
           {declaration.text1 && DFName === -1 && (
             <p id='declarationText1' className='govuk-body'>

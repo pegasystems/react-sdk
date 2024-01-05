@@ -87,7 +87,7 @@ const ConfirmationPage = ({ caseId }) => {
         <p className='govuk-body'>
           {' '}
           {t('AFTER_YOU_HAVE')}{' '}
-          <a href='' onClick={e => generateReturnSlip(e)}>
+          <a href='' onClick={e => generateReturnSlip(e)} target='_blank' rel="noreferrer noopener">
             {t('PRINTED_AND_SIGNED_THE_FORM')} {t('OPENS_IN_NEW_TAB')}
           </a>
           , {t('RETURN_THE_FORM_WITH')}{' '}

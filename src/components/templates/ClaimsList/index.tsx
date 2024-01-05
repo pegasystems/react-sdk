@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import DateFormatter from '@pega/react-sdk-components/lib/components/helpers/formatters/Date';
 import Button from '../../../components/BaseComponents/Button/Button';
 import PropTypes from 'prop-types';
-import { scrollToTop, GBdate } from '../../helpers/utils';
+import { scrollToTop, GBdate, getServiceShutteredStatus } from '../../helpers/utils';
 import { useTranslation } from 'react-i18next';
 import WarningText from '../../BaseComponents/WarningText/WarningText';
 
 declare const PCore: any;
 
 export default function ClaimsList(props) {
-  const { thePConn, data, title, rowClickAction, buttonContent, caseId } = props;
+  const { thePConn, data, title, rowClickAction, buttonContent, caseId, checkShuttered } = props;
   const { t } = useTranslation();
   const [claims, setClaims] = useState([]);
   const statusMapping = status => {
@@ -44,7 +44,7 @@ export default function ClaimsList(props) {
     });
   };
 
-  function _rowClick(row: any) {
+  async function _rowClick(row: any) {
     const { pzInsKey, pyAssignmentID } = row;
 
     const container = thePConn.getContainerName();
@@ -58,13 +58,18 @@ export default function ClaimsList(props) {
         .then(() => {
           scrollToTop();
         })
-        .catch(err => console.log('Error : ', err)); // eslint-disable-line no-console
+        .catch((err: Error) => console.log('Error : ', err)); // eslint-disable-line no-console
     } else if (rowClickAction === 'OpenCase') {
-      PCore.getMashupApi()
-        .openCase(pzInsKey, target, { pageName: 'SummaryClaim' })
-        .then(() => {
-          scrollToTop();
-        });
+      const status = await getServiceShutteredStatus();;
+      if (status) {
+        checkShuttered(status)
+      } else {
+        PCore.getMashupApi()
+          .openCase(pzInsKey, target, { pageName: 'SummaryClaim' })
+          .then(() => {
+            scrollToTop();
+          });
+      }
     }
   }
 

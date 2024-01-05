@@ -277,9 +277,9 @@ export default function Assignment(props) {
       // eslint-disable-next-line sonarjs/no-small-switch
       switch (sAction) {
         case 'finishAssignment': {
-          const shutteredStatus = await getServiceShutteredStatus();
-          if (shutteredStatus) {
-            setServiceShutteredStatus(shutteredStatus);
+          const status = await getServiceShutteredStatus();
+          if (status) {
+            setServiceShutteredStatus(status);
           } else {
             const finishPromise = finishAssignment(itemKey);
 

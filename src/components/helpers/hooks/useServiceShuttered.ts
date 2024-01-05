@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { getServiceShutteredStatus } from '../utils';
 
-export default function useServiceShuttered(): boolean | null {
-  const [serviceShuttered, setServiceShuttered] = useState<boolean | null>(null);
+export default function useServiceShuttered(): boolean {
+  const [serviceShuttered, setServiceShuttered] = useState<boolean>(false);
 
   useEffect(() => {
     const isServiceShuttered = async () => {

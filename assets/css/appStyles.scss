@@ -62,13 +62,6 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
   list-style-type: none;
 }
 .app-task-list__items {
-  font-family: GDS Transport, arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-weight: 400;
-  font-size: 16px;
-  font-size: 1rem;
-  line-height: 1.25;
   margin-bottom: 40px;
   padding-left: 0;
   list-style: none;
@@ -91,11 +84,6 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
   letter-spacing: 1px;
   text-decoration: none;
   text-transform: uppercase;
-  font-family: GDS Transport, arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-weight: 700;
-  font-size: 14px;
   font-size: 0.875rem;
   line-height: 1;
   padding: 5px 8px 4px;
@@ -122,15 +110,8 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
   }
 }
 @media (min-width: 40.0625em) {
-  .govuk-tag {
-    font-size: 16px;
-    font-size: 1rem;
-    line-height: 1;
-  }
   .app-task-list__items {
     padding-left: 0;
-    font-size: 19px;
-    font-size: 1.1875rem;
     line-height: 1.31579;
     margin-bottom: 60px;
   }

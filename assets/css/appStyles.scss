@@ -88,8 +88,6 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
   display: inline-block;
   outline: 2px solid rgba(0, 0, 0, 0);
   outline-offset: -2px;
-  color: #fff;
-  background-color: #1d70b8;
   letter-spacing: 1px;
   text-decoration: none;
   text-transform: uppercase;
@@ -102,13 +100,7 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
   line-height: 1;
   padding: 5px 8px 4px;
 }
-.govuk-tag--grey {
-  color: #383f43;
-  background: #eeefef;
-}
 .hmrc-status-tag {
-  color: #0b0c0c;
-  font-family: GDS Transport, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   display: inline-block;
   margin-top: 10px;

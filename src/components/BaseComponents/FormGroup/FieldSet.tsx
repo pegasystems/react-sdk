@@ -61,9 +61,9 @@ export default function FieldSet({
           />
         </legend>
         {instructionText && legendIsHeading && (
-          <p id='instructions' className='govuk-body'>
+          <div id='instructions' className='govuk-body'>
             <InstructionComp htmlString={instructionText} />
-          </p>
+          </div>
         )}
         {hintTextExists && (
           <div id={hintID} className='govuk-hint'>

@@ -11,7 +11,7 @@ const StartPage: React.FC<{ onStart: React.MouseEventHandler; onBack: any }> = (
   onBack
 }) => {
   const { t } = useTranslation();
-  const { serviceShuttered } = useServiceShuttered();
+  const serviceShuttered = useServiceShuttered();
 
   useEffect(() => {
     setPageTitle();

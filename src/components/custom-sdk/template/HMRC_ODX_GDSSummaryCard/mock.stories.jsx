@@ -1,20 +1,15 @@
-import {
-  Input,
-  DateInput,
-  RadioButtonGroup,
-  RadioButton
-} from '@pega/cosmos-react-core'; // components required for render
+import { Input, DateInput, RadioButtonGroup, RadioButton } from '@pega/cosmos-react-core'; // components required for render
 
 let updateVals = [];
 
-function updateProp( propName, value ) {
+function updateProp(propName, value) {
   return propName + value;
   // receive current config, propname and value
   // return new object?
   // console.log(propName, value);
 }
 
-const renderField = (resolvedProps) => {
+const renderField = resolvedProps => {
   let {
     type,
     // displayMode,
@@ -23,7 +18,7 @@ const renderField = (resolvedProps) => {
     label = ''
     // theme = useTheme() // can't use custom hook here, which is what I think useTheme() is
   } = resolvedProps;
- 
+
   // loop through updateVals array and update the relevant props
   updateVals.map(p => {
     switch (p.propName) {
@@ -80,13 +75,13 @@ const renderField = (resolvedProps) => {
           />
         </RadioButtonGroup>
       );
-      default:
+    default:
       return <Input label={label} value={value} readOnly={readOnly} />;
   }
 };
- let regionChildrenResolved;
+let regionChildrenResolved;
 // looks like this data object is used to look up values to see if they exist - at ALL levels e.g. top level or children
- export default  pyReviewRawMetadata = {
+const pyReviewRawMetadata = {
   name: 'DisplayClaimantDetails',
   type: 'View',
   config: {
@@ -112,7 +107,6 @@ const renderField = (resolvedProps) => {
       getPConnect: () => {
         return {
           getRawMetadata: () => {
-         
             return pyReviewRawMetadata;
           },
           getChildren: () => {
@@ -203,12 +197,11 @@ const renderField = (resolvedProps) => {
   ],
   classID: 'HMRC-ChB-Work-Claim'
 };
-  regionChildrenResolved = [
+regionChildrenResolved = [
   {
     getPConnect: () => {
       return {
         getRawMetadata: () => {
-       
           return pyReviewRawMetadata;
         },
         getChildren: () => {
@@ -239,7 +232,6 @@ const renderField = (resolvedProps) => {
     getPConnect: () => {
       return {
         getRawMetadata: () => {
-       
           return pyReviewRawMetadata;
         },
         getChildren: () => {
@@ -270,7 +262,6 @@ const renderField = (resolvedProps) => {
     getPConnect: () => {
       return {
         getRawMetadata: () => {
-      
           return pyReviewRawMetadata;
         },
         getChildren: () => {
@@ -300,7 +291,6 @@ const renderField = (resolvedProps) => {
     getPConnect: () => {
       return {
         getRawMetadata: () => {
-       
           return pyReviewRawMetadata;
         },
         getChildren: () => {
@@ -330,8 +320,4 @@ const renderField = (resolvedProps) => {
   }
 ];
 
-
-
-
-
-
+export default pyReviewRawMetadata;

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
@@ -7,6 +7,7 @@ import i18n from 'i18next';
 import ChildBenefitsClaim from '../ChildBenefitsClaim/index';
 import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
 import Accessibility from '../ChildBenefitsClaim/AccessibilityPage';
+import UnAuthChildBenefitsClaim from '../UnAuthChildBenefitsClaim';
 
 const AppSelector = () => {
   i18n
@@ -22,18 +23,18 @@ const AppSelector = () => {
       debug: false,
       returnNull: false,
       react: {
-        useSuspense: false,
+        useSuspense: false
       }
     });
 
   return (
     <Switch>
-      <Route exact path='/' component={ChildBenefitsClaim}/>
+      <Route exact path='/' component={ChildBenefitsClaim} />
+      <Route exact path='/ua' component={UnAuthChildBenefitsClaim} />
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
     </Switch>
   );
-
 };
 
 export default AppSelector;

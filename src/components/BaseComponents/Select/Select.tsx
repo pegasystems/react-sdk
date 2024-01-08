@@ -1,22 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {makeHintId, makeErrorId} from '../FormGroup/FormGroup';
+import { makeHintId, makeErrorId } from '../FormGroup/FormGroup';
 import FieldSet from '../FormGroup/FieldSet';
 
-export default function Select(props){
+export default function Select(props) {
+  const { name, onChange, value, children, errorText, hintText } = props;
 
-  const {name, onChange, value, children, errorText, hintText} = props;
+  const describedbyIds = `${hintText ? makeHintId(name) : ''} ${
+    errorText ? makeErrorId(name) : ''
+  }`.trim();
+  const ariaDescBy = describedbyIds.length !== 0 ? { 'aria-describedby': describedbyIds } : {};
 
-  const describedbyIds = `${errorText?makeErrorId(name):""} ${hintText?makeHintId(name):""}`.trim();
-  const ariaDescBy = describedbyIds.length !== 0 ? {'aria-describedby' : describedbyIds} : {};
-
-  return(
+  return (
     <FieldSet {...props}>
-        <select className="govuk-select" id={name} name={name} onChange={onChange} value={value} {...ariaDescBy}>
-          {children}
-        </select>
+      <select
+        className='govuk-select'
+        id={name}
+        name={name}
+        onChange={onChange}
+        value={value}
+        {...ariaDescBy}
+      >
+        {children}
+      </select>
     </FieldSet>
-  )
+  );
 }
 
 Select.propTypes = {
@@ -24,5 +32,5 @@ Select.propTypes = {
   name: PropTypes.string,
   children: PropTypes.node,
   onChange: PropTypes.func,
-  value: PropTypes.string,
-}
+  value: PropTypes.string
+};

@@ -1,8 +1,4 @@
 module.exports = {
-  ...require("@pega/prettier-config"),
-  "overrides": [
-    {
-      excludeFiles: [ "package.json", "sdk-config.json" ]
-    }
-  ]
-}
+  ...require('@pega/prettier-config'),
+  ignore: ['package.json', 'sdk-config.json']
+};

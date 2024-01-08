@@ -14,7 +14,8 @@ export default function TextInput(props) {
             <HintTextComponent htmlString={hintText} />
           </div>
         )}
-        <span className='govuk-body govuk-!-font-weight-bold read-only'>{inputProps.value}</span><br/>
+        <span className='govuk-body govuk-!-font-weight-bold read-only'>{inputProps.value}</span>
+        <br />
       </>
     );
   }
@@ -30,19 +31,18 @@ export default function TextInput(props) {
     } else return inputClasses;
   };
 
-  const keyHandler = (e)=> {
-    if(e.key === 'Enter'){   
-       e.preventDefault();
+  const keyHandler = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
     }
   };
 
   // TODO - Handle input types (password, email, numeric) - Or investigate if these should be separate components, or can simple be handled by inputProps
-  // TODO - Handle autocomplete settings
 
-  const describedByIDs = `${errorText ? makeErrorId(name) : ''} ${
-    hintText ? makeHintId(name) : ''
+  const describedByIDs = `${hintText ? makeHintId(name) : ''} ${
+    errorText ? makeErrorId(name) : ''
   }`.trim();
-  if(describedByIDs.length !== 0){
+  if (describedByIDs.length !== 0) {
     inputProps['aria-describedby'] = describedByIDs;
   }
 

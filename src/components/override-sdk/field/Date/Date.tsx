@@ -25,29 +25,32 @@ export default function Date(props) {
   const pConn = getPConnect();
 
   let label = props.label;
-  const {isOnlyField, overrideLabel} = useIsOnlyField(props.displayOrder);
-  if(isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
+  const { isOnlyField, overrideLabel } = useIsOnlyField(props.displayOrder);
+  if (isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
 
   // PM - Set up state for each input field, either the value we received from pega, or emtpy
   const [day, setDay] = useState(value ? value.split('-')[2] : '');
   const [month, setMonth] = useState(value ? value.split('-')[1] : '');
   const [year, setYear] = useState(value ? value.split('-')[0] : '');
-  const [editedValidateMessage, setEditedValidateMessage] = useState(validatemessage);
+  const [editedValidateMessage, setEditedValidateMessage] = useState(
+    DateErrorFormatter(
+      validatemessage,
+      getPConnect().resolveConfigProps(getPConnect().getMetadata().config).label
+    )
+  );
   const [specificErrors, setSpecificErrors] = useState<any>(null);
-
 
   const actionsApi = getPConnect().getActionsApi();
   const propName = getPConnect().getStateProps().value;
-
   // PM - Create ISODate string (as expected by onChange) and pass to onchange value, adding 0 padding here for day and month to comply with isostring format.
   const handleDateChange = () => {
     let isoDate;
     if (year || month || day) {
       const trimMonth = month.replace(/\s/g, '');
       const trimDay = day.replace(/\s/g, '');
-      isoDate = `${year.replace(/\s/g, '')}-${trimMonth.toString().length === 1 ? `0${trimMonth}` : trimMonth}-${
-        trimDay.toString().length === 1 ? `0${trimDay}` : trimDay
-      }`;
+      isoDate = `${year.replace(/\s/g, '')}-${
+        trimMonth.toString().length === 1 ? `0${trimMonth}` : trimMonth
+      }-${trimDay.toString().length === 1 ? `0${trimDay}` : trimDay}`;
     } else {
       isoDate = '';
     }
@@ -63,57 +66,52 @@ export default function Date(props) {
   }, [day, month, year]);
 
   useEffect(() => {
-   // if (validatemessage) {
-      setEditedValidateMessage(
-        DateErrorFormatter(
-          validatemessage,
-          getPConnect().resolveConfigProps(getPConnect().getMetadata().config).label
-        )
-      );
+    setEditedValidateMessage(
+      DateErrorFormatter(
+        validatemessage,
+        getPConnect().resolveConfigProps(getPConnect().getMetadata().config).label
+      )
+    );
+    const errorTargets = DateErrorTargetFields(validatemessage);
+    let specificError: any = null;
+    if (errorTargets.length > 0)
+      specificError = {
+        day: errorTargets.includes('day'),
+        month: errorTargets.includes('month'),
+        year: errorTargets.includes('year')
+      };
 
-      const errorTargets = DateErrorTargetFields(validatemessage);
-      let specificError: any = null;
-      if (errorTargets.length > 0)
-        specificError = {
-          day: errorTargets.includes('day'),
-          month: errorTargets.includes('month'),
-          year: errorTargets.includes('year')
-        };
-
-      // This sets a state prop to be exposed to the error summary set up in Assisgnment component - and should match the id of the first field of
-      //  the date component. Will investigate better way to do this, to avoid mismatches if the Date BaseComponent changes.
-      pConn.setStateProps({ fieldId: `${name}-day` });
-      if (!specificError?.day) {
-        if (specificError?.month) {
-          pConn.setStateProps({ fieldId: `${name}-month` });
-        } else if (specificError?.year) {
-          pConn.setStateProps({ fieldId: `${name}-year` });
-        }
+    // This sets a state prop to be exposed to the error summary set up in Assisgnment component - and should match the id of the first field of
+    //  the date component. Will investigate better way to do this, to avoid mismatches if the Date BaseComponent changes.
+    pConn.setStateProps({ fieldId: `${name}-day` });
+    if (!specificError?.day) {
+      if (specificError?.month) {
+        pConn.setStateProps({ fieldId: `${name}-month` });
+      } else if (specificError?.year) {
+        pConn.setStateProps({ fieldId: `${name}-year` });
       }
-      setSpecificErrors(specificError);
-   // }
+    }
+    setSpecificErrors(specificError);
   }, [validatemessage]);
 
   // PM - Handlers for each part of date inputs, update state for each respectively
   //      0 pad for ISOString compatibilitiy, with conditions to allow us to clear the fields
 
-
- const  handleChangeDay = dayChange => {
+  const handleChangeDay = dayChange => {
     setDay(dayChange.target.value);
   };
 
   const handleChangeMonth = monthChange => {
     setMonth(monthChange.target.value);
-  }
+  };
 
-  const  handleChangeYear = yearChange => {
+  const handleChangeYear = yearChange => {
     setYear(yearChange.target.value);
   };
 
-  if(props.disabled && value.length > 9){
-    return <span className='govuk-body govuk-!-font-weight-bold'>{GBdate(value)}</span>
+  if (props.disabled && value.length > 9) {
+    return <span className='govuk-body govuk-!-font-weight-bold'>{GBdate(value)}</span>;
   }
-
 
   if (readOnly) {
     return <ReadOnlyDisplay label={label} value={new global.Date(value).toLocaleDateString()} />;

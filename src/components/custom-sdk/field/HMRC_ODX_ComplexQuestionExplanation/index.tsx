@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ParsedHTML from '../../../helpers/formatters/ParsedHtml';
 import { registerNonEditableField } from '../../../helpers/hooks/QuestionDisplayHooks';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';

@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ParsedHTML from '../../../helpers/formatters/ParsedHtml';
 import { registerNonEditableField } from '../../../helpers/hooks/QuestionDisplayHooks';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
 interface HmrcOdxComplexQuestionExplanationProps extends PConnFieldProps {
   // If any, enter additional props that only exist on this componentName
-  
 }
-
 
 // Duplicated runtime code from React SDK
 
@@ -18,10 +16,21 @@ export default function HmrcOdxComplexQuestionExplanation(props: HmrcOdxComplexQ
     value = '',
   } = props;  
   
-  registerNonEditableField();
+  registerNonEditableField();  
+
+  const addGovukBodyToParagraphHook = (node) => {
+    const govukBodyClass = 'govuk-body';
+    if (node.tagName === 'P') {
+      if(!node.getAttribute('class')){
+        node.setAttribute('class', govukBodyClass);
+      } else if (!node.getAttribute('class').includes(govukBodyClass)) {
+        node.setAttribute('class', govukBodyClass.concat(' ', node.getAttribute('class')));
+      }
+    }
+  }  
 
   return (
-    <ParsedHTML htmlString={value} />        
+    <ParsedHTML htmlString={value} DOMSanitiseHooks={[addGovukBodyToParagraphHook]}/>        
   );
 }
 

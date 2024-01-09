@@ -2,22 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 import { useTranslation } from 'react-i18next';
 import { scrollToTop } from '../../../components/helpers/utils';
+import useHMRCExternalLinks from '../../helpers/hooks/HMRCExternalLinks';
 
 export default function AppHeader(props) {
   const { handleSignout, appname } = props;
   const { t } = useTranslation();
-  const [referrerURL, setReferrerURL] = useState<string>(null);
-  const [hmrcURL, setHmrcURL] = useState<string>(null);
-
-  useEffect(() => {
-    const getReferrerURL = async () => {
-      const { serverConfig: { sdkContentServerUrl, sdkHmrcURL } } = await getSdkConfig();
-      setReferrerURL(sdkContentServerUrl);
-      setHmrcURL(sdkHmrcURL);
-    }
-    getReferrerURL();
-    scrollToTop();
-  }, []);
+  const {referrerURL, hmrcURL} = useHMRCExternalLinks();
 
   return (
     <>

@@ -77,7 +77,7 @@ export default function ChildBenefitsClaim() {
   const [showSignoutModal, setShowSignoutModal] = useState(false);
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const [serviceNotAvailable, setServiceNotAvailable] = useState(false)
-  const [shutterServicePage,setShutterServicePage] = useState(false);
+  const [shutterServicePage, setShutterServicePage] = useState(false);
   const [authType, setAuthType] = useState('gg'); 
   const [caseId, setCaseId] = useState('');
   const [showPortalBanner, setShowPortalBanner] = useState(false);
@@ -561,6 +561,10 @@ export default function ChildBenefitsClaim() {
     staySignedIn(setShowTimeoutModal);
   };
 
+  const checkShuttered = (status: boolean) => {
+    setShutterServicePage(status);
+  }
+
   return (
     <>
       <TimeoutPopup 
@@ -572,18 +576,17 @@ export default function ChildBenefitsClaim() {
       <AppHeader handleSignout={handleSignout} appname={t("CLAIM_CHILD_BENEFIT")} />
       <div className="govuk-width-container">
 
-        <LanguageToggle PegaApp="true"/>
-        <div id='pega-part-of-page'>
-          <div id='pega-root'></div>
-        </div>
-        {shutterServicePage && <ShutterServicePage/>}
- 
-        {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage}/>}
+        {shutterServicePage ? <ShutterServicePage/>: <>        
+          <LanguageToggle PegaApp="true"/>
+          <div id='pega-part-of-page'>
+            <div id='pega-root'></div>
+          </div>
+  
+          {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage}/>}
 
-        {showStartPage && <StartPage onStart={startNow} onBack={displayUserPortal} />}
+          {showStartPage && <StartPage onStart={startNow} onBack={displayUserPortal} />}
 
-        {showUserPortal && <UserPortal beginClaim={beginClaim}  showPortalBanner={ showPortalBanner}>
-       
+          {showUserPortal && <UserPortal beginClaim={beginClaim}  showPortalBanner={ showPortalBanner}>
 
           {!loadinginProgressClaims && inprogressClaims.length !== 0 && (
             <ClaimsList
@@ -601,9 +604,12 @@ export default function ChildBenefitsClaim() {
               title=  {t("SUBMITTED_CLAIMS")}
               rowClickAction="OpenCase"
               buttonContent={t("VIEW_CLAIM")}
+              checkShuttered={checkShuttered}
           />)}
 
-      </UserPortal>}
+          </UserPortal>}
+        </>
+      }
 
       {bShowResolutionScreen && <ConfirmationPage caseId={caseId} />}
 

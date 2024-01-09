@@ -14,7 +14,7 @@ const ConfirmationPage = ({ caseId }) => {
   const [isBornAbroadOrAdopted, setIsBornAbroadOrAdopted] = useState(false);
   const [returnSlipContent, setReturnSlipContent] = useState();
   const [loading, setLoading] = useState(true);
-  const { serviceShuttered } = useServiceShuttered();
+  const serviceShuttered = useServiceShuttered();
 
   const docIDForDocList = 'CR0003';
   const docIDForReturnSlip = 'CR0002';

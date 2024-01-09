@@ -3,7 +3,12 @@ import React, {useEffect, useState} from 'react';
 import parse from 'html-react-parser';
 import DOMPurify from 'dompurify';
 
-export default function InstructionComp({htmlString}) {
+/*
+  Accepts optional prop of DOMSanitiseHooks to allow customisation of the sanitise call, 
+  Can be used, for example, to inject required class into <p> tags
+  Expects a list of DomPurify hook callbacks, which will be called with 'beforeSanitizeAttributes' option
+*/
+export default function InstructionComp({htmlString, DOMSanitiseHooks}:{htmlString:string, DOMSanitiseHooks?: Array<any>} ) {
 
   const [invalidHTML, setInvalidHTML] = useState(false);
 
@@ -22,7 +27,7 @@ export default function InstructionComp({htmlString}) {
   },[])
 
   if(invalidHTML){
-    return htmlString;
+    return <>{htmlString}</>;
   }
 
   const appendSecureRelValue = (rel) => {
@@ -53,7 +58,14 @@ export default function InstructionComp({htmlString}) {
     }
   });
 
+  DOMSanitiseHooks?.forEach(
+    (hook) => {
+      DOMPurify.addHook('beforeSanitizeAttributes', hook);
+    }
+  )
+  
   const cleanHTML = DOMPurify.sanitize(htmlString,
     { USE_PROFILES: { html: true } });
+
   return <>{parse(cleanHTML)}</>;
 }

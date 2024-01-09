@@ -1,4 +1,3 @@
-import React from 'react';
 import { getHomeUrl, authIsMainRedirect, authRedirectCallback } from '@pega/auth/lib/sdk-auth-manager';
 import { authDone } from '@pega/auth/lib/auth-code-redirect';
 

@@ -1,4 +1,3 @@
-import React from "react";
 import { Switch, Route } from 'react-router-dom';
 import EmbeddedTopLevel from "../Embedded/EmbeddedTopLevel";
 import FullPortal from "../FullPortal";

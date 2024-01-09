@@ -42,14 +42,14 @@ const StartPage: React.FC<{ onStart: React.MouseEventHandler; onBack: any }> = (
               </a>
               .
             </p>
-            <h2 className='govuk-heading-m'>{t('WHO_CAN_APPLY')}</h2>
+            <h2 className='govuk-heading-l'>{t('WHO_CAN_APPLY')}</h2>
             <p className='govuk-body'>{t('ONLY_ONE_PERSON_CAN')}</p>
             <p className='govuk-body'>{t('IF_YOU_ARE_IN_COUPLE')}</p>
             <p className='govuk-body'>{t('YOU_DONT_NEED_TO_BE_PARENT')}</p>
-            <h2 className='govuk-heading-m'>{t('WHEN_TO_APPLY')}</h2>
+            <h2 className='govuk-heading-l'>{t('WHEN_TO_APPLY')}</h2>
             <p className='govuk-body'>{t('CLAIM_AS_SOON_AS_BABY_IS_BORN')}</p>
             <p className='govuk-body'>{t('CHILD_MUST_BE_UNDER_16')}</p>
-            <h2 className='govuk-heading-m'> {t('BEFORE_YOU_START')}</h2>
+            <h2 className='govuk-heading-l'> {t('BEFORE_YOU_START')}</h2>
             <p className='govuk-body'>{t('TO_COMPLETE_THIS_FORM_YOU_NEED')}</p>
             <ul className='govuk-list govuk-list--bullet'>
               <li> {t('BIRTH_CERTIFICATE')}</li>

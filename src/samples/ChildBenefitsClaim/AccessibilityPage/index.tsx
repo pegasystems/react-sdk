@@ -24,7 +24,7 @@ export default function Accessibility() {
             <div className="govuk-width-container">
                 <LanguageToggle />
                 <MainWrapper>
-                    <h1 className="govuk-heading-l">
+                    <h1 className="govuk-heading-xl">
                         {t("ACCESSIBLITY_STATEMENT_FOR_CHB_SERVICE")}
                     </h1>
                     <p className='govuk-body-l'>

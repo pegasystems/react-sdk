@@ -163,7 +163,7 @@ export default function ClaimsList(props) {
 
   return (
     <>
-      {claims.length !== 0 && <h2 className='govuk-heading-m'>{title}</h2>}
+      {claims.length !== 0 && <h2 className='govuk-heading-l'>{title}</h2>}
 
       {claims.map(claimItem => (
         <React.Fragment key={claimItem.claimRef}>
@@ -173,7 +173,7 @@ export default function ClaimsList(props) {
               <WarningText date={claimItem?.dateUpdated} />
             )}
 
-          {claimItem.childrenAdded && <h3 className='govuk-heading-s'>{t('CHILDREN_ADDED')}</h3>}
+          {claimItem.childrenAdded && <h3 className='govuk-heading-m'>{t('CHILDREN_ADDED')}</h3>}
 
           {claimItem.childrenAdded && renderChildDetails(claimItem)}
 

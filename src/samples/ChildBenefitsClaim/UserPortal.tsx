@@ -36,7 +36,7 @@ export default function UserPortal(props) {
             <div className='govuk-grid-column-two-thirds'>
               <>{children}</>
               <>
-                <h2 className='govuk-heading-m' id="subsection-title">{t('MAKE_A_CLAIM')}</h2>
+                <h2 className='govuk-heading-l' id="subsection-title">{t('MAKE_A_CLAIM')}</h2>
                 <p className='govuk-body'>{t('USE_THIS_SERVICE')}</p>
                 <p className='govuk-body'>{t('WE_MAY_CALL_YOU')}</p>
                 
@@ -49,7 +49,7 @@ export default function UserPortal(props) {
                 </Button>
               </>
               <>
-                <h2 className="govuk-heading-m" id="subsection-title">{t('ONLINE')}</h2>
+                <h2 className="govuk-heading-l" id="subsection-title">{t('ONLINE')}</h2>
                 <p><a
                   href='https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit'
                   className='govuk-link'

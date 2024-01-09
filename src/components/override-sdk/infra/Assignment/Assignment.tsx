@@ -361,7 +361,7 @@ export default function Assignment(props) {
             {(!isOnlyFieldDetails.isOnlyField ||
               containerName.toLowerCase().includes('check your answer') ||
               containerName.toLowerCase().includes('declaration')) && (
-              <h1 className='govuk-heading-l'>
+              <h1 className='govuk-heading-xl'>
                 {localizedVal(containerName, '', localeReference)}
               </h1>
             )}

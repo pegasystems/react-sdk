@@ -80,7 +80,7 @@ const ConfirmationPage = ({ caseId }) => {
             {t('POST_YOUR_SUPPORTING_DOCUMENTS')}
           </div>
         </div>
-        <h2 className='govuk-heading-m'> {t('WHAT_YOU_NEED_TO_DO_NOW')} </h2>
+        <h2 className='govuk-heading-l'> {t('WHAT_YOU_NEED_TO_DO_NOW')} </h2>
         <p className='govuk-body'> {t('THE_INFO_YOU_HAVE_PROVIDED')} </p>
         <ParsedHTML htmlString={documentList} />
         <p className='govuk-body'> {t('HMRC_MIGHT_CALL_YOU')} </p>
@@ -121,7 +121,7 @@ const ConfirmationPage = ({ caseId }) => {
         <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
           <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
         </div>
-        <h2 className='govuk-heading-m'> {t('WHAT_HAPPENS_NEXT')}</h2>
+        <h2 className='govuk-heading-l'> {t('WHAT_HAPPENS_NEXT')}</h2>
         <p className='govuk-body'> {t('WE_HAVE_SENT_YOUR_APPLICATION')}</p>
         <p className='govuk-body'> {t('WE_WILL_TELL_YOU_IN_14_DAYS')}</p>
         <p className='govuk-body'>

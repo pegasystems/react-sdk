@@ -84,7 +84,7 @@ export default function View(props) {
     return (
       <>
         {showLabel && !NO_HEADER_TEMPLATES.includes(template) && (
-          <h2 className='govuk-heading-m'>{label}</h2>
+          <h2 className='govuk-heading-l'>{label}</h2>
         )}
         {RenderedTemplate}
       </>

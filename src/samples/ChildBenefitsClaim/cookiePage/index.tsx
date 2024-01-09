@@ -28,7 +28,7 @@ export default function CookiePage() {
           <p className='govuk-body'>
             {t('COOKIES_PAGE_P2')}
           </p>
-          <h2 className="govuk-heading-m">
+          <h2 className="govuk-heading-l">
             {t('ESSENTIAL_COOKIES')}
           </h2>
           <p className='govuk-body'>

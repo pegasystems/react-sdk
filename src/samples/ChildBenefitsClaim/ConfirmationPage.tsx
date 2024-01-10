@@ -5,6 +5,7 @@ import MainWrapper from '../../components/BaseComponents/MainWrapper';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import useServiceShuttered from '../../components/helpers/hooks/useServiceShuttered';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
+import LanguageToggle from '../../components/AppComponents/LanguageToggle';
 
 declare const PCore: any;
 
@@ -117,25 +118,28 @@ const ConfirmationPage = ({ caseId }) => {
     );
   } else {
     return (
-      <MainWrapper>
-        <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
-          <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
-        </div>
-        <h2 className='govuk-heading-m'> {t('WHAT_HAPPENS_NEXT')}</h2>
-        <p className='govuk-body'> {t('WE_HAVE_SENT_YOUR_APPLICATION')}</p>
-        <p className='govuk-body'> {t('WE_WILL_TELL_YOU_IN_14_DAYS')}</p>
-        <p className='govuk-body'>
-          <a
-            href='https://www.tax.service.gov.uk/feedback/ODXCHB'
-            className='govuk-link'
-            target='_blank'
-            rel='noreferrer'
-          >
-            {t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')}{' '}
-          </a>
-          {t('TAKES_30_SECONDS')}
-        </p>
-      </MainWrapper>
+      <>
+        <LanguageToggle />
+        <MainWrapper>
+          <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
+            <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
+          </div>
+          <h2 className='govuk-heading-m'> {t('WHAT_HAPPENS_NEXT')}</h2>
+          <p className='govuk-body'> {t('WE_HAVE_SENT_YOUR_APPLICATION')}</p>
+          <p className='govuk-body'> {t('WE_WILL_TELL_YOU_IN_14_DAYS')}</p>
+          <p className='govuk-body'>
+            <a
+              href='https://www.tax.service.gov.uk/feedback/ODXCHB'
+              className='govuk-link'
+              target='_blank'
+              rel='noreferrer'
+            >
+              {t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')}{' '}
+            </a>
+            {t('TAKES_30_SECONDS')}
+          </p>
+        </MainWrapper>
+      </>
     );
   }
 };

@@ -265,6 +265,7 @@ export default function EmbeddedTopLevel() {
 
 
   // from react_root.js with some modifications
+  // eslint-disable-next-line react/no-unstable-nested-components
   function RootComponent(props) {
     const PegaConnectObj = createPConnectComponent();
 
@@ -284,6 +285,7 @@ export default function EmbeddedTopLevel() {
     //  SDK does not yet support, so all those need to be fixed up before it can be removed. To
     //  be done in a future sprint.
     const theComp =
+      // eslint-disable-next-line react/jsx-no-constructed-context-values
       <StoreContext.Provider value={{store: PCore.getStore(), displayOnlyFA: true}} >
         <ThemeProvider theme={theme}>
           <CssBaseline />

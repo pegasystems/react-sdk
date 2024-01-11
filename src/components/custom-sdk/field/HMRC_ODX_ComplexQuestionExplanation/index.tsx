@@ -52,12 +52,12 @@ export default function HmrcOdxComplexQuestionExplanation(props: HmrcOdxComplexQ
 
   const replaceWarningTextBlockHook = (node) => {      
     if(node.childNodes){
-      deepNodeList(node.childNodes, (node) => {
-        if (node.parentNode.innerText && node.parentNode.innerText?.indexOf( `${warning}!!!`) !== -1) 
+      deepNodeList(node.childNodes, (deepNode) => {
+        if (deepNode.parentNode.innerText && deepNode.parentNode.innerText?.indexOf( `${warning}!!!`) !== -1) 
         {
-          const originalInnerHTML = node.parentNode.innerHTML;
+          const originalInnerHTML = deepNode.parentNode.innerHTML;
           const trimmedInnerHTML = originalInnerHTML.replace(`${warning}!!!`, '');
-          node.parentNode.innerHTML = `<div class="govuk-warning-text">
+          deepNode.parentNode.innerHTML = `<div class="govuk-warning-text">
               <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
               <strong class="govuk-warning-text__text">
                 <span class="govuk-warning-text__assistive">${warning}</span>

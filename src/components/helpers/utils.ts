@@ -59,3 +59,8 @@ export const getServiceShutteredStatus = async (): Promise<boolean> => {
     return false;
   }
 };
+
+export const isFieldSetReqiredForSelectComponent = (label: string) => {
+  const arrFieldSetNotRequiredForSelectComponent = ['name of building society'];
+  return !arrFieldSetNotRequiredForSelectComponent.includes(label.toLocaleLowerCase());
+};

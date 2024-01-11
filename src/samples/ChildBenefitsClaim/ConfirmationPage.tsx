@@ -5,7 +5,6 @@ import MainWrapper from '../../components/BaseComponents/MainWrapper';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import useServiceShuttered from '../../components/helpers/hooks/useServiceShuttered';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
-import LanguageToggle from '../../components/AppComponents/LanguageToggle';
 
 declare const PCore: any;
 
@@ -75,7 +74,6 @@ const ConfirmationPage = ({ caseId }) => {
   } else if (!loading && isBornAbroadOrAdopted) {
     return (
       <>
-        <LanguageToggle />
         <MainWrapper>
           <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
             <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
@@ -122,7 +120,6 @@ const ConfirmationPage = ({ caseId }) => {
   } else {
     return (
       <>
-        <LanguageToggle />
         <MainWrapper>
           <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
             <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>

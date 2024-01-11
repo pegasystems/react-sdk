@@ -19,7 +19,6 @@ import MainWrapper from '../../../BaseComponents/MainWrapper';
 import ShutterServicePage from '../../../../components/AppComponents/ShutterServicePage';
 import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
 import useServiceShuttered from '../../../helpers/hooks/useServiceShuttered';
-import LanguageToggle from '../../../AppComponents/LanguageToggle';
 
 export interface ErrorMessageDetails {
   message: string;
@@ -338,7 +337,6 @@ export default function Assignment(props) {
         <ShutterServicePage />
       ) : (
         <div id='Assignment'>
-          <LanguageToggle PegaApp={true}/>
           {arSecondaryButtons?.map(sButton =>
             sButton['name'] === 'Previous' ? (
               <Button

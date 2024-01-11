@@ -1,7 +1,6 @@
 import React from 'react';
 import AppHeader from '../../../components/AppComponents/AppHeader';
 import AppFooter from '../../../components/AppComponents/AppFooter';
-import LanguageToggle from '../../../components/AppComponents/LanguageToggle';
 import { useTranslation } from 'react-i18next';
 import useHMRCExternalLinks from '../../../components/helpers/hooks/HMRCExternalLinks';
 import MainWrapper from '../../../components/BaseComponents/MainWrapper';
@@ -20,9 +19,8 @@ export default function Accessibility() {
 
     return (
         <>
-            <AppHeader appname={t("CLAIM_CHILD_BENEFIT")}/>
+            <AppHeader appname={t("CLAIM_CHILD_BENEFIT")} hasLanguageToggle={true} isPegaApp={false}/>
             <div className="govuk-width-container">
-                <LanguageToggle />
                 <MainWrapper>
                     <h1 className="govuk-heading-l">
                         {t("ACCESSIBLITY_STATEMENT_FOR_CHB_SERVICE")}

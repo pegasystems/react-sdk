@@ -2,7 +2,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import AppHeader from '../../../components/AppComponents/AppHeader';
 import AppFooter from '../../../components/AppComponents/AppFooter';
-import LanguageToggle from '../../../components/AppComponents/LanguageToggle';
 import CookiePageTable from './CookiePageTable';
 import { scrollToTop } from '../../../components/helpers/utils';
 import MainWrapper from '../../../components/BaseComponents/MainWrapper';
@@ -15,9 +14,8 @@ export default function CookiePage() {
 
   return (
     <>
-      <AppHeader appname={t("CLAIM_CHILD_BENEFIT")} />
+      <AppHeader appname={t("CLAIM_CHILD_BENEFIT")} hasLanguageToggle={true} isPegaApp={false}/>
       <div className="govuk-width-container">
-        <LanguageToggle />
         <MainWrapper>
           <h1 className="govuk-heading-xl">
             {t('COOKIES')}

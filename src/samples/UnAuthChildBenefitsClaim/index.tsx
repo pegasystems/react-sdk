@@ -17,7 +17,6 @@ import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/
 import { logout } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 import AppHeader from '../../components/AppComponents/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
-import LanguageToggle from '../../components/AppComponents/LanguageToggle';
 import LogoutPopup from '../../components/AppComponents/LogoutPopup';
 
 import ProgressPage from './ProgressPage';
@@ -222,29 +221,12 @@ export default function UnAuthChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_OPENED,
       () => {
-        // displayPega();
         resetAppDisplay();
         setShowPega(true);
       },
       'continueCase'
     );
   }
-
-  useEffect(() => {
-    // Update visibility of UI when bShowPega changes
-    const thePegaPartEl = document.getElementById('pega-part-of-page');
-    const languageToggle = document.getElementById('hmrc-language-toggle');
-
-    if (thePegaPartEl) {
-      if (bShowPega) {
-        thePegaPartEl.style.display = 'block';
-        languageToggle.style.display = 'none';
-      } else {
-        thePegaPartEl.style.display = 'none';
-        languageToggle.style.display = 'block';
-      }
-    }
-  }, [bShowPega]);
 
   function RootComponent(props) {
     const PegaConnectObj = createPConnectComponent();
@@ -486,9 +468,8 @@ export default function UnAuthChildBenefitsClaim() {
         signoutHandler={() => logout()}
       />
 
-      <AppHeader appname={t('CLAIM_CHILD_BENEFIT')} />
+      <AppHeader appname={t('CLAIM_CHILD_BENEFIT')} hasLanguageToggle={true} isPegaApp={bShowPega}/>
       <div className='govuk-width-container'>
-        <LanguageToggle PegaApp='true' />
         <div id='pega-part-of-page'>
           <div id='pega-root'></div>
         </div>

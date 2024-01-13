@@ -14,36 +14,51 @@ let detailsIndex = 0;
 let detailsRegionIndex = 0;
 
 const createPConnectComponent = () => {
-  const formComponents = [TextInput, TextInput,TextInput, Phone, AutoComplete, Email];
+  const formComponents = [TextInput, TextInput, TextInput, Phone, AutoComplete, Email];
   const detailsComponents = [TextInput, TextInput, TextInput, Email, Phone, Currency, RadioButtons, Operator];
-  const detailsRegionComponents = [TextInput, TextInput, TextInput, Email, Phone, Currency, RadioButtons, TextInput, TextInput, TextInput, Email, Phone, Currency, Operator];
+  const detailsRegionComponents = [
+    TextInput,
+    TextInput,
+    TextInput,
+    Email,
+    Phone,
+    Currency,
+    RadioButtons,
+    TextInput,
+    TextInput,
+    TextInput,
+    Email,
+    Phone,
+    Currency,
+    Operator
+  ];
 
   let component;
 
-  switch(compType){
-    case "Details":
-      if(detailsIndex >= detailsComponents.length){
+  switch (compType) {
+    case 'Details':
+      if (detailsIndex >= detailsComponents.length) {
         detailsIndex = 0;
       }
       component = detailsComponents[detailsIndex++];
       break;
 
-    case "DetailsRegion":
-      if(detailsRegionIndex >= detailsRegionComponents.length){
+    case 'DetailsRegion':
+      if (detailsRegionIndex >= detailsRegionComponents.length) {
         detailsRegionIndex = 0;
       }
       component = detailsRegionComponents[detailsRegionIndex++];
       break;
 
     default:
-      if(formIndex >= formComponents.length){
+      if (formIndex >= formComponents.length) {
         formIndex = 0;
       }
       component = formComponents[formIndex++];
   }
 
   return component;
-}
+};
 export default createPConnectComponent;
 
 // The decorator to be used in ./storybook/preview to apply the mock to all stories

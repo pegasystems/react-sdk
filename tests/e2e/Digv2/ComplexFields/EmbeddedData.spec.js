@@ -11,14 +11,8 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('E2E test', () => {
-  test('should login, create case and run different test cases for Embedded Data', async ({
-    page
-  }) => {
-    await common.Login(
-      config.config.apps.digv2.user.username,
-      config.config.apps.digv2.user.password,
-      page
-    );
+  test('should login, create case and run different test cases for Embedded Data', async ({ page }) => {
+    await common.Login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
 
     /** Testing announcement banner presence */
     const announcementBanner = page.locator('h6:has-text("Announcements")');
@@ -58,10 +52,10 @@ test.describe('E2E test', () => {
     await selectedTestName.click();
     await page.locator('li:has-text("Editable")').click();
 
-    await page.locator('input[data-test-id="d61ebdd8a0c0cd57c22455e9f0918c65"]').type("Main St");
-    await page.locator('input[data-test-id="57d056ed0984166336b7879c2af3657f"]').type("Cambridge");
-    await page.locator('input[data-test-id="46a2a41cc6e552044816a2d04634545d"]').type("MA");
-    await page.locator('input[data-test-id="25f75488c91cb6c3bab92672e479619f"]').type("02142");
+    await page.locator('input[data-test-id="d61ebdd8a0c0cd57c22455e9f0918c65"]').type('Main St');
+    await page.locator('input[data-test-id="57d056ed0984166336b7879c2af3657f"]').type('Cambridge');
+    await page.locator('input[data-test-id="46a2a41cc6e552044816a2d04634545d"]').type('MA');
+    await page.locator('input[data-test-id="25f75488c91cb6c3bab92672e479619f"]').type('02142');
 
     await page.locator('button:has-text("Next")').click();
 
@@ -83,19 +77,19 @@ test.describe('E2E test', () => {
     /** Testing the existence of 'readonly' attribute on the fields and the values which were entered by Editable mode test */
     const street = page.locator('input[data-test-id="d61ebdd8a0c0cd57c22455e9f0918c65"]');
     let attributes = await common.getAttributes(street);
-    expect(attributes.includes('readonly') && await street.inputValue() === "Main St").toBeTruthy();
+    expect(attributes.includes('readonly') && (await street.inputValue()) === 'Main St').toBeTruthy();
 
     const city = page.locator('input[data-test-id="57d056ed0984166336b7879c2af3657f"]');
-    attributes = await common.getAttributes(city)
-    expect(attributes.includes('readonly') && await city.inputValue() === "Cambridge").toBeTruthy();
+    attributes = await common.getAttributes(city);
+    expect(attributes.includes('readonly') && (await city.inputValue()) === 'Cambridge').toBeTruthy();
 
     const state = page.locator('input[data-test-id="46a2a41cc6e552044816a2d04634545d"]');
     attributes = await common.getAttributes(state);
-    expect(attributes.includes('readonly') && await state.inputValue() === "MA").toBeTruthy();
+    expect(attributes.includes('readonly') && (await state.inputValue()) === 'MA').toBeTruthy();
 
     const postalCode = page.locator('input[data-test-id="25f75488c91cb6c3bab92672e479619f"]');
     attributes = await common.getAttributes(postalCode);
-    expect(attributes.includes('readonly') && await postalCode.inputValue() === "02142").toBeTruthy();
+    expect(attributes.includes('readonly') && (await postalCode.inputValue()) === '02142').toBeTruthy();
 
     await page.locator('button:has-text("Next")').click();
 
@@ -124,26 +118,26 @@ test.describe('E2E test', () => {
     /** Creating row by clicking on `+Add` button */
     await page.locator('a:has-text("+ Add")').click();
 
-     /** Entering values in the first Row */
-     await page.locator('input[data-test-id="202003240938510823869"]').type("Main St");
-     await page.locator('input[data-test-id="202003240938510831291"]').type("Cambridge");
-     await page.locator('input[data-test-id="202003240938510831411"]').type("MA");
-     await page.locator('input[data-test-id="202003240938510832734"]').type("02142");
+    /** Entering values in the first Row */
+    await page.locator('input[data-test-id="202003240938510823869"]').type('Main St');
+    await page.locator('input[data-test-id="202003240938510831291"]').type('Cambridge');
+    await page.locator('input[data-test-id="202003240938510831411"]').type('MA');
+    await page.locator('input[data-test-id="202003240938510832734"]').type('02142');
 
-     let phone = page.locator('div[data-test-id="1f8261d17452a959e013666c5df45e07"]');
-     await phone.locator('button').click();
-     /** Selecting the country code */
-     await page.locator('text=United States+1 >> nth=0').click();
-     await phone.locator('input').type('6175551212');
+    let phone = page.locator('div[data-test-id="1f8261d17452a959e013666c5df45e07"]');
+    await phone.locator('button').click();
+    /** Selecting the country code */
+    await page.locator('text=United States+1 >> nth=0').click();
+    await phone.locator('input').type('6175551212');
 
-     /** Creating second row by clicking on `+Add` button */
+    /** Creating second row by clicking on `+Add` button */
     await page.locator('a:has-text("+ Add")').click();
 
     /** Entering values in the second Row */
-    await page.locator('input[data-test-id="202003240938510823869"] >> nth=1').type("Global St");
-    await page.locator('input[data-test-id="202003240938510831291"] >> nth=1').type("California");
-    await page.locator('input[data-test-id="202003240938510831411"] >> nth=1').type("AK");
-    await page.locator('input[data-test-id="202003240938510832734"] >> nth=1').type("03142");
+    await page.locator('input[data-test-id="202003240938510823869"] >> nth=1').type('Global St');
+    await page.locator('input[data-test-id="202003240938510831291"] >> nth=1').type('California');
+    await page.locator('input[data-test-id="202003240938510831411"] >> nth=1').type('AK');
+    await page.locator('input[data-test-id="202003240938510832734"] >> nth=1').type('03142');
 
     phone = page.locator('div[data-test-id="1f8261d17452a959e013666c5df45e07"] >> nth=1');
     await phone.locator('button').click();
@@ -165,9 +159,9 @@ test.describe('E2E test', () => {
     /** Testing the filter functionality in simple table */
     await assignment.locator('svg[id="menu-icon"] >> nth=0').click();
     await page.locator('li:has-text("Filter")').click();
-    let modal =  page.locator('div[role="dialog"]');
+    let modal = page.locator('div[role="dialog"]');
 
-    await modal.locator('input[type="text"]').type("main");
+    await modal.locator('input[type="text"]').type('main');
 
     await modal.locator('button:has-text("Submit")').click();
 
@@ -177,11 +171,11 @@ test.describe('E2E test', () => {
 
     await page.locator('li:has-text("Filter")').click();
 
-    modal =  page.locator('div[role="dialog"]');
+    modal = page.locator('div[role="dialog"]');
 
-    await modal.locator('div[id="filter"]').click()
+    await modal.locator('div[id="filter"]').click();
     await page.locator('li:has-text("Equals")').click();
-    await modal.locator('input[type="text"]').type("Cambridge");
+    await modal.locator('input[type="text"]').type('Cambridge');
 
     await modal.locator('button:has-text("Submit")').click();
 
@@ -189,9 +183,9 @@ test.describe('E2E test', () => {
 
     await page.locator('li:has-text("Filter")').click();
 
-    await modal.locator('div[id="filter"]').click()
+    await modal.locator('div[id="filter"]').click();
     await page.locator('li:has-text("Starts with")').click();
-    await modal.locator('input[type="text"]').type("0212");
+    await modal.locator('input[type="text"]').type('0212');
 
     await modal.locator('button:has-text("Submit")').click();
 
@@ -201,7 +195,7 @@ test.describe('E2E test', () => {
 
     await page.locator('li:has-text("Filter")').click();
 
-    await modal.locator('input[type="text"]').fill("");
+    await modal.locator('input[type="text"]').fill('');
     await modal.locator('button:has-text("Submit")').click();
 
     await expect(assignment.locator('td:has-text("main")')).toBeVisible();
@@ -235,10 +229,10 @@ test.describe('E2E test', () => {
     await page.locator('li:has-text("Editable")').click();
 
     /** Entering values in the first Row */
-    await page.locator('input[data-test-id="202003240938510823869"]').type("Main St");
-    await page.locator('input[data-test-id="202003240938510831291"]').type("Cambridge");
-    await page.locator('input[data-test-id="202003240938510831411"]').type("MA");
-    await page.locator('input[data-test-id="202003240938510832734"]').type("02142");
+    await page.locator('input[data-test-id="202003240938510823869"]').type('Main St');
+    await page.locator('input[data-test-id="202003240938510831291"]').type('Cambridge');
+    await page.locator('input[data-test-id="202003240938510831411"]').type('MA');
+    await page.locator('input[data-test-id="202003240938510832734"]').type('02142');
 
     phone = page.locator('div[data-test-id="1f8261d17452a959e013666c5df45e07"]');
     await phone.locator('button').click();
@@ -250,10 +244,10 @@ test.describe('E2E test', () => {
     await page.locator('a:has-text("+Add")').click();
 
     /** Entering values into the newly created row */
-    await page.locator('input[data-test-id="202003240938510823869"] >> nth=1').type("Global St");
-    await page.locator('input[data-test-id="202003240938510831291"] >> nth=1').type("California");
-    await page.locator('input[data-test-id="202003240938510831411"] >> nth=1').type("AK");
-    await page.locator('input[data-test-id="202003240938510832734"] >> nth=1').type("03142");
+    await page.locator('input[data-test-id="202003240938510823869"] >> nth=1').type('Global St');
+    await page.locator('input[data-test-id="202003240938510831291"] >> nth=1').type('California');
+    await page.locator('input[data-test-id="202003240938510831411"] >> nth=1').type('AK');
+    await page.locator('input[data-test-id="202003240938510832734"] >> nth=1').type('03142');
 
     phone = page.locator('div[data-test-id="1f8261d17452a959e013666c5df45e07"] >> nth=1');
     await phone.locator('button').click();
@@ -271,7 +265,6 @@ test.describe('E2E test', () => {
     await expect(assignment.locator('td >> text="02142"')).toBeVisible();
     await expect(assignment.locator('td >> text="+16175551212"')).toBeVisible();
 
-
     await page.locator('button:has-text("Previous")').click();
 
     /** Deleting the newly created row */
@@ -288,12 +281,10 @@ test.describe('E2E test', () => {
 
     await page.locator('button:has-text("Previous")').click();
 
-
     /** Readonly mode type tests */
     selectedTestName = page.locator('div[data-test-id="6f64b45d01d11d8efd1693dfcb63b735"]');
     await selectedTestName.click();
     await page.locator('li:has-text("Readonly")').click();
-
 
     /** Testing the values that were entered by Editable test */
     await expect(assignment.locator('span >> text="Main St"')).toBeVisible();
@@ -303,7 +294,6 @@ test.describe('E2E test', () => {
     await expect(assignment.locator('span >> text="+16175551212"')).toBeVisible();
 
     await page.locator('button:has-text("Next")').click();
-
 
     /** Submitting the case */
     await page.locator('button:has-text("submit")').click();

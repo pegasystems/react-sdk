@@ -10,14 +10,8 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('E2E test', () => {
-  test('should login, create case and run different test cases for Query', async ({
-    page
-  }) => {
-    await common.Login(
-      config.config.apps.digv2.user.username,
-      config.config.apps.digv2.user.password,
-      page
-    );
+  test('should login, create case and run different test cases for Query', async ({ page }) => {
+    await common.Login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
 
     /** Testing announcement banner presence */
     const announcementBanner = page.locator('h6:has-text("Announcements")');
@@ -39,9 +33,7 @@ test.describe('E2E test', () => {
     await page.locator('button:has-text("submit")').click();
 
     /** selecting SingleRecord option from dropdown  */
-    const selectedOption = await page.locator(
-      'div[data-test-id="365ab066d5dd67171317bc3fc755245a"]'
-    );
+    const selectedOption = await page.locator('div[data-test-id="365ab066d5dd67171317bc3fc755245a"]');
     await selectedOption.click();
     await page.locator('li:has-text("SingleRecord")').click();
 
@@ -59,9 +51,7 @@ test.describe('E2E test', () => {
     await page.locator('li:has-text("ListOfRecords")').click();
 
     /** selecting Table option from dropdown  */
-    const selectedDisplayAs = await page.locator(
-      'div[data-test-id="03e83bd975984c06d12c584cb59cc4ad"]'
-    );
+    const selectedDisplayAs = await page.locator('div[data-test-id="03e83bd975984c06d12c584cb59cc4ad"]');
     await selectedDisplayAs.click();
     await page.locator('li:has-text("Table")').click();
 

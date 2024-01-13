@@ -16,14 +16,8 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('E2E test', () => {
-  test('should login, create case and run different test cases for Case View', async ({
-    page
-  }) => {
-    await common.Login(
-      config.config.apps.digv2.user.username,
-      config.config.apps.digv2.user.password,
-      page
-    );
+  test('should login, create case and run different test cases for Case View', async ({ page }) => {
+    await common.Login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
 
     /** Testing announcement banner presence */
     const announcementBanner = page.locator('h6:has-text("Announcements")');
@@ -46,10 +40,10 @@ test.describe('E2E test', () => {
 
     /** Visibility of both(basically more than one) tabs should be set to true in order for them to be displayed otherwise
      *  they won't be displayed and that is what we're testing here. */
-    if(detailsTabVisible && caseHistoryTabVisible){
+    if (detailsTabVisible && caseHistoryTabVisible) {
       await expect(detailsTab).toBeVisible();
       await expect(caseHistoryTab).toBeVisible();
-    }else{
+    } else {
       await expect(detailsTab).toBeHidden();
       await expect(caseHistoryTab).toBeHidden();
     }

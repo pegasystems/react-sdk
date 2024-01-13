@@ -6,7 +6,7 @@
 // found locally. If not found here, we'll look in the Pega-provided component map
 
 const localSdkComponentMap = {
-/*map end - DO NOT REMOVE*/
+  /*map end - DO NOT REMOVE*/
 };
 
 export default localSdkComponentMap;

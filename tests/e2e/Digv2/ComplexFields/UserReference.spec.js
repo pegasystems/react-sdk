@@ -11,14 +11,8 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('E2E test', () => {
-  test('should login, create case and run different test cases for User Reference', async ({
-    page
-  }) => {
-    await common.Login(
-      config.config.apps.digv2.user.username,
-      config.config.apps.digv2.user.password,
-      page
-    );
+  test('should login, create case and run different test cases for User Reference', async ({ page }) => {
+    await common.Login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
 
     /** Testing announcement banner presence */
     const announcementBanner = page.locator('h6:has-text("Announcements")');
@@ -43,19 +37,13 @@ test.describe('E2E test', () => {
     const searchBoxInputDiv = page.locator('div[data-test-id="75c6db46c48c2d7bb102c91d13ed766e"]');
     const searchBoxInput = searchBoxInputDiv.locator('input[aria-autocomplete="list"]');
     await searchBoxInput.type('user');
-    const firstSearchboxOption = page.locator(
-      'div[role="presentation"] ul[role="listbox"]>li:first-child'
-    );
+    const firstSearchboxOption = page.locator('div[role="presentation"] ul[role="listbox"]>li:first-child');
     await firstSearchboxOption.click();
 
     /** selecting first user from Dropdown field  */
-    const userReferenceDropdownDiv = page.locator(
-      'div[data-test-id="12781aa4899d4a2141570b5e52b27156"]'
-    );
+    const userReferenceDropdownDiv = page.locator('div[data-test-id="12781aa4899d4a2141570b5e52b27156"]');
     await userReferenceDropdownDiv.click();
-    const firstDropdownOption = page.locator(
-      'div[role="presentation"] ul[role="listbox"]>li:nth-child(2)'
-    );
+    const firstDropdownOption = page.locator('div[role="presentation"] ul[role="listbox"]>li:nth-child(2)');
     await firstDropdownOption.click();
     const selectedUser = firstDropdownOption.innerHTML;
 

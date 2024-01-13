@@ -11,8 +11,7 @@ export default function InvalidPortal({ defaultPortal, portals, onSelect }) {
   return (
     <div className='portal-load-error'>
       <div>
-        Default portal ( <span className='portal-name'>{defaultPortal}</span> ) for current operator
-        is not compatible with SDK. <br />
+        Default portal ( <span className='portal-name'>{defaultPortal}</span> ) for current operator is not compatible with SDK. <br />
         <br />
         Please select one of the portals available to the operator&apos;s access group:
       </div>

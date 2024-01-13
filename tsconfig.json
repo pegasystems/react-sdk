@@ -6,7 +6,7 @@
     "sourceMap": true,
     "module": "ES2022",
     "target": "ES2022",
-    "lib": [ "ES2022", "DOM" ],
+    "lib": ["ES2022", "DOM"],
     "moduleResolution": "Node",
     "jsx": "react-jsx",
     "allowJs": true,
@@ -17,6 +17,6 @@
     // Need to specify typeRoots to find the types and types to constrain
     //  where to look in @pega (to only get pcore-pconnect-typedefs)
     "typeRoots": ["node_modules/@types", "node_modules/@pega"],
-    "types": [ "jest", "@testing-library/jest-dom", "pcore-pconnect-typedefs" ],
+    "types": ["jest", "@testing-library/jest-dom", "pcore-pconnect-typedefs"]
   }
 }

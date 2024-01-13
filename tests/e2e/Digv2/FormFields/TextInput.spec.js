@@ -18,11 +18,7 @@ test.describe('E2E test', () => {
   let attributes;
 
   test('should login, create case and run the Text Input tests', async ({ page }) => {
-    await common.Login(
-      config.config.apps.digv2.user.username,
-      config.config.apps.digv2.user.password,
-      page
-    );
+    await common.Login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
 
     /** Testing announcement banner presence */
     const announcementBanner = page.locator('h6:has-text("Announcements")');
@@ -47,15 +43,11 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Required' }).click();
 
     /** Required tests */
-    const requiredTextInput = page.locator(
-      'input[data-test-id="6d83ba2ad05ae97a2c75e903e6f8a660"]'
-    );
+    const requiredTextInput = page.locator('input[data-test-id="6d83ba2ad05ae97a2c75e903e6f8a660"]');
     attributes = await common.getAttributes(requiredTextInput);
     await expect(attributes.includes('required')).toBeTruthy();
 
-    const notRequiredTextInput = page.locator(
-      'input[data-test-id="206bc0200017cc475d88b1bf4279cda0"]'
-    );
+    const notRequiredTextInput = page.locator('input[data-test-id="206bc0200017cc475d88b1bf4279cda0"]');
     attributes = await common.getAttributes(notRequiredTextInput);
     await expect(attributes.includes('required')).toBeFalsy();
 
@@ -65,15 +57,11 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Disable' }).click();
 
     // /** Disable tests */
-    const alwaysDisabledTextInput = page.locator(
-      'input[data-test-id="52ad9e3ceacdb9ccea7ca193c213228a"]'
-    );
+    const alwaysDisabledTextInput = page.locator('input[data-test-id="52ad9e3ceacdb9ccea7ca193c213228a"]');
     attributes = await common.getAttributes(alwaysDisabledTextInput);
     await expect(attributes.includes('disabled')).toBeTruthy();
 
-    const conditionallyDisabledTextInput = page.locator(
-      'input[data-test-id="9fd3c38fdf5de68aaa56e298a8c89587"]'
-    );
+    const conditionallyDisabledTextInput = page.locator('input[data-test-id="9fd3c38fdf5de68aaa56e298a8c89587"]');
     attributes = await common.getAttributes(conditionallyDisabledTextInput);
     if (isDisabled) {
       await expect(attributes.includes('disabled')).toBeTruthy();
@@ -81,9 +69,7 @@ test.describe('E2E test', () => {
       await expect(attributes.includes('disabled')).toBeFalsy();
     }
 
-    const neverDisabledTextInput = page.locator(
-      'input[data-test-id="0aac4de2a6b79dd12ef91c6f16708533"]'
-    );
+    const neverDisabledTextInput = page.locator('input[data-test-id="0aac4de2a6b79dd12ef91c6f16708533"]');
     attributes = await common.getAttributes(neverDisabledTextInput);
     await expect(attributes.includes('disabled')).toBeFalsy();
 
@@ -93,15 +79,11 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Update' }).click();
 
     /** Update tests */
-    const readonlyTextInput = page.locator(
-      'input[data-test-id="2fff66b4f045e02eab5826ba25608807"]'
-    );
+    const readonlyTextInput = page.locator('input[data-test-id="2fff66b4f045e02eab5826ba25608807"]');
     attributes = await common.getAttributes(readonlyTextInput);
     await expect(attributes.includes('readonly')).toBeTruthy();
 
-    const EditableTextInput = page.locator(
-      'input[data-test-id="95134a02d891264bca28c3aad682afb7"]'
-    );
+    const EditableTextInput = page.locator('input[data-test-id="95134a02d891264bca28c3aad682afb7"]');
     attributes = await common.getAttributes(EditableTextInput);
     await expect(attributes.includes('readonly')).toBeFalsy();
 
@@ -111,18 +93,12 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Visibility' }).click();
 
     /** Visibility tests */
-    await expect(
-      page.locator('input[data-test-id="a03145775f20271d9f1276b0959d0b8e"]')
-    ).toBeVisible();
+    await expect(page.locator('input[data-test-id="a03145775f20271d9f1276b0959d0b8e"]')).toBeVisible();
 
-    const neverVisibleTextInput = await page.locator(
-      'input[data-test-id="05bf85e34402515bd91335928c06117d"]'
-    );
+    const neverVisibleTextInput = await page.locator('input[data-test-id="05bf85e34402515bd91335928c06117d"]');
     await expect(neverVisibleTextInput).not.toBeVisible();
 
-    const conditionallyVisibleTextInput = await page.locator(
-      'input[data-test-id="d4b374793638017e2ec1b86c81bb1208"]'
-    );
+    const conditionallyVisibleTextInput = await page.locator('input[data-test-id="d4b374793638017e2ec1b86c81bb1208"]');
 
     if (isVisible) {
       await expect(conditionallyVisibleTextInput).toBeVisible();

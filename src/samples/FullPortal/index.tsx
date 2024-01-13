@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -24,7 +24,7 @@ function useQuery() {
 export default function FullPortal() {
   const [portalSelectionScreen, setPortalSelectionScreen] = useState(false);
   const [defaultPortalName, setDefaultPortalName] = useState('');
-  const [availablePortals, setAvailablePortals] = useState<Array<string>>([]);
+  const [availablePortals, setAvailablePortals] = useState<string[]>([]);
 
   const history = useHistory();
   const query = useQuery();
@@ -47,6 +47,7 @@ export default function FullPortal() {
   //  const outlet = document.getElementById("outlet");
 
   // from react_root.js with some modifications
+  // eslint-disable-next-line react/no-unstable-nested-components
   function RootComponent(props) {
     // const { portalTarget, styleSheetTarget } = props;
     const PegaConnectObj = createPConnectComponent();
@@ -61,16 +62,13 @@ export default function FullPortal() {
     // const thePConnObj = <div>the RootComponent</div>;
     const thePConnObj = <PegaConnectObj {...props} />;
 
-    const theComp = (
-      <StoreContext.Provider value={{ store: PCore.getStore() }}>
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
+    return <StoreContext.Provider value={{ store: PCore.getStore() }}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           {thePConnObj}
         </ThemeProvider>
-      </StoreContext.Provider>
-    );
-
-    return theComp;
+      </StoreContext.Provider>;
   }
 
   /**
@@ -132,7 +130,7 @@ export default function FullPortal() {
       compareSdkPCoreVersions();
 
       // Initialize the SdkComponentMap (local and pega-provided)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       getSdkComponentMap(localSdkComponentMap).then((theComponentMap: any) => {
         // eslint-disable-next-line no-console
         console.log(`SdkComponentMap initialized`);
@@ -167,7 +165,7 @@ export default function FullPortal() {
       setDefaultPortalName(defaultPortal);
       // Getting current user's access group's available portals list other than excluded portals (relies on Traditional DX APIs)
       getAvailablePortals().then((portals) => {
-        setAvailablePortals(portals as Array<string>);
+        setAvailablePortals(portals as string[]);
       });
     }
   }
@@ -202,7 +200,7 @@ export default function FullPortal() {
     />
   ) : (
     <div>
-      <div id='pega-root'></div>
+      <div id='pega-root' />
     </div>
   );
 }

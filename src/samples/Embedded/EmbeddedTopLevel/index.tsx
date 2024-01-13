@@ -1,6 +1,5 @@
 /* eslint-disable react/button-has-type */
-// @ts-nocheck - TypeScript type checking to be added soon
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { render } from "react-dom";
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -265,6 +264,7 @@ export default function EmbeddedTopLevel() {
 
 
   // from react_root.js with some modifications
+  // eslint-disable-next-line react/no-unstable-nested-components
   function RootComponent(props) {
     const PegaConnectObj = createPConnectComponent();
 
@@ -283,15 +283,13 @@ export default function EmbeddedTopLevel() {
     // VRS: Attempted to remove displayOnlyFA but it presently handles various components which
     //  SDK does not yet support, so all those need to be fixed up before it can be removed. To
     //  be done in a future sprint.
-    const theComp =
-      <StoreContext.Provider value={{store: PCore.getStore(), displayOnlyFA: true}} >
+    // eslint-disable-next-line react/jsx-no-constructed-context-values
+    return <StoreContext.Provider value={{store: PCore.getStore(), displayOnlyFA: true}} >
         <ThemeProvider theme={theme}>
           <CssBaseline />
           {thePConnObj}
           </ThemeProvider>
       </StoreContext.Provider>;
-
-    return theComp;
 
   }
 
@@ -347,9 +345,9 @@ export default function EmbeddedTopLevel() {
 
     // Initial render of component passed in (which should be a RootContainer)
     render(
-      <React.Fragment>
+      <>
         {theComponent}
-      </React.Fragment>,
+      </>,
       target
     )
 
@@ -375,7 +373,7 @@ export default function EmbeddedTopLevel() {
       setShowAppName(true);
 
       // Initialize the SdkComponentMap (local and pega-provided)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       getSdkComponentMap(localSdkComponentMap).then( (theComponentMap: any) => {
         // eslint-disable-next-line no-console
         console.log(`SdkComponentMap initialized`);
@@ -469,14 +467,14 @@ export default function EmbeddedTopLevel() {
         mashupCaseType = caseTypes[0].pyWorkTypeImplementationClassName;
       }
 
-      const options = {
+      const options: any = {
         pageName: 'pyEmbedAssignment',
         startingFields: mashupCaseType === "DIXL-MediaCo-Work-NewService" ?
           {
             Package: sLevel
           } : {}
       };
-      PCore.getMashupApi().createCase(mashupCaseType, PCore.getConstants().APP.APP, options).then(() => {
+      (PCore.getMashupApi().createCase(mashupCaseType, PCore.getConstants().APP.APP, options) as any).then(() => {
         // eslint-disable-next-line no-console
         console.log('createCase rendering is complete');
       });
@@ -499,12 +497,12 @@ export default function EmbeddedTopLevel() {
     });
 
     return (
-      <React.Fragment>
+      <>
         {theBanner}
         <div className={classes.embedShoppingOptions}>
           {theOptions}
         </div>
-      </React.Fragment>
+      </>
     )
   }
 
@@ -551,7 +549,7 @@ export default function EmbeddedTopLevel() {
       <div>
       <div className={classes.pegaPartInfo} id="pega-part-of-page">
             <div className={classes.pegaPartPega}>
-                <div id="pega-root"></div>
+                <div id="pega-root" />
                 <br />
                 <div className={classes.pegaPartText}> * - required fields</div>
             </div>

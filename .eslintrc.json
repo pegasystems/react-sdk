@@ -19,27 +19,18 @@
       "version": "detect"
     }
   },
-  "ignorePatterns": ["node_modules", "packages/*/lib", "!.storybook", ".storybook/public"],
+  "ignorePatterns": ["node_modules", "packages/*/lib", "!.storybook", ".storybook/public", "**/**/*.json"],
   "rules": {
+    // Note: the "0" means to allow it. 1 = warning, 2 = error
+    "react/jsx-filename-extension": [0, { "extensions": [".jsx", "*.tsx"] }],
 
     // Prettier recommends running separately from a linter.
     // https://prettier.io/docs/en/integrating-with-linters.html#notes
     "prettier/prettier": "off",
 
     // Disable rules from shared configs we're not ready for yet.
-    "sonarjs/cognitive-complexity": "off",
-    "sonarjs/no-identical-functions": "off",
+    "sonarjs/cognitive-complexity": ["warn", 20],
     "sonarjs/no-duplicate-string": "off",
-    "sonarjs/no-nested-template-literals": "off",
-
-    //
-    // JA - Override some default lint handling here
-    "@typescript-eslint/array-type": ["error", { "default": "generic" }],
-    // "import/extensions": ["warn", "never"],    // Turning off for now (see below)
-
-    // Note: the "0" means to allow it. 1 = warning, 2 = error
-    //  allowing this lets index.tsx files pass linting even though they only have an export (and no JSX)
-    "react/jsx-filename-extension": [0, { "extensions": [".js", ".jsx", "*.ts", "*.tsx"] }],
 
     //
     // Initial release: turning these off; phase in to "warn" or "error" over time
@@ -56,9 +47,8 @@
     "import/no-useless-path-segments": "off",
     "import/order": "off",
 
-    "no-else-return": "off",
-    "no-restricted-syntax": "off",
-    "no-underscore-dangle": "off",
+    "no-underscore-dangle": "off", // TODO : adhere to standard naming
+    "no-restricted-syntax": "warn", // TODO : fix for-in loops
 
     "jsx-a11y/alt-text": "off",
     "jsx-a11y/anchor-is-valid": "off",
@@ -66,80 +56,10 @@
     "jsx-a11y/label-has-associated-control": "off",
     "jsx-a11y/no-static-element-interactions": "off",
 
-    "react/jsx-fragments": "off",
-    "react/jsx-no-bind": "off",
-    "react/self-closing-comp": "off",
+    "@typescript-eslint/naming-convention": "off", // prefer warn but needs different parserOptions
+    "@typescript-eslint/ban-types": "off", // also, see override below
 
-    "sonarjs/prefer-immediate-return": "off",
-
-    "@typescript-eslint/dot-notation": "off",       // prefer warn but needs different parserOptions
-    "@typescript-eslint/naming-convention": "off",  // prefer warn but needs different parserOptions
-    "@typescript-eslint/ban-types": "off",   // also, see override below
-
-    //
-    // Initial release: set to error
-    "@typescript-eslint/no-inferrable-types": "error",
-    "eqeqeq": "error",
-    "no-alert": "error",
-    "no-console": "error",
-    "no-fallthrough": "error",
-    "no-undef": "warn",
-    "no-unused-vars": "error",
-    "no-var": "error",
-    "prefer-const": "error",
-    "yoda": "error",
-
-    "import/no-mutable-exports": "error",
-    "sonarjs/max-switch-cases": "error",
-    "sonarjs/no-collapsible-if": "error",
-    "sonarjs/no-all-duplicated-branches": "error",
-    "sonarjs/no-duplicated-branches": "error",
-    "sonarjs/no-gratuitous-expressions": "error",
-    "sonarjs/no-ignored-return": "error",
-    "sonarjs/no-small-switch": "error",
-    "sonarjs/prefer-object-literal": "error",
-    "sonarjs/prefer-single-boolean-return": "error",
-    "@typescript-eslint/no-shadow": "error",
-    "react/default-props-match-prop-types": "error",
-    "react/no-unescaped-entities": "error",
-    "react/no-unused-prop-types": "error",
-    "react/static-property-placement": "error",
-    "array-callback-return": "error",
-    "camelcase": "error",
-    "default-case": "error",
-    "func-names": "error",
-    "no-case-declarations": "error",
-    "no-lonely-if": "error",
-    "no-nested-ternary": "error",
-    "no-plusplus": "error",
-    "no-restricted-globals": "error",
-    "no-restricted-properties": "error",
-    "no-shadow": "error",
-    "radix": "error",
-    "spaced-comment": "error",
-
-    "import/newline-after-import": "error",
-    "sonarjs/no-nested-switch": "error",
-    "@typescript-eslint/no-array-constructor": "error",
-    "@typescript-eslint/no-empty-function": "error",
-    "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-useless-constructor": "error",
-    "react/button-has-type": "error",
-    "react/jsx-curly-brace-presence": "error",
-    "react/jsx-boolean-value": "error",
-    "react/no-array-index-key": "error",
-    "class-methods-use-this": "error",
-    "guard-for-in": "error",
-    "no-unneeded-ternary": "error",
-    "no-unused-expressions": "error",
-    "operator-assignment": "error",
-    "prefer-template": "error",
-    "vars-on-top": "error",
-
-    "no-use-before-define": "off",    // doc for @typescript-eslint/no-use-before-define says to turn off the base implementation
-    "@typescript-eslint/no-use-before-define": "error",
-    "import/no-relative-packages": "warn" // arnab
-
+    "import/no-relative-packages": "off" // arnab
   },
   "overrides": [
     {
@@ -185,8 +105,7 @@
     },
     {
       "files": "*.@(js|jsx|ts|tsx|mdx)",
-      "rules": {
-      }
+      "rules": {}
     },
     {
       "files": ".storybook/*.js",

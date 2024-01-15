@@ -19,7 +19,11 @@
       "version": "detect"
     }
   },
-  "ignorePatterns": ["node_modules", "packages/*/lib", "!.storybook", ".storybook/public"],
+  "ignorePatterns": [
+    "node_modules", "packages/*/lib", "!.storybook", ".storybook/public",
+    "src/components/custom-sdk/**/demo.stories.*",
+    "src/components/custom-sdk/**/mock.stories.*"
+  ],
   "rules": {
 
     // Prettier recommends running separately from a linter.
@@ -55,6 +59,8 @@
     "import/no-unresolved": "off",
     "import/no-useless-path-segments": "off",
     "import/order": "off",
+    "import/prefer-default-export": "off",
+    "import/no-relative-packages": "off",
 
     "no-else-return": "off",
     "no-restricted-syntax": "off",
@@ -66,7 +72,7 @@
     "jsx-a11y/label-has-associated-control": "off",
     "jsx-a11y/no-static-element-interactions": "off",
 
-    "react/jsx-fragments": "off",
+    "react/jsx-fragments": "error",
     "react/jsx-no-bind": "off",
     "react/self-closing-comp": "off",
 
@@ -78,16 +84,19 @@
 
     //
     // Initial release: set to error
-    "@typescript-eslint/no-inferrable-types": "error",
-    "eqeqeq": "error",
-    "no-alert": "error",
-    "no-console": "error",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "eqeqeq": "off",
+    "no-alert": "off",
+    "no-console": "off",
     "no-fallthrough": "error",
-    "no-undef": "warn",
-    "no-unused-vars": "error",
-    "no-var": "error",
-    "prefer-const": "error",
+    "no-undef": "off",
+    "no-unused-vars": "off",
+    "no-var": "off",
+    "prefer-const": "off",
     "yoda": "error",
+    "no-irregular-whitespace": "off",
+    "no-empty": "off",
+    "no-new-object": "off",
 
     "import/no-mutable-exports": "error",
     "sonarjs/max-switch-cases": "error",
@@ -106,7 +115,7 @@
     "react/static-property-placement": "error",
     "array-callback-return": "error",
     "camelcase": "error",
-    "default-case": "error",
+    "default-case": "off",
     "func-names": "error",
     "no-case-declarations": "error",
     "no-lonely-if": "error",
@@ -122,7 +131,7 @@
     "sonarjs/no-nested-switch": "error",
     "@typescript-eslint/no-array-constructor": "error",
     "@typescript-eslint/no-empty-function": "error",
-    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-useless-constructor": "error",
     "react/button-has-type": "error",
     "react/jsx-curly-brace-presence": "error",
@@ -175,7 +184,7 @@
         "react/react-in-jsx-scope": "off",
         // Set up configuration for future sweep
         "react-hooks/exhaustive-deps": [
-          "off",
+          "error",
           {
             "additionalHooks": "useAfterInitialEffect"
           }

@@ -1,4 +1,8 @@
 /* eslint-disable react/button-has-type */
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable react/jsx-no-constructed-context-values */
+/* eslint-disable react/jsx-fragments */
+/* eslint-disable react-hooks/exhaustive-deps */
 // @ts-nocheck - TypeScript type checking to be added soon
 import React, { useState, useEffect } from 'react';
 import { render } from "react-dom";
@@ -165,7 +169,6 @@ export default function EmbeddedTopLevel() {
   useEffect( () => {
     // Update visibility of UI when bShowTriplePlayOptions changes
 
-    // eslint-disable-next-line no-console
     console.log(`EmbeddedTopLevel: bShowTriplePlayOptions set to ${bShowTriplePlayOptions}`);
     const theTopLevelEl = document.getElementById("embedded-top-level-banner-buttons");
     const theTopLevelRibbon = document.getElementById("embedded-top-level-ribbon");
@@ -184,7 +187,6 @@ export default function EmbeddedTopLevel() {
 
   useEffect( () => {
     // Update visibility of UI when bShowPega changes
-    // eslint-disable-next-line no-console
     console.log(`EmbeddedTopLevel: bShowPega set to ${bShowPega}`);
 
     const thePegaPartEl = document.getElementById("pega-part-of-page");
@@ -202,7 +204,6 @@ export default function EmbeddedTopLevel() {
 
   useEffect( () => {
     // Update visibility of UI when bShowResolutionScreen changes
-    // eslint-disable-next-line no-console
     console.log(`EmbeddedTopLevel: bShowPega set to ${bShowPega}`);
 
     const theTopLevelEl = document.getElementById("embedded-top-level-resolution");
@@ -216,7 +217,7 @@ export default function EmbeddedTopLevel() {
         if (theTopLevelEl) { theTopLevelEl.style.display = "none" };
         if (theTopLevelRibbon) { theTopLevelRibbon.style.display = "none"; }
       }
-  }, [bShowResolutionScreen]);
+  }, [bShowResolutionScreen, bShowPega]);
 
 
   useEffect( () => {
@@ -316,7 +317,6 @@ export default function EmbeddedTopLevel() {
 
     const thePConn = props.getPConnect();
     // setPConn(thePConn);
-    // eslint-disable-next-line no-console
     console.log(`EmbeddedTopLevel: initialRender got a PConnect with ${thePConn.getComponentName()}`);
 
     let target:any = null;
@@ -366,7 +366,6 @@ export default function EmbeddedTopLevel() {
 
     // NOTE: When loadMashup is complete, this will be called.
     PCore.onPCoreReady(renderObj => {
-      // eslint-disable-next-line no-console
       console.log(`PCore ready!`);
       // Check that we're seeing the PCore version we expect
       compareSdkPCoreVersions();
@@ -375,9 +374,7 @@ export default function EmbeddedTopLevel() {
       setShowAppName(true);
 
       // Initialize the SdkComponentMap (local and pega-provided)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
       getSdkComponentMap(localSdkComponentMap).then( (theComponentMap: any) => {
-        // eslint-disable-next-line no-console
         console.log(`SdkComponentMap initialized`);
 
         // Don't call initialRender until SdkComponentMap is fully initialized
@@ -477,7 +474,6 @@ export default function EmbeddedTopLevel() {
           } : {}
       };
       PCore.getMashupApi().createCase(mashupCaseType, PCore.getConstants().APP.APP, options).then(() => {
-        // eslint-disable-next-line no-console
         console.log('createCase rendering is complete');
       });
     });

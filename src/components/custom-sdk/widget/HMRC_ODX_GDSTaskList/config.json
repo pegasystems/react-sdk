@@ -8,46 +8,14 @@
   "allowedApplications": [],
   "componentKey": "HMRC_ODX_GDSTaskList",
   "type": "Widget",
-  "subtype": ["PAGE","CASE"],
+  "subtype": ["PAGE", "CASE"],
   "icon": "OneColumnPage.svg",
   "properties": [
     {
-      "name": "title",
-      "label": "Label value",
-      "format": "TEXT"
-    },
-    {
-      "format": "SELECT",
-      "label": "Usage",
-      "name": "label",
-      "defaultValue": "Create operator",
-      "localize": true,
-      "source": [
-        {
-          "key": "Create operator",
-          "value": "Create operator"
-        },
-        {
-          "key": "Update operator",
-          "value": "Update operator"
-        },
-        {
-          "key": "Resolve operator",
-          "value": "Resolve operator"
-        }
-      ]
-    },
-
-    {
-      "label": "Conditions",
-      "format": "GROUP",
-      "properties": [
-        {
-          "name": "visibility",
-          "label": "Visibility",
-          "format": "VISIBILITY"
-        }
-      ]
+      "name": "headerText",
+      "label": "Header text",
+      "format": "TEXT",
+      "defaultValue": "@L Country and State Navigator"
     }
   ],
   "defaultConfig": {
@@ -61,6 +29,16 @@
     "updateDateTime": "@P .pxUpdateDateTime",
     "resolveLabel": "@L Resolved",
     "resolveOperator": "@USER .pyResolvedUserID",
-    "resolveDateTime": "@P .pyResolvedTimestamp"
+    "resolveDateTime": "@P .pyResolvedTimestamp",
+    "target": "primary",
+    "countryList": {
+      "source": "@DATASOURCE D_pyCountryList.pxResults",
+      "fields": {
+        "id": "@P .id",
+        "name": "@P .name",
+        "value": "@P .value",
+        "objectClass": "@P .objectClass"
+      }
+    }
   }
 }

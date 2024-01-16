@@ -1,0 +1,66 @@
+{
+  "name": "HMRC_ODX_GDSTaskList",
+  "label": "GDS Task List",
+  "description": "GDS style task list component for displaying tasks that require completing by the user and their current progress",
+  "organization": "HMRC",
+  "version": "0.0.1",
+  "library": "ODX",
+  "allowedApplications": [],
+  "componentKey": "HMRC_ODX_GDSTaskList",
+  "type": "Widget",
+  "subtype": ["PAGE","CASE"],
+  "icon": "OneColumnPage.svg",
+  "properties": [
+    {
+      "name": "title",
+      "label": "Label value",
+      "format": "TEXT"
+    },
+    {
+      "format": "SELECT",
+      "label": "Usage",
+      "name": "label",
+      "defaultValue": "Create operator",
+      "localize": true,
+      "source": [
+        {
+          "key": "Create operator",
+          "value": "Create operator"
+        },
+        {
+          "key": "Update operator",
+          "value": "Update operator"
+        },
+        {
+          "key": "Resolve operator",
+          "value": "Resolve operator"
+        }
+      ]
+    },
+
+    {
+      "label": "Conditions",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "visibility",
+          "label": "Visibility",
+          "format": "VISIBILITY"
+        }
+      ]
+    }
+  ],
+  "defaultConfig": {
+    "label": "Create operator",
+    "title": "Create operator",
+    "createLabel": "@L Created",
+    "updateLabel": "@L Updated",
+    "createOperator": "@USER .pxCreateOperator",
+    "updateOperator": "@USER .pxUpdateOperator",
+    "createDateTime": "@P .pxCreateDateTime",
+    "updateDateTime": "@P .pxUpdateDateTime",
+    "resolveLabel": "@L Resolved",
+    "resolveOperator": "@USER .pyResolvedUserID",
+    "resolveDateTime": "@P .pyResolvedTimestamp"
+  }
+}

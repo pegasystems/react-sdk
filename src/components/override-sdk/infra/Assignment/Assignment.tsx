@@ -72,7 +72,7 @@ export default function Assignment(props) {
   useEffect(() => {
     setServiceShutteredStatus(serviceShuttered);
   }, [serviceShuttered]);
-  
+
   useEffect(() => {
     const updateErrorTimeOut = setTimeout(() => {
       setPageTitle(errorMessages.length > 0);
@@ -361,7 +361,7 @@ export default function Assignment(props) {
             {(!isOnlyFieldDetails.isOnlyField ||
               containerName.toLowerCase().includes('check your answer') ||
               containerName.toLowerCase().includes('declaration')) && (
-              <h1 className='govuk-heading-xl'>
+              <h1 className='govuk-heading-l'>
                 {localizedVal(containerName, '', localeReference)}
               </h1>
             )}

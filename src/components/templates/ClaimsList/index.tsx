@@ -60,9 +60,9 @@ export default function ClaimsList(props) {
         })
         .catch((err: Error) => console.log('Error : ', err)); // eslint-disable-line no-console
     } else if (rowClickAction === 'OpenCase') {
-      const status = await getServiceShutteredStatus();;
+      const status = await getServiceShutteredStatus();
       if (status) {
-        checkShuttered(status)
+        checkShuttered(status);
       } else {
         PCore.getMashupApi()
           .openCase(pzInsKey, target, { pageName: 'SummaryClaim' })
@@ -163,7 +163,7 @@ export default function ClaimsList(props) {
 
   return (
     <>
-      {claims.length !== 0 && <h2 className='govuk-heading-l'>{title}</h2>}
+      {claims.length !== 0 && <h2 className='govuk-heading-m'>{title}</h2>}
 
       {claims.map(claimItem => (
         <React.Fragment key={claimItem.claimRef}>

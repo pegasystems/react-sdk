@@ -20,7 +20,7 @@ export default function CookiePage() {
           <h1 className='govuk-heading-l'>{t('COOKIES')}</h1>
           <p className='govuk-body'>{t('COOKIES_PAGE_P1')}</p>
           <p className='govuk-body'>{t('COOKIES_PAGE_P2')}</p>
-          <h2 className='govuk-heading-l'>{t('ESSENTIAL_COOKIES')}</h2>
+          <h2 className='govuk-heading-m'>{t('ESSENTIAL_COOKIES')}</h2>
           <p className='govuk-body'>{t('ESSENTIAL_COOKIES_P1')}</p>
           <CookiePageTable />
           <p className='govuk-body'>

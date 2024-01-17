@@ -60,7 +60,11 @@ export default function View(props) {
     // console.log(`View rendering template: ${template}`);
 
     // spreading because all props should go to the template
-    let RenderedTemplate = <ViewTemplate key={key} {...props}>{children}</ViewTemplate>;
+    let RenderedTemplate = (
+      <ViewTemplate key={key} {...props}>
+        {children}
+      </ViewTemplate>
+    );
 
     if (FORMTEMPLATES.includes(template) && showLabel) {
       // Original:
@@ -84,7 +88,7 @@ export default function View(props) {
     return (
       <>
         {showLabel && !NO_HEADER_TEMPLATES.includes(template) && (
-          <h2 className='govuk-heading-l'>{label}</h2>
+          <h2 className='govuk-heading-m'>{label}</h2>
         )}
         {RenderedTemplate}
       </>

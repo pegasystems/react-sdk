@@ -14,7 +14,6 @@ import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/
 import { logout } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 import AppHeader from '../../components/AppComponents/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
-import LanguageToggle from '../../components/AppComponents/LanguageToggle';
 import LogoutPopup from '../../components/AppComponents/LogoutPopup';
 
 import StartPage from './StartPage';
@@ -276,23 +275,6 @@ export default function ChildBenefitsClaim() {
       'continueCase'
     );
   }
-  
-
-  useEffect(() => {
-    // Update visibility of UI when bShowPega changes
-    const thePegaPartEl = document.getElementById('pega-part-of-page');
-    const languageToggle = document.getElementById('hmrc-language-toggle');
-
-    if (thePegaPartEl) {
-      if (bShowPega) {
-        thePegaPartEl.style.display = 'block';
-        languageToggle.style.display = 'none';
-      } else {
-        thePegaPartEl.style.display = 'none';
-        languageToggle.style.display = 'block';
-      }
-    }
-  }, [bShowPega]);
 
   useEffect(() => {
     // Update when bShowAppName changes
@@ -573,11 +555,10 @@ export default function ChildBenefitsClaim() {
         signoutHandler={() => logout()}
       />
       
-      <AppHeader handleSignout={handleSignout} appname={t("CLAIM_CHILD_BENEFIT")} />
+      <AppHeader handleSignout={handleSignout} appname={t("CLAIM_CHILD_BENEFIT")} hasLanguageToggle={true} isPegaApp={bShowPega} />
       <div className="govuk-width-container">
 
         {shutterServicePage ? <ShutterServicePage/>: <>        
-          <LanguageToggle PegaApp="true"/>
           <div id='pega-part-of-page'>
             <div id='pega-root'></div>
           </div>

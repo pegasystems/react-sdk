@@ -72,7 +72,7 @@ export default function Assignment(props) {
   useEffect(() => {
     setServiceShutteredStatus(serviceShuttered);
   }, [serviceShuttered]);
-  
+
   useEffect(() => {
     const updateErrorTimeOut = setTimeout(() => {
       setPageTitle(errorMessages.length > 0);

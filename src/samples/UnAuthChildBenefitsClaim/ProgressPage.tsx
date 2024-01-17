@@ -26,7 +26,7 @@ const ProgressPage = (props: { onStart: any; showPortalBanner: any }) => {
         )}
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-xl'>{t('CLAIM_CHILD_BENEFIT')}</h1>
+            <h1 className='govuk-heading-l'>{t('CLAIM_CHILD_BENEFIT')}</h1>
             <h2 className='govuk-heading-m'>{t('CLAIM_INCOMPLETE')}</h2>
             <p className='govuk-body'>
               {t('YOU_HAVE_COMPLETED')}

@@ -17,7 +17,6 @@ import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/
 import AppHeader from '../../components/AppComponents/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 
-import ProgressPage from './ProgressPage';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import UnauthTimeOut from '../../components/AppComponents/TimeoutPopup/unauthTimeOut';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
@@ -43,7 +42,6 @@ export default function UnAuthChildBenefitsClaim() {
   const [serviceNotAvailable, setServiceNotAvailable] = useState(false);
   const [shutterServicePage, setShutterServicePage] = useState(false);
   const [, setAuthType] = useState('gg'); // authType
-  const [showPortalBanner, setShowPortalBanner] = useState(false);
   const [showDeletePage, setShowDeletePage] = useState(false);
   const history = useHistory();
 
@@ -53,10 +51,6 @@ export default function UnAuthChildBenefitsClaim() {
   const claimsListApi = 'D_GetUnauthClaimStatusBySessionID';
 
   const { t } = useTranslation();
-
-  useEffect(() => {
-    setPageTitle();
-  }, [showStartPage, bShowPega, bShowResolutionScreen]);
 
   // TODO - this function will have its pega counterpart for the feature to be completed - part of future story
   function deleteData() {
@@ -78,19 +72,19 @@ export default function UnAuthChildBenefitsClaim() {
     setShowPega(false);
   }
 
-  function createCase() {
-    resetAppDisplay();
-    setShowPega(true);
-    PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP);
-  }
-
-  function startNow() {
-    // Check if PConn is created, and create case if it is
-    if (pConn) {
-      createCase();
+  useEffect(() => {
+    setPageTitle();
+    function startNow() {
+      // Check if PConn is created, and create case if it is
+      if (pConn) {
+        resetAppDisplay();
+        setShowPega(true);
+        PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP);
+      }
+      setShowStartPage(false);
     }
-    setShowStartPage(false);
-  }
+    startNow();
+  }, [showStartPage, bShowPega, bShowResolutionScreen]);
 
   function closeContainer() {
     PCore.getContainerUtils().closeContainerItem(
@@ -149,7 +143,6 @@ export default function UnAuthChildBenefitsClaim() {
       PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
       () => {
         cancelAssignment();
-        setShowPortalBanner(true);
       },
       'cancelAssignment'
     );
@@ -184,7 +177,6 @@ export default function UnAuthChildBenefitsClaim() {
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CREATE_STAGE_SAVED,
       () => {
         cancelAssignment();
-        setShowPortalBanner(true);
       },
       'savedCase'
     );
@@ -413,11 +405,6 @@ export default function UnAuthChildBenefitsClaim() {
         {shutterServicePage && <ShutterServicePage />}
 
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
-
-        {showStartPage && (
-          <ProgressPage onStart={startNow} showPortalBanner={showPortalBanner}></ProgressPage>
-        )}
-
         {showDeletePage && <DeleteAnswers />}
 
         <UnauthTimeOut

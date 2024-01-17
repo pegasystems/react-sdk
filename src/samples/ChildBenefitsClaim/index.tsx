@@ -352,7 +352,9 @@ export default function ChildBenefitsClaim() {
       establishPCoreSubscriptions();
       setShowAppName(true);
 
-      PCore.getStore().subscribe(() => staySignedIn(setShowTimeoutModal, claimsListApi, true, false));
+      PCore.getStore().subscribe(() =>
+        staySignedIn(setShowTimeoutModal, claimsListApi, true, false)
+      );
       initTimeout(setShowTimeoutModal, true);
 
       // TODO : Consider refactoring 'en_GB' reference as this may need to be set elsewhere
@@ -528,11 +530,10 @@ export default function ChildBenefitsClaim() {
 
   return (
     <>
-
       <AppHeader
         handleSignout={handleSignout}
         appname={t('CLAIM_CHILD_BENEFIT')}
-        hasLanguageToggle={true}
+        hasLanguageToggle
         isPegaApp={bShowPega}
       />
       <div className='govuk-width-container'>

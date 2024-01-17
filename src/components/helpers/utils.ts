@@ -41,10 +41,16 @@ export const getServiceShutteredStatus = async (): Promise<boolean> => {
 
     const url = `${urlConfig}?dataViewParameters=${parameters}`;
     const { invokeCustomRestApi } = PCore.getRestClient();
-    // eslint-disable-next-line @typescript-eslint/return-await
-    return await invokeCustomRestApi(url, {
-      method: 'GET'
-    })
+    return invokeCustomRestApi(
+      url,
+      {
+        method: 'GET',
+        body: '',
+        headers: '',
+        withoutDefaultHeaders: false
+      },
+      ''
+    )
       .then((response: ResponseType) => {
         return response.data.Shuttered;
       })
@@ -58,4 +64,9 @@ export const getServiceShutteredStatus = async (): Promise<boolean> => {
     console.log(error);
     return false;
   }
+};
+
+export const isFieldSetReqiredForSelectComponent = (label: string) => {
+  const arrFieldSetNotRequiredForSelectComponent = ['name of building society'];
+  return !arrFieldSetNotRequiredForSelectComponent.includes(label.toLocaleLowerCase());
 };

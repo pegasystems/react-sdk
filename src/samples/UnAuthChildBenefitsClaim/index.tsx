@@ -468,7 +468,7 @@ export default function UnAuthChildBenefitsClaim() {
         signoutHandler={() => logout()}
       />
 
-      <AppHeader appname={t('CLAIM_CHILD_BENEFIT')} hasLanguageToggle={true} isPegaApp={bShowPega}/>
+      <AppHeader appname={t('CLAIM_CHILD_BENEFIT')} hasLanguageToggle isPegaApp={bShowPega} />
       <div className='govuk-width-container'>
         <div id='pega-part-of-page'>
           <div id='pega-root'></div>

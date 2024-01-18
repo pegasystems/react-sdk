@@ -10,14 +10,8 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('E2E test', () => {
-  test('should login, create case and run different test cases for Data Reference', async ({
-    page
-  }) => {
-    await common.Login(
-      config.config.apps.digv2.user.username,
-      config.config.apps.digv2.user.password,
-      page
-    );
+  test('should login, create case and run different test cases for Data Reference', async ({ page }) => {
+    await common.Login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
 
     /** Testing announcement banner presence */
     const announcementBanner = page.locator('h6:has-text("Announcements")');
@@ -60,9 +54,7 @@ test.describe('E2E test', () => {
     /** Testing the values present on Confirm screen */
     await expect(assignment.locator('input[value="Basic Product"]')).toBeVisible();
     await expect(assignment.locator('input[value="75"]')).toBeVisible();
-    await expect(
-      assignment.locator('input[value="9f2584c2-5cb4-4abe-a261-d68050ee0f66"]')
-    ).toBeVisible();
+    await expect(assignment.locator('input[value="9f2584c2-5cb4-4abe-a261-d68050ee0f66"]')).toBeVisible();
 
     await page.locator('button:has-text("Previous")').click();
 
@@ -86,9 +78,7 @@ test.describe('E2E test', () => {
     /** Testing the values present on Confirm screen */
     await expect(assignment.locator('input[value="Basic Product"]')).toBeVisible();
     await expect(assignment.locator('input[value="75"]')).toBeVisible();
-    await expect(
-      assignment.locator('input[value="9f2584c2-5cb4-4abe-a261-d68050ee0f66"]')
-    ).toBeVisible();
+    await expect(assignment.locator('input[value="9f2584c2-5cb4-4abe-a261-d68050ee0f66"]')).toBeVisible();
 
     await page.locator('button:has-text("Previous")').click();
 
@@ -112,9 +102,7 @@ test.describe('E2E test', () => {
     /** Testing the values present on Confirm screen */
     await expect(assignment.locator('input[value="Basic Product"]')).toBeVisible();
     await expect(assignment.locator('input[value="75"]')).toBeVisible();
-    await expect(
-      assignment.locator('input[value="9f2584c2-5cb4-4abe-a261-d68050ee0f66"]')
-    ).toBeVisible();
+    await expect(assignment.locator('input[value="9f2584c2-5cb4-4abe-a261-d68050ee0f66"]')).toBeVisible();
 
     await page.locator('button:has-text("Previous")').click();
 
@@ -140,9 +128,7 @@ test.describe('E2E test', () => {
     /** Testing the values present on Confirm screen */
     await expect(assignment.locator('input[value="Basic Product"]')).toBeVisible();
     await expect(assignment.locator('input[value="75"]')).toBeVisible();
-    await expect(
-      assignment.locator('input[value="9f2584c2-5cb4-4abe-a261-d68050ee0f66"]')
-    ).toBeVisible();
+    await expect(assignment.locator('input[value="9f2584c2-5cb4-4abe-a261-d68050ee0f66"]')).toBeVisible();
 
     await page.locator('button:has-text("Previous")').click();
 
@@ -196,9 +182,7 @@ test.describe('E2E test', () => {
     /** Testing the values present on Confirm screen */
     await expect(assignment.locator('input[value="Basic Product"]')).toBeVisible();
     await expect(assignment.locator('input[value="75"]')).toBeVisible();
-    await expect(
-      assignment.locator('input[value="9f2584c2-5cb4-4abe-a261-d68050ee0f66"]')
-    ).toBeVisible();
+    await expect(assignment.locator('input[value="9f2584c2-5cb4-4abe-a261-d68050ee0f66"]')).toBeVisible();
 
     await page.locator('button:has-text("Previous")').click();
 
@@ -221,9 +205,7 @@ test.describe('E2E test', () => {
     /** Testing the values present on Confirm screen */
     await expect(assignment.locator('input[value="Basic Product"]')).toBeVisible();
     await expect(assignment.locator('input[value="75"]')).toBeVisible();
-    await expect(
-      assignment.locator('input[value="9f2584c2-5cb4-4abe-a261-d68050ee0f66"]')
-    ).toBeVisible();
+    await expect(assignment.locator('input[value="9f2584c2-5cb4-4abe-a261-d68050ee0f66"]')).toBeVisible();
 
     /** Submitting the case */
     await page.locator('button:has-text("submit")').click();

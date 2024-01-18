@@ -2,8 +2,6 @@ import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helper
 
 getSdkComponentMap();
 
-
-
 /** @type { import('@storybook/react').Preview } */
 const preview = {
   parameters: {

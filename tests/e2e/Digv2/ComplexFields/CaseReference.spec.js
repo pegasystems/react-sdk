@@ -10,14 +10,8 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('E2E test', () => {
-  test('should login, create case and run different test cases for Case Reference', async ({
-    page
-  }) => {
-    await common.Login(
-      config.config.apps.digv2.user.username,
-      config.config.apps.digv2.user.password,
-      page
-    );
+  test('should login, create case and run different test cases for Case Reference', async ({ page }) => {
+    await common.Login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
 
     /** Testing announcement banner presence */
     const announcementBanner = page.locator('h6:has-text("Announcements")');
@@ -31,10 +25,10 @@ test.describe('E2E test', () => {
     let queryCase = page.locator('div[role="button"]:has-text("Query")');
     await queryCase.click();
 
-    let modal =  page.locator('div[role="dialog"]');
+    let modal = page.locator('div[role="dialog"]');
 
     /** Value to be typed in the Name input */
-    const name = "John Doe";
+    const name = 'John Doe';
 
     await modal.locator('input').type(name);
     await modal.locator('button:has-text("submit")').click();

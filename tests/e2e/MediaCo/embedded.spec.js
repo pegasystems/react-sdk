@@ -69,9 +69,7 @@ test.describe('E2E test', () => {
 
     await page.locator('button:has-text("next")').click();
 
-    const dataServiceBeginDate = page.locator(
-      'div[data-test-id="1321FA74451B96BC02663B0EF96CCBB9"]'
-    );
+    const dataServiceBeginDate = page.locator('div[data-test-id="1321FA74451B96BC02663B0EF96CCBB9"]');
     const dataServiceBeginDateInput = dataServiceBeginDate.locator('input');
     await dataServiceBeginDateInput.click();
     const futureDate = common.getFutureDate();

@@ -129,8 +129,8 @@ const ConfirmationPage = ({ caseId }) => {
           <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
             <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
           </div>
-          <h2 className='govuk-heading-m'> {t('WHAT_HAPPENS_NEXT')}</h2>
           <p className='govuk-body'> {t('WE_HAVE_SENT_YOUR_APPLICATION')}</p>
+          <h2 className='govuk-heading-m'> {t('WHAT_HAPPENS_NEXT')}</h2>
           <p className='govuk-body'> {t('WE_WILL_TELL_YOU_IN_14_DAYS')}</p>
           <p className='govuk-body'>
             <a

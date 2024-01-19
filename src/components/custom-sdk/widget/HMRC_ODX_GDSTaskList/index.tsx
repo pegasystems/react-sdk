@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  Text,
-  StandardTree,
-  treeHelpers
-} from '@pega/cosmos-react-core';
+import { treeHelpers } from '@pega/cosmos-react-core';
 
 import StyledHmrcOdxGdsTaskListWrapper from './styles';
 import type { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
@@ -75,7 +68,23 @@ export default function HmrcOdxGdsTaskList(props: HmrcOdxGdsTaskListProps) {
 
   return (
     <StyledHmrcOdxGdsTaskListWrapper>
-      <Card>
+      <ul className='govuk-task-list'>
+        <li className='govuk-task-list__item govuk-task-list__item--with-link'>
+          <div className='govuk-task-list__name-and-hint'>
+            <a
+              className='govuk-link govuk-task-list__link'
+              href='#'
+              aria-describedby='company-details-1-status'
+            >
+              Company Directors
+            </a>
+          </div>
+          <div className='govuk-task-list__status' id='company-details-1-status'>
+            Completed
+          </div>
+        </li>
+      </ul>
+      {/* <Card>
         <CardHeader>
           <Text variant='h2'>{headerText}</Text>
         </CardHeader>
@@ -103,7 +112,7 @@ export default function HmrcOdxGdsTaskList(props: HmrcOdxGdsTaskListProps) {
             }}
           />
         </CardContent>
-      </Card>
+      </Card> */}
     </StyledHmrcOdxGdsTaskListWrapper>
   );
 }

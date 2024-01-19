@@ -60,7 +60,11 @@ export default function View(props) {
     // console.log(`View rendering template: ${template}`);
 
     // spreading because all props should go to the template
-    let RenderedTemplate = <ViewTemplate key={key} {...props}>{children}</ViewTemplate>;
+    let RenderedTemplate = (
+      <ViewTemplate key={key} {...props}>
+        {children}
+      </ViewTemplate>
+    );
 
     if (FORMTEMPLATES.includes(template) && showLabel) {
       // Original:

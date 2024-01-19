@@ -60,9 +60,9 @@ export default function ClaimsList(props) {
         })
         .catch((err: Error) => console.log('Error : ', err)); // eslint-disable-line no-console
     } else if (rowClickAction === 'OpenCase') {
-      const status = await getServiceShutteredStatus();;
+      const status = await getServiceShutteredStatus();
       if (status) {
-        checkShuttered(status)
+        checkShuttered(status);
       } else {
         PCore.getMashupApi()
           .openCase(pzInsKey, target, { pageName: 'SummaryClaim' })
@@ -173,7 +173,7 @@ export default function ClaimsList(props) {
               <WarningText date={claimItem?.dateUpdated} />
             )}
 
-          {claimItem.childrenAdded && <h3 className='govuk-heading-s'>{t('CHILDREN_ADDED')}</h3>}
+          {claimItem.childrenAdded && <h3 className='govuk-heading-m'>{t('CHILDREN_ADDED')}</h3>}
 
           {claimItem.childrenAdded && renderChildDetails(claimItem)}
 

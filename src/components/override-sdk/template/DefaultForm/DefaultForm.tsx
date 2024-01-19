@@ -52,6 +52,7 @@ export default function DefaultForm(props) {
       for (const ele of elementsArr) {
         if (ele.innerHTML.includes(keyText)) {
           ele.setAttribute('target', '_blank');
+          ele.setAttribute('rel', 'noreferrer noopener');
         }
       }
     }

@@ -41,6 +41,7 @@ export default function UnAuthChildBenefitsClaim() {
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const [serviceNotAvailable, setServiceNotAvailable] = useState(false);
   const [shutterServicePage, setShutterServicePage] = useState(false);
+  const [hasSessionTimedOut, setHasSessionTimedOut] = useState(true);
   const [, setAuthType] = useState('gg'); // authType
   const [showDeletePage, setShowDeletePage] = useState(false);
   const history = useHistory();
@@ -405,13 +406,16 @@ export default function UnAuthChildBenefitsClaim() {
         {shutterServicePage && <ShutterServicePage />}
 
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
-        {showDeletePage && <DeleteAnswers />}
+        {showDeletePage && <DeleteAnswers hasSessionTimedOut={hasSessionTimedOut} />}
 
         <UnauthTimeOut
           show={showTimeoutModal}
           modalId='timeout-popup'
           primaryHandler={() => staySignedIn(setShowTimeoutModal, claimsListApi, false)}
-          secondaryHandler={() => deleteData()}
+          secondaryHandler={() => {
+            deleteData();
+            setHasSessionTimedOut(false);
+          }}
         />
 
         {/** No Log out popup required as one isn't logged in */}

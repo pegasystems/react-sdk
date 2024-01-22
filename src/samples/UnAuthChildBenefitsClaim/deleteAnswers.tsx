@@ -1,8 +1,11 @@
 import React from 'react';
 import MainWrapper from '../../components/BaseComponents/MainWrapper';
 import Button from '../../components/BaseComponents/Button/Button';
+import { useTranslation } from 'react-i18next';
 
 export default function DeleteAnswers({ hasSessionTimedOut }) {
+  const { t } = useTranslation();
+
   return (
     <MainWrapper>
       <h1 className='govuk-heading-l'>
@@ -10,9 +13,9 @@ export default function DeleteAnswers({ hasSessionTimedOut }) {
           ? 'For your security, we deleted your answers'
           : 'You deleted your answers'}
       </h1>
-      <Button variant='start'>Start claim again</Button>
-      <h2 className='govuk-heading-m'>Before you go</h2>
-      <p className='govuk-body'>Your feedback helps us make our service better.</p>
+      <Button variant='start'>{t('START_CLAIM_AGAIN')}</Button>
+      <h2 className='govuk-heading-m'>{t('BEFORE_YOU_GO')}</h2>
+      <p className='govuk-body'>{t('YOUR_FEEDBACK_HELPS_US_MAKES_OUR_SERVICE_BETTER')}.</p>
       <p className='govuk-body'>
         <a
           href='https://www.staging.tax.service.gov.uk/contact/beta-feedback?service=463&referrerUrl=www.account.hmrc.gov.uk/child-benefit/make_a_claim
@@ -21,9 +24,9 @@ Prod Link: https://www.tax.service.gov.uk/contact/beta-feedback?service=463&refe
           target='_blank'
           rel='noopener noreferrer'
         >
-          Take our survey
+          {t('TAKE_OUR_SURVEY')}
         </a>{' '}
-        to share your feedback on this service.
+        {t('TO_SHARE_YOUR_FEEDBACK_ON_THIS_SERVICE')}.
       </p>
     </MainWrapper>
   );

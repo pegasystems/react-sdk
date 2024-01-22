@@ -2,7 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import Modal from '../../BaseComponents/Modal/Modal';
 import PropTypes from 'prop-types';
 
-export default function TimeoutPopup({ show, handleClose, id, staySignedIn, children }) {
+export default function TimeoutPopup({ show, id, staySignedIn, children }) {
   const staySignedInCallback = useCallback(
     event => {
       if (event.key === 'Escape') staySignedIn();
@@ -22,7 +22,7 @@ export default function TimeoutPopup({ show, handleClose, id, staySignedIn, chil
   }, [show]);
 
   return (
-    <Modal show={show} handleClose={handleClose} id={id}>
+    <Modal show={show} id={id}>
       {children}
     </Modal>
   );
@@ -30,5 +30,7 @@ export default function TimeoutPopup({ show, handleClose, id, staySignedIn, chil
 
 TimeoutPopup.propTypes = {
   show: PropTypes.bool,
-  staySignedIn: PropTypes.func
+  id: PropTypes.string,
+  staySignedIn: PropTypes.func,
+  children: PropTypes.node
 };

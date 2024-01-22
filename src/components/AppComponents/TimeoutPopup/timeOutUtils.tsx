@@ -30,6 +30,7 @@ export const initTimeout = (setShowTimeoutModal, isAuthorised) => {
       if (isAuthorised) {
         logout();
       } else {
+        setShowTimeoutModal(false);
         // session ends and deleteData() (pega)
       }
     }, milisecondsTilSignout);

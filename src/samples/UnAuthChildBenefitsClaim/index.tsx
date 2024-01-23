@@ -288,19 +288,25 @@ export default function UnAuthChildBenefitsClaim() {
       /* Functionality to set the device id in the header for use in CIP.
       Device id is unique and will be stored on the user device / browser cookie */
       const COOKIE_PEGAODXDI = 'pegaodxdi';
+      const COOKIE_PEGAODXEI = 'pegaodxei';
+
       let deviceID = checkCookie(COOKIE_PEGAODXDI);
-      if (deviceID) {
+      let externalID = checkCookie(COOKIE_PEGAODXEI);
+      if (deviceID && externalID) {
         setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
-        PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
+        setCookie(COOKIE_PEGAODXEI, externalID, 3650);
       } else {
         PCore.getDataPageUtils()
           .getPageDataAsync('D_UserSession', 'root')
           .then(res => {
             deviceID = res.DeviceId;
+            externalID = res.ExternalId;
             setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
-            PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
+            setCookie(COOKIE_PEGAODXEI, externalID, 3650);
           });
       }
+      PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
+      PCore.getRestClient().getHeaderProcessor().registerHeader('externalid', externalID);
     });
 
     // Initialize the SdkComponentMap (local and pega-provided)

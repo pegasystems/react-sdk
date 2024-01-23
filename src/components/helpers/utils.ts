@@ -1,5 +1,4 @@
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
-import { useTranslation } from 'react-i18next';
 
 export const scrollToTop = () => {
   const position = document.getElementById('#main-content')?.offsetTop || 0;
@@ -74,20 +73,14 @@ export const isFieldSetReqiredForSelectComponent = (label: string) => {
 
 export const isSingleEntity = (useType: string, key: string, action: any, getPConnect: any) => {
   // const { t } = useTranslation();
-  let count = 0;
+
   const containerName = getPConnect().getContainerName();
   const context = PCore.getContainerUtils().getActiveContainerItemContext(
     `${PCore.getConstants().APP.APP}/${containerName}`
   );
-  if (useType === '1') {
-    count = PCore.getStoreValue(key, 'caseInfo.content', context)?.length;
-  } else if (useType === '2') {
-    count = PCore.getStoreValue(key, 'caseInfo.content', context)?.length;
-  }
 
-  if (typeof count !== 'undefined' && count === 1) {
-    return true;
-  } else {
-    return false;
-  }
+  const count = PCore.getStoreValue(key, 'caseInfo.content', context)?.length;
+
+  if (typeof count !== 'undefined' && count === 1) return true;
+  // else return false;
 };

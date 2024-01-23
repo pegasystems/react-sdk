@@ -10,7 +10,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
   const { children, NumCols, sectionHeader, getPConnect, useType = '1' || '2' } = props;
 
   const containerItemID = getPConnect().getContextName();
-  let [singleEntity, setSingleEntity] = useState(false);
+  const [singleEntity, setSingleEntity] = useState(false);
   const { t } = useTranslation();
 
   const nCols = parseInt(NumCols, 8);
@@ -48,18 +48,18 @@ export default function HmrcOdxGdsSummaryCard(props) {
 
   const handleOnClick = (action: string) => {
     let key = '';
-    let test = false;
+    let checkSingleEntity = false;
     switch (useType) {
       case '1':
         key = '.Claim.Children';
-        test = isSingleEntity(useType, key, action, getPConnect);
-        setSingleEntity(test);
+        checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
+        setSingleEntity(checkSingleEntity);
         return;
 
       case '2':
         key = '.Claim.Claimant.Nationalities';
-        test = isSingleEntity(useType, key, action, getPConnect);
-        setSingleEntity(test);
+        checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
+        setSingleEntity(checkSingleEntity);
         return;
       default:
         break;

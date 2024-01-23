@@ -49,20 +49,22 @@ export default function HmrcOdxGdsSummaryCard(props) {
   const handleOnClick = (action: string) => {
     let key = '';
     let checkSingleEntity = false;
-    switch (useType) {
-      case '1':
-        key = '.Claim.Children';
-        checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
-        setSingleEntity(checkSingleEntity);
-        return;
+    if (action === t('GDS_ACTION_REMOVE')) {
+      switch (useType) {
+        case '1':
+          key = '.Claim.Children';
+          checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
+          setSingleEntity(checkSingleEntity);
+          return;
 
-      case '2':
-        key = '.Claim.Claimant.Nationalities';
-        checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
-        setSingleEntity(checkSingleEntity);
-        return;
-      default:
-        break;
+        case '2':
+          key = '.Claim.Claimant.Nationalities';
+          checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
+          setSingleEntity(checkSingleEntity);
+          return;
+        default:
+          break;
+      }
     }
 
     switch (action) {

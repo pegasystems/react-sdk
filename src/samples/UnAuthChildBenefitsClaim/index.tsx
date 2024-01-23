@@ -31,7 +31,7 @@ import {
 } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import DeleteAnswers from './deleteAnswers';
 
-declare const myLoadMashup: any;
+declare const myLoadMashup: Function;
 
 export default function UnAuthChildBenefitsClaim() {
   const [pConn, setPConn] = useState<any>(null);

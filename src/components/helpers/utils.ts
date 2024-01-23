@@ -72,8 +72,6 @@ export const isFieldSetReqiredForSelectComponent = (label: string) => {
 };
 
 export const isSingleEntity = (useType: string, key: string, action: any, getPConnect: any) => {
-  // const { t } = useTranslation();
-
   const containerName = getPConnect().getContainerName();
   const context = PCore.getContainerUtils().getActiveContainerItemContext(
     `${PCore.getConstants().APP.APP}/${containerName}`
@@ -82,5 +80,4 @@ export const isSingleEntity = (useType: string, key: string, action: any, getPCo
   const count = PCore.getStoreValue(key, 'caseInfo.content', context)?.length;
 
   if (typeof count !== 'undefined' && count === 1) return true;
-  // else return false;
 };

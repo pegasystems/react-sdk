@@ -1,8 +1,8 @@
 import { logout } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 
-let milisecondsTilWarning = 10 * 1000;
-let milisecondsTilSignout = 10 * 1000;
+let milisecondsTilWarning = 780 * 1000;
+let milisecondsTilSignout = 115 * 1000;
 
 export const settingTimer = async () => {
   const sdkConfig = await getSdkConfig();

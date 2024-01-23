@@ -2,7 +2,7 @@ import { logout } from '@pega/react-sdk-components/lib/components/helpers/authMa
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 
 let milisecondsTilWarning = 10 * 1000;
-let milisecondsTilSignout = 55 * 1000;
+let milisecondsTilSignout = 10 * 1000;
 
 export const settingTimer = async () => {
   const sdkConfig = await getSdkConfig();
@@ -15,8 +15,8 @@ export const settingTimer = async () => {
 let applicationTimeout = null;
 let signoutTimeout = null;
 
-export const initTimeout = (setShowTimeoutModal, isAuthorised) => {
-  // console.log(isAuthorised);
+export const initTimeout = (showTimeoutModal, deleteData, isAuthorised) => {
+  // TODO - isAuthorised to be replaced by caseType from pega
   // Fetches timeout length config
   settingTimer();
   clearTimeout(applicationTimeout);
@@ -24,13 +24,13 @@ export const initTimeout = (setShowTimeoutModal, isAuthorised) => {
 
   // Clears any existing timeouts and starts the timeout for warning, after set time shows the modal and starts signout timer
   applicationTimeout = setTimeout(() => {
-    setShowTimeoutModal(true);
     // TODO - unauth and sessiontimeout functionality to be implemented
+    showTimeoutModal(true);
     signoutTimeout = setTimeout(() => {
       if (isAuthorised) {
         logout();
       } else {
-        setShowTimeoutModal(false);
+        deleteData();
         // session ends and deleteData() (pega)
       }
     }, milisecondsTilSignout);
@@ -41,12 +41,13 @@ export const initTimeout = (setShowTimeoutModal, isAuthorised) => {
 export function staySignedIn(
   setShowTimeoutModal,
   claimsListApi,
-  isAuthorised,
+  deleteData = null,
+  isAuthorised = false,
   refreshSignin = true
 ) {
   if (refreshSignin) {
     PCore.getDataPageUtils().getDataAsync(claimsListApi, 'root');
   }
   setShowTimeoutModal(false);
-  initTimeout(setShowTimeoutModal, isAuthorised);
+  initTimeout(setShowTimeoutModal, deleteData, isAuthorised);
 }

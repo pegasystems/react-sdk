@@ -42,7 +42,6 @@ export default function UnAuthChildBenefitsClaim() {
   const [serviceNotAvailable, setServiceNotAvailable] = useState(false);
   const [shutterServicePage, setShutterServicePage] = useState(false);
   const [hasSessionTimedOut, setHasSessionTimedOut] = useState(true);
-  const [, setAuthType] = useState('gg'); // authType
   const [showDeletePage, setShowDeletePage] = useState(false);
   const history = useHistory();
 
@@ -52,13 +51,6 @@ export default function UnAuthChildBenefitsClaim() {
   const claimsListApi = 'D_GetUnauthClaimStatusBySessionID';
 
   const { t } = useTranslation();
-
-  // TODO - this function will have its pega counterpart for the feature to be completed - part of future story
-  function deleteData() {
-    setShowTimeoutModal(false);
-    setShowStartPage(false);
-    setShowDeletePage(true);
-  }
 
   function doRedirectDone() {
     history.push('/ua');
@@ -73,18 +65,24 @@ export default function UnAuthChildBenefitsClaim() {
     setShowPega(false);
   }
 
+  function startNow() {
+    // Check if PConn is created, and create case if it is
+    if (pConn && !bShowPega) {
+      resetAppDisplay();
+      setShowPega(true);
+      PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP);
+    }
+    setShowStartPage(false);
+  }
+
+  useEffect(() => {
+    if (showStartPage) {
+      startNow();
+    }
+  }, [showStartPage]);
+
   useEffect(() => {
     setPageTitle();
-    function startNow() {
-      // Check if PConn is created, and create case if it is
-      if (pConn) {
-        resetAppDisplay();
-        setShowPega(true);
-        PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP);
-      }
-      setShowStartPage(false);
-    }
-    startNow();
   }, [showStartPage, bShowPega, bShowResolutionScreen]);
 
   function closeContainer() {
@@ -92,6 +90,18 @@ export default function UnAuthChildBenefitsClaim() {
       PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
       { skipDirtyCheck: true }
     );
+    setShowPega(false);
+  }
+
+  // TODO - this function will have its pega counterpart for the feature to be completed - part of future story
+  function deleteData() {
+    if (bShowPega) {
+      closeContainer();
+    }
+    setShowTimeoutModal(false);
+    setShowStartPage(false);
+    setShowPega(false);
+    setShowDeletePage(true);
   }
 
   function returnToPortalPage() {
@@ -106,7 +116,6 @@ export default function UnAuthChildBenefitsClaim() {
     resetAppDisplay();
     setShowResolutionScreen(true);
   }
-
   function cancelAssignment() {
     closeContainer();
     resetAppDisplay();
@@ -260,11 +269,11 @@ export default function UnAuthChildBenefitsClaim() {
       compareSdkPCoreVersions();
       establishPCoreSubscriptions();
 
-      initTimeout(setShowTimeoutModal, false);
+      initTimeout(showTimeoutModal, deleteData, false);
 
       // Subscribe to any store change to reset timeout counter
       PCore.getStore().subscribe(() =>
-        staySignedIn(setShowTimeoutModal, claimsListApi, false, false)
+        staySignedIn(setShowTimeoutModal, claimsListApi, deleteData, false, false)
       );
 
       // TODO : Consider refactoring 'en_GB' reference as this may need to be set elsewhere
@@ -331,7 +340,6 @@ export default function UnAuthChildBenefitsClaim() {
   useEffect(() => {
     getSdkConfig().then(sdkConfig => {
       const sdkConfigAuth = sdkConfig.authConfig;
-      setAuthType(sdkConfigAuth.uAuthService);
       sdkConfigAuth.authService = sdkConfigAuth.uAuthService;
 
       if (!sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === 'Basic') {
@@ -365,9 +373,9 @@ export default function UnAuthChildBenefitsClaim() {
       startMashup();
     });
 
-    document.addEventListener('SdkLoggedOut', () => {
-      window.location.href = 'https://www.gov.uk/government/organisations/hm-revenue-customs';
-    });
+    // document.addEventListener('SdkLoggedOut', () => {
+    //   window.location.href = 'https://www.gov.uk/government/organisations/hm-revenue-customs';
+    // });
 
     // Subscriptions can't be done until onPCoreReady.
     // So we subscribe there. But unsubscribe when this
@@ -411,7 +419,7 @@ export default function UnAuthChildBenefitsClaim() {
         <UnauthTimeOut
           show={showTimeoutModal}
           modalId='timeout-popup'
-          primaryHandler={() => staySignedIn(setShowTimeoutModal, claimsListApi, false)}
+          primaryHandler={() => staySignedIn(setShowTimeoutModal, claimsListApi, deleteData, false)}
           secondaryHandler={() => {
             deleteData();
             setHasSessionTimedOut(false);

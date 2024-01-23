@@ -2,20 +2,22 @@ import React, { ReactNode, useEffect, useState, Fragment } from 'react';
 import { Grid } from '@pega/cosmos-react-core';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { GBdate } from '../../../helpers/utils';
+import { GBdate, isffff } from '../../../helpers/utils';
 import StyledHmrcOdxGdsSummaryCardWrapper from './styles';
 import NotificationBanner from '../../../BaseComponents/NotificationBanner/NotificationBanner';
 
 export default function HmrcOdxGdsSummaryCard(props) {
-  const { children, NumCols, sectionHeader, getPConnect, useType = 1 } = props;
+  const { children, NumCols, sectionHeader, getPConnect, useType = 1 || 2 } = props;
 
   const containerItemID = getPConnect().getContextName();
-  const [singleChild, setSingleChild] = useState(false);
+  let [singleChild, setSingleChild] = useState(false);
+
+  let [singleNationality, setSingleNationality] = useState(false);
   const { t } = useTranslation();
 
   const nCols = parseInt(NumCols, 8);
   const [formElms, setFormElms] = useState<Array<ReactNode>>([]); // Initialize as an empty array of React Nodes
-  const itemName = useType === 1 ? t('GDS_INFO_ITEM_CHILD') : '';
+  const itemName = useType === 1 ? t('GDS_INFO_ITEM_CHILD') : t('GDS_INFO_ITEM_NATIONALITY');
   const [childName, setChildName] = useState(itemName);
   useEffect(() => {
     const elms: Array<string> = [];
@@ -25,7 +27,11 @@ export default function HmrcOdxGdsSummaryCard(props) {
       region.getChildren().forEach(child => {
         child.getPConnect().setInheritedProp('readOnly', true);
         elms.push(child.getPConnect().getComponent());
-        finalELms = elms.slice(0);
+        if (useType === 1) {
+          finalELms = elms.slice(0, -1);
+        } else {
+          finalELms = elms.slice(0);
+        }
       });
       setFormElms(finalELms);
     }
@@ -43,20 +49,23 @@ export default function HmrcOdxGdsSummaryCard(props) {
   }, [formElms]);
 
   const handleOnClick = (action: string) => {
-    const containerName = getPConnect().getContainerName();
-    const context = PCore.getContainerUtils().getActiveContainerItemContext(
-      `${PCore.getConstants().APP.APP}/${containerName}`
-    );
-    const childCount = PCore.getStoreValue('.Claim.Children', 'caseInfo.content', context)?.length;
-
-    if (childCount === 1) {
-      if (action === t('GDS_ACTION_REMOVE')) {
-        setSingleChild(true);
-        return;
-      }
-    } else {
-      setSingleChild(false);
+    // let key = ;
+    switch (useType) {
+      case '1':
+        let key = '.Claim.Children';
+        let test = isffff(useType, key, action, getPConnect);
+        setSingleChild(test);
+        break;
+      case '2':
+        key = '.Claim.Claimant.Nationalities';
+        test = isffff(useType, key, action, getPConnect);
+        setSingleChild(test);
+        //   setSingleChild(isffff(useType, key, action));
+        break;
+      default:
+        break;
     }
+
     switch (action) {
       case t('GDS_ACTION_REMOVE'):
         getPConnect().setValue('.UserActions', 'Remove');

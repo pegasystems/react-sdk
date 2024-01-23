@@ -1,4 +1,5 @@
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import { useTranslation } from 'react-i18next';
 
 export const scrollToTop = () => {
   const position = document.getElementById('#main-content')?.offsetTop || 0;
@@ -69,4 +70,24 @@ export const getServiceShutteredStatus = async (): Promise<boolean> => {
 export const isFieldSetReqiredForSelectComponent = (label: string) => {
   const arrFieldSetNotRequiredForSelectComponent = ['name of building society'];
   return !arrFieldSetNotRequiredForSelectComponent.includes(label.toLocaleLowerCase());
+};
+
+export const isffff = (useType: any, key: string, action: any, getPConnect: any) => {
+  // const { t } = useTranslation();
+  let count = 0;
+  const containerName = getPConnect().getContainerName();
+  const context = PCore.getContainerUtils().getActiveContainerItemContext(
+    `${PCore.getConstants().APP.APP}/${containerName}`
+  );
+  if (useType === 1) {
+    count = PCore.getStoreValue(key, 'caseInfo.content', context)?.length;
+  } else if (useType === 2) {
+    count = PCore.getStoreValue(key, 'caseInfo.content', context)?.length;
+  }
+
+  if (typeof count !== 'undefined' && count === 1) {
+    return true;
+  } else {
+    return false;
+  }
 };

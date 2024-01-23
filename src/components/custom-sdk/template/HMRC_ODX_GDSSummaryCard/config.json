@@ -51,8 +51,8 @@
       "label": "Use Type",
       "defaultValue": "1",
       "source": [
-        { "key": "1", "value": "Multi Child List" }
-       
+        { "key": "1", "value": "Multi Child List" },
+        { "key": "2", "value": "Multi Nationality List" }
       ]
     }
   ]

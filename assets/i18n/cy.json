@@ -155,6 +155,7 @@
   "GDS_INFO_INFO_UNVERIFIED_CHILD": "Check that the details you entered match their birth certificate. If you've just registered their birth, try again in 24 hours",
   "GDS_INFO_CHILDREN": "Plant",
   "GDS_INFO_ITEM_CHILD": "Child",
+  "GDS_INFO_ITEM_NATIONALITY": "Nationality",
   "GDS_ACTION_REMOVE": "Remove",
   "GDS_ACTION_CHANGE": "Change",
   "BANNER_FEEDBACK_1": "your",

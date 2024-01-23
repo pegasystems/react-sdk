@@ -14,10 +14,10 @@ if (!window.PCore) {
   window.PCore = {};
 }
 
-window.PCore.getDataApiUtils = () => {
+window.PCore.getDataPageUtils = () => {
   return {
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-    getData: (dataView, parameters, options) => {
+    getDataAsync: (dataView, parameters, options) => {
       return new Promise(resolve => {
         if (dataView === 'D_CaseTaskList') {
           resolve({
@@ -86,6 +86,9 @@ export const BaseHmrcOdxGdsTaskList = () => {
         },
         resolveConfigProps: () => {
           /* nothing */
+        },
+        getContextName: () => {
+          // Resolve config props
         }
       };
     }

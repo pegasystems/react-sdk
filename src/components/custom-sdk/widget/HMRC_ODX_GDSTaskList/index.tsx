@@ -11,7 +11,7 @@ interface HmrcOdxGdsTaskListProps extends PConnProps {
 // props passed in combination of props from property panel (config.json) and run time props from Constellation
 // any default values in config.pros should be set in defaultProps at bottom of this file
 export default function HmrcOdxGdsTaskList(props: HmrcOdxGdsTaskListProps) {
-  let { taskList } = props;
+  let { taskList, getPConnect } = props;
 
   let globalTaskList = [];
 
@@ -19,11 +19,11 @@ export default function HmrcOdxGdsTaskList(props: HmrcOdxGdsTaskListProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const context = 'app/primary_1';
+    const context = getPConnect().getContextName();
 
     const fetchTaskList = async () => {
       try {
-        const response = await PCore.getDataApiUtils().getData('D_CaseTaskList', [], context, []);
+        const response = await PCore.getDataPageUtils().getDataAsync('D_CaseTaskList', context);
         taskList = response.data;
 
         if (Array.isArray(taskList)) {
@@ -88,5 +88,6 @@ export default function HmrcOdxGdsTaskList(props: HmrcOdxGdsTaskListProps) {
 }
 
 HmrcOdxGdsTaskList.propTypes = {
-  taskList: PropTypes.instanceOf(Object)
+  taskList: PropTypes.instanceOf(Object),
+  getPConnect: PropTypes.func.isRequired
 };

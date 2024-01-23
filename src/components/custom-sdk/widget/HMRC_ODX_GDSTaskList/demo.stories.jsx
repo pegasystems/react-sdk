@@ -19,19 +19,33 @@ window.PCore.getDataApiUtils = () => {
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     getData: (dataView, parameters, options) => {
       return new Promise(resolve => {
-        if (dataView === 'D_pyStateList' && parameters.dataViewParameters.pyCountry === 'USA') {
+        if (dataView === 'D_CaseTaskList') {
           resolve({
             data: {
-              data: [
-                {
-                  pyLabel: 'Alabama',
-                  pyStateCode: 'AL'
-                },
-                {
-                  pyLabel: 'Alaska',
-                  pyStateCode: 'AK'
+              caseInfo: {
+                content: {
+                  CaseTasks: {
+                    CaseTaskList: [
+                      {
+                        TaskLabel: 'Your details',
+                        TaskStatus: 'Completed'
+                      },
+                      {
+                        TaskLabel: 'Relationship details',
+                        TaskStatus: 'In progress'
+                      },
+                      {
+                        TaskLabel: 'Child details',
+                        TaskStatus: 'Cannot start yet'
+                      },
+                      {
+                        TaskLabel: 'Income details',
+                        TaskStatus: 'Cannot start yet'
+                      }
+                    ]
+                  }
                 }
-              ]
+              }
             }
           });
         } else {
@@ -48,22 +62,6 @@ window.PCore.getDataApiUtils = () => {
 
 export const BaseHmrcOdxGdsTaskList = () => {
   const props = {
-    countryList: {
-      source: [
-        {
-          objectClass: 'Rule-Obj-FieldValue',
-          value: 'United Kingdom',
-          id: 'RULE-OBJ-FIELDVALUE @BASECLASS PYCOUNTRYCODE!GBR #20180713T132223.211 GMT',
-          name: 'GBR'
-        },
-        {
-          objectClass: 'Rule-Obj-FieldValue',
-          value: 'United States',
-          id: 'RULE-OBJ-FIELDVALUE @BASECLASS PYCOUNTRYCODE!USA #20180713T132225.795 GMT',
-          name: 'USA'
-        }
-      ]
-    },
     ...caseOpConfig,
     getPConnect: () => {
       return {

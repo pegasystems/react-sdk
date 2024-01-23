@@ -2,22 +2,20 @@ import React, { ReactNode, useEffect, useState, Fragment } from 'react';
 import { Grid } from '@pega/cosmos-react-core';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { GBdate, isffff } from '../../../helpers/utils';
+import { GBdate, isSingleEntity } from '../../../helpers/utils';
 import StyledHmrcOdxGdsSummaryCardWrapper from './styles';
 import NotificationBanner from '../../../BaseComponents/NotificationBanner/NotificationBanner';
 
 export default function HmrcOdxGdsSummaryCard(props) {
-  const { children, NumCols, sectionHeader, getPConnect, useType = 1 || 2 } = props;
+  const { children, NumCols, sectionHeader, getPConnect, useType = '1' || '2' } = props;
 
   const containerItemID = getPConnect().getContextName();
-  let [singleChild, setSingleChild] = useState(false);
-
-  let [singleNationality, setSingleNationality] = useState(false);
+  let [singleEntity, setSingleEntity] = useState(false);
   const { t } = useTranslation();
 
   const nCols = parseInt(NumCols, 8);
   const [formElms, setFormElms] = useState<Array<ReactNode>>([]); // Initialize as an empty array of React Nodes
-  const itemName = useType === 1 ? t('GDS_INFO_ITEM_CHILD') : t('GDS_INFO_ITEM_NATIONALITY');
+  const itemName = useType === '1' ? t('GDS_INFO_ITEM_CHILD') : t('GDS_INFO_ITEM_NATIONALITY');
   const [childName, setChildName] = useState(itemName);
   useEffect(() => {
     const elms: Array<string> = [];
@@ -49,19 +47,20 @@ export default function HmrcOdxGdsSummaryCard(props) {
   }, [formElms]);
 
   const handleOnClick = (action: string) => {
-    // let key = ;
+    let key = '';
+    let test = false;
     switch (useType) {
       case '1':
-        let key = '.Claim.Children';
-        let test = isffff(useType, key, action, getPConnect);
-        setSingleChild(test);
-        break;
+        key = '.Claim.Children';
+        test = isSingleEntity(useType, key, action, getPConnect);
+        setSingleEntity(test);
+        return;
+
       case '2':
         key = '.Claim.Claimant.Nationalities';
-        test = isffff(useType, key, action, getPConnect);
-        setSingleChild(test);
-        //   setSingleChild(isffff(useType, key, action));
-        break;
+        test = isSingleEntity(useType, key, action, getPConnect);
+        setSingleEntity(test);
+        return;
       default:
         break;
     }
@@ -89,7 +88,11 @@ export default function HmrcOdxGdsSummaryCard(props) {
           gap: 2
         }}
       >
-        {singleChild && <NotificationBanner content={t('NOTIFICATION_BANNER_CONTENT')} />}
+        {useType === '1'
+          ? singleEntity && <NotificationBanner content={t('NOTIFICATION_BANNER_CONTENT')} />
+          : singleEntity && (
+              <NotificationBanner content={t('NOTIFICATION_NATIONALITY_BANNER_CONTENT')} />
+            )}
         <div className='govuk-summary-card'>
           <div className='govuk-summary-card__title-wrapper'>
             <h2 className='govuk-summary-card__title'>{itemName}</h2>

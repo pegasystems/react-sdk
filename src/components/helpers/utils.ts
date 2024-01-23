@@ -72,16 +72,16 @@ export const isFieldSetReqiredForSelectComponent = (label: string) => {
   return !arrFieldSetNotRequiredForSelectComponent.includes(label.toLocaleLowerCase());
 };
 
-export const isffff = (useType: any, key: string, action: any, getPConnect: any) => {
+export const isSingleEntity = (useType: string, key: string, action: any, getPConnect: any) => {
   // const { t } = useTranslation();
   let count = 0;
   const containerName = getPConnect().getContainerName();
   const context = PCore.getContainerUtils().getActiveContainerItemContext(
     `${PCore.getConstants().APP.APP}/${containerName}`
   );
-  if (useType === 1) {
+  if (useType === '1') {
     count = PCore.getStoreValue(key, 'caseInfo.content', context)?.length;
-  } else if (useType === 2) {
+  } else if (useType === '2') {
     count = PCore.getStoreValue(key, 'caseInfo.content', context)?.length;
   }
 

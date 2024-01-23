@@ -300,13 +300,13 @@ export default function UnAuthChildBenefitsClaim() {
       /* Functionality to set the device id in the header for use in CIP.
       Device id is unique and will be stored on the user device / browser cookie */
       const COOKIE_PEGAODXDI = 'pegaodxdi';
-      const COOKIE_PEGAODXDI1 = 'pegaodxdi1';
+      const COOKIE_PEGAODXEI = 'pegaodxei';
 
       let deviceID = checkCookie(COOKIE_PEGAODXDI);
-      let externalID = checkCookie(COOKIE_PEGAODXDI1);
+      let externalID = checkCookie(COOKIE_PEGAODXEI);
       if (deviceID && externalID) {
         setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
-        setCookie(COOKIE_PEGAODXDI, externalID, 3650);
+        setCookie(COOKIE_PEGAODXEI, externalID, 3650);
       } else {
         PCore.getDataPageUtils()
           .getPageDataAsync('D_UserSession', 'root')
@@ -314,6 +314,7 @@ export default function UnAuthChildBenefitsClaim() {
             deviceID = res.DeviceId;
             externalID = res.ExternalId;
             setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
+            setCookie(COOKIE_PEGAODXEI, externalID, 3650);
           });
       }
       PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);

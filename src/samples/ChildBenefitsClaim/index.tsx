@@ -534,7 +534,7 @@ export default function ChildBenefitsClaim() {
         handleSignout={handleSignout}
         appname={t('CLAIM_CHILD_BENEFIT')}
         hasLanguageToggle
-        isPegaApp={true}
+        isPegaApp
       />
       <div className='govuk-width-container'>
         {shutterServicePage ? (

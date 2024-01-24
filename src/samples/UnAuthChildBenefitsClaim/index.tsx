@@ -290,23 +290,26 @@ export default function UnAuthChildBenefitsClaim() {
       const COOKIE_PEGAODXDI = 'pegaodxdi';
       const COOKIE_PEGAODXEI = 'pegaodxei';
 
+      async function setIdsInHeaders(deviceID, externalID) {
+        setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
+        setCookie(COOKIE_PEGAODXEI, externalID, 3650);
+        await PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
+        await PCore.getRestClient().getHeaderProcessor().registerHeader('externalid', externalID);
+      }
+
       let deviceID = checkCookie(COOKIE_PEGAODXDI);
       let externalID = checkCookie(COOKIE_PEGAODXEI);
       if (deviceID && externalID) {
-        setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
-        setCookie(COOKIE_PEGAODXEI, externalID, 3650);
+        setIdsInHeaders(deviceID, externalID);
       } else {
         PCore.getDataPageUtils()
           .getPageDataAsync('D_UserSession', 'root')
           .then(res => {
             deviceID = res.DeviceId;
             externalID = res.ExternalId;
-            setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
-            setCookie(COOKIE_PEGAODXEI, externalID, 3650);
+            setIdsInHeaders(deviceID, externalID);
           });
       }
-      PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
-      PCore.getRestClient().getHeaderProcessor().registerHeader('externalid', externalID);
     });
 
     // Initialize the SdkComponentMap (local and pega-provided)

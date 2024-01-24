@@ -64,7 +64,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
     deferDatasource,
     datasourceMetadata,
     status,
-    helperText,
+    instructionText,
     hideLabel,
     onRecordChange
   } = props;
@@ -75,7 +75,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [theDatasource, setDatasource] = useState(null);
   let selectedValue: any = '';
-  const helperTextToDisplay = validatemessage || helperText;
+  const helperTextToDisplay = validatemessage || instructionText;
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
@@ -212,6 +212,6 @@ export default function AutoComplete(props: AutoCompleteProps) {
     //     />
     //   )}
     // />
-    <GDSAutocomplete label={label} optionList={options} />
+    <GDSAutocomplete label={label} optionList={options} instructionText={instructionText} />
   );
 }

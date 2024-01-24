@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
-import { ErrorMsgContext } from '../../helpers/HMRCAppContext';
+import { DefaultFormContext, ErrorMsgContext } from '../../helpers/HMRCAppContext';
 import { checkErrorMsgs } from '../../helpers/utils';
 
 function makeHintId(identifier) {
@@ -26,6 +26,7 @@ export default function FormGroup({
   children,
   testProps = {}
 }) {
+  const {instructionText} = useContext(DefaultFormContext);
   const { errorMsgs } = useContext(ErrorMsgContext);
   const [errMessage, setErrorMessage] = useState(errorText);
   useEffect(() => {
@@ -47,7 +48,7 @@ export default function FormGroup({
       <ConditionalWrapper
         condition={labelIsHeading}
         wrapper={child => {
-          return <h1 className='govuk-label-wrapper'>{child}</h1>;
+          return <h1 className='govuk-label-wrapper govuk-heading-l'>{child}</h1>;
         }}
         childrenToWrap={
           <label className={labelClasses} htmlFor={id || name}>
@@ -55,6 +56,11 @@ export default function FormGroup({
           </label>
         }
       />
+      {instructionText && labelIsHeading &&
+        (<div id='instructions' className='govuk-body'>
+          <HintTextComponent htmlString={instructionText} />
+        </div>)
+      }
       {hintText && (
         <div id={makeHintId(name)} className='govuk-hint'>
           <HintTextComponent htmlString={hintText} />

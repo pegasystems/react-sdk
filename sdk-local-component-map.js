@@ -23,6 +23,7 @@ import HmrcOdxGdsInfoPanel from './src/components/custom-sdk/template/HMRC_ODX_G
 import HmrcOdxGdsSummaryCard from './src/components/custom-sdk/template/HMRC_ODX_GDSSummaryCard/';
 import HmrcOdxGdsButton from './src/components/custom-sdk/field/HMRC_ODX_GDSButton/';
 import HmrcOdxComplexQuestionExplanation from './src/components/custom-sdk/field/HMRC_ODX_ComplexQuestionExplanation/';
+import AutoComplete from './src/components/override-sdk/field/AutoComplete/';
 /*import end - DO NOT REMOVE*/
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -53,6 +54,7 @@ const localSdkComponentMap = {
   "HMRC_ODX_GDSSummaryCard" : HmrcOdxGdsSummaryCard,
   "HMRC_ODX_GDSButton" : HmrcOdxGdsButton,
   "HMRC_ODX_ComplexQuestionExplanation" : HmrcOdxComplexQuestionExplanation,
+  "AutoComplete" : AutoComplete,
 /*map end - DO NOT REMOVE*/
 };
 

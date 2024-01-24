@@ -55,14 +55,14 @@ export default function HmrcOdxGdsSummaryCard(props) {
           key = '.Claim.Children';
           checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
           setSingleEntity(checkSingleEntity);
-          if (checkSingleEntity === true) return;
+          if (checkSingleEntity) return;
           break;
 
         case '2':
           key = '.Claim.Claimant.Nationalities';
           checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
           setSingleEntity(checkSingleEntity);
-          if (checkSingleEntity === true) return;
+          if (checkSingleEntity) return;
 
           break;
         default:

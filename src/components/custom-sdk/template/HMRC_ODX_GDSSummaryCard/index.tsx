@@ -55,18 +55,20 @@ export default function HmrcOdxGdsSummaryCard(props) {
           key = '.Claim.Children';
           checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
           setSingleEntity(checkSingleEntity);
-          return;
+          if (checkSingleEntity === true) return;
+          break;
 
         case '2':
           key = '.Claim.Claimant.Nationalities';
           checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
           setSingleEntity(checkSingleEntity);
-          return;
+          if (checkSingleEntity === true) return;
+
+          break;
         default:
           break;
       }
     }
-
     switch (action) {
       case t('GDS_ACTION_REMOVE'):
         getPConnect().setValue('.UserActions', 'Remove');

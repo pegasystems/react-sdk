@@ -7,16 +7,11 @@ import StyledHmrcOdxGdsSummaryCardWrapper from './styles';
 import NotificationBanner from '../../../BaseComponents/NotificationBanner/NotificationBanner';
 
 export default function HmrcOdxGdsSummaryCard(props) {
-  const {
-    children,
-    NumCols,
-    sectionHeader,
-    getPConnect,
-    useType = '1' || '2' || '3' || '4'
-  } = props;
-  let content = '';
+  const { children, NumCols, sectionHeader, getPConnect, useType } = props;
+
   const containerItemID = getPConnect().getContextName();
   const [singleEntity, setSingleEntity] = useState(false);
+  const [content, setContent] = useState('');
   const { t } = useTranslation();
 
   const nCols = parseInt(NumCols, 8);
@@ -77,24 +72,28 @@ export default function HmrcOdxGdsSummaryCard(props) {
           key = '.Claim.Children';
           checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
           setSingleEntity(checkSingleEntity);
+          setContent(t('NOTIFICATION_BANNER_CONTENT'));
           if (checkSingleEntity) return;
           break;
         case '2':
           key = '.Claim.Claimant.Nationalities';
           checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
           setSingleEntity(checkSingleEntity);
+          setContent(t('NOTIFICATION_NATIONALITY_BANNER_CONTENT'));
           if (checkSingleEntity) return;
           break;
         case '3':
           key = '.Claim.Claimant.CurrentEmployment.CountriesWorkedIn.Countries';
           checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
           setSingleEntity(checkSingleEntity);
+          setContent(t('NOTIFICATION_COUNTRY_BANNER_CONTENT'));
           if (checkSingleEntity) return;
           break;
         case '4':
           key = '.Claim.Claimant.OtherNames';
           checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
           setSingleEntity(checkSingleEntity);
+          setContent(t('NOTIFICATION_NAME_BANNER_CONTENT'));
           if (checkSingleEntity) return;
           break;
         default:
@@ -114,17 +113,6 @@ export default function HmrcOdxGdsSummaryCard(props) {
         break;
     }
   };
-  const getContent = () => {
-    if (useType === '1') {
-      content = t('NOTIFICATION_BANNER_CONTENT');
-    } else if (useType === '2') {
-      content = t('NOTIFICATION_NATIONALITY_BANNER_CONTENT');
-    } else if (useType === '3') {
-      content = t('NOTIFICATION_COUNTRY_BANNER_CONTENT');
-    } else if (useType === '4') {
-      content = t('NOTIFICATION_NAME_BANNER_CONTENT');
-    }
-  };
 
   return (
     <StyledHmrcOdxGdsSummaryCardWrapper>
@@ -135,7 +123,6 @@ export default function HmrcOdxGdsSummaryCard(props) {
           gap: 2
         }}
       >
-        {getContent()}
         {singleEntity && <NotificationBanner content={content} />}
 
         <div className='govuk-summary-card'>

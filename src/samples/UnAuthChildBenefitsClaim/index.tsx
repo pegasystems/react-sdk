@@ -16,7 +16,7 @@ import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/componen
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 import AppHeader from '../../components/AppComponents/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
-
+import ConfirmationPage from '../ChildBenefitsClaim/ConfirmationPage';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import UnauthTimeOut from '../../components/AppComponents/TimeoutPopup/unauthTimeOut';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
@@ -44,6 +44,7 @@ export default function UnAuthChildBenefitsClaim() {
   const [hasSessionTimedOut, setHasSessionTimedOut] = useState(true);
   const [showDeletePage, setShowDeletePage] = useState(false);
   const history = useHistory();
+  const [caseId, setCaseId] = useState('');
 
   // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
   const featureID = 'ChB';
@@ -63,6 +64,14 @@ export default function UnAuthChildBenefitsClaim() {
     setShowResolutionScreen(false);
     setServiceNotAvailable(false);
     setShowPega(false);
+  }
+
+  function getClaimsCaseID() {
+    const context = PCore.getContainerUtils().getActiveContainerItemName(
+      `${PCore.getConstants().APP.APP}/primary`
+    );
+    const caseID = PCore.getStoreValue('.ID', 'caseInfo', context);
+    setCaseId(caseID);
   }
 
   function startNow() {
@@ -112,6 +121,7 @@ export default function UnAuthChildBenefitsClaim() {
   }
 
   function assignmentFinished() {
+    getClaimsCaseID();
     closeContainer();
     resetAppDisplay();
     setShowResolutionScreen(true);
@@ -133,7 +143,8 @@ export default function UnAuthChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       'assignmentFinished',
       () => {
-        resetAppDisplay();
+        setShowStartPage(false);
+        setShowPega(false);
         const containername = PCore.getContainerUtils().getActiveContainerItemName(
           `${PCore.getConstants().APP.APP}/primary`
         );
@@ -160,7 +171,7 @@ export default function UnAuthChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
       () => {
-        closeContainer();
+        resetAppDisplay();
       },
       'closeContainer'
     );
@@ -424,7 +435,7 @@ export default function UnAuthChildBenefitsClaim() {
 
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
         {showDeletePage && <DeleteAnswers hasSessionTimedOut={hasSessionTimedOut} />}
-
+        {bShowResolutionScreen && <ConfirmationPage caseId={caseId} />}
         <UnauthTimeOut
           show={showTimeoutModal}
           modalId='timeout-popup'

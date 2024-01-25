@@ -7,15 +7,26 @@ import StyledHmrcOdxGdsSummaryCardWrapper from './styles';
 import NotificationBanner from '../../../BaseComponents/NotificationBanner/NotificationBanner';
 
 export default function HmrcOdxGdsSummaryCard(props) {
-  const { children, NumCols, sectionHeader, getPConnect, useType = '1' || '2' } = props;
+  const { children, NumCols, sectionHeader, getPConnect, useType } = props;
 
   const containerItemID = getPConnect().getContextName();
   const [singleEntity, setSingleEntity] = useState(false);
   const { t } = useTranslation();
-
+  const [content, setContent] = useState('');
   const nCols = parseInt(NumCols, 8);
   const [formElms, setFormElms] = useState<Array<ReactNode>>([]); // Initialize as an empty array of React Nodes
-  const itemName = useType === '1' ? t('GDS_INFO_ITEM_CHILD') : t('GDS_INFO_ITEM_NATIONALITY');
+  let itemName = '';
+  switch (useType) {
+    case '1':
+      itemName = t('GDS_INFO_ITEM_CHILD');
+      break;
+    case '2':
+      itemName = t('GDS_INFO_ITEM_NATIONALITY');
+      break;
+
+    default:
+      break;
+  }
   const [childName, setChildName] = useState(itemName);
   useEffect(() => {
     const elms: Array<string> = [];
@@ -55,6 +66,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
           key = '.Claim.Children';
           checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
           setSingleEntity(checkSingleEntity);
+          setContent(t('NOTIFICATION_BANNER_CONTENT'));
           if (checkSingleEntity) return;
           break;
 
@@ -62,6 +74,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
           key = '.Claim.Claimant.Nationalities';
           checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
           setSingleEntity(checkSingleEntity);
+          setContent(t('NOTIFICATION_NATIONALITY_BANNER_CONTENT'));
           if (checkSingleEntity) return;
 
           break;
@@ -92,11 +105,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
           gap: 2
         }}
       >
-        {useType === '1'
-          ? singleEntity && <NotificationBanner content={t('NOTIFICATION_BANNER_CONTENT')} />
-          : singleEntity && (
-              <NotificationBanner content={t('NOTIFICATION_NATIONALITY_BANNER_CONTENT')} />
-            )}
+        {singleEntity && <NotificationBanner content={content} />}
         <div className='govuk-summary-card'>
           <div className='govuk-summary-card__title-wrapper'>
             <h2 className='govuk-summary-card__title'>{itemName}</h2>

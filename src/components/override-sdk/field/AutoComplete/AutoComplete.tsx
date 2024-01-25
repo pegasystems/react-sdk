@@ -171,6 +171,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   const handleChange = (event: object, newValue) => {
     const val = newValue ? newValue.key : '';
     handleEvent(actionsApi, 'changeNblur', propName, val);
+
     if (onRecordChange) {
       onRecordChange(event);
     }
@@ -215,6 +216,11 @@ export default function AutoComplete(props: AutoCompleteProps) {
     //     />
     //   )}
     // />
-    <GDSAutocomplete label={label} optionList={options} instructionText={instructionText} />
+    <GDSAutocomplete
+      label={label}
+      optionList={options}
+      instructionText={instructionText}
+      onChange={handleChange}
+    />
   );
 }

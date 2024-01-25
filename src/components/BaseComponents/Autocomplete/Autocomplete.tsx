@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes, { string } from 'prop-types';
+import PropTypes, { func, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
@@ -19,7 +19,7 @@ interface optionList {
 }
 
 export default function AutoComplete(props) {
-  const { optionList, label, instructionText, name } = props;
+  const { optionList, label, instructionText, name, onChange } = props;
   useEffect(() => {
     const script = document.createElement('script');
     script.src = '../assets/css/location-autocomplete.min.js';
@@ -49,10 +49,11 @@ export default function AutoComplete(props) {
       {option.value}
     </option>
   ));
-  console.log('instruction', instructionText);
+  //  const onChangeHandler = (evt: any) => {};
+
   return (
     <div className='govuk-form-group autocomplete-wrapper'>
-      <label className='govuk-heading-xl' htmlFor='default'>
+      <label className='govuk-heading-xl margin-bottom: 20px' htmlFor='default'>
         {label}
       </label>
       {instructionText && (
@@ -61,7 +62,12 @@ export default function AutoComplete(props) {
         </div>
       )}
       {arrOptions && arrOptions.length > 0 ? (
-        <select className='govuk-select' id='default' name='default'>
+        <select
+          className='govuk-select'
+          id='default'
+          name='default'
+          onChange={e => onChange(e, 'America')}
+        >
           <option value='' disabled selected>
             Pick an option
           </option>
@@ -77,5 +83,6 @@ export default function AutoComplete(props) {
 AutoComplete.propTypes = {
   optionList: { key: string, value: string },
   label: string,
-  instructionText: string
+  instructionText: string,
+  onChange: func
 };

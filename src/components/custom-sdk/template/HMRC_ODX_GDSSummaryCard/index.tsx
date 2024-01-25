@@ -7,7 +7,13 @@ import StyledHmrcOdxGdsSummaryCardWrapper from './styles';
 import NotificationBanner from '../../../BaseComponents/NotificationBanner/NotificationBanner';
 
 export default function HmrcOdxGdsSummaryCard(props) {
-  const { children, NumCols, sectionHeader, getPConnect, useType = '1' || '2' || '3' } = props;
+  const {
+    children,
+    NumCols,
+    sectionHeader,
+    getPConnect,
+    useType = '1' || '2' || '3' || '4'
+  } = props;
   let content = '';
   const containerItemID = getPConnect().getContextName();
   const [singleEntity, setSingleEntity] = useState(false);
@@ -25,6 +31,9 @@ export default function HmrcOdxGdsSummaryCard(props) {
       break;
     case '3':
       itemName = t('GDS_INFO_ITEM_COUNTRY');
+      break;
+    case '4':
+      itemName = t('GDS_INFO_ITEM_NAME');
       break;
     default:
       break;
@@ -82,6 +91,12 @@ export default function HmrcOdxGdsSummaryCard(props) {
           setSingleEntity(checkSingleEntity);
           if (checkSingleEntity) return;
           break;
+        case '4':
+          key = '.Claim.Claimant.OtherNames';
+          checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
+          setSingleEntity(checkSingleEntity);
+          if (checkSingleEntity) return;
+          break;
         default:
           break;
       }
@@ -106,6 +121,8 @@ export default function HmrcOdxGdsSummaryCard(props) {
       content = t('NOTIFICATION_NATIONALITY_BANNER_CONTENT');
     } else if (useType === '3') {
       content = t('NOTIFICATION_COUNTRY_BANNER_CONTENT');
+    } else if (useType === '4') {
+      content = t('NOTIFICATION_NAME_BANNER_CONTENT');
     }
   };
 

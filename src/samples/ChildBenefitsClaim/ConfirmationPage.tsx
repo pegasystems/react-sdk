@@ -15,6 +15,7 @@ const ConfirmationPage = ({ caseId }) => {
   const [returnSlipContent, setReturnSlipContent] = useState();
   const [loading, setLoading] = useState(true);
   const serviceShuttered = useServiceShuttered();
+  const [caseIdPresent, setCaseIdPresent] = useState(false);
 
   const docIDForDocList = 'CR0003';
   const docIDForReturnSlip = 'CR0002';
@@ -40,6 +41,9 @@ const ConfirmationPage = ({ caseId }) => {
         }
         setLoading(false);
         setDocumentList(listData.DocumentContentHTML);
+        if (listData.DocumentContentHTML.includes(`data-ninopresent="false"`)) {
+          setCaseIdPresent(true);
+        }
       })
       .catch(err => {
         // eslint-disable-next-line no-console
@@ -77,6 +81,13 @@ const ConfirmationPage = ({ caseId }) => {
         <MainWrapper>
           <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
             <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
+            {caseIdPresent && (
+              <div className='govuk-panel__body'>
+                {t('YOUR_REF_NUMBER')}
+                <br></br>
+                <strong>{caseId}</strong>
+              </div>
+            )}
             <div className='govuk-panel__body govuk-!-font-size-27'>
               {t('POST_YOUR_SUPPORTING_DOCUMENTS')}
             </div>
@@ -128,6 +139,13 @@ const ConfirmationPage = ({ caseId }) => {
         <MainWrapper>
           <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
             <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
+            {caseIdPresent && (
+              <div className='govuk-panel__body'>
+                {t('YOUR_REF_NUMBER')}
+                <br></br>
+                <strong>{caseId}</strong>
+              </div>
+            )}
           </div>
           <p className='govuk-body'> {t('WE_HAVE_SENT_YOUR_APPLICATION')}</p>
           <h2 className='govuk-heading-m'> {t('WHAT_HAPPENS_NEXT')}</h2>

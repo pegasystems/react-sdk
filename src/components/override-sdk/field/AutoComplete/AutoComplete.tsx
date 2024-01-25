@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { TextField } from '@material-ui/core';
 import GDSAutocomplete from '../../../BaseComponents/Autocomplete/Autocomplete';
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import TextInput from '@pega/react-sdk-components/lib/components/field/TextInput';
@@ -48,6 +49,7 @@ interface AutoCompleteProps extends PConnFieldProps {
   parameters?: any;
   datasource: any;
   columns: Array<any>;
+  instructionText: string;
 }
 
 export default function AutoComplete(props: AutoCompleteProps) {
@@ -63,8 +65,9 @@ export default function AutoComplete(props: AutoCompleteProps) {
     displayMode,
     deferDatasource,
     datasourceMetadata,
-    status,
     instructionText,
+    status,
+    helperText,
     hideLabel,
     onRecordChange
   } = props;
@@ -75,7 +78,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [theDatasource, setDatasource] = useState(null);
   let selectedValue: any = '';
-  const helperTextToDisplay = validatemessage || instructionText;
+  const helperTextToDisplay = validatemessage || helperText;
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();

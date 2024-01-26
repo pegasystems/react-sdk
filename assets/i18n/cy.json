@@ -158,7 +158,7 @@
   "GDS_INFO_ITEM_CHILD": "Child",
   "GDS_INFO_ITEM_NATIONALITY": "Nationality",
   "GDS_INFO_ITEM_COUNTRY": "Country",
-  "GDS_INFO_ITEM_NAME": "Name",
+  "GDS_INFO_ITEM_NAME": "Other name",
   "GDS_ACTION_REMOVE": "Remove",
   "GDS_ACTION_CHANGE": "Change",
   "BANNER_FEEDBACK_1": "your",
@@ -285,7 +285,7 @@
   "NOTIFICATION_BANNER_CONTENT": "Rhaid i o leiaf un plentyn fod ar yr hawliad. Diwygiwch fanylion y plentyn hwn yn lle hynny.",
   "NOTIFICATION_NATIONALITY_BANNER_CONTENT": "There must be at least one nationality on the claim. Please amend this nationality details instead.",
   "NOTIFICATION_COUNTRY_BANNER_CONTENT": "There must be at least one country on the claim. Please amend this country details instead.",
-  "NOTIFICATION_NAME_BANNER_CONTENT": "There must be at least one name on the claim. Please amend this name details instead.",
+  "NOTIFICATION_NAME_BANNER_CONTENT": "There must be at least one other name on the claim. Please amend this name details instead.",
 
   "SERVICE_NOT_AVAILABLE": "Mae’n ddrwg gennym, ond mae problem gyda’r gwasanaeth",
   "COME_BACK_LATER": "Gallwch roi cynnig arall arni neu ddod yn ôl nes ymlaen",

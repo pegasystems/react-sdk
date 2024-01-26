@@ -18,7 +18,6 @@ import AppHeader from '../../components/AppComponents/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 import ConfirmationPage from '../ChildBenefitsClaim/ConfirmationPage';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
-import UnauthTimeOut from '../../components/AppComponents/TimeoutPopup/unauthTimeOut';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
@@ -30,6 +29,7 @@ import {
   staySignedIn
 } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import DeleteAnswers from './deleteAnswers';
+import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
 
 declare const myLoadMashup: Function;
 
@@ -436,14 +436,16 @@ export default function UnAuthChildBenefitsClaim() {
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
         {showDeletePage && <DeleteAnswers hasSessionTimedOut={hasSessionTimedOut} />}
         {bShowResolutionScreen && <ConfirmationPage caseId={caseId} />}
-        <UnauthTimeOut
+        <TimeoutPopup
           show={showTimeoutModal}
-          modalId='timeout-popup'
-          primaryHandler={() => staySignedIn(setShowTimeoutModal, claimsListApi, deleteData, false)}
-          secondaryHandler={() => {
+          staySignedinHandler={() =>
+            staySignedIn(setShowTimeoutModal, claimsListApi, deleteData, false)
+          }
+          signoutHandler={() => {
             deleteData();
             setHasSessionTimedOut(false);
           }}
+          isAuthorised={false}
         />
 
         {/** No Log out popup required as one isn't logged in */}

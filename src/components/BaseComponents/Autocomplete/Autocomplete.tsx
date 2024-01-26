@@ -19,7 +19,7 @@ interface optionList {
 }
 
 export default function AutoComplete(props) {
-  const { optionList, label, instructionText, name, onChange } = props;
+  const { optionList, label, instructionText, name, onChange, value } = props;
   useEffect(() => {
     const script = document.createElement('script');
     script.src = '../assets/css/location-autocomplete.min.js';
@@ -64,7 +64,7 @@ export default function AutoComplete(props) {
         </div>
       )}
       {arrOptions && arrOptions.length > 0 ? (
-        <select className='govuk-select' id='default' name='default'>
+        <select className='govuk-select' id='default' name='default' value={value}>
           <option value='' disabled selected>
             Pick an option
           </option>
@@ -81,5 +81,6 @@ AutoComplete.propTypes = {
   optionList: { key: string, value: string },
   label: string,
   instructionText: string,
-  onChange: func
+  onChange: func,
+  value: string
 };

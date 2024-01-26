@@ -51,6 +51,7 @@ interface AutoCompleteProps extends PConnFieldProps {
   datasource: any;
   columns: Array<any>;
   instructionText: string;
+  value: string;
 }
 
 export default function AutoComplete(props: AutoCompleteProps) {
@@ -59,7 +60,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
     label,
     required,
     placeholder,
-    value = '',
+    value,
     validatemessage,
     readOnly,
     testId,
@@ -69,9 +70,11 @@ export default function AutoComplete(props: AutoCompleteProps) {
     instructionText,
     status,
     helperText,
+
     hideLabel,
     onRecordChange
   } = props;
+  console.log('props', props);
 
   const context = getPConnect().getContextName();
   let { listType, parameters, datasource = [], columns = [] } = props;
@@ -222,6 +225,11 @@ export default function AutoComplete(props: AutoCompleteProps) {
     //     />
     //   )}
     // />
-    <GDSAutocomplete label={label} optionList={options} instructionText={instructionText} />
+    <GDSAutocomplete
+      label={label}
+      optionList={options}
+      value={value}
+      instructionText={instructionText}
+    />
   );
 }

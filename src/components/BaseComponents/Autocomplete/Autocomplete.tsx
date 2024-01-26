@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes, { func, string } from 'prop-types';
-import { useTranslation } from 'react-i18next';
+import React, { useEffect } from 'react';
+import { func, string } from 'prop-types';
 
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 
@@ -19,7 +18,7 @@ interface optionList {
 }
 
 export default function AutoComplete(props) {
-  const { optionList, label, instructionText, name, onChange, value } = props;
+  const { optionList, label, instructionText, name, onChange, selectedValue, testId } = props;
   useEffect(() => {
     const script = document.createElement('script');
     script.src = '../assets/css/location-autocomplete.min.js';
@@ -46,12 +45,24 @@ export default function AutoComplete(props) {
   }, [optionList]);
   const arrOptions =
     optionList.length &&
-    optionList.map(option => (
-      <option key={option.key} value={option.value}>
-        {option.value}
-      </option>
-    ));
+    optionList.map(option => {
+      let selected = { selected: false };
+      if (selectedValue === option.key) selected = { selected: true };
+      return (
+        <option key={option.key} value={option.value} {...selected}>
+          {option.value}
+        </option>
+      );
+    });
   //  const onChangeHandler = (evt: any) => {};
+  const getDefaultValue = () => {
+    return optionList.forEach(item => {
+      if (item.key === selectedValue) {
+        return item.value;
+      }
+      return '';
+    });
+  };
 
   return (
     <div className='govuk-form-group autocomplete-wrapper'>
@@ -64,10 +75,16 @@ export default function AutoComplete(props) {
         </div>
       )}
       {arrOptions && arrOptions.length > 0 ? (
-        <select className='govuk-select' id='default' name='default' value={value}>
-          <option value='' disabled selected>
+        <select
+          className='govuk-select'
+          id='default'
+          name='default'
+          value={getDefaultValue()}
+          data-test-id={testId}
+        >
+          {/* <option value='' disabled selected>
             Pick an option
-          </option>
+          </option> */}
           {arrOptions}
         </select>
       ) : (
@@ -82,5 +99,6 @@ AutoComplete.propTypes = {
   label: string,
   instructionText: string,
   onChange: func,
-  value: string
+  selectedValue: string,
+  testId: string
 };

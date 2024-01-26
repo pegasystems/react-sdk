@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { TextField } from '@material-ui/core';
 import GDSAutocomplete from '../../../BaseComponents/Autocomplete/Autocomplete';
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import TextInput from '@pega/react-sdk-components/lib/components/field/TextInput';
@@ -60,7 +59,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
     label,
     required,
     placeholder,
-    value,
+    value = '',
     validatemessage,
     readOnly,
     testId,
@@ -70,11 +69,11 @@ export default function AutoComplete(props: AutoCompleteProps) {
     instructionText,
     status,
     helperText,
-
     hideLabel,
     onRecordChange
   } = props;
   console.log('props', props);
+  // const containerItemID = getPConnect().getContextName();
 
   const context = getPConnect().getContextName();
   let { listType, parameters, datasource = [], columns = [] } = props;
@@ -174,7 +173,9 @@ export default function AutoComplete(props: AutoCompleteProps) {
     return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
   }
   function handleChange(selectedOption: string = '') {
-    handleEvent(actionsApi, 'changeNblur', propName, selectedOption);
+    //  handleEvent(actionsApi, 'changeNblur', propName, selectedOption);
+    getPConnect().setValue(propName, selectedOption);
+    // getPConnect().setValue('.UserActions', 'Amend');
   }
 
   if (value) {
@@ -228,8 +229,9 @@ export default function AutoComplete(props: AutoCompleteProps) {
     <GDSAutocomplete
       label={label}
       optionList={options}
-      value={value}
+      selectedValue={value}
       instructionText={instructionText}
+      testId={testId}
     />
   );
 }

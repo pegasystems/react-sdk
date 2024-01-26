@@ -16,9 +16,8 @@ import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/componen
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 import AppHeader from '../../components/AppComponents/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
-
+import ConfirmationPage from '../ChildBenefitsClaim/ConfirmationPage';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
-import UnauthTimeOut from '../../components/AppComponents/TimeoutPopup/unauthTimeOut';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
@@ -30,6 +29,7 @@ import {
   staySignedIn
 } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import DeleteAnswers from './deleteAnswers';
+import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
 
 declare const myLoadMashup: Function;
 
@@ -44,6 +44,7 @@ export default function UnAuthChildBenefitsClaim() {
   const [hasSessionTimedOut, setHasSessionTimedOut] = useState(true);
   const [showDeletePage, setShowDeletePage] = useState(false);
   const history = useHistory();
+  const [caseId, setCaseId] = useState('');
 
   // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
   const featureID = 'ChB';
@@ -63,6 +64,14 @@ export default function UnAuthChildBenefitsClaim() {
     setShowResolutionScreen(false);
     setServiceNotAvailable(false);
     setShowPega(false);
+  }
+
+  function getClaimsCaseID() {
+    const context = PCore.getContainerUtils().getActiveContainerItemName(
+      `${PCore.getConstants().APP.APP}/primary`
+    );
+    const caseID = PCore.getStoreValue('.ID', 'caseInfo', context);
+    setCaseId(caseID);
   }
 
   function startNow() {
@@ -112,6 +121,7 @@ export default function UnAuthChildBenefitsClaim() {
   }
 
   function assignmentFinished() {
+    getClaimsCaseID();
     closeContainer();
     resetAppDisplay();
     setShowResolutionScreen(true);
@@ -133,7 +143,8 @@ export default function UnAuthChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       'assignmentFinished',
       () => {
-        resetAppDisplay();
+        setShowStartPage(false);
+        setShowPega(false);
         const containername = PCore.getContainerUtils().getActiveContainerItemName(
           `${PCore.getConstants().APP.APP}/primary`
         );
@@ -160,7 +171,7 @@ export default function UnAuthChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
       () => {
-        closeContainer();
+        resetAppDisplay();
       },
       'closeContainer'
     );
@@ -290,23 +301,26 @@ export default function UnAuthChildBenefitsClaim() {
       const COOKIE_PEGAODXDI = 'pegaodxdi';
       const COOKIE_PEGAODXEI = 'pegaodxei';
 
+      async function setIdsInHeaders(deviceID, externalID) {
+        setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
+        setCookie(COOKIE_PEGAODXEI, externalID, 3650);
+        await PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
+        await PCore.getRestClient().getHeaderProcessor().registerHeader('externalid', externalID);
+      }
+
       let deviceID = checkCookie(COOKIE_PEGAODXDI);
       let externalID = checkCookie(COOKIE_PEGAODXEI);
       if (deviceID && externalID) {
-        setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
-        setCookie(COOKIE_PEGAODXEI, externalID, 3650);
+        setIdsInHeaders(deviceID, externalID);
       } else {
         PCore.getDataPageUtils()
           .getPageDataAsync('D_UserSession', 'root')
           .then(res => {
             deviceID = res.DeviceId;
             externalID = res.ExternalId;
-            setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
-            setCookie(COOKIE_PEGAODXEI, externalID, 3650);
+            setIdsInHeaders(deviceID, externalID);
           });
       }
-      PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
-      PCore.getRestClient().getHeaderProcessor().registerHeader('externalid', externalID);
     });
 
     // Initialize the SdkComponentMap (local and pega-provided)
@@ -421,15 +435,17 @@ export default function UnAuthChildBenefitsClaim() {
 
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
         {showDeletePage && <DeleteAnswers hasSessionTimedOut={hasSessionTimedOut} />}
-
-        <UnauthTimeOut
+        {bShowResolutionScreen && <ConfirmationPage caseId={caseId} />}
+        <TimeoutPopup
           show={showTimeoutModal}
-          modalId='timeout-popup'
-          primaryHandler={() => staySignedIn(setShowTimeoutModal, claimsListApi, deleteData, false)}
-          secondaryHandler={() => {
+          staySignedinHandler={() =>
+            staySignedIn(setShowTimeoutModal, claimsListApi, deleteData, false)
+          }
+          signoutHandler={() => {
             deleteData();
             setHasSessionTimedOut(false);
           }}
+          isAuthorised={false}
         />
 
         {/** No Log out popup required as one isn't logged in */}

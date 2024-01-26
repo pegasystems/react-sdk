@@ -44,11 +44,13 @@ export default function AutoComplete(props) {
       });
     }
   }, [optionList]);
-  const arrOptions = optionList.map(option => (
-    <option key={option.key} value={option.value}>
-      {option.value}
-    </option>
-  ));
+  const arrOptions =
+    optionList.length &&
+    optionList.map(option => (
+      <option key={option.key} value={option.value}>
+        {option.value}
+      </option>
+    ));
   //  const onChangeHandler = (evt: any) => {};
 
   return (
@@ -62,12 +64,7 @@ export default function AutoComplete(props) {
         </div>
       )}
       {arrOptions && arrOptions.length > 0 ? (
-        <select
-          className='govuk-select'
-          id='default'
-          name='default'
-          onChange={e => onChange(e, 'America')}
-        >
+        <select className='govuk-select' id='default' name='default'>
           <option value='' disabled selected>
             Pick an option
           </option>

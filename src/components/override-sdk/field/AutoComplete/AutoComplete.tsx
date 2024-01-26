@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TextField } from '@material-ui/core';
 import GDSAutocomplete from '../../../BaseComponents/Autocomplete/Autocomplete';
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
@@ -8,6 +8,7 @@ import { getDataPage } from '@pega/react-sdk-components/lib/components/helpers/d
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import FieldValueList from '@pega/react-sdk-components/lib/components/designSystemExtension/FieldValueList';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { AssignmentContext } from '../../../helpers/HMRCAppContext';
 
 interface IOption {
   key: string;
@@ -79,6 +80,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   const [theDatasource, setDatasource] = useState(null);
   let selectedValue: any = '';
   const helperTextToDisplay = validatemessage || helperText;
+  const { actionTriggered, updateActionTriggered } = useContext(AssignmentContext);
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
@@ -132,6 +134,16 @@ export default function AutoComplete(props: AutoCompleteProps) {
       setOptions(Utils.getOptionList(props, getPConnect().getDataObject('')));
     }
   }, [theDatasource]);
+  useEffect(() => {
+    if (actionTriggered) {
+      const selectedOptionValue = (document.getElementById('default') as HTMLInputElement)?.value;
+
+      const selectedOptionKey = options.filter(item => item.value === selectedOptionValue);
+
+      updateActionTriggered(false);
+      handleChange(selectedOptionKey[0]?.key);
+    }
+  }, [actionTriggered]);
 
   useEffect(() => {
     if (!displayMode && listType !== 'associated') {
@@ -158,6 +170,9 @@ export default function AutoComplete(props: AutoCompleteProps) {
   if (displayMode === 'STACKED_LARGE_VAL') {
     return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
   }
+  function handleChange(selectedOption: string = '') {
+    handleEvent(actionsApi, 'changeNblur', propName, selectedOption);
+  }
 
   if (value) {
     const index = options?.findIndex(element => element.key === value);
@@ -167,15 +182,6 @@ export default function AutoComplete(props: AutoCompleteProps) {
       selectedValue = value;
     }
   }
-
-  const handleChange = (event: object, newValue) => {
-    const val = newValue ? newValue.key : '';
-    handleEvent(actionsApi, 'changeNblur', propName, val);
-
-    if (onRecordChange) {
-      onRecordChange(event);
-    }
-  };
 
   const handleInputValue = (event, newInputValue) => {
     setInputValue(newInputValue);
@@ -216,11 +222,6 @@ export default function AutoComplete(props: AutoCompleteProps) {
     //     />
     //   )}
     // />
-    <GDSAutocomplete
-      label={label}
-      optionList={options}
-      instructionText={instructionText}
-      onChange={handleChange}
-    />
+    <GDSAutocomplete label={label} optionList={options} instructionText={instructionText} />
   );
 }

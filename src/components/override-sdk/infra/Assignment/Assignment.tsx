@@ -17,11 +17,6 @@ import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/s
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import MainWrapper from '../../../BaseComponents/MainWrapper';
 import ShutterServicePage from '../../../../components/AppComponents/ShutterServicePage';
-import {
-  AssignmentContext,
-  AssignmentContextType,
-  ErrorMsgContext
-} from '../../../helpers/HMRCAppContext';
 import useServiceShuttered from '../../../helpers/hooks/useServiceShuttered';
 
 export interface ErrorMessageDetails {
@@ -42,7 +37,6 @@ export default function Assignment(props) {
   const [actionButtons, setActionButtons] = useState<any>({});
   const { t } = useTranslation();
   const serviceShuttered = useServiceShuttered();
-  const [actionTriggered, setActionTriggered] = useState(false);
   const AssignmentCard = SdkComponentMap.getLocalComponentMap()['AssignmentCard']
     ? SdkComponentMap.getLocalComponentMap()['AssignmentCard']
     : SdkComponentMap.getPegaProvidedComponentMap()['AssignmentCard'];
@@ -196,13 +190,9 @@ export default function Assignment(props) {
       );
     });
   }
-  function updateActionTriggered(value = false) {
-    return value;
-  }
+
   async function buttonPress(sAction: string, sButtonType: string) {
     setErrorSummary(false);
-    setActionTriggered(false);
-
     if (sButtonType === 'secondary') {
       switch (sAction) {
         case 'navigateToStep': {
@@ -234,7 +224,6 @@ export default function Assignment(props) {
               onSaveActionSuccess({ caseType, caseID, assignmentID });
               scrollToTop();
               setErrorSummary(false);
-              setActionTriggered(true); // Updating context value
             })
             .catch(() => {
               scrollToTop();
@@ -250,7 +239,6 @@ export default function Assignment(props) {
           const { publish } = PCore.getPubSubUtils();
           if (isCreateStage) {
             const cancelPromise = cancelCreateStageAssignment(itemKey);
-            setActionTriggered(true); // Updating context value
             cancelPromise
               .then(data => {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
@@ -290,7 +278,6 @@ export default function Assignment(props) {
             setServiceShutteredStatus(status);
           } else {
             const finishPromise = finishAssignment(itemKey);
-            setActionTriggered(true); // Updating context value
             finishPromise
               .then(() => {
                 scrollToTop();
@@ -312,10 +299,6 @@ export default function Assignment(props) {
   function _onButtonPress(sAction: string, sButtonType: string) {
     buttonPress(sAction, sButtonType);
   }
-  const AssignmentContextValue: AssignmentContextType = {
-    actionTriggered,
-    updateActionTriggered
-  };
 
   useEffect(() => {
     if (actionButtons) {
@@ -325,23 +308,15 @@ export default function Assignment(props) {
 
   function renderAssignmentCard() {
     return (
-      <AssignmentContext.Provider value={AssignmentContextValue}>
-        <ErrorMsgContext.Provider
-          value={{
-            errorMsgs: errorMessages
-          }}
-        >
-          <AssignmentCard
-            getPConnect={getPConnect}
-            itemKey={itemKey}
-            actionButtons={actionButtons}
-            onButtonPress={buttonPress}
-            errorMsgs={errorMessages}
-          >
-            {children}
-          </AssignmentCard>
-        </ErrorMsgContext.Provider>
-      </AssignmentContext.Provider>
+      <AssignmentCard
+        getPConnect={getPConnect}
+        itemKey={itemKey}
+        actionButtons={actionButtons}
+        onButtonPress={buttonPress}
+        errorMsgs={errorMessages}
+      >
+        {children}
+      </AssignmentCard>
     );
   }
 

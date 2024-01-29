@@ -12,16 +12,12 @@ declare global {
     openregisterLocationPicker: any;
   }
 }
-// interface optionList {
-//   key: string;
-//   value: string;
-// }
 
 export default function AutoComplete(props) {
-  const { optionList, label, instructionText, name, onChange, selectedValue, testId } = props;
+  const { optionList, label, instructionText, name, selectedValue, testId } = props;
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = '../assets/css/location-autocomplete.min.js';
+    script.src = '../assets/lib/location-autocomplete.min.js';
     script.async = true;
     document.body.appendChild(script);
 
@@ -54,7 +50,7 @@ export default function AutoComplete(props) {
         </option>
       );
     });
-  //  const onChangeHandler = (evt: any) => {};
+
   const getDefaultValue = () => {
     return optionList.forEach(item => {
       if (item.key === selectedValue) {

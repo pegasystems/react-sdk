@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import GDSAutocomplete from '../../../BaseComponents/Autocomplete/Autocomplete';
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import TextInput from '@pega/react-sdk-components/lib/components/field/TextInput';
@@ -7,7 +7,6 @@ import { getDataPage } from '@pega/react-sdk-components/lib/components/helpers/d
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import FieldValueList from '@pega/react-sdk-components/lib/components/designSystemExtension/FieldValueList';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import { AssignmentContext } from '../../../helpers/HMRCAppContext';
 
 interface IOption {
   key: string;
@@ -57,32 +56,24 @@ export default function AutoComplete(props: AutoCompleteProps) {
   const {
     getPConnect,
     label,
-    required,
-    placeholder,
     value = '',
-    validatemessage,
     readOnly,
     testId,
     displayMode,
     deferDatasource,
     datasourceMetadata,
     instructionText,
-    status,
-    helperText,
-    hideLabel,
-    onRecordChange
+    hideLabel
   } = props;
-  console.log('props', props);
-  // const containerItemID = getPConnect().getContextName();
 
   const context = getPConnect().getContextName();
   let { listType, parameters, datasource = [], columns = [] } = props;
-  const [inputValue, setInputValue] = useState('');
+  // const [setInputValue] = useState('');
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [theDatasource, setDatasource] = useState(null);
-  let selectedValue: any = '';
-  const helperTextToDisplay = validatemessage || helperText;
-  const { actionTriggered, updateActionTriggered } = useContext(AssignmentContext);
+  // let selectedValue: any = '';
+  // const helperTextToDisplay = validatemessage || helperText;
+  // const { actionTriggered, updateActionTriggered } = useContext(AssignmentContext);
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
@@ -136,16 +127,16 @@ export default function AutoComplete(props: AutoCompleteProps) {
       setOptions(Utils.getOptionList(props, getPConnect().getDataObject('')));
     }
   }, [theDatasource]);
-  useEffect(() => {
-    if (actionTriggered) {
-      const selectedOptionValue = (document.getElementById('default') as HTMLInputElement)?.value;
+  // useEffect(() => {
+  //   if (actionTriggered) {
+  //     const selectedOptionValue = (document.getElementById('default') as HTMLInputElement)?.value;
 
-      const selectedOptionKey = options.filter(item => item.value === selectedOptionValue);
+  //     const selectedOptionKey = options.filter(item => item.value === selectedOptionValue);
 
-      updateActionTriggered(false);
-      handleChange(selectedOptionKey[0]?.key);
-    }
-  }, [actionTriggered]);
+  //     updateActionTriggered(false);
+  //     handleChange(selectedOptionKey[0]?.key);
+  //   }
+  // }, [actionTriggered]);
 
   useEffect(() => {
     if (!displayMode && listType !== 'associated') {
@@ -165,6 +156,23 @@ export default function AutoComplete(props: AutoCompleteProps) {
     }
   }, []);
 
+  function handleChange(event) {
+    const optionValue = event.target.value;
+    const selectedOptionKey = options.filter(item => {
+      return item.value === optionValue;
+    });
+    // getPConnect().setValue(propName, selectedOptionKey[0]?.key);
+    handleEvent(actionsApi, 'changeNblur', propName, selectedOptionKey[0]?.key);
+  }
+  useEffect(() => {
+    const element = document.getElementById('default') as HTMLInputElement;
+    // if (element) {
+    //   console.log('element found');
+    // }
+    element?.addEventListener('blur', handleChange);
+    return () => window.removeEventListener('blur', handleChange);
+  });
+
   if (displayMode === 'LABELS_LEFT') {
     return <FieldValueList name={hideLabel ? '' : label} value={value} />;
   }
@@ -172,60 +180,29 @@ export default function AutoComplete(props: AutoCompleteProps) {
   if (displayMode === 'STACKED_LARGE_VAL') {
     return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
   }
-  function handleChange(selectedOption: string = '') {
-    //  handleEvent(actionsApi, 'changeNblur', propName, selectedOption);
-    getPConnect().setValue(propName, selectedOption);
-    // getPConnect().setValue('.UserActions', 'Amend');
-  }
 
-  if (value) {
-    const index = options?.findIndex(element => element.key === value);
-    if (index > -1) {
-      selectedValue = options[index].value;
-    } else {
-      selectedValue = value;
-    }
-  }
+  // if (value) {
+  //   const index = options?.findIndex(element => element.key === value);
+  //   if (index > -1) {
+  //     selectedValue = options[index].value;
+  //   } else {
+  //     // @ts-ignore
+  //     //  selectedValue = value;
+  //   }
+  // }
 
-  const handleInputValue = (event, newInputValue) => {
-    setInputValue(newInputValue);
-  };
+  // const handleInputValue = (event, newInputValue) => {
+  //   setInputValue(newInputValue);
+  // };
 
   if (readOnly) {
     const theValAsString = options?.find(opt => opt.key === value)?.value;
     return <TextInput {...props} value={theValAsString} />;
   }
+
   // Need to use both getOptionLabel and getOptionSelected to map our
   //  key/value structure to what Autocomplete expects
   return (
-    // <Autocomplete
-    //   options={options}
-    //   getOptionLabel={(option: IOption) => {
-    //     return option.value ? option.value : '';
-    //   }}
-    //   getOptionSelected={(option: any) => {
-    //     return option.value ? option.value : '';
-    //   }}
-    //   fullWidth
-    //   onChange={handleChange}
-    //   value={selectedValue}
-    //   inputValue={inputValue || selectedValue}
-    //   onInputChange={handleInputValue}
-    //   renderInput={params => (
-    //     <TextField
-    //       {...params}
-    //       fullWidth
-    //       variant='outlined'
-    //       helperText={helperTextToDisplay}
-    //       placeholder={placeholder}
-    //       size='small'
-    //       required={required}
-    //       error={status === 'error'}
-    //       label={label}
-    //       data-test-id={testId}
-    //     />
-    //   )}
-    // />
     <GDSAutocomplete
       label={label}
       optionList={options}

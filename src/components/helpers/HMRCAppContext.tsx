@@ -20,11 +20,4 @@ const ReadOnlyDefaultFormContext = createContext({
   hasBeenWrapped: false
 });
 
-export interface AssignmentContextType {
-  actionTriggered: boolean;
-  // eslint-disable-next-line no-unused-vars
-  updateActionTriggered: (value: boolean) => void;
-}
-const AssignmentContext = createContext<AssignmentContextType | undefined>(undefined);
-
-export { DefaultFormContext, ReadOnlyDefaultFormContext, ErrorMsgContext, AssignmentContext };
+export { DefaultFormContext, ReadOnlyDefaultFormContext, ErrorMsgContext };

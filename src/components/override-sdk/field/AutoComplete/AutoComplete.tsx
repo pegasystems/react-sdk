@@ -68,12 +68,9 @@ export default function AutoComplete(props: AutoCompleteProps) {
 
   const context = getPConnect().getContextName();
   let { listType, parameters, datasource = [], columns = [] } = props;
-  // const [setInputValue] = useState('');
+
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [theDatasource, setDatasource] = useState(null);
-  // let selectedValue: any = '';
-  // const helperTextToDisplay = validatemessage || helperText;
-  // const { actionTriggered, updateActionTriggered } = useContext(AssignmentContext);
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
@@ -127,16 +124,6 @@ export default function AutoComplete(props: AutoCompleteProps) {
       setOptions(Utils.getOptionList(props, getPConnect().getDataObject('')));
     }
   }, [theDatasource]);
-  // useEffect(() => {
-  //   if (actionTriggered) {
-  //     const selectedOptionValue = (document.getElementById('default') as HTMLInputElement)?.value;
-
-  //     const selectedOptionKey = options.filter(item => item.value === selectedOptionValue);
-
-  //     updateActionTriggered(false);
-  //     handleChange(selectedOptionKey[0]?.key);
-  //   }
-  // }, [actionTriggered]);
 
   useEffect(() => {
     if (!displayMode && listType !== 'associated') {
@@ -166,9 +153,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   }
   useEffect(() => {
     const element = document.getElementById('default') as HTMLInputElement;
-    // if (element) {
-    //   console.log('element found');
-    // }
+
     element?.addEventListener('blur', handleChange);
     return () => window.removeEventListener('blur', handleChange);
   });
@@ -181,27 +166,11 @@ export default function AutoComplete(props: AutoCompleteProps) {
     return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
   }
 
-  // if (value) {
-  //   const index = options?.findIndex(element => element.key === value);
-  //   if (index > -1) {
-  //     selectedValue = options[index].value;
-  //   } else {
-  //     // @ts-ignore
-  //     //  selectedValue = value;
-  //   }
-  // }
-
-  // const handleInputValue = (event, newInputValue) => {
-  //   setInputValue(newInputValue);
-  // };
-
   if (readOnly) {
     const theValAsString = options?.find(opt => opt.key === value)?.value;
     return <TextInput {...props} value={theValAsString} />;
   }
 
-  // Need to use both getOptionLabel and getOptionSelected to map our
-  //  key/value structure to what Autocomplete expects
   return (
     <GDSAutocomplete
       label={label}

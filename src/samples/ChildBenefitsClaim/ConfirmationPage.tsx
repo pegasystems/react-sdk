@@ -16,7 +16,7 @@ const ConfirmationPage = ({ caseId }) => {
   const [loading, setLoading] = useState(true);
   const serviceShuttered = useServiceShuttered();
   const [caseIdPresent, setCaseIdPresent] = useState(false);
-
+  const refId = caseId.replace('HMRC-CHB-WORK ', '');
   const docIDForDocList = 'CR0003';
   const docIDForReturnSlip = 'CR0002';
   const locale = PCore.getEnvironmentInfo().locale.replaceAll('-', '_');
@@ -85,7 +85,7 @@ const ConfirmationPage = ({ caseId }) => {
               <div className='govuk-panel__body'>
                 {t('YOUR_REF_NUMBER')}
                 <br></br>
-                <strong>{caseId}</strong>
+                <strong>{refId}</strong>
               </div>
             )}
             <div className='govuk-panel__body govuk-!-font-size-27'>
@@ -143,7 +143,7 @@ const ConfirmationPage = ({ caseId }) => {
               <div className='govuk-panel__body'>
                 {t('YOUR_REF_NUMBER')}
                 <br></br>
-                <strong>{caseId}</strong>
+                <strong>{refId}</strong>
               </div>
             )}
           </div>

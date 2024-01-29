@@ -78,9 +78,9 @@ export default function AutoComplete(props) {
           value={getDefaultValue()}
           data-test-id={testId}
         >
-          {/* <option value='' disabled selected>
+          <option value='' disabled selected>
             Pick an option
-          </option> */}
+          </option>
           {arrOptions}
         </select>
       ) : (

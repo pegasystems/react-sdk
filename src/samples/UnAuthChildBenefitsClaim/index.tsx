@@ -26,7 +26,8 @@ import { checkCookie, setCookie } from '../../components/helpers/cookie';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 import {
   initTimeout,
-  staySignedIn
+  staySignedIn,
+  clearTimer
 } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import DeleteAnswers from './deleteAnswers';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
@@ -35,7 +36,7 @@ declare const myLoadMashup: Function;
 
 export default function UnAuthChildBenefitsClaim() {
   const [pConn, setPConn] = useState<any>(null);
-  const [bShowPega, setShowPega] = useState(false);
+  const [bShowPega, setShowPega] = useState(true);
   const [showStartPage, setShowStartPage] = useState(true);
   const [bShowResolutionScreen, setShowResolutionScreen] = useState(false);
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
@@ -447,6 +448,7 @@ export default function UnAuthChildBenefitsClaim() {
           }
           signoutHandler={() => {
             deleteData();
+            clearTimer();
             setHasSessionTimedOut(false);
           }}
           isAuthorised={false}

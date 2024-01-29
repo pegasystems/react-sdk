@@ -139,6 +139,7 @@ export default function DefaultForm(props) {
   useEffect(() => {
     const handleBeforeUnload = () => {
       // Perform actions before the component unloads
+      sessionStorage.setItem('isAutocompleteRendered', 'false');
       PCore.getContainerUtils().closeContainerItem(
         PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
         { skipDirtyCheck: true }

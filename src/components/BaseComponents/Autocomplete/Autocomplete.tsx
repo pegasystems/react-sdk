@@ -12,10 +12,10 @@ declare global {
     openregisterLocationPicker: any;
   }
 }
-interface optionList {
-  key: string;
-  value: string;
-}
+// interface optionList {
+//   key: string;
+//   value: string;
+// }
 
 export default function AutoComplete(props) {
   const { optionList, label, instructionText, name, onChange, selectedValue, testId } = props;

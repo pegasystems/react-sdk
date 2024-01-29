@@ -50,7 +50,7 @@ export default function TextInput(props) {
   const maxLength = fieldMetadata?.maxLength;
 
   if (readOnly) {
-    return <ReadOnlyDisplay label={label} value={value} />;
+    return <ReadOnlyDisplay label={label} value={value} name={name}/>;
   }
 
   const extraProps = { testProps: { 'data-test-id': testId } };

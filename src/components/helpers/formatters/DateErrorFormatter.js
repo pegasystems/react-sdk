@@ -1,5 +1,4 @@
 import i18n from 'i18next';
-import { MAX_DATE_ERROR_LENGTH } from '../constants';
 
 const _DateErrorFormatter = (message, propertyName) => {
   const dateRegExp = /(\d*-\d*-\d*)/;
@@ -26,8 +25,9 @@ const _DateErrorFormatter = (message, propertyName) => {
       else missingPartMessage += ` ${i18n.t('A_YEAR')}`;
       targets.push('year');
     }
-    const shortPropertyName =
-      String(propertyName).length <= MAX_DATE_ERROR_LENGTH ? propertyName : 'Date of birth';
+    const shortPropertyName = String(propertyName).includes('?')
+      ? i18n.t('DATE_OF_BIRTH')
+      : propertyName;
 
     if (missingPartMessage.length > 0) {
       return {

@@ -28,19 +28,23 @@ window.PCore.getDataPageUtils = () => {
                     CaseTaskList: [
                       {
                         TaskLabel: 'Your details',
-                        TaskStatus: 'Completed'
+                        TaskStatus: 'Completed',
+                        IsTaskALink: true
                       },
                       {
                         TaskLabel: 'Relationship details',
-                        TaskStatus: 'In progress'
+                        TaskStatus: 'In progress',
+                        IsTaskALink: true
                       },
                       {
                         TaskLabel: 'Child details',
-                        TaskStatus: 'Cannot start yet'
+                        TaskStatus: 'Cannot start yet',
+                        IsTaskALink: false
                       },
                       {
                         TaskLabel: 'Income details',
-                        TaskStatus: 'Cannot start yet'
+                        TaskStatus: 'Cannot start yet',
+                        IsTaskALink: false
                       }
                     ]
                   }

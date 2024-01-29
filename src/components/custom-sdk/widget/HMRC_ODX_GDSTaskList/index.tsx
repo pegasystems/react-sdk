@@ -23,7 +23,9 @@ export default function HmrcOdxGdsTaskList(props: HmrcOdxGdsTaskListProps) {
 
     const fetchTaskList = async () => {
       try {
-        const response = await PCore.getDataPageUtils().getDataAsync('D_CaseTaskList', context);
+        // @ts-ignore
+        const response = await PCore.getDataPageUtils().getDataAsync('D_CaseTaskList', context); // TODO make configurable.
+        // @ts-ignore
         taskList = response.data;
 
         if (Array.isArray(taskList)) {
@@ -58,13 +60,22 @@ export default function HmrcOdxGdsTaskList(props: HmrcOdxGdsTaskListProps) {
             <Fragment key={key}>
               <li className='govuk-task-list__item govuk-task-list__item--with-link'>
                 <div className='govuk-task-list__name-and-hint'>
-                  <a
-                    className='govuk-link govuk-task-list__link'
-                    href='#'
-                    aria-describedby={`${task.TaskLabel.replaceAll(' ', '')}-${key}-status`}
-                  >
-                    {task.TaskLabel}
-                  </a>
+                  {task.IsTaskALink ? (
+                    <a
+                      className='govuk-link govuk-task-list__link'
+                      href='#'
+                      aria-describedby={`${task.TaskLabel.replaceAll(' ', '')}-${key}-status`}
+                    >
+                      {task.TaskLabel}
+
+                      {/* { 
+                      TODO
+                      Update property - text - selectedTask configurable?
+                      Submit assignment} */}
+                    </a>
+                  ) : (
+                    <span>{task.TaskLabel}</span>
+                  )}
                 </div>
                 <div
                   className='govuk-task-list__status'

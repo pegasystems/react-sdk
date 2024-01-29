@@ -46,6 +46,7 @@ export function staySignedIn(
   refreshSignin = true
 ) {
   if (refreshSignin) {
+    // @ts-ignore
     PCore.getDataPageUtils().getDataAsync(claimsListApi, 'root');
   }
   setShowTimeoutModal(false);

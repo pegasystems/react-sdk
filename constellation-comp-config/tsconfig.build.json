@@ -4,7 +4,10 @@
     "../src/components/custom-constellation/**/**/*.ts",
     "../src/components/custom-constellation/**/**/*.tsx",
     "../src/components/custom-constellation/**/**/*.js",
-    "../src/components/custom-constellation/**/**/*.jsx"
+    "../src/components/custom-constellation/**/**/*.jsx",
+    "../src/components/helpers/formatters/ParsedHtml.tsx",
+    "../src/components/helpers/hooks/QuestionDisplayHooks.ts",
+    "../src/components/helpers/HMRCAppContext.tsx"
     // "../src/components/override-sdk/**/**/*.ts",
     // "../src/components/override-sdk/**/**/*.tsx",
     // "../src/components/override-sdk/**/**/*.js",

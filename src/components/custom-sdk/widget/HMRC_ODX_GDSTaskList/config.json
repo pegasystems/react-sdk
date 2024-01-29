@@ -10,14 +10,7 @@
   "type": "Widget",
   "subtype": ["PAGE", "CASE"],
   "icon": "OneColumnPage.svg",
-  "properties": [
-    {
-      "name": "headerText",
-      "label": "Header text",
-      "format": "TEXT",
-      "defaultValue": "@L Country and State Navigator"
-    }
-  ],
+  "properties": [],
   "defaultConfig": {
     "label": "Create operator",
     "title": "Create operator",
@@ -31,12 +24,12 @@
     "resolveOperator": "@USER .pyResolvedUserID",
     "resolveDateTime": "@P .pyResolvedTimestamp",
     "target": "primary",
-    "countryList": {
-      "source": "@DATASOURCE D_pyCountryList.pxResults",
+    "CaseTaskList": {
+      "source": "@DATASOURCE D_CaseTaskList.pxResults",
       "fields": {
         "id": "@P .id",
-        "name": "@P .name",
-        "value": "@P .value",
+        "TaskLabel": "@P .TaskLabel",
+        "TaskStatus": "@P .TaskStatus",
         "objectClass": "@P .objectClass"
       }
     }

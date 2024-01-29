@@ -17,6 +17,7 @@ import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/s
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import MainWrapper from '../../../BaseComponents/MainWrapper';
 import ShutterServicePage from '../../../../components/AppComponents/ShutterServicePage';
+import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
 import useServiceShuttered from '../../../helpers/hooks/useServiceShuttered';
 
 export interface ErrorMessageDetails {
@@ -37,6 +38,7 @@ export default function Assignment(props) {
   const [actionButtons, setActionButtons] = useState<any>({});
   const { t } = useTranslation();
   const serviceShuttered = useServiceShuttered();
+
   const AssignmentCard = SdkComponentMap.getLocalComponentMap()['AssignmentCard']
     ? SdkComponentMap.getLocalComponentMap()['AssignmentCard']
     : SdkComponentMap.getPegaProvidedComponentMap()['AssignmentCard'];
@@ -193,6 +195,7 @@ export default function Assignment(props) {
 
   async function buttonPress(sAction: string, sButtonType: string) {
     setErrorSummary(false);
+
     if (sButtonType === 'secondary') {
       switch (sAction) {
         case 'navigateToStep': {
@@ -239,6 +242,7 @@ export default function Assignment(props) {
           const { publish } = PCore.getPubSubUtils();
           if (isCreateStage) {
             const cancelPromise = cancelCreateStageAssignment(itemKey);
+
             cancelPromise
               .then(data => {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
@@ -278,6 +282,7 @@ export default function Assignment(props) {
             setServiceShutteredStatus(status);
           } else {
             const finishPromise = finishAssignment(itemKey);
+
             finishPromise
               .then(() => {
                 scrollToTop();
@@ -299,7 +304,6 @@ export default function Assignment(props) {
   function _onButtonPress(sAction: string, sButtonType: string) {
     buttonPress(sAction, sButtonType);
   }
-
   useEffect(() => {
     if (actionButtons) {
       setArSecondaryButtons(actionButtons.secondary);
@@ -308,15 +312,21 @@ export default function Assignment(props) {
 
   function renderAssignmentCard() {
     return (
-      <AssignmentCard
-        getPConnect={getPConnect}
-        itemKey={itemKey}
-        actionButtons={actionButtons}
-        onButtonPress={buttonPress}
-        errorMsgs={errorMessages}
+      <ErrorMsgContext.Provider
+        value={{
+          errorMsgs: errorMessages
+        }}
       >
-        {children}
-      </AssignmentCard>
+        <AssignmentCard
+          getPConnect={getPConnect}
+          itemKey={itemKey}
+          actionButtons={actionButtons}
+          onButtonPress={buttonPress}
+          errorMsgs={errorMessages}
+        >
+          {children}
+        </AssignmentCard>
+      </ErrorMsgContext.Provider>
     );
   }
 

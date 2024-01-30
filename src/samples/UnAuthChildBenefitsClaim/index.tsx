@@ -440,7 +440,7 @@ export default function UnAuthChildBenefitsClaim() {
 
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
         {showDeletePage && <DeleteAnswers hasSessionTimedOut={hasSessionTimedOut} />}
-        {bShowResolutionScreen && <ConfirmationPage caseId={caseId} />}
+        {bShowResolutionScreen && <ConfirmationPage caseId={caseId} isUnAuth />}
         <TimeoutPopup
           show={showTimeoutModal}
           staySignedinHandler={() =>

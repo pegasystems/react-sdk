@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { isUnAuthJourney } from '../../../helpers/utils';
 
-import ActionButtons from "../ActionButtons";
+import ActionButtons from '../ActionButtons';
 
 export default function AssignmentCard(props) {
-  const { children, actionButtons, onButtonPress} = props;
+  const { children, actionButtons, onButtonPress } = props;
 
   const [arMainButtons, setArMainButtons] = useState([]);
   const [arSecondaryButtons, setArSecondaryButtons] = useState([]);
 
-  useEffect( ()=> {
+  useEffect(() => {
     if (actionButtons) {
       setArMainButtons(actionButtons.main);
       setArSecondaryButtons(actionButtons.secondary);
@@ -23,11 +24,16 @@ export default function AssignmentCard(props) {
   return (
     <>
       {children}
-      {
-        arMainButtons && arSecondaryButtons && <ActionButtons arMainButtons={arMainButtons} arSecondaryButtons={arSecondaryButtons} onButtonPress={buttonPress}></ActionButtons>
-      }
+      {arMainButtons && arSecondaryButtons && (
+        <ActionButtons
+          arMainButtons={arMainButtons}
+          arSecondaryButtons={arSecondaryButtons}
+          onButtonPress={buttonPress}
+          isUnAuth={isUnAuthJourney()}
+        ></ActionButtons>
+      )}
     </>
-  )
+  );
 }
 
 AssignmentCard.propTypes = {
@@ -40,6 +46,6 @@ AssignmentCard.propTypes = {
 };
 
 AssignmentCard.defaultProps = {
-  itemKey: null,
+  itemKey: null
   // buildName: null
 };

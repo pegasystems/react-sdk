@@ -80,8 +80,6 @@ export default function HmrcOdxGdsSummaryCard(props) {
           checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
           setSingleEntity(checkSingleEntity);
           setContent(t('NOTIFICATION_NATIONALITY_BANNER_CONTENT'));
-<<<<<<< HEAD
-=======
           if (checkSingleEntity) return;
           break;
         case '3':
@@ -96,7 +94,6 @@ export default function HmrcOdxGdsSummaryCard(props) {
           checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
           setSingleEntity(checkSingleEntity);
           setContent(t('NOTIFICATION_NAME_BANNER_CONTENT'));
->>>>>>> US-12340-multiname
           if (checkSingleEntity) return;
           break;
         default:
@@ -127,10 +124,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
         }}
       >
         {singleEntity && <NotificationBanner content={content} />}
-<<<<<<< HEAD
-=======
 
->>>>>>> US-12340-multiname
         <div className='govuk-summary-card'>
           <div className='govuk-summary-card__title-wrapper'>
             <h2 className='govuk-summary-card__title'>{itemName}</h2>

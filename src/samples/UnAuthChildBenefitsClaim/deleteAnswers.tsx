@@ -10,8 +10,8 @@ export default function DeleteAnswers({ hasSessionTimedOut }) {
     <MainWrapper>
       <h1 className='govuk-heading-l'>
         {hasSessionTimedOut
-          ? t('FOR_YOUR_SECURITY_WE_DELETED_YOUR_ANSWERS')
-          : t('YOU_DELETED_YOUR_ANSWERS')}
+          ? t('FOR_YOUR_SECURITY_WE_DELETED_YOUR_CLAIM')
+          : t('YOU_DELETED_YOUR_CLAIM')}
       </h1>
       <Button variant='start'>{t('START_CLAIM_AGAIN')}</Button>
       <h2 className='govuk-heading-m'>{t('BEFORE_YOU_GO')}</h2>

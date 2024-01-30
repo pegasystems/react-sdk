@@ -52,7 +52,7 @@ export default function TimeoutPopup(props) {
             {t('FOR_YOUR_SECURITY')}
           </h1>
           <p className='govuk-body'>
-            {t('WE_WILL_DELETE_YOUR_ANSWERS')}
+            {t('WE_WILL_DELETE_YOUR_CLAIM')}
             <span className='govuk-!-font-weight-bold'> {t('2_MINUTES')}.</span>
           </p>
           <div className='govuk-button-group govuk-!-padding-top-4'>
@@ -61,7 +61,7 @@ export default function TimeoutPopup(props) {
             </Button>
 
             <a id='modal-staysignin-btn' className='govuk-link' href='#' onClick={signoutHandler}>
-              {t('DELETE_YOUR_ANSWERS')}
+              {t('DELETE_YOUR_CLAIM')}
             </a>
           </div>
         </div>

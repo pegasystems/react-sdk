@@ -158,6 +158,8 @@
   "GDS_INFO_CHILDREN": "Children",
   "GDS_INFO_ITEM_CHILD": "Child",
   "GDS_INFO_ITEM_NATIONALITY": "Nationality",
+  "GDS_INFO_ITEM_COUNTRY": "Country",
+  "GDS_INFO_ITEM_NAME": "Other name",
   "GDS_ACTION_REMOVE": "Remove",
   "GDS_ACTION_CHANGE": "Change",
   "BANNER_FEEDBACK_1": "your",
@@ -225,6 +227,8 @@
   "NOTIFICATION_BANNER_HEADER": "Important",
   "NOTIFICATION_BANNER_CONTENT": "There must be at least one child on the claim. Please amend this child's details instead.",
   "NOTIFICATION_NATIONALITY_BANNER_CONTENT": "There must be at least one nationality on the claim. Please amend this nationality details instead.",
+  "NOTIFICATION_COUNTRY_BANNER_CONTENT": "There must be at least one country on the claim. Please amend this country details instead.",
+  "NOTIFICATION_NAME_BANNER_CONTENT": "There must be at least one other name on the claim. Please amend this name details instead.",
 
   "SERVICE_NOT_AVAILABLE": "Sorry, there is a problem with the service",
   "COME_BACK_LATER": "You can try again or come back later",

@@ -1,5 +1,4 @@
 import React, { createElement, useEffect, useContext, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import ParsedHTML from '../../../helpers/formatters/ParsedHtml';
 import useIsOnlyField, {
@@ -8,6 +7,9 @@ import useIsOnlyField, {
 import { DefaultFormContext, ReadOnlyDefaultFormContext } from '../../../helpers/HMRCAppContext';
 import ConditionalWrapper from '../../../helpers/formatters/ConditionalWrapper';
 import './DefaultForm.css';
+import InstructionTextComponent from './InstructionTextComponent';
+import getFormattedInstructionText from './DefaultFormUtils';
+import { useTranslation } from 'react-i18next';
 
 export default function DefaultForm(props) {
   const { getPConnect, readOnly, additionalProps, configAlternateDesignSystem } = props;
@@ -15,6 +17,7 @@ export default function DefaultForm(props) {
   const { hasBeenWrapped } = useContext(ReadOnlyDefaultFormContext);
   const { DFName } = useContext(DefaultFormContext);
   const { instructionText: passedThroughInstructionText } = useContext(DefaultFormContext);
+  const { t } = useTranslation();
 
   const [declaration, setDeclaration] = useState({ text1: '', warning1: '' });
   let containerName = null;
@@ -22,7 +25,6 @@ export default function DefaultForm(props) {
     containerName = getPConnect().getDataObject().caseInfo?.assignments[0].name;
   }
 
-  const { t } = useTranslation();
   let cssClassHook = '';
 
   if (configAlternateDesignSystem?.cssClassHook) {
@@ -44,7 +46,9 @@ export default function DefaultForm(props) {
   }
   const instructionExists = instructionText !== undefined && instructionText !== '';
 
-  const settingTargetForAnchorTag = () => {
+  const isOnlyFieldDetails = useIsOnlyField();
+
+  function settingTargetForAnchorTag() {
     const instructionDiv = document.getElementById('instructions');
     const keyText = t('OPENS_IN_NEW_TAB');
     if (instructionDiv) {
@@ -56,9 +60,7 @@ export default function DefaultForm(props) {
         }
       }
     }
-  };
-
-  const isOnlyFieldDetails = useIsOnlyField();
+  }
 
   useEffect(() => {
     if (configAlternateDesignSystem?.hidePageLabel) {
@@ -150,36 +152,6 @@ export default function DefaultForm(props) {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, []);
-
-  const getFormattedInstructionText = () => {
-    if (!instructionExists) {
-      return null;
-    }
-    let text = instructionText.replaceAll('\n<p>&nbsp;</p>\n', '');
-    const warning = t('WARNING');
-    if (text.indexOf(`${warning}!!`) !== -1) {
-      // If there is a Warning Text
-      const warningStr = `<strong>${warning}!!`;
-      const start = text.indexOf(warningStr) + warningStr.length + 1;
-      const end = text.indexOf('</strong>', start);
-      const warningText = text.substring(start, end);
-
-      const start1 = text.indexOf(warningStr);
-      const end1 = text.indexOf('</strong>', start1) + '</strong>'.length;
-      const stringToBeReplaced = text.substring(start1, end1);
-      const stringToReplace = `<div class="govuk-warning-text">
-      <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-      <strong class="govuk-warning-text__text">
-        <span class="govuk-warning-text__assistive">${warning}</span>
-        ${warningText}
-      </strong>
-    </div>`;
-
-      text = text.replaceAll(stringToBeReplaced, stringToReplace);
-    }
-
-    return text;
-  };
 
   const dfChildren = arChildren?.map((kid, idx) => {
     let extraProps = {};
@@ -279,13 +251,11 @@ export default function DefaultForm(props) {
             instructionText:
               instructionExists && !singleQuestionPage
                 ? null
-                : (getFormattedInstructionText() as string)
+                : (getFormattedInstructionText(instructionText) as string)
           }}
         >
           {instructionExists && !singleQuestionPage && (
-            <div id='instructions' className='govuk-body'>
-              <ParsedHTML htmlString={getFormattedInstructionText()} />
-            </div>
+            <InstructionTextComponent instructionText={instructionText} />
           )}
           {declaration.text1 && DFName === -1 && (
             <div id='declarationText1' className='govuk-body'>

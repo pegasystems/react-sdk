@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 import { DefaultFormContext, ErrorMsgContext } from '../../helpers/HMRCAppContext';
-import InstructionComp from '../../helpers/formatters/ParsedHtml';
 import { checkErrorMsgs } from '../../helpers/utils';
+import InstructionTextComponent from '../../override-sdk/template/DefaultForm/InstructionTextComponent';
 
 export default function FieldSet({
   legendIsHeading = false,
@@ -62,7 +62,7 @@ export default function FieldSet({
         </legend>
         {instructionText && legendIsHeading && (
           <div id='instructions' className='govuk-body'>
-            <InstructionComp htmlString={instructionText} />
+            <InstructionTextComponent instructionText={instructionText} />
           </div>
         )}
         {hintTextExists && (

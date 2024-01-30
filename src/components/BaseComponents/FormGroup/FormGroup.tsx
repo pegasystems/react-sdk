@@ -4,6 +4,7 @@ import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 import { DefaultFormContext, ErrorMsgContext } from '../../helpers/HMRCAppContext';
 import { checkErrorMsgs } from '../../helpers/utils';
+import InstructionTextComponent from '../../override-sdk/template/DefaultForm/InstructionTextComponent';
 
 function makeHintId(identifier) {
   return `${identifier}-hint`;
@@ -26,7 +27,7 @@ export default function FormGroup({
   children,
   testProps = {}
 }) {
-  const {instructionText} = useContext(DefaultFormContext);
+  const { instructionText } = useContext(DefaultFormContext);
   const { errorMsgs } = useContext(ErrorMsgContext);
   const [errMessage, setErrorMessage] = useState(errorText);
   useEffect(() => {
@@ -56,11 +57,11 @@ export default function FormGroup({
           </label>
         }
       />
-      {instructionText && labelIsHeading &&
-        (<div id='instructions' className='govuk-body'>
-          <HintTextComponent htmlString={instructionText} />
-        </div>)
-      }
+      {instructionText && labelIsHeading && (
+        <div id='instructions' className='govuk-body'>
+          <InstructionTextComponent instructionText={instructionText} />
+        </div>
+      )}
       {hintText && (
         <div id={makeHintId(name)} className='govuk-hint'>
           <HintTextComponent htmlString={hintText} />

@@ -44,7 +44,7 @@ export default function Accessibility() {
           <h2 className='govuk-heading-l'>{t('USING_THIS_SERVICE')}</h2>
           <p className='govuk-body'>
             {t('USE_THIS_FORM_TO_CLAIM')}
-            {t('USE_THIS_FORM_TO_CLAIM_CONTD')}
+            {t('USE_THIS_FORM_TO_CLAIM_CONTD')}.
           </p>
           <p className='govuk-body'>{t('THIS_IS_RUN_BY_HMRC')}</p>
           <ul className='govuk-list govuk-list--bullet'>{makeList(1, 5)}</ul>

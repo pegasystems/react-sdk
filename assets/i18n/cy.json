@@ -105,6 +105,7 @@
   "A_MONTH": "a month",
   "AND_A_YEAR": "and a year",
   "A_YEAR": "a year",
+  "DATE": "Date",
   "MUST_INCLUDE": " must include",
   "MUST_BE_A_REAL_DATE": "must be a real date",
   "IS_NOT_A_VALID_DATE": "is not a valid date",

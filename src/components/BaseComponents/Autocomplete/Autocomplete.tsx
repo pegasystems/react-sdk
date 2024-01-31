@@ -14,7 +14,7 @@ declare global {
 }
 
 export default function AutoComplete(props) {
-  const { optionList, label, instructionText, name, selectedValue, testId } = props;
+  const { optionList, label, instructionText, name, selectedValue, testId, helperText } = props;
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'assets/lib/location-autocomplete.min.js';
@@ -65,11 +65,16 @@ export default function AutoComplete(props) {
       <label className='govuk-heading-xl margin-bottom: 20px' htmlFor='default'>
         {label}
       </label>
-      {instructionText && (
+      {(helperText && (
         <div id={makeHintId(name)} className='govuk-body'>
-          <HintTextComponent htmlString={instructionText} />
+          <HintTextComponent htmlString={helperText} />
         </div>
-      )}
+      )) ||
+        (instructionText && (
+          <div id={makeHintId(name)} className='govuk-body'>
+            <HintTextComponent htmlString={instructionText} />
+          </div>
+        ))}
       {arrOptions && arrOptions.length > 0 ? (
         <select
           className='govuk-select'
@@ -94,6 +99,7 @@ AutoComplete.propTypes = {
   optionList: { key: string, value: string },
   label: string,
   instructionText: string,
+  helperText: string,
   onChange: func,
   selectedValue: string,
   testId: string

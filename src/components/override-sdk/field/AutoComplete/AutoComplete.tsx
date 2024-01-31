@@ -49,6 +49,8 @@ interface AutoCompleteProps extends PConnFieldProps {
   datasource: any;
   columns: Array<any>;
   instructionText: string;
+  helperText: string;
+  helper;
   value: string;
 }
 
@@ -63,6 +65,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
     deferDatasource,
     datasourceMetadata,
     instructionText,
+    helperText,
     hideLabel
   } = props;
 
@@ -177,6 +180,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
       optionList={options}
       selectedValue={value}
       instructionText={instructionText}
+      helperText={helperText}
       testId={testId}
     />
   );

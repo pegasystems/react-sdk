@@ -62,7 +62,7 @@ export default function AutoComplete(props) {
 
   return (
     <div className='govuk-form-group autocomplete-wrapper'>
-      <label className='govuk-heading-xl margin-bottom: 20px' htmlFor='default'>
+      <label className=' margin-bottom: 30px govuk-heading-xl' htmlFor='default'>
         {label}
       </label>
       {(helperText && (

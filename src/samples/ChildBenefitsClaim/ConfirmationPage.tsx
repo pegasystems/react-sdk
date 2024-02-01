@@ -128,7 +128,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
             <a href={getFeedBackLink()} className='govuk-link' target='_blank' rel='noreferrer'>
               {t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')}{' '}
             </a>
-            {t('TAKES_30_SECONDS')}
+            {t('OPENS_IN_NEW_TAB')}
           </p>
         </MainWrapper>
       </>
@@ -154,7 +154,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
             <a href={getFeedBackLink()} className='govuk-link' target='_blank' rel='noreferrer'>
               {t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')}{' '}
             </a>
-            {t('TAKES_30_SECONDS')}
+            {t('OPENS_IN_NEW_TAB')}
           </p>
         </MainWrapper>
       </>

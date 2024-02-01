@@ -58,9 +58,7 @@ export default function FormGroup({
         }
       />
       {instructionText && labelIsHeading && (
-        <div id='instructions' className='govuk-body'>
-          <InstructionTextComponent instructionText={instructionText} />
-        </div>
+        <InstructionTextComponent instructionText={instructionText} />
       )}
       {hintText && (
         <div id={makeHintId(name)} className='govuk-hint'>

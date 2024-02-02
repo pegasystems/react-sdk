@@ -1,54 +1,66 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import AppHeader from '../../../components/AppComponents/AppHeader';
 import AppFooter from '../../../components/AppComponents/AppFooter';
-import { Switch, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import useHMRCExternalLinks from '../../../components/helpers/hooks/HMRCExternalLinks';
 import MainWrapper from '../../../components/BaseComponents/MainWrapper';
 import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioButtons';
 import Button from '../../../components/BaseComponents/Button/Button';
-import Accessibility from '../../ChildBenefitsClaim/AccessibilityPage';
 
 export default function ChooseClaimService() {
   const { t } = useTranslation();
-  let history = useHistory();
-  // const form = document.getElementById('choose-claim-service');
-  // form.addEventListener('submit', submitForm);
+  const history = useHistory();
+  const [errorMsg, setErrorMsg] = useState('');
 
   const radioOptions = [
     {
       value: 'makeanewclaim',
-      label: 'Make a new claim'
+      label: t('MAKE_A_NEW_CLAIM')
     },
     {
       value: 'addchildtoexistingclaim',
-      label: 'Add a child to an existing claim'
+      label: t('ADD_CHILD_TO_EXISTING_CLAIM')
     },
     {
       value: 'checkonprogressofclaim',
-      label: 'Check on the progress of a claim'
+      label: t('CHECK_PROGRESS_OF_CLAIM')
     },
     {
       value: 'restartyourpayments',
-      label: 'Restart your payments (without adding a child to an existing claim)'
+      label: t('RESTART_YOUR_PAYMENTS')
     },
     {
       value: 'stopyourpayments',
-      label: 'Stop your payments (without adding a child to an existing claim)'
+      label: t('STOP_YOUR_PAYMENTS')
     }
   ];
 
   function clicked() {
-    var selected = document.querySelector('input[name="serviceType"]:checked');
-    if (selected) {
-      console.log(selected.getAttribute('value'));
-      if (selected.getAttribute('value') === 'makeanewclaim') {
-        console.log('hello');
-        history.push('/accessibility');
+    const selectedOption = document.querySelector('input[name="serviceType"]:checked');
+    if (selectedOption) {
+      const selectedOptionValue = selectedOption.getAttribute('value');
+      switch (selectedOptionValue) {
+        case 'makeanewclaim':
+          history.push('/accessibility');
+          break;
+        case 'addchildtoexistingclaim':
+          history.push('/cookies');
+          break;
+        case 'checkonprogressofclaim':
+          break;
+        case 'restartyourpayments':
+          window.location.assign(
+            'https://www.gov.uk/child-benefit-tax-charge/restart-child-benefit'
+          );
+          break;
+        case 'stopyourpayments':
+          window.location.assign('https://www.gov.uk/child-benefit-tax-charge/stop-child-benefit');
+          break;
+        default:
+          break;
       }
     } else {
-      console.log('No button selected.');
+      setErrorMsg(t('CONFIRM_YOUR_SERVICE'));
     }
   }
   return (
@@ -61,19 +73,39 @@ export default function ChooseClaimService() {
           key='ChooseClaimBacklink'
           attributes={{ type: 'link' }}
         />
-        <MainWrapper isStatic={true}>
+        <MainWrapper>
+          {errorMsg && errorMsg.length > 0 && (
+            <div className='govuk-error-summary' data-module='govuk-error-summary' tabIndex={-1}>
+              <div role='alert'>
+                <h2 className='govuk-error-summary__title'>There is a problem</h2>
+                <div className='govuk-error-summary__body'>
+                  <ul className='govuk-list govuk-error-summary__list'>
+                    <li key='serviceType'>
+                      <a href={`#serviceType`}>{errorMsg}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
           <RadioButtons
             name='serviceType'
             displayInline={false}
             value=''
             useSmallRadios={false}
             options={radioOptions}
-            label='Make sure you’re using the right Child Benefit service'
-            legendIsHeading={true}
-            hintText='<p class="govuk-body">Confirm which service you want to use.</p>'
+            label={t('MAKE_SURE_YOU_USE_RIGHT_CHBS')}
+            legendIsHeading
+            hintText={`<p class="govuk-body">${t('CONFIRM_YOUR_SERVICE')}</p>`}
+            errorText={errorMsg}
           ></RadioButtons>
-          <button className='govuk-button' data-module='govuk-button' onClick={clicked}>
-            Continue
+          <button
+            className='govuk-button'
+            data-module='govuk-button'
+            onClick={clicked}
+            type='button'
+          >
+            {t('CONTINUE')}
           </button>
           <br></br>
           <br></br>

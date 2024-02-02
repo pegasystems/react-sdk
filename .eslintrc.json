@@ -116,6 +116,54 @@
       "rules": {
         "import/prefer-default-export": ["off"]
       }
+    },
+    // associated components eslint rules to match DXCB
+    {
+      "files": ["**/custom-constellation/**/*.@(js|jsx)"],
+      "rules": {
+        "import/no-relative-packages": "off",
+        "import/prefer-default-export": "off",
+        "@typescript-eslint/no-shadow": "error",
+        "react/jsx-fragments": "off",
+        "no-undef": "error",
+        "no-console": "error",
+        "prefer-regex-literals": "off",
+        "sonarjs/cognitive-complexity": ["warn", 50]
+      }
+    },
+    {
+      "files": ["**/custom-constellation/**/*.@(ts|tsx)"],
+      "rules": {
+        "eqeqeq": "off",
+        "no-alert": "off",
+        "no-console": "off",
+        "no-fallthrough": "error",
+        "no-undef": "off",
+        "no-unused-vars": "off",
+        "no-var": "off",
+        "yoda": "error",
+        "no-irregular-whitespace": "off",
+        "no-empty": "off",
+        "no-new-object": "off",
+        "react/jsx-fragments": "off",
+        "import/prefer-default-export": "off",
+        "@typescript-eslint/no-inferrable-types": "error",
+        // "@typescript-eslint/array-type": ["error", { "default": "generic" }],
+        "@typescript-eslint/array-type": "off",
+        "sonarjs/cognitive-complexity": ["warn", 45],
+        "react-hooks/exhaustive-deps": [
+          "error",
+          {
+            "additionalHooks": "useAfterInitialEffect"
+          }
+        ]
+      }
+    },
+    {
+      "files": ["**/custom-sdk/**/**/mock.stories.js"],
+      "rules": {
+        "storybook/default-exports": "off"
+      }
     }
   ]
 }

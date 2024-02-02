@@ -4,12 +4,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import type { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
 import StyledHmrcOdxGdsTaskListTemplateWrapper from './styles';
+import './TaskListTemplate.css';
 
 interface HmrcOdxGdsTaskListTemplateProps extends PConnProps {
   // If any, enter additional props that only exist on this componentName
   children: Array<any>;
   templateCol: string;
   taskList: {};
+  cssClassHook: string;
 }
 
 const useStyles = makeStyles(() => ({
@@ -27,7 +29,7 @@ const useStyles = makeStyles(() => ({
 export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemplateProps) {
   const classes = useStyles();
 
-  const { children, templateCol = '1fr' } = props;
+  const { children, templateCol = '1fr', cssClassHook } = props;
 
   if (children.length !== 2) {
     // eslint-disable-next-line no-console
@@ -53,26 +55,39 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
   // eslint-disable-next-line prefer-const
   let { taskList, getPConnect } = props;
 
-  let globalTaskList = [];
-
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const context = getPConnect().getContextName();
+  const context = getPConnect().getContextName();
+  const caseInfo = getPConnect().getCaseSummary();
+  const caseID = caseInfo.content.pyID;
 
+  const params = {
+    caseID
+  };
+
+  useEffect(() => {
     const fetchTaskList = async () => {
       try {
         // @ts-ignore
-        const response = await PCore.getDataPageUtils().getDataAsync('D_CaseTaskList', context); // TODO make configurable.
-        // @ts-ignore
-        taskList = response.data;
+        const response = await PCore.getDataPageUtils().getDataAsync(
+          'D_CaseTaskList',
+          context
+          // params
+        ); // TODO make configurable.
 
-        if (Array.isArray(taskList)) {
-          globalTaskList = globalTaskList.concat(taskList);
-        } else {
-          globalTaskList.push(taskList);
-        }
+        // @ts-ignore
+        // eslint-disable-next-line prefer-template, no-console
+        // console.log('DATA: ' + response.data);
+
+        // @ts-ignore
+        taskList = await response.data;
+
+        // if (Array.isArray(taskList)) {
+        //   globalTaskList = globalTaskList.concat(taskList);
+        // } else {
+        //   globalTaskList.push(taskList);
+        // }
 
         setData(taskList);
       } catch (error) {
@@ -87,61 +102,72 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
     // Example of how to use the async function
     fetchTaskList();
   }, []);
+
+  const handleOnClick = (section: string) => {
+    getPConnect().setValue('.SelectedTask', section, '', false);
+    getPConnect().getActionsApi().finishAssignment(context);
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
-  if (!data) {
-    return <p>No data</p>;
-  }
+  // if (!data.caseInfo) {
+  //   return <p>No data</p>;
+  // }
   return (
     <StyledHmrcOdxGdsTaskListTemplateWrapper>
-      <Grid container spacing={1} className='govuk-!-padding-bottom-8'>
+      <Grid container spacing={1} className={`govuk-!-padding-bottom-8 ${cssClassHook}`}>
         <Grid item xs={12} md={aSize} className={classes.colStyles}>
           {children[0]}
         </Grid>
       </Grid>
-      <div className='govuk-grid-column-two-thirds govuk-!-padding-bottom-4'>
+      <div className='govuk-!-padding-bottom-4'>
         <ul className='govuk-task-list'>
-          {data.caseInfo.content.CaseTasks.CaseTaskList.map((task, index) => {
-            const key = new Date().getTime() + index;
+          {data &&
+            data.map((task, index) => {
+              const key = new Date().getTime() + index;
 
-            return (
-              <Fragment key={key}>
-                <li className='govuk-task-list__item govuk-task-list__item--with-link'>
-                  <div className='govuk-task-list__name-and-hint'>
-                    {task.IsTaskALink ? (
-                      <a
-                        className='govuk-link govuk-task-list__link'
-                        href='#'
-                        aria-describedby={`${task.TaskLabel.replaceAll(' ', '')}-${key}-status`}
-                      >
-                        {task.TaskLabel}
+              // eslint-disable-next-line no-console
+              console.log(data);
 
-                        {/* { 
+              return (
+                <Fragment key={key}>
+                  <li className='govuk-task-list__item govuk-task-list__item--with-link'>
+                    <div className='govuk-task-list__name-and-hint'>
+                      {task.IsTaskALink ? (
+                        <a
+                          className='govuk-link govuk-task-list__link'
+                          href='#'
+                          aria-describedby={`${task.TaskLabel.replaceAll(' ', '')}-${key}-status`}
+                          onClick={() => handleOnClick(`${task.TaskLabel}`)}
+                        >
+                          {task.TaskLabel}
+
+                          {/* { 
                         TODO
                         Update property - text - selectedTask configurable?
                         Submit assignment} */}
-                      </a>
-                    ) : (
-                      <span>{task.TaskLabel}</span>
-                    )}
-                  </div>
-                  <div
-                    className='govuk-task-list__status'
-                    id={`${task.TaskLabel.replaceAll(' ', '')}-${key}-status`}
-                  >
-                    {task.TaskStatus === 'In progress' ? (
-                      <strong className='govuk-tag govuk-tag--blue'>{task.TaskStatus}</strong>
-                    ) : (
-                      task.TaskStatus
-                    )}
-                    {/* <strong class="govuk-tag govuk-tag--blue"></strong>
+                        </a>
+                      ) : (
+                        <span>{task.TaskLabel}</span>
+                      )}
+                    </div>
+                    <div
+                      className='govuk-task-list__status'
+                      id={`${task.TaskLabel.replaceAll(' ', '')}-${key}-status`}
+                    >
+                      {task.TaskStatus.toLowerCase() === 'in progress' ? (
+                        <strong className='govuk-tag govuk-tag--blue'>{task.TaskStatus}</strong>
+                      ) : (
+                        task.TaskStatus
+                      )}
+                      {/* <strong class="govuk-tag govuk-tag--blue"></strong>
                     {task.TaskStatus} */}
-                  </div>
-                </li>
-              </Fragment>
-            );
-          })}
+                    </div>
+                  </li>
+                </Fragment>
+              );
+            })}
         </ul>
       </div>
       <Grid container spacing={1}>

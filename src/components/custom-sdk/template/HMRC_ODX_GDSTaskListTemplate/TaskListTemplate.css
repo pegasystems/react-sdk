@@ -1,0 +1,13 @@
+label[for='SelectedTask'],
+#SelectedTask {
+  display: none;
+}
+
+/* .govuk-form-group:has(label[for='SelectedTask']) { */
+.govuk-form-group {
+  margin-bottom: 0;
+}
+
+form:has(div.u-tasklist) .govuk-button-group {
+  display: none;
+}

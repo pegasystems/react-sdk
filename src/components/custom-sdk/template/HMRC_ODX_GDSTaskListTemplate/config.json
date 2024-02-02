@@ -42,6 +42,11 @@
           "label": "Visibility",
           "format": "VISIBILITY",
           "saveToReference": true
+        },
+        {
+          "name": "cssClassHook",
+          "label": "CSS class hook",
+          "format": "TEXT"
         }
       ]
     }

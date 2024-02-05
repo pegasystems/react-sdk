@@ -52,7 +52,7 @@ export default function DoYouWantToSignIn() {
         <Button
           variant='backlink'
           onClick={() => history.goBack()}
-          key='ChooseClaimBacklink'
+          key='doYouWantToSignInBackLink'
           attributes={{ type: 'link' }}
         />
         <MainWrapper>

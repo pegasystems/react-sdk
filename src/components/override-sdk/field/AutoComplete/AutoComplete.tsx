@@ -76,6 +76,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   const [errorMessage, setErrorMessage] = useState(validatemessage);
   const context = getPConnect().getContextName();
   let { listType, parameters, datasource = [], columns = [], label } = props;
+
   const { isOnlyField, overrideLabel } = useIsOnlyField(displayOrder);
   if (isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
   const [options, setOptions] = useState<Array<IOption>>([]);

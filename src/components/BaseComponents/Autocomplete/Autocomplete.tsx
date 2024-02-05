@@ -20,7 +20,7 @@ export default function AutoComplete(props) {
   const inputClasses = `govuk-input ${errorText ? 'govuk-input--error' : ''}`.trim();
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = '../assets/lib/location-autocomplete.min.js';
+    script.src = 'assets/lib/location-autocomplete.min.js';
     script.async = true;
     document.body.appendChild(script);
 

@@ -9,6 +9,7 @@ import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
 import Accessibility from '../ChildBenefitsClaim/AccessibilityPage';
 import UnAuthChildBenefitsClaim from '../UnAuthChildBenefitsClaim';
 import ChooseClaimService from '../StaticPages/ChooseClaimService';
+import CheckOnClaim from '../StaticPages/CheckOnClaim';
 
 const AppSelector = () => {
   i18n
@@ -35,6 +36,7 @@ const AppSelector = () => {
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
       <Route path='/recently-claimed-child-benefit' component={ChooseClaimService} />
+      <Route path='/check-on-claim' component={CheckOnClaim} />
     </Switch>
   );
 };

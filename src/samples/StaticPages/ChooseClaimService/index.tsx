@@ -47,6 +47,7 @@ export default function ChooseClaimService() {
           history.push('/cookies');
           break;
         case 'checkonprogressofclaim':
+          history.push('/check-on-claim');
           break;
         case 'restartyourpayments':
           window.location.assign(

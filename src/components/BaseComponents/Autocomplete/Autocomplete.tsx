@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { func, string } from 'prop-types';
+import { any, func, string } from 'prop-types';
 
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
+import FormGroup from '../FormGroup/FormGroup';
 
 function makeHintId(identifier) {
   return `${identifier}-hint`;
@@ -14,7 +15,9 @@ declare global {
 }
 
 export default function AutoComplete(props) {
-  const { optionList, label, instructionText, name, selectedValue, testId } = props;
+  const { optionList, instructionText, name, selectedValue, testId, helperText, errorText, id } =
+    props;
+  const inputClasses = `govuk-input ${errorText ? 'govuk-input--error' : ''}`.trim();
   useEffect(() => {
     const script = document.createElement('script');
     script.src = '../assets/lib/location-autocomplete.min.js';
@@ -34,7 +37,7 @@ export default function AutoComplete(props) {
     ) {
       sessionStorage.setItem('isAutocompleteRendered', 'true');
       window.openregisterLocationPicker({
-        selectElement: document.getElementById('default'),
+        selectElement: document.getElementById(id),
         defaultValue: ''
       });
     }
@@ -61,10 +64,12 @@ export default function AutoComplete(props) {
   };
 
   return (
-    <div className='govuk-form-group autocomplete-wrapper'>
-      <label className='govuk-heading-xl margin-bottom: 20px' htmlFor='default'>
-        {label}
-      </label>
+    <FormGroup {...props}>
+      {helperText && (
+        <div id={makeHintId(name)} className='govuk-body'>
+          <HintTextComponent htmlString={helperText} />
+        </div>
+      )}
       {instructionText && (
         <div id={makeHintId(name)} className='govuk-body'>
           <HintTextComponent htmlString={instructionText} />
@@ -72,9 +77,9 @@ export default function AutoComplete(props) {
       )}
       {arrOptions && arrOptions.length > 0 ? (
         <select
-          className='govuk-select'
-          id='default'
-          name='default'
+          className={inputClasses}
+          id={id}
+          name={name}
           value={getDefaultValue()}
           data-test-id={testId}
         >
@@ -86,15 +91,18 @@ export default function AutoComplete(props) {
       ) : (
         <></>
       )}
-    </div>
+    </FormGroup>
   );
 }
 
 AutoComplete.propTypes = {
+  ...FormGroup.propTypes,
   optionList: { key: string, value: string },
   label: string,
   instructionText: string,
   onChange: func,
   selectedValue: string,
-  testId: string
+  testId: string,
+  helperText: string,
+  name: any
 };

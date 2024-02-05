@@ -79,7 +79,7 @@ export default function AutoComplete(props) {
         <select
           className={inputClasses}
           id={id}
-          name={name}
+          name={id}
           value={getDefaultValue()}
           data-test-id={testId}
         >

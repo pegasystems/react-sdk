@@ -53,6 +53,7 @@ interface AutoCompleteProps extends PConnFieldProps {
   helperText: string;
   value: string;
   displayOrder: any;
+  hideLabel: boolean;
   name: string;
 }
 
@@ -69,20 +70,20 @@ export default function AutoComplete(props: AutoCompleteProps) {
     validatemessage,
     helperText,
     hideLabel,
+    displayOrder,
     name
   } = props;
   const [errorMessage, setErrorMessage] = useState(validatemessage);
   const context = getPConnect().getContextName();
-  let { listType, parameters, datasource = [], columns = [] } = props;
-  let label = props.label;
-  const { isOnlyField, overrideLabel } = useIsOnlyField(props.displayOrder);
+  let { listType, parameters, datasource = [], columns = [], label } = props;
+  const { isOnlyField, overrideLabel } = useIsOnlyField(displayOrder);
   if (isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [theDatasource, setDatasource] = useState(null);
-
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps()['value'];
+
   useEffect(() => {
     setErrorMessage(validatemessage);
   }, [validatemessage]);
@@ -94,7 +95,8 @@ export default function AutoComplete(props: AutoCompleteProps) {
   const flattenParameters = (params = {}) => {
     const flatParams = {};
     Object.keys(params).forEach(key => {
-      const { value: theVal } = params[key];
+      // eslint-disable-next-line
+      const { name, value: theVal } = params[key];
       flatParams[name] = theVal;
     });
 
@@ -163,6 +165,9 @@ export default function AutoComplete(props: AutoCompleteProps) {
   }
   useEffect(() => {
     const element = document.getElementById(name) as HTMLInputElement;
+    if (validatemessage) {
+      element?.classList.add('govuk-input--error');
+    }
     element?.addEventListener('blur', handleChange);
     return () => window.removeEventListener('blur', handleChange);
   });
@@ -191,7 +196,6 @@ export default function AutoComplete(props: AutoCompleteProps) {
       labelIsHeading={isOnlyField}
       errorText={errorMessage}
       id={name}
-      name={name}
     />
   );
 }

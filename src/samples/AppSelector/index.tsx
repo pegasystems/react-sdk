@@ -8,6 +8,7 @@ import ChildBenefitsClaim from '../ChildBenefitsClaim/index';
 import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
 import Accessibility from '../ChildBenefitsClaim/AccessibilityPage';
 import UnAuthChildBenefitsClaim from '../UnAuthChildBenefitsClaim';
+import DoYouWantToSignIn from '../StaticPages/DoYouWantToSignIn/doYouWantToSignIn';
 
 const AppSelector = () => {
   i18n
@@ -33,6 +34,7 @@ const AppSelector = () => {
       <Route exact path='/ua' component={UnAuthChildBenefitsClaim} />
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
+      <Route path='/do-you-want-to-signin' component={DoYouWantToSignIn} />
     </Switch>
   );
 };

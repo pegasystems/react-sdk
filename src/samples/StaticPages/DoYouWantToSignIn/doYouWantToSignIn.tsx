@@ -4,6 +4,7 @@ import AppFooter from '../../../components/AppComponents/AppFooter';
 import Button from '../../../components/BaseComponents/Button/Button';
 import MainWrapper from '../../../components/BaseComponents/MainWrapper';
 import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioButtons';
+import '../../../../assets/css/appStyles.scss';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -38,7 +39,7 @@ export default function DoYouWantToSignIn() {
 
   const instructionText = `<p class="govuk-body">${t('YOU_CAN_CREATE_A_PERSONAL_GOVT')}.</p>
   <p class="govuk-body">${t('WHEN_YOU_SIGN_IN_YOU_CAN')}:</p>
-  <ul style="list-style: inside; padding-left:0;">
+  <ul class="list-inside">
     <li class="govuk-body">${t('RECIEVE_YOUR_CHB_PAYMENT_SOONER')}</li>
     <li class="govuk-body">${t('SAVE_PROGRESS_AND_RETURN_TO_IT_LATER')}</li>
     <li class="govuk-body">${t('COMPLETE_THE_CHB_APPLICATION_FORM_QUICKLY')}</li>

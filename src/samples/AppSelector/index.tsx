@@ -34,7 +34,10 @@ const AppSelector = () => {
       <Route exact path='/ua' component={UnAuthChildBenefitsClaim} />
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
-      <Route path='/are-you-sure-not-to-sign-in' component={AreYouSureToContinueWoSignIn} />
+      <Route
+        path='/are-you-sure-to-continue-without-sign-in'
+        component={AreYouSureToContinueWoSignIn}
+      />
     </Switch>
   );
 };

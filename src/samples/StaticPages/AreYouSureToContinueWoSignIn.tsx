@@ -47,7 +47,7 @@ export default function AreYouSureToContinueWoSignIn() {
         <Button
           variant='backlink'
           onClick={() => history.goBack()}
-          key='ChooseClaimBacklink'
+          key='areYouSureToContinueWoSignInBacklink'
           attributes={{ type: 'link' }}
         />
         <MainWrapper>

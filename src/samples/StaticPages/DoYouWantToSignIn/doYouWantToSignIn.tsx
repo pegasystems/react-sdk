@@ -24,7 +24,6 @@ export default function DoYouWantToSignIn() {
 
   function handleSubmit() {
     const selectedOption = document.querySelector('input[name="doYouWantToSignIn"]:checked');
-    console.log(selectedOption); // eslint-disable-line
     if (selectedOption) {
       const selectedOptionValue = selectedOption.getAttribute('value');
       if (selectedOptionValue === 'yes') {

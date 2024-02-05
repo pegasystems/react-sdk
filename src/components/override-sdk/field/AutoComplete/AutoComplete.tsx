@@ -53,7 +53,7 @@ interface AutoCompleteProps extends PConnFieldProps {
   helperText: string;
   value: string;
   displayOrder: any;
-  name: any;
+  name: string;
 }
 
 export default function AutoComplete(props: AutoCompleteProps) {

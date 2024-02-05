@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { any, func, string } from 'prop-types';
+import { func, string } from 'prop-types';
 
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 import FormGroup from '../FormGroup/FormGroup';
@@ -104,5 +104,5 @@ AutoComplete.propTypes = {
   selectedValue: string,
   testId: string,
   helperText: string,
-  name: any
+  name: string
 };

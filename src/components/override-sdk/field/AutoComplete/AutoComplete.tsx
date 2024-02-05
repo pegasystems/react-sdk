@@ -52,7 +52,7 @@ interface AutoCompleteProps extends PConnFieldProps {
   instructionText: string;
   helperText: string;
   value: string;
-  displayOrder: any;
+  displayOrder: string;
   hideLabel: boolean;
   name: string;
 }

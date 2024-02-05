@@ -32,8 +32,9 @@ export default function DoYouWantToSignIn() {
       } else {
         history.push('/are-you-sure-not-to-sign-in');
       }
+    } else {
+      setErrorMsg(t('SELECT_YES_IF_YOU_WANT_TO_SIGN_IN'));
     }
-    setErrorMsg(t('SELECT_YES_IF_YOU_WANT_TO_SIGN_IN'));
   }
 
   const instructionText = `<p class="govuk-body">${t('YOU_CAN_CREATE_A_PERSONAL_GOVT')}.</p>

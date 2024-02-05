@@ -8,7 +8,6 @@ import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event
 import FieldValueList from '@pega/react-sdk-components/lib/components/designSystemExtension/FieldValueList';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
-import { name } from '../../../../../playwright.config';
 
 interface IOption {
   key: string;
@@ -95,7 +94,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   const flattenParameters = (params = {}) => {
     const flatParams = {};
     Object.keys(params).forEach(key => {
-      const { name, value: theVal } = params[key];
+      const { value: theVal } = params[key];
       flatParams[name] = theVal;
     });
 

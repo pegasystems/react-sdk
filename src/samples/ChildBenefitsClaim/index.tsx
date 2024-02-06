@@ -25,11 +25,7 @@ import ConfirmationPage from './ConfirmationPage';
 import UserPortal from './UserPortal';
 import ClaimsList from '../../components/templates/ClaimsList';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
-import AuthTimeOut from '../../components/AppComponents/TimeoutPopup/authTimeOut';
-import {
-  staySignedIn,
-  initTimeout
-} from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
+import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
@@ -38,6 +34,36 @@ import { checkCookie, setCookie } from '../../components/helpers/cookie';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 
 declare const myLoadMashup: any;
+
+/* Time out modal functionality */
+let applicationTimeout = null;
+let signoutTimeout = null;
+// Sets default timeouts (13 mins for warning, 115 seconds for sign out after warning shows)
+let milisecondsTilSignout = 115 * 1000;
+let milisecondsTilWarning = 780 * 1000;
+
+// Clears any existing timeouts and starts the timeout for warning, after set time shows the modal and starts signout timer
+function initTimeout(setShowTimeoutModal) {
+  clearTimeout(applicationTimeout);
+  clearTimeout(signoutTimeout);
+
+  applicationTimeout = setTimeout(() => {
+    setShowTimeoutModal(true);
+    signoutTimeout = setTimeout(() => {
+      logout();
+    }, milisecondsTilSignout);
+  }, milisecondsTilWarning);
+}
+
+// Sends 'ping' to pega to keep session alive and then initiates the timout
+function staySignedIn(setShowTimeoutModal, refreshSignin = true) {
+  if (refreshSignin) {
+    PCore.getDataPageUtils().getDataAsync('D_ClaimantWorkAssignmentChBCases', 'root');
+  }
+  setShowTimeoutModal(false);
+  initTimeout(setShowTimeoutModal);
+}
+/* ******************************* */
 
 export default function ChildBenefitsClaim() {
   const [pConn, setPConn] = useState<any>(null);
@@ -59,7 +85,6 @@ export default function ChildBenefitsClaim() {
   // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
   const featureID = 'ChB';
   const featureType = 'Service';
-  const claimsListApi = 'D_ClaimantWorkAssignmentChBCases';
 
   function resetAppDisplay() {
     setShowStartPage(false);
@@ -122,11 +147,11 @@ export default function ChildBenefitsClaim() {
 
   function beginClaim() {
     // Added to ensure that clicking begin claim restarts timeout
-    staySignedIn(setShowTimeoutModal, claimsListApi, true);
+    staySignedIn(setShowTimeoutModal);
     displayStartPage();
   }
   function returnToPortalPage() {
-    staySignedIn(setShowTimeoutModal, claimsListApi, true);
+    staySignedIn(setShowTimeoutModal);
     setServiceNotAvailable(false);
     displayUserPortal();
     PCore.getContainerUtils().closeContainerItem(
@@ -162,7 +187,7 @@ export default function ChildBenefitsClaim() {
     let inProgressClaimsData: any = [];
     // @ts-ignore
     PCore.getDataPageUtils()
-      .getDataAsync(claimsListApi, 'root')
+      .getDataAsync('D_ClaimantWorkAssignmentChBCases', 'root')
       .then(resp => {
         resp = resp.data.slice(0, 10);
         inProgressClaimsData = resp;
@@ -352,10 +377,19 @@ export default function ChildBenefitsClaim() {
       establishPCoreSubscriptions();
       setShowAppName(true);
 
-      PCore.getStore().subscribe(() =>
-        staySignedIn(setShowTimeoutModal, claimsListApi, true, false)
-      );
-      initTimeout(setShowTimeoutModal, true);
+      // Fetches timeout length config
+      getSdkConfig()
+        .then(sdkConfig => {
+          if (sdkConfig.timeoutConfig.secondsTilWarning)
+            milisecondsTilWarning = sdkConfig.timeoutConfig.secondsTilWarning * 1000;
+          if (sdkConfig.timeoutConfig.secondsTilLogout)
+            milisecondsTilSignout = sdkConfig.timeoutConfig.secondsTilLogout * 1000;
+        })
+        .finally(() => {
+          // Subscribe to any store change to reset timeout counter
+          PCore.getStore().subscribe(() => staySignedIn(setShowTimeoutModal, false));
+          initTimeout(setShowTimeoutModal);
+        });
 
       // TODO : Consider refactoring 'en_GB' reference as this may need to be set elsewhere
       PCore.getEnvironmentInfo().setLocale(sessionStorage.getItem('rsdk_locale') || 'en_GB');
@@ -496,6 +530,7 @@ export default function ChildBenefitsClaim() {
   }, []);
 
   function signOut() {
+    //  const authService = authType === 'gg' ? 'GovGateway' : (authType === 'gg-dev' ? 'GovGateway-Dev' : authType);
     let authService;
     if (authType && authType === 'gg') {
       authService = 'GovGateway';
@@ -521,7 +556,7 @@ export default function ChildBenefitsClaim() {
     e.preventDefault();
     setShowSignoutModal(false);
     // Extends manual signout popup 'stay signed in' to reset the automatic timeout timer also
-    staySignedIn(setShowTimeoutModal, claimsListApi, true, false);
+    staySignedIn(setShowTimeoutModal);
   };
 
   const checkShuttered = (status: boolean) => {
@@ -530,6 +565,13 @@ export default function ChildBenefitsClaim() {
 
   return (
     <>
+      <TimeoutPopup
+        show={showTimeoutModal}
+        staySignedinHandler={() => staySignedIn(setShowTimeoutModal)}
+        signoutHandler={() => logout()}
+        isAuthorised
+      />
+
       <AppHeader
         handleSignout={handleSignout}
         appname={t('CLAIM_CHILD_BENEFIT')}
@@ -577,22 +619,14 @@ export default function ChildBenefitsClaim() {
           </>
         )}
 
-        {bShowResolutionScreen && <ConfirmationPage caseId={caseId} />}
+        {bShowResolutionScreen && <ConfirmationPage caseId={caseId} isUnAuth={false} />}
       </div>
-
-      <AuthTimeOut
-        show={showTimeoutModal}
-        modalId='timeout-popup'
-        primaryHandler={() => staySignedIn(setShowTimeoutModal, claimsListApi, true)}
-        secondaryHandler={() => logout()}
-      />
 
       <LogoutPopup
         show={showSignoutModal && !showTimeoutModal}
-        onClose={() => setShowSignoutModal(false)}
-        modalId='logout-popup'
-        primaryHandler={signOut}
-        secondaryHandler={handleStaySignIn}
+        hideModal={() => setShowSignoutModal(false)}
+        handleSignoutModal={signOut}
+        handleStaySignIn={handleStaySignIn}
       />
       <AppFooter />
     </>

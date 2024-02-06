@@ -8,18 +8,24 @@ import ShutterServicePage from '../../components/AppComponents/ShutterServicePag
 
 declare const PCore: any;
 
-const ConfirmationPage = ({ caseId }) => {
+const ConfirmationPage = ({ caseId, isUnAuth }) => {
   const { t } = useTranslation();
   const [documentList, setDocumentList] = useState(``);
   const [isBornAbroadOrAdopted, setIsBornAbroadOrAdopted] = useState(false);
   const [returnSlipContent, setReturnSlipContent] = useState();
   const [loading, setLoading] = useState(true);
   const serviceShuttered = useServiceShuttered();
-
+  const [caseIdPresent, setCaseIdPresent] = useState(false);
+  const refId = caseId.replace('HMRC-CHB-WORK ', '');
   const docIDForDocList = 'CR0003';
   const docIDForReturnSlip = 'CR0002';
   const locale = PCore.getEnvironmentInfo().locale.replaceAll('-', '_');
 
+  function getFeedBackLink() {
+    return isUnAuth
+      ? 'https://www.tax.service.gov.uk/feedback/ODXCHBUA'
+      : 'https://www.tax.service.gov.uk/feedback/ODXCHB';
+  }
   useEffect(() => {
     setPageTitle();
   }, []);
@@ -40,6 +46,9 @@ const ConfirmationPage = ({ caseId }) => {
         }
         setLoading(false);
         setDocumentList(listData.DocumentContentHTML);
+        if (listData.DocumentContentHTML.includes(`data-ninopresent="false"`)) {
+          setCaseIdPresent(true);
+        }
       })
       .catch(err => {
         // eslint-disable-next-line no-console
@@ -77,6 +86,13 @@ const ConfirmationPage = ({ caseId }) => {
         <MainWrapper>
           <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
             <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
+            {caseIdPresent && (
+              <div className='govuk-panel__body'>
+                {t('YOUR_REF_NUMBER')}
+                <br></br>
+                <strong>{refId}</strong>
+              </div>
+            )}
             <div className='govuk-panel__body govuk-!-font-size-27'>
               {t('POST_YOUR_SUPPORTING_DOCUMENTS')}
             </div>
@@ -109,15 +125,10 @@ const ConfirmationPage = ({ caseId }) => {
           </p>
           <p className='govuk-body'> {t('WE_NORMALLY_RETURN_DOCUMENTS_WITHIN')} </p>
           <p className='govuk-body'>
-            <a
-              href='https://www.tax.service.gov.uk/feedback/ODXCHB'
-              className='govuk-link'
-              target='_blank'
-              rel='noreferrer'
-            >
+            <a href={getFeedBackLink()} className='govuk-link' target='_blank' rel='noreferrer'>
               {t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')}{' '}
             </a>
-            {t('TAKES_30_SECONDS')}
+            {t('OPENS_IN_NEW_TAB')}
           </p>
         </MainWrapper>
       </>
@@ -128,20 +139,22 @@ const ConfirmationPage = ({ caseId }) => {
         <MainWrapper>
           <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
             <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
+            {caseIdPresent && (
+              <div className='govuk-panel__body'>
+                {t('YOUR_REF_NUMBER')}
+                <br></br>
+                <strong>{refId}</strong>
+              </div>
+            )}
           </div>
           <p className='govuk-body'> {t('WE_HAVE_SENT_YOUR_APPLICATION')}</p>
           <h2 className='govuk-heading-m'> {t('WHAT_HAPPENS_NEXT')}</h2>
           <p className='govuk-body'> {t('WE_WILL_TELL_YOU_IN_14_DAYS')}</p>
           <p className='govuk-body'>
-            <a
-              href='https://www.tax.service.gov.uk/feedback/ODXCHB'
-              className='govuk-link'
-              target='_blank'
-              rel='noreferrer'
-            >
+            <a href={getFeedBackLink()} className='govuk-link' target='_blank' rel='noreferrer'>
               {t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')}{' '}
             </a>
-            {t('TAKES_30_SECONDS')}
+            {t('OPENS_IN_NEW_TAB')}
           </p>
         </MainWrapper>
       </>

@@ -15,6 +15,11 @@ export const settingTimer = async () => {
 let applicationTimeout = null;
 let signoutTimeout = null;
 
+export function clearTimer() {
+  clearTimeout(applicationTimeout);
+  clearTimeout(signoutTimeout);
+}
+
 export const initTimeout = (showTimeoutModal, deleteData, isAuthorised) => {
   // TODO - isAuthorised to be replaced by caseType from pega
   // Fetches timeout length config
@@ -31,6 +36,7 @@ export const initTimeout = (showTimeoutModal, deleteData, isAuthorised) => {
         logout();
       } else {
         deleteData();
+        clearTimer();
         // session ends and deleteData() (pega)
       }
     }, milisecondsTilSignout);

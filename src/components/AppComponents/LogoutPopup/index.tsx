@@ -4,11 +4,12 @@ import Modal from '../../BaseComponents/Modal/Modal';
 import Button from '../../BaseComponents/Button/Button';
 import { useTranslation } from 'react-i18next';
 
-export default function LogoutPopup({ show, onClose, modalId, primaryHandler, secondaryHandler }) {
+export default function LogoutPopup(props) {
+  const { hideModal, handleSignoutModal, handleStaySignIn, id } = props;
   const { t } = useTranslation();
 
   return (
-    <Modal show={show} handleClose={onClose} id={modalId}>
+    <Modal show={props.show} handleClose={hideModal} id={id}>
       <div>
         <h1 id='govuk-timeout-heading' className='govuk-heading-m push--top'>
           {t('YOU_ARE_ABOUT_TO_SIGN_OUT')}
@@ -20,12 +21,12 @@ export default function LogoutPopup({ show, onClose, modalId, primaryHandler, se
             type='button'
             id='modal-signout-btn'
             attributes={{ className: 'govuk-button' }}
-            onClick={primaryHandler}
+            onClick={handleSignoutModal}
           >
             {t('SIGN-OUT')}
           </Button>
 
-          <a id='modal-staysignin-btn' className='govuk-link ' href='#' onClick={secondaryHandler}>
+          <a id='modal-staysignin-btn' className='govuk-link ' href='#' onClick={handleStaySignIn}>
             {t('STAY_SIGNED_IN')}
           </a>
         </div>
@@ -35,9 +36,9 @@ export default function LogoutPopup({ show, onClose, modalId, primaryHandler, se
 }
 
 LogoutPopup.propTypes = {
+  id: PropTypes.string,
   show: PropTypes.bool,
-  onClose: PropTypes.func,
-  modalId: PropTypes.string,
-  primaryHandler: PropTypes.func,
-  secondaryHandler: PropTypes.func
+  hideModal: PropTypes.func,
+  handleSignoutModal: PropTypes.func,
+  handleStaySignIn: PropTypes.func
 };

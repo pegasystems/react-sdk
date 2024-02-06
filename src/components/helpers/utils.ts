@@ -70,3 +70,22 @@ export const isFieldSetReqiredForSelectComponent = (label: string) => {
   const arrFieldSetNotRequiredForSelectComponent = ['name of building society'];
   return !arrFieldSetNotRequiredForSelectComponent.includes(label.toLocaleLowerCase());
 };
+
+export const isUnAuthJourney = () => {
+  const containername = PCore.getContainerUtils().getActiveContainerItemName(
+    `${PCore.getConstants().APP.APP}/primary`
+  );
+  const context = PCore.getContainerUtils().getActiveContainerItemName(`${containername}/workarea`);
+  const caseType = PCore.getStoreValue('.CaseType', 'caseInfo.content', context);
+  return caseType === 'Unauth';
+};
+export const isSingleEntity = (useType: string, key: string, action: any, getPConnect: any) => {
+  const containerName = getPConnect().getContainerName();
+  const context = PCore.getContainerUtils().getActiveContainerItemContext(
+    `${PCore.getConstants().APP.APP}/${containerName}`
+  );
+
+  const count = PCore.getStoreValue(key, 'caseInfo.content', context)?.length;
+
+  if (typeof count !== 'undefined' && count === 1) return true;
+};

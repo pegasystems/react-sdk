@@ -7,7 +7,7 @@ import DOMPurify from 'dompurify';
   Can be used, for example, to inject required class into <p> tags
   Expects a list of DomPurify hook callbacks, which will be called with 'beforeSanitizeAttributes' option
 */
-export default function InstructionComp({
+export default function ParsedHTML({
   htmlString,
   DOMSanitiseHooks
 }: {

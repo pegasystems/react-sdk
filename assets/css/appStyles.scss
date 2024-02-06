@@ -2,6 +2,7 @@
 @import 'node_modules/hmrc-frontend/hmrc/components/header/_header.scss';
 @import 'node_modules/hmrc-frontend/hmrc/components/language-select/_language-select.scss';
 @import 'node_modules/hmrc-frontend/hmrc/components/timeout-dialog/_timeout-dialog.scss';
+@import './location-autocomplete.min.css';
 
 .app-claimslist-tag {
   @include govuk-media-query($from: tablet) {

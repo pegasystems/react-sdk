@@ -1,0 +1,11 @@
+{
+  "name": "AutoComplete",
+  "label": "Search box",
+  "description": "Picklist",
+  "type": "Field",
+  "subtype": "Picklist",
+  "componentKey" : "AutoComplete",
+  "icon": "",
+  "properties": [
+  ]
+}

@@ -7,6 +7,8 @@ import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioB
 import '../../../../assets/css/appStyles.scss';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import InstructionTextComponent from '../../../components/override-sdk/template/DefaultForm/InstructionTextComponent';
+import StaticPageErrorSummary from './StaticPageErrorSummary';
 
 export default function DoYouWantToSignIn() {
   const [errorMsg, setErrorMsg] = useState('');
@@ -56,16 +58,16 @@ export default function DoYouWantToSignIn() {
           attributes={{ type: 'link' }}
         />
         <MainWrapper>
+          <StaticPageErrorSummary errorMessage={errorMsg} linkToFocus='#doYouWantToSignIn' />
           <h1 className='govuk-label govuk-label--l'>{t('DO_YOU_WANT_TO_SIGN_IN')}</h1>
+          <InstructionTextComponent instructionText={instructionText} />
           <RadioButtons
             name='doYouWantToSignIn'
             displayInline
             value=''
             useSmallRadios
             options={radioOptions}
-            label=''
             legendIsHeading
-            hintText={instructionText}
             errorText={errorMsg}
           ></RadioButtons>
           <button

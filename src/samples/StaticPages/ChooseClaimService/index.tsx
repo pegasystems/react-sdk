@@ -45,6 +45,7 @@ export default function RecentlyClaimedChildBenefit() {
         case 'addchildtoexistingclaim':
           break;
         case 'checkonprogressofclaim':
+          history.push('/check-on-claim');
           break;
         case 'restartyourpayments':
           window.location.assign(

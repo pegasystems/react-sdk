@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import HmrcOdxGdsTaskListTemplate from './index.tsx';
-import { pyReviewRaw } from './mock.stories';
+import { pyReviewRaw, caseData } from './mock.stories';
 import { TextField } from '@material-ui/core';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -194,6 +194,9 @@ export const BaseHmrcOdxGdsTaskListTemplate = () => {
         },
         getContextName: () => {
           // Resolve config props
+        },
+        getCaseSummary: () => {
+          return caseData;
         }
       };
     }

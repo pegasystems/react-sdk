@@ -1,3 +1,33 @@
+export const caseData = {
+  content: {
+    CaseTaskList: [
+      {
+        TaskLabel: 'Your details',
+        TaskStatus: 'Completed',
+        IsTaskALink: true,
+        IsTaskInProgress: false
+      },
+      {
+        TaskLabel: 'Relationship details',
+        TaskStatus: 'In progress',
+        IsTaskALink: true,
+        IsTaskInProgress: true
+      },
+      {
+        TaskLabel: 'Child details',
+        TaskStatus: 'Cannot start yet',
+        IsTaskALink: false,
+        IsTaskInProgress: false
+      },
+      {
+        TaskLabel: 'Income details',
+        TaskStatus: 'Cannot start yet',
+        IsTaskALink: false,
+        IsTaskInProgress: false
+      }
+    ]
+  }
+};
 export const pyReviewRaw = {
   name: 'CollectInformation',
   type: 'View',

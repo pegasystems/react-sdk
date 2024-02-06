@@ -7,7 +7,7 @@ import MainWrapper from '../../../components/BaseComponents/MainWrapper';
 import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioButtons';
 import Button from '../../../components/BaseComponents/Button/Button';
 
-export default function ChooseClaimService() {
+export default function RecentlyClaimedChildBenefit() {
   const { t } = useTranslation();
   const history = useHistory();
   const [errorMsg, setErrorMsg] = useState('');
@@ -35,16 +35,14 @@ export default function ChooseClaimService() {
     }
   ];
 
-  function clicked() {
+  function routeToService() {
     const selectedOption = document.querySelector('input[name="serviceType"]:checked');
     if (selectedOption) {
       const selectedOptionValue = selectedOption.getAttribute('value');
       switch (selectedOptionValue) {
         case 'makeanewclaim':
-          history.push('/accessibility');
           break;
         case 'addchildtoexistingclaim':
-          history.push('/cookies');
           break;
         case 'checkonprogressofclaim':
           break;
@@ -70,7 +68,7 @@ export default function ChooseClaimService() {
         <Button
           variant='backlink'
           onClick={() => history.goBack()}
-          key='ChooseClaimBacklink'
+          key='RecentlyClaimedBacklink'
           attributes={{ type: 'link' }}
         />
         <MainWrapper>
@@ -102,7 +100,7 @@ export default function ChooseClaimService() {
           <button
             className='govuk-button'
             data-module='govuk-button'
-            onClick={clicked}
+            onClick={routeToService}
             type='button'
           >
             {t('CONTINUE')}

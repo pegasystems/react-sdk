@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import MainWrapper from '../../../components/BaseComponents/MainWrapper';
 import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioButtons';
 import Button from '../../../components/BaseComponents/Button/Button';
+import StaticPageErrorSummary from '../ErrorSummary';
+import { error } from '@pega/pcore-pconnect-typedefs/store/state/actions/action-creators';
 
 export default function RecentlyClaimedChildBenefit() {
   const { t } = useTranslation();
@@ -74,18 +76,10 @@ export default function RecentlyClaimedChildBenefit() {
         />
         <MainWrapper>
           {errorMsg && errorMsg.length > 0 && (
-            <div className='govuk-error-summary' data-module='govuk-error-summary' tabIndex={-1}>
-              <div role='alert'>
-                <h2 className='govuk-error-summary__title'>There is a problem</h2>
-                <div className='govuk-error-summary__body'>
-                  <ul className='govuk-list govuk-error-summary__list'>
-                    <li key='serviceType'>
-                      <a href={`#serviceType`}>{errorMsg}</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <StaticPageErrorSummary
+              errorSummary={errorMsg}
+              linkHref={`#serviceType`}
+            ></StaticPageErrorSummary>
           )}
           <RadioButtons
             name='serviceType'
@@ -103,11 +97,10 @@ export default function RecentlyClaimedChildBenefit() {
             data-module='govuk-button'
             onClick={routeToService}
             type='button'
+            style={{ display: 'block', marginBottom: '50px' }}
           >
             {t('CONTINUE')}
           </button>
-          <br></br>
-          <br></br>
         </MainWrapper>
       </div>
       <AppFooter />

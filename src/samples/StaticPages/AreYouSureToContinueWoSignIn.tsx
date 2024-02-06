@@ -51,16 +51,27 @@ export default function AreYouSureToContinueWoSignIn() {
           attributes={{ type: 'link' }}
         />
         <MainWrapper>
-          <h1 className='govuk-label govuk-label--l'>
-            {t('ARE_YOU_SURE_YOU_WANT_TO_CONTINUE_WO_SIGN_IN')}
-          </h1>
+          {errorMsg && errorMsg.length > 0 && (
+            <div className='govuk-error-summary' data-module='govuk-error-summary' tabIndex={-1}>
+              <div role='alert'>
+                <h2 className='govuk-error-summary__title'>There is a problem</h2>
+                <div className='govuk-error-summary__body'>
+                  <ul className='govuk-list govuk-error-summary__list'>
+                    <li>
+                      <a href='#areYouSureToContinueWoSignIn'>{errorMsg}</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
           <RadioButtons
             name='areYouSureToContinueWoSignIn'
             displayInline
             value=''
             useSmallRadios
             options={radioOptions}
-            label=''
+            label={t('ARE_YOU_SURE_YOU_WANT_TO_CONTINUE_WO_SIGN_IN')}
             legendIsHeading
             errorText={errorMsg}
           ></RadioButtons>

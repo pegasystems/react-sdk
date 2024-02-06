@@ -7,7 +7,6 @@ import MainWrapper from '../../../components/BaseComponents/MainWrapper';
 import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioButtons';
 import Button from '../../../components/BaseComponents/Button/Button';
 import StaticPageErrorSummary from '../ErrorSummary';
-import { error } from '@pega/pcore-pconnect-typedefs/store/state/actions/action-creators';
 
 export default function RecentlyClaimedChildBenefit() {
   const { t } = useTranslation();
@@ -97,7 +96,7 @@ export default function RecentlyClaimedChildBenefit() {
             data-module='govuk-button'
             onClick={routeToService}
             type='button'
-            style={{ display: 'block', marginBottom: '50px' }}
+            style={{ display: 'block', marginBottom: '80px' }}
           >
             {t('CONTINUE')}
           </button>

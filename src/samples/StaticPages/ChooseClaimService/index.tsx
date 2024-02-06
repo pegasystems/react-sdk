@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import MainWrapper from '../../../components/BaseComponents/MainWrapper';
 import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioButtons';
 import Button from '../../../components/BaseComponents/Button/Button';
+import '../../../../assets/css/appStyles.scss';
 import StaticPageErrorSummary from '../ErrorSummary';
 
 export default function RecentlyClaimedChildBenefit() {
@@ -92,11 +93,10 @@ export default function RecentlyClaimedChildBenefit() {
             errorText={errorMsg}
           ></RadioButtons>
           <button
-            className='govuk-button'
+            className={`govuk-button static-page-cont-button`}
             data-module='govuk-button'
             onClick={routeToService}
             type='button'
-            style={{ display: 'block', marginBottom: '80px' }}
           >
             {t('CONTINUE')}
           </button>

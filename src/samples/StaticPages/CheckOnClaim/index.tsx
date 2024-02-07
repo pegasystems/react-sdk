@@ -22,32 +22,30 @@ export default function CheckOnClaim() {
           attributes={{ type: 'link' }}
         />
         <MainWrapper>
-          <>
-            <h1 className='govuk-heading-xl'>{t('CHECK_PROGRESS_CHB')}</h1>
-            <p className='govuk-body'>
-              {t('YOU_CAN_ALSO')}
-              <a
-                className='govuk-link '
-                target='_blank'
-                rel='noopener noreferrer'
-                href='https://www.gov.uk/guidance/check-when-you-can-expect-a-reply-from-hmrc'
-              >
-                {t('CHECK_CLAIM_REPLY')}
-              </a>
-            </p>
-            <p className='govuk-body'>
-              {t('CHECK_CLAIM_APPROVED')}
-              <a
-                className='govuk-link '
-                target='_blank'
-                rel='noopener noreferrer'
-                href='https://www.tax.service.gov.uk/fill-online/claim-child-benefit/check-on-claim'
-              >
-                {t('YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO')}
-              </a>
-            </p>
-            <br></br>
-          </>
+          <h1 className='govuk-heading-xl'>{t('CHECK_PROGRESS_CHB')}</h1>
+          <p className='govuk-body'>
+            {t('YOU_CAN_ALSO')}
+            <a
+              className='govuk-link '
+              target='_blank'
+              rel='noopener noreferrer'
+              href='https://www.gov.uk/guidance/check-when-you-can-expect-a-reply-from-hmrc'
+            >
+              {t('CHECK_CLAIM_REPLY')}
+            </a>
+          </p>
+          <p className='govuk-body'>
+            {t('CHECK_CLAIM_APPROVED')}
+            <a
+              className='govuk-link '
+              target='_blank'
+              rel='noopener noreferrer'
+              href='https://www.tax.service.gov.uk/fill-online/claim-child-benefit/check-on-claim'
+            >
+              {t('YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO')}
+            </a>
+          </p>
+          <br></br>
         </MainWrapper>
       </div>
       <AppFooter />

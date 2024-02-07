@@ -12,7 +12,7 @@ function replaceWarningText(finalText, textToBeReplaced, textToBeFormatted) {
 }
 
 function replaceInsetText(finalText, textToBeReplaced, textToBeFormatted) {
-  if (textToBeFormatted.trim().length < 1) {
+  if (textToBeFormatted.trim().length === 0) {
     return finalText.replaceAll(textToBeReplaced, '');
   }
   const textToBeInserted = `<div class="govuk-inset-text">${textToBeFormatted}</div>`;

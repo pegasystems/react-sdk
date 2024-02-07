@@ -11,7 +11,7 @@ interface HmrcOdxGdsTaskListProps extends PConnProps {
 // props passed in combination of props from property panel (config.json) and run time props from Constellation
 // any default values in config.pros should be set in defaultProps at bottom of this file
 export default function HmrcOdxGdsTaskList(props: HmrcOdxGdsTaskListProps) {
-  let { taskList, getPConnect } = props;
+  const { taskList, getPConnect } = props;
 
   let globalTaskList = [];
 

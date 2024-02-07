@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Grid } from '@pega/cosmos-react-core';
+import { useTranslation } from 'react-i18next';
 import type { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import StyledHmrcOdxGdsTaskListTemplateWrapper from './styles';
 import './TaskListTemplate.css';
@@ -14,10 +15,21 @@ interface HmrcOdxGdsTaskListTemplateProps extends PConnProps {
 export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemplateProps) {
   const { children, cssClassHook, NumCols, getPConnect } = props;
   const nCols = parseInt(NumCols, 8);
-
+  const { t } = useTranslation();
   const context = getPConnect().getContextName();
   const caseInfo = getPConnect().getCaseSummary();
   const data = caseInfo.content.CaseTaskList;
+
+  let totalSections = 0;
+  let completedSections = 0;
+
+  // Loop through the data to determine the number of sections in total and how many are flagged as complete.
+  data.map(task => {
+    totalSections += 1;
+    if (task.IsTaskComplete) {
+      completedSections += 1;
+    }
+  });
 
   const handleOnClick = (section: string) => {
     getPConnect().setValue('.SelectedTask', section, '', false);
@@ -36,6 +48,17 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
         {children[0]}
       </Grid>
       <div className='govuk-!-padding-bottom-4'>
+        <p className='govuk-body govuk-!-font-weight-bold'>
+          {completedSections < totalSections
+            ? `${t('CLAIM')} ${t('INCOMPLETE')}`
+            : `${t('CLAIM')} ${t('COMPLETE')}`}
+        </p>
+        <p className='govuk-body govuk-!-padding-bottom-4'>
+          {`${t('YOU_HAVE_COMPLETED')} ${completedSections} ${t('OF')} ${totalSections} ${t(
+            'SECTIONS'
+          )}`}
+          .
+        </p>
         <ul className='govuk-task-list'>
           {data &&
             data.map((task, index) => {

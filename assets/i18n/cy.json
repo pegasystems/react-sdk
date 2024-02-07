@@ -296,18 +296,5 @@
   "SHUTTER_USE_SERVICE_LATER_MESSAGE": "You will be able to use the service later.",
   "PORTAL_WARNING_TEXT": "We saved your progress on",
   "PORTAL_WARNING_TEXT2": "and will store your information for 28 days.",
-  "PORTAL_NOTIFICATION_BANNER_CONTENT": "We saved your progress and will store your information for 28 days.",
-  "MAKE_A_NEW_CLAIM": "Make a new claim",
-  "ADD_CHILD_TO_EXISTING_CLAIM": "Add a child to an existing claim",
-  "CHECK_PROGRESS_OF_CLAIM": "Check on the progress of a claim",
-  "RESTART_YOUR_PAYMENTS": "Restart your payments (without adding a child to an existing claim)",
-  "STOP_YOUR_PAYMENTS": "Stop your payments (without adding a child to an existing claim)",
-  "CONFIRM_YOUR_SERVICE": "Confirm which service you want to use",
-  "CONTINUE": "Continue",
-  "MAKE_SURE_YOU_USE_RIGHT_CHBS": "Make sure you’re using the right Child Benefit service",
-  "CHECK_PROGRESS_CHB": "Check on the progress of a Child Benefit claim",
-  "YOU_CAN_ALSO": "You can use HMRC's online service to ",
-  "CHECK_CLAIM_REPLY": "check when you can expect a reply to your claim.(opens in new tab)",
-  "CHECK_CLAIM_APPROVED": "To check if your claim for Child Benefit has been approved, you can view your proof of entitlement.",
-  "YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO": "You will need to sign in to access this information.If you do not have sign in details, you can create them.(opens in new tab)"
+  "PORTAL_NOTIFICATION_BANNER_CONTENT": "We saved your progress and will store your information for 28 days."
 }

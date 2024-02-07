@@ -13,7 +13,7 @@ function replaceWarningText(finalText, textToBeReplaced, textToBeFormatted) {
 
 function replaceInsetText(finalText, textToBeReplaced, textToBeFormatted) {
   if (textToBeFormatted.trim().length < 1) {
-    return null;
+    return finalText.replaceAll(textToBeReplaced, '');
   }
   const textToBeInserted = `<div class="govuk-inset-text">${textToBeFormatted}</div>`;
   return finalText.replaceAll(textToBeReplaced, textToBeInserted);
@@ -43,6 +43,7 @@ export default function getFormattedInstructionText(instructionText) {
   if (finalText.includes(stringWithTagForWarning)) {
     return formatter(finalText, stringWithTagForWarning, endtagForWarning, replaceWarningText);
   }
+
   if (finalText.includes(stringWithTagForInset)) {
     return formatter(finalText, stringWithTagForInset, endtagForInset, replaceInsetText);
   }

@@ -4,7 +4,7 @@ label[for='SelectedTask'],
 }
 
 /* .govuk-form-group:has(label[for='SelectedTask']) { */
-.govuk-form-group {
+form:has(div.u-tasklist) .govuk-form-group {
   margin-bottom: 0;
 }
 

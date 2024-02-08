@@ -8,7 +8,7 @@ import '../../../../assets/css/appStyles.scss';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import InstructionTextComponent from '../../../components/override-sdk/template/DefaultForm/InstructionTextComponent';
-import StaticPageErrorSummary from './StaticPageErrorSummary';
+import StaticPageErrorSummary from '../ErrorSummary';
 
 export default function DoYouWantToSignIn() {
   const [errorMsg, setErrorMsg] = useState('');
@@ -58,7 +58,7 @@ export default function DoYouWantToSignIn() {
           attributes={{ type: 'link' }}
         />
         <MainWrapper>
-          <StaticPageErrorSummary errorMessage={errorMsg} linkToFocus='#doYouWantToSignIn' />
+          <StaticPageErrorSummary errorSummary={errorMsg} linkHref='#doYouWantToSignIn' />
           <h1 className='govuk-label govuk-label--l'>{t('DO_YOU_WANT_TO_SIGN_IN')}</h1>
           <InstructionTextComponent instructionText={instructionText} />
           <RadioButtons

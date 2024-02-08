@@ -7,6 +7,7 @@ import { getDataPage } from '@pega/react-sdk-components/lib/components/helpers/d
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import FieldValueList from '@pega/react-sdk-components/lib/components/designSystemExtension/FieldValueList';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 
 interface IOption {
   key: string;
@@ -49,13 +50,16 @@ interface AutoCompleteProps extends PConnFieldProps {
   datasource: any;
   columns: Array<any>;
   instructionText: string;
+  helperText: string;
   value: string;
+  displayOrder: string;
+  hideLabel: boolean;
+  name: string;
 }
 
 export default function AutoComplete(props: AutoCompleteProps) {
   const {
     getPConnect,
-    label,
     value = '',
     readOnly,
     testId,
@@ -63,19 +67,27 @@ export default function AutoComplete(props: AutoCompleteProps) {
     deferDatasource,
     datasourceMetadata,
     instructionText,
-    hideLabel
+    validatemessage,
+    helperText,
+    hideLabel,
+    displayOrder,
+    name
   } = props;
-
+  const [errorMessage, setErrorMessage] = useState(validatemessage);
   const context = getPConnect().getContextName();
-  let { listType, parameters, datasource = [], columns = [] } = props;
+  let { listType, parameters, datasource = [], columns = [], label } = props;
 
+  const { isOnlyField, overrideLabel } = useIsOnlyField(displayOrder);
+  if (isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [theDatasource, setDatasource] = useState(null);
-
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps()['value'];
 
+  useEffect(() => {
+    setErrorMessage(validatemessage);
+  }, [validatemessage]);
   if (!isDeepEqual(datasource, theDatasource)) {
     // inbound datasource is different, so update theDatasource (to trigger useEffect)
     setDatasource(datasource);
@@ -84,6 +96,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   const flattenParameters = (params = {}) => {
     const flatParams = {};
     Object.keys(params).forEach(key => {
+      // eslint-disable-next-line
       const { name, value: theVal } = params[key];
       flatParams[name] = theVal;
     });
@@ -152,8 +165,10 @@ export default function AutoComplete(props: AutoCompleteProps) {
     handleEvent(actionsApi, 'changeNblur', propName, selectedOptionKey[0]?.key);
   }
   useEffect(() => {
-    const element = document.getElementById('default') as HTMLInputElement;
-
+    const element = document.getElementById(name) as HTMLInputElement;
+    if (validatemessage) {
+      element?.classList.add('govuk-input--error');
+    }
     element?.addEventListener('blur', handleChange);
     return () => window.removeEventListener('blur', handleChange);
   });
@@ -177,7 +192,11 @@ export default function AutoComplete(props: AutoCompleteProps) {
       optionList={options}
       selectedValue={value}
       instructionText={instructionText}
+      helperText={helperText}
       testId={testId}
+      labelIsHeading={isOnlyField}
+      errorText={errorMessage}
+      id={name}
     />
   );
 }

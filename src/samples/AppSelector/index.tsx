@@ -3,12 +3,13 @@ import { Switch, Route } from 'react-router-dom';
 import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
 import i18n from 'i18next';
-// import EmbeddedTopLevel from "../Embedded/EmbeddedTopLevel";
 import ChildBenefitsClaim from '../ChildBenefitsClaim/index';
 import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
 import Accessibility from '../ChildBenefitsClaim/AccessibilityPage';
 import UnAuthChildBenefitsClaim from '../UnAuthChildBenefitsClaim';
 import DoYouWantToSignIn from '../StaticPages/DoYouWantToSignIn/doYouWantToSignIn';
+import CheckOnClaim from '../StaticPages/CheckOnClaim';
+import RecentlyClaimedChildBenefit from '../StaticPages/ChooseClaimService';
 
 const AppSelector = () => {
   i18n
@@ -35,6 +36,8 @@ const AppSelector = () => {
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
       <Route path='/do-you-want-to-signin' component={DoYouWantToSignIn} />
+      <Route path='/check-on-claim' component={CheckOnClaim} />
+      <Route path='/recently-claimed-child-benefit' component={RecentlyClaimedChildBenefit} />
     </Switch>
   );
 };

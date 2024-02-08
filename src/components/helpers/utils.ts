@@ -79,3 +79,13 @@ export const isUnAuthJourney = () => {
   const caseType = PCore.getStoreValue('.CaseType', 'caseInfo.content', context);
   return caseType === 'Unauth';
 };
+export const isSingleEntity = (useType: string, key: string, action: any, getPConnect: any) => {
+  const containerName = getPConnect().getContainerName();
+  const context = PCore.getContainerUtils().getActiveContainerItemContext(
+    `${PCore.getConstants().APP.APP}/${containerName}`
+  );
+
+  const count = PCore.getStoreValue(key, 'caseInfo.content', context)?.length;
+
+  if (typeof count !== 'undefined' && count === 1) return true;
+};

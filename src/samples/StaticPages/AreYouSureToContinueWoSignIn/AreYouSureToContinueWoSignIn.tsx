@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import AppHeader from '../../components/AppComponents/AppHeader';
-import AppFooter from '../../components/AppComponents/AppFooter';
-import Button from '../../components/BaseComponents/Button/Button';
-import MainWrapper from '../../components/BaseComponents/MainWrapper';
-import RadioButtons from '../../components/BaseComponents/RadioButtons/RadioButtons';
+import AppHeader from '../../../components/AppComponents/AppHeader';
+import AppFooter from '../../../components/AppComponents/AppFooter';
+import Button from '../../../components/BaseComponents/Button/Button';
+import MainWrapper from '../../../components/BaseComponents/MainWrapper';
+import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioButtons';
+import StaticPageErrorSummary from '../ErrorSummary';
 import '../../../assets/css/appStyles.scss';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -51,20 +52,7 @@ export default function AreYouSureToContinueWoSignIn() {
           attributes={{ type: 'link' }}
         />
         <MainWrapper>
-          {errorMsg && errorMsg.length > 0 && (
-            <div className='govuk-error-summary' data-module='govuk-error-summary' tabIndex={-1}>
-              <div role='alert'>
-                <h2 className='govuk-error-summary__title'>There is a problem</h2>
-                <div className='govuk-error-summary__body'>
-                  <ul className='govuk-list govuk-error-summary__list'>
-                    <li>
-                      <a href='#areYouSureToContinueWoSignIn'>{errorMsg}</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
+          <StaticPageErrorSummary errorSummary={errorMsg} linkHref='#doYouWantToSignIn' />
           <RadioButtons
             name='areYouSureToContinueWoSignIn'
             displayInline

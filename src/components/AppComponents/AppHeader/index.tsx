@@ -4,7 +4,7 @@ import useHMRCExternalLinks from '../../helpers/hooks/HMRCExternalLinks';
 import LanguageToggle from '../LanguageToggle';
 
 export default function AppHeader(props) {
-  const { handleSignout, appname, hasLanguageToggle, languageToggleCallback, isPegaApp } = props;
+  const { handleSignout, appname, hasLanguageToggle, languageToggleCallback } = props;
   const { t } = useTranslation();
   const { referrerURL, hmrcURL } = useHMRCExternalLinks();
 
@@ -80,7 +80,7 @@ export default function AppHeader(props) {
               </span>
             </p>
           </div>
-          {hasLanguageToggle && <LanguageToggle PegaApp={isPegaApp} languageToggleCallback={languageToggleCallback} />}
+          {hasLanguageToggle && <LanguageToggle languageToggleCallback={languageToggleCallback} />}
         </div>
       </header>
     </>

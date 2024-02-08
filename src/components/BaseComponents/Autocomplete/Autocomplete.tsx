@@ -72,7 +72,7 @@ export default function AutoComplete(props) {
       )}
       {instructionText && (
         <div id={makeHintId(name)} className='govuk-body'>
-          <HintTextComponent htmlString={instructionText} />
+          <HintTextComponent htmlString={helperText} />
         </div>
       )}
       {arrOptions && arrOptions.length > 0 ? (
@@ -100,9 +100,9 @@ AutoComplete.propTypes = {
   optionList: { key: string, value: string },
   label: string,
   instructionText: string,
+  helperText: string,
   onChange: func,
   selectedValue: string,
   testId: string,
-  helperText: string,
   name: string
 };

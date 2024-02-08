@@ -52,7 +52,10 @@ export default function AreYouSureToContinueWithoutSignIn() {
           attributes={{ type: 'link' }}
         />
         <MainWrapper>
-          <StaticPageErrorSummary errorSummary={errorMsg} linkHref='#doYouWantToSignIn' />
+          <StaticPageErrorSummary
+            errorSummary={errorMsg}
+            linkHref='#areYouSureToContinueWoSignIn'
+          />
           <RadioButtons
             name='areYouSureToContinueWoSignIn'
             displayInline

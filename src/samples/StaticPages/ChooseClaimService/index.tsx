@@ -77,12 +77,7 @@ export default function RecentlyClaimedChildBenefit() {
           attributes={{ type: 'link' }}
         />
         <MainWrapper>
-          {errorMsg && errorMsg.length > 0 && (
-            <StaticPageErrorSummary
-              errorSummary={errorMsg}
-              linkHref={errorHref}
-            ></StaticPageErrorSummary>
-          )}
+          <StaticPageErrorSummary errorSummary={errorMsg} linkHref={errorHref} />
           <RadioButtons
             name='serviceType'
             displayInline={false}

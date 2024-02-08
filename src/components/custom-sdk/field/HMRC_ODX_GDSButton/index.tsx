@@ -6,9 +6,7 @@ import FieldValueList from '@pega/react-sdk-components/lib/components/designSyst
 import PropTypes from 'prop-types';
 import { scrollToTop } from '../../../helpers/utils';
 
-
 import StyledHmrcOdxGdsButtonWrapper from './styles';
-
 
 // Duplicated runtime code from React SDK
 
@@ -35,7 +33,6 @@ export default function HmrcOdxGdsButton(props: any) {
 
   const containerItemID = getPConnect().getContextName();
 
-  
   // const helperTextToDisplay = validatemessage || helperText;
 
   // const maxLength = fieldMetadata?.maxLength;
@@ -60,18 +57,26 @@ export default function HmrcOdxGdsButton(props: any) {
   //   'data-test-id': testId
   // };
 
-  const handleOnClick = (e) => {
+  const handleOnClick = e => {
     e.preventDefault();
-    getPConnect().setValue(".AddToList", "Yes");
+    getPConnect().setValue('.AddToList', 'Yes');
     getPConnect().getActionsApi().finishAssignment(containerItemID);
   };
 
   return (
     <StyledHmrcOdxGdsButtonWrapper>
-      <Button type="submit" name={label} variant="secondary" onClick={(e)=>{handleOnClick(e); scrollToTop();}}>
-        Add another child
+      <Button
+        type='submit'
+        name={label}
+        variant='secondary'
+        onClick={e => {
+          handleOnClick(e);
+          scrollToTop();
+        }}
+      >
+        {label}
       </Button>
-     {/* <TextField
+      {/* <TextField
       fullWidth
       variant={readOnly ? 'standard' : 'outlined'}
       helperText={helperTextToDisplay}

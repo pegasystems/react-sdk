@@ -9,6 +9,8 @@ import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
 import Accessibility from '../ChildBenefitsClaim/AccessibilityPage';
 import UnAuthChildBenefitsClaim from '../UnAuthChildBenefitsClaim';
 import AreYouSureToContinueWoSignIn from '../StaticPages/AreYouSureToContinueWoSignIn';
+import CheckOnClaim from '../StaticPages/CheckOnClaim';
+import RecentlyClaimedChildBenefit from '../StaticPages/ChooseClaimService';
 
 const AppSelector = () => {
   i18n
@@ -38,6 +40,8 @@ const AppSelector = () => {
         path='/are-you-sure-to-continue-without-sign-in'
         component={AreYouSureToContinueWoSignIn}
       />
+      <Route path='/check-on-claim' component={CheckOnClaim} />
+      <Route path='/recently-claimed-child-benefit' component={RecentlyClaimedChildBenefit} />
     </Switch>
   );
 };

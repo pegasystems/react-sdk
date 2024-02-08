@@ -1,36 +1,40 @@
 /***** CSS styles specific to default form hooks                   *****/
 /***** added through extended Pega properties                      *****/
-/***** 1. u-childSummary - used on child summary screen            *****/
+/***** 1. u-gdsSummaryCard - used on child summary screen            *****/
 /***** 2. u-childRemove - used on the confirm child removal screen *****/
 
-
-/* FORM HOOK - u-childSummary */
-
-.u-childSummary .govuk-form-group fieldset {
+/* FORM HOOK - u-gdsSummaryCard */
+.u-gdsSummaryCard .govuk-form-group fieldset {
+  display: none;
+}
+.u-gdsSummaryCard .govuk-form-group {
   display: none;
 }
 
-.u-childSummary .MuiGrid-container {
+.u-gdsSummaryCard .govuk-form-group fieldset {
+  display: none;
+}
+
+.u-gdsSummaryCard .MuiGrid-container {
   counter-reset: item-counter;
 }
 
-.u-childSummary .MuiGrid-item {
+.u-gdsSummaryCard .MuiGrid-item {
   counter-increment: item-counter;
 }
 
-.u-childSummary .MuiGrid-item h2.govuk-summary-card__title:after {
+.u-gdsSummaryCard .MuiGrid-item h2.govuk-summary-card__title:after {
   content: counter(item-counter);
   margin-left: 8px;
 }
 
-.u-childSummary .MuiGrid-item b {
+.u-gdsSummaryCard .MuiGrid-item b {
   display: none;
 }
 
-.u-childSummary .MuiGrid-item br {
+.u-gdsSummaryCard .MuiGrid-item br {
   display: none;
 }
-
 
 /* FORM HOOK - u-childRemove */
 
@@ -49,7 +53,7 @@
 
 .u-childRemove .govuk-summary-list__row {
   display: block;
-  font-family:  "GDS Transport", "Roboto", "Helvetica", "Arial", "sans-serif";
+  font-family: 'GDS Transport', 'Roboto', 'Helvetica', 'Arial', 'sans-serif';
 }
 
 .u-childRemove .MuiTypography-body2 {

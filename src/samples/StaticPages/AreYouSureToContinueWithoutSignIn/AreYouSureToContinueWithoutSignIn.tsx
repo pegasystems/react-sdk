@@ -9,7 +9,7 @@ import '../../../assets/css/appStyles.scss';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-export default function AreYouSureToContinueWoSignIn() {
+export default function AreYouSureToContinueWithoutSignIn() {
   const [errorMsg, setErrorMsg] = useState('');
   const { t } = useTranslation();
   const history = useHistory();

@@ -12,6 +12,9 @@ function replaceWarningText(finalText, textToBeReplaced, textToBeFormatted) {
 }
 
 function replaceInsetText(finalText, textToBeReplaced, textToBeFormatted) {
+  if (textToBeFormatted.trim().length === 0) {
+    return finalText.replaceAll(textToBeReplaced, '');
+  }
   const textToBeInserted = `<div class="govuk-inset-text">${textToBeFormatted}</div>`;
   return finalText.replaceAll(textToBeReplaced, textToBeInserted);
 }
@@ -31,17 +34,18 @@ export default function getFormattedInstructionText(instructionText) {
   if (instructionText === undefined || instructionText === '') {
     return null;
   }
-  let finalText = instructionText.replaceAll('\n<p>&nbsp;</p>\n', '');
+  const finalText = instructionText.replaceAll('\n<p>&nbsp;</p>\n', '');
   const stringWithTagForWarning = `<strong>WARNING!!!`;
   const endtagForWarning = '</strong>';
   const stringWithTagForInset = `<p>INSET!!`;
   const endtagForInset = '</p>';
-  // if the required text exists
-  if (finalText.indexOf(stringWithTagForWarning) !== -1) {
-    finalText = formatter(finalText, stringWithTagForWarning, endtagForWarning, replaceWarningText);
+
+  if (finalText.includes(stringWithTagForWarning)) {
+    return formatter(finalText, stringWithTagForWarning, endtagForWarning, replaceWarningText);
   }
-  if (finalText.indexOf(stringWithTagForInset) !== -1) {
-    finalText = formatter(finalText, stringWithTagForInset, endtagForInset, replaceInsetText);
+
+  if (finalText.includes(stringWithTagForInset)) {
+    return formatter(finalText, stringWithTagForInset, endtagForInset, replaceInsetText);
   }
 
   return finalText;

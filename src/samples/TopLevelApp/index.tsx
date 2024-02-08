@@ -18,6 +18,7 @@ document.addEventListener('SdkLoggedOut', () => {
     theLogoutMsgDiv.innerHTML = `You are logged out. Refresh the page to log in again.`;
     thePegaRoot.appendChild(theLogoutMsgDiv);
   }
+  sessionStorage.removeItem('rsdk_portalName');
 });
 
 export default TopLevelApp;

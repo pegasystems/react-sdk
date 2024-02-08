@@ -20,7 +20,9 @@ const LanguageToggle = (props) => {
       PCore.getLocaleUtils().resetLocaleStore();
       PCore.getLocaleUtils().loadLocaleResources([PCore.getLocaleUtils().GENERIC_BUNDLE_KEY, '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE']);
     }
-    languageToggleCallback && languageToggleCallback(lang);
+    if(languageToggleCallback){
+      languageToggleCallback(lang);
+    } 
   };
 
   useEffect(() => {

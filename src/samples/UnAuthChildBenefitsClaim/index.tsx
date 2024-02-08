@@ -31,7 +31,7 @@ import {
 } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import DeleteAnswers from './deleteAnswers';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
-import { ToggleNotificationProcess } from '../../components/helpers';
+import toggleNotificationProcess from '../../components/helpers';
 
 declare const myLoadMashup: Function;
 
@@ -436,7 +436,7 @@ export default function UnAuthChildBenefitsClaim() {
 
   return (
     <>
-      <AppHeader appname={t('CLAIM_CHILD_BENEFIT')} hasLanguageToggle isPegaApp={bShowPega} languageToggleCallback={toggleNotificationProcess({en:'SwitchLanguageToEnglish', cy:'SwitchLanguageToWelsh'}, PConn)}/>
+      <AppHeader appname={t('CLAIM_CHILD_BENEFIT')} hasLanguageToggle isPegaApp={bShowPega} languageToggleCallback={toggleNotificationProcess({en:'SwitchLanguageToEnglish', cy:'SwitchLanguageToWelsh'}, assignmentPConn)}/>
 
       <div className='govuk-width-container'>
         <div id='pega-part-of-page'>

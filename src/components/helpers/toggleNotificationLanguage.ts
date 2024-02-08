@@ -1,4 +1,4 @@
-/**************************
+/** ************************
 * Returns a function to handle switching of Notification Language within a Pega Claim using the 2nd process
 * defined in document attached to US-12624 (TODO: Host documentation in Common Component Documentation Catalogue)
 *
@@ -26,4 +26,4 @@ function toggleNotificationProcess(config, PConnectObject) {
         
 };
 
-export { toggleNotificationProcess };
+export default toggleNotificationProcess;

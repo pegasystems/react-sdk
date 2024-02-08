@@ -32,7 +32,7 @@ import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helper
 import localSdkComponentMap from '../../../sdk-local-component-map';
 import { checkCookie, setCookie } from '../../components/helpers/cookie';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
-import { toggleNotificationProcess } from '../../components/helpers/toggleNotificationLanguage';
+import toggleNotificationProcess from '../../components/helpers/toggleNotificationLanguage';
 
 declare const myLoadMashup: any;
 

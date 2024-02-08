@@ -5,7 +5,7 @@ import Button from '../../../components/BaseComponents/Button/Button';
 import MainWrapper from '../../../components/BaseComponents/MainWrapper';
 import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioButtons';
 import StaticPageErrorSummary from '../ErrorSummary';
-import '../../../assets/css/appStyles.scss';
+import '../../../../assets/css/appStyles.scss';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 

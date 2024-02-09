@@ -78,6 +78,7 @@ function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemplateProps) {
           name='Tasks'
           icon='clipboard-check-solid'
           count={totalSections}
+          // eslint-disable-next-line no-constant-condition
           items={false ? [] : itemsToRender}
           // loading={}
           noItemsText='No items'

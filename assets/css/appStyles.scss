@@ -100,6 +100,16 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
   display: block;
 }
 
+.list-inside {
+  list-style: inside;
+  padding-left: 0;
+}
+
+.static-page-cont-button {
+  display: block;
+  margin-bottom: 70px;
+}
+
 @media (min-width: 28.125em) {
   .hmrc-status-tag {
     float: right;

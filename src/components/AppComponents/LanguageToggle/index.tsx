@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 
 declare const PCore: any;
 
-const LanguageToggle = () => {
+const LanguageToggle = props => {
+  const { languageToggleCallback } = props;
   const { i18n } = useTranslation();
   let lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
   const [selectedLang, setSelectedLang] = useState(lang);
@@ -21,6 +22,9 @@ const LanguageToggle = () => {
       '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE',
       'HMRC-CHB-WORK-CLAIM!CASE!CLAIM'
     ]);
+    if (languageToggleCallback) {
+      languageToggleCallback(lang);
+    }
   };
 
   useEffect(() => {

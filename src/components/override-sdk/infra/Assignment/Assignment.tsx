@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import {
@@ -19,6 +19,7 @@ import MainWrapper from '../../../BaseComponents/MainWrapper';
 import ShutterServicePage from '../../../../components/AppComponents/ShutterServicePage';
 import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
 import useServiceShuttered from '../../../helpers/hooks/useServiceShuttered';
+import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext'
 
 export interface ErrorMessageDetails {
   message: string;
@@ -38,6 +39,7 @@ export default function Assignment(props) {
   const [actionButtons, setActionButtons] = useState<any>({});
   const { t } = useTranslation();
   const serviceShuttered = useServiceShuttered();
+  const {setAssignmentPConnect}:any = useContext(StoreContext)
 
   const AssignmentCard = SdkComponentMap.getLocalComponentMap()['AssignmentCard']
     ? SdkComponentMap.getLocalComponentMap()['AssignmentCard']
@@ -68,6 +70,12 @@ export default function Assignment(props) {
   const containerID = PCore.getContainerUtils()
     .getContainerAccessOrder(`${context}/${_containerName}`)
     .at(-1);
+
+  // Register/Deregister this Pconnect Object to AssignmentPConn context value, for use in Portal scope
+  useEffect(() => {
+    setAssignmentPConnect(getPConnect());
+    return () => setAssignmentPConnect(null);
+  }, [])
 
   useEffect(() => {
     setServiceShutteredStatus(serviceShuttered);

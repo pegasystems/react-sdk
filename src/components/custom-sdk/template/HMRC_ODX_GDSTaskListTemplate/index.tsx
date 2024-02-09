@@ -24,7 +24,7 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
   let completedSections = 0;
 
   // Loop through the data to determine the number of sections in total and how many are flagged as complete.
-  data.map(task => {
+  data.forEach(task => {
     totalSections += 1;
     if (task.IsTaskComplete) {
       completedSections += 1;
@@ -84,7 +84,7 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
                       className='govuk-task-list__status'
                       id={`${task.TaskLabel.replaceAll(' ', '')}-${key}-status`}
                     >
-                      {task.IsTaskInProgress ? (
+                      {task.IsTaskInProgress && !task.IsTaskComplete ? (
                         <strong className='govuk-tag govuk-tag--blue'>{task.TaskStatus}</strong>
                       ) : (
                         task.TaskStatus

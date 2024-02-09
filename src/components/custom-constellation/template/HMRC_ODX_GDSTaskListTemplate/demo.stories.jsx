@@ -1,133 +1,172 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from 'react';
-import { withKnobs } from '@storybook/addon-knobs';
-
-import HmrcOdxGdsTaskListTemplate from './index.jsx';
-import { DateInput, Input, FieldValueList, Text } from '@pega/cosmos-react-core';
-import { PhoneInput as CosmosPhone } from '@pega/cosmos-react-core';
-import { pyReviewRaw, regionChildrenResolved } from './mock.stories';
+import HmrcOdxGdsTaskListTemplate from './index.tsx';
+import { pyReviewRaw, caseData } from './mock.stories';
+import { TextField } from '@material-ui/core';
+import MuiPhoneNumber from 'material-ui-phone-number';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DayjsUtils from '@date-io/dayjs';
 
 export default {
-  title: 'HmrcOdxGdsTaskListTemplate',
-  decorators: [withKnobs],
+  title: 'HmrcOdxGdsTaskListTemplateCONSTELLATION',
   component: HmrcOdxGdsTaskListTemplate
 };
 
 const renderField = resolvedProps => {
-  const { displayMode, value = '', label = '', key } = resolvedProps;
-
-  const [inputValue, setInputValue] = useState(value);
-  const [phoneValue, setPhoneValue] = useState('+16397975093');
+  const { displayMode, value = '', label = '', onChange, readOnly } = resolvedProps;
 
   const variant = displayMode === 'LABELS_LEFT' ? 'inline' : 'stacked';
-
-  let val =
-    value !== '' ? (
-      <Text
-        variant='h1'
-        as='span'
-        key={key}
-        onChange={e => {
-          setInputValue(e.target.value);
-        }}
-      >
-        {inputValue}
-      </Text>
-    ) : (
-      ''
-    );
-
+  let val = '';
   if (label === 'Service Date')
     val = (
-      <DateInput
-        value={inputValue}
-        style={{ fontSize: '14px' }}
-        key={key}
-        onChange={dateVal => {
-          const { valueAsISOString: date } = dateVal;
-          const trimmedDate = date ? date.substring(0, date.indexOf('T')) : date;
-          setInputValue(trimmedDate);
-        }}
-      ></DateInput>
+      <MuiPickersUtilsProvider utils={DayjsUtils}>
+        <KeyboardDatePicker
+          variant='inline'
+          inputVariant='outlined'
+          placeholder='mm/dd/yyyy'
+          fullWidth
+          format='MM/DD/YYYY'
+          mask='__/__/____'
+          size='small'
+          label={label}
+          value={value || null}
+          onChange={onChange}
+        />
+      </MuiPickersUtilsProvider>
     );
 
   if (label === 'Email')
     val = (
-      <Input
+      <TextField
         type='email'
-        value={inputValue}
+        fullWidth
+        value={value}
+        size='small'
+        variant='outlined'
         style={{ fontSize: '14px' }}
-        key={key}
-        onChange={e => {
-          setInputValue(e.target.value);
-        }}
-      ></Input>
+        label={label}
+        onChange={onChange}
+        readOnly={readOnly}
+      ></TextField>
     );
 
   if (label === 'First Name' || label === 'Last Name' || label === 'Middle Name')
     val = (
-      <Input
-        value={inputValue}
+      <TextField
+        value={value}
+        fullWidth
+        size='small'
+        variant='outlined'
         style={{ fontSize: '14px' }}
-        key={key}
-        onChange={e => {
-          setInputValue(e.target.value);
-        }}
-      ></Input>
+        label={label}
+        onChange={onChange}
+        readOnly={readOnly}
+      ></TextField>
     );
 
   if (label === 'Phone Number')
     val = (
-      <CosmosPhone
-        value={phoneValue}
-        showCountryCode
+      <MuiPhoneNumber
+        value={value}
+        fullWidth
+        variant='outlined'
+        size='small'
         style={{ fontSize: '14px' }}
-        key={key}
-        onChange={phoneVal => {
-          setPhoneValue(phoneVal);
-        }}
-      ></CosmosPhone>
+        defaultCountry='us'
+        label={label}
+        onChange={onChange}
+      ></MuiPhoneNumber>
     );
 
   if (variant === 'inline') {
-    val = value || (
-      <span
-        aria-hidden='true'
-        key={key}
-        onChange={e => {
-          setInputValue(e.target.value);
-        }}
-      >
-        &ndash;&ndash;
-      </span>
-    );
-  } else {
-    val = (
-      <Text
-        variant='h1'
-        as='span'
-        key={key}
-        onChange={e => {
-          setInputValue(e.target.value);
-        }}
-      >
-        {val}
-      </Text>
-    );
+    val = value || <span aria-hidden='true'>&ndash;&ndash;</span>;
   }
-  return (
-    <FieldValueList
-      variant={variant}
-      fields={[{ name: label, value: val }]}
-      key={key}
-      onChange={() => {
-        /* nothing */
-      }}
-    />
-  );
+
+  return <span key={label}>{val}</span>;
 };
 
-export const baseHmrcOdxGdsTaskListTemplate = () => {
+export const BaseHmrcOdxGdsTaskListTemplate = () => {
+  const [firstName, setFirstName] = useState('Ian');
+  const [middleName, setMiddleName] = useState('');
+  const [lastName, setLastName] = useState('Joe');
+  const [phone, setPhone] = useState('+16397975093');
+  const [serviceDate, setServiceDate] = useState('2023-01-25');
+  const [email, setEmail] = useState('john@doe.com');
+  const regionChildrenResolved = [
+    {
+      readOnly: true,
+      value: firstName,
+      label: 'First Name',
+      hasSuggestions: false,
+      onChange: val => {
+        setFirstName(val.target.value);
+      }
+    },
+    {
+      readOnly: undefined,
+      value: middleName,
+      label: 'Middle Name',
+      hasSuggestions: false,
+      onChange: val => {
+        setMiddleName(val.target.value);
+      }
+    },
+    {
+      readOnly: undefined,
+      value: lastName,
+      label: 'Last Name',
+      hasSuggestions: false,
+      onChange: val => {
+        setLastName(val.target.value);
+      }
+    },
+    {
+      readOnly: undefined,
+      value: email,
+      label: 'Email',
+      hasSuggestions: false,
+      onChange: val => {
+        setEmail(val.target.value);
+      }
+    },
+    {
+      readOnly: undefined,
+      value: phone,
+      label: 'Phone Number',
+      datasource: {
+        fields: {
+          value: undefined
+        },
+        source: [
+          {
+            value: '+1'
+          },
+          {
+            value: '+91'
+          },
+          {
+            value: '+48'
+          },
+          {
+            value: '+44'
+          }
+        ]
+      },
+      hasSuggestions: false,
+      onChange: val => {
+        setPhone(val);
+      }
+    },
+    {
+      readOnly: undefined,
+      value: serviceDate,
+      label: 'Service Date',
+      hasSuggestions: false,
+      onChange: date => {
+        const changeValue = date && date.isValid() ? date.toISOString() : null;
+        setServiceDate(changeValue);
+      }
+    }
+  ];
   const props = {
     template: 'DefaultForm',
     getPConnect: () => {
@@ -136,7 +175,6 @@ export const baseHmrcOdxGdsTaskListTemplate = () => {
           return pyReviewRaw.children;
         },
         createComponent: config => {
-          // eslint-disable-next-line default-case
           switch (config.config.value) {
             case '@P .FirstName':
               return renderField(regionChildrenResolved[0]);
@@ -150,10 +188,68 @@ export const baseHmrcOdxGdsTaskListTemplate = () => {
               return renderField(regionChildrenResolved[4]);
             case '@P .ServiceDate':
               return renderField(regionChildrenResolved[5]);
+            default:
+              break;
           }
+        },
+        getContextName: () => {
+          // Resolve config props
+        },
+        getCaseSummary: () => {
+          return caseData;
         }
       };
     }
+  };
+
+  window.PCore.getDataPageUtils = () => {
+    return {
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+      getDataAsync: (dataView, parameters, options) => {
+        return new Promise(resolve => {
+          if (dataView === 'D_CaseTaskList') {
+            resolve({
+              data: {
+                caseInfo: {
+                  content: {
+                    CaseTasks: {
+                      CaseTaskList: [
+                        {
+                          TaskLabel: 'Your details',
+                          TaskStatus: 'Completed',
+                          IsTaskALink: true
+                        },
+                        {
+                          TaskLabel: 'Relationship details',
+                          TaskStatus: 'In progress',
+                          IsTaskALink: true
+                        },
+                        {
+                          TaskLabel: 'Child details',
+                          TaskStatus: 'Cannot start yet',
+                          IsTaskALink: false
+                        },
+                        {
+                          TaskLabel: 'Income details',
+                          TaskStatus: 'Cannot start yet',
+                          IsTaskALink: false
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            });
+          } else {
+            resolve({
+              data: {
+                data: []
+              }
+            });
+          }
+        });
+      }
+    };
   };
 
   const regionAChildren = pyReviewRaw.children[0].children.map(child => {
@@ -164,9 +260,11 @@ export const baseHmrcOdxGdsTaskListTemplate = () => {
   });
 
   return (
-    <HmrcOdxGdsTaskListTemplate {...props}>
-      {regionAChildren}
-      {regionBChildren}
-    </HmrcOdxGdsTaskListTemplate>
+    <>
+      <HmrcOdxGdsTaskListTemplate {...props}>
+        {regionAChildren}
+        {regionBChildren}
+      </HmrcOdxGdsTaskListTemplate>
+    </>
   );
 };

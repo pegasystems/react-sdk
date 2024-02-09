@@ -1,3 +1,33 @@
+export const caseData = {
+  content: {
+    CaseTaskList: [
+      {
+        TaskLabel: 'Your details',
+        TaskStatus: 'Completed',
+        IsTaskALink: true,
+        IsTaskInProgress: false
+      },
+      {
+        TaskLabel: 'Relationship details',
+        TaskStatus: 'In progress',
+        IsTaskALink: true,
+        IsTaskInProgress: true
+      },
+      {
+        TaskLabel: 'Child details',
+        TaskStatus: 'Cannot start yet',
+        IsTaskALink: false,
+        IsTaskInProgress: false
+      },
+      {
+        TaskLabel: 'Income details',
+        TaskStatus: 'Cannot start yet',
+        IsTaskALink: false,
+        IsTaskInProgress: false
+      }
+    ]
+  }
+};
 export const pyReviewRaw = {
   name: 'CollectInformation',
   type: 'View',
@@ -16,24 +46,21 @@ export const pyReviewRaw = {
           type: 'TextInput',
           config: {
             value: '@P .FirstName',
-            label: '@L First Name',
-            key: 'FirstName'
+            label: '@L First Name'
           }
         },
         {
           type: 'TextInput',
           config: {
             value: '@P .MiddleName',
-            label: '@L Middle Name',
-            key: 'MiddleName'
+            label: '@L Middle Name'
           }
         },
         {
           type: 'TextInput',
           config: {
             value: '@P .LastName',
-            label: '@L Last Name',
-            key: 'LastName'
+            label: '@L Last Name'
           }
         }
       ]
@@ -46,8 +73,7 @@ export const pyReviewRaw = {
           type: 'Email',
           config: {
             value: '@P .Email',
-            label: '@L Email',
-            key: 'Email'
+            label: '@L Email'
           }
         },
         {
@@ -60,16 +86,14 @@ export const pyReviewRaw = {
               fields: {
                 value: '@P .pyCallingCode'
               }
-            },
-            key: 'PhoneNumber'
+            }
           }
         },
         {
           type: 'Date',
           config: {
             value: '@P .ServiceDate',
-            label: '@L Service Date',
-            key: 'ServiceDate'
+            label: '@L Service Date'
           }
         }
       ]
@@ -80,32 +104,28 @@ export const pyReviewRaw = {
 
 export const regionChildrenResolved = [
   {
-    readOnly: undefined,
-    value: 'John',
+    readOnly: true,
+    value: 'SDK',
     label: 'First Name',
-    hasSuggestions: false,
-    key: 'First Name'
+    hasSuggestions: false
   },
   {
     readOnly: undefined,
-    value: '',
+    value: 'Din',
     label: 'Middle Name',
-    hasSuggestions: false,
-    key: 'Middle Name'
+    hasSuggestions: false
   },
   {
     readOnly: undefined,
     value: 'Doe',
     label: 'Last Name',
-    hasSuggestions: false,
-    key: 'Last Name'
+    hasSuggestions: false
   },
   {
     readOnly: undefined,
     value: 'John@doe.com',
     label: 'Email',
-    hasSuggestions: false,
-    key: 'Email'
+    hasSuggestions: false
   },
   {
     readOnly: undefined,
@@ -130,14 +150,12 @@ export const regionChildrenResolved = [
         }
       ]
     },
-    hasSuggestions: false,
-    key: 'Phone Number'
+    hasSuggestions: false
   },
   {
     readOnly: undefined,
     value: '2023-01-25',
     label: 'Service Date',
-    hasSuggestions: false,
-    key: 'Service Date'
+    hasSuggestions: false
   }
 ];

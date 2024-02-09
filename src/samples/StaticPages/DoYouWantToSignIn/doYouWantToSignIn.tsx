@@ -30,7 +30,7 @@ export default function DoYouWantToSignIn() {
     if (selectedOption) {
       const selectedOptionValue = selectedOption.getAttribute('value');
       if (selectedOptionValue === 'yes') {
-        window.location.href = 'https://www.access.service.gov.uk/login/signin/creds';
+        history.push('/');
       } else {
         history.push('/are-you-sure-to-continue-without-sign-in');
       }

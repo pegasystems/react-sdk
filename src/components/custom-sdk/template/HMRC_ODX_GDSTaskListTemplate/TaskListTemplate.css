@@ -8,6 +8,10 @@ form:has(div.u-tasklist) .govuk-form-group {
   margin-bottom: 0;
 }
 
-form:has(div.u-tasklist) .govuk-button-group {
+form:has(div.u-tasklist.unauth) .govuk-button-group {
+  display: none;
+}
+
+form:has(div.u-tasklist.auth) .govuk-button-group button {
   display: none;
 }

@@ -19,9 +19,17 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
   const context = getPConnect().getContextName();
   const caseInfo = getPConnect().getCaseSummary();
   const data = caseInfo.content.CaseTaskList;
+  const caseType = caseInfo.content.CaseType;
 
   let totalSections = 0;
   let completedSections = 0;
+
+  let cssHooks = '';
+  if (caseType === 'Auth') {
+    cssHooks = 'auth';
+  } else {
+    cssHooks = 'unauth';
+  }
 
   // Loop through the data to determine the number of sections in total and how many are flagged as complete.
   data.forEach(task => {
@@ -39,7 +47,7 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
   return (
     <StyledHmrcOdxGdsTaskListTemplateWrapper>
       <Grid
-        className={`govuk-!-padding-bottom-4 ${cssClassHook}`}
+        className={`govuk-!-padding-bottom-4 ${cssClassHook} ${cssHooks}`}
         container={{
           cols: `repeat(${nCols}, minmax(0, 1fr))`,
           gap: 2

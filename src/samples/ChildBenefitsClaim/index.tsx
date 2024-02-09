@@ -32,6 +32,7 @@ import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helper
 import localSdkComponentMap from '../../../sdk-local-component-map';
 import { checkCookie, setCookie } from '../../components/helpers/cookie';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
+import toggleNotificationProcess from '../../components/helpers/toggleNotificationLanguage';
 
 declare const myLoadMashup: any;
 
@@ -81,6 +82,7 @@ export default function ChildBenefitsClaim() {
   const [authType, setAuthType] = useState('gg');
   const [caseId, setCaseId] = useState('');
   const [showPortalBanner, setShowPortalBanner] = useState(false);
+  const [assignmentPConn, setAssignmentPConn] = useState(null);
   const history = useHistory();
   // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
   const featureID = 'ChB';
@@ -135,7 +137,10 @@ export default function ChildBenefitsClaim() {
 
   function createCase() {
     displayPega();
-    PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP);
+
+    let startingFields = {};    
+    startingFields = {NotificationLanguage:sessionStorage.getItem('rsdk_locale')?.slice(0,2) || 'en'};
+    PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP, {startingFields});
   }
 
   function startNow() {
@@ -308,7 +313,7 @@ export default function ChildBenefitsClaim() {
     // so the values are available to any component that may need it.
     const theComp = (
       <StoreContext.Provider
-        value={{ store: PCore.getStore(), displayOnlyFA: true, isMashup: true }}
+        value={{ store: PCore.getStore(), displayOnlyFA: true, isMashup: true, setAssignmentPConnect: setAssignmentPConn }}
       >
         {thePConnObj}
       </StoreContext.Provider>
@@ -577,6 +582,7 @@ export default function ChildBenefitsClaim() {
         appname={t('CLAIM_CHILD_BENEFIT')}
         hasLanguageToggle
         isPegaApp={bShowPega}
+        languageToggleCallback={toggleNotificationProcess({en:'SwitchLanguageToEnglish', cy:'SwitchLanguageToWelsh'}, assignmentPConn)}        
       />
       <div className='govuk-width-container'>
         {shutterServicePage ? (

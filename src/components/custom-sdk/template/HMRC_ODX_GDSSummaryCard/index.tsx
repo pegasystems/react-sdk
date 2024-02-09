@@ -4,14 +4,12 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { GBdate, isSingleEntity } from '../../../helpers/utils';
 import StyledHmrcOdxGdsSummaryCardWrapper from './styles';
-import NotificationBanner from '../../../BaseComponents/NotificationBanner/NotificationBanner';
 
 export default function HmrcOdxGdsSummaryCard(props) {
   const { children, NumCols, sectionHeader, getPConnect, useType } = props;
 
   const containerItemID = getPConnect().getContextName();
-  const [singleEntity, setSingleEntity] = useState(false);
-  const [content, setContent] = useState('');
+  const [pageReference, setPageReference] = useState('');
   const { t } = useTranslation();
   const nCols = parseInt(NumCols, 8);
   const [formElms, setFormElms] = useState<Array<ReactNode>>([]); // Initialize as an empty array of React Nodes
@@ -38,6 +36,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
     const elms: Array<string> = [];
     let finalELms: Array<string> = [];
     const region = children[0] ? children[0].props.getPConnect() : null;
+    setPageReference(region.getPageReference());
     if (region?.getChildren()) {
       region.getChildren().forEach(child => {
         child.getPConnect().setInheritedProp('readOnly', true);
@@ -64,42 +63,6 @@ export default function HmrcOdxGdsSummaryCard(props) {
   }, [formElms]);
 
   const handleOnClick = (action: string) => {
-    let key = '';
-    let checkSingleEntity = false;
-    if (action === t('GDS_ACTION_REMOVE')) {
-      switch (useType) {
-        case '1':
-          key = '.Claim.Children';
-          checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
-          setSingleEntity(checkSingleEntity);
-          setContent(t('NOTIFICATION_BANNER_CONTENT'));
-          if (checkSingleEntity) return;
-          break;
-        case '2':
-          key = '.Claim.Claimant.Nationalities';
-          checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
-          setSingleEntity(checkSingleEntity);
-          setContent(t('NOTIFICATION_NATIONALITY_BANNER_CONTENT'));
-          if (checkSingleEntity) return;
-          break;
-        case '3':
-          key = '.Claim.Claimant.CurrentEmployment.CountriesWorkedIn.Countries';
-          checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
-          setSingleEntity(checkSingleEntity);
-          setContent(t('NOTIFICATION_COUNTRY_BANNER_CONTENT'));
-          if (checkSingleEntity) return;
-          break;
-        case '4':
-          key = '.Claim.Claimant.OtherNames';
-          checkSingleEntity = isSingleEntity(useType, key, action, getPConnect);
-          setSingleEntity(checkSingleEntity);
-          setContent(t('NOTIFICATION_NAME_BANNER_CONTENT'));
-          if (checkSingleEntity) return;
-          break;
-        default:
-          break;
-      }
-    }
     switch (action) {
       case t('GDS_ACTION_REMOVE'):
         getPConnect().setValue('.UserActions', 'Remove');
@@ -123,23 +86,23 @@ export default function HmrcOdxGdsSummaryCard(props) {
           gap: 2
         }}
       >
-        {singleEntity && <NotificationBanner content={content} />}
-
         <div className='govuk-summary-card'>
           <div className='govuk-summary-card__title-wrapper'>
             <h2 className='govuk-summary-card__title'>{itemName}</h2>
             <ul className='govuk-summary-card__actions'>
-              <li className='govuk-summary-card__action'>
-                {' '}
-                <a
-                  className='govuk-link'
-                  href='#'
-                  onClick={() => handleOnClick(t('GDS_ACTION_REMOVE'))}
-                >
-                  {t('GDS_ACTION_REMOVE')}
-                  <span className='govuk-visually-hidden'> {childName}</span>
-                </a>
-              </li>
+              {!isSingleEntity(pageReference, getPConnect) && (
+                <li className='govuk-summary-card__action remove-link'>
+                  {' '}
+                  <a
+                    className='govuk-link'
+                    href='#'
+                    onClick={() => handleOnClick(t('GDS_ACTION_REMOVE'))}
+                  >
+                    {t('GDS_ACTION_REMOVE')}
+                    <span className='govuk-visually-hidden'> {childName}</span>
+                  </a>
+                </li>
+              )}
               <li className='govuk-summary-card__action'>
                 {' '}
                 <a

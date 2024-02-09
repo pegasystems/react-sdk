@@ -31,7 +31,7 @@ import {
 } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import DeleteAnswers from './deleteAnswers';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
-import toggleNotificationProcess from '../../components/helpers';
+import toggleNotificationProcess from '../../components/helpers/toggleNotificationLanguage';
 
 declare const myLoadMashup: Function;
 

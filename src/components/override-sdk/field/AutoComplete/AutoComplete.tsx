@@ -164,13 +164,25 @@ export default function AutoComplete(props: AutoCompleteProps) {
     // getPConnect().setValue(propName, selectedOptionKey[0]?.key);
     handleEvent(actionsApi, 'changeNblur', propName, selectedOptionKey[0]?.key);
   }
+  function stopPropagation(event: MouseEvent, elementUl: HTMLInputElement) {
+    if (event.offsetX > elementUl.clientWidth) {
+      event.preventDefault();
+    }
+  }
+
   useEffect(() => {
     const element = document.getElementById(name) as HTMLInputElement;
+    const elementUl = document.getElementById(`${name}__listbox`) as HTMLInputElement;
+
     if (validatemessage) {
       element?.classList.add('govuk-input--error');
     }
     element?.addEventListener('blur', handleChange);
-    return () => window.removeEventListener('blur', handleChange);
+    elementUl?.addEventListener('mousedown', event => stopPropagation(event, elementUl));
+    return () => {
+      window.removeEventListener('blur', handleChange);
+      window.removeEventListener('mousedown', handleChange);
+    };
   });
 
   if (displayMode === 'LABELS_LEFT') {

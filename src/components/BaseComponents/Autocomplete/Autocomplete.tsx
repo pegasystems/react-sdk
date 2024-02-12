@@ -66,7 +66,7 @@ export default function AutoComplete(props) {
   return (
     <FormGroup {...props}>
       {helperText && (
-        <div id={makeHintId(name)} className='govuk-body'>
+        <div id={makeHintId(name)} className='govuk-hint'>
           <HintTextComponent htmlString={helperText} />
         </div>
       )}

@@ -18,16 +18,6 @@ export default function AutoComplete(props) {
   const { optionList, instructionText, name, selectedValue, testId, helperText, errorText, id } =
     props;
   const inputClasses = `govuk-input ${errorText ? 'govuk-input--error' : ''}`.trim();
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'assets/lib/location-autocomplete.min.js';
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      sessionStorage.setItem('isAutocompleteRendered', 'false');
-    };
-  }, []);
 
   useEffect(() => {
     if (
@@ -84,7 +74,7 @@ export default function AutoComplete(props) {
           data-test-id={testId}
         >
           <option value='' disabled selected>
-            Pick an option
+            {' '}
           </option>
           {arrOptions}
         </select>

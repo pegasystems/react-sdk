@@ -74,6 +74,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
     name
   } = props;
   const [errorMessage, setErrorMessage] = useState(validatemessage);
+  const [isAutocompleteLoaded, setAutocompleteLoaded] = useState(false);
   const context = getPConnect().getContextName();
   let { listType, parameters, datasource = [], columns = [], label } = props;
 
@@ -84,6 +85,20 @@ export default function AutoComplete(props: AutoCompleteProps) {
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps()['value'];
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'assets/lib/location-autocomplete.min.js';
+    script.async = true;
+    document.body.appendChild(script);
+    script.onload = () => {
+      setAutocompleteLoaded(true);
+    };
+
+    return () => {
+      sessionStorage.setItem('isAutocompleteRendered', 'false');
+    };
+  }, []);
 
   useEffect(() => {
     setErrorMessage(validatemessage);
@@ -199,16 +214,18 @@ export default function AutoComplete(props: AutoCompleteProps) {
   }
 
   return (
-    <GDSAutocomplete
-      label={label}
-      optionList={options}
-      selectedValue={value}
-      instructionText={instructionText}
-      helperText={helperText}
-      testId={testId}
-      labelIsHeading={isOnlyField}
-      errorText={errorMessage}
-      id={name}
-    />
+    isAutocompleteLoaded && (
+      <GDSAutocomplete
+        label={label}
+        optionList={options}
+        selectedValue={value}
+        instructionText={instructionText}
+        helperText={helperText}
+        testId={testId}
+        labelIsHeading={isOnlyField}
+        errorText={errorMessage}
+        id={name}
+      />
+    )
   );
 }

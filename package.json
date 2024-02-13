@@ -90,7 +90,7 @@
     "@pega/cspell-config": "^0.7.1",
     "@pega/dx-component-builder-sdk": "~23.1.11",
     "@pega/eslint-config": "^0.7.1",
-    "@pega/pcore-pconnect-typedefs": "2.1.0",
+    "@pega/pcore-pconnect-typedefs": "~2.1.1",
     "@pega/prettier-config": "^0.6.0",
     "@pega/react-sdk-overrides": "~23.1.10",
     "@pega/stylelint-config": "^0.7.1",

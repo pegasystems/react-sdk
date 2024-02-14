@@ -46,10 +46,6 @@ export default function TextInput(props) {
     inputProps['aria-describedby'] = describedByIDs;
   }
 
-  if (!inputProps['autoComplete']) {
-    inputProps['autoComplete'] = 'off';
-  }
-
   return (
     <FormGroup {...props}>
       <input

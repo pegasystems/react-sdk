@@ -6,15 +6,15 @@ const config = {
     mediaCo: {
       rep: {
         username: 'rep@mediaco',
-        password: 'pega'
+        password: 'pega5u5!'
       },
       manager: {
         username: 'manager@mediaco',
-        password: 'pega'
+        password: 'pega5u5!'
       },
       tech: {
         username: 'tech@mediaco',
-        password: 'pega'
+        password: 'pega5u5!'
       }
     },
     digv2: {

@@ -8,6 +8,7 @@ import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event
 import FieldValueList from '@pega/react-sdk-components/lib/components/designSystemExtension/FieldValueList';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
+import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
 interface IOption {
   key: string;
@@ -183,7 +184,8 @@ export default function AutoComplete(props: AutoCompleteProps) {
 
   if (readOnly) {
     const theValAsString = options?.find(opt => opt.key === value)?.value;
-    return <TextInput {...props} value={theValAsString} />;
+    // return <TextInput {...props} value={theValAsString} />;
+    return <ReadOnlyDisplay label={label} value={value} name={name} />;
   }
 
   return (

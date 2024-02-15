@@ -75,6 +75,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
     name
   } = props;
   const [errorMessage, setErrorMessage] = useState(validatemessage);
+  const [isAutocompleteLoaded, setAutocompleteLoaded] = useState(false);
   const context = getPConnect().getContextName();
   let { listType, parameters, datasource = [], columns = [], label } = props;
 
@@ -85,6 +86,20 @@ export default function AutoComplete(props: AutoCompleteProps) {
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps()['value'];
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'assets/lib/location-autocomplete.min.js';
+    script.async = true;
+    document.body.appendChild(script);
+    script.onload = () => {
+      setAutocompleteLoaded(true);
+    };
+
+    return () => {
+      sessionStorage.setItem('isAutocompleteRendered', 'false');
+    };
+  }, []);
 
   useEffect(() => {
     setErrorMessage(validatemessage);
@@ -165,13 +180,25 @@ export default function AutoComplete(props: AutoCompleteProps) {
     // getPConnect().setValue(propName, selectedOptionKey[0]?.key);
     handleEvent(actionsApi, 'changeNblur', propName, selectedOptionKey[0]?.key);
   }
+  function stopPropagation(event: MouseEvent, elementUl: HTMLInputElement) {
+    if (event.offsetX > elementUl.clientWidth) {
+      event.preventDefault();
+    }
+  }
+
   useEffect(() => {
     const element = document.getElementById(name) as HTMLInputElement;
+    const elementUl = document.getElementById(`${name}__listbox`) as HTMLInputElement;
+
     if (validatemessage) {
       element?.classList.add('govuk-input--error');
     }
     element?.addEventListener('blur', handleChange);
-    return () => window.removeEventListener('blur', handleChange);
+    elementUl?.addEventListener('mousedown', event => stopPropagation(event, elementUl));
+    return () => {
+      window.removeEventListener('blur', handleChange);
+      window.removeEventListener('mousedown', handleChange);
+    };
   });
 
   if (displayMode === 'LABELS_LEFT') {
@@ -189,16 +216,18 @@ export default function AutoComplete(props: AutoCompleteProps) {
   }
 
   return (
-    <GDSAutocomplete
-      label={label}
-      optionList={options}
-      selectedValue={value}
-      instructionText={instructionText}
-      helperText={helperText}
-      testId={testId}
-      labelIsHeading={isOnlyField}
-      errorText={errorMessage}
-      id={name}
-    />
+    isAutocompleteLoaded && (
+      <GDSAutocomplete
+        label={label}
+        optionList={options}
+        selectedValue={value}
+        instructionText={instructionText}
+        helperText={helperText}
+        testId={testId}
+        labelIsHeading={isOnlyField}
+        errorText={errorMessage}
+        id={name}
+      />
+    )
   );
 }

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import GDSAutocomplete from '../../../BaseComponents/Autocomplete/Autocomplete';
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
-import TextInput from '@pega/react-sdk-components/lib/components/field/TextInput';
 import isDeepEqual from 'fast-deep-equal/react';
 import { getDataPage } from '@pega/react-sdk-components/lib/components/helpers/data_page';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
@@ -43,9 +42,6 @@ interface AutoCompleteProps extends PConnFieldProps {
   displayMode?: string;
   deferDatasource?: boolean;
   datasourceMetadata?: any;
-  status?: string;
-  onRecordChange?: any;
-  additionalProps?: object;
   listType: string;
   parameters?: any;
   datasource: any;
@@ -210,7 +206,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   }
 
   if (readOnly) {
-    const theValAsString = options?.find(opt => opt.key === value)?.value;
+    // const theValAsString = options?.find(opt => opt.key === value)?.value;
     // return <TextInput {...props} value={theValAsString} />;
     return <ReadOnlyDisplay label={label} value={value} name={name} />;
   }

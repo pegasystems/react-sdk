@@ -1,12 +1,16 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-		"debug.allowBreakpointsEverywhere": true,
-		"debug.toolBarLocation": "floating",
-		"git.ignoreLimitWarning": true
-	}
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../volt-server"
+    }
+  ],
+  "settings": {
+    "debug.allowBreakpointsEverywhere": true,
+    "debug.toolBarLocation": "floating",
+    "git.ignoreLimitWarning": true,
+    "liveServer.settings.multiRootWorkspaceName": "volt-server"
+  }
 }

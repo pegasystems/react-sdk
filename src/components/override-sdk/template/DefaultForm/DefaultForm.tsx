@@ -53,6 +53,7 @@ export default function DefaultForm(props) {
     const keyText = t('OPENS_IN_NEW_TAB');
     if (instructionDiv) {
       const elementsArr = instructionDiv.querySelectorAll('a');
+      // @ts-ignore
       for (const ele of elementsArr) {
         if (ele.innerHTML.includes(keyText)) {
           ele.setAttribute('target', '_blank');

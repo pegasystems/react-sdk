@@ -1,11 +1,12 @@
 /* eslint-disable no-undef */
 const { test, expect } = require('@playwright/test');
+
 const config = require('../../../config');
 const common = require('../../../common');
 
 test.beforeEach(async ({ page }) => {
   await page.setViewportSize({ width: 1720, height: 1080 });
-  await page.goto('http://localhost:3502/portal');
+  await page.goto('http://localhost:3502/portal', { waitUntil: 'networkidle' });
 });
 
 test.describe('E2E test', () => {
@@ -64,7 +65,7 @@ test.describe('E2E test', () => {
     await selectedDisplayAs.click();
     await page.locator('li:has-text("Table")').click();
 
-    const tableRows = page.locator('div[id="simple-table-manual"]');
+    const tableRows = page.locator('div[id="list-view"]');
     await expect(tableRows).toBeVisible();
   }, 10000);
 });

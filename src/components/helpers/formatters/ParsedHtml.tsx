@@ -7,7 +7,7 @@ import DOMPurify from 'dompurify';
   Can be used, for example, to inject required class into <p> tags
   Expects a list of DomPurify hook callbacks, which will be called with 'beforeSanitizeAttributes' option
 */
-export default function ParsedHTML({
+export default function InstructionComp({
   htmlString,
   DOMSanitiseHooks
 }: {
@@ -47,15 +47,32 @@ export default function ParsedHTML({
 
   DOMPurify.addHook('beforeSanitizeAttributes', node => {
     if (node.tagName === 'A' && node.hasAttribute('target')) {
+<<<<<<< HEAD
       // @ts-ignore
       node.setAttribute(TEMPORARY_ATTRIBUTE, node.getAttribute('target'));
+=======
+      const temporaryAttribute = node.getAttribute('target');
+
+      if (temporaryAttribute !== null) {
+        node.setAttribute(TEMPORARY_ATTRIBUTE, temporaryAttribute);
+      }
+>>>>>>> main
     }
   });
 
   DOMPurify.addHook('afterSanitizeAttributes', node => {
     if (node.tagName === 'A' && node.hasAttribute(TEMPORARY_ATTRIBUTE)) {
+<<<<<<< HEAD
       // @ts-ignore
       node.setAttribute('target', node.getAttribute(TEMPORARY_ATTRIBUTE));
+=======
+      const temporaryAttribute = node.getAttribute('target');
+
+      if (temporaryAttribute !== null) {
+        node.setAttribute(TEMPORARY_ATTRIBUTE, temporaryAttribute);
+      }
+
+>>>>>>> main
       node.removeAttribute(TEMPORARY_ATTRIBUTE);
       if (node.getAttribute('target') === '_blank') {
         const rel = node.getAttribute('rel');

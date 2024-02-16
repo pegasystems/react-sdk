@@ -1,3 +1,13 @@
+## 08-November-2023 - Developer exepreience improvements
+<br />
+<h3>On <strong>November 08, 2023</strong>, a <strong>significant update</strong> to the React SDK <strong>main and release/8.8.20</strong> branches was completed.</h3>
+<br />
+
+1. Added the use of **TypeScript typedefs** (from @pega/pcore-pconnect-typedefs) to SDK components.
+For more information, see [Using type definitions](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/type-definitions-constellation-sdks.html)
+2. Updated Cosmos support to cosmos 3-8.8 and 4-23.1 (for custom Constellation components).
+3. Enhanced security including token storage and item obfuscation support.
+
 ## 24-April-2023 - Major change to React SDK Packaging
 <br />
 <h3>On <strong>April 24, 2023</strong>, a <strong>significant update</strong> to the React SDK <strong>main</strong> branch was completed.</h3>

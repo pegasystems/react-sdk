@@ -64,6 +64,8 @@ export default function TextInput(props) {
 
   if (configAlternateDesignSystem?.autocomplete) {
     extraInputProps['autoComplete'] = configAlternateDesignSystem.autocomplete;
+  } else {
+    extraInputProps['autoComplete'] = 'off';
   }
 
   return (

@@ -16,6 +16,7 @@ const config = {
       __dirname,
       '../__mocks__/DetailsFields.js'
     );
+    config.resolve.alias['@pega/react-sdk-components/lib/components/helpers/state-utils'] = path.resolve(__dirname, '../__mocks__/state-utils.tsx');
     config.module.rules.push({
       test: /\.(d.ts)$/,
       loader: 'null-loader'

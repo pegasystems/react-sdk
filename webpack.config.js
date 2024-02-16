@@ -37,11 +37,11 @@ module.exports = (env, argv) => {
           to: './'
         },
         {
-          from: './node_modules/govuk-frontend/dist/govuk/assets/images',
+          from: './node_modules/govuk-frontend/govuk/assets/images',
           to: 'assets/images/'
         },
         {
-          from: './node_modules/govuk-frontend/dist/govuk/assets/fonts',
+          from: './node_modules/govuk-frontend/govuk/assets/fonts',
           to: 'assets/fonts/'
         },
         {

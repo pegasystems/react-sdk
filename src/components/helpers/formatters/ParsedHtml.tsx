@@ -47,32 +47,26 @@ export default function InstructionComp({
 
   DOMPurify.addHook('beforeSanitizeAttributes', node => {
     if (node.tagName === 'A' && node.hasAttribute('target')) {
-<<<<<<< HEAD
       // @ts-ignore
       node.setAttribute(TEMPORARY_ATTRIBUTE, node.getAttribute('target'));
-=======
       const temporaryAttribute = node.getAttribute('target');
 
       if (temporaryAttribute !== null) {
         node.setAttribute(TEMPORARY_ATTRIBUTE, temporaryAttribute);
       }
->>>>>>> main
     }
   });
 
   DOMPurify.addHook('afterSanitizeAttributes', node => {
     if (node.tagName === 'A' && node.hasAttribute(TEMPORARY_ATTRIBUTE)) {
-<<<<<<< HEAD
+
       // @ts-ignore
       node.setAttribute('target', node.getAttribute(TEMPORARY_ATTRIBUTE));
-=======
       const temporaryAttribute = node.getAttribute('target');
 
       if (temporaryAttribute !== null) {
         node.setAttribute(TEMPORARY_ATTRIBUTE, temporaryAttribute);
       }
-
->>>>>>> main
       node.removeAttribute(TEMPORARY_ATTRIBUTE);
       if (node.getAttribute('target') === '_blank') {
         const rel = node.getAttribute('rel');

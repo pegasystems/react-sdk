@@ -7,10 +7,10 @@ import ChildBenefitsClaim from '../ChildBenefitsClaim/index';
 import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
 import Accessibility from '../ChildBenefitsClaim/AccessibilityPage';
 import UnAuthChildBenefitsClaim from '../UnAuthChildBenefitsClaim';
-import AreYouSureToContinueWithoutSignIn from '../StaticPages/AreYouSureToContinueWithoutSignIn/AreYouSureToContinueWithoutSignIn';
-import DoYouWantToSignIn from '../StaticPages/DoYouWantToSignIn/doYouWantToSignIn';
-import CheckOnClaim from '../StaticPages/CheckOnClaim';
-import RecentlyClaimedChildBenefit from '../StaticPages/ChooseClaimService';
+// import AreYouSureToContinueWithoutSignIn from '../StaticPages/AreYouSureToContinueWithoutSignIn/AreYouSureToContinueWithoutSignIn';
+// import DoYouWantToSignIn from '../StaticPages/DoYouWantToSignIn/doYouWantToSignIn';
+// import CheckOnClaim from '../StaticPages/CheckOnClaim';
+// import RecentlyClaimedChildBenefit from '../StaticPages/ChooseClaimService';
 
 const AppSelector = () => {
   i18n

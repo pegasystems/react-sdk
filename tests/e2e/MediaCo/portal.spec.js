@@ -2,6 +2,7 @@
 /* eslint-disable no-undef */
 const path = require('path');
 const { test, expect } = require('@playwright/test');
+
 const config = require('../../config');
 const common = require('../../common');
 const endpoints = require("../../../sdk-config.json");
@@ -9,7 +10,8 @@ const endpoints = require("../../../sdk-config.json");
 let caseID;
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('http://localhost:3502/portal');
+  await page.setViewportSize({ width: 1720, height: 1080 });
+  await page.goto('http://localhost:3502/portal', { waitUntil: 'networkidle' });
 });
 
 test.describe('E2E test', () => {
@@ -28,7 +30,6 @@ test.describe('E2E test', () => {
 
     const newServiceCase = page.locator('div[role="button"]:has-text("New Service")');
     await newServiceCase.click();
-
     caseID = await page.locator('#caseId').textContent();
 
     const firstNameInput = page.locator('input[data-test-id="BC910F8BDF70F29374F496F05BE0330C"]');
@@ -116,22 +117,28 @@ test.describe('E2E test', () => {
     const attachmentID = await page.locator('div[id="attachment-ID"]').textContent();
     await page.setInputFiles(`#${attachmentID}`, filePath);
 
+    const PCoreVersion = await page.evaluate(() => window.PCore.getPCoreVersion());
+
     await Promise.all([
-      page.waitForResponse(`${endpoints.serverConfig.infinityRestServerUrl}${endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ""}/api/application/v2/attachments/upload`)
+      page.waitForResponse(
+        `${endpoints.serverConfig.infinityRestServerUrl}${
+          endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ''
+        }/api/application/v2/attachments/upload`
+      )
     ]);
 
     await page.locator('button:has-text("submit")').click();
 
     await Promise.all([
-      page.waitForResponse(`${endpoints.serverConfig.infinityRestServerUrl}${endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ""}/api/application/v2/cases/${currentCaseID}/attachments`),
+      page.waitForResponse(
+        `${endpoints.serverConfig.infinityRestServerUrl}${
+          endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ''
+        }/api/application/v2/cases/${currentCaseID}/attachments${PCoreVersion.includes('8.23.0') ? '?includeThumbnail=false' : ''}`
+      )
     ]);
 
     const attachmentCount = await page.locator('div[id="attachments-count"]').textContent();
     await expect(Number(attachmentCount)).toBeGreaterThan(0);
-
-    await page
-      .locator('text=Thank you! The next step in this case has been routed appropriately.')
-      .click();
   }, 10000);
 
   test('should enter a discount value($) and send to tech', async ({ page }) => {
@@ -157,9 +164,8 @@ test.describe('E2E test', () => {
 
     await page.locator('button:has-text("submit")').click();
 
-    await page
-      .locator('text=Thank you! The next step in this case has been routed appropriately.')
-      .click();
+    await expect(page.locator('div[id="Assignment"]')).not.toBeVisible();
+
   }, 10000);
 
   test('should modify(if required) the actual services/packages to be installed and resolve the case', async ({

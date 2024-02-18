@@ -8,6 +8,9 @@ import {
 } from '@pega/cosmos-react-core';
 
 import { decorator } from "../__mocks__/react_pconnect";
+import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+
+getSdkComponentMap();  
 
 export const decorators: DecoratorFn[] = [
   (Story, context) => {

@@ -11,13 +11,6 @@ module.exports = (env, argv) => {
   const pluginsToAdd = [];
   const webpackMode = argv.mode;
 
-  pluginsToAdd.push(new CleanWebpackPlugin());
-  pluginsToAdd.push(
-    new HtmlWebpackPlugin({
-      template: './src/auth.html',
-      filename: 'auth.html'
-    })
-  );
   pluginsToAdd.push(
     new HtmlWebpackPlugin({
       template: './src/index.html',
@@ -36,7 +29,11 @@ module.exports = (env, argv) => {
           to: './'
         },
         {
-          from: './node_modules/@pega/react-sdk-components/lib/components/helpers/auth.js' /* New SDK packaging has moved auth.js into node_modules */,
+          from: './node_modules/@pega/auth/lib/oauth-client/authDone.html',
+          to: './auth.html'
+        },
+        {
+          from: './node_modules/@pega/auth/lib/oauth-client/authDone.js',
           to: './'
         },
         {
@@ -64,6 +61,10 @@ module.exports = (env, argv) => {
         {
           from: './assets/css/*',
           to: './'
+        },
+        {
+          from: './node_modules/tinymce',
+          to: './tinymce'
         },
         {
           from: './node_modules/@pega/constellationjs/dist/bootstrap-shell.js',
@@ -213,7 +214,10 @@ module.exports = (env, argv) => {
           loader: 'url-loader',
           options: { limit: 10000, mimetype: 'application/font-woff' }
         },
-        { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' },
+        {
+          test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
+          loader: 'file-loader'
+        },
         {
           test: /\.(d.ts)$/ /* latest react-sdk-components needs to ignore compiling .d.ts and .map files */,
           loader: 'null-loader'

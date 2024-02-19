@@ -206,8 +206,6 @@ export default function AutoComplete(props: AutoCompleteProps) {
   }
 
   if (readOnly) {
-    // const theValAsString = options?.find(opt => opt.key === value)?.value;
-    // return <TextInput {...props} value={theValAsString} />;
     return <ReadOnlyDisplay label={label} value={value} name={name} />;
   }
 

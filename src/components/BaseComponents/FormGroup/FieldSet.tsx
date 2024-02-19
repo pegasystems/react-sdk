@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ConditionalWrapper from '../../helpers/formatters/ConditionalWrapper';
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 import { DefaultFormContext, ErrorMsgContext } from '../../helpers/HMRCAppContext';
-import { checkErrorMsgs } from '../../helpers/utils';
+import { checkErrorMsgs, removeRedundantString } from '../../helpers/utils';
 import InstructionTextComponent from '../../override-sdk/template/DefaultForm/InstructionTextComponent';
 
 export default function FieldSet({
@@ -72,7 +72,7 @@ export default function FieldSet({
         {errMessage && (
           <p id={errorID} className='govuk-error-message'>
             <span className='govuk-visually-hidden'>Error:</span>
-            {errMessage}
+            {removeRedundantString(errMessage)}
           </p>
         )}
         {children}

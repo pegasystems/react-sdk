@@ -87,7 +87,31 @@ export const isSingleEntity = (propReference: string, getPConnect) => {
     `${PCore.getConstants().APP.APP}/${containerName}`
   );
 
-  const count = PCore.getStoreValue(propReference.split('[')[0], 'caseInfo.content', context)?.length;
+  const count = PCore.getStoreValue(
+    propReference.split('[')[0],
+    'caseInfo.content',
+    context
+  )?.length;
 
   if (typeof count !== 'undefined' && count === 1) return true;
+};
+
+// This method will remove redundant string separated by seperatorexport
+export const removeRedundantString = (redundantString: string, separator: string = '.') => {
+  const list = redundantString.split(separator);
+  const newList = [];
+  let uniqueString = '';
+  if (list.length > 0) {
+    list.forEach(item => {
+      if (!newList.includes(item.trim())) {
+        newList.push(item);
+      }
+    });
+    if (newList.length > 0) {
+      newList.forEach(element => {
+        uniqueString = uniqueString + (uniqueString.length > 0 ? '. ' : '') + element.trim();
+      });
+    }
+  }
+  return uniqueString;
 };

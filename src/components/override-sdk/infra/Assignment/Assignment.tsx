@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import {
   getServiceShutteredStatus,
   scrollToTop,
-  shouldRemoveFormTagForReadOnly
+  shouldRemoveFormTagForReadOnly,
+  removeRedundantString
 } from '../../../helpers/utils';
 import ErrorSummary from '../../../BaseComponents/ErrorSummary/ErrorSummary';
 import {
@@ -19,7 +20,7 @@ import MainWrapper from '../../../BaseComponents/MainWrapper';
 import ShutterServicePage from '../../../../components/AppComponents/ShutterServicePage';
 import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
 import useServiceShuttered from '../../../helpers/hooks/useServiceShuttered';
-import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext'
+import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 
 export interface ErrorMessageDetails {
   message: string;
@@ -39,7 +40,7 @@ export default function Assignment(props) {
   const [actionButtons, setActionButtons] = useState<any>({});
   const { t } = useTranslation();
   const serviceShuttered = useServiceShuttered();
-  const {setAssignmentPConnect}:any = useContext(StoreContext)
+  const { setAssignmentPConnect }: any = useContext(StoreContext);
 
   const AssignmentCard = SdkComponentMap.getLocalComponentMap()['AssignmentCard']
     ? SdkComponentMap.getLocalComponentMap()['AssignmentCard']
@@ -75,7 +76,7 @@ export default function Assignment(props) {
   useEffect(() => {
     setAssignmentPConnect(getPConnect());
     return () => setAssignmentPConnect(null);
-  }, [])
+  }, []);
 
   useEffect(() => {
     setServiceShutteredStatus(serviceShuttered);
@@ -159,7 +160,7 @@ export default function Assignment(props) {
 
           acc.push({
             message: {
-              message: validatemessage,
+              message: removeRedundantString(validatemessage),
               fieldId
             },
             displayOrder: fieldComponent.props.displayOrder

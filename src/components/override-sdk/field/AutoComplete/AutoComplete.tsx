@@ -181,6 +181,11 @@ export default function AutoComplete(props: AutoCompleteProps) {
       event.preventDefault();
     }
   }
+  const keyHandler = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
 
   useEffect(() => {
     const element = document.getElementById(name) as HTMLInputElement;
@@ -190,6 +195,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
       element?.classList.add('govuk-input--error');
     }
     element?.addEventListener('blur', handleChange);
+    element?.addEventListener('keypress', keyHandler);
     elementUl?.addEventListener('mousedown', event => stopPropagation(event, elementUl));
     return () => {
       window.removeEventListener('blur', handleChange);

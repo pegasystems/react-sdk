@@ -43,6 +43,8 @@ let signoutTimeout = null;
 let milisecondsTilSignout = 115 * 1000;
 let milisecondsTilWarning = 780 * 1000;
 
+let secondsTillStartNowUnblocked = 30 * 1000;
+
 // Clears any existing timeouts and starts the timeout for warning, after set time shows the modal and starts signout timer
 function initTimeout(setShowTimeoutModal) {
   clearTimeout(applicationTimeout);
@@ -83,6 +85,8 @@ export default function ChildBenefitsClaim() {
   const [caseId, setCaseId] = useState('');
   const [showPortalBanner, setShowPortalBanner] = useState(false);
   const [assignmentPConn, setAssignmentPConn] = useState(null);
+  const [isCreateCaseBlocked, setIsCreateCaseBlocked] = useState(false);
+  const [timeoutID, setTimeoutID] = useState(null);
   const history = useHistory();
   // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
   const featureID = 'ChB';
@@ -138,15 +142,31 @@ export default function ChildBenefitsClaim() {
   function createCase() {
     displayPega();
 
-    let startingFields = {};    
-    startingFields = {NotificationLanguage:sessionStorage.getItem('rsdk_locale')?.slice(0,2) || 'en'};
-    PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP, {startingFields});
+    let startingFields = {};
+    startingFields = {
+      NotificationLanguage: sessionStorage.getItem('rsdk_locale')?.slice(0, 2) || 'en'
+    };
+    PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP, {
+      startingFields
+    });
   }
 
   function startNow() {
-    // Check if PConn is created, and create case if it is
-    if (pConn) {
-      createCase();
+    if (!isCreateCaseBlocked) {
+      setIsCreateCaseBlocked(true);
+
+      // Check if PConn is created, and create case if it is
+      if (pConn) {
+        createCase();
+      }
+
+      if (typeof timeoutID === 'number') {
+        clearTimeout(timeoutID);
+      }
+      const timeout = setTimeout(() => {
+        setIsCreateCaseBlocked(false);
+      }, secondsTillStartNowUnblocked);
+      setTimeoutID(timeout);
     }
   }
 
@@ -246,6 +266,7 @@ export default function ChildBenefitsClaim() {
       () => {
         cancelAssignment();
         setShowPortalBanner(true);
+        setIsCreateCaseBlocked(false);
       },
       'cancelAssignment'
     );
@@ -279,6 +300,7 @@ export default function ChildBenefitsClaim() {
       () => {
         cancelAssignment();
         setShowPortalBanner(true);
+        setIsCreateCaseBlocked(false);
       },
       'savedCase'
     );
@@ -313,7 +335,12 @@ export default function ChildBenefitsClaim() {
     // so the values are available to any component that may need it.
     const theComp = (
       <StoreContext.Provider
-        value={{ store: PCore.getStore(), displayOnlyFA: true, isMashup: true, setAssignmentPConnect: setAssignmentPConn }}
+        value={{
+          store: PCore.getStore(),
+          displayOnlyFA: true,
+          isMashup: true,
+          setAssignmentPConnect: setAssignmentPConn
+        }}
       >
         {thePConnObj}
       </StoreContext.Provider>
@@ -389,6 +416,9 @@ export default function ChildBenefitsClaim() {
             milisecondsTilWarning = sdkConfig.timeoutConfig.secondsTilWarning * 1000;
           if (sdkConfig.timeoutConfig.secondsTilLogout)
             milisecondsTilSignout = sdkConfig.timeoutConfig.secondsTilLogout * 1000;
+          if (sdkConfig.timeoutConfig.secondsTillStartNowUnblocked)
+            secondsTillStartNowUnblocked =
+              sdkConfig.timeoutConfig.secondsTillStartNowUnblocked * 1000;
         })
         .finally(() => {
           // Subscribe to any store change to reset timeout counter
@@ -582,7 +612,10 @@ export default function ChildBenefitsClaim() {
         appname={t('CLAIM_CHILD_BENEFIT')}
         hasLanguageToggle
         isPegaApp={bShowPega}
-        languageToggleCallback={toggleNotificationProcess({en:'SwitchLanguageToEnglish', cy:'SwitchLanguageToWelsh'}, assignmentPConn)}        
+        languageToggleCallback={toggleNotificationProcess(
+          { en: 'SwitchLanguageToEnglish', cy: 'SwitchLanguageToWelsh' },
+          assignmentPConn
+        )}
       />
       <div className='govuk-width-container'>
         {shutterServicePage ? (

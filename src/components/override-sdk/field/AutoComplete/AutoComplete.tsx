@@ -173,9 +173,13 @@ export default function AutoComplete(props: AutoCompleteProps) {
     const selectedOptionKey = options.filter(item => {
       return item.value === optionValue;
     });
-    // getPConnect().setValue(propName, selectedOptionKey[0]?.key);
-    handleEvent(actionsApi, 'changeNblur', propName, selectedOptionKey[0]?.key);
+    if (selectedOptionKey[0]?.key) {
+      handleEvent(actionsApi, 'changeNblur', propName, selectedOptionKey[0]?.key);
+    } else {
+      thePConn.setValue(propName, '', '', false);
+    }
   }
+
   function stopPropagation(event: MouseEvent, elementUl: HTMLInputElement) {
     if (event.offsetX > elementUl.clientWidth) {
       event.preventDefault();

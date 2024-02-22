@@ -78,23 +78,6 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
 .app-task-list__item:first-child {
   border-top: 1px solid #b1b4b6;
 }
-.govuk-tag {
-  display: inline-block;
-  outline: 2px solid rgba(0, 0, 0, 0);
-  outline-offset: -2px;
-  letter-spacing: 1px;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-  line-height: 1;
-  padding: 5px 8px 4px;
-}
-.hmrc-status-tag {
-  -webkit-font-smoothing: antialiased;
-  display: inline-block;
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
 .app-task-list__task-name {
   width: auto;
   display: block;
@@ -111,11 +94,6 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
 }
 
 @media (min-width: 28.125em) {
-  .hmrc-status-tag {
-    float: right;
-    margin-top: 0;
-    margin-bottom: 0;
-  }
   .app-task-list__task-name {
     float: left;
   }

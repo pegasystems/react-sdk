@@ -2,6 +2,7 @@
 
 const config = {
   baseUrl: 'http://localhost:3502/portal',
+  embeddedUrl: 'http://localhost:3502/embedded',
   apps: {
     mediaCo: {
       rep: {

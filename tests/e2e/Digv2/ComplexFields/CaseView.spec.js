@@ -12,7 +12,7 @@ const detailsTabVisible = false;
 const caseHistoryTabVisible = true;
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('http://localhost:3502/portal');
+  await page.goto(config.config.baseUrl);
 });
 
 test.describe('E2E test', () => {

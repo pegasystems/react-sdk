@@ -173,14 +173,23 @@ export default function AutoComplete(props: AutoCompleteProps) {
     const selectedOptionKey = options.filter(item => {
       return item.value === optionValue;
     });
-    // getPConnect().setValue(propName, selectedOptionKey[0]?.key);
-    handleEvent(actionsApi, 'changeNblur', propName, selectedOptionKey[0]?.key);
+    if (selectedOptionKey[0]?.key) {
+      handleEvent(actionsApi, 'changeNblur', propName, selectedOptionKey[0]?.key);
+    } else {
+      thePConn.setValue(propName, '', '', false);
+    }
   }
+
   function stopPropagation(event: MouseEvent, elementUl: HTMLInputElement) {
     if (event.offsetX > elementUl.clientWidth) {
       event.preventDefault();
     }
   }
+  const keyHandler = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
 
   useEffect(() => {
     const element = document.getElementById(name) as HTMLInputElement;
@@ -190,6 +199,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
       element?.classList.add('govuk-input--error');
     }
     element?.addEventListener('blur', handleChange);
+    element?.addEventListener('keypress', keyHandler);
     elementUl?.addEventListener('mousedown', event => stopPropagation(event, elementUl));
     return () => {
       window.removeEventListener('blur', handleChange);

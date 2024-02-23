@@ -126,9 +126,8 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
           <p className='govuk-body'> {t('WE_NORMALLY_RETURN_DOCUMENTS_WITHIN')} </p>
           <p className='govuk-body'>
             <a href={getFeedBackLink()} className='govuk-link' target='_blank' rel='noreferrer'>
-              {t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')}{' '}
+              {t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')} {t('OPENS_IN_NEW_TAB')}
             </a>
-            {t('OPENS_IN_NEW_TAB')}
           </p>
         </MainWrapper>
       </>
@@ -152,9 +151,8 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
           <p className='govuk-body'> {t('WE_WILL_TELL_YOU_IN_14_DAYS')}</p>
           <p className='govuk-body'>
             <a href={getFeedBackLink()} className='govuk-link' target='_blank' rel='noreferrer'>
-              {t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')}{' '}
+              {t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')} {t('OPENS_IN_NEW_TAB')}
             </a>
-            {t('OPENS_IN_NEW_TAB')}
           </p>
         </MainWrapper>
       </>

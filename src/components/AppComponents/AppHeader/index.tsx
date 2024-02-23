@@ -40,7 +40,7 @@ export default function AppHeader(props) {
               </a>
             </div>
             <div className='govuk-header__content'>
-              <span className='govuk-header__link govuk-header__service-name'>{appname}</span>
+              <span className='govuk-header__service-name'>{appname}</span>
               {handleSignout && (
                 <nav className='hmrc-sign-out-nav'>
                   <a

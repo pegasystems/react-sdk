@@ -7,6 +7,9 @@ const config = {
   framework: {
     name: '@storybook/react-webpack5'
   },
+  docs: {
+    autodocs: 'tag'
+  },
   features: {
     storyStoreV7: false
   },

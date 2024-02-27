@@ -48,7 +48,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
         }
         setLoading(false);
         setDocumentList(listData.DocumentContentHTML);
-        if (listData.DocumentContentHTML.includes(`data-ninopresent="false"`)) {
+        if (listData.DocumentContentHTML.includes("data-ninopresent='false'")) {
           setIsCaseRefRequired(true);
         }
       })
@@ -83,6 +83,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
   } else if (serviceShuttered) {
     return <ShutterServicePage />;
   } else if (!loading && isBornAbroadOrAdopted) {
+    console.log(isCaseTypeUnauth, isCaseRefRequired); // eslint-disable-line
     return (
       <>
         <MainWrapper>
@@ -95,19 +96,16 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
                 <strong>{refId}</strong>
               </div>
             )}
-            <div className='govuk-panel__body govuk-!-font-size-27'>
-              {t('POST_YOUR_SUPPORTING_DOCUMENTS')}
-            </div>
           </div>
           <h2 className='govuk-heading-m'> {t('WHAT_YOU_NEED_TO_DO_NOW')} </h2>
-          <p className='govuk-body'> {t('THE_INFO_YOU_HAVE_PROVIDED')} </p>
-          <ParsedHTML htmlString={documentList} />
           {isCaseTypeUnauth && isCaseRefRequired && (
             <p className='govuk-body'>
-              Keep a note of the reference number. HMRC may use this to communicate with you in the
-              future.
+              Print this page or make a note of your reference number. You will need it if HMRC asks
+              you for more information.
             </p>
           )}
+          <p className='govuk-body'> {t('THE_INFO_YOU_HAVE_PROVIDED')} </p>
+          <ParsedHTML htmlString={documentList} />
           <p className='govuk-body'> {t('HMRC_MIGHT_CALL_YOU')} </p>
           <p className='govuk-body'>
             {' '}
@@ -142,6 +140,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
       </>
     );
   } else {
+    console.log(isCaseTypeUnauth, isCaseRefRequired); // eslint-disable-line
     return (
       <>
         <MainWrapper>
@@ -156,13 +155,13 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
             )}
           </div>
           <p className='govuk-body'> {t('WE_HAVE_SENT_YOUR_APPLICATION')}</p>
+          <h2 className='govuk-heading-m'> {t('WHAT_HAPPENS_NEXT')}</h2>
           {isCaseTypeUnauth && isCaseRefRequired && (
             <p className='govuk-body'>
-              Keep a note of the reference number. HMRC may use this to communicate with you in the
-              future.
+              Print this page or make a note of your reference number. You will need it if HMRC asks
+              you for more information.
             </p>
           )}
-          <h2 className='govuk-heading-m'> {t('WHAT_HAPPENS_NEXT')}</h2>
           <p className='govuk-body'> {t('WE_WILL_TELL_YOU_IN_14_DAYS')}</p>
           <p className='govuk-body'>
             <a href={getFeedBackLink()} className='govuk-link' target='_blank' rel='noreferrer'>

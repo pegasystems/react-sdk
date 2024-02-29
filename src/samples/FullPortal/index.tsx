@@ -11,6 +11,7 @@ import InvalidPortal from './InvalidPortal';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../sdk-local-component-map';
+import { theme } from '../../../theme';
 
 declare const myLoadPortal: any;
 declare const myLoadDefaultPortal: any;
@@ -32,17 +33,6 @@ export default function FullPortal() {
     const portalValue: any = query.get('portal');
     sessionStorage.setItem('rsdk_portalName', portalValue);
   }
-
-  const theme = createTheme({
-    // palette: {
-    //   primary: {
-    //     main: '#2196f3',
-    //   },
-    //   secondary: {
-    //     main: '#ff9800',
-    //   },
-    // },
-  });
 
   //  const outlet = document.getElementById("outlet");
 

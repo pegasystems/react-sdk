@@ -216,7 +216,14 @@ export default function AutoComplete(props: AutoCompleteProps) {
   }
 
   if (readOnly) {
-    return <ReadOnlyDisplay label={label} value={value} name={name} />;
+    const selectedOption = options?.filter(item => {
+      return item?.key === value;
+    });
+    return (
+      selectedOption?.length > 0 && (
+        <ReadOnlyDisplay label={label} value={selectedOption[0]?.value} name={name} />
+      )
+    );
   }
 
   return (

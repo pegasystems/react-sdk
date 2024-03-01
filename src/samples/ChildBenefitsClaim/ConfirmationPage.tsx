@@ -93,14 +93,12 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
                 <strong>{refId}</strong>
               </div>
             )}
+            <div className='govuk-panel__body govuk-!-font-size-27'>
+              {t('POST_YOUR_SUPPORTING_DOCUMENTS')}
+            </div>
           </div>
           <h2 className='govuk-heading-m'> {t('WHAT_YOU_NEED_TO_DO_NOW')} </h2>
-          {isUnAuth && isCaseRefRequired && (
-            <p className='govuk-body'>
-              Print this page or make a note of your reference number. You will need it if HMRC asks
-              you for more information.
-            </p>
-          )}
+          {isUnAuth && isCaseRefRequired && <p className='govuk-body'>{t('PRINT_THIS_INFO')}</p>}
           <p className='govuk-body'> {t('THE_INFO_YOU_HAVE_PROVIDED')} </p>
           <ParsedHTML htmlString={documentList} />
           <p className='govuk-body'> {t('HMRC_MIGHT_CALL_YOU')} </p>
@@ -152,12 +150,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
           </div>
           <p className='govuk-body'> {t('WE_HAVE_SENT_YOUR_APPLICATION')}</p>
           <h2 className='govuk-heading-m'> {t('WHAT_HAPPENS_NEXT')}</h2>
-          {isUnAuth && isCaseRefRequired && (
-            <p className='govuk-body'>
-              Print this page or make a note of your reference number. You will need it if HMRC asks
-              you for more information.
-            </p>
-          )}
+          {isUnAuth && isCaseRefRequired && <p className='govuk-body'>{t('PRINT_THIS_INFO')}</p>}
           <p className='govuk-body'> {t('WE_WILL_TELL_YOU_IN_14_DAYS')}</p>
           <p className='govuk-body'>
             <a href={getFeedBackLink()} className='govuk-link' target='_blank' rel='noreferrer'>

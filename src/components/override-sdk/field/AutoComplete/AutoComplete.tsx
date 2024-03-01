@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import GDSAutocomplete from '../../../BaseComponents/Autocomplete/Autocomplete';
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
-import TextInput from '@pega/react-sdk-components/lib/components/field/TextInput';
 import isDeepEqual from 'fast-deep-equal/react';
 import { getDataPage } from '@pega/react-sdk-components/lib/components/helpers/data_page';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import FieldValueList from '@pega/react-sdk-components/lib/components/designSystemExtension/FieldValueList';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
+import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
 interface IOption {
   key: string;
@@ -42,9 +42,6 @@ interface AutoCompleteProps extends PConnFieldProps {
   displayMode?: string;
   deferDatasource?: boolean;
   datasourceMetadata?: any;
-  status?: string;
-  onRecordChange?: any;
-  additionalProps?: object;
   listType: string;
   parameters?: any;
   datasource: any;
@@ -176,14 +173,23 @@ export default function AutoComplete(props: AutoCompleteProps) {
     const selectedOptionKey = options.filter(item => {
       return item.value === optionValue;
     });
-    // getPConnect().setValue(propName, selectedOptionKey[0]?.key);
-    handleEvent(actionsApi, 'changeNblur', propName, selectedOptionKey[0]?.key);
+    if (selectedOptionKey[0]?.key) {
+      handleEvent(actionsApi, 'changeNblur', propName, selectedOptionKey[0]?.key);
+    } else {
+      thePConn.setValue(propName, '', '', false);
+    }
   }
+
   function stopPropagation(event: MouseEvent, elementUl: HTMLInputElement) {
     if (event.offsetX > elementUl.clientWidth) {
       event.preventDefault();
     }
   }
+  const keyHandler = e => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  };
 
   useEffect(() => {
     const element = document.getElementById(name) as HTMLInputElement;
@@ -193,6 +199,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
       element?.classList.add('govuk-input--error');
     }
     element?.addEventListener('blur', handleChange);
+    element?.addEventListener('keypress', keyHandler);
     elementUl?.addEventListener('mousedown', event => stopPropagation(event, elementUl));
     return () => {
       window.removeEventListener('blur', handleChange);
@@ -209,8 +216,14 @@ export default function AutoComplete(props: AutoCompleteProps) {
   }
 
   if (readOnly) {
-    const theValAsString = options?.find(opt => opt.key === value)?.value;
-    return <TextInput {...props} value={theValAsString} />;
+    const selectedOption = options?.filter(item => {
+      return item?.key === value;
+    });
+    return (
+      selectedOption?.length > 0 && (
+        <ReadOnlyDisplay label={label} value={selectedOption[0]?.value} name={name} />
+      )
+    );
   }
 
   return (

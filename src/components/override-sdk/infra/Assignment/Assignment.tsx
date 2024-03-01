@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import {
   getServiceShutteredStatus,
   scrollToTop,
-  shouldRemoveFormTagForReadOnly
+  shouldRemoveFormTagForReadOnly,
+  removeRedundantString
 } from '../../../helpers/utils';
 import ErrorSummary from '../../../BaseComponents/ErrorSummary/ErrorSummary';
 import {
@@ -19,11 +20,13 @@ import MainWrapper from '../../../BaseComponents/MainWrapper';
 import ShutterServicePage from '../../../../components/AppComponents/ShutterServicePage';
 import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
 import useServiceShuttered from '../../../helpers/hooks/useServiceShuttered';
-import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext'
+import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 
 export interface ErrorMessageDetails {
   message: string;
   fieldId: string;
+  pageRef: string;
+  clearMessageProperty: string;
 }
 
 interface OrderedErrorMessage {
@@ -39,7 +42,7 @@ export default function Assignment(props) {
   const [actionButtons, setActionButtons] = useState<any>({});
   const { t } = useTranslation();
   const serviceShuttered = useServiceShuttered();
-  const {setAssignmentPConnect}:any = useContext(StoreContext)
+  const { setAssignmentPConnect }: any = useContext(StoreContext);
 
   const AssignmentCard = SdkComponentMap.getLocalComponentMap()['AssignmentCard']
     ? SdkComponentMap.getLocalComponentMap()['AssignmentCard']
@@ -75,7 +78,7 @@ export default function Assignment(props) {
   useEffect(() => {
     setAssignmentPConnect(getPConnect());
     return () => setAssignmentPConnect(null);
-  }, [])
+  }, []);
 
   useEffect(() => {
     setServiceShutteredStatus(serviceShuttered);
@@ -137,6 +140,8 @@ export default function Assignment(props) {
         }
 
         if (validatemessage) {
+          const clearMessageProperty = fieldC11nEnv?.getStateProps()?.value;
+          const pageRef = fieldC11nEnv?.getPageReference();
           const formattedPropertyName = fieldC11nEnv?.getStateProps()?.value?.split('.')?.pop();
           let fieldId =
             fieldC11nEnv.getStateProps().fieldId ||
@@ -159,8 +164,10 @@ export default function Assignment(props) {
 
           acc.push({
             message: {
-              message: validatemessage,
-              fieldId
+              message: removeRedundantString(validatemessage),
+              pageRef,
+              fieldId,
+              clearMessageProperty
             },
             displayOrder: fieldComponent.props.displayOrder
           });
@@ -169,6 +176,18 @@ export default function Assignment(props) {
       }, []);
 
     setErrorMessages([...errorStateProps]);
+  }
+
+  function clearErrors() {
+    errorMessages.forEach(error =>
+      PCore.getMessageManager().clearMessages({
+        property: error.message.clearMessageProperty,
+        pageReference: error.message.pageRef,
+        category: 'Property',
+        context: containerID,
+        type: 'error'
+      })
+    );
   }
 
   // Fetches and filters any validatemessages on fields on the page, ordering them correctly based on the display order set in DefaultForm.
@@ -208,6 +227,8 @@ export default function Assignment(props) {
       switch (sAction) {
         case 'navigateToStep': {
           const navigatePromise = navigateToStep('previous', itemKey);
+
+          clearErrors();
 
           navigatePromise
             .then(() => {

@@ -52,6 +52,7 @@
 
   "APPLICATION_RECEIVED": "Application for Child Benefit received",
   "CLOSE_CLAIM": "Close claim",
+  "SAVE_AND_CONTINUE": "Save and continue",
   "YOUR_REF_NUMBER": "Your reference number",
   "POST_YOUR_SUPPORTING_DOCUMENTS": "Post your supporting documents",
   "WHAT_YOU_NEED_TO_DO_NOW": "What you need to do now",
@@ -71,7 +72,7 @@
   "PRINT_THIS_INFO": "Print this page or make a note of your reference number. You will need it if you contact HMRC or HMRC ask you for more information.",
 
   "WHAT_HAPPENS_NEXT": "What happens next",
-  "WE_HAVE_SENT_YOUR_APPLICATION": "We've sent your application to Child Benefit Office.",
+  "WE_HAVE_SENT_YOUR_APPLICATION": "We've sent your application to the Child Benefit Office.",
   "WE_WILL_TELL_YOU_IN_14_DAYS": "We'll tell you in 14 calendar days if your application has been successful.",
   "CONTINUE_CLAIM": "Continue claim",
   "CLAIMS_IN_PROGRESS": "Child Benefit claims in progress",
@@ -118,7 +119,7 @@
   "OPENS_IN_NEW_TAB": "(opens in new tab)",
   "SIGN_OUT_MESSAGE": "this sign out message",
   "SKIP_TO_MAIN": "Skip to main content",
-  "BETA": "beta",
+  "BETA": "Beta",
   "NEW_SERVICE": "This is a new service",
   "FOR": " for ",
   "NEW_CHILD": "a new child",

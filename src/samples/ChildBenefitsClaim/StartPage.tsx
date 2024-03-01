@@ -67,7 +67,7 @@ const StartPage: React.FC<{ onStart: React.MouseEventHandler; onBack: any }> = (
                 !
               </span>
               <strong className='govuk-warning-text__text'>
-                <span className='govuk-warning-text__assistive'>{t('WARNING')}</span>
+                <span className='govuk-visually-hidden'>{t('WARNING')}</span>
                 {t('DO_NOT_DELAY_MAKING')}
               </strong>
             </div>

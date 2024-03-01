@@ -5,7 +5,6 @@ import MainWrapper from '../../components/BaseComponents/MainWrapper';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import useServiceShuttered from '../../components/helpers/hooks/useServiceShuttered';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
-import { isUnAuthJourney } from '../../components/helpers/utils';
 
 declare const PCore: any;
 
@@ -21,7 +20,6 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
   const docIDForDocList = 'CR0003';
   const docIDForReturnSlip = 'CR0002';
   const locale = PCore.getEnvironmentInfo().locale.replaceAll('-', '_');
-  const isCaseTypeUnauth = isUnAuthJourney();
 
   function getFeedBackLink() {
     return isUnAuth
@@ -48,7 +46,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
         }
         setLoading(false);
         setDocumentList(listData.DocumentContentHTML);
-        if (listData.DocumentContentHTML.includes("data-ninopresent='false'")) {
+        if (listData.DocumentContentHTML.includes('data-ninopresent')) {
           setIsCaseRefRequired(true);
         }
       })
@@ -83,7 +81,6 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
   } else if (serviceShuttered) {
     return <ShutterServicePage />;
   } else if (!loading && isBornAbroadOrAdopted) {
-    console.log(isCaseTypeUnauth, isCaseRefRequired); // eslint-disable-line
     return (
       <>
         <MainWrapper>
@@ -98,7 +95,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
             )}
           </div>
           <h2 className='govuk-heading-m'> {t('WHAT_YOU_NEED_TO_DO_NOW')} </h2>
-          {isCaseTypeUnauth && isCaseRefRequired && (
+          {isUnAuth && isCaseRefRequired && (
             <p className='govuk-body'>
               Print this page or make a note of your reference number. You will need it if HMRC asks
               you for more information.
@@ -140,7 +137,6 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
       </>
     );
   } else {
-    console.log(isCaseTypeUnauth, isCaseRefRequired); // eslint-disable-line
     return (
       <>
         <MainWrapper>
@@ -156,7 +152,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
           </div>
           <p className='govuk-body'> {t('WE_HAVE_SENT_YOUR_APPLICATION')}</p>
           <h2 className='govuk-heading-m'> {t('WHAT_HAPPENS_NEXT')}</h2>
-          {isCaseTypeUnauth && isCaseRefRequired && (
+          {isUnAuth && isCaseRefRequired && (
             <p className='govuk-body'>
               Print this page or make a note of your reference number. You will need it if HMRC asks
               you for more information.

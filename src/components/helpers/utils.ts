@@ -86,7 +86,11 @@ export const isSingleEntity = (propReference: string, getPConnect) => {
     `${PCore.getConstants().APP.APP}/${containerName}`
   );
 
-  const count = PCore.getStoreValue(propReference.split('[')[0], 'caseInfo.content', context)?.length;
+  const count = PCore.getStoreValue(
+    propReference.split('[')[0],
+    'caseInfo.content',
+    context
+  )?.length;
 
   if (typeof count !== 'undefined' && count === 1) return true;
 };

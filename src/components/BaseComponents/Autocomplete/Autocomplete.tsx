@@ -15,8 +15,7 @@ declare global {
 }
 
 export default function AutoComplete(props) {
-  const { optionList, instructionText, name, selectedValue, testId, helperText, errorText, id } =
-    props;
+  const { optionList, instructionText, selectedValue, testId, helperText, errorText, id } = props;
   const inputClasses = `govuk-input ${errorText ? 'govuk-input--error' : ''}`.trim();
 
   useEffect(() => {
@@ -56,12 +55,12 @@ export default function AutoComplete(props) {
   return (
     <FormGroup {...props}>
       {helperText && (
-        <div id={makeHintId(name)} className='govuk-hint'>
+        <div id={makeHintId(id)} className='govuk-hint'>
           <HintTextComponent htmlString={helperText} />
         </div>
       )}
       {instructionText && (
-        <div id={makeHintId(name)} className='govuk-body'>
+        <div id={makeHintId(id)} className='govuk-body'>
           <HintTextComponent htmlString={helperText} />
         </div>
       )}

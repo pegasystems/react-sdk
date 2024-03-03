@@ -14,6 +14,7 @@ import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/componen
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../../sdk-local-component-map';
+import { theme } from '../../../../theme';
 
 declare const myLoadMashup: any;
 
@@ -105,17 +106,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function EmbeddedTopLevel() {
-  const theme = createTheme({
-    // palette: {
-    //   primary: {
-    //     main: '#2196f3',
-    //   },
-    //   secondary: {
-    //     main: '#ff9800',
-    //   },
-    // },
-  });
-
   // Array of 3 shopping options to display
   const shoppingOptions = [
     {

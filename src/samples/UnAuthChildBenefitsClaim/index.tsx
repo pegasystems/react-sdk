@@ -44,7 +44,7 @@ export default function UnAuthChildBenefitsClaim() {
   const [serviceNotAvailable, setServiceNotAvailable] = useState(false);
   const [shutterServicePage, setShutterServicePage] = useState(false);
   const [hasSessionTimedOut, setHasSessionTimedOut] = useState(true);
-  const [showDeletePage, setShowDeletePage] = useState(false);  
+  const [showDeletePage, setShowDeletePage] = useState(false);
   const [assignmentPConn, setAssignmentPConn] = useState(null);
   const history = useHistory();
   const [caseId, setCaseId] = useState('');
@@ -83,10 +83,13 @@ export default function UnAuthChildBenefitsClaim() {
       resetAppDisplay();
       setShowPega(true);
 
-
       let startingFields = {};
-      startingFields = {NotificationLanguage: sessionStorage.getItem('rsdk_locale')?.slice(0,2) || 'en'};
-      PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP, {startingFields});
+      startingFields = {
+        NotificationLanguage: sessionStorage.getItem('rsdk_locale')?.slice(0, 2) || 'en'
+      };
+      PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP, {
+        startingFields
+      });
     }
     setShowStartPage(false);
   }
@@ -117,6 +120,7 @@ export default function UnAuthChildBenefitsClaim() {
     setShowTimeoutModal(false);
     setShowStartPage(false);
     setShowPega(false);
+    setShowResolutionScreen(false);
     setShowDeletePage(true);
   }
 
@@ -225,7 +229,12 @@ export default function UnAuthChildBenefitsClaim() {
 
     const theComp = (
       <StoreContext.Provider
-        value={{ store: PCore.getStore(), displayOnlyFA: true, isMashup: true, setAssignmentPConnect: setAssignmentPConn }}
+        value={{
+          store: PCore.getStore(),
+          displayOnlyFA: true,
+          isMashup: true,
+          setAssignmentPConnect: setAssignmentPConn
+        }}
       >
         {thePConnObj}
       </StoreContext.Provider>
@@ -436,7 +445,15 @@ export default function UnAuthChildBenefitsClaim() {
 
   return (
     <>
-      <AppHeader appname={t('CLAIM_CHILD_BENEFIT')} hasLanguageToggle isPegaApp={bShowPega} languageToggleCallback={toggleNotificationProcess({en:'SwitchLanguageToEnglish', cy:'SwitchLanguageToWelsh'}, assignmentPConn)}/>
+      <AppHeader
+        appname={t('CLAIM_CHILD_BENEFIT')}
+        hasLanguageToggle
+        isPegaApp={bShowPega}
+        languageToggleCallback={toggleNotificationProcess(
+          { en: 'SwitchLanguageToEnglish', cy: 'SwitchLanguageToWelsh' },
+          assignmentPConn
+        )}
+      />
 
       <div className='govuk-width-container'>
         <div id='pega-part-of-page'>

@@ -1,17 +1,12 @@
-import React, { useRef} from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import FieldSet from '../FormGroup/FieldSet';
-import GDSCheckbox from './Checkbox'
+import GDSCheckbox from './Checkbox';
+import { t } from 'i18next';
 // import { Checkboxes as govukCheckbox} from 'govuk-frontend/govuk/all';
 
 export default function Checkboxes(props) {
-  const {
-    optionsList,
-    onBlur,
-    inputProps,
-    exclusiveOption
-  } = props;
-
+  const { optionsList, onBlur, inputProps, exclusiveOption } = props;
 
   // This snippet works to get the govuk-frontend code working BUT it doesn't allow any extension for
   // calling the on change handlers of each check box, therefore the 'behind the scenes' values are not
@@ -20,56 +15,55 @@ export default function Checkboxes(props) {
 
   const checkboxElement = useRef(null);
 
-  function onExclusiveClick(exclusiveOptopnIndex){
+  function onExclusiveClick(exclusiveOptopnIndex) {
     optionsList.forEach((element, index) => {
-      if(index !== exclusiveOptopnIndex){
-        element.onChange({target: {checked: false}});
+      if (index !== exclusiveOptopnIndex) {
+        element.onChange({ target: { checked: false } });
       }
     });
-
   }
-
 
   const checkboxClasses = `govuk-checkboxes`;
 
   return (
     <FieldSet {...props}>
-      <div className={checkboxClasses} data-module="govuk-checkboxes"  ref={checkboxElement}>
+      <div className={checkboxClasses} data-module='govuk-checkboxes' ref={checkboxElement}>
         {optionsList.map((item, index) => {
-            return (<GDSCheckbox
+          return (
+            <GDSCheckbox
               item={item}
               index={index}
               name={item.name}
               inputProps={...inputProps}
-              onChange={(evt) => {
+              onChange={evt => {
                 item.onChange(evt);
-                if(exclusiveOption){
-                  exclusiveOption.onChange({target: {checked: false}});
+                if (exclusiveOption) {
+                  exclusiveOption.onChange({ target: { checked: false } });
                 }
               }}
               onBlur={onBlur}
               key={item.name}
-            />)
-          })
-        }
+            />
+          );
+        })}
 
-        {exclusiveOption &&
+        {exclusiveOption && (
           <>
-            <div className="govuk-checkboxes__divider">or</div>
+            <div className='govuk-checkboxes__divider'>{t('EXCLUSIVEOPTION_OR')}</div>
             <GDSCheckbox
               item={exclusiveOption}
               index={optionsList.length}
               name={exclusiveOption.name}
               inputProps={...inputProps}
-              onChange={(evt) => {
+              onChange={evt => {
                 exclusiveOption.onChange(evt);
                 onExclusiveClick(optionsList.length);
               }}
               onBlur={onBlur}
               key={exclusiveOption.name}
             />
-            </>
-        }
+          </>
+        )}
       </div>
     </FieldSet>
   );
@@ -77,16 +71,18 @@ export default function Checkboxes(props) {
 
 Checkboxes.propTypes = {
   name: PropTypes.string,
-  optionsList: PropTypes.arrayOf(PropTypes.shape({
-    checked: PropTypes.bool,
-    label: PropTypes.string,
-    hintText: PropTypes.string,
-    readOnly:PropTypes.bool,
-    onChange:PropTypes.func})
+  optionsList: PropTypes.arrayOf(
+    PropTypes.shape({
+      checked: PropTypes.bool,
+      label: PropTypes.string,
+      hintText: PropTypes.string,
+      readOnly: PropTypes.bool,
+      onChange: PropTypes.func
+    })
   ),
   inputProps: PropTypes.object,
   onChange: PropTypes.func,
   onBlur: PropTypes.func,
   exclusiveOption: PropTypes.object,
-  ...FieldSet.propTypes ,
+  ...FieldSet.propTypes
 };

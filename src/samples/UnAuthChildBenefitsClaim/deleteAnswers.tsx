@@ -13,7 +13,7 @@ export default function DeleteAnswers({ hasSessionTimedOut }) {
           ? t('FOR_YOUR_SECURITY_WE_DELETED_YOUR_CLAIM')
           : t('YOU_DELETED_YOUR_CLAIM')}
       </h1>
-      <Button variant='start'>{t('START_CLAIM_AGAIN')}</Button>
+      <Button>{t('START_CLAIM_AGAIN')}</Button>
       <h2 className='govuk-heading-m'>{t('BEFORE_YOU_GO')}</h2>
       <p className='govuk-body'>{t('YOUR_FEEDBACK_HELPS_US_MAKES_OUR_SERVICE_BETTER')}.</p>
       <p className='govuk-body'>

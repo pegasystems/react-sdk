@@ -57,6 +57,7 @@
 
   "APPLICATION_RECEIVED": "Application for Child Benefit received",
   "CLOSE_CLAIM": "Close claim",
+  "SAVE_AND_CONTINUE": "Save and continue",
   "YOUR_REF_NUMBER": "Your reference number",
   "POST_YOUR_SUPPORTING_DOCUMENTS": "Post your supporting documents",
   "WHAT_YOU_NEED_TO_DO_NOW": "What you need to do now",
@@ -73,6 +74,7 @@
   "RETURN_TO_HOMEPAGE": "Return to your claim portal application homepage",
   "WHAT_DID_YOU_THINK_OF_THIS_SERVICE": "What did you think of this service?",
   "TAKES_30_SECONDS": "(takes 30 seconds)",
+  "PRINT_THIS_INFO": "Print this page or make a note of your reference number. You will need it if you contact HMRC or HMRC ask you for more information.",
 
   "WHAT_HAPPENS_NEXT": "What happens next",
   "WE_HAVE_SENT_YOUR_APPLICATION": "We've sent your application to the Child Benefit Office.",
@@ -269,5 +271,6 @@
   "YOU_CAN_ALSO": "You can use HMRC's online service to ",
   "CHECK_CLAIM_REPLY": "check when you can expect a reply to your claim.(opens in new tab)",
   "CHECK_CLAIM_APPROVED": "To check if your claim for Child Benefit has been approved, you can view your proof of entitlement.",
-  "YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO": "You will need to sign in to access this information.If you do not have sign in details, you can create them.(opens in new tab)"
+  "YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO": "You will need to sign in to access this information.If you do not have sign in details, you can create them.(opens in new tab)",
+  "EXCLUSIVEOPTION_OR": "or"
 }

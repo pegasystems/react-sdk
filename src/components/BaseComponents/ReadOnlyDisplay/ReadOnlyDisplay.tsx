@@ -25,7 +25,7 @@ export default function ReadOnlyDisplay(props) {
             ))}
           </ul>
         ) : (
-          formattedValue
+          formattedValue || value
         )}{' '}
       </dd>
     </div>

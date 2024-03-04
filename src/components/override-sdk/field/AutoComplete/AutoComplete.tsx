@@ -93,6 +93,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
     };
 
     return () => {
+      document.body.removeChild(script);
       sessionStorage.setItem('isAutocompleteRendered', 'false');
     };
   }, []);
@@ -173,11 +174,8 @@ export default function AutoComplete(props: AutoCompleteProps) {
     const selectedOptionKey = options.filter(item => {
       return item.value === optionValue;
     });
-    if (selectedOptionKey[0]?.key) {
-      handleEvent(actionsApi, 'changeNblur', propName, selectedOptionKey[0]?.key);
-    } else {
-      thePConn.setValue(propName, '', '', false);
-    }
+    const selectedKey = selectedOptionKey[0]?.key || '';
+    handleEvent(actionsApi, 'changeNblur', propName, selectedKey);
   }
 
   function stopPropagation(event: MouseEvent, elementUl: HTMLInputElement) {
@@ -216,7 +214,14 @@ export default function AutoComplete(props: AutoCompleteProps) {
   }
 
   if (readOnly) {
-    return <ReadOnlyDisplay label={label} value={value} name={name} />;
+    const selectedOption = options?.filter(item => {
+      return item?.key === value;
+    });
+    return (
+      selectedOption?.length > 0 && (
+        <ReadOnlyDisplay label={label} value={selectedOption[0]?.value} name={name} />
+      )
+    );
   }
 
   return (

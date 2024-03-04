@@ -57,7 +57,9 @@
 
   "APPLICATION_RECEIVED": "Cais am Fudd-dal Plant wedi dod i law",
   "CLOSE_CLAIM": "Close claim",
+  "SAVE_AND_CONTINUE": "Save and continue",
   "YOUR_REF_NUMBER": "Your reference number",
+
   "POST_YOUR_SUPPORTING_DOCUMENTS": "Postiwch eich dogfennau ategol",
   "WHAT_YOU_NEED_TO_DO_NOW": "Yr hyn y mae angen i chi ei wneud nawr",
   "THE_INFO_YOU_HAVE_PROVIDED": "Mae’r wybodaeth a roddwyd gennych wedi’i defnyddio i greu eich ffurflen hawlio Budd-dal Plant",
@@ -73,6 +75,7 @@
   "RETURN_TO_HOMEPAGE": "Yn ôl i hafan eich porth hawlio",
   "WHAT_DID_YOU_THINK_OF_THIS_SERVICE": "Beth oedd eich barn am y gwasanaeth hwn?",
   "TAKES_30_SECONDS": "(mae’n cymryd 30 eiliad)",
+  "PRINT_THIS_INFO": "Print this page or make a note of your reference number. You will need it if you contact HMRC or HMRC ask you for more information.",
 
   "WHAT_HAPPENS_NEXT": "Yr hyn sy’n digwydd nesaf",
   "WE_HAVE_SENT_YOUR_APPLICATION": "We've sent your application to the Child Benefit Office.",
@@ -328,5 +331,6 @@
   "YOU_CAN_ALSO": "You can use HMRC's online service to ",
   "CHECK_CLAIM_REPLY": "check when you can expect a reply to your claim.(opens in new tab)",
   "CHECK_CLAIM_APPROVED": "To check if your claim for Child Benefit has been approved, you can view your proof of entitlement.",
-  "YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO": "You will need to sign in to access this information.If you do not have sign in details, you can create them.(opens in new tab)"
+  "YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO": "You will need to sign in to access this information.If you do not have sign in details, you can create them.(opens in new tab)",
+  "EXCLUSIVEOPTION_OR": "or"
 }

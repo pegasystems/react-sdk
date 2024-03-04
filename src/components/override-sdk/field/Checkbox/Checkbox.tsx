@@ -5,6 +5,7 @@ import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 import { DefaultFormContext, ErrorMsgContext } from '../../../helpers/HMRCAppContext';
 import { checkErrorMsgs } from '../../../helpers/utils';
+import { t } from 'i18next';
 
 export default function CheckboxComponent(props) {
   const { OverrideLabelValue } = useContext(DefaultFormContext);
@@ -62,7 +63,9 @@ export default function CheckboxComponent(props) {
 
   return (
     <>
-      {exclusiveOption && <div className='govuk-checkboxes__divider'>or</div>}
+      {exclusiveOption && (
+        <div className='govuk-checkboxes__divider'>{t('EXCLUSIVEOPTION_OR')}</div>
+      )}
 
       {/* If its the declaration view then group the checkboxes separately so the error message is assigned correctly */}
       {OverrideLabelValue.trim().toLowerCase() === 'declaration' ? (

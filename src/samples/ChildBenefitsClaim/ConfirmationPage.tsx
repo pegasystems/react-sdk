@@ -15,7 +15,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
   const [returnSlipContent, setReturnSlipContent] = useState();
   const [loading, setLoading] = useState(true);
   const serviceShuttered = useServiceShuttered();
-  const [caseIdPresent, setCaseIdPresent] = useState(false);
+  const [isCaseRefRequired, setIsCaseRefRequired] = useState(false);
   const refId = caseId.replace('HMRC-CHB-WORK ', '');
   const docIDForDocList = 'CR0003';
   const docIDForReturnSlip = 'CR0002';
@@ -46,8 +46,8 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
         }
         setLoading(false);
         setDocumentList(listData.DocumentContentHTML);
-        if (listData.DocumentContentHTML.includes(`data-ninopresent="false"`)) {
-          setCaseIdPresent(true);
+        if (listData.DocumentContentHTML.includes('data-ninopresent')) {
+          setIsCaseRefRequired(true);
         }
       })
       .catch(err => {
@@ -86,7 +86,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
         <MainWrapper>
           <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
             <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
-            {caseIdPresent && (
+            {isCaseRefRequired && (
               <div className='govuk-panel__body'>
                 {t('YOUR_REF_NUMBER')}
                 <br></br>
@@ -98,6 +98,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
             </div>
           </div>
           <h2 className='govuk-heading-m'> {t('WHAT_YOU_NEED_TO_DO_NOW')} </h2>
+          {isUnAuth && isCaseRefRequired && <p className='govuk-body'>{t('PRINT_THIS_INFO')}</p>}
           <p className='govuk-body'> {t('THE_INFO_YOU_HAVE_PROVIDED')} </p>
           <ParsedHTML htmlString={documentList} />
           <p className='govuk-body'> {t('HMRC_MIGHT_CALL_YOU')} </p>
@@ -138,7 +139,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
         <MainWrapper>
           <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
             <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
-            {caseIdPresent && (
+            {isCaseRefRequired && (
               <div className='govuk-panel__body'>
                 {t('YOUR_REF_NUMBER')}
                 <br></br>
@@ -148,6 +149,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
           </div>
           <p className='govuk-body'> {t('WE_HAVE_SENT_YOUR_APPLICATION')}</p>
           <h2 className='govuk-heading-m'> {t('WHAT_HAPPENS_NEXT')}</h2>
+          {isUnAuth && isCaseRefRequired && <p className='govuk-body'>{t('PRINT_THIS_INFO')}</p>}
           <p className='govuk-body'> {t('WE_WILL_TELL_YOU_IN_14_DAYS')}</p>
           <p className='govuk-body'>
             <a href={getFeedBackLink()} className='govuk-link' target='_blank' rel='noreferrer'>

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { render } from 'react-dom';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { createTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { sdkIsLoggedIn, loginIfNecessary, sdkSetAuthHeader, sdkSetCustomTokenParamsCB, getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
@@ -18,6 +18,7 @@ import { theme } from '../../../../theme';
 
 declare const myLoadMashup: any;
 
+// eslint-disable-next-line @typescript-eslint/no-shadow
 const useStyles = makeStyles(theme => ({
   embedTopRibbon: {
     display: 'none',

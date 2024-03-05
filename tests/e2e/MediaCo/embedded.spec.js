@@ -1,10 +1,11 @@
 /* eslint-disable no-undef */
 
 const { test } = require('@playwright/test');
+const config = require('../../config');
 const common = require('../../common');
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('http://localhost:3502/embedded');
+  await page.goto(config.config.embeddedUrl);
 });
 
 test.describe('E2E test', () => {

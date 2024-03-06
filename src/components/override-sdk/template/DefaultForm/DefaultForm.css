@@ -1,6 +1,6 @@
 /***** CSS styles specific to default form hooks                   *****/
 /***** added through extended Pega properties                      *****/
-/***** 1. u-gdsSummaryCard - used on child summary screen            *****/
+/***** 1. u-gdsSummaryCard - used on child summary screen          *****/
 /***** 2. u-childRemove - used on the confirm child removal screen *****/
 
 /* FORM HOOK - u-gdsSummaryCard */
@@ -37,6 +37,10 @@
 }
 
 /* FORM HOOK - u-childRemove */
+
+.u-childRemove {
+  font-size: 1.1875rem;
+}
 
 .u-childRemove .govuk-main-wrapper {
   padding-top: 0;

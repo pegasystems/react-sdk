@@ -32,24 +32,6 @@ export default function ActionButtons(props) {
             </Button>
           ) : null
         )}
-        {isUnAuth &&
-          arSecondaryButtons.map(sButton =>
-            sButton.actionID !== 'back' &&
-            sButton.name !== 'Hidden' &&
-            sButton.name.indexOf('Save') === -1 ? (
-              <Button
-                variant='secondary'
-                onClick={e => {
-                  e.target.blur();
-                  _onButtonPress(sButton.jsAction, 'secondary');
-                }}
-                key={sButton.actionID}
-                attributes={{ type: 'button' }}
-              >
-                {t('CLOSE_CLAIM')}
-              </Button>
-            ) : null
-          )}
       </div>
 
       {!isUnAuth &&

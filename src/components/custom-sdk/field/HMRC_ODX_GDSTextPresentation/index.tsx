@@ -1,13 +1,17 @@
+// TODO - comment
+
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import ReadOnlyValue from '../../../BaseComponents/ReadOnlyValue/ReadOnlyValue';
 
 import StyledHmrcOdxGdsTextPresentationWrapper from './styles';
 
 interface HmrcOdxGdsTextPresentationProps extends PConnFieldProps {
   // If any, enter additional props that only exist on this componentName
   fieldMetadata?: any;
+  configAlternateDesignSystem;
 }
 
 // Duplicated runtime code from React SDK
@@ -19,17 +23,18 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
     label,
     required,
     disabled,
-    value = '',
+    value = 'AB123456C',
     validatemessage,
     status,
     onChange,
     onBlur,
-    readOnly,
+    readOnly = true,
     testId,
     fieldMetadata,
     helperText,
     displayMode,
-    hideLabel
+    hideLabel,
+    configAlternateDesignSystem
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
 
@@ -37,7 +42,7 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
 
   const maxLength = fieldMetadata?.maxLength;
 
-  let readOnlyProp = {}; // Note: empty if NOT ReadOnly
+  const readOnlyProp = {}; // Note: empty if NOT ReadOnly
 
   if (displayMode === 'LABELS_LEFT') {
     return <FieldValueList name={hideLabel ? '' : label} value={value} />;
@@ -47,8 +52,12 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
     return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
   }
 
-  if (readOnly) {
-    readOnlyProp = { readOnly: true };
+  // if (readOnly) {
+  //   readOnlyProp = { readOnly: true };
+  // }
+
+  if (configAlternateDesignSystem?.GDSPresentationType) {
+    // TODO - add logic to determine string manipulation
   }
 
   let testProp = {};
@@ -57,6 +66,7 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
     'data-test-id': testId
   };
 
+  // Check presentation type - e.g., NINO
   const formatValue = (val: string) => {
     return val
       .toUpperCase()
@@ -66,6 +76,10 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
       .trim();
   };
 
+  if (readOnly) {
+    return <ReadOnlyValue label={label} value={formatValue('AB123456C')} />;
+  }
+
   return (
     <StyledHmrcOdxGdsTextPresentationWrapper>
       <TextField
@@ -73,6 +87,7 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
         variant={readOnly ? 'standard' : 'outlined'}
         helperText={helperTextToDisplay}
         placeholder=''
+        name=''
         size='small'
         required={required}
         disabled={disabled}

@@ -10,7 +10,17 @@
   "type": "Field",
   "subtype": "Text",
   "icon": "images/pz-url-active.svg",
-   "properties": [
+  "properties": [
+    {
+      "format": "SELECT",
+      "name": "GDSPresentationType",
+      "label": "GDS presentation type",
+      "defaultValue": "",
+      "placeholder": "GDS presentation type",
+      "required": false,
+      "helperText": "Select a GDS presentation format for displaying the value of the property.",
+      "source": [{ "key": "nino", "value": "NINO" }]
+    },
     {
       "name": "label",
       "label": "Field label",

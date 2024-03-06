@@ -41,7 +41,7 @@ export default function FieldSet({
   const describedByIDs: Array<string> = [];
   const hintID = `${name}-hint`;
   const errorID = `${name}-error`;
-  if (hintText) {
+  if (hintTextExists) {
     describedByIDs.push(hintID);
   }
   if (errMessage) {

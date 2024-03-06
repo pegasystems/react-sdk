@@ -4,7 +4,7 @@ import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import Select from '../../../BaseComponents/Select/Select';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
-import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay'
+import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 
 interface IOption {
   key: string;
@@ -27,10 +27,9 @@ export default function Dropdown(props) {
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [displayValue, setDisplayValue] = useState();
   let label = props.label;
-  const {isOnlyField, overrideLabel} = useIsOnlyField(props.displayOrder);
-  if(isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
-  const[errorMessage,setErrorMessage] = useState(validatemessage);
-
+  const { isOnlyField, overrideLabel } = useIsOnlyField(props.displayOrder);
+  if (isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
+  const [errorMessage, setErrorMessage] = useState(validatemessage);
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
@@ -39,19 +38,25 @@ export default function Dropdown(props) {
   const className = thePConn.getCaseInfo().getClassName();
   const refName = propName?.slice(propName.lastIndexOf('.') + 1);
 
-  useEffect(()=>{
-    setErrorMessage(validatemessage)
-  
-  },[validatemessage])
-
+  useEffect(() => {
+    setErrorMessage(validatemessage);
+  }, [validatemessage]);
 
   useEffect(() => {
-    const optionsList = [...Utils.getOptionList(props, getPConnect().getDataObject())];
-    const selectedOption = optionsList.find(option => option.key === value);
-    if(selectedOption && selectedOption.value){
-      setDisplayValue(selectedOption.value);
+    function fetchData() {
+      try {
+        const optionsList = [...Utils.getOptionList(props, getPConnect().getDataObject())];
+        const selectedOption = optionsList.find(option => option.key === value);
+        if (selectedOption && selectedOption.value) {
+          setDisplayValue(selectedOption.value);
+        }
+        setOptions(optionsList);
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      }
     }
-    setOptions(optionsList);
+    fetchData();
   }, [datasource, value]);
 
   const metaData = Array.isArray(fieldMetadata)
@@ -70,38 +75,43 @@ export default function Dropdown(props) {
     handleEvent(actionsApi, 'changeNblur', propName, selectedValue);
   };
 
-  if(readOnly){
-    return <ReadOnlyDisplay label={label} value={thePConn.getLocalizedValue(
-      displayValue,
-      localePath,
-      thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
-    )} />
+  if (readOnly) {
+    return (
+      <ReadOnlyDisplay
+        label={label}
+        value={thePConn.getLocalizedValue(
+          displayValue,
+          localePath,
+          thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+        )}
+      />
+    );
   }
 
   return (
-      <Select
-        label={label}
-        hintText={helperText}
-        errorText={errorMessage}
-        legendIsHeading={isOnlyField}
-        onChange={handleChange}
-        value={value}
-        name={name}
-      >
-        <option key={placeholder} value=''>
-          {placeholder}
-        </option>
-        {options.map(option => {
-          return (
-            <option key={option.key} value={option.key}>
-              {thePConn.getLocalizedValue(
-                option.value,
-                localePath,
-                thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
-              )}
-            </option>
-          );
-        })}
-      </Select>
+    <Select
+      label={label}
+      hintText={helperText}
+      errorText={errorMessage}
+      legendIsHeading={isOnlyField}
+      onChange={handleChange}
+      value={value}
+      name={name}
+    >
+      <option key={placeholder} value=''>
+        {placeholder}
+      </option>
+      {options.map(option => {
+        return (
+          <option key={option.key} value={option.key}>
+            {thePConn.getLocalizedValue(
+              option.value,
+              localePath,
+              thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+            )}
+          </option>
+        );
+      })}
+    </Select>
   );
 }

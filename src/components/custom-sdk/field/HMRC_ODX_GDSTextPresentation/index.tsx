@@ -23,7 +23,7 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
     label,
     required,
     disabled,
-    value = 'AB123456C',
+    value = '',
     validatemessage,
     status,
     onChange,
@@ -55,9 +55,13 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
   // if (readOnly) {
   //   readOnlyProp = { readOnly: true };
   // }
+  const extraInputProps = { onChange, value };
 
   if (configAlternateDesignSystem?.GDSPresentationType) {
     // TODO - add logic to determine string manipulation
+    extraInputProps['nino'] = configAlternateDesignSystem.nino;
+  } else {
+    extraInputProps['nino'] = 'off';
   }
 
   let testProp = {};
@@ -77,7 +81,7 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
   };
 
   if (readOnly) {
-    return <ReadOnlyValue label={label} value={formatValue('AB123456C')} />;
+    return <ReadOnlyValue label={label} value={formatValue(value)} />;
   }
 
   return (

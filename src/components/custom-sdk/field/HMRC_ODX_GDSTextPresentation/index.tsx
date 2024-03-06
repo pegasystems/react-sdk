@@ -52,13 +52,9 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
     return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
   }
 
-  // if (readOnly) {
-  //   readOnlyProp = { readOnly: true };
-  // }
   const extraInputProps = { onChange, value };
 
   if (configAlternateDesignSystem?.GDSPresentationType) {
-    // TODO - add logic to determine string manipulation
     extraInputProps['nino'] = configAlternateDesignSystem.nino;
   } else {
     extraInputProps['nino'] = 'off';

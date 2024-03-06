@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function ReadOnlyDisplay(props) {
   const COMMA_DELIMITED_FIELD = 'CSV';
-  const { label, value, name } = props;
+  const { value, name } = props;
   const [formattedValue, setFormattedValue] = useState<string | []>(value);
 
   useEffect(() => {
@@ -13,28 +13,10 @@ export default function ReadOnlyDisplay(props) {
     }
   }, []);
 
-  return (
-    <span>{formattedValue}</span>
-    // <div className='govuk-summary-list__row'>
-    //   <dt className='govuk-summary-list__key'>{label}</dt>
-
-    //   <dd className='govuk-summary-list__value'>
-    //     {Array.isArray(formattedValue) ? (
-    //       <ul className='govuk-list'>
-    //         {formattedValue.map(valueItem => (
-    //           <li key={valueItem}>{valueItem}</li>
-    //         ))}
-    //       </ul>
-    //     ) : (
-    //       formattedValue || value
-    //     )}{' '}
-    //   </dd>
-    // </div>
-  );
+  return <span>{formattedValue}</span>;
 }
 
 ReadOnlyDisplay.propTypes = {
-  label: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   name: PropTypes.string
 };

@@ -77,7 +77,7 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
   };
 
   if (readOnly) {
-    return <ReadOnlyValue label={label} value={formatValue(value)} />;
+    return <ReadOnlyValue value={formatValue(value)} />;
   }
 
   return (

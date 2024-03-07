@@ -18,11 +18,13 @@ import FieldDropdown from './src/components/override-sdk/field/Dropdown/';
 import TemplateFieldGroupTemplate from './src/components/override-sdk/template/FieldGroupTemplate/';
 import TemplateDetails from './src/components/override-sdk/template/Details/';
 import InfraViewContainer from './src/components/override-sdk/infra/ViewContainer/';
-import MimicASentence from './src/components/custom-sdk/template/MimicASentence/'
+import MimicASentence from './src/components/custom-sdk/template/MimicASentence/';
 import HmrcOdxGdsInfoPanel from './src/components/custom-sdk/template/HMRC_ODX_GDSInfoPanel/';
 import HmrcOdxGdsSummaryCard from './src/components/custom-sdk/template/HMRC_ODX_GDSSummaryCard/';
 import HmrcOdxGdsButton from './src/components/custom-sdk/field/HMRC_ODX_GDSButton/';
 import HmrcOdxComplexQuestionExplanation from './src/components/custom-sdk/field/HMRC_ODX_ComplexQuestionExplanation/';
+import HmrcOdxGdsTaskList from './src/components/custom-sdk/widget/HMRC_ODX_GDSTaskList/';
+import HmrcOdxGdsTaskListTemplate from './src/components/custom-sdk/template/HMRC_ODX_GDSTaskListTemplate/';
 import AutoComplete from './src/components/override-sdk/field/AutoComplete/';
 import HmrcOdxGdsTextPresentation from './src/components/custom-sdk/field/HMRC_ODX_GDSTextPresentation/';
 /*import end - DO NOT REMOVE*/
@@ -31,6 +33,7 @@ import HmrcOdxGdsTextPresentation from './src/components/custom-sdk/field/HMRC_O
 // found locally. If not found here, we'll look in the Pega-provided component map
 
 const localSdkComponentMap = {
+<<<<<<< HEAD
   "Checkbox" : FieldCheckbox,
   "TextInput" : FieldTextInput,
   "Date" : FieldDate,
@@ -58,6 +61,36 @@ const localSdkComponentMap = {
   "AutoComplete" : AutoComplete,
   "HMRC_ODX_GDSTextPresentation" : HmrcOdxGdsTextPresentation,
 /*map end - DO NOT REMOVE*/
+=======
+  Checkbox: FieldCheckbox,
+  TextInput: FieldTextInput,
+  Date: FieldDate,
+  HMRC_ODX_CheckAnswers: CheckAnswers,
+  HMRC_ODX_ChangeLink: ChangeLink,
+  HMRC_ODX_MimicASentence: MimicASentence,
+  RadioButtons: FieldRadioButtons,
+  DefaultForm: TemplateDefaultForm,
+  Assignment: InfraAssignment,
+  AssignmentCard: InfraAssignmentCard,
+  ActionButtons: InfraActionButtons,
+  Assignment: InfraAssignment,
+  FlowContainer: InfraFlowContainer,
+  HMRC_ODX_PhoneNumber: FieldPhone,
+  View: InfraView,
+  CaseView: TemplateCaseView,
+  Dropdown: FieldDropdown,
+  Group: TemplateFieldGroupTemplate,
+  Details: TemplateDetails,
+  ViewContainer: InfraViewContainer,
+  HMRC_ODX_GDSInfoPanel: HmrcOdxGdsInfoPanel,
+  HMRC_ODX_GDSSummaryCard: HmrcOdxGdsSummaryCard,
+  HMRC_ODX_GDSButton: HmrcOdxGdsButton,
+  HMRC_ODX_ComplexQuestionExplanation: HmrcOdxComplexQuestionExplanation,
+  HMRC_ODX_GDSTaskList: HmrcOdxGdsTaskList,
+  HMRC_ODX_GDSTaskListTemplate: HmrcOdxGdsTaskListTemplate,
+  AutoComplete: AutoComplete
+  /*map end - DO NOT REMOVE*/
+>>>>>>> main
 };
 
 export default localSdkComponentMap;

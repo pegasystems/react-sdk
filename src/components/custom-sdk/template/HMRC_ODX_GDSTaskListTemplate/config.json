@@ -1,0 +1,54 @@
+{
+  "name": "HMRC_ODX_GDSTaskListTemplate",
+  "label": "GDS Task List",
+  "description": "GDS Task list component display template",
+  "organization": "HMRC",
+  "version": "0.0.1",
+  "library": "ODX",
+  "allowedApplications": [],
+  "componentKey": "HMRC_ODX_GDSTaskListTemplate",
+  "type": "Template",
+  "subtype": "FORM",
+  "icon": "TwoColumn.svg",
+  "properties": [
+    {
+      "name": "A",
+      "label": "Region A",
+      "format": "CONTENTPICKER"
+    },
+    {
+      "name": "B",
+      "label": "Region B",
+      "format": "CONTENTPICKER"
+    },
+    {
+      "label": "Conditions",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "required",
+          "label": "Required",
+          "format": "REQUIRED",
+          "saveToReference": true
+        },
+        {
+          "name": "disabled",
+          "label": "Disabled",
+          "format": "DISABLED",
+          "saveToReference": true
+        },
+        {
+          "name": "visibility",
+          "label": "Visibility",
+          "format": "VISIBILITY",
+          "saveToReference": true
+        },
+        {
+          "name": "cssClassHook",
+          "label": "CSS class hook",
+          "format": "TEXT"
+        }
+      ]
+    }
+  ]
+}

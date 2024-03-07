@@ -2,7 +2,12 @@
   "CLAIM_CHILD_BENEFIT": "Hawlio Budd-dal Plant",
   "CLAIM_INCOMPLETE": "Cais yn anghyflawn",
   "YOU_HAVE_COMPLETED": "YRydych wedi llenwi ",
+  "OF": "o",
+  "SECTIONS": "adran",
   "OF_4_SECTIONS": " o 4 adran.",
+  "CLAIM": "Hawlio",
+  "COMPLETE": "cyflawn",
+  "INCOMPLETE": "anghyflawn",
   "YOUR_DETAILS": "Eich manylion",
   "NOT_STARTED": "Heb ddechrau",
   "RELATIONSHIP_DETAILS": "Manylion y berthynas",
@@ -51,7 +56,6 @@
   "APPLICATION_FOR_CHB_COMPLETE": "Application for Child Benefit complete",
 
   "APPLICATION_RECEIVED": "Cais am Fudd-dal Plant wedi dod i law",
-  "CLOSE_CLAIM": "Close claim",
   "SAVE_AND_CONTINUE": "Save and continue",
   "YOUR_REF_NUMBER": "Your reference number",
 

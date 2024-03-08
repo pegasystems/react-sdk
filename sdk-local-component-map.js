@@ -60,6 +60,7 @@ const localSdkComponentMap = {
   AutoComplete: AutoComplete,
   HMRC_ODX_GDSTextPresentation: HmrcOdxGdsTextPresentation,
   HMRC_ODX_GDSTaskListTemplate: HmrcOdxGdsTaskListTemplate
+  /*map end - DO NOT REMOVE*/
 };
 
 export default localSdkComponentMap;

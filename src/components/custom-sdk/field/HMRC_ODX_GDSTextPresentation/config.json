@@ -25,7 +25,7 @@
       "name": "label",
       "label": "Field label",
       "format": "TEXT",
-      "required": true
+      "required": false
     },
     {
       "name": "readOnly",

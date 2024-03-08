@@ -1,18 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function ReadOnlyDisplay(props) {
-  const { value } = props;
-
-  return (
-    <div className='govuk-summary-list__row'>
-    <dd className='govuk-summary-list__value'>{value}</dd>
-  </div>
-  )
-
+interface ReadOnlyValueProps {
+  label: string;
+  value: string;
 }
 
-ReadOnlyDisplay.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+export default function ReadOnlyValue(props: ReadOnlyValueProps) {
+  const { label, value } = props;
 
+  return (
+    <div className='govuk-summary-list'>
+      <div className='govuk-summary-list__row'>
+        <dt className='govuk-summary-list__key'>{label}</dt>
+        <dd className='govuk-summary-list__value'>{value}</dd>
+      </div>
+    </div>
+  );
+}
+
+ReadOnlyValue.propTypes = {
+  value: PropTypes.string
 };

@@ -3,6 +3,7 @@
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 //  import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import ReadOnlyValue from '../../../BaseComponents/ReadOnlyValue/ReadOnlyValue';
 
@@ -12,6 +13,7 @@ interface HmrcOdxGdsTextPresentationProps extends PConnFieldProps {
   // If any, enter additional props that only exist on this componentName
   fieldMetadata?: any;
   configAlternateDesignSystem;
+  displayOrder?: any;
 }
 
 // Duplicated runtime code from React SDK
@@ -20,7 +22,6 @@ interface HmrcOdxGdsTextPresentationProps extends PConnFieldProps {
 // any default values in config.pros should be set in defaultProps at bottom of this file
 export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresentationProps) {
   const {
-    label,
     required,
     disabled,
     value = '',
@@ -44,28 +45,6 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
 
   const readOnlyProp = {};
 
-  // if (displayMode === 'LABELS_LEFT') {
-  //   return FieldValueList ? (
-  //     <FieldValueList name={hideLabel ? '' : label} value={value} />
-  //   ) : (
-  //     <StyledHmrcOdxGdsTextPresentationWrapper>
-  //       <span>{hideLabel ? '' : label}</span>
-  //       <span>{value}</span>
-  //     </StyledHmrcOdxGdsTextPresentationWrapper>
-  //   );
-  // }
-
-  // if (displayMode === 'STACKED_LARGE_VAL') {
-  //   return FieldValueList ? (
-  //     <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />
-  //   ) : (
-  //     <StyledHmrcOdxGdsTextPresentationWrapper>
-  //       <span>{hideLabel ? '' : label}</span>
-  //       <span>{value}</span>
-  //     </StyledHmrcOdxGdsTextPresentationWrapper>
-  //   );
-  // }
-
   const extraInputProps = { onChange, value };
 
   if (configAlternateDesignSystem?.GDSPresentationType) {
@@ -74,8 +53,11 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
     extraInputProps['nino'] = 'off';
   }
 
-  let testProp = {};
+  let label = props.label;
+  const { isOnlyField, overrideLabel } = useIsOnlyField(props.displayOrder);
+  if (isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
 
+  let testProp = {};
   testProp = {
     'data-test-id': testId
   };
@@ -91,7 +73,7 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
   };
 
   if (readOnly) {
-    return <ReadOnlyValue value={formatValue(value)} />;
+    return <ReadOnlyValue label={label} value={formatValue(value)} />;
   }
 
   return (

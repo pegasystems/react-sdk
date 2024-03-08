@@ -33,35 +33,6 @@ import HmrcOdxGdsTextPresentation from './src/components/custom-sdk/field/HMRC_O
 // found locally. If not found here, we'll look in the Pega-provided component map
 
 const localSdkComponentMap = {
-<<<<<<< HEAD
-  "Checkbox" : FieldCheckbox,
-  "TextInput" : FieldTextInput,
-  "Date" : FieldDate,
-  "HMRC_ODX_CheckAnswers" : CheckAnswers,
-  "HMRC_ODX_ChangeLink" : ChangeLink,
-  "HMRC_ODX_MimicASentence" : MimicASentence,
-  "RadioButtons" : FieldRadioButtons,
-  "DefaultForm" : TemplateDefaultForm,
-  "Assignment" : InfraAssignment,
-  "AssignmentCard" : InfraAssignmentCard,
-  "ActionButtons" : InfraActionButtons,
-  "Assignment" : InfraAssignment,
-  "FlowContainer" : InfraFlowContainer,
-  "HMRC_ODX_PhoneNumber" : FieldPhone,
-  "View" : InfraView,
-  "CaseView" : TemplateCaseView,
-  "Dropdown" : FieldDropdown,
-  "Group" : TemplateFieldGroupTemplate,
-  "Details" : TemplateDetails,
-  "ViewContainer" : InfraViewContainer,
-  "HMRC_ODX_GDSInfoPanel" : HmrcOdxGdsInfoPanel,
-  "HMRC_ODX_GDSSummaryCard" : HmrcOdxGdsSummaryCard,
-  "HMRC_ODX_GDSButton" : HmrcOdxGdsButton,
-  "HMRC_ODX_ComplexQuestionExplanation" : HmrcOdxComplexQuestionExplanation,
-  "AutoComplete" : AutoComplete,
-  "HMRC_ODX_GDSTextPresentation" : HmrcOdxGdsTextPresentation,
-/*map end - DO NOT REMOVE*/
-=======
   Checkbox: FieldCheckbox,
   TextInput: FieldTextInput,
   Date: FieldDate,
@@ -86,11 +57,9 @@ const localSdkComponentMap = {
   HMRC_ODX_GDSSummaryCard: HmrcOdxGdsSummaryCard,
   HMRC_ODX_GDSButton: HmrcOdxGdsButton,
   HMRC_ODX_ComplexQuestionExplanation: HmrcOdxComplexQuestionExplanation,
-  HMRC_ODX_GDSTaskList: HmrcOdxGdsTaskList,
-  HMRC_ODX_GDSTaskListTemplate: HmrcOdxGdsTaskListTemplate,
-  AutoComplete: AutoComplete
-  /*map end - DO NOT REMOVE*/
->>>>>>> main
+  AutoComplete: AutoComplete,
+  HMRC_ODX_GDSTextPresentation: HmrcOdxGdsTextPresentation,
+  HMRC_ODX_GDSTaskListTemplate: HmrcOdxGdsTaskListTemplate
 };
 
 export default localSdkComponentMap;

@@ -3,7 +3,7 @@
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+//  import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import ReadOnlyValue from '../../../BaseComponents/ReadOnlyValue/ReadOnlyValue';
 
 import StyledHmrcOdxGdsTextPresentationWrapper from './styles';
@@ -32,25 +32,39 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
     testId,
     fieldMetadata,
     helperText,
-    displayMode,
-    hideLabel,
+    //  displayMode,
+    //  hideLabel,
     configAlternateDesignSystem
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
 
-  const FieldValueList = getComponentFromMap('FieldValueList');
+  //  const FieldValueList = getComponentFromMap('FieldValueList');
 
   const maxLength = fieldMetadata?.maxLength;
 
-  const readOnlyProp = {}; // Note: empty if NOT ReadOnly
+  const readOnlyProp = {};
 
-  if (displayMode === 'LABELS_LEFT') {
-    return <FieldValueList name={hideLabel ? '' : label} value={value} />;
-  }
+  // if (displayMode === 'LABELS_LEFT') {
+  //   return FieldValueList ? (
+  //     <FieldValueList name={hideLabel ? '' : label} value={value} />
+  //   ) : (
+  //     <StyledHmrcOdxGdsTextPresentationWrapper>
+  //       <span>{hideLabel ? '' : label}</span>
+  //       <span>{value}</span>
+  //     </StyledHmrcOdxGdsTextPresentationWrapper>
+  //   );
+  // }
 
-  if (displayMode === 'STACKED_LARGE_VAL') {
-    return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
-  }
+  // if (displayMode === 'STACKED_LARGE_VAL') {
+  //   return FieldValueList ? (
+  //     <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />
+  //   ) : (
+  //     <StyledHmrcOdxGdsTextPresentationWrapper>
+  //       <span>{hideLabel ? '' : label}</span>
+  //       <span>{value}</span>
+  //     </StyledHmrcOdxGdsTextPresentationWrapper>
+  //   );
+  // }
 
   const extraInputProps = { onChange, value };
 

@@ -1,22 +1,16 @@
-// TODO - comment
-
 import React from 'react';
 import { TextField } from '@material-ui/core';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
-//  import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import ReadOnlyValue from '../../../BaseComponents/ReadOnlyValue/ReadOnlyValue';
 
 import StyledHmrcOdxGdsTextPresentationWrapper from './styles';
 
 interface HmrcOdxGdsTextPresentationProps extends PConnFieldProps {
-  // If any, enter additional props that only exist on this componentName
   fieldMetadata?: any;
   configAlternateDesignSystem;
   displayOrder?: any;
 }
-
-// Duplicated runtime code from React SDK
 
 // props passed in combination of props from property panel (config.json) and run time props from Constellation
 // any default values in config.pros should be set in defaultProps at bottom of this file
@@ -33,13 +27,9 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
     testId,
     fieldMetadata,
     helperText,
-    //  displayMode,
-    //  hideLabel,
     configAlternateDesignSystem
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
-
-  //  const FieldValueList = getComponentFromMap('FieldValueList');
 
   const maxLength = fieldMetadata?.maxLength;
 
@@ -62,7 +52,6 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
     'data-test-id': testId
   };
 
-  // Check presentation type - e.g., NINO
   const formatValue = (val: string) => {
     return val
       .toUpperCase()

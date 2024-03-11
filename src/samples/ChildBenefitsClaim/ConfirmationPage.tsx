@@ -46,7 +46,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
         }
         setLoading(false);
         setDocumentList(listData.DocumentContentHTML);
-        if (listData.DocumentContentHTML.includes('data-ninopresent')) {
+        if (listData.DocumentContentHTML.includes('data-ninopresent="false"')) {
           setIsCaseRefRequired(true);
         }
       })

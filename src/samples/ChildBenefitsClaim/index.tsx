@@ -598,6 +598,44 @@ export default function ChildBenefitsClaim() {
     setShutterServicePage(status);
   };
 
+  const renderContent = () => {
+    return shutterServicePage ? (
+      <ShutterServicePage />
+    ) : (
+      <>
+        <div id='pega-part-of-page'>
+          <div id='pega-root'></div>
+        </div>
+        {showStartPage && <StartPage onStart={startNow} onBack={displayUserPortal} />}
+        {showUserPortal && (
+          <UserPortal beginClaim={beginClaim} showPortalBanner={showPortalBanner}>
+            {!loadinginProgressClaims && inprogressClaims.length !== 0 && (
+              <ClaimsList
+                thePConn={pConn}
+                data={inprogressClaims}
+                title={t('CLAIMS_IN_PROGRESS')}
+                rowClickAction='OpenAssignment'
+                buttonContent={t('CONTINUE_CLAIM')}
+                caseId={caseId}
+              />
+            )}
+
+            {!loadingsubmittedClaims && submittedClaims.length !== 0 && (
+              <ClaimsList
+                thePConn={pConn}
+                data={submittedClaims}
+                title={t('SUBMITTED_CLAIMS')}
+                rowClickAction='OpenCase'
+                buttonContent={t('VIEW_CLAIM')}
+                checkShuttered={checkShuttered}
+              />
+            )}
+          </UserPortal>
+        )}
+      </>
+    );
+  };
+
   return (
     <>
       <TimeoutPopup
@@ -618,44 +656,10 @@ export default function ChildBenefitsClaim() {
         )}
       />
       <div className='govuk-width-container'>
-        {shutterServicePage ? (
-          <ShutterServicePage />
+        {serviceNotAvailable ? (
+          <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />
         ) : (
-          <>
-            <div id='pega-part-of-page'>
-              <div id='pega-root'></div>
-            </div>
-
-            {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
-
-            {showStartPage && <StartPage onStart={startNow} onBack={displayUserPortal} />}
-
-            {showUserPortal && (
-              <UserPortal beginClaim={beginClaim} showPortalBanner={showPortalBanner}>
-                {!loadinginProgressClaims && inprogressClaims.length !== 0 && (
-                  <ClaimsList
-                    thePConn={pConn}
-                    data={inprogressClaims}
-                    title={t('CLAIMS_IN_PROGRESS')}
-                    rowClickAction='OpenAssignment'
-                    buttonContent={t('CONTINUE_CLAIM')}
-                    caseId={caseId}
-                  />
-                )}
-
-                {!loadingsubmittedClaims && submittedClaims.length !== 0 && (
-                  <ClaimsList
-                    thePConn={pConn}
-                    data={submittedClaims}
-                    title={t('SUBMITTED_CLAIMS')}
-                    rowClickAction='OpenCase'
-                    buttonContent={t('VIEW_CLAIM')}
-                    checkShuttered={checkShuttered}
-                  />
-                )}
-              </UserPortal>
-            )}
-          </>
+          renderContent()
         )}
 
         {bShowResolutionScreen && <ConfirmationPage caseId={caseId} isUnAuth={false} />}

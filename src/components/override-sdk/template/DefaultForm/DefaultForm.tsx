@@ -263,7 +263,14 @@ export default function DefaultForm(props) {
               <ParsedHTML htmlString={declaration.text1} />
             </div>
           )}
-          {dfChildren}
+          {cssClassHook === 'u-childRemove' ? (
+            <>
+              {dfChildren[0]}
+              <dl className='govuk-summary-list'>{dfChildren[1]}</dl>
+            </>
+          ) : (
+            <>{dfChildren}</>
+          )}
           {declaration.warning1 && DFName === -1 && (
             <div id='declarationWarning1' className='govuk-body'>
               <ParsedHTML htmlString={declaration.warning1} />

@@ -93,17 +93,16 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
                 <strong>{refId}</strong>
               </div>
             )}
+            <br />
             <div className='govuk-panel__body govuk-!-font-size-27'>
               {t('POST_YOUR_SUPPORTING_DOCUMENTS')}
             </div>
           </div>
           <h2 className='govuk-heading-m'> {t('WHAT_YOU_NEED_TO_DO_NOW')} </h2>
           {isUnAuth && isCaseRefRequired && <p className='govuk-body'>{t('PRINT_THIS_INFO')}</p>}
-          <p className='govuk-body'> {t('THE_INFO_YOU_HAVE_PROVIDED')} </p>
+          <p className='govuk-body'> {t('THE_INFO_YOU_HAVE_PROVIDED')}. </p>
           <ParsedHTML htmlString={documentList} />
-          <p className='govuk-body'> {t('HMRC_MIGHT_CALL_YOU')} </p>
           <p className='govuk-body'>
-            {' '}
             {t('AFTER_YOU_HAVE')}{' '}
             <a
               href=''

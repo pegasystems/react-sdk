@@ -56,12 +56,10 @@ export const getServiceShutteredStatus = async (): Promise<boolean> => {
         return response.data.Shuttered;
       })
       .catch((error: Error) => {
-        // eslint-disable-next-line no-console
         console.log(error);
         return false;
       });
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.log(error);
     return false;
   }

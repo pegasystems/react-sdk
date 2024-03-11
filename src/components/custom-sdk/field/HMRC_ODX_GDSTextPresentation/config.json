@@ -1,0 +1,93 @@
+{
+  "name": "HMRC_ODX_GDSTextPresentation",
+  "label": "GDS Text Presentation",
+  "description": "Special presentation for read only text properties",
+  "organization": "HMRC",
+  "version": "0.0.1",
+  "library": "ODX",
+  "allowedApplications": [],
+  "componentKey": "HMRC_ODX_GDSTextPresentation",
+  "type": "Field",
+  "subtype": "Text",
+  "icon": "images/pz-url-active.svg",
+  "properties": [
+    {
+      "format": "SELECT",
+      "name": "GDSPresentationType",
+      "label": "GDS presentation type",
+      "defaultValue": "",
+      "placeholder": "GDS presentation type",
+      "required": false,
+      "helperText": "Select a GDS presentation format for displaying the value of the property.",
+      "source": [{ "key": "nino", "value": "NINO" }]
+    },
+    {
+      "name": "label",
+      "label": "Field label",
+      "format": "TEXT",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "label": "Edit mode",
+      "format": "READONLY"
+    },
+    {
+      "label": "Input settings",
+      "format": "GROUP",
+      "visibility": "(!readOnly = true)",
+      "properties": [
+        {
+          "name": "placeholder",
+          "label": "Placeholder",
+          "format": "TEXT"
+        },
+        {
+          "name": "helperText",
+          "label": "Helper text",
+          "format": "TEXT"
+        }
+      ]
+    },
+    {
+      "label": "Conditions",
+      "format": "GROUP",
+      "properties": [
+        {
+          "name": "required",
+          "label": "Required",
+          "format": "REQUIRED",
+          "visibility": "(!readOnly = true)"
+        },
+        {
+          "name": "disabled",
+          "label": "Disabled",
+          "format": "DISABLED",
+          "visibility": "(!readOnly = true)"
+        },
+        {
+          "name": "visibility",
+          "label": "Visibility",
+          "format": "VISIBILITY"
+        }
+      ]
+    },
+    {
+      "label": "Advanced",
+      "format": "GROUP",
+      "collapsible": true,
+      "properties": [
+        {
+          "name": "testId",
+          "label": "Test ID",
+          "format": "TEXT",
+          "ignorePattern": "[^-_\\p{N}\\p{L}]",
+          "includeAnnotations": false
+        }
+      ]
+    }
+  ],
+  "defaultConfig": {
+    "label": "@L $this.label"
+  }
+}

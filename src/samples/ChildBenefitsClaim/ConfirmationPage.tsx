@@ -86,8 +86,8 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
         <MainWrapper>
           <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
             <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
-            {isCaseRefRequired && (
-              <div className='govuk-panel__body'>
+            {isUnAuth && isCaseRefRequired && (
+              <div className='govuk-panel__body govuk-!-margin-bottom-5'>
                 {t('YOUR_REF_NUMBER')}
                 <br></br>
                 <strong>{refId}</strong>

@@ -1,65 +1,60 @@
-import { useEffect, useState, useRef } from 'react';
-import { Input, FieldValueList, Text, EmailDisplay, PhoneDisplay, URLDisplay } from '@pega/cosmos-react-core';
+import React, { useEffect, useState, useRef } from 'react';
+import {
+  Input,
+  FieldValueList,
+  Text,
+  EmailDisplay,
+  PhoneDisplay,
+  URLDisplay
+} from '@pega/cosmos-react-core';
 import PropTypes from 'prop-types';
 
 // include in bundle
-import handleEvent from "./event-utils";
-import StatusWorkRenderer from "./StatusWork.jsx";
+import handleEvent from './event-utils';
+import StatusWorkRenderer from './StatusWork.jsx';
 import { suggestionsHandler } from './suggestions-handler';
 
 import StyledHmrcOdxGdsTextPresentationWrapper from './styles';
 
+const formatExists = formatterVal => {
+  const formatterValues = [
+    'TextInput',
+    'WorkStatus',
+    'RichText',
+    'Email',
+    'Phone',
+    'URL',
+    'Operator'
+  ];
+  return formatterValues.includes(formatterVal);
+};
 
-export const formatExists = (formatterVal) => {
-    const formatterValues = [
-      "TextInput",
-      "WorkStatus",
-      "RichText",
-      "Email",
-      "Phone",
-      "URL",
-      "Operator"
-    ];
-    let isformatter = false;
-    if (formatterValues.includes(formatterVal)) {
-      isformatter = true;
-    }
-    return isformatter;
-  };
-
-
-export const textFormatter = (formatter,value) => {
+const textFormatter = (formatter, value) => {
   let displayComponent = null;
-  switch(formatter){
-    case "TextInput" : {
+  switch (formatter) {
+    case 'TextInput':
       displayComponent = value;
       break;
-    }
-    case "Email" : {
-      displayComponent = (<EmailDisplay value={value} displayText={value} variant="link" />);
+    case 'Email':
+      displayComponent = <EmailDisplay value={value} displayText={value} variant='link' />;
       break;
-    }
-    case "Phone" : {
-      displayComponent = (<PhoneDisplay value={value} variant="link" />);
+    case 'Phone':
+      displayComponent = <PhoneDisplay value={value} variant='link' />;
       break;
-    }
-    case "URL" : {
-      displayComponent = (<URLDisplay target="_blank" value={value} displayText={value} variant="link" />);
+    case 'URL':
+      displayComponent = (
+        <URLDisplay target='_blank' value={value} displayText={value} variant='link' />
+      );
       break;
-    }
-    // no default
+    default:
+      // handle default case
+      break;
   }
   return displayComponent;
 };
 
-
-
-// Duplicated runtime code from Constellation Design System Component
-
-// props passed in combination of props from property panel (config.json) and run time props from Constellation
-// any default values in config.pros should be set in defaultProps at bottom of this file
 const HmrcOdxGdsTextPresentation = props => {
- const {
+  const {
     getPConnect,
     placeholder,
     validatemessage,
@@ -86,7 +81,7 @@ const HmrcOdxGdsTextPresentation = props => {
 
   let { value, readOnly, required, disabled } = props;
   [readOnly, required, disabled] = [readOnly, required, disabled].map(
-    (prop) => prop === true || (typeof prop === 'string' && prop === 'true')
+    prop => prop === true || (typeof prop === 'string' && prop === 'true')
   );
 
   const [inputValue, setInputValue] = useState(value);
@@ -104,16 +99,23 @@ const HmrcOdxGdsTextPresentation = props => {
     }
   }, [validatemessage, hasSuggestions, status]);
 
-  const onResolveSuggestionHandler = (accepted) => {
+  const onResolveSuggestionHandler = accepted => {
     suggestionsHandler(accepted, pConn, setStatus);
   };
+
   // Override the value to render as status work when prop passed to display as status
   if (displayAsStatus) {
     value = StatusWorkRenderer({ value });
 
     // Fall into this scenario for case summary, default to stacked status
     if (!displayMode) {
-      return <FieldValueList variant='stacked' data-testid={testId} fields={[{ id: 'status', name: label, value }]} />;
+      return (
+        <FieldValueList
+          variant='stacked'
+          data-testid={testId}
+          fields={[{ id: 'status', name: label, value }]}
+        />
+      );
     }
   }
 
@@ -123,14 +125,16 @@ const HmrcOdxGdsTextPresentation = props => {
       displayComp = textFormatter(formatter, value);
     }
     return displayMode === 'DISPLAY_ONLY' ? (
-      <StyledHmrcOdxGdsTextPresentationWrapper> displayComp </StyledHmrcOdxGdsTextPresentationWrapper>
+      <StyledHmrcOdxGdsTextPresentationWrapper>
+        {displayComp}
+      </StyledHmrcOdxGdsTextPresentationWrapper>
     ) : (
       <StyledHmrcOdxGdsTextPresentationWrapper>
-      <FieldValueList
-        variant={hideLabel ? 'stacked' : variant}
-        data-testid={testId}
-        fields={[{ id: '1', name: hideLabel ? '' : label, value: displayComp }]}
-      />
+        <FieldValueList
+          variant={hideLabel ? 'stacked' : variant}
+          data-testid={testId}
+          fields={[{ id: '1', name: hideLabel ? '' : label, value: displayComp }]}
+        />
       </StyledHmrcOdxGdsTextPresentationWrapper>
     );
   }
@@ -146,63 +150,63 @@ const HmrcOdxGdsTextPresentation = props => {
     );
     return (
       <StyledHmrcOdxGdsTextPresentationWrapper>
-      <FieldValueList
-        variant='stacked'
-        data-testid={testId}
-        fields={[{ id: '2', name: hideLabel ? '' : label, value: val }]}
-      />
+        <FieldValueList
+          variant='stacked'
+          data-testid={testId}
+          fields={[{ id: '2', name: hideLabel ? '' : label, value: val }]}
+        />
       </StyledHmrcOdxGdsTextPresentationWrapper>
     );
   }
 
   return (
     <StyledHmrcOdxGdsTextPresentationWrapper>
-    <Input
-      {...additionalProps}
-      type='text'
-      label={label}
-      labelHidden={hideLabel}
-      info={validatemessage || helperText}
-      data-testid={testId}
-      value={inputValue}
-      status={status}
-      placeholder={placeholder}
-      disabled={disabled}
-      readOnly={readOnly}
-      required={required}
-      maxLength={maxLength}
-      onChange={(event) => {
-        if (hasSuggestions) {
-          setStatus(undefined);
-        }
-        setInputValue(event.target.value);
-        if (value !== event.target.value) {
-          handleEvent(actions, 'change', propName, event.target.value);
-          hasValueChange.current = true;
-        }
-      }}
-      onBlur={(event) => {
-        if ((!value || hasValueChange.current) && !readOnly) {
-          handleEvent(actions, 'blur', propName, event.target.value);
+      <Input
+        {...additionalProps}
+        type='text'
+        label={label}
+        labelHidden={hideLabel}
+        info={validatemessage || helperText}
+        data-testid={testId}
+        value={inputValue}
+        status={status}
+        placeholder={placeholder}
+        disabled={disabled}
+        readOnly={readOnly}
+        required={required}
+        maxLength={maxLength}
+        onChange={event => {
           if (hasSuggestions) {
-            pConn.ignoreSuggestion();
+            setStatus(undefined);
           }
-          hasValueChange.current = false;
-        }
-      }}
-      onResolveSuggestion={onResolveSuggestionHandler}
-      {...(enableAdditionalInformation && fieldDescription
-        ? {
-            additionalInfo: {
-              heading: label,
-              content: fieldDescription
+          setInputValue(event.target.value);
+          if (value !== event.target.value) {
+            handleEvent(actions, 'change', propName, event.target.value);
+            hasValueChange.current = true;
+          }
+        }}
+        onBlur={event => {
+          if ((!value || hasValueChange.current) && !readOnly) {
+            handleEvent(actions, 'blur', propName, event.target.value);
+            if (hasSuggestions) {
+              pConn.ignoreSuggestion();
             }
+            hasValueChange.current = false;
           }
-        : {})}
-    />
+        }}
+        onResolveSuggestion={onResolveSuggestionHandler}
+        {...(enableAdditionalInformation && fieldDescription
+          ? {
+              additionalInfo: {
+                heading: label,
+                content: fieldDescription
+              }
+            }
+          : {})}
+      />
     </StyledHmrcOdxGdsTextPresentationWrapper>
   );
-}
+};
 
 HmrcOdxGdsTextPresentation.defaultProps = {
   value: '',

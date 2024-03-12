@@ -66,18 +66,9 @@ function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemplateProps) {
         {children[0]}
       </Grid>
       <div>
-        <Text>{completedSections < totalSections ? 'Claim incomplete' : 'Claim complete'}</Text>
-        <br />
-        <br />
-        <Text variant='secondary'>
-          {`You have completed ${completedSections} of ${totalSections} sections.`}
-        </Text>
-        <br />
-        <br />
         <SummaryList
-          name='Tasks'
+          name={`You have completed ${completedSections} of ${totalSections} sections.`}
           icon='clipboard-check-solid'
-          count={totalSections}
           // eslint-disable-next-line no-constant-condition
           items={false ? [] : itemsToRender}
           // loading={}

@@ -87,15 +87,14 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
           <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
             <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
             {isUnAuth && isCaseRefRequired && (
-              <div className='govuk-panel__body govuk-!-margin-bottom-5'>
+              <div className='govuk-panel__body'>
                 {t('YOUR_REF_NUMBER')}
                 <br></br>
                 <strong>{refId}</strong>
               </div>
             )}
-            <br />
-            <div className='govuk-panel__body govuk-!-font-size-27'>
-              {t('POST_YOUR_SUPPORTING_DOCUMENTS')}
+            <div className='govuk-panel__body'>
+              <p>{t('POST_YOUR_SUPPORTING_DOCUMENTS')}</p>
             </div>
           </div>
           <h2 className='govuk-heading-m'> {t('WHAT_YOU_NEED_TO_DO_NOW')} </h2>

@@ -7,10 +7,10 @@ import ChildBenefitsClaim from '../ChildBenefitsClaim/index';
 import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
 import Accessibility from '../ChildBenefitsClaim/AccessibilityPage';
 import UnAuthChildBenefitsClaim from '../UnAuthChildBenefitsClaim';
-// import AreYouSureToContinueWithoutSignIn from '../StaticPages/AreYouSureToContinueWithoutSignIn/AreYouSureToContinueWithoutSignIn';
-// import DoYouWantToSignIn from '../StaticPages/DoYouWantToSignIn/doYouWantToSignIn';
-// import CheckOnClaim from '../StaticPages/CheckOnClaim';
-// import RecentlyClaimedChildBenefit from '../StaticPages/ChooseClaimService';
+import AreYouSureToContinueWithoutSignIn from '../StaticPages/AreYouSureToContinueWithoutSignIn/AreYouSureToContinueWithoutSignIn';
+import DoYouWantToSignIn from '../StaticPages/DoYouWantToSignIn/doYouWantToSignIn';
+import CheckOnClaim from '../StaticPages/CheckOnClaim';
+import RecentlyClaimedChildBenefit from '../StaticPages/ChooseClaimService';
 
 const AppSelector = () => {
   i18n
@@ -36,13 +36,13 @@ const AppSelector = () => {
       <Route exact path='/ua' component={UnAuthChildBenefitsClaim} />
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
-      {/* <Route
+      <Route
         path='/are-you-sure-to-continue-without-sign-in'
         component={AreYouSureToContinueWithoutSignIn}
       />
       <Route path='/sign-in-to-government-gateway' component={DoYouWantToSignIn} />
       <Route path='/check-on-claim' component={CheckOnClaim} />
-      <Route path='/recently-claimed-child-benefit' component={RecentlyClaimedChildBenefit} /> */}
+      <Route path='/recently-claimed-child-benefit' component={RecentlyClaimedChildBenefit} />
     </Switch>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppHeader from '../../../components/AppComponents/AppHeader';
 import AppFooter from '../../../components/AppComponents/AppFooter';
 import Button from '../../../components/BaseComponents/Button/Button';
@@ -8,11 +8,24 @@ import StaticPageErrorSummary from '../ErrorSummary';
 import '../../../../assets/css/appStyles.scss';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import setPageTitle from '../../../components/helpers/setPageTitleHelpers';
 
 export default function AreYouSureToContinueWithoutSignIn() {
   const [errorMsg, setErrorMsg] = useState('');
   const { t } = useTranslation();
   const history = useHistory();
+  const lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
+  useEffect(() => {
+    const setPageTitleInterval = setInterval(() => {
+      clearInterval(setPageTitleInterval);
+      if (errorMsg.length > 0) {
+        setPageTitle(true);
+      } else {
+        setPageTitle();
+      }
+    }, 500);
+  }, [errorMsg, lang]);
+
   const radioOptions = [
     {
       value: 'yes',

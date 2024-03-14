@@ -7,6 +7,8 @@ import ChildBenefitsClaim from '../ChildBenefitsClaim/index';
 import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
 import Accessibility from '../ChildBenefitsClaim/AccessibilityPage';
 import UnAuthChildBenefitsClaim from '../UnAuthChildBenefitsClaim';
+import { HighIncomeCase } from '../HighIncomeCase';
+import { HighIncomeCase as InstantHighIncomeCase} from '../HighIncomeCase/indexTwo';
 // import AreYouSureToContinueWithoutSignIn from '../StaticPages/AreYouSureToContinueWithoutSignIn/AreYouSureToContinueWithoutSignIn';
 // import DoYouWantToSignIn from '../StaticPages/DoYouWantToSignIn/doYouWantToSignIn';
 // import CheckOnClaim from '../StaticPages/CheckOnClaim';
@@ -34,6 +36,10 @@ const AppSelector = () => {
     <Switch>
       <Route exact path='/' component={ChildBenefitsClaim} />
       <Route exact path='/ua' component={UnAuthChildBenefitsClaim} />
+      <Route exact path='/highincomeclaim-' component={HighIncomeCase} />
+      
+      <Route exact path='/highincomeclaim' component={InstantHighIncomeCase} />
+      
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
       {/* <Route

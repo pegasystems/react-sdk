@@ -5,7 +5,6 @@ import AppFooter from '../../../components/AppComponents/AppFooter';
 import { useTranslation } from 'react-i18next';
 import MainWrapper from '../../../components/BaseComponents/MainWrapper';
 import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioButtons';
-import Button from '../../../components/BaseComponents/Button/Button';
 import '../../../../assets/css/appStyles.scss';
 import StaticPageErrorSummary from '../ErrorSummary';
 import setPageTitle from '../../../components/helpers/setPageTitleHelpers';
@@ -85,12 +84,6 @@ export default function RecentlyClaimedChildBenefit() {
     <>
       <AppHeader appname={t('CLAIM_CHILD_BENEFIT')} hasLanguageToggle isPegaApp={false} />
       <div className='govuk-width-container'>
-        <Button
-          variant='backlink'
-          onClick={() => history.goBack()}
-          key='RecentlyClaimedBacklink'
-          attributes={{ type: 'link' }}
-        />
         <MainWrapper>
           <StaticPageErrorSummary errorSummary={errorMsg} linkHref={errorHref} />
           <RadioButtons

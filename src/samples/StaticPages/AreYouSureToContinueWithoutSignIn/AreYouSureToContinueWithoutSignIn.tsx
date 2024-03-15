@@ -45,9 +45,11 @@ export default function AreYouSureToContinueWithoutSignIn() {
       // todo - both yes and no redirection link to be confirmed - not mentioned explicitly in story
       const selectedOptionValue = selectedOption.getAttribute('value');
       if (selectedOptionValue === 'yes') {
-        history.push('/ua');
+        window.location.assign(
+          'https://www.tax.service.gov.uk/fill-online/claim-child-benefit/task-list'
+        );
       } else {
-        window.location.href = 'https://www.access.service.gov.uk/login/signin/creds';
+        window.location.href = '/';
       }
     } else {
       setErrorMsg(t('SELECT_YES_IF_YOU_WANT_TO_CONTINUE_WO_SIGN_IN'));

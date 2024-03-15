@@ -65,11 +65,6 @@ export const getServiceShutteredStatus = async (): Promise<boolean> => {
   }
 };
 
-export const isFieldSetReqiredForSelectComponent = (label: string) => {
-  const arrFieldSetNotRequiredForSelectComponent = ['name of building society'];
-  return !arrFieldSetNotRequiredForSelectComponent.includes(label.toLocaleLowerCase());
-};
-
 export const isUnAuthJourney = () => {
   const containername = PCore.getContainerUtils().getActiveContainerItemName(
     `${PCore.getConstants().APP.APP}/primary`

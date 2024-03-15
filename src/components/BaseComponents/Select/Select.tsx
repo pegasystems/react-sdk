@@ -2,16 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FormGroup, { makeErrorId, makeHintId } from '../FormGroup/FormGroup';
 import FieldSet from '../FormGroup/FieldSet';
-import { isFieldSetReqiredForSelectComponent } from '../../helpers/utils';
 
 export default function Select(props) {
-  const { name, onChange, value, children, errorText, hintText, label } = props;
+  const { name, onChange, value, children, errorText, hintText } = props;
 
   const describedbyIds = `${hintText ? makeHintId(name) : ''} ${
     errorText ? makeErrorId(name) : ''
   }`.trim();
   const ariaDescBy = describedbyIds.length !== 0 ? { 'aria-describedby': describedbyIds } : {};
-  const isFieldSetReqired = isFieldSetReqiredForSelectComponent(label);
 
   const selectCompoment = () => {
     return (
@@ -28,11 +26,7 @@ export default function Select(props) {
     );
   };
 
-  return isFieldSetReqired ? (
-    <FieldSet {...props}>{selectCompoment()}</FieldSet>
-  ) : (
-    <FormGroup {...props}>{selectCompoment()}</FormGroup>
-  );
+  return <FormGroup {...props}>{selectCompoment()}</FormGroup>;
 }
 
 Select.propTypes = {

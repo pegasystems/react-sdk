@@ -4,7 +4,7 @@ import GDSCheckbox from '../../../BaseComponents/Checkboxes/Checkbox';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 import { DefaultFormContext, ErrorMsgContext } from '../../../helpers/HMRCAppContext';
-import { checkErrorMsgs } from '../../../helpers/utils';
+import { checkErrorMsgs, removeRedundantString } from '../../../helpers/utils';
 import { t } from 'i18next';
 
 export default function CheckboxComponent(props) {
@@ -72,7 +72,7 @@ export default function CheckboxComponent(props) {
         <div className={`govuk-form-group ${errorMessage ? 'govuk-form-group--error' : ''}`}>
           {errorMessage && (
             <p id={`${name}-error`} className='govuk-error-message'>
-              <span className='govuk-visually-hidden'>Error:</span> {errorMessage}
+              <span className='govuk-visually-hidden'>Error:</span> {removeRedundantString(errorMessage)}
             </p>
           )}
           <GDSCheckbox

@@ -14,7 +14,6 @@ export default function RecentlyClaimedChildBenefit() {
   const history = useHistory();
   const [errorMsg, setErrorMsg] = useState('');
   const errorHref = `#serviceType`;
-  const summaryErrClasses = `govuk-button static-page-cont-button`;
   const lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
 
   useEffect(() => {
@@ -86,25 +85,27 @@ export default function RecentlyClaimedChildBenefit() {
       <div className='govuk-width-container'>
         <MainWrapper>
           <StaticPageErrorSummary errorSummary={errorMsg} linkHref={errorHref} />
-          <RadioButtons
-            name='serviceType'
-            displayInline={false}
-            value=''
-            useSmallRadios={false}
-            options={radioOptions}
-            label={t('MAKE_SURE_YOU_USE_RIGHT_CHBS')}
-            legendIsHeading
-            hintText={`<p class="govuk-body">${t('CONFIRM_YOUR_SERVICE')}</p>`}
-            errorText={errorMsg}
-          ></RadioButtons>
-          <button
-            className={summaryErrClasses}
-            data-module='govuk-button'
-            onClick={routeToService}
-            type='button'
-          >
-            {t('CONTINUE')}
-          </button>
+          <form>
+            <RadioButtons
+              name='serviceType'
+              displayInline={false}
+              value=''
+              useSmallRadios={false}
+              options={radioOptions}
+              label={t('MAKE_SURE_YOU_USE_RIGHT_CHBS')}
+              legendIsHeading
+              hintText={`${t('CONFIRM_YOUR_SERVICE')}`}
+              errorText={errorMsg}
+            ></RadioButtons>
+            <button
+              className='govuk-button'
+              data-module='govuk-button'
+              onClick={routeToService}
+              type='button'
+            >
+              {t('CONTINUE')}
+            </button>
+          </form>
         </MainWrapper>
       </div>
       <AppFooter />

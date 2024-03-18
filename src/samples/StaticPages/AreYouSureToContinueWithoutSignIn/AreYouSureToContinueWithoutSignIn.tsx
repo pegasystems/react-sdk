@@ -29,11 +29,11 @@ export default function AreYouSureToContinueWithoutSignIn() {
   const radioOptions = [
     {
       value: 'yes',
-      label: `${t('YES')} - ${t('I_WANT_TO_CONTINUE_WITHOUT_SIGN_IN')}`
+      label: `${t('YES')}, ${t('I_WANT_TO_CONTINUE_WITHOUT_SIGN_IN')}`
     },
     {
       value: 'no',
-      label: `${t('NO')} - ${t('I_WANT_TO_SIGN_IN')}`
+      label: `${t('NO')}, ${t('I_WANT_TO_SIGN_IN')}`
     }
   ];
 
@@ -71,25 +71,26 @@ export default function AreYouSureToContinueWithoutSignIn() {
             errorSummary={errorMsg}
             linkHref='#areYouSureToContinueWoSignIn'
           />
-          <RadioButtons
-            name='areYouSureToContinueWoSignIn'
-            displayInline
-            value=''
-            useSmallRadios
-            options={radioOptions}
-            label={t('ARE_YOU_SURE_YOU_WANT_TO_CONTINUE_WO_SIGN_IN')}
-            legendIsHeading
-            errorText={errorMsg}
-          ></RadioButtons>
-          <button
-            className='govuk-button'
-            data-module='govuk-button'
-            onClick={handleSubmit}
-            type='button'
-          >
-            {t('CONTINUE')}
-          </button>
-          <br />
+          <form>
+            <RadioButtons
+              name='areYouSureToContinueWoSignIn'
+              displayInline
+              value=''
+              useSmallRadios
+              options={radioOptions}
+              label={t('ARE_YOU_SURE_YOU_WANT_TO_CONTINUE_WO_SIGN_IN')}
+              legendIsHeading
+              errorText={errorMsg}
+            ></RadioButtons>
+            <button
+              className='govuk-button'
+              data-module='govuk-button'
+              onClick={handleSubmit}
+              type='button'
+            >
+              {t('CONTINUE')}
+            </button>
+          </form>
         </MainWrapper>
       </div>
       <AppFooter />

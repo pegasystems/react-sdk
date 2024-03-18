@@ -7,7 +7,6 @@ import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioB
 import '../../../../assets/css/appStyles.scss';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import InstructionTextComponent from '../../../components/override-sdk/template/DefaultForm/InstructionTextComponent';
 import StaticPageErrorSummary from '../ErrorSummary';
 import setPageTitle from '../../../components/helpers/setPageTitleHelpers';
 
@@ -52,7 +51,7 @@ export default function DoYouWantToSignIn() {
     }
   }
 
-  const instructionText = `<p class="govuk-body">${t('YOU_CAN_CREATE_A_PERSONAL_GOVT')}.</p>
+  const hintText = `<p class="govuk-body">${t('YOU_CAN_CREATE_A_PERSONAL_GOVT')}.</p>
   <p class="govuk-body">${t('WHEN_YOU_SIGN_IN_YOU_CAN')}:</p>
   <ul class="govuk-list govuk-list--bullet">
     <li>${t('RECIEVE_YOUR_CHB_PAYMENT_SOONER')}</li>
@@ -60,6 +59,7 @@ export default function DoYouWantToSignIn() {
     <li>${t('COMPLETE_THE_CHB_APPLICATION_FORM_QUICKLY')}</li>
     <li>${t('RECEIVE_TEXT_MESSAGE_UPDATES')}</li>
   </ul>`;
+
   return (
     <>
       <AppHeader appname={t('CLAIM_CHILD_BENEFIT')} hasLanguageToggle isPegaApp={false} />
@@ -72,26 +72,27 @@ export default function DoYouWantToSignIn() {
         />
         <MainWrapper>
           <StaticPageErrorSummary errorSummary={errorMsg} linkHref='#doYouWantToSignIn' />
-          <h1 className='govuk-label govuk-label--l'>{t('DO_YOU_WANT_TO_SIGN_IN')}</h1>
-          <InstructionTextComponent instructionText={instructionText} />
-          <RadioButtons
-            name='doYouWantToSignIn'
-            displayInline
-            value=''
-            useSmallRadios
-            options={radioOptions}
-            legendIsHeading
-            errorText={errorMsg}
-          ></RadioButtons>
-          <button
-            className='govuk-button'
-            data-module='govuk-button'
-            onClick={handleSubmit}
-            type='button'
-          >
-            {t('CONTINUE')}
-          </button>
-          <br />
+          <form>
+            <RadioButtons
+              name='doYouWantToSignIn'
+              displayInline
+              value=''
+              useSmallRadios
+              options={radioOptions}
+              hintText={hintText}
+              legendIsHeading
+              errorText={errorMsg}
+              label={t('DO_YOU_WANT_TO_SIGN_IN')}
+            ></RadioButtons>
+            <button
+              className='govuk-button'
+              data-module='govuk-button'
+              onClick={handleSubmit}
+              type='button'
+            >
+              {t('CONTINUE')}
+            </button>
+          </form>
         </MainWrapper>
       </div>
       <AppFooter />

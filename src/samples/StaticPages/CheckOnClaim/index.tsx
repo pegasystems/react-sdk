@@ -47,7 +47,7 @@ export default function CheckOnClaim() {
               className='govuk-link '
               target='_blank'
               rel='noopener noreferrer'
-              href='https://www.tax.service.gov.uk/fill-online/claim-child-benefit/check-on-claim'
+              href='https://www.tax.service.gov.uk/child-benefit/view-proof-entitlement'
             >
               {t('YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO')}
             </a>

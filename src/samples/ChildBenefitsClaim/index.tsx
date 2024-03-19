@@ -142,11 +142,13 @@ export default function ChildBenefitsClaim() {
   function createCase() {
     displayPega();
 
-    /* let startingFields = {};
+    let startingFields = {};
     startingFields = {
       NotificationLanguage: sessionStorage.getItem('rsdk_locale')?.slice(0, 2) || 'en'
-    }; */
-    
+    };
+    PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP, {
+      startingFields
+    });
   }
 
   function startNow() {

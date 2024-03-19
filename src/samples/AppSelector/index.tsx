@@ -7,8 +7,7 @@ import ChildBenefitsClaim from '../ChildBenefitsClaim/index';
 import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
 import Accessibility from '../ChildBenefitsClaim/AccessibilityPage';
 import UnAuthChildBenefitsClaim from '../UnAuthChildBenefitsClaim';
-import { HighIncomeCase } from '../HighIncomeCase';
-import { HighIncomeCase as InstantHighIncomeCase} from '../HighIncomeCase/indexTwo';
+import HighIncomeCase from '../HighIncomeCase';
 // import AreYouSureToContinueWithoutSignIn from '../StaticPages/AreYouSureToContinueWithoutSignIn/AreYouSureToContinueWithoutSignIn';
 // import DoYouWantToSignIn from '../StaticPages/DoYouWantToSignIn/doYouWantToSignIn';
 // import CheckOnClaim from '../StaticPages/CheckOnClaim';
@@ -22,7 +21,7 @@ const AppSelector = () => {
       lng: sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en',
       backend: {
         /* translation file path */
-        loadPath: `assets/i18n/{{lng}}.json`
+        loadPath: `/assets/i18n/{{lng}}.json`
       },
       fallbackLng: 'en',
       debug: false,
@@ -36,10 +35,7 @@ const AppSelector = () => {
     <Switch>
       <Route exact path='/' component={ChildBenefitsClaim} />
       <Route exact path='/ua' component={UnAuthChildBenefitsClaim} />
-      <Route exact path='/highincomeclaim-' component={HighIncomeCase} />
-      
-      <Route exact path='/highincomeclaim' component={InstantHighIncomeCase} />
-      
+      <Route exact path='/hicbc/opt-in' component={HighIncomeCase} />      
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
       {/* <Route

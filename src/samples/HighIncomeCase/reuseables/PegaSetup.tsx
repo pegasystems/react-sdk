@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import { render } from 'react-dom';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
@@ -11,7 +11,7 @@ import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helper
 import localSdkComponentMap from '../../../../sdk-local-component-map';
 
 import {
-  sdkIsLoggedIn,
+  // sdkIsLoggedIn,
   loginIfNecessary,  
   sdkSetAuthHeader
 } from '@pega/react-sdk-components/lib/components/helpers/authManager';
@@ -19,17 +19,17 @@ import {
 declare const myLoadMashup: any;
 
 export function establishPCoreSubscriptions({setShowPega}) {
-/*********************************************
+/* ********************************************
  * Registers close active container on end of assignment processing
-**********************************************/
+********************************************* */
   function closeActiveContainer() {
-    //PM!! getClaimsCaseID();
-    console.log('SUBEVENT! closeActiveContainerOnEndOfAssignment');
+    // PM!! getClaimsCaseID();
+    // console.log('SUBEVENT! closeActiveContainerOnEndOfAssignment');
     PCore.getContainerUtils().closeContainerItem(
       PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
       { skipDirtyCheck: true }
     );
-    //PM!! displayResolutionScreen();
+    // PM!! displayResolutionScreen();
   }
 
   PCore.getPubSubUtils().subscribe(
@@ -38,14 +38,14 @@ export function establishPCoreSubscriptions({setShowPega}) {
     'closeActiveContainerOnEndOfAssignment'
   );
 
-/**********************************************
+/* *********************************************
  * closes container item if case is resolved-discarded, on assignmentFinished
- *********************************************/
+ ******************************************** */
   function handleServiceNotAvailable() {
-      //PM!! setShowStartPage(false);
-      //PM!! setShowUserPortal(false);
-      //PM!! setShowPega(false);
-      console.log('SUBEVENT! handleServiceNotAvailableOnAssignmentFinished');
+      // PM!! setShowStartPage(false);
+      // PM!! setShowUserPortal(false);
+      // PM!! setShowPega(false);
+      // console.log('SUBEVENT! handleServiceNotAvailableOnAssignmentFinished');
       const containername = PCore.getContainerUtils().getActiveContainerItemName(
         `${PCore.getConstants().APP.APP}/primary`
       );
@@ -54,7 +54,7 @@ export function establishPCoreSubscriptions({setShowPega}) {
       );
       const status = PCore.getStoreValue('.pyStatusWork', 'caseInfo.content', context);
       if (status === 'Resolved-Discarded') {
-        //PM!! displayServiceNotAvailable();
+        // PM!! displayServiceNotAvailable();
         PCore.getContainerUtils().closeContainerItem(context);
       }
     }
@@ -65,22 +65,22 @@ export function establishPCoreSubscriptions({setShowPega}) {
     'handleServiceNotAvailableOnAssignmentFinished'
   );
 
-  /*********************************
+  /* ********************************
    * On Cancel event, ?
-  *********************************/
+  ******************************** */
   PCore.getPubSubUtils().subscribe(
     PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
     () => {
-      //PM!! cancelAssignment();
-      //PM!! setShowPortalBanner(true);
-      //PM!! setIsCreateCaseBlocked(false);
+      // PM!! cancelAssignment();
+      // PM!! setShowPortalBanner(true);
+      // PM!! setIsCreateCaseBlocked(false);
     },
     'cancelAssignment'
   );
 
- /*********************************
+ /* ********************************
    * On close container event, ?
-  *********************************/  
+  ******************************** */  
   PCore.getPubSubUtils().subscribe(
     PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
     () => {
@@ -88,25 +88,25 @@ export function establishPCoreSubscriptions({setShowPega}) {
     'closeContainer'
   );
 
-  /*********************************
+  /* ********************************
    * On assignment opened, toggle show pega
-  *********************************/  
+  ******************************** */  
   PCore.getPubSubUtils().subscribe(
     PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.ASSIGNMENT_OPENED,
     () => {
-      console.log("SUBEVENT!! showPegaWhenAssignmentOpened")
+      // console.log("SUBEVENT!! showPegaWhenAssignmentOpened")
       setShowPega(true);
     },
     'showPegaWhenAssignmentOpened'
   );
 
-  /*********************************
+  /* ********************************
    * On case created, toggle show pega
-  *********************************/  
+  ******************************** */  
   PCore.getPubSubUtils().subscribe(
     PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_CREATED,
     () => {
-      console.log("SUBEVENT!! showPegaWhenCaseCreated")
+      // console.log("SUBEVENT!! showPegaWhenCaseCreated")
       setShowPega(true)
     },
     'showPegaWhenCaseCreated'
@@ -115,10 +115,10 @@ export function establishPCoreSubscriptions({setShowPega}) {
   PCore.getPubSubUtils().subscribe(
     PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CREATE_STAGE_SAVED,
     () => {
-      //PM!! cancelAssignment();
-      //PM!! setShowPortalBanner(true);
-      //PM!! setIsCreateCaseBlocked(false);
-      console.log('SUBEVENT!!! savedCase');
+      // PM!! cancelAssignment();
+      // PM!! setShowPortalBanner(true);
+      // PM!! setIsCreateCaseBlocked(false);
+      // console.log('SUBEVENT!!! savedCase');
     },
     'savedCase'
   );
@@ -126,7 +126,7 @@ export function establishPCoreSubscriptions({setShowPega}) {
   PCore.getPubSubUtils().subscribe(
     PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_OPENED,
     () => {
-      //PM!! displayPega();
+      // PM!! displayPega();
     },
     'continueCase'
   );
@@ -134,7 +134,7 @@ export function establishPCoreSubscriptions({setShowPega}) {
 
 
 
-/*****
+/* ****
  * Defines the Root Component used in pega mashup
  * 
  * DXAPI Note, has been extended to accept further context values 
@@ -163,7 +163,7 @@ export function RootComponent(props) {
     return theComp;
   }
      
-  /**
+  /* *
    * Callback from onPCoreReady that's called once the top-level render object
    * is ready to be rendered
    * @param inRenderObj the initial, top-level PConnect object to render
@@ -179,7 +179,7 @@ export function RootComponent(props) {
       styleSheetTarget
     } = inRenderObj;
 
-    const thePConn = props.getPConnect();
+    // const thePConn = props.getPConnect();
 
     // PM!! setPConn(thePConn);
 
@@ -213,7 +213,7 @@ export function RootComponent(props) {
     // render( <div>EmbeddedTopLevel initialRender in {domContainerID} with PConn of {componentName}</div>, target);
   }
 
-  /**
+  /*
    * kick off the application's portal that we're trying to serve up
    */
   export function startMashup({setShowPega}) {
@@ -226,7 +226,7 @@ export function RootComponent(props) {
 
       // Fetches timeout length config
       // PM!! 
-      /*getSdkConfig()
+      /* getSdkConfig()
         .then(sdkConfig => {
           if (sdkConfig.timeoutConfig.secondsTilWarning)
             milisecondsTilWarning = sdkConfig.timeoutConfig.secondsTilWarning * 1000;
@@ -275,13 +275,13 @@ export function RootComponent(props) {
 
       // PM!! setLoadingSubmittedClaims(true);
       // @ts-ignore
-      /*PCore.getDataPageUtils()
+      /* PCore.getDataPageUtils()
         .getDataAsync('D_ClaimantSubmittedChBCases', 'root', { OperatorId: operatorId })
         .then(resp => {
           setSubmittedClaims(resp.data.slice(0, 10));
         })
         .finally(() => setLoadingSubmittedClaims(false));
-      fetchInProgressClaimsData();*/
+      fetchInProgressClaimsData(); */
     });
 
     // Initialize the SdkComponentMap (local and pega-provided)
@@ -291,8 +291,8 @@ export function RootComponent(props) {
       console.log(`SdkComponentMap initialized`);
     });
 
-    //@ts-ignore
-    /*const dpagePromise = PCore.getDataPageUtils()
+    // @ts-ignore
+    /* const dpagePromise = PCore.getDataPageUtils()
       .getPageDataAsync('D_ShutterLookup', 'root', {
         FeatureID: 'highincome',
         FeatureType: 'highincome'
@@ -310,7 +310,7 @@ export function RootComponent(props) {
       .catch(err => {
         // eslint-disable-next-line no-console
         console.error(err);
-      });*/
+      }); */
 
     // load the Mashup and handle the onPCoreEntry response that establishes the
     //  top level Pega root element (likely a RootContainer)
@@ -356,7 +356,7 @@ export function RootComponent(props) {
 
     document.addEventListener('SdkConstellationReady', () => {
       // start the portal
-      startMashup({setShowPega: setShowPega});
+      startMashup({setShowPega});
     });
 
     document.addEventListener('SdkLoggedOut', () => {
@@ -395,7 +395,7 @@ export function RootComponent(props) {
         PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
         'assignmentFinished'
       );
-    };*/    
+    }; */    
   }, [])
 
   return {showPega, setShowPega}

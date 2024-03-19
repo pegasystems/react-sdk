@@ -34,14 +34,6 @@ import { checkCookie, setCookie } from '../../components/helpers/cookie';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 import toggleNotificationProcess from '../../components/helpers/toggleNotificationLanguage';
 
-import { establishPCoreSubscriptions } from '../HighIncomeCase/reuseables/PegaSetup';
-import {
-  sdkIsLoggedIn,
-  loginIfNecessary,  
-  sdkSetAuthHeader
-} from '@pega/react-sdk-components/lib/components/helpers/authManager';
-
-
 declare const myLoadMashup: any;
 
 /* Time out modal functionality */
@@ -150,10 +142,10 @@ export default function ChildBenefitsClaim() {
   function createCase() {
     displayPega();
 
-    let startingFields = {};
+    /* let startingFields = {};
     startingFields = {
       NotificationLanguage: sessionStorage.getItem('rsdk_locale')?.slice(0, 2) || 'en'
-    };
+    }; */
     
   }
 

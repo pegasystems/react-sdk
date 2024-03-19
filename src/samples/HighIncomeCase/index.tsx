@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState, useEffect, useMemo} from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
@@ -11,28 +11,30 @@ import LogoutPopup from '../../components/AppComponents/LogoutPopup';
 import { logout } from '@pega/auth/lib/sdk-auth-manager';
 import { staySignedIn } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import { useStartMashup } from './reuseables/PegaSetup';
-import { initTimeout } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
+import { initTimeout, settingTimer } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import {
     loginIfNecessary, 
   } from '@pega/react-sdk-components/lib/components/helpers/authManager';
   
-declare const myLoadMashup;
+// declare const myLoadMashup;
 
-const HighIncomeCase:FunctionComponent<any> = (props: any) => {
+const HighIncomeCase:FunctionComponent<any> = () => {
 
     // const [bShowPega, setShowPega] = useState(false);
-    const [shutterServicePage, setShutterServicePage] = useState(false);
-    const [serviceNotAvailable, setServiceNotAvailable] = useState(false);
+    const [shutterServicePage, /* setShutterServicePage */] = useState(false);
+    const [serviceNotAvailable, /* setServiceNotAvailable */] = useState(false);
     const [authType, setAuthType] = useState('gg');
     
     const [showTimeoutModal, setShowTimeoutModal] = useState(false);  
     const [showSignoutModal, setShowSignoutModal] = useState(false);
 
     const history = useHistory();
-    initTimeout(setShowTimeoutModal, false, true);
+    useEffect(() => 
+        {initTimeout(setShowTimeoutModal, false, true) }  
+    , []);
 
     function doRedirectDone() {
-        history.push('/highincomeclaim');
+        history.push('/hicbc/opt-in');
         // appName and mainRedirect params have to be same as earlier invocation
         loginIfNecessary({ appName: 'embedded', mainRedirect: true });
       } 
@@ -76,7 +78,7 @@ const HighIncomeCase:FunctionComponent<any> = (props: any) => {
 
 
 
-    /****
+    /* ***
      * Application specific PCore subscriptions
      * 
      * TODO Can this be made into a tidy helper? including its own clean up? A custom hook perhaps 
@@ -86,15 +88,16 @@ const HighIncomeCase:FunctionComponent<any> = (props: any) => {
         PCore.getPubSubUtils().subscribe(
             PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
             () => {
-                console.log("SUBEVENT!!! showStartPageOnCloseContainerItem")
+                // console.log("SUBEVENT!!! showStartPageOnCloseContainerItem")
                 setShowPega(false);
             },
             'showStartPageOnCloseContainerItem'
         );
         })
+        settingTimer();
     }); 
     
-    //And clean up
+    // And clean up
 
     useEffect(() => {
         return () => {
@@ -152,4 +155,4 @@ const HighIncomeCase:FunctionComponent<any> = (props: any) => {
 }
 
 
-export { HighIncomeCase };
+export default HighIncomeCase ;

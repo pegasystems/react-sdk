@@ -8,6 +8,7 @@ import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioB
 import '../../../../assets/css/appStyles.scss';
 import StaticPageErrorSummary from '../ErrorSummary';
 import setPageTitle from '../../../components/helpers/setPageTitleHelpers';
+import NotificationBanner from '../../../components/BaseComponents/NotificationBanner/NotificationBanner';
 
 export default function RecentlyClaimedChildBenefit() {
   const { t } = useTranslation();
@@ -84,6 +85,7 @@ export default function RecentlyClaimedChildBenefit() {
       <AppHeader appname={t('CLAIM_CHILD_BENEFIT')} hasLanguageToggle isPegaApp={false} />
       <div className='govuk-width-container'>
         <MainWrapper>
+          <NotificationBanner content={t('IMPROVMENTS_TO_THIS_SERVICE_NOTIFICATION')} />
           <StaticPageErrorSummary errorSummary={errorMsg} linkHref={errorHref} />
           <form>
             <RadioButtons

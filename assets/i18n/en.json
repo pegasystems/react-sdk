@@ -235,5 +235,6 @@
   "CHECK_CLAIM_REPLY": "check when you can expect a reply to your claim (opens in new tab).",
   "CHECK_CLAIM_APPROVED": "To check if your claim for Child Benefit has been approved, you can view your proof of entitlement. ",
   "YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO": "You will need to sign in to access this information. If you do not have sign in details, you can create them (opens in new tab).",
-  "EXCLUSIVEOPTION_OR": "or"
+  "EXCLUSIVEOPTION_OR": "or",
+  "IMPROVMENTS_TO_THIS_SERVICE_NOTIFICATION": "We have recently made some improvements to this service. If you are coming back to complete a previous claim and it does not show, you will need to start again."
 }

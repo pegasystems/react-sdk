@@ -111,6 +111,8 @@
   "FOOTER_LISCENSE_P2": " , ac eithrio lle nodir yn wahanol",
   "COPYRIGHT": "© Hawlfraint y Goron",
   "SEVEN_DAYS": "7 diwrnod",
+  "TEN_YEARS": "10 years",
+  "ONE_HOUR": "1 hour",
   "SESSION": "Sesiwn",
 
   "COOKIES_PAGE_P1": "Cwcis yw ffeiliau bach sy’n cael eu cadw ar eich ffôn, llechen neu gyfrifiadur pan ydych yn ymweld â gwefan.",
@@ -123,6 +125,11 @@
   "COOKIE_AWSALB_DESCRIPTION": "Defnyddir hyn i helpu i reoli’r traffig rhwng porwr gwe ymwelwr a gweinydd y rhaglen sy’n cynnal gwasanaethau CThEF.",
   "COOKIE_AWSALBCORS_DESCRIPTION": "Defnyddir hyn i helpu i reoli’r traffig rhwng porwr gwe ymwelwr a gweinydd y rhaglen sy’n cynnal gwasanaethau CThEF.",
   "COOKIE_JSESSIONID_DESCRIPTION": "Defnyddir hyn i adnabod gwybodaeth am sesiwn yr ymwelwr, a’r wybodaeth honno yn ymwneud â’r gwasanaeth sy’n cael ei ddefnyddio.",
+  
+  "COOKIE_PEGAODXEI_DESCRIPTION": "This is used to identify the session ID of a user not using Government Gateway.",
+  "COOKIE_PEGAODXDI_DESCRIPTION": "This is used to uniquely identify a device that has interacted with HMRC services and is used for internal security auditing.",
+  "COOKIE_AKA_A2_DESCRIPTION": "This Akamai cookie is used to help speed up content delivery on websites using adaptive acceleration.",
+  
   "COOKIE_FIND_OUT_MORE": "Dysgwch ragor am gwcis ar wasanaethau CThEF",
   "GDS_INFO_IMPORTANT": "Pwysig",
   "GDS_INFO_SUCCESS": "Llwyddiant",

@@ -111,6 +111,8 @@
   "FOOTER_LISCENSE_P2": ", except where otherwise stated",
   "COPYRIGHT": "© Crown copyright",
   "SEVEN_DAYS": "7 days",
+  "TEN_YEARS": "10 years",
+  "ONE_HOUR": "1 hour",
   "SESSION": "Session",
 
   "COOKIES_PAGE_P1": "Cookies are small files saved on your phone, tablet or computer when you visit a website.",
@@ -123,6 +125,11 @@
   "COOKIE_AWSALB_DESCRIPTION": "Used to help manage web traffic between a visitors web browser and the application servers that host HMRC services.",
   "COOKIE_AWSALBCORS_DESCRIPTION": "Used to help manage web traffic between a visitors web browser and the application servers that host HMRC services.",
   "COOKIE_JSESSIONID_DESCRIPTION": "Used to identify the visitor’s session information related to the HMRC service being accessed.",
+  
+  "COOKIE_PEGAODXEI_DESCRIPTION": "This is used to identify the session ID of a user not using Government Gateway.",
+  "COOKIE_PEGAODXDI_DESCRIPTION": "This is used to uniquely identify a device that has interacted with HMRC services and is used for internal security auditing.",
+  "COOKIE_AKA_A2_DESCRIPTION": "This Akamai cookie is used to help speed up content delivery on websites using adaptive acceleration.",
+
   "COOKIE_FIND_OUT_MORE": "Find out more about cookies on HMRC services",
   "GDS_INFO_IMPORTANT": "Important",
   "GDS_INFO_SUCCESS": "Success",

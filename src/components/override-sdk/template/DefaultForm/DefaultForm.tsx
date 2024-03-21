@@ -111,6 +111,19 @@ export default function DefaultForm(props) {
     }
   }, [instructionExists]);
 
+  // Sets the localeReference property in the store for getting the translated title in Assignment.tsx
+  useEffect(() => {
+    PCore.getStore().dispatch({
+      type: 'SET_PROPERTY',
+      payload: {
+        reference: 'localeReference',
+        value: props.localeReference,
+        context: 'app',
+        isArrayDeepMerge: false
+      }
+    });
+  }, []);
+
   useEffect(() => {
     if (containerName === 'Declaration') {
       // Get current context

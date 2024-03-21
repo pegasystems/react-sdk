@@ -12,25 +12,36 @@ import localSdkComponentMap from '../../../../sdk-local-component-map';
 
 import {
   // sdkIsLoggedIn,
-  loginIfNecessary,  
+  loginIfNecessary,
   sdkSetAuthHeader
 } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 
 declare const myLoadMashup: any;
 
-export function establishPCoreSubscriptions({setShowPega, setShowResolutionScreen}) {
- 
-/* ********************************************
- * Registers close active container on end of assignment processing
-********************************************* */
+export function establishPCoreSubscriptions({
+  setShowPega,
+  setShowResolutionPage,
+  setCaseId,
+  setCaseStatus
+}) {
+  /* ********************************************
+   * Registers close active container on end of assignment processing
+   ********************************************* */
   function showResolutionScreen() {
     // PM!! getClaimsCaseID();
+    const context = PCore.getContainerUtils().getActiveContainerItemName(
+      `${PCore.getConstants().APP.APP}/primary`
+    );
+    const status = PCore.getStoreValue('.status', 'caseInfo', context);
+    const id = PCore.getStoreValue('.ID', 'caseInfo', context);
+    setCaseStatus(status);
+    setCaseId(id);
     // console.log('SUBEVENT! closeActiveContainerOnEndOfAssignment');
     PCore.getContainerUtils().closeContainerItem(
       PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
       { skipDirtyCheck: true }
     );
-    setShowResolutionScreen(true);
+    setShowResolutionPage(true);
   }
 
   PCore.getPubSubUtils().subscribe(
@@ -39,27 +50,27 @@ export function establishPCoreSubscriptions({setShowPega, setShowResolutionScree
     'showResolutionScreenOnEndOfAssignment'
   );
 
-/* *********************************************
- * closes container item if case is resolved-discarded, on assignmentFinished
- ******************************************** */
+  /* *********************************************
+   * closes container item if case is resolved-discarded, on assignmentFinished
+   ******************************************** */
   function handleServiceNotAvailable() {
-      // PM!! setShowStartPage(false);
-      // PM!! setShowUserPortal(false);
-      // PM!! setShowPega(false);
-      // console.log('SUBEVENT! handleServiceNotAvailableOnAssignmentFinished');
-      const containername = PCore.getContainerUtils().getActiveContainerItemName(
-        `${PCore.getConstants().APP.APP}/primary`
-      );
-      const context = PCore.getContainerUtils().getActiveContainerItemName(
-        `${containername}/workarea`
-      );
-      const status = PCore.getStoreValue('.pyStatusWork', 'caseInfo.content', context);
-      if (status === 'Resolved-Discarded') {
-        // PM!! displayServiceNotAvailable();
-        PCore.getContainerUtils().closeContainerItem(context);
-      }
+    // PM!! setShowStartPage(false);
+    // PM!! setShowUserPortal(false);
+    // PM!! setShowPega(false);
+    // console.log('SUBEVENT! handleServiceNotAvailableOnAssignmentFinished');
+    const containername = PCore.getContainerUtils().getActiveContainerItemName(
+      `${PCore.getConstants().APP.APP}/primary`
+    );
+    const context = PCore.getContainerUtils().getActiveContainerItemName(
+      `${containername}/workarea`
+    );
+    const status = PCore.getStoreValue('.pyStatusWork', 'caseInfo.content', context);
+    if (status === 'Resolved-Discarded') {
+      // PM!! displayServiceNotAvailable();
+      PCore.getContainerUtils().closeContainerItem(context);
     }
-  
+  }
+
   PCore.getPubSubUtils().subscribe(
     'assignmentFinished',
     handleServiceNotAvailable,
@@ -68,7 +79,7 @@ export function establishPCoreSubscriptions({setShowPega, setShowResolutionScree
 
   /* ********************************
    * On Cancel event, ?
-  ******************************** */
+   ******************************** */
   PCore.getPubSubUtils().subscribe(
     PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
     () => {
@@ -79,19 +90,18 @@ export function establishPCoreSubscriptions({setShowPega, setShowResolutionScree
     'cancelAssignment'
   );
 
- /* ********************************
+  /* ********************************
    * On close container event, ?
-  ******************************** */  
+   ******************************** */
   PCore.getPubSubUtils().subscribe(
     PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
-    () => {
-    },
+    () => {},
     'closeContainer'
   );
 
   /* ********************************
    * On assignment opened, toggle show pega
-  ******************************** */  
+   ******************************** */
   PCore.getPubSubUtils().subscribe(
     PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.ASSIGNMENT_OPENED,
     () => {
@@ -103,12 +113,12 @@ export function establishPCoreSubscriptions({setShowPega, setShowResolutionScree
 
   /* ********************************
    * On case created, toggle show pega
-  ******************************** */  
+   ******************************** */
   PCore.getPubSubUtils().subscribe(
     PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CASE_CREATED,
     () => {
       // console.log("SUBEVENT!! showPegaWhenCaseCreated")
-      setShowPega(true)
+      setShowPega(true);
     },
     'showPegaWhenCaseCreated'
   );
@@ -133,101 +143,104 @@ export function establishPCoreSubscriptions({setShowPega, setShowResolutionScree
   );
 }
 
-
-
 /* ****
  * Defines the Root Component used in pega mashup
- * 
- * DXAPI Note, has been extended to accept further context values 
- * 
- *  */ 
+ *
+ * DXAPI Note, has been extended to accept further context values
+ *
+ *  */
 
 export function RootComponent(props) {
-    const PegaConnectObj = createPConnectComponent();
-    const thePConnObj = <PegaConnectObj {...props} />;
+  const PegaConnectObj = createPConnectComponent();
+  const thePConnObj = <PegaConnectObj {...props} />;
 
-    // NOTE: For Embedded mode, we add in displayOnlyFA and isMashup to our React context
-    // so the values are available to any component that may need it.
-    const theComp = (
-      <StoreContext.Provider
-        value={{
-          store: PCore.getStore(),
-          displayOnlyFA: true,
-          isMashup: true,
-          ...props.contextExtensionValues
-        }}
-      >
-        {thePConnObj}
-      </StoreContext.Provider>
-    );
+  // NOTE: For Embedded mode, we add in displayOnlyFA and isMashup to our React context
+  // so the values are available to any component that may need it.
+  const theComp = (
+    <StoreContext.Provider
+      value={{
+        store: PCore.getStore(),
+        displayOnlyFA: true,
+        isMashup: true,
+        ...props.contextExtensionValues
+      }}
+    >
+      {thePConnObj}
+    </StoreContext.Provider>
+  );
 
-    return theComp;
+  return theComp;
+}
+
+/* *
+ * Callback from onPCoreReady that's called once the top-level render object
+ * is ready to be rendered
+ * @param inRenderObj the initial, top-level PConnect object to render
+ */
+function initialRender(inRenderObj) {
+  // loadMashup does its own thing so we don't need to do much/anything here
+  // // modified from react_root.js render
+  const {
+    props,
+    domContainerID = null,
+    componentName,
+    portalTarget,
+    styleSheetTarget
+  } = inRenderObj;
+
+  // const thePConn = props.getPConnect();
+
+  // PM!! setPConn(thePConn);
+
+  let target: any = null;
+
+  if (domContainerID !== null) {
+    target = document.getElementById(domContainerID);
+  } else if (portalTarget !== null) {
+    target = portalTarget;
   }
-     
-  /* *
-   * Callback from onPCoreReady that's called once the top-level render object
-   * is ready to be rendered
-   * @param inRenderObj the initial, top-level PConnect object to render
-   */
-  function initialRender(inRenderObj) {
-    // loadMashup does its own thing so we don't need to do much/anything here
-    // // modified from react_root.js render
-    const {
-      props,
-      domContainerID = null,
-      componentName,
-      portalTarget,
-      styleSheetTarget
-    } = inRenderObj;
 
-    // const thePConn = props.getPConnect();
+  // Note: RootComponent is just a function (declared below)
 
-    // PM!! setPConn(thePConn);
+  const Component: any = RootComponent;
 
-    let target: any = null;
+  if (componentName) {
+    Component.displayName = componentName;
+  }
 
-    if (domContainerID !== null) {
-      target = document.getElementById(domContainerID);
-    } else if (portalTarget !== null) {
-      target = portalTarget;
-    }
+  const theComponent = (
+    <Component
+      {...props}
+      portalTarget={portalTarget}
+      styleSheetTarget={styleSheetTarget}
+      contextExtensionValues={{ setAssignmentPConnect: () => {} }}
+    />
+  );
 
-    // Note: RootComponent is just a function (declared below)
+  // Initial render of component passed in (which should be a RootContainer)
+  render(<React.Fragment>{theComponent}</React.Fragment>, target);
 
-    const Component: any = RootComponent;
-
-    if (componentName) {
-      Component.displayName = componentName;
-    }
-
-    const theComponent = (
-      <Component {...props} portalTarget={portalTarget} styleSheetTarget={styleSheetTarget} contextExtensionValues={{setAssignmentPConnect: ()=> {}}}/>
-    );
-
-    // Initial render of component passed in (which should be a RootContainer)
-    render(<React.Fragment>{theComponent}</React.Fragment>, target);
-
-    /* const root = render(target); // createRoot(container!) if you use TypeScript
+  /* const root = render(target); // createRoot(container!) if you use TypeScript
     root.render(<>{theComponent}</>); */
 
-    // Initial render to show that we have a PConnect and can render in the target location
-    // render( <div>EmbeddedTopLevel initialRender in {domContainerID} with PConn of {componentName}</div>, target);
-  }
+  // Initial render to show that we have a PConnect and can render in the target location
+  // render( <div>EmbeddedTopLevel initialRender in {domContainerID} with PConn of {componentName}</div>, target);
+}
 
-  /*
-   * kick off the application's portal that we're trying to serve up
-   */
-  export function startMashup({setShowPega, setShowResolutionScreen}) {
-    // NOTE: When loadMashup is complete, this will be called.
-    PCore.onPCoreReady(renderObj => {
-      // Check that we're seeing the PCore version we expect
-      compareSdkPCoreVersions();
-      establishPCoreSubscriptions({setShowPega, setShowResolutionScreen});      
-      // PM!! setShowAppName(true);
+/*
+ * kick off the application's portal that we're trying to serve up
+ */
+export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus }) {
+  // NOTE: When loadMashup is complete, this will be called.
+  PCore.onPCoreReady(renderObj => {
+    // Check that we're seeing the PCore version we expect
+    compareSdkPCoreVersions();
+    establishPCoreSubscriptions({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus });
+    // PM!! setShowAppName(true);
 
-      // Fetches timeout length config
-      // PM!! 
-      /* getSdkConfig()
+    // Fetches timeout length config
+    // PM!!
+    /* getSdkConfig()
         .then(sdkConfig => {
           if (sdkConfig.timeoutConfig.secondsTilWarning)
             milisecondsTilWarning = sdkConfig.timeoutConfig.secondsTilWarning * 1000;
@@ -244,56 +257,57 @@ export function RootComponent(props) {
         });
         */
 
-      // TODO : Consider refactoring 'en_GB' reference as this may need to be set elsewhere
-      PCore.getEnvironmentInfo().setLocale(sessionStorage.getItem('rsdk_locale') || 'en_GB');
-      PCore.getLocaleUtils().resetLocaleStore();
-      PCore.getLocaleUtils().loadLocaleResources([
-        PCore.getLocaleUtils().GENERIC_BUNDLE_KEY,
-        '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE'
-      ]);
-      initialRender(renderObj);
+    // TODO : Consider refactoring 'en_GB' reference as this may need to be set elsewhere
+    PCore.getEnvironmentInfo().setLocale(sessionStorage.getItem('rsdk_locale') || 'en_GB');
+    PCore.getLocaleUtils().resetLocaleStore();
+    PCore.getLocaleUtils().loadLocaleResources([
+      PCore.getLocaleUtils().GENERIC_BUNDLE_KEY,
+      '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE'
+    ]);
+    initialRender(renderObj);
 
-      // PM!! operatorId = PCore.getEnvironmentInfo().getOperatorIdentifier();
+    // PM!! operatorId = PCore.getEnvironmentInfo().getOperatorIdentifier();
 
-      /* Functionality to set the device id in the header for use in CIP.
+    /* Functionality to set the device id in the header for use in CIP.
       Device id is unique and will be stored on the user device / browser cookie */
-      const COOKIE_PEGAODXDI = 'pegaodxdi';
-      let deviceID = checkCookie(COOKIE_PEGAODXDI);
-      if (deviceID) {
+    const COOKIE_PEGAODXDI = 'pegaodxdi';
+    let deviceID = checkCookie(COOKIE_PEGAODXDI);
+    if (deviceID) {
+      setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
+      PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
+    } else {
+      // @ts-ignore
+      const dpagepromise = PCore.getDataPageUtils().getPageDataAsync(
+        'D_UserSession',
+        'root'
+      ) as Promise<any>;
+      dpagepromise.then(res => {
+        deviceID = res.DeviceId;
         setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
         PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
-      } else {
+      });
+    }
 
-        // @ts-ignore
-        const dpagepromise = PCore.getDataPageUtils()
-          .getPageDataAsync('D_UserSession', 'root') as Promise<any>;
-          dpagepromise.then(res => {
-            deviceID = res.DeviceId;
-            setCookie(COOKIE_PEGAODXDI, deviceID, 3650);
-            PCore.getRestClient().getHeaderProcessor().registerHeader('deviceid', deviceID);
-          });
-      }
-
-      // PM!! setLoadingSubmittedClaims(true);
-      // @ts-ignore
-      /* PCore.getDataPageUtils()
+    // PM!! setLoadingSubmittedClaims(true);
+    // @ts-ignore
+    /* PCore.getDataPageUtils()
         .getDataAsync('D_ClaimantSubmittedChBCases', 'root', { OperatorId: operatorId })
         .then(resp => {
           setSubmittedClaims(resp.data.slice(0, 10));
         })
         .finally(() => setLoadingSubmittedClaims(false));
       fetchInProgressClaimsData(); */
-    });
+  });
 
-    // Initialize the SdkComponentMap (local and pega-provided)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-    getSdkComponentMap(localSdkComponentMap).then((theComponentMap: any) => {
-      // eslint-disable-next-line no-console
-      console.log(`SdkComponentMap initialized`);
-    });
+  // Initialize the SdkComponentMap (local and pega-provided)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  getSdkComponentMap(localSdkComponentMap).then((theComponentMap: any) => {
+    // eslint-disable-next-line no-console
+    console.log(`SdkComponentMap initialized`);
+  });
 
-    // @ts-ignore
-    /* const dpagePromise = PCore.getDataPageUtils()
+  // @ts-ignore
+  /* const dpagePromise = PCore.getDataPageUtils()
       .getPageDataAsync('D_ShutterLookup', 'root', {
         FeatureID: 'highincome',
         FeatureType: 'highincome'
@@ -313,19 +327,20 @@ export function RootComponent(props) {
         console.error(err);
       }); */
 
-    // load the Mashup and handle the onPCoreEntry response that establishes the
-    //  top level Pega root element (likely a RootContainer)
+  // load the Mashup and handle the onPCoreEntry response that establishes the
+  //  top level Pega root element (likely a RootContainer)
 
-    myLoadMashup('pega-root', false); // this is defined in bootstrap shell that's been loaded already
-  }
+  myLoadMashup('pega-root', false); // this is defined in bootstrap shell that's been loaded already
+}
 
-  // One time (initialization) subscriptions and related unsubscribe
-  export const useStartMashup = (setAuthType, onRedirectDone) => {
+// One time (initialization) subscriptions and related unsubscribe
+export const useStartMashup = (setAuthType, onRedirectDone) => {
+  const [showPega, setShowPega] = useState(false);
+  const [showResolutionPage, setShowResolutionPage] = useState(false);
+  const [caseId, setCaseId] = useState('');
+  const [caseStatus, setCaseStatus] = useState('');
 
-    const [showPega, setShowPega] = useState(false);
-    const [showResoltuionPage, setShowResolutionScreen] = useState(false);
-    
-    useEffect(() => { 
+  useEffect(() => {
     getSdkConfig().then(sdkConfig => {
       const sdkConfigAuth = sdkConfig.authConfig;
       setAuthType(sdkConfigAuth.authService);
@@ -358,7 +373,7 @@ export function RootComponent(props) {
 
     document.addEventListener('SdkConstellationReady', () => {
       // start the portal
-      startMashup({setShowPega, setShowResolutionScreen});
+      startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus });
     });
 
     document.addEventListener('SdkLoggedOut', () => {
@@ -369,13 +384,12 @@ export function RootComponent(props) {
     //  So we subscribe there. But unsubscribe when this
     //  component is unmounted (in function returned from this effect)
 
-
     return function cleanupSubscriptions() {
       PCore?.getPubSubUtils().unsubscribe(
         PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
         'cancelAssignment'
       );
-    }
+    };
     // PM!!
     /*
     return function cleanupSubscriptions() {
@@ -397,11 +411,8 @@ export function RootComponent(props) {
         PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
         'assignmentFinished'
       );
-    }; */    
-  }, [])
+    }; */
+  }, []);
 
-  return {showPega, setShowPega}
+  return { showPega, setShowPega, showResolutionPage, setShowResolutionPage, caseId, caseStatus };
 };
-
-  
-  

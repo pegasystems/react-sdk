@@ -18,24 +18,25 @@ import {
 
 declare const myLoadMashup: any;
 
-export function establishPCoreSubscriptions({setShowPega}) {
+export function establishPCoreSubscriptions({setShowPega, setShowResolutionScreen}) {
+ 
 /* ********************************************
  * Registers close active container on end of assignment processing
 ********************************************* */
-  function closeActiveContainer() {
+  function showResolutionScreen() {
     // PM!! getClaimsCaseID();
     // console.log('SUBEVENT! closeActiveContainerOnEndOfAssignment');
     PCore.getContainerUtils().closeContainerItem(
       PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
       { skipDirtyCheck: true }
     );
-    // PM!! displayResolutionScreen();
+    setShowResolutionScreen(true);
   }
 
   PCore.getPubSubUtils().subscribe(
     PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
-    closeActiveContainer,
-    'closeActiveContainerOnEndOfAssignment'
+    showResolutionScreen,
+    'showResolutionScreenOnEndOfAssignment'
   );
 
 /* *********************************************
@@ -216,12 +217,12 @@ export function RootComponent(props) {
   /*
    * kick off the application's portal that we're trying to serve up
    */
-  export function startMashup({setShowPega}) {
+  export function startMashup({setShowPega, setShowResolutionScreen}) {
     // NOTE: When loadMashup is complete, this will be called.
     PCore.onPCoreReady(renderObj => {
       // Check that we're seeing the PCore version we expect
       compareSdkPCoreVersions();
-      establishPCoreSubscriptions({setShowPega});      
+      establishPCoreSubscriptions({setShowPega, setShowResolutionScreen});      
       // PM!! setShowAppName(true);
 
       // Fetches timeout length config
@@ -322,6 +323,7 @@ export function RootComponent(props) {
   export const useStartMashup = (setAuthType, onRedirectDone) => {
 
     const [showPega, setShowPega] = useState(false);
+    const [showResoltuionPage, setShowResolutionScreen] = useState(false);
     
     useEffect(() => { 
     getSdkConfig().then(sdkConfig => {
@@ -356,7 +358,7 @@ export function RootComponent(props) {
 
     document.addEventListener('SdkConstellationReady', () => {
       // start the portal
-      startMashup({setShowPega});
+      startMashup({setShowPega, setShowResolutionScreen});
     });
 
     document.addEventListener('SdkLoggedOut', () => {

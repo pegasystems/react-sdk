@@ -4,12 +4,24 @@ import { BrowserRouter } from 'react-router-dom';
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 import AppSelector from '../AppSelector';
 
+
+// declare let __webpack_public_path__; // eslint-disable-line
+
 const TopLevelApp = () => {
   const [basepath, setBasepath] = useState('');
   useEffect(() => {
     getSdkConfig().then(sdkConfig => {
       const url = new URL(sdkConfig.serverConfig.sdkContentServerUrl);
       setBasepath(url.pathname);
+      
+      
+      /* if(url){
+        // eslint-disable-next-line
+        __webpack_public_path__ = url;
+      } else {
+        // eslint-disable-next-line
+        __webpack_public_path__ = '/';
+      } */
     });
   }, []);
 

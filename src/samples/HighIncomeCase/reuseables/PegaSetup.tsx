@@ -18,7 +18,7 @@ import {
 
 declare const myLoadMashup: any;
 
-export function establishPCoreSubscriptions({setShowPega, setShowResolutionScreen}) {
+export function establishPCoreSubscriptions({setShowPega, setShowResolutionPage}) {
  
 /* ********************************************
  * Registers close active container on end of assignment processing
@@ -30,22 +30,12 @@ export function establishPCoreSubscriptions({setShowPega, setShowResolutionScree
       PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
       { skipDirtyCheck: true }
     );
-    setShowResolutionScreen(true);
+    setShowResolutionPage(true); 
   }
-
-  PCore.getPubSubUtils().subscribe(
-    PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
-    showResolutionScreen,
-    'showResolutionScreenOnEndOfAssignment'
-  );
-
 /* *********************************************
  * closes container item if case is resolved-discarded, on assignmentFinished
  ******************************************** */
   function handleServiceNotAvailable() {
-      // PM!! setShowStartPage(false);
-      // PM!! setShowUserPortal(false);
-      // PM!! setShowPega(false);
       // console.log('SUBEVENT! handleServiceNotAvailableOnAssignmentFinished');
       const containername = PCore.getContainerUtils().getActiveContainerItemName(
         `${PCore.getConstants().APP.APP}/primary`
@@ -57,7 +47,9 @@ export function establishPCoreSubscriptions({setShowPega, setShowResolutionScree
       if (status === 'Resolved-Discarded') {
         // PM!! displayServiceNotAvailable();
         PCore.getContainerUtils().closeContainerItem(context);
-      }
+      } else {
+        showResolutionScreen();
+      }      
     }
   
   PCore.getPubSubUtils().subscribe(
@@ -217,12 +209,12 @@ export function RootComponent(props) {
   /*
    * kick off the application's portal that we're trying to serve up
    */
-  export function startMashup({setShowPega, setShowResolutionScreen}) {
+  export function startMashup({setShowPega, setShowResolutionPage}) {
     // NOTE: When loadMashup is complete, this will be called.
     PCore.onPCoreReady(renderObj => {
       // Check that we're seeing the PCore version we expect
       compareSdkPCoreVersions();
-      establishPCoreSubscriptions({setShowPega, setShowResolutionScreen});      
+      establishPCoreSubscriptions({setShowPega, setShowResolutionPage});      
       // PM!! setShowAppName(true);
 
       // Fetches timeout length config
@@ -323,7 +315,7 @@ export function RootComponent(props) {
   export const useStartMashup = (setAuthType, onRedirectDone) => {
 
     const [showPega, setShowPega] = useState(false);
-    const [showResoltuionPage, setShowResolutionScreen] = useState(false);
+    const [showResolutionPage, setShowResolutionPage] = useState(false);
     
     useEffect(() => { 
     getSdkConfig().then(sdkConfig => {
@@ -358,7 +350,7 @@ export function RootComponent(props) {
 
     document.addEventListener('SdkConstellationReady', () => {
       // start the portal
-      startMashup({setShowPega, setShowResolutionScreen});
+      startMashup({setShowPega, setShowResolutionPage});
     });
 
     document.addEventListener('SdkLoggedOut', () => {
@@ -400,7 +392,7 @@ export function RootComponent(props) {
     }; */    
   }, [])
 
-  return {showPega, setShowPega}
+  return {showPega, setShowPega, showResolutionPage, setShowResolutionPage}
 };
 
   

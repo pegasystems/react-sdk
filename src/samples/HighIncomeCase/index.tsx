@@ -24,6 +24,8 @@ const HighIncomeCase:FunctionComponent<any> = () => {
     const [shutterServicePage, /* setShutterServicePage */] = useState(false);
     const [serviceNotAvailable, /* setServiceNotAvailable */] = useState(false);
     const [authType, setAuthType] = useState('gg');
+
+    const [currentDisplay, setCurrentDisplay] = useState<'startpage'|'pegapage'|'resolutionpage'|'servicenotavailable'|'shutterpage'>('startpage');
     
     const [showTimeoutModal, setShowTimeoutModal] = useState(false);  
     const [showSignoutModal, setShowSignoutModal] = useState(false);
@@ -32,13 +34,23 @@ const HighIncomeCase:FunctionComponent<any> = () => {
     useEffect(() => 
         {initTimeout(setShowTimeoutModal, false, true) }  
     , []);
-
+    
     function doRedirectDone() {
         history.push('/hicbc/opt-in');
         // appName and mainRedirect params have to be same as earlier invocation
         loginIfNecessary({ appName: 'embedded', mainRedirect: true });
       } 
-    const { showPega, setShowPega } = useStartMashup(setAuthType, doRedirectDone);
+    const { showPega, setShowPega, showResolutionPage } = useStartMashup(setAuthType, doRedirectDone);
+
+    useEffect(() => {
+      if(showPega){setCurrentDisplay('pegapage')}
+      else if(showResolutionPage){setCurrentDisplay('resolutionpage')}
+      else if(shutterServicePage){setCurrentDisplay('shutterpage')}      
+      else if(serviceNotAvailable){setCurrentDisplay('servicenotavailable')}
+      else {setCurrentDisplay('startpage')}
+
+    }, [showResolutionPage, showPega, shutterServicePage, serviceNotAvailable])
+
 
     function signOut() {
         //  const authService = authType === 'gg' ? 'GovGateway' : (authType === 'gg-dev' ? 'GovGateway-Dev' : authType);
@@ -57,7 +69,7 @@ const HighIncomeCase:FunctionComponent<any> = () => {
     }
 
     function handleSignout() {
-        if (showPega) {
+        if (currentDisplay==='pegapage') {
         setShowSignoutModal(true);
         } else {
         signOut();
@@ -71,9 +83,13 @@ const HighIncomeCase:FunctionComponent<any> = () => {
         staySignedIn(setShowTimeoutModal, null, null, null);
     };
 
-    const startClaim= () => {
+    const startClaim= (caseID = null) => {
         setShowPega(true);
-        PCore.getMashupApi().createCase('HMRC-ChB-Work-HICBCPreference', PCore.getConstants().APP.APP);           
+        if(caseID)
+          { PCore.getMashupApi().createCase(caseID, PCore.getConstants().APP.APP) }
+        else {
+          PCore.getMashupApi().createCase('HMRC-ChB-Work-HICBCPreference', PCore.getConstants().APP.APP);       
+        }    
     }   
 
 
@@ -136,8 +152,8 @@ const HighIncomeCase:FunctionComponent<any> = () => {
 
             {serviceNotAvailable && <ServiceNotAvailable />}
 
-            { !showPega && <StartPage onStart={startClaim}/>}
-
+            { currentDisplay === 'startpage' && <StartPage onStart={startClaim}/>}
+            { currentDisplay === 'resolutionpage' && <h3>Confirmation PlaceHolder</h3> }
             </>
         )}
 

@@ -108,7 +108,7 @@ module.exports = (env, argv) => {
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: '/assets/appStyles.css'
+      filename: './assets/appStyles.css'
     })
   );
 
@@ -143,7 +143,6 @@ module.exports = (env, argv) => {
     );
   }
 
-  let publicPathValue = '/';
   if (webpackMode === 'development') {
     // In development mode, add LiveReload plug
     //  When run in conjunction with build-with-watch,
@@ -155,11 +154,6 @@ module.exports = (env, argv) => {
       hostname: 'localhost'
     };
     pluginsToAdd.push(new LiveReloadPlugin(liveReloadOptions));
-    publicPathValue = '/';
-  }
-
-  if (webpackMode === 'production') {    
-    publicPathValue = '/child-benefit/make_a_claim/WebpackEnvironmentSubPath/';
   }
 
   // need to set mode to 'development' to get LiveReload to work
@@ -181,7 +175,7 @@ module.exports = (env, argv) => {
     output: {
       filename: '[name].bundle.js',
       path: path.resolve(__dirname, 'dist'),
-      publicPath: '/'
+      publicPath: '/child-benefit/make_a_claim/sandbox/'
     },
     module: {
       rules: [

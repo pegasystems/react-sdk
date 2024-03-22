@@ -41,35 +41,27 @@ export function establishPCoreSubscriptions({
       PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
       { skipDirtyCheck: true }
     );
-    setShowResolutionPage(true);
+    setShowResolutionPage(true); 
   }
-
-  PCore.getPubSubUtils().subscribe(
-    PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
-    showResolutionScreen,
-    'showResolutionScreenOnEndOfAssignment'
-  );
-
-  /* *********************************************
-   * closes container item if case is resolved-discarded, on assignmentFinished
-   ******************************************** */
+/* *********************************************
+ * closes container item if case is resolved-discarded, on assignmentFinished
+ ******************************************** */
   function handleServiceNotAvailable() {
-    // PM!! setShowStartPage(false);
-    // PM!! setShowUserPortal(false);
-    // PM!! setShowPega(false);
-    // console.log('SUBEVENT! handleServiceNotAvailableOnAssignmentFinished');
-    const containername = PCore.getContainerUtils().getActiveContainerItemName(
-      `${PCore.getConstants().APP.APP}/primary`
-    );
-    const context = PCore.getContainerUtils().getActiveContainerItemName(
-      `${containername}/workarea`
-    );
-    const status = PCore.getStoreValue('.pyStatusWork', 'caseInfo.content', context);
-    if (status === 'Resolved-Discarded') {
-      // PM!! displayServiceNotAvailable();
-      PCore.getContainerUtils().closeContainerItem(context);
-    }
-  }
+      // console.log('SUBEVENT! handleServiceNotAvailableOnAssignmentFinished');
+      const containername = PCore.getContainerUtils().getActiveContainerItemName(
+        `${PCore.getConstants().APP.APP}/primary`
+      );
+      const context = PCore.getContainerUtils().getActiveContainerItemName(
+        `${containername}/workarea`
+      );
+      const status = PCore.getStoreValue('.pyStatusWork', 'caseInfo.content', context);
+      if (status === 'Resolved-Discarded') {
+        // PM!! displayServiceNotAvailable();
+        PCore.getContainerUtils().closeContainerItem(context);
+      } else {
+        showResolutionScreen();
+      }      
+  }  
 
   PCore.getPubSubUtils().subscribe(
     'assignmentFinished',

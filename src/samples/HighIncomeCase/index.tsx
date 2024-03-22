@@ -21,28 +21,36 @@ import ConfirmationPage from '../ChildBenefitsClaim/ConfirmationPage';
 // declare const myLoadMashup;
 
 const HighIncomeCase: FunctionComponent<any> = () => {
-  // const [bShowPega, setShowPega] = useState(false);
-  const [shutterServicePage /* setShutterServicePage */] = useState(false);
-  const [serviceNotAvailable /* setServiceNotAvailable */] = useState(false);
-  const [authType, setAuthType] = useState('gg');
+    // const [bShowPega, setShowPega] = useState(false);
+    const [shutterServicePage, /* setShutterServicePage */] = useState(false);
+    const [serviceNotAvailable, /* setServiceNotAvailable */] = useState(false);
+    const [authType, setAuthType] = useState('gg');
 
-  const [showTimeoutModal, setShowTimeoutModal] = useState(false);
-  const [showSignoutModal, setShowSignoutModal] = useState(false);
+    const [currentDisplay, setCurrentDisplay] = useState<'startpage'|'pegapage'|'resolutionpage'|'servicenotavailable'|'shutterpage'>('startpage');
+    
+    const [showTimeoutModal, setShowTimeoutModal] = useState(false);  
+    const [showSignoutModal, setShowSignoutModal] = useState(false);
 
-  const history = useHistory();
-  useEffect(() => {
-    initTimeout(setShowTimeoutModal, false, true);
-  }, []);
+    const history = useHistory();
+    useEffect(() => 
+        {initTimeout(setShowTimeoutModal, false, true) }  
+    , []);
+    
+    function doRedirectDone() {
+        history.push('/hicbc/opt-in');
+        // appName and mainRedirect params have to be same as earlier invocation
+        loginIfNecessary({ appName: 'embedded', mainRedirect: true });
+      } 
+      const { showPega, setShowPega, showResolutionPage, caseId, caseStatus } = useStartMashup(setAuthType, doRedirectDone);
 
-  function doRedirectDone() {
-    history.push('/hicbc/opt-in');
-    // appName and mainRedirect params have to be same as earlier invocation
-    loginIfNecessary({ appName: 'embedded', mainRedirect: true });
-  }
-  const { showPega, setShowPega, showResolutionPage, caseId, caseStatus } = useStartMashup(
-    setAuthType,
-    doRedirectDone
-  ); //
+    useEffect(() => {
+      if(showPega){setCurrentDisplay('pegapage')}
+      else if(showResolutionPage){setCurrentDisplay('resolutionpage')}
+      else if(shutterServicePage){setCurrentDisplay('shutterpage')}      
+      else if(serviceNotAvailable){setCurrentDisplay('servicenotavailable')}
+      else {setCurrentDisplay('startpage')}
+
+    }, [showResolutionPage, showPega, shutterServicePage, serviceNotAvailable])
 
   function signOut() {
     //  const authService = authType === 'gg' ? 'GovGateway' : (authType === 'gg-dev' ? 'GovGateway-Dev' : authType);
@@ -62,12 +70,12 @@ const HighIncomeCase: FunctionComponent<any> = () => {
   }
 
   function handleSignout() {
-    if (showPega) {
-      setShowSignoutModal(true);
-    } else {
-      signOut();
-    }
-  }
+        if (currentDisplay==='pegapage') {
+        setShowSignoutModal(true);
+        } else {
+        signOut();
+        }
+  }  
 
   const handleStaySignIn = e => {
     e.preventDefault();
@@ -111,8 +119,35 @@ const HighIncomeCase: FunctionComponent<any> = () => {
     };
   }, []);
 
-  return (
-    <>
+    /* ***
+     * Application specific PCore subscriptions
+     * 
+     * TODO Can this be made into a tidy helper? including its own clean up? A custom hook perhaps 
+     */
+    document.addEventListener('SdkConstellationReady', () => {
+        PCore.onPCoreReady(() => {        
+        PCore.getPubSubUtils().subscribe(
+            PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
+            () => {
+                // console.log("SUBEVENT!!! showStartPageOnCloseContainerItem")
+                setShowPega(false);
+            },
+            'showStartPageOnCloseContainerItem'
+        );
+        })
+        settingTimer();
+    }); 
+    
+    // And clean up
+
+    useEffect(() => {
+        return () => {
+            PCore.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,'showStartPageOnCloseContainerItem')
+        }
+    }, [])
+
+
+    return ( <>
       <TimeoutPopup
         show={showTimeoutModal}
         staySignedinHandler={() =>
@@ -145,15 +180,12 @@ const HighIncomeCase: FunctionComponent<any> = () => {
 
             {serviceNotAvailable && <ServiceNotAvailable />}
 
-            {!showPega && <StartPage onStart={startClaim} />}
+            { currentDisplay === 'startpage' && <StartPage onStart={startClaim}/>}
 
-            {showResolutionPage && (
-              <ConfirmationPage caseStatus={caseStatus} caseId={caseId} isUnAuth={false} />
-            )}
+            { currentDisplay === 'resolutionpage' && <ConfirmationPage caseStatus={caseStatus} caseId={caseId} isUnAuth={false} /> }            
           </>
         )}
       </div>
-
       <LogoutPopup
         show={showSignoutModal && !showTimeoutModal}
         hideModal={() => setShowSignoutModal(false)}

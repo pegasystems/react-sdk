@@ -14,6 +14,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "strictNullChecks": false,
+    "resolveJsonModule": true ,
     // Need to specify typeRoots to find the types and types to constrain
     //  where to look in @pega (to only get pcore-pconnect-typedefs)
     "typeRoots": ["node_modules/@types", "node_modules/@pega"],

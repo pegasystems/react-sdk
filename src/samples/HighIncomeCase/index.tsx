@@ -16,7 +16,8 @@ import {
   settingTimer
 } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import { loginIfNecessary } from '@pega/react-sdk-components/lib/components/helpers/authManager';
-import ConfirmationPage from '../ChildBenefitsClaim/ConfirmationPage';
+import SummaryPage from '../../components/AppComponents/SummaryPage';
+import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 
 // declare const myLoadMashup;
 
@@ -27,7 +28,8 @@ const HighIncomeCase: FunctionComponent<any> = () => {
     const [authType, setAuthType] = useState('gg');
 
     const [currentDisplay, setCurrentDisplay] = useState<'startpage'|'pegapage'|'resolutionpage'|'servicenotavailable'|'shutterpage'>('startpage');
-    
+    const [summaryPageContent, setSummaryPageContent] = useState<{content:string|null, title:string|null, banner:string|null}>({content:null, title:null, banner:null})
+
     const [showTimeoutModal, setShowTimeoutModal] = useState(false);  
     const [showSignoutModal, setShowSignoutModal] = useState(false);
 
@@ -45,7 +47,31 @@ const HighIncomeCase: FunctionComponent<any> = () => {
 
     useEffect(() => {
       if(showPega){setCurrentDisplay('pegapage')}
-      else if(showResolutionPage){setCurrentDisplay('resolutionpage')}
+      else if(showResolutionPage){
+        setCurrentDisplay('resolutionpage')
+        getSdkConfig().then((config)=>{
+          PCore.getRestClient().invokeCustomRestApi(
+            `${config.serverConfig.infinityRestServerUrl}/api/application/v2/cases/${caseId}?pageName=SubmissionSummary`,
+            {
+              method: 'GET',
+              body: '',
+              headers: '', //`Access-Control-Allow-Origin:${window.location}`,
+              withoutDefaultHeaders: false,
+            },
+            '')
+            .then((response) => {
+              const summaryData = response.data.data.caseInfo.content;
+              console.log('SummaryContent' + JSON.stringify(response.data))
+              setSummaryPageContent({content:summaryData.SubmissionContent, title:summaryData.SubmissionTitle, banner:summaryData.SubmissionBanner})
+            })
+            .catch((error) => {
+              console.log(error);
+              return false;
+            });
+        }
+
+        )
+      }
       else if(shutterServicePage){setCurrentDisplay('shutterpage')}      
       else if(serviceNotAvailable){setCurrentDisplay('servicenotavailable')}
       else {setCurrentDisplay('startpage')}
@@ -182,7 +208,7 @@ const HighIncomeCase: FunctionComponent<any> = () => {
 
             { currentDisplay === 'startpage' && <StartPage onStart={startClaim}/>}
 
-            { currentDisplay === 'resolutionpage' && <ConfirmationPage caseStatus={caseStatus} caseId={caseId} isUnAuth={false} /> }            
+            { currentDisplay === 'resolutionpage' && <SummaryPage summaryContent={summaryPageContent.content} summaryTitle={summaryPageContent.title} summaryBanner={summaryPageContent.banner} /> }            
           </>
         )}
       </div>

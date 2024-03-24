@@ -108,7 +108,7 @@ module.exports = (env, argv) => {
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: '/assets/appStyles.css'
+      filename: 'assets/appStyles.css'
     })
   );
 

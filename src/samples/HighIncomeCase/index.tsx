@@ -43,7 +43,7 @@ const HighIncomeCase: FunctionComponent<any> = () => {
         // appName and mainRedirect params have to be same as earlier invocation
         loginIfNecessary({ appName: 'embedded', mainRedirect: true });
       } 
-      const { showPega, setShowPega, showResolutionPage, caseId, caseStatus } = useStartMashup(setAuthType, doRedirectDone);
+      const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone);
 
     useEffect(() => {
       if(showPega){setCurrentDisplay('pegapage')}
@@ -55,17 +55,15 @@ const HighIncomeCase: FunctionComponent<any> = () => {
             {
               method: 'GET',
               body: '',
-              headers: '', //`Access-Control-Allow-Origin:${window.location}`,
+              headers: '',
               withoutDefaultHeaders: false,
             },
             '')
             .then((response) => {
               const summaryData = response.data.data.caseInfo.content;
-              console.log('SummaryContent' + JSON.stringify(response.data))
               setSummaryPageContent({content:summaryData.SubmissionContent, title:summaryData.SubmissionTitle, banner:summaryData.SubmissionBanner})
             })
-            .catch((error) => {
-              console.log(error);
+            .catch(() => {                            
               return false;
             });
         }

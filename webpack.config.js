@@ -15,7 +15,6 @@ module.exports = (env, argv) => {
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html',
-      baseUrl:'./'
     })
   );
   pluginsToAdd.push(
@@ -66,6 +65,10 @@ module.exports = (env, argv) => {
         {
           from: './assets/css/*',
           to: './'
+        }, 
+        {
+          from: './assets/',
+          to: './hicbc/assets'
         },
         {
           from: './node_modules/tinymce',
@@ -181,7 +184,6 @@ module.exports = (env, argv) => {
     output: {
       filename: '[name].bundle.js',
       path: path.resolve(__dirname, 'dist'),
-      publicPath: '/'
     },
     module: {
       rules: [

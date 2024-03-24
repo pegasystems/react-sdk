@@ -5,7 +5,7 @@ import ParsedHTML from '../../helpers/formatters/ParsedHtml';
 export default function SummaryPage(props){
     const {summaryTitle, summaryContent, summaryBanner} = props;
 
-    if(summaryBanner && summaryBanner != ""){
+    if(summaryBanner && summaryBanner !== ""){
         return (<>
                 <MainWrapper>
                     <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>

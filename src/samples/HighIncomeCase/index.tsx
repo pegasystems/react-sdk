@@ -17,6 +17,7 @@ import {
 } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import { loginIfNecessary } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 import SummaryPage from '../../components/AppComponents/SummaryPage';
+import LandingPage from './LandingPage';
 import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 
 // declare const myLoadMashup;
@@ -27,7 +28,7 @@ const HighIncomeCase: FunctionComponent<any> = () => {
     const [serviceNotAvailable, /* setServiceNotAvailable */] = useState(false);
     const [authType, setAuthType] = useState('gg');
 
-    const [currentDisplay, setCurrentDisplay] = useState<'startpage'|'pegapage'|'resolutionpage'|'servicenotavailable'|'shutterpage'>('startpage');
+    const [currentDisplay, setCurrentDisplay] = useState<'startpage'|'pegapage'|'resolutionpage'|'servicenotavailable'|'shutterpage'|'landingpage'>('landingpage');
     const [summaryPageContent, setSummaryPageContent] = useState<{content:string|null, title:string|null, banner:string|null}>({content:null, title:null, banner:null})
 
     const [showTimeoutModal, setShowTimeoutModal] = useState(false);  
@@ -72,7 +73,7 @@ const HighIncomeCase: FunctionComponent<any> = () => {
       }
       else if(shutterServicePage){setCurrentDisplay('shutterpage')}      
       else if(serviceNotAvailable){setCurrentDisplay('servicenotavailable')}
-      else {setCurrentDisplay('startpage')}
+      else if(currentDisplay !== 'landingpage'){setCurrentDisplay('startpage')}
 
     }, [showResolutionPage, showPega, shutterServicePage, serviceNotAvailable])
 
@@ -107,6 +108,10 @@ const HighIncomeCase: FunctionComponent<any> = () => {
     // Extends manual signout popup 'stay signed in' to reset the automatic timeout timer also
     staySignedIn(setShowTimeoutModal, null, null, null);
   };
+
+  const landingPageProceedHandler = () => {
+    setCurrentDisplay('startpage');
+  }
 
   const startClaim = () => {
     setShowPega(true);
@@ -203,9 +208,9 @@ const HighIncomeCase: FunctionComponent<any> = () => {
             </div>
 
             {serviceNotAvailable && <ServiceNotAvailable />}
-
+            
+            { currentDisplay === 'landingpage' && <LandingPage onProceedHandler={landingPageProceedHandler}/>}
             { currentDisplay === 'startpage' && <StartPage onStart={startClaim}/>}
-
             { currentDisplay === 'resolutionpage' && <SummaryPage summaryContent={summaryPageContent.content} summaryTitle={summaryPageContent.title} summaryBanner={summaryPageContent.banner} /> }            
           </>
         )}

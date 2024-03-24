@@ -8,7 +8,7 @@
     "build:dev:ci": "npm run _internal-check-node-version && npm run clean && npm run _internal-install-sdk && npm run build:dev",
     "build:prod": "npm run _internal-check-node-version && run-p -l lint _internal-build-prod-only && npm run clean:bundle && npm run update-version",
     "build:prod:ci": "npm run _internal-check-node-version && npm run clean && npm run _internal-install-sdk && npm run build:prod",
-    "start-dev": "npm run govuk-frontend-init && webpack serve",
+    "start-dev": "npm run govuk-frontend-init && webpack serve --mode=development",
     "start-dev-https": "webpack serve --https",
     "start-prod": "http-server ./dist --port 3502 --gzip --brotli --cors --proxy http://localhost:3502?",
     "start-prod-https": "http-server ./dist --port 3502 --gzip --brotli --cors --ssl --cert private.pem --key private.key --proxy https://localhost:3502?",

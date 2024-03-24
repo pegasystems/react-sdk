@@ -27,7 +27,7 @@ export default function HmrcOdxCheckAnswers(props) {
   return (
     <div>
       {formElms.map((field, index) => {
-          const key = `${field.props.inheritedProps.find(prop => prop.prop === "label").value.replace(/ /g,"_")}_${index}`;
+          const key = `${field?.props?.inheritedProps?.find(prop => prop.prop === "label").value.replace(/ /g,"_")}_${index}`;
 
           return (<Fragment key={key}>{field}</Fragment>)
       })}

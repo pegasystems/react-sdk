@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
-import AppHeader from '../../components/AppComponents/AppHeader';
+import AppHeader from './reuseables/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
@@ -19,6 +19,7 @@ import { loginIfNecessary } from '@pega/react-sdk-components/lib/components/help
 import SummaryPage from '../../components/AppComponents/SummaryPage';
 import LandingPage from './LandingPage';
 import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
+import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 
 // declare const myLoadMashup;
 
@@ -33,6 +34,8 @@ const HighIncomeCase: FunctionComponent<any> = () => {
 
     const [showTimeoutModal, setShowTimeoutModal] = useState(false);  
     const [showSignoutModal, setShowSignoutModal] = useState(false);
+
+    const { hmrcURL } = useHMRCExternalLinks();
 
     const history = useHistory();
     useEffect(() => 
@@ -189,14 +192,14 @@ const HighIncomeCase: FunctionComponent<any> = () => {
       <AppHeader
         handleSignout={handleSignout}
         appname={useTranslation().t('HIGH_INCOME_BENEFITS')}
-        hasLanguageToggle
+        hasLanguageToggle={false}
         isPegaApp={showPega}
         languageToggleCallback={
           () => {} /* toggleNotificationProcess(
           { en: 'SwitchLanguageToEnglish', cy: 'SwitchLanguageToWelsh' },
           assignmentPConn 
-        ) */
-        }
+          ) */}
+        betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=463&referrerUrl=${window.location}`}    
       />
       <div className='govuk-width-container'>
         {shutterServicePage ? (

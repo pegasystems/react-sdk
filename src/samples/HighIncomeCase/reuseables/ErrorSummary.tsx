@@ -5,7 +5,6 @@ export default function ErrorSummary(props) {
   const { errors } = props;
 
   const errorSummaryRef = useRef<any>(null);
-  const localeCategory = 'Messages';
 
   useEffect( () => {
     if(errorSummaryRef && errorSummaryRef?.current){

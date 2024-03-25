@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, Children } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import Modal from '../../BaseComponents/Modal/Modal';
 import Button from '../../BaseComponents/Button/Button';
 import { useTranslation } from 'react-i18next';

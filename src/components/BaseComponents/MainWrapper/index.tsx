@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 export default function MainWrapper ({children}) {
     
     const { t } = useTranslation();
-    const {referrerURL, hmrcURL} = useHMRCExternalLinks();
+    const {hmrcURL} = useHMRCExternalLinks();
 
     return (
         <main className="govuk-main-wrapper govuk-main-wrapper--l" id="main-content" role="main">

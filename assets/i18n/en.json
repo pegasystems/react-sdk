@@ -238,5 +238,9 @@
   "EXCLUSIVEOPTION_OR": "or",
 
 
-  "HIGH_INCOME_BENEFITS": "Opt-in for Child Benefit Payment"
+  "HIGH_INCOME_BENEFITS": "Opt-in for Child Benefit Payment",
+  "HICBC_LANDINGPAGE_BEFORE_6_APRIL_OPTION_LABEL": "Before 6 April 2024",
+  "HICBC_LANDINGPAGE_ONORAFTER_6_APRIL_OPTION_LABEL": "On or after 6 April 2024",
+  "HICBC_LANDINGPAGE_QUESTION_LABEL": "When do you want to opt-in to Child Benefit payments from?",
+  "HICBC_LANDINGPAGE_NO_OPTION_SELECTED_ERROR_MESSAGE":"Select a date to opt-in"
 }

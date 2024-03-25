@@ -15,6 +15,7 @@ module.exports = (env, argv) => {
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: 'index.html',
+      baseUrl:'./'
     })
   );
   pluginsToAdd.push(
@@ -146,7 +147,7 @@ module.exports = (env, argv) => {
     );
   }
 
-  let publicPathValue = '/';
+  let publicPathValue = '';
   if (webpackMode === 'development') {
     // In development mode, add LiveReload plug
     //  When run in conjunction with build-with-watch,
@@ -159,11 +160,7 @@ module.exports = (env, argv) => {
     };
     pluginsToAdd.push(new LiveReloadPlugin(liveReloadOptions));
     publicPathValue = '/';
-  }
-
-  if (webpackMode === 'production') {    
-    publicPathValue = '/child-benefit/make_a_claim/WebpackEnvironmentSubPath/';
-  }
+  } 
 
   // need to set mode to 'development' to get LiveReload to work
   //  and for debugger statements to not be stripped out of the bundle
@@ -184,6 +181,7 @@ module.exports = (env, argv) => {
     output: {
       filename: '[name].bundle.js',
       path: path.resolve(__dirname, 'dist'),
+      // publicPath: publicPathValue
     },
     module: {
       rules: [
@@ -247,5 +245,10 @@ module.exports = (env, argv) => {
       extensions: ['.tsx', '.ts', '.js', '.jsx']
     }
   };
+
+  if(webpackMode==='development'){
+    initConfig.output.publicPath = publicPathValue
+  }
+
   return initConfig;
 };

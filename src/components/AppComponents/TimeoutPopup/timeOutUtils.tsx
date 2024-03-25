@@ -28,7 +28,7 @@ export const initTimeout = async (showTimeoutModal, deleteData, isAuthorised) =>
   clearTimeout(signoutTimeout);
 
   // Clears any existing timeouts and starts the timeout for warning, after set time shows the modal and starts signout timer
-  applicationTimeout = setTimeout(() => {
+  applicationTimeout = setTimeout(() => {    
     // TODO - unauth and sessiontimeout functionality to be implemented
     showTimeoutModal(true);
     signoutTimeout = setTimeout(() => {
@@ -57,7 +57,7 @@ export const resetTimeout = (showTimeoutModal, deleteData, isAuthorised) => {
       if (isAuthorised) {
         logout();
       } else {
-        deleteData();
+        if(deleteData){  deleteData(); }
         clearTimer();
         // session ends and deleteData() (pega)
       }
@@ -73,6 +73,7 @@ export function staySignedIn(
   isAuthorised = false,
   refreshSignin = true
 ) {
+
   if (refreshSignin) {
     // @ts-ignore
     PCore.getDataPageUtils().getDataAsync(claimsListApi, 'root');

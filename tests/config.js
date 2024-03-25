@@ -1,7 +1,7 @@
 // require('lighthouse/lighthouse-core/config/lr-desktop-config.js');
 
 const config = {
-  baseUrl: 'http://localhost:3502/portal',
+  baseUrl: 'http://localhost:3502',
   apps: {
     mediaCo: {
       rep: {

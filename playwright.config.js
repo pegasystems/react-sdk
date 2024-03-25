@@ -1,4 +1,3 @@
-/* eslint-disable strict */
 // @ts-check
 const { devices } = require('@playwright/test');
 
@@ -96,10 +95,10 @@ const config = {
     //     channel: 'chrome',
     //   },
     // },
-  ]
+  ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  // outputDir: 'test-results/',
+  outputDir: 'test-reports/'
 
   /* Run your local dev server before starting the tests */
   // webServer: {

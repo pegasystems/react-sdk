@@ -12,7 +12,7 @@ test.beforeEach(common.launchPortal);
 test.describe('E2E test', () => {
   let attributes;
 
-  test('should login, create case and run the Text Input tests', async ({ page }) => {
+  test('should login, create case and run the Time tests', async ({ page }) => {
     await common.login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
 
     /** Testing announcement banner presence */
@@ -27,23 +27,32 @@ test.describe('E2E test', () => {
     const complexFieldsCase = page.locator('div[role="button"]:has-text("Form Field")');
     await complexFieldsCase.click();
 
-    /** Selecting Text Input from the Category dropdown */
+    /** Selecting TimeOnly from the Category dropdown */
     const selectedCategory = page.locator('div[data-test-id="76729937a5eb6b0fd88c42581161facd"]');
     await selectedCategory.click();
-    await page.getByRole('option', { name: 'TextInput' }).click();
+    await page.getByRole('option', { name: 'TimeOnly' }).click();
 
     /** Selecting Required from the Sub Category dropdown */
     let selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');
     await selectedSubCategory.click();
     await page.getByRole('option', { name: 'Required' }).click();
 
+    await page.locator('button:has-text("submit")').click();
+
+    await expect(page.locator('p.Mui-error.Mui-required')).toBeVisible();
+
     /** Required tests */
-    const requiredTextInput = page.locator('input[data-test-id="6d83ba2ad05ae97a2c75e903e6f8a660"]');
-    attributes = await common.getAttributes(requiredTextInput);
+    const requiredTime = page.locator('input[data-test-id="2a98fa391e3ce4e2a077bb71271eb2da"]');
+    const date = new Date();
+    const time = `${date.getHours()}${date.getMinutes()}`;
+    requiredTime.fill(time);
+    attributes = await common.getAttributes(requiredTime);
     await expect(attributes.includes('required')).toBeTruthy();
 
-    const notRequiredTextInput = page.locator('input[data-test-id="206bc0200017cc475d88b1bf4279cda0"]');
-    attributes = await common.getAttributes(notRequiredTextInput);
+    await expect(page.locator('p.Mui-error.Mui-required')).toBeHidden();
+
+    const notRequiredTime = page.locator('input[data-test-id="921d625dba40a48cdcd006d6d17273fd"]');
+    attributes = await common.getAttributes(notRequiredTime);
     await expect(attributes.includes('required')).toBeFalsy();
 
     /** Selecting Disable from the Sub Category dropdown */
@@ -52,20 +61,20 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Disable' }).click();
 
     // /** Disable tests */
-    const alwaysDisabledTextInput = page.locator('input[data-test-id="52ad9e3ceacdb9ccea7ca193c213228a"]');
-    attributes = await common.getAttributes(alwaysDisabledTextInput);
+    const alwaysDisabledTime = page.locator('input[data-test-id="b5b2a2335304986a2aba011c0a2a464d"]');
+    attributes = await common.getAttributes(alwaysDisabledTime);
     await expect(attributes.includes('disabled')).toBeTruthy();
 
-    const conditionallyDisabledTextInput = page.locator('input[data-test-id="9fd3c38fdf5de68aaa56e298a8c89587"]');
-    attributes = await common.getAttributes(conditionallyDisabledTextInput);
+    const conditionallyDisabledTime = page.locator('input[data-test-id="9f7b7d5d8793642e0650a03f5f9dd991"]');
+    attributes = await common.getAttributes(conditionallyDisabledTime);
     if (isDisabled) {
       await expect(attributes.includes('disabled')).toBeTruthy();
     } else {
       await expect(attributes.includes('disabled')).toBeFalsy();
     }
 
-    const neverDisabledTextInput = page.locator('input[data-test-id="0aac4de2a6b79dd12ef91c6f16708533"]');
-    attributes = await common.getAttributes(neverDisabledTextInput);
+    const neverDisabledTime = page.locator('input[data-test-id="aeb770a579929bf10a1b301600da68ca"]');
+    attributes = await common.getAttributes(neverDisabledTime);
     await expect(attributes.includes('disabled')).toBeFalsy();
 
     /** Selecting Update from the Sub Category dropdown */
@@ -74,12 +83,14 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Update' }).click();
 
     /** Update tests */
-    const readonlyTextInput = page.locator('input[data-test-id="2fff66b4f045e02eab5826ba25608807"]');
-    attributes = await common.getAttributes(readonlyTextInput);
+    const readonlyTime = page.locator('input[data-test-id="084f8187169ed36f03937ecfd6e67087"]');
+    attributes = await common.getAttributes(readonlyTime);
     await expect(attributes.includes('readonly')).toBeTruthy();
 
-    const EditableTextInput = page.locator('input[data-test-id="95134a02d891264bca28c3aad682afb7"]');
-    attributes = await common.getAttributes(EditableTextInput);
+    const editableTime = page.locator('input[data-test-id="9a43bbe34f0e3db5a53f8e89082c0770"]');
+    editableTime.fill(time);
+
+    attributes = await common.getAttributes(editableTime);
     await expect(attributes.includes('readonly')).toBeFalsy();
 
     /** Selecting Visibility from the Sub Category dropdown */
@@ -88,17 +99,17 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Visibility' }).click();
 
     /** Visibility tests */
-    await expect(page.locator('input[data-test-id="a03145775f20271d9f1276b0959d0b8e"]')).toBeVisible();
+    await expect(page.locator('input[data-test-id="1b5786591e69307188bb7bb6ed1d6007"]')).toBeVisible();
 
-    const neverVisibleTextInput = await page.locator('input[data-test-id="05bf85e34402515bd91335928c06117d"]');
-    await expect(neverVisibleTextInput).not.toBeVisible();
+    const neverVisibleTime = await page.locator('input[data-test-id="971d3da425a39fac98652a85633db661"]');
+    await expect(neverVisibleTime).not.toBeVisible();
 
-    const conditionallyVisibleTextInput = await page.locator('input[data-test-id="d4b374793638017e2ec1b86c81bb1208"]');
+    const conditionallyVisibleTime = await page.locator('input[data-test-id="6e52133ee5d2aef2dab9a8e61511c030"]');
 
     if (isVisible) {
-      await expect(conditionallyVisibleTextInput).toBeVisible();
+      await expect(conditionallyVisibleTime).toBeVisible();
     } else {
-      await expect(conditionallyVisibleTextInput).not.toBeVisible();
+      await expect(conditionallyVisibleTime).not.toBeVisible();
     }
   }, 10000);
 });

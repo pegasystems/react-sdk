@@ -1,11 +1,11 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, Children } from 'react';
 import Modal from '../../BaseComponents/Modal/Modal';
 import Button from '../../BaseComponents/Button/Button';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 export default function TimeoutPopup(props) {
-  const { show, staySignedinHandler, signoutHandler, isAuthorised } = props;
+  const { show, staySignedinHandler, signoutHandler, isAuthorised, staySignedInButtonText, signoutButtonText, children } = props;
   const staySignedInCallback = useCallback(
     event => {
       if (event.key === 'Escape') staySignedinHandler();
@@ -24,6 +24,23 @@ export default function TimeoutPopup(props) {
       window.removeEventListener('keydown', staySignedInCallback);
     };
   }, [show]);
+
+  if(children){
+    return <Modal show={show} id='timeout-popup'>
+      <div>
+        {children}
+        <div className='govuk-button-group govuk-!-padding-top-4'>
+          <Button type='button' onClick={staySignedinHandler}>
+            {staySignedInButtonText}
+          </Button>
+
+          <a id='modal-signout-btn' className='govuk-link' href='#' onClick={signoutHandler}>
+            {signoutButtonText}
+          </a>
+        </div>
+      </div>  
+    </Modal>  
+  }
 
   return (
     <Modal show={show} id='timeout-popup'>
@@ -74,5 +91,8 @@ TimeoutPopup.propTypes = {
   show: PropTypes.bool,
   staySignedinHandler: PropTypes.func,
   signoutHandler: PropTypes.func,
-  isAuthorised: PropTypes.bool
+  isAuthorised: PropTypes.bool,
+  staySignedInButtonText: PropTypes.string,
+  signoutButtonText: PropTypes.string,
+  children: PropTypes.any
 };

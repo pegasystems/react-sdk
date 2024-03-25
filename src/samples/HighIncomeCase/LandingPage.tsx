@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 import  MainWrapper   from '../../components/BaseComponents/MainWrapper';
 import  RadioButtons  from '../../components/BaseComponents/RadioButtons/RadioButtons';
 import  Button from '../../components/BaseComponents/Button/Button';
-import ErrorSummary from '../../components/BaseComponents/ErrorSummary/ErrorSummary';
+import ErrorSummary from './reuseables/ErrorSummary';
+import AppHeader from './reuseables/AppHeader';
+import AppFooter from '../../components/AppComponents/AppFooter';
+import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 
 export default function LandingPage(props){
     const {onProceedHandler} = props;    
@@ -11,6 +14,8 @@ export default function LandingPage(props){
     const onOrAfterOptionValue = 'onOrAfter6April'; 
     const [errorText, setErrorText] = useState('');
     const [selectedOption, setSelectedOption] = useState();  
+
+    const { hmrcURL } = useHMRCExternalLinks();
 
     const {t} = useTranslation()
     const changeHandler = (evt) => {
@@ -32,23 +37,33 @@ export default function LandingPage(props){
 
 
     return (
-        <MainWrapper>
-            {errorText && <ErrorSummary errors={[{message:errorText, fieldId:'optin-date'}]}/> }
-            <RadioButtons
-            name='optin-date' 
-            options={[
-                {label:t('HICBC_LANDINGPAGE_BEFORE_6_APRIL_OPTION_LABEL'), value:beforeOptionValue},
-                {label:t('HICBC_LANDINGPAGE_ONORAFTER_6_APRIL_OPTION_LABEL'), value:onOrAfterOptionValue}   ]} 
-            displayInline={false}
-            label={t('HICBC_LANDINGPAGE_QUESTION_LABEL')}
-            useSmallRadios={false}
-            legendIsHeading
-            errorText={errorText}
-            onChange={changeHandler}  
-            value={selectedOption}          
+        <>
+            <AppHeader
+                appname={useTranslation().t('HIGH_INCOME_BENEFITS')}
+                hasLanguageToggle={false}    
+                betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=463&referrerUrl=${window.location}`}                  
             />
-            <Button id='continueToOptin' onClick={onContinue}>{t("CONTINUE")}</Button>
-            <br />
-        </MainWrapper>
+            <div className='govuk-width-container'>
+                <MainWrapper>
+                    {errorText && <ErrorSummary errors={[{message:errorText, fieldId:'optin-date'}]}/> }
+                    <RadioButtons
+                    name='optin-date' 
+                    options={[
+                        {label:t('HICBC_LANDINGPAGE_BEFORE_6_APRIL_OPTION_LABEL'), value:beforeOptionValue},
+                        {label:t('HICBC_LANDINGPAGE_ONORAFTER_6_APRIL_OPTION_LABEL'), value:onOrAfterOptionValue}   ]} 
+                    displayInline={false}
+                    label={t('HICBC_LANDINGPAGE_QUESTION_LABEL')}
+                    useSmallRadios={false}
+                    legendIsHeading
+                    errorText={errorText}
+                    onChange={changeHandler}  
+                    value={selectedOption}          
+                    />
+                    <Button id='continueToOptin' onClick={onContinue}>{t("CONTINUE")}</Button>
+                    <br />
+                </MainWrapper>
+            </div>
+            <AppFooter />
+        </>
     )
 }

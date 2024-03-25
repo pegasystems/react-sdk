@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const { config } = require('./config');
 
 const launchPortal = async ({ page }) => {

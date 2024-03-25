@@ -12,7 +12,7 @@ test.beforeEach(common.launchPortal);
 test.describe('E2E test', () => {
   let attributes;
 
-  test('should login, create case and run the Text Input tests', async ({ page }) => {
+  test('should login, create case and run the URL tests', async ({ page }) => {
     await common.login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
 
     /** Testing announcement banner presence */
@@ -30,7 +30,7 @@ test.describe('E2E test', () => {
     /** Selecting Text Input from the Category dropdown */
     const selectedCategory = page.locator('div[data-test-id="76729937a5eb6b0fd88c42581161facd"]');
     await selectedCategory.click();
-    await page.getByRole('option', { name: 'TextInput' }).click();
+    await page.getByRole('option', { name: 'URL' }).click();
 
     /** Selecting Required from the Sub Category dropdown */
     let selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');
@@ -38,12 +38,12 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Required' }).click();
 
     /** Required tests */
-    const requiredTextInput = page.locator('input[data-test-id="6d83ba2ad05ae97a2c75e903e6f8a660"]');
-    attributes = await common.getAttributes(requiredTextInput);
+    const requiredURL = page.locator('input[data-test-id="20815fd8b2e59e25b75185515b126212"]');
+    attributes = await common.getAttributes(requiredURL);
     await expect(attributes.includes('required')).toBeTruthy();
 
-    const notRequiredTextInput = page.locator('input[data-test-id="206bc0200017cc475d88b1bf4279cda0"]');
-    attributes = await common.getAttributes(notRequiredTextInput);
+    const notRequiredURL = page.locator('input[data-test-id="d50c2aa9fe6df301d0d3d5a667daeda2"]');
+    attributes = await common.getAttributes(notRequiredURL);
     await expect(attributes.includes('required')).toBeFalsy();
 
     /** Selecting Disable from the Sub Category dropdown */
@@ -52,20 +52,20 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Disable' }).click();
 
     // /** Disable tests */
-    const alwaysDisabledTextInput = page.locator('input[data-test-id="52ad9e3ceacdb9ccea7ca193c213228a"]');
-    attributes = await common.getAttributes(alwaysDisabledTextInput);
+    const alwaysDisabledURL = page.locator('input[data-test-id="922758766489b064688aba17552c566d"]');
+    attributes = await common.getAttributes(alwaysDisabledURL);
     await expect(attributes.includes('disabled')).toBeTruthy();
 
-    const conditionallyDisabledTextInput = page.locator('input[data-test-id="9fd3c38fdf5de68aaa56e298a8c89587"]');
-    attributes = await common.getAttributes(conditionallyDisabledTextInput);
+    const conditionallyDisabledURL = page.locator('input[data-test-id="ae2e04faf34d58c5bff6be9b4fc9b0d9"]');
+    attributes = await common.getAttributes(conditionallyDisabledURL);
     if (isDisabled) {
       await expect(attributes.includes('disabled')).toBeTruthy();
     } else {
       await expect(attributes.includes('disabled')).toBeFalsy();
     }
 
-    const neverDisabledTextInput = page.locator('input[data-test-id="0aac4de2a6b79dd12ef91c6f16708533"]');
-    attributes = await common.getAttributes(neverDisabledTextInput);
+    const neverDisabledURL = page.locator('input[data-test-id="cd5da1117b7b64256f2749d1664866bc"]');
+    attributes = await common.getAttributes(neverDisabledURL);
     await expect(attributes.includes('disabled')).toBeFalsy();
 
     /** Selecting Update from the Sub Category dropdown */
@@ -74,13 +74,23 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Update' }).click();
 
     /** Update tests */
-    const readonlyTextInput = page.locator('input[data-test-id="2fff66b4f045e02eab5826ba25608807"]');
-    attributes = await common.getAttributes(readonlyTextInput);
+    const readonlyURL = page.locator('input[data-test-id="6180c34fa2ef0cbfe3459b6f94b89d62"]');
+    attributes = await common.getAttributes(readonlyURL);
     await expect(attributes.includes('readonly')).toBeTruthy();
 
-    const EditableTextInput = page.locator('input[data-test-id="95134a02d891264bca28c3aad682afb7"]');
-    attributes = await common.getAttributes(EditableTextInput);
+    const editableURL = page.locator('input[data-test-id="79504c0d99166c4c0a0749bef59b5e0f"]');
+    attributes = await common.getAttributes(editableURL);
     await expect(attributes.includes('readonly')).toBeFalsy();
+
+    /** Validation tests */
+    const validationMsg = 'Please enter a valid URL including the protocol (http://, https://, ftp://, etc.)';
+    await editableURL.fill('InvalidUrl');
+    await editableURL.blur();
+    await expect(page.locator(`p:has-text("${validationMsg}")`)).toBeVisible();
+    await editableURL.click();
+    await editableURL.clear();
+    await editableURL.blur();
+    await expect(page.locator(`p:has-text("${validationMsg}")`)).toBeHidden();
 
     /** Selecting Visibility from the Sub Category dropdown */
     selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');
@@ -88,17 +98,17 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Visibility' }).click();
 
     /** Visibility tests */
-    await expect(page.locator('input[data-test-id="a03145775f20271d9f1276b0959d0b8e"]')).toBeVisible();
+    await expect(page.locator('input[data-test-id="c239893d906b22bc8de9c7f3d0c1e219"]')).toBeVisible();
 
-    const neverVisibleTextInput = await page.locator('input[data-test-id="05bf85e34402515bd91335928c06117d"]');
-    await expect(neverVisibleTextInput).not.toBeVisible();
+    const neverVisibleURL = await page.locator('input[data-test-id="01cec81e2fe61acf1b0480187998d1ee"]');
+    await expect(neverVisibleURL).not.toBeVisible();
 
-    const conditionallyVisibleTextInput = await page.locator('input[data-test-id="d4b374793638017e2ec1b86c81bb1208"]');
+    const conditionallyVisibleURL = await page.locator('input[data-test-id="c7a204d92fc6300c68859901de172f8b"]');
 
     if (isVisible) {
-      await expect(conditionallyVisibleTextInput).toBeVisible();
+      await expect(conditionallyVisibleURL).toBeVisible();
     } else {
-      await expect(conditionallyVisibleTextInput).not.toBeVisible();
+      await expect(conditionallyVisibleURL).not.toBeVisible();
     }
   }, 10000);
 });

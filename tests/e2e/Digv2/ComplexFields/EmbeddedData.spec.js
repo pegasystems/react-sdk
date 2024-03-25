@@ -1,18 +1,13 @@
-/* eslint-disable no-template-curly-in-string */
-/* eslint-disable no-undef */
-
 const { test, expect } = require('@playwright/test');
+
 const config = require('../../../config');
 const common = require('../../../common');
 
-test.beforeEach(async ({ page }) => {
-  await page.setViewportSize({ width: 1720, height: 1080 });
-  await page.goto('http://localhost:3502/portal');
-});
+test.beforeEach(common.launchPortal);
 
 test.describe('E2E test', () => {
   test('should login, create case and run different test cases for Embedded Data', async ({ page }) => {
-    await common.Login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
+    await common.login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
 
     /** Testing announcement banner presence */
     const announcementBanner = page.locator('h6:has-text("Announcements")');
@@ -246,7 +241,7 @@ test.describe('E2E test', () => {
     await page.locator('text=United States+1 >> nth=0').click();
     await phone.locator('input').fill('6175551212');
 
-    let country = modal.locator('div[data-test-id="59716c97497eb9694541f7c3d37b1a4d"]');
+    const country = modal.locator('div[data-test-id="59716c97497eb9694541f7c3d37b1a4d"]');
     await country.click();
     await page.getByRole('option', { name: 'Switzerland' }).click();
 
@@ -280,7 +275,7 @@ test.describe('E2E test', () => {
 
     modal = page.locator('div[role="dialog"]');
 
-    /** Testing Edit Record title*/
+    /** Testing Edit Record title */
     const editRecordTitle = modal.locator('h2:has-text("Edit Record")');
     await expect(editRecordTitle).toBeVisible();
 
@@ -408,6 +403,4 @@ test.describe('E2E test', () => {
   }, 10000);
 });
 
-test.afterEach(async ({ page }) => {
-  await page.close();
-});
+test.afterEach(async ({ page }) => common.closePage(page));

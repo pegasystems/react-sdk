@@ -181,7 +181,7 @@ module.exports = (env, argv) => {
     output: {
       filename: '[name].bundle.js',
       path: path.resolve(__dirname, 'dist'),
-      publicPath: publicPathValue
+      // publicPath: publicPathValue
     },
     module: {
       rules: [
@@ -245,6 +245,10 @@ module.exports = (env, argv) => {
       extensions: ['.tsx', '.ts', '.js', '.jsx']
     }
   };
+
+  if(webpackMode==='development'){
+    initConfig.output.publicPath = publicPathValue
+  }
 
   return initConfig;
 };

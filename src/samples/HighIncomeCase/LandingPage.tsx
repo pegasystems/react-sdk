@@ -12,6 +12,7 @@ export default function LandingPage(props){
     const [errorText, setErrorText] = useState('');
     const [selectedOption, setSelectedOption] = useState();  
 
+    const {t} = useTranslation()
     const changeHandler = (evt) => {
         setSelectedOption(evt.target.value);        
     }
@@ -29,7 +30,6 @@ export default function LandingPage(props){
         }        
     }
 
-    const {t} = useTranslation()
 
     return (
         <MainWrapper>
@@ -42,7 +42,7 @@ export default function LandingPage(props){
             displayInline={false}
             label={t('HICBC_LANDINGPAGE_QUESTION_LABEL')}
             useSmallRadios={false}
-            legendIsHeading={true}
+            legendIsHeading
             errorText={errorText}
             onChange={changeHandler}  
             value={selectedOption}          

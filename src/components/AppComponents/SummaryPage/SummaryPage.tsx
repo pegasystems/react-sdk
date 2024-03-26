@@ -1,9 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import  MainWrapper from '../../BaseComponents/MainWrapper' ;
 import ParsedHTML from '../../helpers/formatters/ParsedHtml';
+import setPageTitle from '../../helpers/setPageTitleHelpers';
 
 export default function SummaryPage(props){
-    const {summaryTitle, summaryContent, summaryBanner} = props;
+    const {summaryTitle, summaryContent, summaryBanner} = props;  
+    
+    useEffect(() => {
+        setPageTitle();
+    }, [summaryTitle, summaryBanner ])
 
     if(summaryBanner && summaryBanner !== ""){
         return (<>

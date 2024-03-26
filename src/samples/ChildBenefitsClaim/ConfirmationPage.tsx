@@ -236,6 +236,57 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
     return null;
   } else if (serviceShuttered) {
     return <ShutterServicePage />;
+  } else if (!loading && isBornAbroadOrAdopted) {
+    return (
+      <>
+        <MainWrapper>
+          <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>
+            <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
+            {isUnAuth && isCaseRefRequired && (
+              <div className='govuk-panel__body'>
+                {t('YOUR_REF_NUMBER')}
+                <br></br>
+                <strong>{refId}</strong>
+              </div>
+            )}
+            <div className='govuk-panel__body'>
+              <p>{t('POST_YOUR_SUPPORTING_DOCUMENTS')}</p>
+            </div>
+          </div>
+          <h2 className='govuk-heading-m'> {t('WHAT_YOU_NEED_TO_DO_NOW')} </h2>
+          {isUnAuth && isCaseRefRequired && <p className='govuk-body'>{t('PRINT_THIS_INFO')}</p>}
+          <p className='govuk-body'> {t('THE_INFO_YOU_HAVE_PROVIDED')}. </p>
+          <ParsedHTML htmlString={documentList} />
+          <p className='govuk-body'>
+            {t('AFTER_YOU_HAVE')}{' '}
+            <a
+              href=''
+              onClick={e => generateReturnSlip(e)}
+              target='_blank'
+              rel='noreferrer noopener'
+            >
+              {t('PRINTED_AND_SIGNED_THE_FORM')} {t('OPENS_IN_NEW_TAB')}
+            </a>
+            , {t('RETURN_THE_FORM_WITH')}{' '}
+          </p>
+          <p className='govuk-body govuk-!-font-weight-bold'>
+            Child Benefit Office (GB)
+            <br />
+            Washington
+            <br />
+            NEWCASTLE UPON TYNE
+            <br />
+            NE88 1ZD
+          </p>
+          <p className='govuk-body'> {t('WE_NORMALLY_RETURN_DOCUMENTS_WITHIN')} </p>
+          <p className='govuk-body'>
+            <a href={getFeedBackLink()} className='govuk-link' target='_blank' rel='noreferrer'>
+              {t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')} {t('OPENS_IN_NEW_TAB')}
+            </a>
+          </p>
+        </MainWrapper>
+      </>
+    );
   } else {
     return (
       <>

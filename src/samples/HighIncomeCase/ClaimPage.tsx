@@ -112,7 +112,7 @@ const ClaimPage: FunctionComponent<any> = () => {
     e.preventDefault();
     setShowSignoutModal(false);
     // Extends manual signout popup 'stay signed in' to reset the automatic timeout timer also
-    staySignedIn(setShowTimeoutModal, null, null, null);
+    staySignedIn(setShowTimeoutModal, "D_ClaimantSubmittedChBCases", null, null);
   };
 
   const startClaim = () => {
@@ -227,7 +227,14 @@ const ClaimPage: FunctionComponent<any> = () => {
         hideModal={() => setShowSignoutModal(false)}
         handleSignoutModal={signOut}
         handleStaySignIn={handleStaySignIn}
-      />
+        staySignedInButtonText='Stay signed in'
+        signoutButtonText='Sign out'
+      >
+        <h1 id='govuk-timeout-heading' className='govuk-heading-m push--top'>
+          {useTranslation().t('YOU_ARE_ABOUT_TO_SIGN_OUT')}
+        </h1>
+        <p className='govuk-body'>If you sign out now, your progress will be lost.</p>
+      </LogoutPopup>
       <AppFooter />
     </>
   );

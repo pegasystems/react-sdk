@@ -15,13 +15,15 @@ const LanguageToggle = props => {
     setSelectedLang(lang);
     sessionStorage.setItem('rsdk_locale', `${lang}_GB`);
     i18n.changeLanguage(lang);
-    PCore.getEnvironmentInfo().setLocale(`${lang}_GB`);
-    PCore.getLocaleUtils().resetLocaleStore();
-    PCore.getLocaleUtils().loadLocaleResources([
-      PCore.getLocaleUtils().GENERIC_BUNDLE_KEY,
-      '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE',
-      'HMRC-CHB-WORK-CLAIM!CASE!CLAIM'
-    ]);
+    if (typeof PCore !== 'undefined') {
+      PCore.getEnvironmentInfo().setLocale(`${lang}_GB`);
+      PCore.getLocaleUtils().resetLocaleStore();
+      PCore.getLocaleUtils().loadLocaleResources([
+        PCore.getLocaleUtils().GENERIC_BUNDLE_KEY,
+        '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE',
+        'HMRC-CHB-WORK-CLAIM!CASE!CLAIM'
+      ]);
+    }
     if (languageToggleCallback) {
       languageToggleCallback(lang);
     }

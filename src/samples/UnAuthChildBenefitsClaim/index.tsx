@@ -464,19 +464,20 @@ export default function UnAuthChildBenefitsClaim() {
         {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
         {showDeletePage && <DeleteAnswers hasSessionTimedOut={hasSessionTimedOut} />}
         {bShowResolutionScreen && <ConfirmationPage caseId={caseId} isUnAuth />}
-        <TimeoutPopup
-          show={showTimeoutModal}
-          staySignedinHandler={() =>
-            staySignedIn(setShowTimeoutModal, claimsListApi, deleteData, false)
-          }
-          signoutHandler={() => {
-            deleteData();
-            clearTimer();
-            setHasSessionTimedOut(false);
-          }}
-          isAuthorised={false}
-        />
-
+        {!showDeletePage && (
+          <TimeoutPopup
+            show={showTimeoutModal}
+            staySignedinHandler={() =>
+              staySignedIn(setShowTimeoutModal, claimsListApi, deleteData, false)
+            }
+            signoutHandler={() => {
+              deleteData();
+              clearTimer();
+              setHasSessionTimedOut(false);
+            }}
+            isAuthorised={false}
+          />
+        )}
         {/** No Log out popup required as one isn't logged in */}
       </div>
 

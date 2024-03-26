@@ -30,7 +30,7 @@ const ClaimPage: FunctionComponent<any> = () => {
     const [pCoreReady, setPCoreReady] = useState(false);
     const [authType, setAuthType] = useState('gg');
 
-    const [currentDisplay, setCurrentDisplay] = useState<'startpage'|'pegapage'|'resolutionpage'|'servicenotavailable'|'shutterpage'|'loading'>('startpage');
+    const [currentDisplay, setCurrentDisplay] = useState<|'pegapage'|'resolutionpage'|'servicenotavailable'|'shutterpage'|'loading'>('pegapage');
     const [summaryPageContent, setSummaryPageContent] = useState<{content:string|null, title:string|null, banner:string|null}>({content:null, title:null, banner:null})
 
     const [showTimeoutModal, setShowTimeoutModal] = useState(false);  
@@ -78,7 +78,6 @@ const ClaimPage: FunctionComponent<any> = () => {
       }
       else if(shutterServicePage){setCurrentDisplay('shutterpage')}      
       else if(serviceNotAvailable){setCurrentDisplay('servicenotavailable')}
-      else if(pCoreReady){setCurrentDisplay('startpage')}
       else {
         setCurrentDisplay('loading');
       }
@@ -138,6 +137,7 @@ const ClaimPage: FunctionComponent<any> = () => {
         },
         'showStartPageOnCloseContainerItem'
       );
+      startClaim();
     });
     settingTimer();
   });
@@ -219,7 +219,6 @@ const ClaimPage: FunctionComponent<any> = () => {
               <div id='pega-root'></div>
             </div>
             { serviceNotAvailable && <ServiceNotAvailable /> }            
-            { currentDisplay === 'startpage' && <StartPage onStart={startClaim}/>}
             { currentDisplay === 'resolutionpage' && <SummaryPage summaryContent={summaryPageContent.content} summaryTitle={summaryPageContent.title} summaryBanner={summaryPageContent.banner} /> }            
           </>
         )}

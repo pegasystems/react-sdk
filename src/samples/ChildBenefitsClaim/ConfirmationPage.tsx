@@ -236,8 +236,6 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
     return null;
   } else if (serviceShuttered) {
     return <ShutterServicePage />;
-<<<<<<< HEAD
-=======
   } else if (!loading && isBornAbroadOrAdopted) {
     return (
       <>
@@ -289,7 +287,6 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
         </MainWrapper>
       </>
     );
->>>>>>> origin/main
   } else {
     return (
       <>

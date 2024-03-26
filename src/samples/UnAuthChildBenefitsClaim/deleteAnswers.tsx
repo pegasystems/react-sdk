@@ -1,11 +1,15 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import MainWrapper from '../../components/BaseComponents/MainWrapper';
 import Button from '../../components/BaseComponents/Button/Button';
 import { useTranslation } from 'react-i18next';
 
 export default function DeleteAnswers({ hasSessionTimedOut }) {
   const { t } = useTranslation();
-
+  const history = useHistory();
+  const redirectChoseClaim = () => {
+    history.push('/recently-claimed-child-benefit');
+  };
   return (
     <MainWrapper>
       <h1 className='govuk-heading-l'>
@@ -13,7 +17,7 @@ export default function DeleteAnswers({ hasSessionTimedOut }) {
           ? t('FOR_YOUR_SECURITY_WE_DELETED_YOUR_CLAIM')
           : t('YOU_DELETED_YOUR_CLAIM')}
       </h1>
-      <Button>{t('START_CLAIM_AGAIN')}</Button>
+      <Button onClick={redirectChoseClaim}>{t('START_CLAIM_AGAIN')}</Button>
       <h2 className='govuk-heading-m'>{t('BEFORE_YOU_GO')}</h2>
       <p className='govuk-body'>{t('YOUR_FEEDBACK_HELPS_US_MAKES_OUR_SERVICE_BETTER')}.</p>
       <p className='govuk-body'>

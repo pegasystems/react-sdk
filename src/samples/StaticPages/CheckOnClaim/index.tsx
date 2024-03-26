@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import AppHeader from '../../../components/AppComponents/AppHeader';
 import AppFooter from '../../../components/AppComponents/AppFooter';
 import { useTranslation } from 'react-i18next';
 import MainWrapper from '../../../components/BaseComponents/MainWrapper';
 import Button from '../../../components/BaseComponents/Button/Button';
+import setPageTitle from '../../../components/helpers/setPageTitleHelpers';
 
 export default function CheckOnClaim() {
   const { t } = useTranslation();
   const history = useHistory();
+  const lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
+  useEffect(() => {
+    const setPageTitleInterval = setInterval(() => {
+      clearInterval(setPageTitleInterval);
+      setPageTitle();
+    }, 500);
+  }, [lang]);
 
   return (
     <>
@@ -39,7 +47,7 @@ export default function CheckOnClaim() {
               className='govuk-link '
               target='_blank'
               rel='noopener noreferrer'
-              href='https://www.tax.service.gov.uk/fill-online/claim-child-benefit/check-on-claim'
+              href='https://www.tax.service.gov.uk/child-benefit/view-proof-entitlement'
             >
               {t('YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO')}
             </a>

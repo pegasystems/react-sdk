@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppHeader from '../../../components/AppComponents/AppHeader';
 import AppFooter from '../../../components/AppComponents/AppFooter';
 import Button from '../../../components/BaseComponents/Button/Button';
@@ -8,19 +8,32 @@ import StaticPageErrorSummary from '../ErrorSummary';
 import '../../../../assets/css/appStyles.scss';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import setPageTitle from '../../../components/helpers/setPageTitleHelpers';
 
 export default function AreYouSureToContinueWithoutSignIn() {
   const [errorMsg, setErrorMsg] = useState('');
   const { t } = useTranslation();
   const history = useHistory();
+  const lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
+  useEffect(() => {
+    const setPageTitleInterval = setInterval(() => {
+      clearInterval(setPageTitleInterval);
+      if (errorMsg.length > 0) {
+        setPageTitle(true);
+      } else {
+        setPageTitle();
+      }
+    }, 500);
+  }, [errorMsg, lang]);
+
   const radioOptions = [
     {
       value: 'yes',
-      label: `${t('YES')} - ${t('I_WANT_TO_CONTINUE_WITHOUT_SIGN_IN')}`
+      label: `${t('YES')}, ${t('I_WANT_TO_CONTINUE_WITHOUT_SIGN_IN')}`
     },
     {
       value: 'no',
-      label: `${t('NO')} - ${t('I_WANT_TO_SIGN_IN')}`
+      label: `${t('NO')}, ${t('I_WANT_TO_SIGN_IN')}`
     }
   ];
 
@@ -32,9 +45,11 @@ export default function AreYouSureToContinueWithoutSignIn() {
       // todo - both yes and no redirection link to be confirmed - not mentioned explicitly in story
       const selectedOptionValue = selectedOption.getAttribute('value');
       if (selectedOptionValue === 'yes') {
-        history.push('/ua');
+        window.location.assign(
+          'https://www.tax.service.gov.uk/fill-online/claim-child-benefit/task-list'
+        );
       } else {
-        window.location.href = 'https://www.access.service.gov.uk/login/signin/creds';
+        history.push('/');
       }
     } else {
       setErrorMsg(t('SELECT_YES_IF_YOU_WANT_TO_CONTINUE_WO_SIGN_IN'));
@@ -56,25 +71,26 @@ export default function AreYouSureToContinueWithoutSignIn() {
             errorSummary={errorMsg}
             linkHref='#areYouSureToContinueWoSignIn'
           />
-          <RadioButtons
-            name='areYouSureToContinueWoSignIn'
-            displayInline
-            value=''
-            useSmallRadios
-            options={radioOptions}
-            label={t('ARE_YOU_SURE_YOU_WANT_TO_CONTINUE_WO_SIGN_IN')}
-            legendIsHeading
-            errorText={errorMsg}
-          ></RadioButtons>
-          <button
-            className='govuk-button'
-            data-module='govuk-button'
-            onClick={handleSubmit}
-            type='button'
-          >
-            {t('CONTINUE')}
-          </button>
-          <br />
+          <form>
+            <RadioButtons
+              name='areYouSureToContinueWoSignIn'
+              displayInline
+              value=''
+              useSmallRadios
+              options={radioOptions}
+              label={t('ARE_YOU_SURE_YOU_WANT_TO_CONTINUE_WO_SIGN_IN')}
+              legendIsHeading
+              errorText={errorMsg}
+            ></RadioButtons>
+            <button
+              className='govuk-button'
+              data-module='govuk-button'
+              onClick={handleSubmit}
+              type='button'
+            >
+              {t('CONTINUE')}
+            </button>
+          </form>
         </MainWrapper>
       </div>
       <AppFooter />

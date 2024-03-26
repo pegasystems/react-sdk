@@ -572,6 +572,15 @@ export default function ChildBenefitsClaim() {
     } else if (authType && authType === 'gg-dev') {
       authService = 'GovGateway-Dev';
     }
+
+    // If the continer / case is opened then close the container on signout to prevent locking.
+    if (bShowPega) {
+      PCore.getContainerUtils().closeContainerItem(
+        PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
+        { skipDirtyCheck: true }
+      );
+    }
+
     PCore.getDataPageUtils()
       .getPageDataAsync('D_AuthServiceLogout', 'root', { AuthService: authService })
       .then(() => {

@@ -19,6 +19,8 @@ export default function DefaultForm(props) {
   const { instructionText: passedThroughInstructionText } = useContext(DefaultFormContext);
   const { t } = useTranslation();
 
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+
   const [declaration, setDeclaration] = useState({ text1: '', warning1: '' });
   let containerName = null;
   if (getPConnect().getDataObject().caseInfo?.assignments) {
@@ -108,6 +110,19 @@ export default function DefaultForm(props) {
       settingTargetForAnchorTag();
     }
   }, [instructionExists]);
+
+  // Sets the localeReference property in the store for getting the translated title in Assignment.tsx
+  useEffect(() => {
+    PCore.getStore().dispatch({
+      type: 'SET_PROPERTY',
+      payload: {
+        reference: 'localeReference',
+        value: props.localeReference,
+        context: 'app',
+        isArrayDeepMerge: false
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (containerName === 'Declaration') {
@@ -248,7 +263,7 @@ export default function DefaultForm(props) {
           value={{
             displayAsSingleQuestion: configAlternateDesignSystem?.hidePageLabel,
             DFName: props.localeReference,
-            OverrideLabelValue: containerName,
+            OverrideLabelValue: localizedVal(containerName, '', props.localeReference),
             instructionText:
               instructionExists && !singleQuestionPage
                 ? null

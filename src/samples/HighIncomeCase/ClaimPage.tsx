@@ -19,6 +19,7 @@ import { loginIfNecessary } from '@pega/react-sdk-components/lib/components/help
 import SummaryPage from '../../components/AppComponents/SummaryPage';
 import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
+import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 
 // declare const myLoadMashup;
 
@@ -81,6 +82,7 @@ const ClaimPage: FunctionComponent<any> = () => {
       else {
         setCurrentDisplay('loading');
       }
+      if(!showPega){ setPageTitle(); }
 
     }, [showResolutionPage, showPega, shutterServicePage, serviceNotAvailable, pCoreReady])
 

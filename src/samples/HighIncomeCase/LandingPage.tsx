@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import  MainWrapper   from '../../components/BaseComponents/MainWrapper';
 import  RadioButtons  from '../../components/BaseComponents/RadioButtons/RadioButtons';
@@ -7,6 +7,7 @@ import ErrorSummary from './reuseables/ErrorSummary';
 import AppHeader from './reuseables/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
+import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 
 export default function LandingPage(props){
     const {onProceedHandler} = props;    
@@ -16,6 +17,10 @@ export default function LandingPage(props){
     const [selectedOption, setSelectedOption] = useState();  
 
     const { hmrcURL } = useHMRCExternalLinks();
+
+    useEffect(() => {
+    setPageTitle(!!errorText)
+    }, [errorText] )
 
     const {t} = useTranslation()
     const changeHandler = (evt) => {

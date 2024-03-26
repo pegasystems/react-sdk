@@ -7,6 +7,8 @@ import i18n from 'i18next';
   accepts optional param errorProperty and appends 'Error :' if there is error on page
 */
 
+let serviceName = '';
+
 export default function setPageTitle(errorProperty = false) {
   // In case where there may be multiple H1s on page (e.g. breifly may have pega part of page and confirmation screen shown together)
   // set up an interval to keep checking until we have only one H1, and then set the page title with the remaining H1
@@ -28,7 +30,9 @@ export default function setPageTitle(errorProperty = false) {
 
   // Scope to fetch serviceName dynamically from here
   // TODO fetch serviceName dynamically
-  const serviceName = i18n.t('CLAIM_CHILD_BENEFIT');
+  if(!serviceName || serviceName === ''){
+    serviceName = i18n.t('CLAIM_CHILD_BENEFIT');
+  }   
 
   if (pageHeading) {
     const errorPrefix = errorProperty ? 'Error: ' : '';
@@ -37,3 +41,8 @@ export default function setPageTitle(errorProperty = false) {
     document.title = `${serviceName} - GOV.UK`;
   }
 }
+
+function registerServiceName(name){
+  serviceName = name;
+}
+export { registerServiceName }

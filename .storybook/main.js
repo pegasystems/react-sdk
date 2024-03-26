@@ -2,7 +2,9 @@ const path = require('path');
 
 /** @type { import('@storybook/react-webpack5').StorybookConfig } */
 const config = {
-  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: process.env.STORYBOOK_CONSTELLATION
+    ? ['../src/components/custom-constellation/**/*.stories.@(js|jsx|ts|tsx)']
+    : ['../src/components/custom-sdk/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   framework: {
     name: '@storybook/react-webpack5'
@@ -11,7 +13,7 @@ const config = {
     autodocs: 'tag'
   },
   features: {
-    storyStoreV7: false
+    storyStoreV7: true
   },
   webpackFinal: config => {
     config.resolve.alias['@pega/react-sdk-components/lib/bridge/react_pconnect'] = path.resolve(__dirname, '../__mocks__/react_pconnect.jsx');

@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import LandingPage from './LandingPage';
 import ClaimPage from './ClaimPage';
-import setPageTitle, { registerServiceName } from '../../components/helpers/setPageTitleHelpers';
+import { registerServiceName } from '../../components/helpers/setPageTitleHelpers';
 
 const HighIncomeCase: FunctionComponent<any> = () => {
     const [showLandingPage, setShowLandingPage] = useState<boolean>(!window.location.search.includes('code')); 

@@ -6,7 +6,6 @@ import AppHeader from './reuseables/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
-import StartPage from './StartPage';
 import LogoutPopup from '../../components/AppComponents/LogoutPopup';
 import { logout } from '@pega/auth/lib/sdk-auth-manager';
 import { staySignedIn } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';

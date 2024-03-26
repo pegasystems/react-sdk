@@ -1,10 +1,8 @@
 const path = require('path');
 
-const runConstellationStorybooks = false;
-
 /** @type { import('@storybook/react-webpack5').StorybookConfig } */
 const config = {
-  stories: runConstellationStorybooks
+  stories: process.env.STORYBOOK_CONSTELLATION
     ? ['../src/components/custom-constellation/**/*.stories.@(js|jsx|ts|tsx)']
     : ['../src/components/custom-sdk/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],

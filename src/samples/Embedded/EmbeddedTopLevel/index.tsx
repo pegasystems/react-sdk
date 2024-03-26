@@ -14,7 +14,7 @@ import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/componen
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../../sdk-local-component-map';
-import { theme } from '../../../../theme';
+import { theme } from '../../../theme';
 
 declare const myLoadMashup: any;
 

@@ -20,10 +20,11 @@ const config = {
       '../__mocks__/DetailsFields.js'
     );
     config.resolve.alias['@pega/react-sdk-components/lib/components/helpers/state-utils'] = path.resolve(__dirname, '../__mocks__/state-utils.tsx');
-    config.module.rules.push({
-      test: /\.(d.ts)$/,
-      loader: 'null-loader'
-    });
+    (config.resolve.alias['@pega/auth/lib/sdk-auth-manager'] = path.resolve(__dirname, '../__mocks__/authManager.tsx')),
+      config.module.rules.push({
+        test: /\.(d.ts)$/,
+        loader: 'null-loader'
+      });
     config.module.rules.push({
       test: /\.(map)$/,
       loader: 'null-loader'

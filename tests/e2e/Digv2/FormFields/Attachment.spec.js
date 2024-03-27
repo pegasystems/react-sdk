@@ -38,8 +38,8 @@ test.describe('E2E test', () => {
     await selectedSubCategory.click();
     await page.getByRole('option', { name: 'Required' }).click();
 
-    const filePath = path.join(__dirname, '../../../../assets/img/cableinfo.png');
-    const filePath2 = path.join(__dirname, '../../../../assets/img/cablechat.png');
+    const filePath = path.join(__dirname, '../../../../assets/img/cableinfo.jpg');
+    const filePath2 = path.join(__dirname, '../../../../assets/img/cablechat.jpg');
     const zeroBytesFile = path.join(__dirname, '../../../../assets/img/Zerobytes');
 
     // Checking required  attachment field
@@ -80,7 +80,7 @@ test.describe('E2E test', () => {
     const singleAttachment = page.locator('label[for="Attachment"]');
     await expect(singleAttachment.locator('span[role="button"]:has-text("Choose a file")')).toBeVisible();
     await page.setInputFiles(`#Attachment`, filePath);
-    await expect(page.locator('div >> text="cableinfo.png"')).toBeVisible();
+    await expect(page.locator('div >> text="cableinfo.jpg"')).toBeVisible();
     await expect(page.locator('span:has-text("Choose a file")')).toBeHidden();
 
     await page.locator('button[aria-label="Delete Attachment"]').click();
@@ -104,8 +104,8 @@ test.describe('E2E test', () => {
       )
     ]);
 
-    await expect(page.locator('div >> text="cableinfo.png"')).toBeVisible();
-    await expect(page.locator('div >> text="cablechat.png"')).toBeVisible();
+    await expect(page.locator('div >> text="cableinfo.jpg"')).toBeVisible();
+    await expect(page.locator('div >> text="cablechat.jpg"')).toBeVisible();
 
     await expect(page.locator('div >> text="Uploaded successfully" >> nth=0')).toBeVisible();
 
@@ -131,8 +131,8 @@ test.describe('E2E test', () => {
 
     /** Delete attachment */
     await menuSelector.locator('li >> text="Delete"').click();
-    await expect(page.locator('div >> text="cableinfo.png"')).toBeVisible();
-    await expect(page.locator('div >> text="cablechat.png"')).toBeHidden();
+    await expect(page.locator('div >> text="cableinfo.jpg"')).toBeVisible();
+    await expect(page.locator('div >> text="cablechat.jpg"')).toBeHidden();
   }, 10000);
 });
 

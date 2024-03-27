@@ -103,7 +103,7 @@ test.describe('E2E test', () => {
     await sendToMgr.check();
 
     const currentCaseID = await page.locator('div[id="current-caseID"]').textContent();
-    const filePath = path.join(__dirname, '../../../assets/img/cableinfo.png');
+    const filePath = path.join(__dirname, '../../../assets/img/cableinfo.jpg');
 
     const attachmentID = await page.locator('div[id="attachment-ID"]').textContent();
     await page.setInputFiles(`#${attachmentID}`, filePath);

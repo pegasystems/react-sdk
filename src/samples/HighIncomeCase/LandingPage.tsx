@@ -38,10 +38,8 @@ export default function LandingPage(props){
         else if(selectedOption === onOrAfterOptionValue){
             onProceedHandler();
         }        
-    }
+    }    
     
-    const instructionText = `<p class="govuk-body"> Use this service if you want to opt-in for Child Benefit payments.</p><p class="govuk-body"> You will need to:</p><ul class="govuk-list govuk-list--bullet"><li>be a Child Benefit claimant</li><li>have your bank or payment details available</li><li>opt-in to receive Child Benefit payments within the next 3 months</li></ul>`
-
     return (
         <>
             <AppHeader

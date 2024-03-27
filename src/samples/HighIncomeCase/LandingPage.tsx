@@ -39,7 +39,8 @@ export default function LandingPage(props){
             onProceedHandler();
         }        
     }
-
+    
+    const instructionText = `<p class="govuk-body"> Use this service if you want to opt-in for Child Benefit payments.</p><p class="govuk-body"> You will need to:</p><ul class="govuk-list govuk-list--bullet"><li>be a Child Benefit claimant</li><li>have your bank or payment details available</li><li>opt-in to receive Child Benefit payments within the next 3 months</li></ul>`
 
     return (
         <>
@@ -48,9 +49,17 @@ export default function LandingPage(props){
                 hasLanguageToggle={false}    
                 betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=463&referrerUrl=${window.location}`}                  
             />
-            <div className='govuk-width-container'>
+            <div className='govuk-width-container'>                
                 <MainWrapper>
                     {errorText && <ErrorSummary errors={[{message:errorText, fieldId:'optin-date'}]}/> }
+                    <h1 className="govuk-heading-xl">Opt-in for Child Benefit Payments</h1>
+                    <p className="govuk-body"> Use this service if you want to opt-in for Child Benefit payments.</p>
+                    <p className="govuk-body"> You will need to:</p>
+                    <ul className="govuk-list govuk-list--bullet">
+                        <li>be a Child Benefit claimant</li>
+                        <li>have your bank or payment details available</li>
+                        <li>opt-in to receive Child Benefit payments within the next 3 months</li>
+                    </ul>
                     <RadioButtons
                     name='optin-date' 
                     options={[
@@ -59,12 +68,12 @@ export default function LandingPage(props){
                     displayInline={false}
                     label={t('HICBC_LANDINGPAGE_QUESTION_LABEL')}
                     useSmallRadios={false}
-                    legendIsHeading
+                    legendIsHeading={false}
                     errorText={errorText}
                     onChange={changeHandler}  
-                    value={selectedOption}          
+                    value={selectedOption}           
                     />
-                    <Button id='continueToOptin' onClick={onContinue}>{t("CONTINUE")}</Button>
+                    <Button id='continueToOptin' onClick={onContinue} variant='start'>{t("START_NOW")}</Button>
                     <br />
                 </MainWrapper>
             </div>

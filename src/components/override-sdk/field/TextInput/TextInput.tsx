@@ -23,7 +23,9 @@ export default function TextInput(props) {
     configAlternateDesignSystem
   } = props;
 
-  const [errorMessage, setErrorMessage] = useState(validatemessage);
+  
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+  const [errorMessage, setErrorMessage] = useState(localizedVal(validatemessage));
   const isHICBC = isHICBCJourney();
 
   if (isHICBC) {
@@ -33,7 +35,7 @@ export default function TextInput(props) {
   }
 
   useEffect(() => {
-    setErrorMessage(validatemessage);
+    setErrorMessage(localizedVal(validatemessage));
   }, [validatemessage]);
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();

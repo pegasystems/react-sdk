@@ -175,7 +175,7 @@ export default function Assignment(props) {
 
           acc.push({
             message: {
-              message: removeRedundantString(validatemessage),
+              message: localizedVal(removeRedundantString(validatemessage)),
               pageRef,
               fieldId,
               clearMessageProperty

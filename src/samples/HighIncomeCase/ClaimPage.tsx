@@ -124,26 +124,29 @@ const ClaimPage: FunctionComponent<any> = () => {
    * Application specific PCore subscriptions
    *
    * TODO Can this be made into a tidy helper? including its own clean up? A custom hook perhaps
-   */
-  document.addEventListener('SdkConstellationReady', () => {
-    PCore.onPCoreReady(() => {
-      setPCoreReady(true);
-      PCore.getPubSubUtils().subscribe(
-        PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
-        () => {
-          // console.log("SUBEVENT!!! showStartPageOnCloseContainerItem")
-          setShowPega(false);
-        },
-        'showStartPageOnCloseContainerItem'
-      );
-      startClaim();
-    });
-    settingTimer();
-  });
+   */  
 
   // And clean up
 
   useEffect(() => {
+    document.addEventListener('SdkConstellationReady', () => {
+      PCore.onPCoreReady(() => {
+        if(!pCoreReady){
+          setPCoreReady(true);
+          PCore.getPubSubUtils().subscribe(
+            PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
+            () => {
+              // console.log("SUBEVENT!!! showStartPageOnCloseContainerItem")
+              setShowPega(false);
+            },
+            'showStartPageOnCloseContainerItem'
+          );
+          startClaim();
+        }
+      });
+      settingTimer();
+    });
+    
     return () => {
       PCore.getPubSubUtils().unsubscribe(
         PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,

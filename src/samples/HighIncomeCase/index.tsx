@@ -21,7 +21,11 @@ const HighIncomeCase: FunctionComponent<any> = () => {
 
     useEffect(()=>{
         getSdkConfig().then((config)=>{
-            config.hicbcOptinConfig?.shutterService ? setShuttered(config.hicbcOptinConfig.shutterService) : setShuttered(false)
+            if(config.hicbcOptinConfig?.shutterService) {
+                setShuttered(config.hicbcOptinConfig.shutterService)
+            } else {
+                setShuttered(false);     
+            }        
         })
     }, []);
 
@@ -31,29 +35,16 @@ const HighIncomeCase: FunctionComponent<any> = () => {
     } else if(shuttered){  
         setPageTitle();
         return (  
-            <>
-                {/* <AppHeader
-                    appname={useTranslation().t('HIGH_INCOME_BENEFITS')}
-                    hasLanguageToggle={false}                   
-                />
-                <div className='govuk-width-container'>                
-                    <MainWrapper>                            
-                        <ShutterServicePage />
-                    </MainWrapper>
-                </div> */}
+            <>                
                 <AppHeader
                     appname={t('HIGH_INCOME_BENEFITS')}
                     hasLanguageToggle={false}                   
                 />
                 <div className='govuk-width-container'>                
-                    <MainWrapper showPageNotWorkingLink={false}>                            
-                        <div className="govuk-grid-row">
-                            <div className="govuk-grid-column-two-thirds">
+                    <MainWrapper showPageNotWorkingLink={false}>
                             <h1 className="govuk-heading-l">Sorry, the service is unavailable</h1>
                             <p className="govuk-body">Try again later.</p>
-                            <p className="govuk-body">You can return to <a className="govuk-link" href="https://www.gov.uk/child-benefit">Child Benefit guidance</a></p>          
-                            </div>
-                        </div>
+                            <p className="govuk-body">You can return to <a className="govuk-link" href="https://www.gov.uk/child-benefit">Child Benefit guidance</a>.</p>
                     </MainWrapper>
                 </div>
                 <AppFooter />

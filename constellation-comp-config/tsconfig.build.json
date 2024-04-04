@@ -5,10 +5,15 @@
     "../src/components/custom-constellation/**/**/*.tsx",
     "../src/components/custom-constellation/**/**/*.js",
     "../src/components/custom-constellation/**/**/*.jsx",
+    "../src/components/gds/*.ts",
+    "../src/components/gds/*.tsx",
+    "../src/components/gds/*.js",
+    "../src/components/gds/*.jsx",
     "../src/components/override-sdk/**/**/*.ts",
     "../src/components/override-sdk/**/**/*.tsx",
     "../src/components/override-sdk/**/**/*.js",
-    "../src/components/override-sdk/**/**/*.jsx"],
+    "../src/components/override-sdk/**/**/*.jsx"
+  ],
   "exclude": [
     "node_modules",
     "../src/**/*.stories.ts",
@@ -23,7 +28,6 @@
     "rootDir": "../src",
     "allowSyntheticDefaultImports": true,
     // "skipLibCheck" must be true in order to not see errors in the @pega/pcore-pconnect-typedefs files themselves
-    "skipLibCheck": true,
+    "skipLibCheck": true
   }
-
 }

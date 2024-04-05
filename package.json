@@ -90,7 +90,7 @@
     "@pega/configs": "^0.6.0",
     "@pega/constellationjs": "~23.1.1",
     "@pega/cspell-config": "^0.7.1",
-    "@pega/dx-component-builder-sdk": "~0.23.18",
+    "@pega/dx-component-builder-sdk": "~0.23.19",
     "@pega/eslint-config": "^0.7.1",
     "@pega/pcore-pconnect-typedefs": "~2.1.1",
     "@pega/prettier-config": "^0.6.0",

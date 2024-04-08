@@ -7,13 +7,9 @@ import { logout } from '@pega/react-sdk-components/lib/components/helpers/authMa
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 
-import {
-  loginIfNecessary,
-  sdkSetAuthHeader
-} from '@pega/react-sdk-components/lib/components/helpers/authManager';
+import { loginIfNecessary, sdkSetAuthHeader, getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
-import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 import AppHeader from '../../components/AppComponents/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 import ConfirmationPage from '../ChildBenefitsClaim/ConfirmationPage';

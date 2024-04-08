@@ -10,12 +10,12 @@ import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react
 import {
   sdkIsLoggedIn,
   loginIfNecessary,
-  sdkSetAuthHeader
-} from '@pega/react-sdk-components/lib/components/helpers/authManager';
+  sdkSetAuthHeader,
+  getSdkConfig,
+  logout
+} from '@pega/auth/lib/sdk-auth-manager';
 
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
-import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
-import { logout } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 import AppHeader from '../../components/AppComponents/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 import LogoutPopup from '../../components/AppComponents/LogoutPopup';

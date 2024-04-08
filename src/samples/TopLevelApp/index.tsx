@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import AppSelector from '../AppSelector';
 
 const TopLevelApp = () => {

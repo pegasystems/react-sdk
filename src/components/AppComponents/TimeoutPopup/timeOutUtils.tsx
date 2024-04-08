@@ -1,5 +1,4 @@
-import { logout } from '@pega/react-sdk-components/lib/components/helpers/authManager';
-import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import { logout, getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 
 let milisecondsTilWarning = 780 * 1000;
 let milisecondsTilSignout = 115 * 1000;

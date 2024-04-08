@@ -1,4 +1,4 @@
-import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 
 export const scrollToTop = () => {
   const position = document.getElementById('#main-content')?.offsetTop || 0;

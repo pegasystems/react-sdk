@@ -54,7 +54,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@material-ui/pickers": "^3.3.10",
-    "@pega/auth": "^0.1.6",
+    "@pega/auth": "^0.2.8",
     "@pega/constellationjs": "SDK-8.23.0",
     "@pega/cosmos-react-core": "^4.0.1",
     "@pega/cosmos-react-work": "^4.0.1",

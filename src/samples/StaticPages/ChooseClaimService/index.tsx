@@ -76,7 +76,7 @@ export default function RecentlyClaimedChildBenefit() {
           break;
       }
     } else {
-      setErrorMsg(t('CONFIRM_YOUR_SERVICE'));
+      setErrorMsg(t('SELECT_CHILD_BENEFIT_SERVICE'));
     }
   }
   return (

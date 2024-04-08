@@ -246,6 +246,12 @@
 
 
   "HIGH_INCOME_BENEFITS": "Opt-in for Child Benefit Payment",
+  "HICBC_LANDINGPAGE_P1": "Use this service if you want to opt-in for Child Benefit payments.",
+  "HICBC_LANDINGPAGE_P2": "You will need to:",
+  "HICBC_LANDINGPAGE_LISTITEM1": "be a Child Benefit claimant",
+  "HICBC_LANDINGPAGE_LISTITEM2": "have your bank or payment details available",
+  "HICBC_LANDINGPAGE_LISTITEM3": "opt-in to receive Child Benefit payments within the next 3 months",
+
   "HICBC_LANDINGPAGE_BEFORE_6_APRIL_OPTION_LABEL": "Before 6 April 2024",
   "HICBC_LANDINGPAGE_ONORAFTER_6_APRIL_OPTION_LABEL": "On or after 6 April 2024",
   "HICBC_LANDINGPAGE_QUESTION_LABEL": "When do you want to opt-in to Child Benefit payments?",

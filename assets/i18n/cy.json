@@ -39,7 +39,7 @@
 
   "APPLICATION_RECEIVED": "Cais am Fudd-dal Plant wedi dod i law",
   "SAVE_AND_CONTINUE": "Cadw ac yn eich blaen",
-  "YOUR_REF_NUMBER": "Your reference number",
+  "YOUR_REF_NUMBER": "Eich cyfeirnod",
   "POST_YOUR_SUPPORTING_DOCUMENTS": "Postiwch eich dogfennau ategol",
   "WHAT_YOU_NEED_TO_DO_NOW": "Yr hyn y mae angen i chi ei wneud nawr",
   "THE_INFO_YOU_HAVE_PROVIDED": "Mae’r wybodaeth a roddwyd gennych wedi’i defnyddio i greu eich ffurflen hawlio Budd-dal Plant",
@@ -51,7 +51,7 @@
   "PRINT_THIS_INFO": "Argraffwch y dudalen hon neu gwnewch nodyn o’r cyfeirnod. Bydd angen hwn arnoch os byddwch yn cysylltu â CThEF neu os bydd CThEF yn gofyn am ragor o wybodaeth.",
 
   "WHAT_HAPPENS_NEXT": "Yr hyn sy’n digwydd nesaf",
-  "WE_HAVE_SENT_YOUR_APPLICATION": "We've sent your application to the Child Benefit Office.",
+  "WE_HAVE_SENT_YOUR_APPLICATION": "Rwyf wedi anfon eich cais i’r Swyddfa Budd-dal Plant.",
   "WE_WILL_TELL_YOU_IN_14_DAYS": "Byddwn yn rhoi gwybod i chi cyn pen 14 diwrnod calendr os yw’ch cais wedi bod yn llwyddiannus.",
   "CONTINUE_CLAIM": "Parhau â’r hawliad",
   "CLAIMS_IN_PROGRESS": "Hawliadau ar y gweill",
@@ -71,7 +71,7 @@
   "THE_HIGH_INCOME_CHB_TAX_CHARGE": "y Tâl Treth Budd-dal Plant Incwm Uchel",
   "ANY_CHANGE_OF_CIRCUMSTANCE": "unrhyw newid mewn amgylchiadau i chi neu eich plentyn a allai effeithio ar eich hawliad",
 
-  "CHILD_NAME": "Child name",
+  "CHILD_NAME": "Enw’r plentyn",
   "DATE_OF_BIRTH": "Dyddiad geni",
   "CREATED_DATE": "Dyddiad creu",
   "YOU_STILL_NEED_TO_SAVE_YOUR_PROGRESS": "Mae angen i chi gadw eich cynnydd o hyd. Os byddwch yn allgofnodi heb ei gadw, byddwch yn colli’ch cynnydd.",
@@ -125,11 +125,11 @@
   "COOKIE_AWSALB_DESCRIPTION": "Defnyddir hyn i helpu i reoli’r traffig rhwng porwr gwe ymwelwr a gweinydd y rhaglen sy’n cynnal gwasanaethau CThEF.",
   "COOKIE_AWSALBCORS_DESCRIPTION": "Defnyddir hyn i helpu i reoli’r traffig rhwng porwr gwe ymwelwr a gweinydd y rhaglen sy’n cynnal gwasanaethau CThEF.",
   "COOKIE_JSESSIONID_DESCRIPTION": "Defnyddir hyn i adnabod gwybodaeth am sesiwn yr ymwelwr, a’r wybodaeth honno yn ymwneud â’r gwasanaeth sy’n cael ei ddefnyddio.",
-  
+
   "COOKIE_PEGAODXEI_DESCRIPTION": "This is used to identify the session ID of a user not using Government Gateway.",
   "COOKIE_PEGAODXDI_DESCRIPTION": "This is used to uniquely identify a device that has interacted with HMRC services and is used for internal security auditing.",
   "COOKIE_AKA_A2_DESCRIPTION": "This Akamai cookie is used to help speed up content delivery on websites using adaptive acceleration.",
-  
+
   "COOKIE_FIND_OUT_MORE": "Dysgwch ragor am gwcis ar wasanaethau CThEF",
   "GDS_INFO_IMPORTANT": "Pwysig",
   "GDS_INFO_SUCCESS": "Llwyddiant",
@@ -242,5 +242,8 @@
   "CHECK_CLAIM_REPLY": "wirio pryd y gallwch ddisgwyl ymateb i’ch hawliad (yn agor tab newydd).",
   "CHECK_CLAIM_APPROVED": "I wirio os yw’ch hawliad am Fudd-dal Plant wedi’i gymeradwyo, gallwch fwrw golwg dros eich tystiolaeth o hawl. ",
   "YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO": "Bydd angen i chi mewngofnodi i gael at yr wybodaeth hon. Os nad oes gennych fanylion mewngofnodi, gallwch eu creu (yn agor tab newydd).",
-  "EXCLUSIVEOPTION_OR": "neu"
+  "EXCLUSIVEOPTION_OR": "neu",
+  "AUTOMATICALLY_CLOSE_IN": "Bydd y dudalen hon yn cau’n awtomatig mewn",
+  "STAY_ON_THIS_PAGE": "Aros ar y dudalen hon",
+  "EXIT_THIS_PAGE": "Gadael y dudalen hon"
 }

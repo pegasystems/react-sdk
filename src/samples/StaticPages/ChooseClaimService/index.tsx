@@ -17,8 +17,8 @@ export default function RecentlyClaimedChildBenefit() {
   const lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
 
   useEffect(() => {
-    const setPageTitleInterval = setInterval(() => {
-      clearInterval(setPageTitleInterval);
+    const setPageTitleTimeout = setTimeout(() => {
+      clearInterval(setPageTitleTimeout);
       if (errorMsg.length > 0) {
         setPageTitle(true);
       } else {

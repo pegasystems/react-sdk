@@ -20,7 +20,7 @@ export function clearTimer() {
   clearTimeout(signoutTimeout);
 }
 
-export const initTimeout = (showTimeoutModal, deleteData, isAuthorised) => {
+export const initTimeout = (showTimeoutModal, deleteData, isAuthorised, isConfirmationPage) => {
   // TODO - isAuthorised to be replaced by caseType from pega
   // Fetches timeout length config
   settingTimer();
@@ -32,12 +32,14 @@ export const initTimeout = (showTimeoutModal, deleteData, isAuthorised) => {
     // TODO - unauth and sessiontimeout functionality to be implemented
     showTimeoutModal(true);
     signoutTimeout = setTimeout(() => {
-      if (isAuthorised) {
-        logout();
-      } else {
+      if (!isAuthorised && !isConfirmationPage) {
+        // if the journey is not authorized or from confirmation page , the claim data gets deleted
         deleteData();
         clearTimer();
-        // session ends and deleteData() (pega)
+      } else {
+        // the logout case executes when entire timeout occurs after confirmation page or user clicks
+        // exit survey link in pop after confirmation page
+        logout();
       }
     }, milisecondsTilSignout);
   }, milisecondsTilWarning);
@@ -49,12 +51,13 @@ export function staySignedIn(
   claimsListApi,
   deleteData = null,
   isAuthorised = false,
-  refreshSignin = true
+  refreshSignin = true,
+  isConfirmationPage = false
 ) {
-  if (refreshSignin) {
+  if (refreshSignin && !!claimsListApi) {
     // @ts-ignore
     PCore.getDataPageUtils().getDataAsync(claimsListApi, 'root');
   }
   setShowTimeoutModal(false);
-  initTimeout(setShowTimeoutModal, deleteData, isAuthorised);
+  initTimeout(setShowTimeoutModal, deleteData, isAuthorised, isConfirmationPage);
 }

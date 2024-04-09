@@ -28,6 +28,7 @@ import {
 import DeleteAnswers from './deleteAnswers';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
 import toggleNotificationProcess from '../../components/helpers/toggleNotificationLanguage';
+import { getServiceShutteredStatus } from '../../components/helpers/utils';
 
 declare const myLoadMashup: Function;
 
@@ -45,9 +46,6 @@ export default function UnAuthChildBenefitsClaim() {
   const history = useHistory();
   const [caseId, setCaseId] = useState('');
 
-  // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
-  const featureID = 'ChB';
-  const featureType = 'Service';
   const claimsListApi = '';
 
   const { t } = useTranslation();
@@ -141,6 +139,15 @@ export default function UnAuthChildBenefitsClaim() {
     setShowStartPage(true);
   }
 
+  async function setShutterStatus(isCalledFromTaskList: boolean) {
+    const status = await getServiceShutteredStatus();
+    setShutterServicePage(status);
+    if (!isCalledFromTaskList) resetAppDisplay();
+    if (!status) {
+      setShowStartPage(true);
+    }
+  }
+
   function establishPCoreSubscriptions() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
@@ -149,6 +156,15 @@ export default function UnAuthChildBenefitsClaim() {
       },
       'assignmentFinished'
     );
+
+    PCore.getPubSubUtils().subscribe(
+      'assignmentFinishedOnTaskListClicked',
+      () => {
+        setShutterStatus(true);
+      },
+      'assignmentFinishedOnTaskListClicked'
+    );
+
     PCore.getPubSubUtils().subscribe(
       'assignmentFinished',
       () => {
@@ -320,26 +336,8 @@ export default function UnAuthChildBenefitsClaim() {
       // eslint-disable-next-line no-console
       console.log(`SdkComponentMap initialized`);
     });
-    PCore.getDataPageUtils()
-      .getPageDataAsync('D_ShutterLookup', 'root', {
-        FeatureID: featureID,
-        FeatureType: featureType
-      })
-      .then(resp => {
-        const isShuttered = resp.Shuttered;
-        if (isShuttered) {
-          resetAppDisplay();
-          setShutterServicePage(true);
-        } else {
-          setShutterServicePage(false);
-          resetAppDisplay();
-          setShowStartPage(true);
-        }
-      })
-      .catch(err => {
-        // eslint-disable-next-line no-console
-        console.error(err);
-      });
+
+    setShutterStatus(false);
 
     // load the Mashup and handle the onPCoreEntry response that establishes the
     //  top level Pega root element (likely a RootContainer)
@@ -437,6 +435,7 @@ export default function UnAuthChildBenefitsClaim() {
         'continueCase'
       );
 
+      PCore?.getPubSubUtils().unsubscribe('assignmentFinishedOnTaskListClicked');
       PCore?.getPubSubUtils().unsubscribe('closeContainer');
       PCore?.getPubSubUtils().unsubscribe(
         PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
@@ -445,8 +444,48 @@ export default function UnAuthChildBenefitsClaim() {
     };
   }, []);
 
+  const renderContent = () => {
+    return shutterServicePage ? (
+      <ShutterServicePage />
+    ) : (
+      <>
+        <div id='pega-part-of-page'>
+          <div id='pega-root'></div>
+        </div>
+        {showDeletePage && <DeleteAnswers hasSessionTimedOut={hasSessionTimedOut} />}
+      </>
+    );
+  };
+
   return (
     <>
+      {!showDeletePage && (
+        <TimeoutPopup
+          show={showTimeoutModal}
+          staySignedinHandler={() => {
+            staySignedIn(
+              setShowTimeoutModal,
+              claimsListApi,
+              deleteData,
+              false,
+              false,
+              bShowResolutionScreen
+            );
+          }}
+          signoutHandler={() => {
+            if (bShowResolutionScreen) {
+              logout();
+            } else {
+              clearTimer();
+              deleteData();
+
+              setHasSessionTimedOut(false);
+            }
+          }}
+          isAuthorised={false}
+          isConfirmationPage={bShowResolutionScreen}
+        />
+      )}
       <AppHeader
         appname={t('CLAIM_CHILD_BENEFIT')}
         hasLanguageToggle
@@ -456,44 +495,14 @@ export default function UnAuthChildBenefitsClaim() {
           assignmentPConn
         )}
       />
-
       <div className='govuk-width-container'>
-        <div id='pega-part-of-page'>
-          <div id='pega-root'></div>
-        </div>
-        {shutterServicePage && <ShutterServicePage />}
-
-        {serviceNotAvailable && <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />}
-        {showDeletePage && <DeleteAnswers hasSessionTimedOut={hasSessionTimedOut} />}
-        {bShowResolutionScreen && <ConfirmationPage caseId={caseId} isUnAuth />}
-        {!showDeletePage && (
-          <TimeoutPopup
-            show={showTimeoutModal}
-            staySignedinHandler={() => {
-              staySignedIn(
-                setShowTimeoutModal,
-                claimsListApi,
-                deleteData,
-                false,
-                false,
-                bShowResolutionScreen
-              );
-            }}
-            signoutHandler={() => {
-              if (bShowResolutionScreen) {
-                logout();
-              } else {
-                clearTimer();
-                deleteData();
-
-                setHasSessionTimedOut(false);
-              }
-            }}
-            isAuthorised={false}
-            isConfirmationPage={bShowResolutionScreen}
-          />
+        {serviceNotAvailable ? (
+          <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />
+        ) : (
+          renderContent()
         )}
-        {/** No Log out popup required as one isn't logged in */}
+
+        {bShowResolutionScreen && <ConfirmationPage caseId={caseId} isUnAuth />}
       </div>
 
       <AppFooter />

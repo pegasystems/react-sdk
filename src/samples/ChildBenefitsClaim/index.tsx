@@ -33,6 +33,7 @@ import localSdkComponentMap from '../../../sdk-local-component-map';
 import { checkCookie, setCookie } from '../../components/helpers/cookie';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 import toggleNotificationProcess from '../../components/helpers/toggleNotificationLanguage';
+import { getServiceShutteredStatus } from '../../components/helpers/utils';
 
 declare const myLoadMashup: any;
 
@@ -88,9 +89,6 @@ export default function ChildBenefitsClaim() {
   const [isCreateCaseBlocked, setIsCreateCaseBlocked] = useState(false);
   const [timeoutID, setTimeoutID] = useState(null);
   const history = useHistory();
-  // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
-  const featureID = 'ChB';
-  const featureType = 'Service';
 
   function resetAppDisplay() {
     setShowStartPage(false);
@@ -231,6 +229,16 @@ export default function ChildBenefitsClaim() {
     );
   }
 
+  async function setShutterStatus() {
+    const status = await getServiceShutteredStatus();
+    setShutterServicePage(status);
+    if (status) {
+      resetAppDisplay();
+    } else {
+      displayUserPortal();
+    }
+  }
+
   function establishPCoreSubscriptions() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
@@ -239,6 +247,14 @@ export default function ChildBenefitsClaim() {
       },
       'assignmentFinished'
     );
+    PCore.getPubSubUtils().subscribe(
+      'assignmentFinishedOnTaskListClicked',
+      () => {
+        setShutterStatus();
+      },
+      'assignmentFinishedOnTaskListClicked'
+    );
+
     PCore.getPubSubUtils().subscribe(
       'assignmentFinished',
       () => {
@@ -471,25 +487,8 @@ export default function ChildBenefitsClaim() {
       // eslint-disable-next-line no-console
       console.log(`SdkComponentMap initialized`);
     });
-    PCore.getDataPageUtils()
-      .getPageDataAsync('D_ShutterLookup', 'root', {
-        FeatureID: featureID,
-        FeatureType: featureType
-      })
-      .then(resp => {
-        const isShuttered = resp.Shuttered;
-        if (isShuttered) {
-          setShutterServicePage(true);
-          resetAppDisplay();
-        } else {
-          setShutterServicePage(false);
-          displayUserPortal();
-        }
-      })
-      .catch(err => {
-        // eslint-disable-next-line no-console
-        console.error(err);
-      });
+
+    setShutterStatus();
 
     // load the Mashup and handle the onPCoreEntry response that establishes the
     //  top level Pega root element (likely a RootContainer)
@@ -556,6 +555,7 @@ export default function ChildBenefitsClaim() {
         'continueCase'
       );
 
+      PCore?.getPubSubUtils().unsubscribe('assignmentFinishedOnTaskListClicked');
       PCore?.getPubSubUtils().unsubscribe('closeContainer');
       PCore?.getPubSubUtils().unsubscribe(
         PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,

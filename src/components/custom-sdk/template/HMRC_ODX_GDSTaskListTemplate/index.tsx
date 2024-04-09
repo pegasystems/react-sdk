@@ -42,6 +42,7 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
   const handleOnClick = (section: string) => {
     getPConnect().setValue('.SelectedTask', section, '', false);
     getPConnect().getActionsApi().finishAssignment(context);
+    PCore.getPubSubUtils().publish('assignmentFinishedOnTaskListClicked', {});
   };
 
   return (

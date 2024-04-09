@@ -39,7 +39,7 @@ const ClaimPage: FunctionComponent<any> = () => {
 
     const history = useHistory();
     useEffect(() => 
-        {initTimeout(setShowTimeoutModal, false, true) }  
+        {initTimeout(setShowTimeoutModal, false, true, false) }  
     , []);
     
     function doRedirectDone() {

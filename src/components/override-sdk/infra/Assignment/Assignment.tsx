@@ -110,7 +110,7 @@ export default function Assignment(props) {
     }, 50);
 
     return () => clearTimeout(headerFetch);
-  }, [headerLocaleLocation]);
+  }, [headerLocaleLocation, containerName]);
 
   useEffect(() => {
     if (children && children.length > 0) {

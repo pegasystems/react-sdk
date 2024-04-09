@@ -1,5 +1,4 @@
-import { logout } from '@pega/react-sdk-components/lib/components/helpers/authManager';
-import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import { logout, getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 
 let milisecondsTilWarning = 780 * 1000;
 let milisecondsTilSignout = 115 * 1000;
@@ -20,7 +19,7 @@ export function clearTimer() {
   clearTimeout(signoutTimeout);
 }
 
-export const initTimeout = async (showTimeoutModal, deleteData, isAuthorised) => {
+export const initTimeout = async (showTimeoutModal, deleteData, isAuthorised, isConfirmationPage) => {
   // TODO - isAuthorised to be replaced by caseType from pega
   // Fetches timeout length config
   await settingTimer();
@@ -32,9 +31,8 @@ export const initTimeout = async (showTimeoutModal, deleteData, isAuthorised) =>
     // TODO - unauth and sessiontimeout functionality to be implemented
     showTimeoutModal(true);
     signoutTimeout = setTimeout(() => {
-      if (isAuthorised) {
-        logout();
-      } else {
+      if (!isAuthorised && !isConfirmationPage) {
+        // if the journey is not authorized or from confirmation page , the claim data gets deleted
         deleteData();
         clearTimer();
         // session ends and deleteData() (pega)
@@ -43,7 +41,7 @@ export const initTimeout = async (showTimeoutModal, deleteData, isAuthorised) =>
   }, milisecondsTilWarning);
 };
 
-export const resetTimeout = (showTimeoutModal, deleteData, isAuthorised) => {
+export const resetTimeout = (showTimeoutModal, deleteData, isAuthorised, isConfirmationPage) => {
   // TODO - isAuthorised to be replaced by caseType from pega
   // Fetches timeout length config
   clearTimeout(applicationTimeout);
@@ -54,12 +52,14 @@ export const resetTimeout = (showTimeoutModal, deleteData, isAuthorised) => {
     // TODO - unauth and sessiontimeout functionality to be implemented
     showTimeoutModal(true);
     signoutTimeout = setTimeout(() => {
-      if (isAuthorised) {
-        logout();
-      } else {
-        if(deleteData){  deleteData(); }
+      if (!isAuthorised && !isConfirmationPage) {
+        // if the journey is not authorized or from confirmation page , the claim data gets deleted
+        deleteData();
         clearTimer();
-        // session ends and deleteData() (pega)
+      } else {
+        // the logout case executes when entire timeout occurs after confirmation page or user clicks
+        // exit survey link in pop after confirmation page
+        logout();
       }
     }, milisecondsTilSignout);
   }, milisecondsTilWarning);
@@ -71,13 +71,13 @@ export function staySignedIn(
   claimsListApi,
   deleteData = null,
   isAuthorised = false,
-  refreshSignin = true
+  refreshSignin = true,
+  isConfirmationPage = false
 ) {
-
-  if (refreshSignin) {
+  if (refreshSignin && !!claimsListApi) {
     // @ts-ignore
     PCore.getDataPageUtils().getDataAsync(claimsListApi, 'root');
   }
   setShowTimeoutModal(false);
-  resetTimeout(setShowTimeoutModal, deleteData, isAuthorised);
+  resetTimeout(setShowTimeoutModal, deleteData, isAuthorised, isConfirmationPage);
 }

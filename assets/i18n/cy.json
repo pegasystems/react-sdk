@@ -244,5 +244,6 @@
   "SELECT_CHILD_BENEFIT_SERVICE": "Dewiswch pa wasanaeth Budd-dal Plant yr hoffech ei ddefnyddio",
   "AUTOMATICALLY_CLOSE_IN": "Bydd y dudalen hon yn cau’n awtomatig mewn",
   "STAY_ON_THIS_PAGE": "Aros ar y dudalen hon",
-  "EXIT_THIS_PAGE": "Gadael y dudalen hon"
+  "EXIT_THIS_PAGE": "Gadael y dudalen hon",
+  "THERE_IS_A_PROBLEM": "Mae yna broblem"
 }

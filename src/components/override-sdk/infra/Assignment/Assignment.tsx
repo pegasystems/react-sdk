@@ -69,6 +69,9 @@ export default function Assignment(props) {
   const [serviceShutteredStatus, setServiceShutteredStatus] = useState(serviceShuttered);
   const [header, setHeader] = useState('');
 
+  const lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
+  const [selectedLang, setSelectedLang] = useState(lang);
+
   const _containerName = getPConnect().getContainerName();
   const context = getPConnect().getContextName();
   const containerID = PCore.getContainerUtils()
@@ -103,6 +106,25 @@ export default function Assignment(props) {
   }
 
   const headerLocaleLocation = PCore.getStoreValue('localeReference', '', 'app');
+
+  PCore.getPubSubUtils().subscribe(
+    'languageToggleTriggered',
+    (langreference) => {
+      setSelectedLang(langreference?.language);
+    }
+  );
+
+  // To update the title when we toggle the language
+  useEffect(() => {
+    setTimeout(() => {
+      let tryTranslate = localizedVal(containerName, '', 'HMRC-CHB-WORK-CLAIM!CASE!CLAIM');
+      if(tryTranslate === containerName){
+        tryTranslate = localizedVal(tryTranslate, '', headerLocaleLocation);
+      }
+      // Set our translated header!
+      setHeader(tryTranslate);
+    }, 300);
+  }, [selectedLang]);
 
   useEffect(() => {
     const headerFetch = setTimeout(() => {

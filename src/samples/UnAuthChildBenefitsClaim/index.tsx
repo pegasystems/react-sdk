@@ -457,6 +457,7 @@ export default function UnAuthChildBenefitsClaim() {
         'assignmentFinished'
       );
       PCore?.getPubSubUtils().unsubscribe('staySignedInOnConfirmationScreen');
+      PCore?.getPubSubUtils().unsubscribe('languageToggleTriggered');
     };
   }, []);
 

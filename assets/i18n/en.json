@@ -246,5 +246,6 @@
   "SELECT_CHILD_BENEFIT_SERVICE": "Select which Child Benefit service you would like to use",
   "AUTOMATICALLY_CLOSE_IN": "This page will automatically close in",
   "STAY_ON_THIS_PAGE": "Stay on this page",
-  "EXIT_THIS_PAGE": "Exit this page"
+  "EXIT_THIS_PAGE": "Exit this page",
+  "THERE_IS_A_PROBLEM": "There is a problem"
 }

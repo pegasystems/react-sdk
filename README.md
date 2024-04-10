@@ -57,7 +57,7 @@ A DX component consists of the following:
 - Javascript to integrate component parameters, ConstellationJS client APIs, and alternate design system presentational components.
 - Storybook configuration and mocks for integrating with Infinity to facilitate local component testing before publication, configuration, and testing with the Infinity server.
 
-The React SDK includes a ConstellationJS to Angular bridge and sample DX components. The alternative design system used in the React SDK is [Material UI](https://v4.mui.com/). For more information about Constellation SDKs, see the [Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html) documentation.
+The React SDK includes a ConstellationJS to React bridge and sample DX components. The alternative design system used in the React SDK is [Material UI](https://v4.mui.com/). For more information about Constellation SDKs, see the [Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html) documentation.
 
 A **summary of the latest updates** to the **@pega/react-sdk-components** and
 **@pega/react-sdk-overrides** used by the React SDK can be found in

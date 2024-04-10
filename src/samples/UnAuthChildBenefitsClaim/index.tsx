@@ -166,6 +166,14 @@ export default function UnAuthChildBenefitsClaim() {
     );
 
     PCore.getPubSubUtils().subscribe(
+      'staySignedInOnConfirmationScreen',
+      () => {
+        staySignedIn(setShowTimeoutModal, claimsListApi, deleteData, false, false, true);
+      },
+      'staySignedInOnConfirmationScreen'
+    );
+
+    PCore.getPubSubUtils().subscribe(
       'assignmentFinished',
       () => {
         setShowStartPage(false);
@@ -310,11 +318,18 @@ export default function UnAuthChildBenefitsClaim() {
       compareSdkPCoreVersions();
       establishPCoreSubscriptions();
 
-      initTimeout(showTimeoutModal, deleteData, false);
+      initTimeout(setShowTimeoutModal, deleteData, false, bShowResolutionScreen);
 
       // Subscribe to any store change to reset timeout counter
       PCore.getStore().subscribe(() =>
-        staySignedIn(setShowTimeoutModal, claimsListApi, deleteData, false, false)
+        staySignedIn(
+          setShowTimeoutModal,
+          claimsListApi,
+          deleteData,
+          false,
+          false,
+          bShowResolutionScreen
+        )
       );
 
       // TODO : Consider refactoring 'en_GB' reference as this may need to be set elsewhere
@@ -441,6 +456,7 @@ export default function UnAuthChildBenefitsClaim() {
         PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
         'assignmentFinished'
       );
+      PCore?.getPubSubUtils().unsubscribe('staySignedInOnConfirmationScreen');
     };
   }, []);
 

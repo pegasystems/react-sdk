@@ -67,6 +67,9 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
       .catch(err => {
         // eslint-disable-next-line no-console
         console.error(err);
+      })
+      .finally(() => {
+        PCore.getPubSubUtils().publish('staySignedInOnConfirmationScreen', {});
       });
   }, []);
 

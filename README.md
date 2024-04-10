@@ -1,23 +1,13 @@
 <p align="center"><img width=60% src="docs/media/ReactSDK-Logo.png">
 
-# React SDK - Release Announcement - v23.1.10
+# React SDK - Release Announcement - v23.1.11
 
-This release - **SDK-R v23.1.10** - is **only compatible with Pega Infinity 23**. This release is related to the [**main** branch of the React SDK repository](https://github.com/pegasystems/react-sdk/tree/main).
+**SDK-R v23.1.11** is **only compatible with Pega Infinity '23** and is related to the [**release/23.1.11**](https://github.com/pegasystems/react-sdk/tree/release/23.1.11) branch of the React SDK repository.
 <br>
-(If you currently are using the React SDK with Pega Infinity 8.8, update your SDK to
-the [SDK-R v8.8.20 - release/8.8.20 branch](https://github.com/pegasystems/react-sdk/tree/release/8.8.20).)
 
-The SDK-R v23.1.10 and v8.8.20 releases allow React SDK users to to take advantage of the latest
-[SDK enhancements and fixes noted in **What's New in the SDK?**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html) including:
+**Note**: From **SDK-R v23.1.11** onwards, the main branch will be the development branch for future versions or the latest version of Infinity.
 
-* Added the use of **TypeScript typedefs** (from @pega/pcore-pconnect-typedefs) to SDK components.
-For more information, see [Using type definitions](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/type-definitions-constellation-sdks.html)
-* Additional functionality including **RichTextEditor** and **Dynamic Tabs** components and **many-to-many data reference** support
-* Updated Cosmos support to cosmos 4 (for custom Constellation components).
-* Enhanced security including token storage and item obfuscation support.
-* Bug fixes.
-* Full set of merged PRs can be found in the [react-sdk-components GitHub repo list of merged PRs](https://github.com/pegasystems/react-sdk-components/pulls?q=is%3Apr+is%3Amerged+base%3Amaster+). This release includes all PRs since (and including) #166 and #230.
-
+The SDK-R v23.1.11 release upgrades the React version to React 17. This release allows React SDK users to to take advantage of the latest SDK enhancements and fixes. For more information, see [ **What's New in SDK-R 23.1.11**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
 <br />
 
 This
@@ -28,24 +18,23 @@ about all of the React SDK releases.
 
 ## Previous releases
 
-### React SDK - Release Announcement - v8.23.11 - 10 August 2023
+### React SDK - Release Announcement - v23.1.10
 
-This (**main** branch) is the latest version of the React SDK. It is intended to be used with **Infinity 8.8.0+**. If you need to use **Infinity 8.7.***, please use the **release/8.8.10** branch instead of this **main** branch.
+The **SDK-R v23.1.10** release is **only compatible with Pega Infinity '23**. This release is related to the [**release/23.1.10**](https://github.com/pegasystems/react-sdk/tree/release/23.1.10) branch of the React SDK repository.
+<br>
+(If you currently are using the React SDK with Pega Infinity 8.8, update your SDK to
+the [SDK-R v8.8.20 - release/8.8.20 branch](https://github.com/pegasystems/react-sdk/tree/release/8.8.20).)
 
-This version of the **React SDK** provides many new features that are documented here:
+The SDK-R v23.1.10 and v8.8.20 releases allow React SDK users to to take advantage of the latest SDK enhancements and fixes. For more information, see [**What's New in SDK-R 23.1.10 and SDK-R 8.8.20**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
 
-[What's new in the SDK?](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html) and also outlined below:
+* Added the use of **TypeScript typedefs** (from @pega/pcore-pconnect-typedefs) to SDK components.
+For more information, see [Using type definitions](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/type-definitions-constellation-sdks.html)
+* Additional functionality including **RichTextEditor** and **Dynamic Tabs** components and **many-to-many data reference** support
+* Updated Constellation Design System support to Cosmos 4 (for custom Constellation components).
+* Enhanced security including token storage and item obfuscation support.
+* Bug fixes.
+* Full set of merged PRs can be found in the [react-sdk-components GitHub repo list of merged PRs](https://github.com/pegasystems/react-sdk-components/pulls?q=is%3Apr+is%3Amerged+base%3Amaster+). This release includes all PRs since (and including) #166 and #230.
 
-The following list shows some of the key features and changes in this 8.23.11 release:
-
-- Added localization support. You can now implement localization in your custom and overridden SDK components.
-
-- Updated the lint settings in the DX Component Builder to enable publishing custom components with lint errors or warnings. You can modify the lint setting (lintAction) in the sdk-config.json file from “show” to “block” to disable publishing components with lint errors or warnings.
-
-- Updated support for the following npm packages:
-  - @pega/react-sdk-components: v8.23.11
-  - @pega/react-sdk-overrides: v8.23.11
-  - @pega/dx-component-builder-sdk: v8.23.16
 
 For more information about the react-sdk-components and react-sdk-overrides packages, and enhancements and bug fixes in the packages, click [here](https://github.com/pegasystems/react-sdk-components/blob/master/packages/react-sdk-components/doc/KeyReleaseUpdates.md).
 
@@ -60,9 +49,15 @@ If you want to continue using the previous release you can checkout [release/8.8
 
 # Overview
 
-The **React SDK** provides Pega customers with the ability to build DX components that connect Pega’s ConstellationJS Engine APIs with a design system other than the Pega [Constellation Design System](https://design.pega.com).
+The **React SDK** combined with Pega's client orchestration APIs (ConstellationJS APIs) provides a guided iterative development workflow experience. This accelerates integrating Pega’s Constellation DX API with an alternative (non-Pega) UI. Integrating an alternative design system is achieved using DX Components.
 
-The React SDK differs from out-of-the-box Constellation design system because it provides and demonstrates the use of a React design system that is not the Pega **Constellation** design system. The alternative design system used in this React SDK is [Material UI](https://mui.com/).
+A DX component consists of the following:
+
+- Component definition metadata that defines the low code developer configuration experience in App Studio and the parameters passed to the DX component for runtime rendering.
+- Javascript to integrate component parameters, ConstellationJS client APIs, and alternate design system presentational components.
+- Storybook configuration and mocks for integrating with Infinity to facilitate local component testing before publication, configuration, and testing with the Infinity server.
+
+The React SDK includes a ConstellationJS to React bridge and sample DX components. The alternative design system used in the React SDK is [Material UI](https://v4.mui.com/). For more information about Constellation SDKs, see the [Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html) documentation.
 
 A **summary of the latest updates** to the **@pega/react-sdk-components** and
 **@pega/react-sdk-overrides** used by the React SDK can be found in
@@ -74,7 +69,7 @@ A **summary of the latest updates** to the **@pega/react-sdk-components** and
 
 ## Pega Infinity Server and Constellation-enabled Application
 
-This version of the React SDK assumes that you have access to a Pega Infinity server (**23.1.0+**) running an application that is configured to run using the Constellation UI service. _(If you need to use Infinity 8.8.*, please use the **release/8.8.20** branch instead of this **main** branch.)_
+This version of the React SDK assumes that you have access to a Pega Infinity server (**23.1.0+**) running an application that is configured to run using the Constellation UI service. _(If you need to use Infinity 8.8.x, please use the **release/8.8.20** branch instead of the **release/23.1.11** branch.)_
 
 The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download. For more information about the MediaCo sample application, see [MediaCo sample application](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/mediaco-sample-application.html).
 
@@ -92,15 +87,15 @@ Future updates to the SDK will support more recent LTS versions of node as Const
 
 ---
 # Installing and Running the Application
-The following procedures provide an overview of installing Constellation SDKs and running the application. For detailed documentation, see [Installing and configuring Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/installing-configuring-constellation-sdks.html).
+The following procedures provide an overview of installing Constellation SDKs and running the application. For more information, see [Installing and configuring Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/installing-configuring-constellation-sdks.html).
 
 # Developing with the SDKs
 You can find more details on how to integrate the latest React SDK into your development workflow and also instructions on the new using the new DX Component Builder for SDK features.
 
-see [Development](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/development.html)
+For more information, see [Development](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/development.html).
 
 # Troubleshooting
-Stuck?  Look at our [Troubleshooting Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/troubleshooting-constellation-sdks.html) which covers resolutions for most of the common problems.
+If you are facing any issues, please see [Troubleshooting Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/troubleshooting-constellation-sdks.html).
 
 
 ---

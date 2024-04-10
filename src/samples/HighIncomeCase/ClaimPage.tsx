@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
@@ -7,18 +7,18 @@ import AppFooter from '../../components/AppComponents/AppFooter';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
 import LogoutPopup from '../../components/AppComponents/LogoutPopup';
-import { logout } from '@pega/auth/lib/sdk-auth-manager';
+import { logout, loginIfNecessary } from '@pega/auth/lib/sdk-auth-manager';
 import { staySignedIn } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import { useStartMashup } from './reuseables/PegaSetup';
 import {
   initTimeout,
   settingTimer
 } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
-import { loginIfNecessary } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 import SummaryPage from '../../components/AppComponents/SummaryPage';
 import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
+import { AppContext } from './reuseables/AppContext';
 
 // declare const myLoadMashup;
 
@@ -31,13 +31,20 @@ const ClaimPage: FunctionComponent<any> = () => {
 
     const [currentDisplay, setCurrentDisplay] = useState<|'pegapage'|'resolutionpage'|'servicenotavailable'|'shutterpage'|'loading'>('pegapage');
     const [summaryPageContent, setSummaryPageContent] = useState<{content:string|null, title:string|null, banner:string|null}>({content:null, title:null, banner:null})
+    const { appBacklinkAction } = useContext(AppContext);
+    
+    const history = useHistory();
+    
+    const redirectToLandingPage = () => {
+      signOut();
+      appBacklinkAction();
+    }
 
     const [showTimeoutModal, setShowTimeoutModal] = useState(false);  
     const [showSignoutModal, setShowSignoutModal] = useState(false);
 
     const { hmrcURL } = useHMRCExternalLinks();
 
-    const history = useHistory();
     useEffect(() => 
         {initTimeout(setShowTimeoutModal, false, true) }  
     , []);
@@ -45,10 +52,11 @@ const ClaimPage: FunctionComponent<any> = () => {
     function doRedirectDone() {
         history.push('/hicbc/opt-in');
         // appName and mainRedirect params have to be same as earlier invocation
-        loginIfNecessary({ appName: 'embedded', mainRedirect: true });
+        loginIfNecessary({ appName: 'embedded', mainRedirect: true });        
     } 
-
-    const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone);
+    
+    const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone, {appBacklinkAction: redirectToLandingPage});
+    
 
     useEffect(() => {
       if(showPega){setCurrentDisplay('pegapage')}
@@ -221,7 +229,7 @@ const ClaimPage: FunctionComponent<any> = () => {
               <div id='pega-root'></div>
             </div>
             { serviceNotAvailable && <ServiceNotAvailable /> }            
-            { currentDisplay === 'resolutionpage' && <SummaryPage summaryContent={summaryPageContent.content} summaryTitle={summaryPageContent.title} summaryBanner={summaryPageContent.banner} /> }            
+            { currentDisplay === 'resolutionpage' && <SummaryPage summaryContent={summaryPageContent.content} summaryTitle={summaryPageContent.title} summaryBanner={summaryPageContent.banner} backlinkAction={redirectToLandingPage}/> }            
           </>
         )}
       </div>

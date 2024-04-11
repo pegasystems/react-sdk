@@ -44,7 +44,7 @@ export default function LandingPage(props){
         <>
             <AppHeader
                 appname={t('HIGH_INCOME_BENEFITS')}
-                hasLanguageToggle={true}    
+                hasLanguageToggle 
                 betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=463&referrerUrl=${window.location}`}                  
             />
             <div className='govuk-width-container'>                

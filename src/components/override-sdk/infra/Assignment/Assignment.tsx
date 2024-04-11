@@ -21,7 +21,7 @@ import ShutterServicePage from '../../../../components/AppComponents/ShutterServ
 import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
 import useServiceShuttered from '../../../helpers/hooks/useServiceShuttered';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
-import { AppContext } from '../../../../samples/HighIncomeCase/reuseables/AppContext';
+import AppContext from '../../../../samples/HighIncomeCase/reuseables/AppContext';
 
 export interface ErrorMessageDetails {
   message: string;
@@ -393,14 +393,14 @@ export default function Assignment(props) {
             ) : null
           )} 
           {
-            // If there is no 'Previous' action button, show a backlink that uses the app context backlink action
-            !(arSecondaryButtons?.find((button) => button['name'] === 'Previous')) && appBacklinkAction &&  <Button
+            // If we are in the create stage, and a 'appcontext' backlink action is set, show a backlink that performs the appcontext backlink action
+            getPConnect().getCaseInfo().isAssignmentInCreateStage() && appBacklinkAction &&  <Button
               variant='backlink'
               onClick={e => {
                 e.target.blur();
                 appBacklinkAction();
               }}
-              key={'returntolanding'}
+              key='createstagebacklink'
               attributes={{ type: 'link' }}
             ></Button>       
           }

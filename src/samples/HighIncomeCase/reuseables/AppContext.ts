@@ -1,6 +1,8 @@
 
-import { useState, createContext } from 'react';
+import { createContext } from 'react';
 
-const AppContext =  createContext<{appBacklinkAction:any, setAppBacklinkAction:any}>({appBacklinkAction: ()=>{}, setAppBacklinkAction: ()=>{}});
+const AppContext =  createContext<{appBacklinkAction?:Function}>({
+                                    appBacklinkAction: null
+                                    });
 
-export { AppContext }
+export { AppContext as default }

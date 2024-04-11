@@ -18,7 +18,7 @@ import SummaryPage from '../../components/AppComponents/SummaryPage';
 import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
-import { AppContext } from './reuseables/AppContext';
+import AppContext from './reuseables/AppContext';
 
 // declare const myLoadMashup;
 
@@ -34,7 +34,23 @@ const ClaimPage: FunctionComponent<any> = () => {
     const { appBacklinkAction } = useContext(AppContext);
     
     const history = useHistory();
-    
+
+    function signOut() {
+      //  const authService = authType === 'gg' ? 'GovGateway' : (authType === 'gg-dev' ? 'GovGateway-Dev' : authType);
+      let authService;
+      if (authType && authType === 'gg') {
+        authService = 'GovGateway';
+      } else if (authType && authType === 'gg-dev') {
+        authService = 'GovGateway-Dev';
+      }
+      const dpprom = PCore.getDataPageUtils().getPageDataAsync('D_AuthServiceLogout', 'root', {
+        AuthService: authService
+      }) as Promise<object>;
+      dpprom.then(() => {
+        logout().then(() => {});
+      });
+    }
+
     const redirectToLandingPage = () => {
       signOut();
       appBacklinkAction();
@@ -92,21 +108,7 @@ const ClaimPage: FunctionComponent<any> = () => {
 
     }, [showResolutionPage, showPega, shutterServicePage, serviceNotAvailable, pCoreReady])
 
-  function signOut() {
-    //  const authService = authType === 'gg' ? 'GovGateway' : (authType === 'gg-dev' ? 'GovGateway-Dev' : authType);
-    let authService;
-    if (authType && authType === 'gg') {
-      authService = 'GovGateway';
-    } else if (authType && authType === 'gg-dev') {
-      authService = 'GovGateway-Dev';
-    }
-    const dpprom = PCore.getDataPageUtils().getPageDataAsync('D_AuthServiceLogout', 'root', {
-      AuthService: authService
-    }) as Promise<object>;
-    dpprom.then(() => {
-      logout().then(() => {});
-    });
-  }
+  
 
   function handleSignout() {
         if (currentDisplay==='pegapage') {
@@ -211,7 +213,7 @@ const ClaimPage: FunctionComponent<any> = () => {
       <AppHeader
         handleSignout={handleSignout}
         appname={useTranslation().t('HIGH_INCOME_BENEFITS')}
-        hasLanguageToggle={true}
+        hasLanguageToggle
         isPegaApp={showPega}
         languageToggleCallback={
           () => {} /* toggleNotificationProcess(

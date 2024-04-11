@@ -1,17 +1,14 @@
-import React, { useEffect, useState, createContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 import AppSelector from '../AppSelector';
-import { AppContext } from '../HighIncomeCase/reuseables/AppContext';
 
 
 // declare let __webpack_public_path__; // eslint-disable-line
 
 const TopLevelApp = () => {
   const [basepath, setBasepath] = useState('');  
-  
-  const [backlinkAction, setBacklinkAction] = useState<Function>(() => {});
   useEffect(() => {
     getSdkConfig().then(sdkConfig => {
       const url = new URL(sdkConfig.serverConfig.sdkContentServerUrl);
@@ -30,9 +27,7 @@ const TopLevelApp = () => {
 
   return ( basepath &&
     <BrowserRouter basename={basepath}>
-      <AppContext.Provider value={{appBacklinkAction: backlinkAction, setAppBacklinkAction: setBacklinkAction}}>
-        <AppSelector/>
-      </AppContext.Provider>
+      <AppSelector/>
     </BrowserRouter>
   );
 }

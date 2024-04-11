@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect, useContext } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import LandingPage from './LandingPage';
 import ClaimPage from './ClaimPage';
@@ -7,14 +7,13 @@ import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/
 import AppHeader from './reuseables/AppHeader';
 import MainWrapper from '../../components/BaseComponents/MainWrapper';
 import AppFooter from '../../components/AppComponents/AppFooter';
-import { AppContext } from './reuseables/AppContext';
+import AppContext from './reuseables/AppContext';
 
 const HighIncomeCase: FunctionComponent<any> = () => {
     const [showLandingPage, setShowLandingPage] = useState<boolean>(!window.location.search.includes('code')); 
     const [shuttered, setShuttered] = useState(null)
-    const {setAppBacklinkAction} = useContext(AppContext);
 
-    const {t} = useTranslation();   
+    const {t} = useTranslation();  
     registerServiceName(t('HIGH_INCOME_BENEFITS'));
     const landingPageProceedHandler = () => {
         localStorage.setItem('showLandingPage', 'false');
@@ -23,11 +22,7 @@ const HighIncomeCase: FunctionComponent<any> = () => {
 
     const toggleShowLandingPageTrue = () => {
         setShowLandingPage(true);
-    }
-
-    useEffect(() => {
-        setAppBacklinkAction(() => toggleShowLandingPageTrue);
-    }, [])
+    }    
 
     useEffect(()=>{
         getSdkConfig().then((config)=>{
@@ -63,11 +58,11 @@ const HighIncomeCase: FunctionComponent<any> = () => {
     }
     else {
     return (
-        <>            
+        <AppContext.Provider value={{appBacklinkAction:toggleShowLandingPageTrue}}>            
             {showLandingPage ?
-            <LandingPage onProceedHandler={landingPageProceedHandler}/>             
+            <LandingPage onProceedHandler={() => landingPageProceedHandler()}/>             
             : <ClaimPage/>}
-        </>
+        </AppContext.Provider>
     )
     }
 }

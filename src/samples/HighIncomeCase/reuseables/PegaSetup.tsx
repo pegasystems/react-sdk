@@ -9,7 +9,7 @@ import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/
 import { checkCookie, setCookie } from '../../../components/helpers/cookie';
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../../sdk-local-component-map';
-import { AppContext } from './AppContext';
+import AppContext from './AppContext';
 
 import {
   // sdkIsLoggedIn,

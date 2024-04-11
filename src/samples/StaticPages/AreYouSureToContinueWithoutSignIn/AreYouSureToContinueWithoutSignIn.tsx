@@ -9,6 +9,7 @@ import '../../../../assets/css/appStyles.scss';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import setPageTitle from '../../../components/helpers/setPageTitleHelpers';
+import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
 
 export default function AreYouSureToContinueWithoutSignIn() {
   const [errorMsg, setErrorMsg] = useState('');
@@ -42,12 +43,17 @@ export default function AreYouSureToContinueWithoutSignIn() {
       'input[name="areYouSureToContinueWoSignIn"]:checked'
     );
     if (selectedOption) {
-      // todo - both yes and no redirection link to be confirmed - not mentioned explicitly in story
       const selectedOptionValue = selectedOption.getAttribute('value');
       if (selectedOptionValue === 'yes') {
-        window.location.assign(
-          'https://www.tax.service.gov.uk/fill-online/claim-child-benefit/task-list'
-        );
+        getSdkConfig().then(sdkConfig => {
+          if (sdkConfig?.isUnauthRouteToPega) {
+            history.push('/ua');
+          } else {
+            window.location.assign(
+              'https://www.tax.service.gov.uk/fill-online/claim-child-benefit/task-list'
+            );
+          }
+        });
       } else {
         history.push('/');
       }

@@ -90,6 +90,20 @@ export default function ChildBenefitsClaim() {
   const [timeoutID, setTimeoutID] = useState(null);
   const history = useHistory();
 
+  const lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
+  const [switchLang, setSwitchLang] = useState(lang);
+
+  if (typeof PCore !== 'undefined') {
+    PCore.getPubSubUtils().subscribe(
+      'languageToggleTriggered',
+      (langreference) => {
+        setTimeout(() => {
+          setSwitchLang(langreference?.language);
+        }, 50);
+      }
+    );
+  }
+
   function resetAppDisplay() {
     setShowStartPage(false);
     setShowUserPortal(false);
@@ -561,6 +575,7 @@ export default function ChildBenefitsClaim() {
         PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
         'assignmentFinished'
       );
+      PCore?.getPubSubUtils().unsubscribe('languageToggleTriggered');
     };
   }, []);
 
@@ -626,6 +641,7 @@ export default function ChildBenefitsClaim() {
                 rowClickAction='OpenAssignment'
                 buttonContent={t('CONTINUE_CLAIM')}
                 caseId={caseId}
+                switchLang ={switchLang}
               />
             )}
 
@@ -637,6 +653,7 @@ export default function ChildBenefitsClaim() {
                 rowClickAction='OpenCase'
                 buttonContent={t('VIEW_CLAIM')}
                 checkShuttered={checkShuttered}
+                switchLang ={switchLang}
               />
             )}
           </UserPortal>

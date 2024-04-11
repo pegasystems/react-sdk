@@ -26,9 +26,18 @@ const NO_HEADER_TEMPLATES = [
   'Confirmation'
 ];
 
+declare const PCore: any;
 export default function View(props) {
   const { children, template, getPConnect, mode, visibility, name: pageName } = props;
   let { label, showLabel = false } = props;
+
+  // call the locale reference api when we toggle the languge from English to Welsh
+  PCore.getPubSubUtils().subscribe('languageToggleTriggered', locale => {
+    if(!locale.localeRef.includes(props.localeReference)) {
+      locale.localeRef.push(props.localeReference);
+      PCore.getLocaleUtils().loadLocaleResources([props.localeReference]);
+    }
+  });
 
   // Get the inherited props from the parent to determine label settings. For 8.6, this is only for embedded data form views
   // Putting this logic here instead of copy/paste in every Form template index.js

@@ -10,12 +10,12 @@ import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react
 import {
   sdkIsLoggedIn,
   loginIfNecessary,
-  sdkSetAuthHeader
-} from '@pega/react-sdk-components/lib/components/helpers/authManager';
+  sdkSetAuthHeader,
+  getSdkConfig,
+  logout
+} from '@pega/auth/lib/sdk-auth-manager';
 
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
-import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
-import { logout } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 import AppHeader from '../../components/AppComponents/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 import LogoutPopup from '../../components/AppComponents/LogoutPopup';
@@ -33,6 +33,7 @@ import localSdkComponentMap from '../../../sdk-local-component-map';
 import { checkCookie, setCookie } from '../../components/helpers/cookie';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 import toggleNotificationProcess from '../../components/helpers/toggleNotificationLanguage';
+import { getServiceShutteredStatus } from '../../components/helpers/utils';
 
 declare const myLoadMashup: any;
 
@@ -88,9 +89,20 @@ export default function ChildBenefitsClaim() {
   const [isCreateCaseBlocked, setIsCreateCaseBlocked] = useState(false);
   const [timeoutID, setTimeoutID] = useState(null);
   const history = useHistory();
-  // This needs to be changed in future when we handle the shutter for multiple service, for now this one's for single service
-  const featureID = 'ChB';
-  const featureType = 'Service';
+
+  const lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
+  const [switchLang, setSwitchLang] = useState(lang);
+
+  if (typeof PCore !== 'undefined') {
+    PCore.getPubSubUtils().subscribe(
+      'languageToggleTriggered',
+      (langreference) => {
+        setTimeout(() => {
+          setSwitchLang(langreference?.language);
+        }, 50);
+      }
+    );
+  }
 
   function resetAppDisplay() {
     setShowStartPage(false);
@@ -231,6 +243,16 @@ export default function ChildBenefitsClaim() {
     );
   }
 
+  async function setShutterStatus() {
+    const status = await getServiceShutteredStatus();
+    setShutterServicePage(status);
+    if (status) {
+      resetAppDisplay();
+    } else {
+      displayUserPortal();
+    }
+  }
+
   function establishPCoreSubscriptions() {
     PCore.getPubSubUtils().subscribe(
       PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
@@ -239,6 +261,14 @@ export default function ChildBenefitsClaim() {
       },
       'assignmentFinished'
     );
+    PCore.getPubSubUtils().subscribe(
+      'assignmentFinishedOnTaskListClicked',
+      () => {
+        setShutterStatus();
+      },
+      'assignmentFinishedOnTaskListClicked'
+    );
+
     PCore.getPubSubUtils().subscribe(
       'assignmentFinished',
       () => {
@@ -471,25 +501,8 @@ export default function ChildBenefitsClaim() {
       // eslint-disable-next-line no-console
       console.log(`SdkComponentMap initialized`);
     });
-    PCore.getDataPageUtils()
-      .getPageDataAsync('D_ShutterLookup', 'root', {
-        FeatureID: featureID,
-        FeatureType: featureType
-      })
-      .then(resp => {
-        const isShuttered = resp.Shuttered;
-        if (isShuttered) {
-          setShutterServicePage(true);
-          resetAppDisplay();
-        } else {
-          setShutterServicePage(false);
-          displayUserPortal();
-        }
-      })
-      .catch(err => {
-        // eslint-disable-next-line no-console
-        console.error(err);
-      });
+
+    setShutterStatus();
 
     // load the Mashup and handle the onPCoreEntry response that establishes the
     //  top level Pega root element (likely a RootContainer)
@@ -556,11 +569,13 @@ export default function ChildBenefitsClaim() {
         'continueCase'
       );
 
+      PCore?.getPubSubUtils().unsubscribe('assignmentFinishedOnTaskListClicked');
       PCore?.getPubSubUtils().unsubscribe('closeContainer');
       PCore?.getPubSubUtils().unsubscribe(
         PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
         'assignmentFinished'
       );
+      PCore?.getPubSubUtils().unsubscribe('languageToggleTriggered');
     };
   }, []);
 
@@ -626,6 +641,7 @@ export default function ChildBenefitsClaim() {
                 rowClickAction='OpenAssignment'
                 buttonContent={t('CONTINUE_CLAIM')}
                 caseId={caseId}
+                switchLang ={switchLang}
               />
             )}
 
@@ -637,6 +653,7 @@ export default function ChildBenefitsClaim() {
                 rowClickAction='OpenCase'
                 buttonContent={t('VIEW_CLAIM')}
                 checkShuttered={checkShuttered}
+                switchLang ={switchLang}
               />
             )}
           </UserPortal>

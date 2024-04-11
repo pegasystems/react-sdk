@@ -125,7 +125,7 @@
   "COOKIE_AWSALB_DESCRIPTION": "Used to help manage web traffic between a visitors web browser and the application servers that host HMRC services.",
   "COOKIE_AWSALBCORS_DESCRIPTION": "Used to help manage web traffic between a visitors web browser and the application servers that host HMRC services.",
   "COOKIE_JSESSIONID_DESCRIPTION": "Used to identify the visitor’s session information related to the HMRC service being accessed.",
-  
+
   "COOKIE_PEGAODXEI_DESCRIPTION": "This is used to identify the session ID of a user not using Government Gateway.",
   "COOKIE_PEGAODXDI_DESCRIPTION": "This is used to uniquely identify a device that has interacted with HMRC services and is used for internal security auditing.",
   "COOKIE_AKA_A2_DESCRIPTION": "This Akamai cookie is used to help speed up content delivery on websites using adaptive acceleration.",
@@ -255,6 +255,11 @@
   "HICBC_LANDINGPAGE_BEFORE_6_APRIL_OPTION_LABEL": "Before 6 April 2024",
   "HICBC_LANDINGPAGE_ONORAFTER_6_APRIL_OPTION_LABEL": "On or after 6 April 2024",
   "HICBC_LANDINGPAGE_QUESTION_LABEL": "When do you want to opt-in to Child Benefit payments?",
-  "HICBC_LANDINGPAGE_NO_OPTION_SELECTED_ERROR_MESSAGE":"Select a date to opt-in"
+  "HICBC_LANDINGPAGE_NO_OPTION_SELECTED_ERROR_MESSAGE":"Select a date to opt-in",
   
+  "SELECT_CHILD_BENEFIT_SERVICE": "Select which Child Benefit service you would like to use",
+  "AUTOMATICALLY_CLOSE_IN": "This page will automatically close in",
+  "STAY_ON_THIS_PAGE": "Stay on this page",
+  "EXIT_THIS_PAGE": "Exit this page",
+  "THERE_IS_A_PROBLEM": "There is a problem"
 }

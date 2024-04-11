@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 export default function ErrorSummary(props) {
   const { errors } = props;
+  const { t } = useTranslation();
 
   const errorSummaryRef = useRef<any>(null);
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
@@ -25,7 +27,7 @@ export default function ErrorSummary(props) {
   return (
     <div ref={errorSummaryRef} className='govuk-error-summary' data-module='govuk-error-summary' tabIndex={-1} >
       <div role='alert'>
-        <h2 className='govuk-error-summary__title'>There is a problem</h2>
+        <h2 className='govuk-error-summary__title'>{t('THERE_IS_A_PROBLEM')}</h2>
         <div className='govuk-error-summary__body'>
           <ul className='govuk-list govuk-error-summary__list'>
               {errors.map(error => {

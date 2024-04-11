@@ -32,7 +32,6 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
   }, []);
 
   useEffect(() => {
-    if (caseStatus === undefined) {
       PCore.getDataPageUtils()
         .getPageDataAsync('D_DocumentContent', 'root', {
           DocumentID: docIDForDocList,
@@ -57,20 +56,22 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
           console.error(err);
         });
 
-      PCore.getDataPageUtils()
-        .getPageDataAsync('D_DocumentContent', 'root', {
-          DocumentID: docIDForReturnSlip,
-          Locale: locale,
-          CaseID: caseId
-        })
-        .then(pageData => {
-          setReturnSlipContent(pageData.DocumentContentHTML);
-        })
-        .catch(err => {
-          // eslint-disable-next-line no-console
-          console.error(err);
-        });
-    }
+    PCore.getDataPageUtils()
+      .getPageDataAsync('D_DocumentContent', 'root', {
+        DocumentID: docIDForReturnSlip,
+        Locale: locale,
+        CaseID: caseId
+      })
+      .then(pageData => {
+        setReturnSlipContent(pageData.DocumentContentHTML);
+      })
+      .catch(err => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      })
+      .finally(() => {
+        PCore.getPubSubUtils().publish('staySignedInOnConfirmationScreen', {});
+      });
   }, []);
 
   const generateReturnSlip = e => {

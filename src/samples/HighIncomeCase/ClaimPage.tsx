@@ -62,7 +62,7 @@ const ClaimPage: FunctionComponent<any> = () => {
     const { hmrcURL } = useHMRCExternalLinks();
 
     useEffect(() => 
-        {initTimeout(setShowTimeoutModal, false, true) }  
+        {initTimeout(setShowTimeoutModal, false, true, false) }  
     , []);
     
     function doRedirectDone() {

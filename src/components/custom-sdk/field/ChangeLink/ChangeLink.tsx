@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 // Duplicated runtime code from Constellation Design System Component
 
@@ -8,6 +9,7 @@ import PropTypes from 'prop-types';
 const HmrcOdxChangeLink = props => {
   const { getPConnect, label, stepId, testID } =
     props;
+  const { t } = useTranslation();
 
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
@@ -32,7 +34,7 @@ const HmrcOdxChangeLink = props => {
   return (
     <>
       <div className="govuk-!-margin-bottom-9" style={{"display":"flex", "gap": "20px"}} data-test-id={testID}>
-        <span style={{"marginLeft":"auto"}}><a href='#' className="govuk-link" onClick={handleOnClick}>Change<span className="govuk-visually-hidden"> {label}</span></a>
+        <span style={{"marginLeft":"auto"}}><a href='#' className="govuk-link" onClick={handleOnClick}>{t('GDS_ACTION_CHANGE')}<span className="govuk-visually-hidden"> {label}</span></a>
         </span>
       </div>
     </>

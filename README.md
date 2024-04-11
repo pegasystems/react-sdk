@@ -49,17 +49,13 @@ If you want to continue using the previous release you can checkout [release/8.8
 
 # Overview
 
-The **React SDK** combined with Pega's client orchestration APIs (ConstellationJS APIs) provides a guided iterative development workflow experience. This accelerates integrating Pega’s Constellation DX API with an alternative (non-Pega) UI. Integrating an alternative design system is achieved using DX Components.
+The **React SDK** combined with Pega's client orchestration APIs provides a guided iterative development workflow experience that accelerates integrating Pega’s Constellation DX API with an alternative (non-Pega) UI. Integrating an alternative design system is achieved using DX Components.
 
-A DX component consists of the following:
+A DX component contains logic and presentation tags to merge the alternate design system with Pega’s client orchestration APIs.
 
-- Component definition metadata that defines the low code developer configuration experience in App Studio and the parameters passed to the DX component for runtime rendering.
-- Javascript to integrate component parameters, ConstellationJS client APIs, and alternate design system presentational components.
-- Storybook configuration and mocks for integrating with Infinity to facilitate local component testing before publication, configuration, and testing with the Infinity server.
+The alternative design system used in the React SDK is [Material UI](https://v4.mui.com/). For more information about Constellation SDKs, see the [Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html) documentation.
 
-The React SDK includes a ConstellationJS to React bridge and sample DX components. The alternative design system used in the React SDK is [Material UI](https://v4.mui.com/). For more information about Constellation SDKs, see the [Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html) documentation.
-
-A **summary of the latest updates** to the **@pega/react-sdk-components** and
+A summary of the latest updates to the **@pega/react-sdk-components** and
 **@pega/react-sdk-overrides** used by the React SDK can be found in
 [react-sdk-components KeyReleaseUpdates.md](./node_modules/@pega/react-sdk-components/lib/doc/KeyReleaseUpdates.md).
 

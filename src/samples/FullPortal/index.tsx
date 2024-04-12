@@ -33,6 +33,10 @@ export default function FullPortal() {
     const portalValue: any = query.get('portal');
     sessionStorage.setItem('rsdk_portalName', portalValue);
   }
+  if (query.get('locale')) {
+    const localeOverride: any = query.get('locale');
+    sessionStorage.setItem('rsdk_locale', localeOverride);
+  }
 
   //  const outlet = document.getElementById("outlet");
 
@@ -161,8 +165,12 @@ export default function FullPortal() {
 
   function doRedirectDone() {
     history.push(window.location.pathname);
+    let localeOverride: any = sessionStorage.getItem('locale');
+    if( !localeOverride ) {
+      localeOverride = undefined;
+    }
     // appName and mainRedirect params have to be same as earlier invocation
-    loginIfNecessary({ appName: 'portal', mainRedirect: true });
+    loginIfNecessary({ appName: 'portal', mainRedirect: true, locale: localeOverride });
   }
 
   // One time (initialization)
@@ -171,11 +179,16 @@ export default function FullPortal() {
       // start the portal
       startPortal();
     });
+    let localeOverride:string = sessionStorage.getItem('locale');
+    if( !localeOverride ) {
+      localeOverride = undefined;
+    }
     // Login if needed, doing an initial main window redirect
     loginIfNecessary({
       appName: 'portal',
       mainRedirect: true,
-      redirectDoneCB: doRedirectDone
+      redirectDoneCB: doRedirectDone,
+      locale: localeOverride
     });
   }, []);
 

@@ -31,7 +31,8 @@ const ClaimPage: FunctionComponent<any> = () => {
 
     const [currentDisplay, setCurrentDisplay] = useState<|'pegapage'|'resolutionpage'|'servicenotavailable'|'shutterpage'|'loading'>('pegapage');
     const [summaryPageContent, setSummaryPageContent] = useState<{content:string|null, title:string|null, banner:string|null}>({content:null, title:null, banner:null})
-    const { appBacklinkAction } = useContext(AppContext);
+    const { appBacklinkProps } = useContext(AppContext);
+    const { t } = useTranslation();
     
     const history = useHistory();
 
@@ -53,7 +54,7 @@ const ClaimPage: FunctionComponent<any> = () => {
 
     const redirectToLandingPage = () => {
       signOut();
-      appBacklinkAction();
+      appBacklinkProps.appBacklinkAction();
     }
 
     const [showTimeoutModal, setShowTimeoutModal] = useState(false);  
@@ -71,7 +72,7 @@ const ClaimPage: FunctionComponent<any> = () => {
         loginIfNecessary({ appName: 'embedded', mainRedirect: true });        
     } 
     
-    const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone, {appBacklinkAction: redirectToLandingPage});
+    const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone, {appBacklinkProps:{appBacklinkAction: redirectToLandingPage, appBacklinkText:t('BACK_TO_START_PAGE')}});
     
 
     useEffect(() => {
@@ -212,7 +213,7 @@ const ClaimPage: FunctionComponent<any> = () => {
 
       <AppHeader
         handleSignout={handleSignout}
-        appname={useTranslation().t('HIGH_INCOME_BENEFITS')}
+        appname={t('HIGH_INCOME_BENEFITS')}
         hasLanguageToggle
         isPegaApp={showPega}
         languageToggleCallback={
@@ -231,7 +232,13 @@ const ClaimPage: FunctionComponent<any> = () => {
               <div id='pega-root'></div>
             </div>
             { serviceNotAvailable && <ServiceNotAvailable /> }            
-            { currentDisplay === 'resolutionpage' && <SummaryPage summaryContent={summaryPageContent.content} summaryTitle={summaryPageContent.title} summaryBanner={summaryPageContent.banner} backlinkAction={redirectToLandingPage}/> }            
+            { currentDisplay === 'resolutionpage' && <SummaryPage summaryContent={
+              summaryPageContent.content}
+              summaryTitle={summaryPageContent.title}
+              summaryBanner={summaryPageContent.banner}
+              backlinkProps={{backlinkAction:redirectToLandingPage,
+                              backlinkText:t('BACK_TO_START_PAGE')}}  
+            />}        
           </>
         )}
       </div>
@@ -244,7 +251,7 @@ const ClaimPage: FunctionComponent<any> = () => {
         signoutButtonText='Sign out'
       >
         <h1 id='govuk-timeout-heading' className='govuk-heading-m push--top'>
-          {useTranslation().t('YOU_ARE_ABOUT_TO_SIGN_OUT')}
+          {t('YOU_ARE_ABOUT_TO_SIGN_OUT')}
         </h1>
         <p className='govuk-body'>If you sign out now, your progress will be lost.</p>
       </LogoutPopup>

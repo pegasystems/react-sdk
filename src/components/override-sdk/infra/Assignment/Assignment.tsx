@@ -44,7 +44,7 @@ export default function Assignment(props) {
   const { t } = useTranslation();
   const serviceShuttered = useServiceShuttered();
   const { setAssignmentPConnect }: any = useContext(StoreContext);
-  const { appBacklinkAction } = useContext(AppContext)
+  const { appBacklinkProps } = useContext(AppContext)
 
   const AssignmentCard = SdkComponentMap.getLocalComponentMap()['AssignmentCard']
     ? SdkComponentMap.getLocalComponentMap()['AssignmentCard']
@@ -415,16 +415,17 @@ export default function Assignment(props) {
             ) : null
           )} 
           {
-            // If we are in the create stage, and a 'appcontext' backlink action is set, show a backlink that performs the appcontext backlink action
-            getPConnect().getCaseInfo().isAssignmentInCreateStage() && appBacklinkAction &&  <Button
+            // If there is no previous action button, and a 'appcontext' backlink action is set, show a backlink that performs the appcontext backlink action
+            arSecondaryButtons?.findIndex(button=>button.name === 'Previous') === -1
+            && appBacklinkProps.appBacklinkAction &&  <Button
               variant='backlink'
               onClick={e => {
                 e.target.blur();
-                appBacklinkAction();
+                appBacklinkProps.appBacklinkAction();
               }}
               key='createstagebacklink'
               attributes={{ type: 'link' }}
-            ></Button>       
+            >{appBacklinkProps.appBacklinkText}</Button>       
           }
           <MainWrapper>
             {errorSummary && errorMessages.length > 0 && (

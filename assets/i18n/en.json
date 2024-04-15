@@ -256,6 +256,8 @@
   "HICBC_LANDINGPAGE_ONORAFTER_6_APRIL_OPTION_LABEL": "On or after 6 April 2024",
   "HICBC_LANDINGPAGE_QUESTION_LABEL": "When do you want to opt-in to Child Benefit payments?",
   "HICBC_LANDINGPAGE_NO_OPTION_SELECTED_ERROR_MESSAGE":"Select a date to opt-in",
+
+  "BACK_TO_START_PAGE": "Back to start page",
   
   "SELECT_CHILD_BENEFIT_SERVICE": "Select which Child Benefit service you would like to use",
   "AUTOMATICALLY_CLOSE_IN": "This page will automatically close in",

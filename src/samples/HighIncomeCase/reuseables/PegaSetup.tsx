@@ -9,7 +9,7 @@ import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/
 import { checkCookie, setCookie } from '../../../components/helpers/cookie';
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../../sdk-local-component-map';
-import AppContext from './AppContext';
+import AppContext, {AppContextValues} from './AppContext';
 
 import {
   // sdkIsLoggedIn,
@@ -170,7 +170,7 @@ export function RootComponent(props) {
  * is ready to be rendered
  * @param inRenderObj the initial, top-level PConnect object to render
  */
-function initialRender(inRenderObj, AppContextValues){
+function initialRender(inRenderObj, AppContextValues:AppContextValues){
   // loadMashup does its own thing so we don't need to do much/anything here
   // // modified from react_root.js render
   const {
@@ -227,7 +227,7 @@ function initialRender(inRenderObj, AppContextValues){
 /*
  * kick off the application's portal that we're trying to serve up
  */
-export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus }, AppContextValues) {
+export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus }, AppContextValues:AppContextValues) {
   // NOTE: When loadMashup is complete, this will be called.
   PCore.onPCoreReady(renderObj => {
     // Check that we're seeing the PCore version we expect
@@ -331,7 +331,7 @@ export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, set
 }
 
 // One time (initialization) subscriptions and related unsubscribe
-export const useStartMashup = (setAuthType, onRedirectDone, AppContextValues) => {
+export const useStartMashup = (setAuthType, onRedirectDone, AppContextValues:AppContextValues) => {
   const [showPega, setShowPega] = useState(false);
   const [showResolutionPage, setShowResolutionPage] = useState(false);
   const [caseId, setCaseId] = useState('');

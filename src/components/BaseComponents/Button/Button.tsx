@@ -2,7 +2,7 @@ import React,{ useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-export default function Button(props) {
+export default function Button(props:React.PropsWithChildren<any>) {
   const {
     disabled,
     id,
@@ -69,7 +69,7 @@ export default function Button(props) {
         {...attributes}
         className='govuk-back-link'
       >
-        {t('BACK')}{children}
+        {children ? ` ${children}` : t('BACK')}
       </a>
     );
   }

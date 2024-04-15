@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
@@ -7,18 +7,18 @@ import AppFooter from '../../components/AppComponents/AppFooter';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
 import LogoutPopup from '../../components/AppComponents/LogoutPopup';
-import { logout } from '@pega/auth/lib/sdk-auth-manager';
+import { logout, loginIfNecessary } from '@pega/auth/lib/sdk-auth-manager';
 import { staySignedIn } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import { useStartMashup } from './reuseables/PegaSetup';
 import {
   initTimeout,
   settingTimer
 } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
-import { loginIfNecessary } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 import SummaryPage from '../../components/AppComponents/SummaryPage';
 import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
+import AppContext from './reuseables/AppContext';
 
 // declare const myLoadMashup;
 
@@ -31,13 +31,37 @@ const ClaimPage: FunctionComponent<any> = () => {
 
     const [currentDisplay, setCurrentDisplay] = useState<|'pegapage'|'resolutionpage'|'servicenotavailable'|'shutterpage'|'loading'>('pegapage');
     const [summaryPageContent, setSummaryPageContent] = useState<{content:string|null, title:string|null, banner:string|null}>({content:null, title:null, banner:null})
+    const { appBacklinkProps } = useContext(AppContext);
+    const { t } = useTranslation();
+    
+    const history = useHistory();
+
+    function signOut() {
+      //  const authService = authType === 'gg' ? 'GovGateway' : (authType === 'gg-dev' ? 'GovGateway-Dev' : authType);
+      let authService;
+      if (authType && authType === 'gg') {
+        authService = 'GovGateway';
+      } else if (authType && authType === 'gg-dev') {
+        authService = 'GovGateway-Dev';
+      }
+      const dpprom = PCore.getDataPageUtils().getPageDataAsync('D_AuthServiceLogout', 'root', {
+        AuthService: authService
+      }) as Promise<object>;
+      dpprom.then(() => {
+        logout().then(() => {});
+      });
+    }
+
+    const redirectToLandingPage = () => {
+      signOut();
+      appBacklinkProps.appBacklinkAction();
+    }
 
     const [showTimeoutModal, setShowTimeoutModal] = useState(false);  
     const [showSignoutModal, setShowSignoutModal] = useState(false);
 
     const { hmrcURL } = useHMRCExternalLinks();
 
-    const history = useHistory();
     useEffect(() => 
         {initTimeout(setShowTimeoutModal, false, true, false) }  
     , []);
@@ -45,10 +69,11 @@ const ClaimPage: FunctionComponent<any> = () => {
     function doRedirectDone() {
         history.push('/hicbc/opt-in');
         // appName and mainRedirect params have to be same as earlier invocation
-        loginIfNecessary({ appName: 'embedded', mainRedirect: true });
+        loginIfNecessary({ appName: 'embedded', mainRedirect: true });        
     } 
-
-    const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone);
+    
+    const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone, {appBacklinkProps:{appBacklinkAction: redirectToLandingPage, appBacklinkText:t('BACK_TO_START_PAGE')}});
+    
 
     useEffect(() => {
       if(showPega){setCurrentDisplay('pegapage')}
@@ -84,21 +109,7 @@ const ClaimPage: FunctionComponent<any> = () => {
 
     }, [showResolutionPage, showPega, shutterServicePage, serviceNotAvailable, pCoreReady])
 
-  function signOut() {
-    //  const authService = authType === 'gg' ? 'GovGateway' : (authType === 'gg-dev' ? 'GovGateway-Dev' : authType);
-    let authService;
-    if (authType && authType === 'gg') {
-      authService = 'GovGateway';
-    } else if (authType && authType === 'gg-dev') {
-      authService = 'GovGateway-Dev';
-    }
-    const dpprom = PCore.getDataPageUtils().getPageDataAsync('D_AuthServiceLogout', 'root', {
-      AuthService: authService
-    }) as Promise<object>;
-    dpprom.then(() => {
-      logout().then(() => {});
-    });
-  }
+  
 
   function handleSignout() {
         if (currentDisplay==='pegapage') {
@@ -202,8 +213,8 @@ const ClaimPage: FunctionComponent<any> = () => {
 
       <AppHeader
         handleSignout={handleSignout}
-        appname={useTranslation().t('HIGH_INCOME_BENEFITS')}
-        hasLanguageToggle={false}
+        appname={t('HIGH_INCOME_BENEFITS')}
+        hasLanguageToggle
         isPegaApp={showPega}
         languageToggleCallback={
           () => {} /* toggleNotificationProcess(
@@ -221,7 +232,13 @@ const ClaimPage: FunctionComponent<any> = () => {
               <div id='pega-root'></div>
             </div>
             { serviceNotAvailable && <ServiceNotAvailable /> }            
-            { currentDisplay === 'resolutionpage' && <SummaryPage summaryContent={summaryPageContent.content} summaryTitle={summaryPageContent.title} summaryBanner={summaryPageContent.banner} /> }            
+            { currentDisplay === 'resolutionpage' && <SummaryPage summaryContent={
+              summaryPageContent.content}
+              summaryTitle={summaryPageContent.title}
+              summaryBanner={summaryPageContent.banner}
+              backlinkProps={{backlinkAction:redirectToLandingPage,
+                              backlinkText:t('BACK_TO_START_PAGE')}}  
+            />}        
           </>
         )}
       </div>
@@ -234,7 +251,7 @@ const ClaimPage: FunctionComponent<any> = () => {
         signoutButtonText='Sign out'
       >
         <h1 id='govuk-timeout-heading' className='govuk-heading-m push--top'>
-          {useTranslation().t('YOU_ARE_ABOUT_TO_SIGN_OUT')}
+          {t('YOU_ARE_ABOUT_TO_SIGN_OUT')}
         </h1>
         <p className='govuk-body'>If you sign out now, your progress will be lost.</p>
       </LogoutPopup>

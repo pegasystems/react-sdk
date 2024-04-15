@@ -9,12 +9,13 @@ import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/
 import { checkCookie, setCookie } from '../../../components/helpers/cookie';
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../../sdk-local-component-map';
+import AppContext, {AppContextValues} from './AppContext';
 
 import {
   // sdkIsLoggedIn,
   loginIfNecessary,
   sdkSetAuthHeader
-} from '@pega/react-sdk-components/lib/components/helpers/authManager';
+} from '@pega/auth/lib/sdk-auth-manager';
 
 declare const myLoadMashup: any;
 
@@ -169,7 +170,7 @@ export function RootComponent(props) {
  * is ready to be rendered
  * @param inRenderObj the initial, top-level PConnect object to render
  */
-function initialRender(inRenderObj) {
+function initialRender(inRenderObj, AppContextValues:AppContextValues){
   // loadMashup does its own thing so we don't need to do much/anything here
   // // modified from react_root.js render
   const {
@@ -210,7 +211,11 @@ function initialRender(inRenderObj) {
   );
 
   // Initial render of component passed in (which should be a RootContainer)
-  render(<React.Fragment>{theComponent}</React.Fragment>, target);
+  render(
+    <AppContext.Provider value={AppContextValues}>
+       <React.Fragment>{theComponent}</React.Fragment>
+    </AppContext.Provider>  
+  , target);
 
   /* const root = render(target); // createRoot(container!) if you use TypeScript
     root.render(<>{theComponent}</>); */
@@ -222,7 +227,7 @@ function initialRender(inRenderObj) {
 /*
  * kick off the application's portal that we're trying to serve up
  */
-export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus }) {
+export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus }, AppContextValues:AppContextValues) {
   // NOTE: When loadMashup is complete, this will be called.
   PCore.onPCoreReady(renderObj => {
     // Check that we're seeing the PCore version we expect
@@ -256,7 +261,7 @@ export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, set
       PCore.getLocaleUtils().GENERIC_BUNDLE_KEY,
       '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE'
     ]);
-    initialRender(renderObj);
+    initialRender(renderObj, AppContextValues);
 
     // PM!! operatorId = PCore.getEnvironmentInfo().getOperatorIdentifier();
 
@@ -326,7 +331,7 @@ export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, set
 }
 
 // One time (initialization) subscriptions and related unsubscribe
-export const useStartMashup = (setAuthType, onRedirectDone) => {
+export const useStartMashup = (setAuthType, onRedirectDone, AppContextValues:AppContextValues) => {
   const [showPega, setShowPega] = useState(false);
   const [showResolutionPage, setShowResolutionPage] = useState(false);
   const [caseId, setCaseId] = useState('');
@@ -365,12 +370,12 @@ export const useStartMashup = (setAuthType, onRedirectDone) => {
 
     document.addEventListener('SdkConstellationReady', () => {
       // start the portal
-      startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus });
+      startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus }, AppContextValues);
     });
 
-    document.addEventListener('SdkLoggedOut', () => {
+    /* document.addEventListener('SdkLoggedOut', () => {
       window.location.href = 'https://www.gov.uk/government/organisations/hm-revenue-customs';
-    });
+    }); */
 
     // Subscriptions can't be done until onPCoreReady.
     //  So we subscribe there. But unsubscribe when this

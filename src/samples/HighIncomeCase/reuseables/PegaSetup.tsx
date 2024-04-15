@@ -170,7 +170,7 @@ export function RootComponent(props) {
  * is ready to be rendered
  * @param inRenderObj the initial, top-level PConnect object to render
  */
-function initialRender(inRenderObj, AppContextValues:AppContextValues){
+function initialRender(inRenderObj, _AppContextValues:AppContextValues){
   // loadMashup does its own thing so we don't need to do much/anything here
   // // modified from react_root.js render
   const {
@@ -212,7 +212,7 @@ function initialRender(inRenderObj, AppContextValues:AppContextValues){
 
   // Initial render of component passed in (which should be a RootContainer)
   render(
-    <AppContext.Provider value={AppContextValues}>
+    <AppContext.Provider value={_AppContextValues}>
        <React.Fragment>{theComponent}</React.Fragment>
     </AppContext.Provider>  
   , target);
@@ -227,7 +227,7 @@ function initialRender(inRenderObj, AppContextValues:AppContextValues){
 /*
  * kick off the application's portal that we're trying to serve up
  */
-export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus }, AppContextValues:AppContextValues) {
+export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus }, _AppContextValues:AppContextValues) {
   // NOTE: When loadMashup is complete, this will be called.
   PCore.onPCoreReady(renderObj => {
     // Check that we're seeing the PCore version we expect
@@ -261,7 +261,7 @@ export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, set
       PCore.getLocaleUtils().GENERIC_BUNDLE_KEY,
       '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE'
     ]);
-    initialRender(renderObj, AppContextValues);
+    initialRender(renderObj, _AppContextValues);
 
     // PM!! operatorId = PCore.getEnvironmentInfo().getOperatorIdentifier();
 
@@ -331,7 +331,7 @@ export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, set
 }
 
 // One time (initialization) subscriptions and related unsubscribe
-export const useStartMashup = (setAuthType, onRedirectDone, AppContextValues:AppContextValues) => {
+export const useStartMashup = (setAuthType, onRedirectDone, _AppContextValues:AppContextValues) => {
   const [showPega, setShowPega] = useState(false);
   const [showResolutionPage, setShowResolutionPage] = useState(false);
   const [caseId, setCaseId] = useState('');
@@ -370,7 +370,7 @@ export const useStartMashup = (setAuthType, onRedirectDone, AppContextValues:App
 
     document.addEventListener('SdkConstellationReady', () => {
       // start the portal
-      startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus }, AppContextValues);
+      startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus }, _AppContextValues);
     });
 
     /* document.addEventListener('SdkLoggedOut', () => {

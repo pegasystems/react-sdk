@@ -81,9 +81,13 @@ export default function UnAuthChildBenefitsClaim() {
       startingFields = {
         NotificationLanguage: sessionStorage.getItem('rsdk_locale')?.slice(0, 2) || 'en'
       };
-      PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP, {
-        startingFields
-      });
+      if (sessionStorage.getItem('isRefreshedOnClaim') === 'true') {
+        setShowDeletePage(true);
+      } else {
+        PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP, {
+          startingFields
+        });
+      }
     }
     setShowStartPage(false);
   }

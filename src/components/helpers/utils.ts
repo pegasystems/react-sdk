@@ -29,7 +29,7 @@ export const isUnAuthJourney = () => {
   );
   const context = PCore.getContainerUtils().getActiveContainerItemName(`${containername}/workarea`);
   const caseType = PCore.getStoreValue('.CaseType', 'caseInfo.content', context);
-  return caseType === 'Unauth';
+  return caseType === 'Unauth' || window.location.href.includes('/ua');
 };
 
 export const getServiceShutteredStatus = async (): Promise<boolean> => {

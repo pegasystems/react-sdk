@@ -82,6 +82,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
   const propName = thePConn.getStateProps()['value'];
+  const formattedPropertyName = name || propName?.split('.')?.pop();
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -235,7 +236,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
         testId={testId}
         labelIsHeading={isOnlyField}
         errorText={errorMessage}
-        id={name}
+        id={formattedPropertyName}
       />
     )
   );

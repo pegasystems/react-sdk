@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { func, string } from 'prop-types';
+import { bool, func, string } from 'prop-types';
 
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
-import FormGroup from '../FormGroup/FormGroup';
+import FieldSet from '../FormGroup/FieldSet';
 
 function makeHintId(identifier) {
   return `${identifier}-hint`;
@@ -15,7 +15,7 @@ declare global {
 }
 
 export default function AutoComplete(props) {
-  const { optionList, instructionText, selectedValue, testId, helperText, errorText, id } = props;
+  const { optionList, instructionText, selectedValue, testId, helperText, errorText, id, labelIsHeading } = props;
   const inputClasses = `govuk-input ${errorText ? 'govuk-input--error' : ''}`.trim();
 
   useEffect(() => {
@@ -52,8 +52,10 @@ export default function AutoComplete(props) {
     });
   };
 
+  const extraProps = { testProps: { 'data-test-id': testId }, isAutoCompleteLegendIsHeading:labelIsHeading, isAutoCompleteField:true};
+
   return (
-    <FormGroup {...props}>
+    <FieldSet {...props}  {...extraProps}>
       {helperText && (
         <div id={makeHintId(id)} className='govuk-hint'>
           <HintTextComponent htmlString={helperText} />
@@ -80,12 +82,12 @@ export default function AutoComplete(props) {
       ) : (
         <></>
       )}
-    </FormGroup>
+    </FieldSet>
   );
 }
 
 AutoComplete.propTypes = {
-  ...FormGroup.propTypes,
+  ...FieldSet.propTypes,
   optionList: { key: string, value: string },
   label: string,
   instructionText: string,
@@ -93,5 +95,7 @@ AutoComplete.propTypes = {
   onChange: func,
   selectedValue: string,
   testId: string,
-  name: string
+  name: string,
+  labelIsHeading: bool,
+  id: string
 };

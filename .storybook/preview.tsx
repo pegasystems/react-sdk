@@ -40,5 +40,8 @@ export const parameters = {
         value: WorkTheme.base.palette['secondary-background']
       }
     ]
+  },
+  docs: {
+    source: { type: 'code' }
   }
 };

@@ -70,6 +70,14 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
       })
       .finally(() => {
         PCore.getPubSubUtils().publish('staySignedInOnConfirmationScreen', {});
+        //  As the document API calls are executed as last ones , we want to close container as a very
+        //  last call , so we even included 2.5 seconds of time gap for execution
+        setTimeout(() => {
+          PCore.getContainerUtils().closeContainerItem(
+            PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
+            { skipDirtyCheck: true }
+          );
+        }, 2500);
       });
   }, []);
 

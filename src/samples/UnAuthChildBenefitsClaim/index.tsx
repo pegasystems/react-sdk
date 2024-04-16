@@ -133,7 +133,12 @@ export default function UnAuthChildBenefitsClaim() {
 
   function assignmentFinished() {
     getClaimsCaseID();
-    closeContainer();
+    if (!bShowResolutionScreen) {
+      PCore.getContainerUtils().closeContainerItem(
+        PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
+        { skipDirtyCheck: true }
+      );
+    }
     resetAppDisplay();
     setShowResolutionScreen(true);
   }

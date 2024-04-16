@@ -94,14 +94,11 @@ export default function ChildBenefitsClaim() {
   const [switchLang, setSwitchLang] = useState(lang);
 
   if (typeof PCore !== 'undefined') {
-    PCore.getPubSubUtils().subscribe(
-      'languageToggleTriggered',
-      (langreference) => {
-        setTimeout(() => {
-          setSwitchLang(langreference?.language);
-        }, 50);
-      }
-    );
+    PCore.getPubSubUtils().subscribe('languageToggleTriggered', langreference => {
+      setTimeout(() => {
+        setSwitchLang(langreference?.language);
+      }, 50);
+    });
   }
 
   function resetAppDisplay() {
@@ -205,10 +202,12 @@ export default function ChildBenefitsClaim() {
   }
   function assignmentFinished() {
     getClaimsCaseID();
-    PCore.getContainerUtils().closeContainerItem(
-      PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
-      { skipDirtyCheck: true }
-    );
+    if (!bShowResolutionScreen) {
+      PCore.getContainerUtils().closeContainerItem(
+        PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
+        { skipDirtyCheck: true }
+      );
+    }
     displayResolutionScreen();
   }
 
@@ -219,7 +218,7 @@ export default function ChildBenefitsClaim() {
   // Calls data page to fetch in progress claims, then for each result (limited to first 10), calls D_Claim to get extra details about each 'assignment'
   // to display within the claim 'card' in the list. This then sets inprogress claims state value to the list of claims data.
   // This funtion also sets 'isloading' value to true before making d_page calls, and sets it back to false after data claimed.
-  function fetchInProgressClaimsData() {
+  function fetchInProgressClaimsData(isSaveComeBackClicked = false) {
     setLoadingInProgressClaims(true);
     let inProgressClaimsData: any = [];
     // @ts-ignore
@@ -230,17 +229,26 @@ export default function ChildBenefitsClaim() {
         inProgressClaimsData = resp;
         setInprogressClaims(inProgressClaimsData);
         setLoadingInProgressClaims(false);
+      })
+      .finally(() => {
+        if (isSaveComeBackClicked) {
+          // Here we are calling this close container because of the fact that above
+          // D_ClaimantWorkAssignmentChBCases API is getting excuted as last call but we want to make
+          // close container call as the very last one.
+          PCore.getContainerUtils().closeContainerItem(
+            PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
+            { skipDirtyCheck: true }
+          );
+        }
       });
   }
 
   function cancelAssignment() {
-    fetchInProgressClaimsData();
+    //  Here we are passing true as argument for below function because we will close container
+    //  based on whether claimant has clicked save and come back later link.
+    fetchInProgressClaimsData(true);
     getClaimsCaseID();
     displayUserPortal();
-    PCore.getContainerUtils().closeContainerItem(
-      PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
-      { skipDirtyCheck: true }
-    );
   }
 
   async function setShutterStatus() {
@@ -641,7 +649,7 @@ export default function ChildBenefitsClaim() {
                 rowClickAction='OpenAssignment'
                 buttonContent={t('CONTINUE_CLAIM')}
                 caseId={caseId}
-                switchLang ={switchLang}
+                switchLang={switchLang}
               />
             )}
 
@@ -653,7 +661,7 @@ export default function ChildBenefitsClaim() {
                 rowClickAction='OpenCase'
                 buttonContent={t('VIEW_CLAIM')}
                 checkShuttered={checkShuttered}
-                switchLang ={switchLang}
+                switchLang={switchLang}
               />
             )}
           </UserPortal>

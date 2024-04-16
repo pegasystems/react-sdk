@@ -140,7 +140,7 @@ export default function ChildBenefitsClaim() {
 
   useEffect(() => {
     setPageTitle();
-  }, [showStartPage, showUserPortal, bShowPega, bShowResolutionScreen]);
+  }, [showStartPage, showUserPortal, bShowPega, bShowResolutionScreen, shutterServicePage]);
 
   const [inprogressClaims, setInprogressClaims] = useState([]);
   const [submittedClaims, setSubmittedClaims] = useState([]);

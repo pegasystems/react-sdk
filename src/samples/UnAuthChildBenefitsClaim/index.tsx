@@ -100,7 +100,7 @@ export default function UnAuthChildBenefitsClaim() {
 
   useEffect(() => {
     setPageTitle();
-  }, [showStartPage, bShowPega, bShowResolutionScreen]);
+  }, [showStartPage, bShowPega, bShowResolutionScreen, shutterServicePage]);
 
   function closeContainer() {
     PCore.getContainerUtils().closeContainerItem(

@@ -27,6 +27,7 @@ const ConfirmationPage = ({ caseId, isUnAuth }) => {
       : 'https://www.tax.service.gov.uk/feedback/ODXCHB';
   }
   useEffect(() => {
+    sessionStorage.removeItem('assignmentID');
     setPageTitle();
   }, []);
 

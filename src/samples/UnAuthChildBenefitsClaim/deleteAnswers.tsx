@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import MainWrapper from '../../components/BaseComponents/MainWrapper';
 import Button from '../../components/BaseComponents/Button/Button';
@@ -8,9 +8,13 @@ export default function DeleteAnswers({ hasSessionTimedOut }) {
   const { t } = useTranslation();
   const history = useHistory();
   const redirectChoseClaim = () => {
-    sessionStorage.removeItem('isRefreshedOnClaim');
     history.push('/recently-claimed-child-benefit');
   };
+
+  useEffect(() => {
+    sessionStorage.removeItem('assignmentID');
+  }, []);
+
   return (
     <MainWrapper>
       <h1 className='govuk-heading-l'>

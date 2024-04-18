@@ -5,11 +5,11 @@ import { render } from 'react-dom';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
-import { getSdkConfig } from '@pega/react-sdk-components/lib/components/helpers/config_access';
+import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import { checkCookie, setCookie } from '../../../components/helpers/cookie';
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../../sdk-local-component-map';
-import AppContext, {AppContextValues} from './AppContext';
+import AppContext, { AppContextValues } from './AppContext';
 
 import {
   // sdkIsLoggedIn,
@@ -42,27 +42,27 @@ export function establishPCoreSubscriptions({
       PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
       { skipDirtyCheck: true }
     );
-    setShowResolutionPage(true); 
+    setShowResolutionPage(true);
   }
-/* *********************************************
- * closes container item if case is resolved-discarded, on assignmentFinished
- ******************************************** */
+  /* *********************************************
+   * closes container item if case is resolved-discarded, on assignmentFinished
+   ******************************************** */
   function handleServiceNotAvailable() {
-      // console.log('SUBEVENT! handleServiceNotAvailableOnAssignmentFinished');
-      const containername = PCore.getContainerUtils().getActiveContainerItemName(
-        `${PCore.getConstants().APP.APP}/primary`
-      );
-      const context = PCore.getContainerUtils().getActiveContainerItemName(
-        `${containername}/workarea`
-      );
-      const status = PCore.getStoreValue('.pyStatusWork', 'caseInfo.content', context);
-      if (status === 'Resolved-Discarded') {
-        // PM!! displayServiceNotAvailable();
-        PCore.getContainerUtils().closeContainerItem(context);
-      } else {
-        showResolutionScreen();
-      }      
-  }  
+    // console.log('SUBEVENT! handleServiceNotAvailableOnAssignmentFinished');
+    const containername = PCore.getContainerUtils().getActiveContainerItemName(
+      `${PCore.getConstants().APP.APP}/primary`
+    );
+    const context = PCore.getContainerUtils().getActiveContainerItemName(
+      `${containername}/workarea`
+    );
+    const status = PCore.getStoreValue('.pyStatusWork', 'caseInfo.content', context);
+    if (status === 'Resolved-Discarded') {
+      // PM!! displayServiceNotAvailable();
+      PCore.getContainerUtils().closeContainerItem(context);
+    } else {
+      showResolutionScreen();
+    }
+  }
 
   PCore.getPubSubUtils().subscribe(
     'assignmentFinished',
@@ -170,7 +170,7 @@ export function RootComponent(props) {
  * is ready to be rendered
  * @param inRenderObj the initial, top-level PConnect object to render
  */
-function initialRender(inRenderObj, _AppContextValues:AppContextValues){
+function initialRender(inRenderObj, _AppContextValues: AppContextValues) {
   // loadMashup does its own thing so we don't need to do much/anything here
   // // modified from react_root.js render
   const {
@@ -213,9 +213,10 @@ function initialRender(inRenderObj, _AppContextValues:AppContextValues){
   // Initial render of component passed in (which should be a RootContainer)
   render(
     <AppContext.Provider value={_AppContextValues}>
-       <React.Fragment>{theComponent}</React.Fragment>
-    </AppContext.Provider>  
-  , target);
+      <React.Fragment>{theComponent}</React.Fragment>
+    </AppContext.Provider>,
+    target
+  );
 
   /* const root = render(target); // createRoot(container!) if you use TypeScript
     root.render(<>{theComponent}</>); */
@@ -227,7 +228,10 @@ function initialRender(inRenderObj, _AppContextValues:AppContextValues){
 /*
  * kick off the application's portal that we're trying to serve up
  */
-export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus }, _AppContextValues:AppContextValues) {
+export function startMashup(
+  { setShowPega, setShowResolutionPage, setCaseId, setCaseStatus },
+  _AppContextValues: AppContextValues
+) {
   // NOTE: When loadMashup is complete, this will be called.
   PCore.onPCoreReady(renderObj => {
     // Check that we're seeing the PCore version we expect
@@ -331,7 +335,11 @@ export function startMashup({ setShowPega, setShowResolutionPage, setCaseId, set
 }
 
 // One time (initialization) subscriptions and related unsubscribe
-export const useStartMashup = (setAuthType, onRedirectDone, _AppContextValues:AppContextValues) => {
+export const useStartMashup = (
+  setAuthType,
+  onRedirectDone,
+  _AppContextValues: AppContextValues
+) => {
   const [showPega, setShowPega] = useState(false);
   const [showResolutionPage, setShowResolutionPage] = useState(false);
   const [caseId, setCaseId] = useState('');
@@ -370,7 +378,10 @@ export const useStartMashup = (setAuthType, onRedirectDone, _AppContextValues:Ap
 
     document.addEventListener('SdkConstellationReady', () => {
       // start the portal
-      startMashup({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus }, _AppContextValues);
+      startMashup(
+        { setShowPega, setShowResolutionPage, setCaseId, setCaseStatus },
+        _AppContextValues
+      );
     });
 
     /* document.addEventListener('SdkLoggedOut', () => {

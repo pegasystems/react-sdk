@@ -48,6 +48,7 @@ export default function AreYouSureToContinueWithoutSignIn() {
         getSdkConfig().then(sdkConfig => {
           if (sdkConfig?.isUnauthRouteToPega) {
             history.push('/ua');
+            window.location.reload();
           } else {
             window.location.assign(
               'https://www.tax.service.gov.uk/fill-online/claim-child-benefit/task-list'

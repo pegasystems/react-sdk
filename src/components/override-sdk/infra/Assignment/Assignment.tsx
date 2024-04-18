@@ -150,6 +150,20 @@ export default function Assignment(props) {
     }
   }, [children]);
 
+  function sortErrorMessages(errorMsg) {
+    const formElements = document.forms[0].elements;
+    let sortedErrors = [];
+
+    for (let i=0; i<formElements.length; i++){
+      errorMsg.forEach(err => { 
+        if(formElements[i]?.id == err?.message?.fieldId) {
+          sortedErrors.push(err);
+        }
+      });
+    }
+    return sortedErrors;
+  }
+
   function checkErrorMessages() {
     let errorStateProps = [];
     errorStateProps = PCore.getFormUtils()
@@ -208,6 +222,10 @@ export default function Assignment(props) {
         return acc;
       }, []);
 
+    // To sort error message based on form field order
+    if (errorStateProps.length > 0) {
+      errorStateProps = sortErrorMessages(errorStateProps);
+    }
     setErrorMessages([...errorStateProps]);
   }
 

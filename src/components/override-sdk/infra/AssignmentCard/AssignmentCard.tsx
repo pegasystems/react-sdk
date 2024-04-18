@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { isUnAuthJourney } from '../../../helpers/utils';
+import { isHICBCJourney } from '../../../helpers/utils';
 
 import ActionButtons from '../ActionButtons';
 
@@ -30,6 +31,7 @@ export default function AssignmentCard(props) {
           arSecondaryButtons={arSecondaryButtons}
           onButtonPress={buttonPress}
           isUnAuth={isUnAuthJourney()}
+          isHICBC={isHICBCJourney()}
         ></ActionButtons>
       )}
     </>

@@ -74,6 +74,15 @@ export const getServiceShutteredStatus = async (): Promise<boolean> => {
   }
 };
 
+export const isHICBCJourney = () => {
+  const containername = PCore.getContainerUtils().getActiveContainerItemName(
+    `${PCore.getConstants().APP.APP}/primary`
+  );
+  const caseType = PCore.getStore().getState().data[containername].caseInfo.caseTypeID;
+
+  return caseType === 'HMRC-ChB-Work-HICBCPreference';
+};
+
 export const isSingleEntity = (propReference: string, getPConnect) => {
   const containerName = getPConnect().getContainerName();
   const context = PCore.getContainerUtils().getActiveContainerItemContext(

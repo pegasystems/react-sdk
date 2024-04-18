@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 export default function TimeoutPopup(props) {
-  const { show, staySignedinHandler, signoutHandler, isAuthorised, isConfirmationPage } = props;
+  const { show, staySignedinHandler, signoutHandler, isAuthorised, isConfirmationPage, staySignedInButtonText, signoutButtonText, children } = props;
   const staySignedInCallback = useCallback(
     event => {
       if (event.key === 'Escape') staySignedinHandler();
@@ -79,6 +79,23 @@ export default function TimeoutPopup(props) {
       : unAuthTimeoutPopupContent();
   };
 
+  if(children){
+    return <Modal show={show} id='timeout-popup'>
+      <div>
+        {children}
+        <div className='govuk-button-group govuk-!-padding-top-4'>
+          <Button type='button' onClick={staySignedinHandler}>
+            {staySignedInButtonText}
+          </Button>
+
+          <a id='modal-signout-btn' className='govuk-link' href='#' onClick={signoutHandler}>
+            {signoutButtonText}
+          </a>
+        </div>
+      </div>  
+    </Modal>  
+  }
+
   return (
     <Modal show={show} id='timeout-popup'>
       {isAuthorised ? (
@@ -112,5 +129,8 @@ TimeoutPopup.propTypes = {
   staySignedinHandler: PropTypes.func,
   signoutHandler: PropTypes.func,
   isAuthorised: PropTypes.bool,
+  staySignedInButtonText: PropTypes.string,
+  signoutButtonText: PropTypes.string,
+  children: PropTypes.any,
   isConfirmationPage: PropTypes.bool
 };

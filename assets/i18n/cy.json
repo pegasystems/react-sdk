@@ -236,11 +236,15 @@
   "CONFIRM_YOUR_SERVICE": "Cadarnhewch y gwasanaeth rydych am ei ddefnyddio.",
   "MAKE_SURE_YOU_USE_RIGHT_CHBS": "Gwnewch yn siŵr eich bod yn defnyddio’r gwasanaeth Budd-dal Plant cywir",
   "CHECK_PROGRESS_CHB": "Gweld hynt hawliad Budd-dal Plant",
+
   "YOU_CAN_ALSO": "Gallwch ddefnyddio gwasanaeth ar-lein CThEF er mwyn ",
   "CHECK_CLAIM_REPLY": "wirio pryd y gallwch ddisgwyl ymateb i’ch hawliad (yn agor tab newydd).",
   "CHECK_CLAIM_APPROVED": "I wirio os yw’ch hawliad am Fudd-dal Plant wedi’i gymeradwyo, gallwch fwrw golwg dros eich tystiolaeth o hawl. ",
   "YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO": "Bydd angen i chi mewngofnodi i gael at yr wybodaeth hon. Os nad oes gennych fanylion mewngofnodi, gallwch eu creu (yn agor tab newydd).",
   "EXCLUSIVEOPTION_OR": "neu",
+
+
+  "HIGH_INCOME_BENEFITS": "Opt-in for Child Benefit Payment",
   "SELECT_CHILD_BENEFIT_SERVICE": "Dewiswch pa wasanaeth Budd-dal Plant yr hoffech ei ddefnyddio",
   "AUTOMATICALLY_CLOSE_IN": "Bydd y dudalen hon yn cau’n awtomatig mewn",
   "STAY_ON_THIS_PAGE": "Aros ar y dudalen hon",

@@ -23,10 +23,12 @@ export default function RadioButtons(props) {
   let label = props.label;
   const {isOnlyField, overrideLabel} = useIsOnlyField(props.displayOrder);
   if(isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
+  
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
 
-  const[errorMessage,setErrorMessage] = useState(validatemessage);
+  const[errorMessage,setErrorMessage] = useState(localizedVal(validatemessage));
   useEffect(()=>{
-    setErrorMessage(validatemessage)
+    setErrorMessage(localizedVal(validatemessage))
   },[validatemessage])
  
   const thePConn = getPConnect();

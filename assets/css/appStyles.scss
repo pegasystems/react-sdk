@@ -50,3 +50,7 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
 .inline-block-warning {
   display: inline-block;
 }
+
+.pg-conf-bank > .govuk-summary-list__row {
+  display: none;
+}

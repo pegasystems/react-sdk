@@ -40,6 +40,8 @@ export default function Date(props) {
   );
   const [specificErrors, setSpecificErrors] = useState<any>(null);
 
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+
   const actionsApi = getPConnect().getActionsApi();
   const propName = getPConnect().getStateProps().value;
   // PM - Create ISODate string (as expected by onChange) and pass to onchange value, adding 0 padding here for day and month to comply with isostring format.
@@ -67,10 +69,11 @@ export default function Date(props) {
 
   useEffect(() => {
     setEditedValidateMessage(
+      localizedVal(
       DateErrorFormatter(
         validatemessage,
         getPConnect().resolveConfigProps(getPConnect().getMetadata().config).label
-      )
+      ))
     );
     const errorTargets = DateErrorTargetFields(validatemessage);
     let specificError: any = null;

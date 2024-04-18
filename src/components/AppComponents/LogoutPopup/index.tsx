@@ -5,8 +5,32 @@ import Button from '../../BaseComponents/Button/Button';
 import { useTranslation } from 'react-i18next';
 
 export default function LogoutPopup(props) {
-  const { hideModal, handleSignoutModal, handleStaySignIn, id } = props;
+  const { hideModal, handleSignoutModal, handleStaySignIn, id, staySignedInButtonText, signoutButtonText, children } = props;
   const { t } = useTranslation();
+
+  if(children){
+    return(
+      <Modal show={props.show} handleClose={hideModal} id={id}>
+        <div>
+            {children}
+            <div className='govuk-button-group govuk-!-padding-top-4'>
+              <Button
+                type='button'
+                id='modal-signout-btn'
+                attributes={{ className: 'govuk-button' }}
+                onClick={handleSignoutModal}
+              >
+                {signoutButtonText}
+              </Button>
+
+              <a id='modal-staysignin-btn' className='govuk-link ' href='#' onClick={handleStaySignIn}>
+                {staySignedInButtonText}
+              </a>
+            </div>
+          </div>
+      </Modal>
+    )
+  }
 
   return (
     <Modal show={props.show} handleClose={hideModal} id={id}>
@@ -40,5 +64,8 @@ LogoutPopup.propTypes = {
   show: PropTypes.bool,
   hideModal: PropTypes.func,
   handleSignoutModal: PropTypes.func,
-  handleStaySignIn: PropTypes.func
+  handleStaySignIn: PropTypes.func,
+  staySignedInButtonText: PropTypes.string,
+  signoutButtonText: PropTypes.string,
+  children: PropTypes.any
 };

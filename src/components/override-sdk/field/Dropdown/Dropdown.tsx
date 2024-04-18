@@ -24,12 +24,13 @@ export default function Dropdown(props) {
     fieldMetadata
   } = props;
 
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const [options, setOptions] = useState<Array<IOption>>([]);
   const [displayValue, setDisplayValue] = useState();
   let label = props.label;
   const { isOnlyField, overrideLabel } = useIsOnlyField(props.displayOrder);
   if (isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
-  const [errorMessage, setErrorMessage] = useState(validatemessage);
+  const [errorMessage, setErrorMessage] = useState(localizedVal(validatemessage));
 
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
@@ -39,7 +40,7 @@ export default function Dropdown(props) {
   const refName = propName?.slice(propName.lastIndexOf('.') + 1);
 
   useEffect(() => {
-    setErrorMessage(validatemessage);
+    setErrorMessage(localizedVal(validatemessage));
   }, [validatemessage]);
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import GDSTextInput from '../../../BaseComponents/TextInput/TextInput';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
 import { registerNonEditableField } from '../../../helpers/hooks/QuestionDisplayHooks';
-
+import { isHICBCJourney } from '../../../helpers/utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 
 export default function TextInput(props) {
@@ -23,13 +23,20 @@ export default function TextInput(props) {
     configAlternateDesignSystem
   } = props;
 
-  const[errorMessage,setErrorMessage] = useState(validatemessage);
+  
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+  const [errorMessage, setErrorMessage] = useState(localizedVal(validatemessage));
+  const isHICBC = isHICBCJourney();
 
-  registerNonEditableField(!!disabled);
+  if (isHICBC) {
+    registerNonEditableField();
+  } else {
+    registerNonEditableField(!!disabled);
+  }
 
-  useEffect(()=>{
-    setErrorMessage(validatemessage)
-  },[validatemessage])
+  useEffect(() => {
+    setErrorMessage(localizedVal(validatemessage));
+  }, [validatemessage]);
   const thePConn = getPConnect();
   const actionsApi = thePConn.getActionsApi();
 
@@ -44,13 +51,13 @@ export default function TextInput(props) {
   };
 
   let label = props.label;
-  const {isOnlyField, overrideLabel} = useIsOnlyField(props.displayOrder);
-  if(isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
+  const { isOnlyField, overrideLabel } = useIsOnlyField(props.displayOrder);
+  if (isOnlyField && !readOnly) label = overrideLabel.trim() ? overrideLabel : label;
 
   const maxLength = fieldMetadata?.maxLength;
 
   if (readOnly) {
-    return <ReadOnlyDisplay label={label} value={value} name={name}/>;
+    return <ReadOnlyDisplay label={label} value={value} name={name} />;
   }
 
   const extraProps = { testProps: { 'data-test-id': testId } };

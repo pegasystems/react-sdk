@@ -70,7 +70,9 @@ export default function AutoComplete(props: AutoCompleteProps) {
     displayOrder,
     name
   } = props;
-  const [errorMessage, setErrorMessage] = useState(validatemessage);
+  
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
+  const [errorMessage, setErrorMessage] = useState(localizedVal(validatemessage));
   const [isAutocompleteLoaded, setAutocompleteLoaded] = useState(false);
   const context = getPConnect().getContextName();
   let { listType, parameters, datasource = [], columns = [], label } = props;
@@ -100,7 +102,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   }, []);
 
   useEffect(() => {
-    setErrorMessage(validatemessage);
+    setErrorMessage(localizedVal(validatemessage));
   }, [validatemessage]);
   if (!isDeepEqual(datasource, theDatasource)) {
     // inbound datasource is different, so update theDatasource (to trigger useEffect)

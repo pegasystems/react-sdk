@@ -8,8 +8,6 @@ import CookiePage from '../ChildBenefitsClaim/cookiePage/index';
 import Accessibility from '../ChildBenefitsClaim/AccessibilityPage';
 import UnAuthChildBenefitsClaim from '../UnAuthChildBenefitsClaim';
 import HighIncomeCase from '../HighIncomeCase';
-import * as en from '../../../assets/i18n/en.json'
-import * as cy from '../../../assets/i18n/cy.json'
 import AreYouSureToContinueWithoutSignIn from '../StaticPages/AreYouSureToContinueWithoutSignIn/AreYouSureToContinueWithoutSignIn';
 import DoYouWantToSignIn from '../StaticPages/DoYouWantToSignIn/doYouWantToSignIn';
 import CheckOnClaim from '../StaticPages/CheckOnClaim';

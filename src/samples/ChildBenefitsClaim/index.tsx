@@ -12,7 +12,6 @@ import {
   loginIfNecessary,
   sdkSetAuthHeader,
   getSdkConfig,
-  logout
 } from '@pega/auth/lib/sdk-auth-manager';
 
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
@@ -33,7 +32,7 @@ import localSdkComponentMap from '../../../sdk-local-component-map';
 import { checkCookie, setCookie } from '../../components/helpers/cookie';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 import toggleNotificationProcess from '../../components/helpers/toggleNotificationLanguage';
-import { getServiceShutteredStatus } from '../../components/helpers/utils';
+import { getServiceShutteredStatus, triggerLogout } from '../../components/helpers/utils';
 
 declare const myLoadMashup: any;
 
@@ -54,7 +53,7 @@ function initTimeout(setShowTimeoutModal) {
   applicationTimeout = setTimeout(() => {
     setShowTimeoutModal(true);
     signoutTimeout = setTimeout(() => {
-      logout();
+      triggerLogout();
     }, milisecondsTilSignout);
   }, milisecondsTilWarning);
 }
@@ -82,7 +81,6 @@ export default function ChildBenefitsClaim() {
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const [serviceNotAvailable, setServiceNotAvailable] = useState(false);
   const [shutterServicePage, setShutterServicePage] = useState(false);
-  const [authType, setAuthType] = useState('gg');
   const [caseId, setCaseId] = useState('');
   const [showPortalBanner, setShowPortalBanner] = useState(false);
   const [assignmentPConn, setAssignmentPConn] = useState(null);
@@ -529,7 +527,6 @@ export default function ChildBenefitsClaim() {
   useEffect(() => {
     getSdkConfig().then(sdkConfig => {
       const sdkConfigAuth = sdkConfig.authConfig;
-      setAuthType(sdkConfigAuth.authService);
       if (!sdkConfigAuth.mashupClientId && sdkConfigAuth.customAuthType === 'Basic') {
         // Service package to use custom auth with Basic
         const sB64 = window.btoa(
@@ -562,10 +559,6 @@ export default function ChildBenefitsClaim() {
       startMashup();
     });
 
-    document.addEventListener('SdkLoggedOut', () => {
-      window.location.href = 'https://www.gov.uk/government/organisations/hm-revenue-customs';
-    });
-
     // Subscriptions can't be done until onPCoreReady.
     //  So we subscribe there. But unsubscribe when this
     //  component is unmounted (in function returned from this effect)
@@ -594,35 +587,11 @@ export default function ChildBenefitsClaim() {
     };
   }, []);
 
-  function signOut() {
-    //  const authService = authType === 'gg' ? 'GovGateway' : (authType === 'gg-dev' ? 'GovGateway-Dev' : authType);
-    let authService;
-    if (authType && authType === 'gg') {
-      authService = 'GovGateway';
-    } else if (authType && authType === 'gg-dev') {
-      authService = 'GovGateway-Dev';
-    }
-
-    // If the continer / case is opened then close the container on signout to prevent locking.
-    if (bShowPega) {
-      PCore.getContainerUtils().closeContainerItem(
-        PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
-        { skipDirtyCheck: true }
-      );
-    }
-
-    PCore.getDataPageUtils()
-      .getPageDataAsync('D_AuthServiceLogout', 'root', { AuthService: authService })
-      .then(() => {
-        logout().then(() => {});
-      });
-  }
-
   function handleSignout() {
     if (bShowPega) {
       setShowSignoutModal(true);
     } else {
-      signOut();
+      triggerLogout();
     }
   }
 
@@ -682,7 +651,7 @@ export default function ChildBenefitsClaim() {
       <TimeoutPopup
         show={showTimeoutModal}
         staySignedinHandler={() => staySignedIn(setShowTimeoutModal)}
-        signoutHandler={() => logout()}
+        signoutHandler={() => triggerLogout()}
         isAuthorised
       />
 
@@ -709,7 +678,7 @@ export default function ChildBenefitsClaim() {
       <LogoutPopup
         show={showSignoutModal && !showTimeoutModal}
         hideModal={() => setShowSignoutModal(false)}
-        handleSignoutModal={signOut}
+        handleSignoutModal={triggerLogout}
         handleStaySignIn={handleStaySignIn}
       />
       <AppFooter />

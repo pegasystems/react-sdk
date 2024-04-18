@@ -72,7 +72,7 @@ const ClaimPage: FunctionComponent<any> = () => {
         loginIfNecessary({ appName: 'embedded', mainRedirect: true });        
     } 
     
-    const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone, {appBacklinkProps:{appBacklinkAction: redirectToLandingPage, appBacklinkText:t('BACK_TO_START_PAGE')}});
+    const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone, {appBacklinkProps:{appBacklinkAction: redirectToLandingPage}});
     
 
     useEffect(() => {

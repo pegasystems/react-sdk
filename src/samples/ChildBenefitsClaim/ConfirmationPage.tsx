@@ -21,6 +21,7 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
   const docIDForReturnSlip = 'CR0002';
   const locale = PCore.getEnvironmentInfo().locale.replaceAll('-', '_');
   const chbOfficeLink = 'https://www.gov.uk/child-benefit-tax-charge/your-circumstances-change';
+  const lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
 
   function getFeedBackLink() {
     return isUnAuth
@@ -32,7 +33,7 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
       sessionStorage.setItem('caseRefId', caseId);
     }
     setPageTitle();
-  }, []);
+  }, [lang]);
 
   useEffect(() => {
     PCore.getDataPageUtils()

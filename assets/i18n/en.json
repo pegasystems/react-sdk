@@ -41,7 +41,7 @@
   "SAVE_AND_CONTINUE": "Save and continue",
   "YOUR_REF_NUMBER": "Your reference number",
   "POST_YOUR_SUPPORTING_DOCUMENTS": "Post your supporting documents",
-  "WHAT_YOU_NEED_TO_DO_NOW": "What you need to do now",
+  "WHAT_YOU_NEED_TO_DO_NOW": "What you need to do",
   "THE_INFO_YOU_HAVE_PROVIDED": "The information you have provided has been used to create your Child Benefit claim form",
   "AFTER_YOU_HAVE": "After you have",
   "PRINTED_AND_SIGNED_THE_FORM": "printed this form and signed and dated this Declaration",
@@ -244,7 +244,6 @@
   "YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO": "You will need to sign in to access this information. If you do not have sign in details, you can create them (opens in new tab).",
   "EXCLUSIVEOPTION_OR": "or",
 
-
   "HIGH_INCOME_BENEFITS": "Opt-in for Child Benefit Payment",
   "HICBC_LANDINGPAGE_P1": "Use this service if you want to opt-in for Child Benefit payments.",
   "HICBC_LANDINGPAGE_P2": "You will need to:",
@@ -255,10 +254,10 @@
   "HICBC_LANDINGPAGE_BEFORE_6_APRIL_OPTION_LABEL": "Before 6 April 2024",
   "HICBC_LANDINGPAGE_ONORAFTER_6_APRIL_OPTION_LABEL": "On or after 6 April 2024",
   "HICBC_LANDINGPAGE_QUESTION_LABEL": "When do you want to opt-in to Child Benefit payments?",
-  "HICBC_LANDINGPAGE_NO_OPTION_SELECTED_ERROR_MESSAGE":"Select a date to opt-in",
+  "HICBC_LANDINGPAGE_NO_OPTION_SELECTED_ERROR_MESSAGE": "Select a date to opt-in",
 
   "BACK_TO_START_PAGE": "Back to start page",
-  
+
   "SELECT_CHILD_BENEFIT_SERVICE": "Select which Child Benefit service you would like to use",
   "AUTOMATICALLY_CLOSE_IN": "This page will automatically close in",
   "STAY_ON_THIS_PAGE": "Stay on this page",

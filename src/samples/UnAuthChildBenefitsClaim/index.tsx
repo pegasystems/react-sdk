@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { render } from 'react-dom';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { logout } from '@pega/react-sdk-components/lib/components/helpers/authManager';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 
@@ -28,7 +27,7 @@ import {
 import DeleteAnswers from './deleteAnswers';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
 import toggleNotificationProcess from '../../components/helpers/toggleNotificationLanguage';
-import { getServiceShutteredStatus } from '../../components/helpers/utils';
+import { getServiceShutteredStatus, scrollToTop, triggerLogout } from '../../components/helpers/utils';
 
 declare const myLoadMashup: Function;
 
@@ -77,14 +76,29 @@ export default function UnAuthChildBenefitsClaim() {
       resetAppDisplay();
       setShowPega(true);
 
+      const pyAssignmentID = sessionStorage.getItem('assignmentID');
       let startingFields = {};
       startingFields = {
         NotificationLanguage: sessionStorage.getItem('rsdk_locale')?.slice(0, 2) || 'en'
       };
-      PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP, {
-        startingFields
-      });
+      if (!pyAssignmentID) {
+        PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP, {
+          startingFields
+        });
+      } else {
+        const container = pConn.getContainerName();
+        const target = `${PCore.getConstants().APP.APP}/${container}`;
+        const openAssignmentOptions = { containerName: container };
+        const assignmentID = sessionStorage.getItem('assignmentID');
+        PCore.getMashupApi()
+          .openAssignment(assignmentID, target, openAssignmentOptions)
+          .then(() => {
+            scrollToTop();
+          })
+          .catch((err: Error) => console.log('Error : ', err)); // eslint-disable-line no-console
+      }
     }
+
     setShowStartPage(false);
   }
 
@@ -96,7 +110,7 @@ export default function UnAuthChildBenefitsClaim() {
 
   useEffect(() => {
     setPageTitle();
-  }, [showStartPage, bShowPega, bShowResolutionScreen]);
+  }, [showStartPage, bShowPega, bShowResolutionScreen, shutterServicePage]);
 
   function closeContainer() {
     PCore.getContainerUtils().closeContainerItem(
@@ -129,7 +143,12 @@ export default function UnAuthChildBenefitsClaim() {
 
   function assignmentFinished() {
     getClaimsCaseID();
-    closeContainer();
+    if (!bShowResolutionScreen) {
+      PCore.getContainerUtils().closeContainerItem(
+        PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
+        { skipDirtyCheck: true }
+      );
+    }
     resetAppDisplay();
     setShowResolutionScreen(true);
   }
@@ -491,7 +510,7 @@ export default function UnAuthChildBenefitsClaim() {
           }}
           signoutHandler={() => {
             if (bShowResolutionScreen) {
-              logout();
+              triggerLogout();
             } else {
               clearTimer();
               deleteData();

@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
@@ -15,14 +15,16 @@ export default function Button(props:React.PropsWithChildren<any>) {
   const { t } = useTranslation();
   const [pointerState, setPointerState] = useState<Object>({});
 
-  if(!Object.prototype.hasOwnProperty.call(attributes, 'className')) {attributes.className=''};
+  if (!Object.prototype.hasOwnProperty.call(attributes, 'className')) {
+    attributes.className = '';
+  }
 
-  useEffect(()=>{
+  useEffect(() => {
     // eslint-disable-next-line no-prototype-builtins
-    if(pointerState.hasOwnProperty('pointerEvents')){
-      setTimeout(() => setPointerState({}), 200);
+    if (pointerState.hasOwnProperty('pointerEvents')) {
+      setTimeout(() => setPointerState({}), 1000);
     }
-  },[pointerState])
+  }, [pointerState]);
 
   if (variant === 'start') {
     return (
@@ -51,7 +53,12 @@ export default function Button(props:React.PropsWithChildren<any>) {
   } else if (variant === 'link') {
     return (
       <div className='govuk-button-group'>
-        <a {...attributes} className={'govuk-link'.concat(' ', attributes.className)} href='#' onClick={onClick} >
+        <a
+          {...attributes}
+          className={'govuk-link'.concat(' ', attributes.className)}
+          href='#'
+          onClick={onClick}
+        >
           {children}
         </a>
       </div>
@@ -61,11 +68,10 @@ export default function Button(props:React.PropsWithChildren<any>) {
       <a
         href='#'
         style={pointerState}
-        onClick={(e) => {
-          setPointerState({pointerEvents: 'none'});
+        onClick={e => {
+          setPointerState({ pointerEvents: 'none' });
           onClick(e);
         }}
-          
         {...attributes}
         className='govuk-back-link'
       >
@@ -100,7 +106,7 @@ export default function Button(props:React.PropsWithChildren<any>) {
 }
 
 Button.propTypes = {
-  id:PropTypes.string,
+  id: PropTypes.string,
   name: PropTypes.string,
   disabled: PropTypes.bool,
   variant: PropTypes.string,

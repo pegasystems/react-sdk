@@ -1,4 +1,5 @@
-import { logout, getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
+import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
+import { triggerLogout } from '../../helpers/utils';
 
 let milisecondsTilWarning = 780 * 1000;
 let milisecondsTilSignout = 115 * 1000;
@@ -59,7 +60,7 @@ export const resetTimeout = (showTimeoutModal, deleteData, isAuthorised, isConfi
       } else {
         // the logout case executes when entire timeout occurs after confirmation page or user clicks
         // exit survey link in pop after confirmation page
-        logout();
+        triggerLogout();
       }
     }, milisecondsTilSignout);
   }, milisecondsTilWarning);

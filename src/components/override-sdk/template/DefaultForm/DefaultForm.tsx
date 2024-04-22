@@ -158,6 +158,11 @@ export default function DefaultForm(props) {
     const handleBeforeUnload = () => {
       // Perform actions before the component unloads
       sessionStorage.setItem('isAutocompleteRendered', 'false');
+
+      const thePConn = getPConnect();
+      const assignmentID = thePConn.getCaseInfo().getAssignmentID();
+      sessionStorage.setItem('assignmentID', assignmentID);
+
       PCore.getContainerUtils().closeContainerItem(
         PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
         { skipDirtyCheck: true }

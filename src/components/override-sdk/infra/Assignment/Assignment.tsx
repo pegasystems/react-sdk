@@ -109,18 +109,15 @@ export default function Assignment(props) {
 
   const headerLocaleLocation = PCore.getStoreValue('localeReference', '', 'app');
 
-  PCore.getPubSubUtils().subscribe(
-    'languageToggleTriggered',
-    (langreference) => {
-      setSelectedLang(langreference?.language);
-    }
-  );
+  PCore.getPubSubUtils().subscribe('languageToggleTriggered', langreference => {
+    setSelectedLang(langreference?.language);
+  });
 
   // To update the title when we toggle the language
   useEffect(() => {
     setTimeout(() => {
       let tryTranslate = localizedVal(containerName, '', 'HMRC-CHB-WORK-CLAIM!CASE!CLAIM');
-      if(tryTranslate === containerName){
+      if (tryTranslate === containerName) {
         tryTranslate = localizedVal(tryTranslate, '', headerLocaleLocation);
       }
       // Set our translated header!
@@ -151,6 +148,20 @@ export default function Assignment(props) {
       }
     }
   }, [children]);
+
+  function sortErrorMessages(errorMsg) {
+    const formElements = document.forms[0].elements;
+    const sortedErrors = [];
+
+    for (let i = 0; i < formElements.length; i += 1) {
+      errorMsg.forEach(err => {
+        if (formElements[i]?.id === err?.message?.fieldId) {
+          sortedErrors.push(err);
+        }
+      });
+    }
+    return sortedErrors;
+  }
 
   function checkErrorMessages() {
     let errorStateProps = [];
@@ -210,6 +221,10 @@ export default function Assignment(props) {
         return acc;
       }, []);
 
+    // To sort error message based on form field order
+    if (errorStateProps.length > 0) {
+      errorStateProps = sortErrorMessages(errorStateProps);
+    }
     setErrorMessages([...errorStateProps]);
   }
 

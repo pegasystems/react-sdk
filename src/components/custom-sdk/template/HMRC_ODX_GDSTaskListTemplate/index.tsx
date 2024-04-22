@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Grid } from '@pega/cosmos-react-core';
 import { useTranslation } from 'react-i18next';
 import type { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
@@ -38,6 +38,10 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
       completedSections += 1;
     }
   });
+
+  useEffect(() => {
+    sessionStorage.removeItem('assignmentID');
+  }, []);
 
   const handleOnClick = (section: string) => {
     getPConnect().setValue('.SelectedTask', section, '', false);

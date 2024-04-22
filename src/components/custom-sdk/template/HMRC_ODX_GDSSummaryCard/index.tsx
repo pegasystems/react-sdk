@@ -21,7 +21,6 @@ export default function HmrcOdxGdsSummaryCard(props) {
     case '2':
       itemName = t('GDS_INFO_ITEM_NATIONALITY');
       break;
-
     case '3':
       itemName = t('GDS_INFO_ITEM_COUNTRY');
       break;
@@ -51,6 +50,25 @@ export default function HmrcOdxGdsSummaryCard(props) {
     }
   }, [children[0]]);
 
+  const [formattedValues, setFormattedValues] = useState([]);
+
+  useEffect(() => {
+    // Populate formattedValues array when formElms change
+    const values = formElms.map(field => {
+      let formattedValue = '';
+
+      formattedValue =
+        (field as any)?.props?.label === 'Date of birth' ||
+        (field as any)?.props?.label === 'Dyddiad geni' // TODO: Need to make more robust
+          ? GBdate((field as any)?.props?.value)
+          : (field as any)?.props?.value;
+
+      return formattedValue;
+    });
+
+    setFormattedValues(values);
+  }, [formElms]);
+
   useEffect(() => {
     formElms.forEach(field => {
       if (
@@ -61,6 +79,14 @@ export default function HmrcOdxGdsSummaryCard(props) {
       }
     });
   }, [formElms]);
+
+  const [hiddenText, setHiddenText] = useState('');
+
+  useEffect(() => {
+    const updatedHiddenText =
+      useType === 2 ? `${formattedValues[0]} ${childName}` : `${childName} ${formattedValues[0]}`;
+    setHiddenText(updatedHiddenText);
+  }, [childName, formattedValues]);
 
   const handleOnClick = (action: string) => {
     switch (action) {
@@ -99,7 +125,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
                     onClick={() => handleOnClick(t('GDS_ACTION_REMOVE'))}
                   >
                     {t('GDS_ACTION_REMOVE')}
-                    <span className='govuk-visually-hidden'> {childName}</span>
+                    <span className='govuk-visually-hidden'>{hiddenText}</span>
                   </a>
                 </li>
               )}
@@ -111,7 +137,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
                   onClick={() => handleOnClick(t('GDS_ACTION_CHANGE'))}
                 >
                   {t('GDS_ACTION_CHANGE')}
-                  <span className='govuk-visually-hidden'> {childName}</span>
+                  <span className='govuk-visually-hidden'>{hiddenText}</span>
                 </a>
               </li>
             </ul>
@@ -119,21 +145,13 @@ export default function HmrcOdxGdsSummaryCard(props) {
           <div className='govuk-summary-card__content'>
             <dl className='govuk-summary-list'>
               {formElms.map((field, index) => {
-                let formattedValue = '';
-
-                formattedValue =
-                  (field as any)?.props?.label === 'Date of birth' ||
-                  (field as any)?.props?.label === 'Dyddiad geni' // TODO: Need to make more robust
-                    ? GBdate((field as any)?.props?.value)
-                    : (field as any)?.props?.value;
-
                 const key = new Date().getTime() + index;
 
                 return (
                   <Fragment key={key}>
                     <div className='govuk-summary-list__row'>
                       <dt className='govuk-summary-list__key'>{(field as any).props.label}</dt>
-                      <dd className='govuk-summary-list__value'>{formattedValue}</dd>
+                      <dd className='govuk-summary-list__value'>{formattedValues[index]}</dd>
                     </div>
                   </Fragment>
                 );

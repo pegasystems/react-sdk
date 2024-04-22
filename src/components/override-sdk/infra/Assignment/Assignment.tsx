@@ -139,6 +139,9 @@ export default function Assignment(props) {
       if (tryTranslate === containerName) {
         tryTranslate = localizedVal(tryTranslate, '', headerLocaleLocation);
       }
+      if (containerName === 'Claim Child Benefit') {
+        tryTranslate = t('CLAIM_CHILD_BENEFIT');
+      }
       // Set our translated header!
       setHeader(tryTranslate);
     }, 300);

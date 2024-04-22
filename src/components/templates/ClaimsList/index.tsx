@@ -9,7 +9,7 @@ import WarningText from '../../BaseComponents/WarningText/WarningText';
 declare const PCore: any;
 
 export default function ClaimsList(props) {
-  const { thePConn, data, title, rowClickAction, buttonContent, caseId, checkShuttered, switchLang } = props;
+  const { thePConn, data, title, rowClickAction, buttonContent, caseId, checkShuttered } = props;
   const { t } = useTranslation();
   const [claims, setClaims] = useState([]);
   const statusMapping = status => {
@@ -125,7 +125,7 @@ export default function ClaimsList(props) {
 
   useEffect(() => {
     setClaims([...getClaims()]);
-  }, [data, switchLang]);
+  }, [data, title]);
 
   function renderChildDetails(claimItem) {
     return claimItem.children.map((child, index) => (

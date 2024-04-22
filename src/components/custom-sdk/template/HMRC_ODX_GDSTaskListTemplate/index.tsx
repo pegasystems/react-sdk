@@ -66,6 +66,29 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
     sessionStorage.setItem('isTasklistClicked', 'true');
   };
 
+  const labelStatusMapping = status => {
+    switch (status) {
+      case 'Not yet started':
+        return t('NOT_YET_STARTED');
+      case 'Cannot start yet':
+        return t('CANNOT_START_YET');
+      case 'In progress':
+        return t('IN_PROGRESS');
+      case 'Completed':
+        return t('COMPLETED');
+      case 'Your details':
+        return t('YOUR_DETAILS');
+      case 'Relationship details':
+        return t('RELATIONSHIP_DETAILS');
+      case 'Child details':
+        return t('CHILD_DETAILS');
+      case 'Income details':
+        return t('INCOME_DETAILS');
+      default:
+        return status;
+    }
+  };
+
   return (
     <StyledHmrcOdxGdsTaskListTemplateWrapper>
       <Grid
@@ -104,10 +127,10 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
                           aria-describedby={`${task.TaskLabel.replaceAll(' ', '')}-${key}-status`}
                           onClick={() => handleOnClick(`${task.TaskLabel}`)}
                         >
-                          {task.TaskLabel}
+                          {labelStatusMapping(task.TaskLabel)}
                         </a>
                       ) : (
-                        <span>{task.TaskLabel}</span>
+                        <span>{labelStatusMapping(task.TaskLabel)}</span>
                       )}
                     </div>
                     {!task.IsTaskALink && !task.IsTaskInProgress && !task.IsTaskComplete && (
@@ -116,7 +139,7 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
                         className='govuk-task-list__status govuk-task-list__status--cannot-start-yet'
                         id={`${task.TaskLabel.replaceAll(' ', '')}-${key}-status`}
                       >
-                        {task.TaskStatus}
+                        {labelStatusMapping(task.TaskStatus)}
                       </div>
                     )}
 
@@ -127,7 +150,7 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
                           className='govuk-task-list__status'
                           id={`${task.TaskLabel.replaceAll(' ', '')}-${key}-status`}
                         >
-                          <strong className='govuk-tag govuk-tag--blue'>{task.TaskStatus}</strong>
+                          <strong className='govuk-tag govuk-tag--blue'>{labelStatusMapping(task.TaskStatus)}</strong>
                         </div>
                       )}
 
@@ -139,7 +162,7 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
                           id={`${task.TaskLabel.replaceAll(' ', '')}-${key}-status`}
                         >
                           <strong className='govuk-tag govuk-tag--light-blue'>
-                            {task.TaskStatus}
+                            {labelStatusMapping(task.TaskStatus)}
                           </strong>
                         </div>
                       )}
@@ -151,7 +174,7 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
                           className='govuk-task-list__status'
                           id={`${task.TaskLabel.replaceAll(' ', '')}-${key}-status`}
                         >
-                          <span>{task.TaskStatus}</span>
+                          <span>{labelStatusMapping(task.TaskStatus)}</span>
                         </div>
                       )}
                   </li>

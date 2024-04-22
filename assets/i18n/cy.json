@@ -236,8 +236,7 @@
   "CONFIRM_YOUR_SERVICE": "Cadarnhewch y gwasanaeth rydych am ei ddefnyddio.",
   "MAKE_SURE_YOU_USE_RIGHT_CHBS": "Gwnewch yn siŵr eich bod yn defnyddio’r gwasanaeth Budd-dal Plant cywir",
   "CHECK_PROGRESS_CHB": "Gweld hynt hawliad Budd-dal Plant",
-
-  "YOU_CAN_ALSO": "Gallwch ddefnyddio gwasanaeth ar-lein CThEF er mwyn ",
+  "YOU_CAN_ALSO": "Gallwch ddefnyddio gwasanaeth ar-lein CThEF i ",
   "CHECK_CLAIM_REPLY": "wirio pryd y gallwch ddisgwyl ymateb i’ch hawliad (yn agor tab newydd).",
   "CHECK_CLAIM_APPROVED": "I wirio os yw’ch hawliad am Fudd-dal Plant wedi’i gymeradwyo, gallwch fwrw golwg dros eich tystiolaeth o hawl. ",
   "YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO": "Bydd angen i chi mewngofnodi i gael at yr wybodaeth hon. Os nad oes gennych fanylion mewngofnodi, gallwch eu creu (yn agor tab newydd).",
@@ -249,5 +248,12 @@
   "AUTOMATICALLY_CLOSE_IN": "Bydd y dudalen hon yn cau’n awtomatig mewn",
   "STAY_ON_THIS_PAGE": "Aros ar y dudalen hon",
   "EXIT_THIS_PAGE": "Gadael y dudalen hon",
-  "THERE_IS_A_PROBLEM": "Mae yna broblem"
+  "THERE_IS_A_PROBLEM": "Mae yna broblem",
+  "NOT_YET_STARTED": "Heb ddechrau eto",
+  "CANNOT_START_YET": "Methu dechrau eto",
+  "COMPLETED": "wedi ei gwblhau",
+  "YOUR_DETAILS": "Eich manylion",
+  "RELATIONSHIP_DETAILS": "Manylion perthynas",
+  "CHILD_DETAILS": "Manylion y plentyn",
+  "INCOME_DETAILS": "Manylion incwm"
 }

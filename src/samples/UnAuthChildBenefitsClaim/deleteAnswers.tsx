@@ -9,6 +9,8 @@ export default function DeleteAnswers({ hasSessionTimedOut }) {
   const history = useHistory();
   const redirectChoseClaim = () => {
     sessionStorage.removeItem('isRefreshFromDeleteScreen');
+    sessionStorage.removeItem('hasSessionTimedOut');
+    sessionStorage.removeItem('isTasklistClicked');
     history.push('/recently-claimed-child-benefit');
   };
 

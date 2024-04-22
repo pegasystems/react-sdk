@@ -165,8 +165,8 @@ export default function FullPortal() {
 
   function doRedirectDone() {
     history.push(window.location.pathname);
-    let localeOverride: any = sessionStorage.getItem('locale');
-    if( !localeOverride ) {
+    let localeOverride: any = sessionStorage.getItem('rsdk_locale');
+    if (!localeOverride) {
       localeOverride = undefined;
     }
     // appName and mainRedirect params have to be same as earlier invocation
@@ -179,8 +179,8 @@ export default function FullPortal() {
       // start the portal
       startPortal();
     });
-    let localeOverride:string = sessionStorage.getItem('locale');
-    if( !localeOverride ) {
+    let localeOverride: any = sessionStorage.getItem('rsdk_locale');
+    if (!localeOverride) {
       localeOverride = undefined;
     }
     // Login if needed, doing an initial main window redirect

@@ -18,13 +18,6 @@ const AppSelector = () => {
     .use(Backend)
     .use(initReactI18next)
     .init({
-
-      /*lng: sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en',
-       
-      resources: {
-        en: { translation: en},
-        cy: { translation: cy}*/
-
       lng: sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en',      
       
       backend: {

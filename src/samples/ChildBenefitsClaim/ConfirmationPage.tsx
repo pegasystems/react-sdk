@@ -16,7 +16,7 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
   const [loading, setLoading] = useState(true);
   const serviceShuttered = useServiceShuttered();
   const [isCaseRefRequired, setIsCaseRefRequired] = useState(false);
-  const refId = caseId.replace('HMRC-CHB-WORK ', '');
+  const refId = caseId?.replace('HMRC-CHB-WORK ', '') || '';
   const docIDForDocList = 'CR0003';
   const docIDForReturnSlip = 'CR0002';
   const locale = PCore.getEnvironmentInfo().locale.replaceAll('-', '_');
@@ -28,40 +28,42 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
       : 'https://www.tax.service.gov.uk/feedback/ODXCHB';
   }
   useEffect(() => {
-    sessionStorage.removeItem('assignmentID');
+    if (caseId && isUnAuth) {
+      sessionStorage.setItem('caseRefId', caseId);
+    }
     setPageTitle();
   }, []);
 
   useEffect(() => {
-      PCore.getDataPageUtils()
-        .getPageDataAsync('D_DocumentContent', 'root', {
-          DocumentID: docIDForDocList,
-          Locale: locale,
-          CaseID: caseId
-        })
-        .then(listData => {
-          if (
-            listData.DocumentContentHTML.includes("data-bornabroad='true'") ||
-            listData.DocumentContentHTML.includes("data-adopted='true'")
-          ) {
-            setIsBornAbroadOrAdopted(true);
-          }
-          setLoading(false);
-          setDocumentList(listData.DocumentContentHTML);
-          if (listData.DocumentContentHTML.includes('data-ninopresent="false"')) {
-            setIsCaseRefRequired(true);
-          }
-        })
-        .catch(err => {
-          // eslint-disable-next-line no-console
-          console.error(err);
-        });
+    PCore.getDataPageUtils()
+      .getPageDataAsync('D_DocumentContent', 'root', {
+        DocumentID: docIDForDocList,
+        Locale: locale,
+        CaseID: caseId || sessionStorage.getItem('caseRefId')
+      })
+      .then(listData => {
+        if (
+          listData.DocumentContentHTML.includes("data-bornabroad='true'") ||
+          listData.DocumentContentHTML.includes("data-adopted='true'")
+        ) {
+          setIsBornAbroadOrAdopted(true);
+        }
+        setLoading(false);
+        setDocumentList(listData.DocumentContentHTML);
+        if (listData.DocumentContentHTML.includes('data-ninopresent="false"')) {
+          setIsCaseRefRequired(true);
+        }
+      })
+      .catch(err => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
 
     PCore.getDataPageUtils()
       .getPageDataAsync('D_DocumentContent', 'root', {
         DocumentID: docIDForReturnSlip,
         Locale: locale,
-        CaseID: caseId
+        CaseID: caseId || sessionStorage.getItem('caseRefId')
       })
       .then(pageData => {
         setReturnSlipContent(pageData.DocumentContentHTML);
@@ -90,14 +92,16 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
   };
 
   const getBirthChildPanelContent = () => {
+    const sessionCaseId = sessionStorage.getItem('caseRefId');
+    const referenceNumber = refId || sessionCaseId?.replace('HMRC-CHB-WORK ', '');
     return (
       <>
         <h1 className='govuk-panel__title'> {t('APPLICATION_RECEIVED')}</h1>
-        {isUnAuth && isCaseRefRequired && (
+        {isUnAuth && (isCaseRefRequired || sessionCaseId) && (
           <div className='govuk-panel__body'>
             {t('YOUR_REF_NUMBER')}
             <br></br>
-            <strong>{refId}</strong>
+            <strong>{referenceNumber} </strong>
           </div>
         )}
       </>

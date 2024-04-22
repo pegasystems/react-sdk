@@ -27,7 +27,11 @@ import {
 import DeleteAnswers from './deleteAnswers';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
 import toggleNotificationProcess from '../../components/helpers/toggleNotificationLanguage';
-import { getServiceShutteredStatus, scrollToTop, triggerLogout } from '../../components/helpers/utils';
+import {
+  getServiceShutteredStatus,
+  scrollToTop,
+  triggerLogout
+} from '../../components/helpers/utils';
 
 declare const myLoadMashup: Function;
 
@@ -70,6 +74,20 @@ export default function UnAuthChildBenefitsClaim() {
     setCaseId(caseID);
   }
 
+  // TODO - this function will have its pega counterpart for the feature to be completed - part of future story
+  function deleteData() {
+    const activeContainer = PCore.getContainerUtils().getActiveContainerItemContext('app/primary');
+    if (bShowPega && activeContainer) {
+      PCore.getContainerUtils().closeContainerItem(activeContainer, { skipDirtyCheck: true });
+    }
+
+    setShowTimeoutModal(false);
+    setShowStartPage(false);
+    setShowPega(false);
+    setShowResolutionScreen(false);
+    setShowDeletePage(true);
+  }
+
   function startNow() {
     // Check if PConn is created, and create case if it is
     if (pConn && !bShowPega) {
@@ -81,7 +99,12 @@ export default function UnAuthChildBenefitsClaim() {
       startingFields = {
         NotificationLanguage: sessionStorage.getItem('rsdk_locale')?.slice(0, 2) || 'en'
       };
-      if (!pyAssignmentID) {
+      if (sessionStorage.getItem('isRefreshFromDeleteScreen') === 'true') {
+        clearTimer();
+        deleteData();
+      } else if (sessionStorage.getItem('caseRefId')) {
+        setShowResolutionScreen(true);
+      } else if (!pyAssignmentID) {
         PCore.getMashupApi().createCase('HMRC-ChB-Work-Claim', PCore.getConstants().APP.APP, {
           startingFields
         });
@@ -118,20 +141,6 @@ export default function UnAuthChildBenefitsClaim() {
       { skipDirtyCheck: true }
     );
     setShowPega(false);
-  }
-
-  // TODO - this function will have its pega counterpart for the feature to be completed - part of future story
-  function deleteData() {
-    const activeContainer = PCore.getContainerUtils().getActiveContainerItemContext('app/primary');
-    if (bShowPega && activeContainer) {
-      PCore.getContainerUtils().closeContainerItem(activeContainer, { skipDirtyCheck: true });
-    }
-
-    setShowTimeoutModal(false);
-    setShowStartPage(false);
-    setShowPega(false);
-    setShowResolutionScreen(false);
-    setShowDeletePage(true);
   }
 
   function returnToPortalPage() {
@@ -512,6 +521,7 @@ export default function UnAuthChildBenefitsClaim() {
             if (bShowResolutionScreen) {
               triggerLogout();
             } else {
+              sessionStorage.setItem('hasSessionTimedOut', 'true');
               clearTimer();
               deleteData();
 

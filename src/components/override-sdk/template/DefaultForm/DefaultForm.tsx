@@ -154,26 +154,6 @@ export default function DefaultForm(props) {
     }
   }, []);
 
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      // Perform actions before the component unloads
-      sessionStorage.setItem('isAutocompleteRendered', 'false');
-
-      const thePConn = getPConnect();
-      const assignmentID = thePConn.getCaseInfo().getAssignmentID();
-      sessionStorage.setItem('assignmentID', assignmentID);
-
-      PCore.getContainerUtils().closeContainerItem(
-        PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
-        { skipDirtyCheck: true }
-      );
-    };
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
-
   const dfChildren = arChildren?.map((kid, idx) => {
     let extraProps = {};
     const childPConnect = kid.getPConnect();

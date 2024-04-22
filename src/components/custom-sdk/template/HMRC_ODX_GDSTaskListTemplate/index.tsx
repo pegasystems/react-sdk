@@ -18,17 +18,37 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
   const { t } = useTranslation();
   const context = getPConnect().getContextName();
   const caseInfo = getPConnect().getCaseSummary();
-  const data = caseInfo.content.CaseTaskList;
+  const caseTaskListData = caseInfo.content.CaseTaskList;
   const caseType = caseInfo.content.CaseType;
 
   let totalSections = 0;
   let completedSections = 0;
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem('tasklistData', JSON.stringify(caseTaskListData));
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.removeItem('isTasklistClicked');
+  }, []);
 
   let cssHooks = '';
   if (caseType === 'Auth') {
     cssHooks = 'auth';
   } else {
     cssHooks = 'unauth';
+  }
+  let data;
+  if (sessionStorage.getItem('isTasklistClicked') === 'true') {
+    data = caseTaskListData;
+  } else {
+    data = JSON.parse(sessionStorage.getItem('tasklistData')) || caseTaskListData;
   }
 
   // Loop through the data to determine the number of sections in total and how many are flagged as complete.
@@ -39,14 +59,11 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
     }
   });
 
-  useEffect(() => {
-    sessionStorage.removeItem('assignmentID');
-  }, []);
-
   const handleOnClick = (section: string) => {
     getPConnect().setValue('.SelectedTask', section, '', false);
     getPConnect().getActionsApi().finishAssignment(context);
     PCore.getPubSubUtils().publish('assignmentFinishedOnTaskListClicked', {});
+    sessionStorage.setItem('isTasklistClicked', 'true');
   };
 
   return (

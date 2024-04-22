@@ -8,19 +8,21 @@ export default function DeleteAnswers({ hasSessionTimedOut }) {
   const { t } = useTranslation();
   const history = useHistory();
   const redirectChoseClaim = () => {
+    sessionStorage.removeItem('isRefreshFromDeleteScreen');
     history.push('/recently-claimed-child-benefit');
   };
 
   useEffect(() => {
     sessionStorage.removeItem('assignmentID');
+    sessionStorage.setItem('isRefreshFromDeleteScreen', 'true');
   }, []);
 
   return (
     <MainWrapper>
       <h1 className='govuk-heading-l'>
-        {hasSessionTimedOut
-          ? t('FOR_YOUR_SECURITY_WE_DELETED_YOUR_CLAIM')
-          : t('YOU_DELETED_YOUR_CLAIM')}
+        {sessionStorage.getItem('hasSessionTimedOut') === 'true' || !hasSessionTimedOut
+          ? t('YOU_DELETED_YOUR_CLAIM')
+          : t('FOR_YOUR_SECURITY_WE_DELETED_YOUR_CLAIM')}
       </h1>
       <Button onClick={redirectChoseClaim}>{t('START_CLAIM_AGAIN')}</Button>
       <h2 className='govuk-heading-m'>{t('BEFORE_YOU_GO')}</h2>

@@ -12,7 +12,7 @@ import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/componen
 import AppHeader from '../../components/AppComponents/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 import ConfirmationPage from '../ChildBenefitsClaim/ConfirmationPage';
-import setPageTitle from '../../components/helpers/setPageTitleHelpers';
+import setPageTitle, { registerServiceName } from '../../components/helpers/setPageTitleHelpers';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
 
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
@@ -52,6 +52,8 @@ export default function UnAuthChildBenefitsClaim() {
   const claimsListApi = '';
 
   const { t } = useTranslation();
+  const serviceName = t('CLAIM_CHILD_BENEFIT');
+  registerServiceName(serviceName);
 
   function doRedirectDone() {
     history.push('/ua');
@@ -133,7 +135,7 @@ export default function UnAuthChildBenefitsClaim() {
 
   useEffect(() => {
     setPageTitle();
-  }, [showStartPage, bShowPega, bShowResolutionScreen, shutterServicePage]);
+  }, [showStartPage, bShowPega, bShowResolutionScreen, shutterServicePage, serviceName]);
 
   function closeContainer() {
     PCore.getContainerUtils().closeContainerItem(

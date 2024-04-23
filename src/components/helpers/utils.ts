@@ -145,7 +145,11 @@ export const triggerLogout = () => {
       const logoutUrl = (response as responseType).URLResourcePath2;
 
       logout().then(() => {
-        if (logoutUrl) window.location.href = logoutUrl;
+        if (logoutUrl) {
+          // Clear previous sessioStorage values
+          sessionStorage.clear();
+          window.location.href = logoutUrl;
+        }
       });
     });
 };

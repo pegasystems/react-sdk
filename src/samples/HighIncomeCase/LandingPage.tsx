@@ -44,7 +44,7 @@ export default function LandingPage(props){
         <>
             <AppHeader
                 appname={t('HIGH_INCOME_BENEFITS')}
-                hasLanguageToggle 
+                hasLanguageToggle={false}
                 betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=463&referrerUrl=${window.location}`}                  
             />
             <div className='govuk-width-container'>                
@@ -54,9 +54,14 @@ export default function LandingPage(props){
                     <p className="govuk-body"> {t("HICBC_LANDINGPAGE_P1")}</p>
                     <p className="govuk-body"> {t("HICBC_LANDINGPAGE_P2")}</p>
                     <ul className="govuk-list govuk-list--bullet">
-                        <li>{t("HICBC_LANDINGPAGE_LISTITEM1")}</li>
-                        <li>{t("HICBC_LANDINGPAGE_LISTITEM2")}</li>
-                        <li>{t("HICBC_LANDINGPAGE_LISTITEM3")}</li>
+                        <li>{t("HICBC_LANDINGPAGE_LISTITEM_BE_CHB_CLAIMANT")}</li>
+                        <li>{t("HICBC_LANDINGPAGE_LISTITEM_STILL_ELIGIBLE")}{' '}
+                            <a className='govuk-link' href='https://www.gov.uk/child-benefit/eligibility' target="_blank" rel="noreferrer noopener">
+                                {t("HICBC_LANDINGPAGE_LISTITEM_STILL_ELIGIBLE_LINK_TEXT")} {t("OPENS_IN_NEW_TAB")}
+                            </a>    
+                        </li>
+                        <li>{t("HICBC_LANDINGPAGE_LISTITEM_HAVE_PAYMENT_DETAILS_AVAILABLE")}</li>
+                        <li>{t("HICBC_LANDINGPAGE_LISTITEM_OPT_IN_WITHIN_3_MONTHS")}</li>
                     </ul>
                     <RadioButtons
                     name='optin-date' 

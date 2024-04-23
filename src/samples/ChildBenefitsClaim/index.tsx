@@ -23,7 +23,7 @@ import StartPage from './StartPage';
 import ConfirmationPage from './ConfirmationPage';
 import UserPortal from './UserPortal';
 import ClaimsList from '../../components/templates/ClaimsList';
-import setPageTitle from '../../components/helpers/setPageTitleHelpers';
+import setPageTitle, { registerServiceName } from '../../components/helpers/setPageTitleHelpers';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
 
@@ -121,10 +121,12 @@ export default function ChildBenefitsClaim() {
 
   const { t } = useTranslation();
   let operatorId = '';
+  const serviceName = t('CLAIM_CHILD_BENEFIT');
+  registerServiceName(serviceName);
 
   useEffect(() => {
     setPageTitle();
-  }, [showStartPage, showUserPortal, bShowPega, bShowResolutionScreen, shutterServicePage]);
+  }, [showStartPage, showUserPortal, bShowPega, bShowResolutionScreen, shutterServicePage, serviceName]);
 
   const [inprogressClaims, setInprogressClaims] = useState([]);
   const [submittedClaims, setSubmittedClaims] = useState([]);

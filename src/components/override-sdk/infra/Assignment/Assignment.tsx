@@ -22,6 +22,7 @@ import { ErrorMsgContext } from '../../../helpers/HMRCAppContext';
 import useServiceShuttered from '../../../helpers/hooks/useServiceShuttered';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import AppContext from '../../../../samples/HighIncomeCase/reuseables/AppContext';
+import dayjs from 'dayjs';
 
 export interface ErrorMessageDetails {
   message: string;
@@ -292,12 +293,29 @@ export default function Assignment(props) {
     });
   }
 
+  function handleBackLinkforInvalidDate(){
+    const childPconnect = children[0]?.props?.getPConnect();
+    const dateField = PCore.getFormUtils().getEditableFields(childPconnect.getContextName()).filter(field => field.type.toLowerCase() === 'date');
+    if(dateField){
+      dateField?.forEach(field => {
+        const childPagRef = childPconnect.getPageReference();
+        const pageRef = thePConn.getPageReference() === childPagRef ? thePConn.getPageReference() : childPagRef;
+        const storedRefName = field.name?.replace(pageRef, '');
+        const storedDateValue = childPconnect.getValue(`.${storedRefName}`);
+        if(!dayjs(storedDateValue, 'YYYY-MM-DD', true).isValid()) {
+          childPconnect.setValue(`.${storedRefName}`,'');
+        }
+      })
+    }
+  }
+
   async function buttonPress(sAction: string, sButtonType: string) {
     setErrorSummary(false);
 
     if (sButtonType === 'secondary') {
       switch (sAction) {
         case 'navigateToStep': {
+          handleBackLinkforInvalidDate(); // clears the date value if there is invalid date, allowing back btn click(ref bug-7756) 
           const navigatePromise = navigateToStep('previous', itemKey);
 
           clearErrors();

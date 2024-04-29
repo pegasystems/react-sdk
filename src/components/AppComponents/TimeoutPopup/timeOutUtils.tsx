@@ -32,7 +32,7 @@ export const initTimeout = async (showTimeoutModal, deleteData, isAuthorised, is
     // TODO - unauth and sessiontimeout functionality to be implemented
     showTimeoutModal(true);
     signoutTimeout = setTimeout(() => {
-      if (!isAuthorised && !isConfirmationPage) {
+      if (!isAuthorised && !isConfirmationPage && deleteData) {
         // if the journey is not authorized or from confirmation page , the claim data gets deleted
         deleteData();
         clearTimer();
@@ -53,7 +53,7 @@ export const resetTimeout = (showTimeoutModal, deleteData, isAuthorised, isConfi
     // TODO - unauth and sessiontimeout functionality to be implemented
     showTimeoutModal(true);
     signoutTimeout = setTimeout(() => {
-      if (!isAuthorised && !isConfirmationPage) {
+      if (!isAuthorised && !isConfirmationPage && deleteData) {
         // if the journey is not authorized or from confirmation page , the claim data gets deleted
         deleteData();
         clearTimer();

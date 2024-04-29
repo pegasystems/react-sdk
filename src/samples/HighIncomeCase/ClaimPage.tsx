@@ -7,7 +7,7 @@ import AppFooter from '../../components/AppComponents/AppFooter';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 import ServiceNotAvailable from '../../components/AppComponents/ServiceNotAvailable';
 import LogoutPopup from '../../components/AppComponents/LogoutPopup';
-import { logout, loginIfNecessary } from '@pega/auth/lib/sdk-auth-manager';
+import { loginIfNecessary } from '@pega/auth/lib/sdk-auth-manager';
 import { staySignedIn } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import { useStartMashup } from './reuseables/PegaSetup';
 import {
@@ -19,6 +19,7 @@ import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import AppContext from './reuseables/AppContext';
+import { triggerLogout } from '../../components/helpers/utils';
 
 // declare const myLoadMashup;
 
@@ -27,7 +28,7 @@ const ClaimPage: FunctionComponent<any> = () => {
     const [shutterServicePage, /* setShutterServicePage */] = useState(false);
     const [serviceNotAvailable, /* setServiceNotAvailable */] = useState(false);
     const [pCoreReady, setPCoreReady] = useState(false);
-    const [authType, setAuthType] = useState('gg');
+    const setAuthType = useState('gg')[1];
 
     const [currentDisplay, setCurrentDisplay] = useState<|'pegapage'|'resolutionpage'|'servicenotavailable'|'shutterpage'|'loading'>('pegapage');
     const [summaryPageContent, setSummaryPageContent] = useState<{content:string|null, title:string|null, banner:string|null}>({content:null, title:null, banner:null})
@@ -36,24 +37,8 @@ const ClaimPage: FunctionComponent<any> = () => {
     
     const history = useHistory();
 
-    function signOut() {
-      //  const authService = authType === 'gg' ? 'GovGateway' : (authType === 'gg-dev' ? 'GovGateway-Dev' : authType);
-      let authService;
-      if (authType && authType === 'gg') {
-        authService = 'GovGateway';
-      } else if (authType && authType === 'gg-dev') {
-        authService = 'GovGateway-Dev';
-      }
-      const dpprom = PCore.getDataPageUtils().getPageDataAsync('D_AuthServiceLogout', 'root', {
-        AuthService: authService
-      }) as Promise<object>;
-      dpprom.then(() => {
-        logout().then(() => {});
-      });
-    }
-
-    const redirectToLandingPage = () => {
-      signOut();
+     const redirectToLandingPage = () => {
+      triggerLogout();
       appBacklinkProps.appBacklinkAction();
     }
 
@@ -113,9 +98,9 @@ const ClaimPage: FunctionComponent<any> = () => {
 
   function handleSignout() {
         if (currentDisplay==='pegapage') {
-        setShowSignoutModal(true);
+          setShowSignoutModal(true);
         } else {
-        signOut();
+          triggerLogout();
         }
   }  
 
@@ -201,7 +186,7 @@ const ClaimPage: FunctionComponent<any> = () => {
         staySignedinHandler={() =>
           staySignedIn(setShowTimeoutModal, 'D_ClaimantWorkAssignmentChBCases')
         }
-        signoutHandler={() => logout()}
+        signoutHandler={triggerLogout}
         isAuthorised={false}  
         signoutButtonText="Sign out"
         staySignedInButtonText="Stay signed in"
@@ -245,7 +230,7 @@ const ClaimPage: FunctionComponent<any> = () => {
       <LogoutPopup
         show={showSignoutModal && !showTimeoutModal}
         hideModal={() => setShowSignoutModal(false)}
-        handleSignoutModal={signOut}
+        handleSignoutModal={triggerLogout}
         handleStaySignIn={handleStaySignIn}
         staySignedInButtonText='Stay signed in'
         signoutButtonText='Sign out'

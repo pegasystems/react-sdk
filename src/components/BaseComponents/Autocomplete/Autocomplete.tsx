@@ -15,7 +15,16 @@ declare global {
 }
 
 export default function AutoComplete(props) {
-  const { optionList, instructionText, selectedValue, testId, helperText, errorText, id, labelIsHeading } = props;
+  const {
+    optionList,
+    instructionText,
+    selectedValue,
+    testId,
+    helperText,
+    errorText,
+    id,
+    labelIsHeading
+  } = props;
   const inputClasses = `govuk-input ${errorText ? 'govuk-input--error' : ''}`.trim();
 
   useEffect(() => {
@@ -52,10 +61,14 @@ export default function AutoComplete(props) {
     });
   };
 
-  const extraProps = { testProps: { 'data-test-id': testId }, isAutoCompleteLegendIsHeading:labelIsHeading, isAutoCompleteField:true};
+  const extraProps = {
+    testProps: { 'data-test-id': testId },
+    isAutoCompleteField: true,
+    legendIsHeading: labelIsHeading
+  };
 
   return (
-    <FieldSet {...props}  {...extraProps}>
+    <FieldSet {...props} {...extraProps}>
       {helperText && (
         <div id={makeHintId(id)} className='govuk-hint'>
           <HintTextComponent htmlString={helperText} />

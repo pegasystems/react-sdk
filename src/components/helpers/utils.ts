@@ -78,7 +78,7 @@ export const isHICBCJourney = () => {
   const containername = PCore.getContainerUtils().getActiveContainerItemName(
     `${PCore.getConstants().APP.APP}/primary`
   );
-  const caseType = PCore.getStore().getState().data[containername].caseInfo.caseTypeID;
+  const caseType = PCore.getStore().getState().data[containername]?.caseInfo.caseTypeID;
 
   return caseType === 'HMRC-ChB-Work-HICBCPreference';
 };

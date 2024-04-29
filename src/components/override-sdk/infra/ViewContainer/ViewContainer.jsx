@@ -113,7 +113,7 @@ export default function ViewContainer(props) {
   // debugging/investigation help
   // console.log(`ViewContainer props: ${JSON.stringify(props)}`);
   const theBuildName = buildName();
-  const isHICBC = { isHICBCJourney };
+  const isHICBC = isHICBCJourney();
   const { CREATE_DETAILS_VIEW_NAME } = PCore.getConstants();
   if (routingInfo) {
     const { accessedOrder, items } = routingInfo;

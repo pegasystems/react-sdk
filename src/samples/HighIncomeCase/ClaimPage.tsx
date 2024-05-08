@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect, useContext } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
@@ -18,7 +18,6 @@ import SummaryPage from '../../components/AppComponents/SummaryPage';
 import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
-import AppContext from './reuseables/AppContext';
 import { triggerLogout } from '../../components/helpers/utils';
 
 // declare const myLoadMashup;
@@ -32,14 +31,12 @@ const ClaimPage: FunctionComponent<any> = () => {
 
     const [currentDisplay, setCurrentDisplay] = useState<|'pegapage'|'resolutionpage'|'servicenotavailable'|'shutterpage'|'loading'>('pegapage');
     const [summaryPageContent, setSummaryPageContent] = useState<{content:string|null, title:string|null, banner:string|null}>({content:null, title:null, banner:null})
-    const { appBacklinkProps } = useContext(AppContext);
     const { t } = useTranslation();
     
     const history = useHistory();
 
      const redirectToLandingPage = () => {
       triggerLogout();
-      appBacklinkProps.appBacklinkAction();
     }
 
     const [showTimeoutModal, setShowTimeoutModal] = useState(false);  
@@ -48,7 +45,7 @@ const ClaimPage: FunctionComponent<any> = () => {
     const { hmrcURL } = useHMRCExternalLinks();
 
     useEffect(() => 
-        {initTimeout(setShowTimeoutModal, false, true, false) }  
+        {initTimeout(setShowTimeoutModal, false, true, false) }
     , []);
     
     function doRedirectDone() {
@@ -56,10 +53,10 @@ const ClaimPage: FunctionComponent<any> = () => {
         // appName and mainRedirect params have to be same as earlier invocation
         loginIfNecessary({ appName: 'embedded', mainRedirect: true });        
     } 
-    
-    const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone, {appBacklinkProps:{appBacklinkAction: redirectToLandingPage}});
-    
 
+    const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone, {appBacklinkProps:{appBacklinkAction: redirectToLandingPage, appBacklinkText:t("CLICK_TO_LOGOUT")}});
+    
+    
     useEffect(() => {
       if(showPega){setCurrentDisplay('pegapage')}
       else if(showResolutionPage){
@@ -222,7 +219,7 @@ const ClaimPage: FunctionComponent<any> = () => {
               summaryTitle={summaryPageContent.title}
               summaryBanner={summaryPageContent.banner}
               backlinkProps={{backlinkAction:redirectToLandingPage,
-                              backlinkText:t('BACK_TO_START_PAGE')}}  
+                              backlinkText:t('CLICK_TO_LOGOUT')}}  
             />}        
           </>
         )}

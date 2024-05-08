@@ -482,7 +482,7 @@ export default function Assignment(props) {
                   key='createstagebacklink'
                   attributes={{ type: 'link' }}
                 >
-                  {appBacklinkProps.appBacklinkText}
+                  {t(appBacklinkProps.appBacklinkText as string)}
                 </Button>
               )
           }

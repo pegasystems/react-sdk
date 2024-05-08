@@ -1,6 +1,5 @@
 import React, { createElement, useEffect, useContext, useState } from 'react';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
-import ParsedHTML from '../../../helpers/formatters/ParsedHtml';
 import useIsOnlyField, {
   registerNonEditableField
 } from '../../../helpers/hooks/QuestionDisplayHooks';
@@ -13,15 +12,12 @@ import { useTranslation } from 'react-i18next';
 
 export default function DefaultForm(props) {
   const { getPConnect, readOnly, additionalProps, configAlternateDesignSystem } = props;
-
   const { hasBeenWrapped } = useContext(ReadOnlyDefaultFormContext);
-  const { DFName } = useContext(DefaultFormContext);
   const { instructionText: passedThroughInstructionText } = useContext(DefaultFormContext);
   const { t } = useTranslation();
 
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
 
-  const [declaration, setDeclaration] = useState({ text1: '', warning1: '' });
   let containerName = null;
   if (getPConnect().getDataObject().caseInfo?.assignments) {
     containerName = getPConnect().getDataObject().caseInfo?.assignments[0].name;
@@ -122,36 +118,6 @@ export default function DefaultForm(props) {
         isArrayDeepMerge: false
       }
     });
-  }, []);
-
-  useEffect(() => {
-    if (containerName === 'Declaration') {
-      // Get current context
-      const context = PCore.getContainerUtils().getActiveContainerItemName(
-        `${PCore.getConstants().APP.APP}/primary`
-      );
-      // Get is documentation required flag value
-      const isDocumentationRequired = PCore.getStoreValue(
-        '.IsDocumentationRequired',
-        'context_data.caseInfo.content.Claim.summary_of_when_conditions__',
-        context
-      );
-
-      if (isDocumentationRequired) {
-        const declarationText1 = PCore.getStoreValue(
-          '.DeclarationText1',
-          'caseInfo.content.Claim',
-          context
-        );
-        const declarationWarning1 = PCore.getStoreValue(
-          '.DeclarationWarning1',
-          'caseInfo.content.Claim',
-          context
-        );
-
-        setDeclaration({ text1: declarationText1, warning1: declarationWarning1 });
-      }
-    }
   }, []);
 
   const dfChildren = arChildren?.map((kid, idx) => {
@@ -258,11 +224,6 @@ export default function DefaultForm(props) {
           {instructionExists && !singleQuestionPage && (
             <InstructionTextComponent instructionText={instructionText} />
           )}
-          {declaration.text1 && DFName === -1 && (
-            <div id='declarationText1' className='govuk-body'>
-              <ParsedHTML htmlString={declaration.text1} />
-            </div>
-          )}
           {cssClassHook === 'u-childRemove' ? (
             <>
               {dfChildren[0]}
@@ -270,11 +231,6 @@ export default function DefaultForm(props) {
             </>
           ) : (
             <>{dfChildren}</>
-          )}
-          {declaration.warning1 && DFName === -1 && (
-            <div id='declarationWarning1' className='govuk-body'>
-              <ParsedHTML htmlString={declaration.warning1} />
-            </div>
           )}
         </DefaultFormContext.Provider>
       }

@@ -70,7 +70,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
     displayOrder,
     name
   } = props;
-  
+
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const [errorMessage, setErrorMessage] = useState(localizedVal(validatemessage));
   const [isAutocompleteLoaded, setAutocompleteLoaded] = useState(false);
@@ -193,8 +193,10 @@ export default function AutoComplete(props: AutoCompleteProps) {
   };
 
   useEffect(() => {
-    const element = document.getElementById(name) as HTMLInputElement;
-    const elementUl = document.getElementById(`${name}__listbox`) as HTMLInputElement;
+    const element = document.getElementById(formattedPropertyName) as HTMLInputElement;
+    const elementUl = document.getElementById(
+      `${formattedPropertyName}__listbox`
+    ) as HTMLInputElement;
 
     if (validatemessage) {
       element?.classList.add('govuk-input--error');

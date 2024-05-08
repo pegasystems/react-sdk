@@ -5,6 +5,7 @@ import MainWrapper from '../../components/BaseComponents/MainWrapper';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import useServiceShuttered from '../../components/helpers/hooks/useServiceShuttered';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
+import { formatter } from '../../components/override-sdk/template/DefaultForm/DefaultFormUtils';
 
 declare const PCore: any;
 
@@ -28,6 +29,23 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
       ? 'https://www.tax.service.gov.uk/feedback/ODXCHBUA'
       : 'https://www.tax.service.gov.uk/feedback/ODXCHB';
   }
+
+  function removeSpacesFromName(finalText, textToBeReplaced, textToBeFormatted) {
+    return finalText.replaceAll(
+      textToBeReplaced,
+      `<span class="govuk-hidespace">${textToBeFormatted.trim()}</span>`
+    );
+  }
+
+  function formatAndSetListData(listData) {
+    const finalText = formatter(
+      listData,
+      `<span class="govuk-hidespace">`,
+      `</span>`,
+      removeSpacesFromName
+    );
+    setDocumentList(finalText);
+  }
   useEffect(() => {
     if (caseId && isUnAuth) {
       sessionStorage.setItem('caseRefId', caseId);
@@ -50,7 +68,7 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
           setIsBornAbroadOrAdopted(true);
         }
         setLoading(false);
-        setDocumentList(listData.DocumentContentHTML);
+        formatAndSetListData(listData.DocumentContentHTML);
         if (listData.DocumentContentHTML.includes('data-ninopresent="false"')) {
           setIsCaseRefRequired(true);
         }

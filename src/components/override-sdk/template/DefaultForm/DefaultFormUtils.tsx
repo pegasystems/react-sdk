@@ -19,7 +19,7 @@ function replaceInsetText(finalText, textToBeReplaced, textToBeFormatted) {
   return finalText.replaceAll(textToBeReplaced, textToBeInserted);
 }
 
-function formatter(finalText, stringWithTag, endtag, replace) {
+export function formatter(finalText, stringWithTag, endtag, replace) {
   const startOfMarkedSpan = finalText.indexOf(stringWithTag); // e.g. abjhfds*<strong>WARNING!!jkgkjhhlk</strong>abjkk
   const endOfMarkedSpan = finalText.indexOf(endtag, startOfMarkedSpan) + endtag.length; // e.g. abjhfds<strong>WARNING!!jkgkjhhlk</strong>*abjkk
   const textToReplace = finalText.substring(startOfMarkedSpan, endOfMarkedSpan); // e.g. <strong>WARNING!!jkgkjhhlk</strong>

@@ -21,6 +21,7 @@ const LanguageToggle = props => {
       PCore.getLocaleUtils().loadLocaleResources([
         PCore.getLocaleUtils().GENERIC_BUNDLE_KEY,
         '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE',
+        '@BASECLASS!DATAPAGE!D_SCOPEDREFERENCEDATALISTBYTYPE',
         'HMRC-CHB-WORK-CLAIM!CASE!CLAIM'
       ]);
 

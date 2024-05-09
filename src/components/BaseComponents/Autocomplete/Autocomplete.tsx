@@ -38,6 +38,9 @@ export default function AutoComplete(props) {
         selectElement: document.getElementById(id),
         defaultValue: ''
       });
+
+      // Publish event so that errorSummary component can be updated with autocomplete field errors after rendering.
+      PCore.getPubSubUtils().publish('autoCompleteFieldPresent', { error: errorText });
     }
   }, [optionList]);
   const arrOptions =

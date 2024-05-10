@@ -89,7 +89,7 @@
     "@kooneko/livereload-webpack-plugin": "^1.2.1",
     "@loadable/component": "^5.16.3",
     "@pega/configs": "^0.6.0",
-    "@pega/constellationjs": "23.1.2-test-20240506",
+    "@pega/constellationjs": "23.1.2-Test-10052024",
     "@pega/cspell-config": "^0.7.1",
     "@pega/dx-component-builder-sdk": "~0.23.20",
     "@pega/eslint-config": "^0.7.1",

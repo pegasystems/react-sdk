@@ -6,10 +6,11 @@ import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import useServiceShuttered from '../../components/helpers/hooks/useServiceShuttered';
 import ShutterServicePage from '../../components/AppComponents/ShutterServicePage';
 
-const StartPage: React.FC<{ onStart: React.MouseEventHandler; onBack: any }> = ({
-  onStart,
-  onBack
-}) => {
+const StartPage: React.FC<{
+  onStart: React.MouseEventHandler;
+  onBack: any;
+  isStartButtonDisabled: boolean;
+}> = ({ onStart, onBack, isStartButtonDisabled }) => {
   const { t } = useTranslation();
   const serviceShuttered = useServiceShuttered();
 
@@ -71,7 +72,7 @@ const StartPage: React.FC<{ onStart: React.MouseEventHandler; onBack: any }> = (
                 {t('DO_NOT_DELAY_MAKING')}
               </strong>
             </div>
-            <Button variant='start' onClick={onStart}>
+            <Button variant='start' disabled={isStartButtonDisabled} onClick={onStart}>
               {t('START_NOW')}
             </Button>
             <p className='govuk-body'>

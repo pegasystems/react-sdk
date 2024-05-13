@@ -2,15 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
-export default function Button(props:React.PropsWithChildren<any>) {
-  const {
-    disabled,
-    id,
-    variant,
-    onClick,
-    children,
-    attributes = {}
-  } = props;
+export default function Button(props: React.PropsWithChildren<any>) {
+  const { disabled, id, variant, onClick, children, attributes = {} } = props;
 
   const { t } = useTranslation();
   const [pointerState, setPointerState] = useState<Object>({});
@@ -26,10 +19,20 @@ export default function Button(props:React.PropsWithChildren<any>) {
     }
   }, [pointerState]);
 
+  let disablebuttonAttributes = {};
+
+  if (disabled) {
+    disablebuttonAttributes = {
+      'aria-disabled': true,
+      disabled: 'disabled'
+    };
+  }
+
   if (variant === 'start') {
     return (
       <a
         href='#'
+        {...disablebuttonAttributes}
         role='button'
         draggable='false'
         className={'govuk-button govuk-button--start'.concat(' ', attributes.className)}
@@ -91,8 +94,7 @@ export default function Button(props:React.PropsWithChildren<any>) {
 
   if (disabled) {
     buttonAttributes = {
-      'aria-disabled': true,
-      disabled: 'disabled',
+      ...disablebuttonAttributes,
       ...buttonAttributes
     };
   }

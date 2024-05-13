@@ -42,8 +42,6 @@ let signoutTimeout = null;
 let milisecondsTilSignout = 115 * 1000;
 let milisecondsTilWarning = 780 * 1000;
 
-let secondsTillStartNowUnblocked = 30 * 1000;
-
 // Clears any existing timeouts and starts the timeout for warning, after set time shows the modal and starts signout timer
 function initTimeout(setShowTimeoutModal) {
   clearTimeout(applicationTimeout);
@@ -84,7 +82,7 @@ export default function ChildBenefitsClaim() {
   const [showPortalBanner, setShowPortalBanner] = useState(false);
   const [assignmentPConn, setAssignmentPConn] = useState(null);
   const [isCreateCaseBlocked, setIsCreateCaseBlocked] = useState(false);
-  const [timeoutID, setTimeoutID] = useState(null);
+
   const history = useHistory();
 
   function resetAppDisplay() {
@@ -156,21 +154,10 @@ export default function ChildBenefitsClaim() {
   }
 
   function startNow() {
-    if (!isCreateCaseBlocked) {
+    // Check if PConn is created, and create case if it is
+    if (pConn) {
       setIsCreateCaseBlocked(true);
-
-      // Check if PConn is created, and create case if it is
-      if (pConn) {
-        createCase();
-      }
-
-      if (typeof timeoutID === 'number') {
-        clearTimeout(timeoutID);
-      }
-      const timeout = setTimeout(() => {
-        setIsCreateCaseBlocked(false);
-      }, secondsTillStartNowUnblocked);
-      setTimeoutID(timeout);
+      createCase();
     }
   }
 
@@ -456,9 +443,6 @@ export default function ChildBenefitsClaim() {
             milisecondsTilWarning = sdkConfig.timeoutConfig.secondsTilWarning * 1000;
           if (sdkConfig.timeoutConfig.secondsTilLogout)
             milisecondsTilSignout = sdkConfig.timeoutConfig.secondsTilLogout * 1000;
-          if (sdkConfig.timeoutConfig.secondsTillStartNowUnblocked)
-            secondsTillStartNowUnblocked =
-              sdkConfig.timeoutConfig.secondsTillStartNowUnblocked * 1000;
         })
         .finally(() => {
           // Subscribe to any store change to reset timeout counter
@@ -611,7 +595,13 @@ export default function ChildBenefitsClaim() {
         <div id='pega-part-of-page'>
           <div id='pega-root'></div>
         </div>
-        {showStartPage && <StartPage onStart={startNow} onBack={displayUserPortal} />}
+        {showStartPage && (
+          <StartPage
+            onStart={startNow}
+            onBack={displayUserPortal}
+            isStartButtonDisabled={isCreateCaseBlocked}
+          />
+        )}
         {showUserPortal && (
           <UserPortal beginClaim={beginClaim} showPortalBanner={showPortalBanner}>
             {!loadinginProgressClaims && inprogressClaims.length !== 0 && (

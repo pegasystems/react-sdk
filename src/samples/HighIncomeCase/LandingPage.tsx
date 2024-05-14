@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import  MainWrapper   from '../../components/BaseComponents/MainWrapper';
 import  RadioButtons  from '../../components/BaseComponents/RadioButtons/RadioButtons';
@@ -8,13 +8,15 @@ import AppHeader from './reuseables/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
+import AppContext from './reuseables/AppContext';
 
 export default function LandingPage(props){
     const {onProceedHandler} = props;    
     const beforeOptionValue = 'before6April';     
     const onOrAfterOptionValue = 'onOrAfter6April'; 
     const [errorText, setErrorText] = useState('');
-    const [selectedOption, setSelectedOption] = useState();  
+    const [selectedOption, setSelectedOption] = useState(); 
+    const {showLanguageToggle} = useContext(AppContext); 
 
     const { hmrcURL } = useHMRCExternalLinks();
 
@@ -44,7 +46,7 @@ export default function LandingPage(props){
         <>
             <AppHeader
                 appname={t('HIGH_INCOME_BENEFITS')}
-                hasLanguageToggle
+                hasLanguageToggle={showLanguageToggle}
                 betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=463&referrerUrl=${window.location}`}                  
             />
             <div className='govuk-width-container'>                

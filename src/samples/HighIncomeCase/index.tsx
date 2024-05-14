@@ -13,7 +13,8 @@ const HighIncomeCase: FunctionComponent<any> = () => {
   const [showLandingPage, setShowLandingPage] = useState<boolean>(
     !window.location.search.includes('code')
   );
-  const [shuttered, setShuttered] = useState(null);
+  const [shuttered, setShuttered] = useState(null);  
+  const [showLanguageToggle, setShowLanguageToggle] = useState(false);
 
   const { t } = useTranslation();
   registerServiceName(t('HIGH_INCOME_BENEFITS'));
@@ -25,6 +26,11 @@ const HighIncomeCase: FunctionComponent<any> = () => {
   const toggleShowLandingPageTrue = () => {
     setShowLandingPage(true);
   };
+  useEffect(() => {
+    getSdkConfig().then((config)=>{
+      setShowLanguageToggle(config?.hicbcOptinConfig?.showLanguageToggle);
+    })
+  }, [])
 
   useEffect(() => {
     getSdkConfig().then(config => {
@@ -62,7 +68,7 @@ const HighIncomeCase: FunctionComponent<any> = () => {
   } else {
     return (
       <AppContext.Provider
-        value={{ appBacklinkProps: { appBacklinkAction: toggleShowLandingPageTrue } }}
+        value={{ appBacklinkProps: { appBacklinkAction: toggleShowLandingPageTrue }, showLanguageToggle: showLanguageToggle}}
       >
         {showLandingPage ? (
           <LandingPage onProceedHandler={() => landingPageProceedHandler()} />

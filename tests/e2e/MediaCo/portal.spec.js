@@ -108,9 +108,6 @@ test.describe('E2E test', () => {
     const attachmentID = await page.locator('div[id="attachment-ID"]').textContent();
     await page.setInputFiles(`#${attachmentID}`, filePath);
 
-    const pCoreVersion = await page.evaluate(() => window.PCore.getPCoreVersion());
-    const isInfinity23OrHigher = ['8.23.0', '23.1.1'].includes(pCoreVersion);
-
     await Promise.all([
       page.waitForResponse(
         `${endpoints.serverConfig.infinityRestServerUrl}${
@@ -125,7 +122,7 @@ test.describe('E2E test', () => {
       page.waitForResponse(
         `${endpoints.serverConfig.infinityRestServerUrl}${
           endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ''
-        }/api/application/v2/cases/${currentCaseID}/attachments${isInfinity23OrHigher ? '?includeThumbnail=false' : ''}`
+        }/api/application/v2/cases/${currentCaseID}/attachments?includeThumbnail=false`
       )
     ]);
 

@@ -71,7 +71,7 @@ export default function FormGroup({
           {removeRedundantString(errMessage)}
         </p>
       )}
-      <div>{children}</div>
+      {children}
     </div>
   );
 }

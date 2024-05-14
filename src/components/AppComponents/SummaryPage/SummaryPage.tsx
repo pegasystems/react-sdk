@@ -13,7 +13,7 @@ export default function SummaryPage(props){
     }, [summaryTitle, summaryBanner ])    
     
     return  <>
-        {!summaryBanner && summaryContent && <Button variant='backlink' onClick={backlinkAction}>{backlinkText}</Button> }
+        {!summaryBanner && summaryContent && backlinkAction && <Button variant='backlink' onClick={backlinkAction}>{backlinkText}</Button> }
         <MainWrapper>
             { (summaryBanner && summaryBanner !== "") ?
                     <div className='govuk-panel govuk-panel--confirmation govuk-!-margin-bottom-7'>

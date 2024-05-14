@@ -22,16 +22,12 @@ const HighIncomeCase: FunctionComponent<any> = () => {
     localStorage.setItem('showLandingPage', 'false');
     setShowLandingPage(false);
   };
-
-  const toggleShowLandingPageTrue = () => {
-    setShowLandingPage(true);
-  };
   useEffect(() => {
     getSdkConfig().then((config)=>{
       setShowLanguageToggle(config?.hicbcOptinConfig?.showLanguageToggle);
     })
   }, [])
-
+  
   useEffect(() => {
     getSdkConfig().then(config => {
       if (config.hicbcOptinConfig?.shutterService) {
@@ -68,7 +64,7 @@ const HighIncomeCase: FunctionComponent<any> = () => {
   } else {
     return (
       <AppContext.Provider
-        value={{ appBacklinkProps: { appBacklinkAction: toggleShowLandingPageTrue }, showLanguageToggle: showLanguageToggle}}
+        value={{ appBacklinkProps: {}, showLanguageToggle}}
       >
         {showLandingPage ? (
           <LandingPage onProceedHandler={() => landingPageProceedHandler()} />

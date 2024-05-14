@@ -38,10 +38,6 @@ const ClaimPage: FunctionComponent<any> = () => {
     
     const history = useHistory();
 
-     const redirectToLandingPage = () => {
-      triggerLogout();
-    }
-
     const [showTimeoutModal, setShowTimeoutModal] = useState(false);  
     const [showSignoutModal, setShowSignoutModal] = useState(false);
 
@@ -59,7 +55,7 @@ const ClaimPage: FunctionComponent<any> = () => {
         loginIfNecessary({ appName: 'embedded', mainRedirect: true });        
     } 
 
-    const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone, {appBacklinkProps:{appBacklinkAction: redirectToLandingPage, appBacklinkText:t("CLICK_TO_LOGOUT")}});
+    const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone, {appBacklinkProps:{}});
     
     
     useEffect(() => {
@@ -223,8 +219,7 @@ const ClaimPage: FunctionComponent<any> = () => {
               summaryPageContent.content}
               summaryTitle={summaryPageContent.title}
               summaryBanner={summaryPageContent.banner}
-              backlinkProps={{backlinkAction:redirectToLandingPage,
-                              backlinkText:t('CLICK_TO_LOGOUT')}}  
+              backlinkProps={{}}  
             />}        
           </>
         )}

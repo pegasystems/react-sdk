@@ -6,7 +6,7 @@ import FieldSet from '../FormGroup/FieldSet';
 import FormGroup from '../FormGroup/FormGroup';
 
 function makeHintId(identifier) {
-  return `${identifier}-hint`;
+  return `${identifier}__assistiveHint`;
 }
 
 declare global {

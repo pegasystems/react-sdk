@@ -120,7 +120,7 @@ export default function ChildBenefitsClaim() {
   let operatorId = '';
   const serviceName = t('CLAIM_CHILD_BENEFIT');
   registerServiceName(serviceName);
-
+  let assignmentFinishedFlag = false;
   useEffect(() => {
     setPageTitle();
   }, [
@@ -269,20 +269,28 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       'assignmentFinished',
       () => {
-        setShowStartPage(false);
-        setShowUserPortal(false);
-        setShowPega(false);
-        const containername = PCore.getContainerUtils().getActiveContainerItemName(
-          `${PCore.getConstants().APP.APP}/primary`
-        );
-        const context = PCore.getContainerUtils().getActiveContainerItemName(
-          `${containername}/workarea`
-        );
-        const status = PCore.getStoreValue('.pyStatusWork', 'caseInfo.content', context);
-        if (status === 'Resolved-Discarded') {
-          displayServiceNotAvailable();
+        if (!assignmentFinishedFlag) { // Temporary workaround to restrict infinite update calls
+          setShowStartPage(false);
+          setShowUserPortal(false);
+          setShowPega(false);
+          const containername = PCore.getContainerUtils().getActiveContainerItemName(
+            `${PCore.getConstants().APP.APP}/primary`
+          );
+          const context = PCore.getContainerUtils().getActiveContainerItemName(
+            `${containername}/workarea`
+          );
+          const status = PCore.getStoreValue('.pyStatusWork', 'caseInfo.content', context);
+          if (status === 'Resolved-Discarded') {
+            displayServiceNotAvailable();
 
-          PCore.getContainerUtils().closeContainerItem(context);
+            PCore.getContainerUtils().closeContainerItem(context);
+            //Temporary workaround to restrict infinite update calls
+            assignmentFinishedFlag = true;
+            PCore?.getPubSubUtils().unsubscribe(
+              PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
+              'assignmentFinished'
+            );
+          }
         }
       },
       'assignmentFinished'

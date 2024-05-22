@@ -145,7 +145,7 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
         <p className='govuk-body'> {t('WE_HAVE_SENT_YOUR_APPLICATION')}</p>
         <h2 className='govuk-heading-m'> {t('WHAT_HAPPENS_NEXT')}</h2>
         {isUnAuth && isCaseRefRequired && <p className='govuk-body'>{t('PRINT_THIS_INFO')}</p>}
-        <p className='govuk-body'> {t('WE_WILL_TELL_YOU_IN_14_DAYS')}</p>
+        <p className='govuk-body'> {t('WE_WILL_TELL_YOU_IN_28_DAYS')}</p>
         <p className='govuk-body'>
           <a href={getFeedBackLink()} className='govuk-link' target='_blank' rel='noreferrer'>
             {t('WHAT_DID_YOU_THINK_OF_THIS_SERVICE')} {t('OPENS_IN_NEW_TAB')}

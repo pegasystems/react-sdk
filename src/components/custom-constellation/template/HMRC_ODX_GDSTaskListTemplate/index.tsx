@@ -1,5 +1,12 @@
 import React from 'react';
-import { Grid, Text, SummaryList, Status, withConfiguration } from '@pega/cosmos-react-core';
+import {
+  Grid,
+  Text,
+  SummaryList,
+  Status,
+  withConfiguration,
+  Button
+} from '@pega/cosmos-react-core';
 import type { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import StyledHmrcOdxGdsTaskListTemplateWrapper from './styles';
 
@@ -16,6 +23,7 @@ function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemplateProps) {
   const context = getPConnect().getContextName();
   const caseInfo = getPConnect().getCaseSummary();
   const data = caseInfo.content.CaseTaskList;
+  const caseType = caseInfo.content.CaseType;
 
   let totalSections = 0;
   let completedSections = 0;
@@ -74,7 +82,19 @@ function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemplateProps) {
           // loading={}
           noItemsText='No items'
         ></SummaryList>
+        {completedSections === totalSections ? (
+          <Button
+            variant='primary'
+            compact={false}
+            onClick={() => handleOnClick(caseType === 'Auth' ? 'Save And Continue' : 'Continue')}
+          >
+            {caseType === 'Auth' ? 'Save And Continue' : 'Continue'}
+          </Button>
+        ) : (
+          <></>
+        )}
       </div>
+
       <Grid
         className='u-hide'
         container={{

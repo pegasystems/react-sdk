@@ -183,6 +183,19 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
             })}
         </ul>
       </div>
+      {completedSections === totalSections ? (
+        <button
+          className='govuk-button'
+          data-module='govuk-button'
+          onClick={() => handleOnClick(cssHooks === 'unauth' ? 'Continue' : 'Save And Continue')}
+          type='button'
+        >
+          {cssHooks === 'unauth' ? t('CONTINUE') : t('SAVE_AND_CONTINUE')}
+        </button>
+      ) : (
+        <></>
+      )}
+
       <Grid
         className='govuk-!-display-none'
         container={{

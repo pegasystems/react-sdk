@@ -5,7 +5,8 @@
     "./src/components/**/*.tsx",
     "./src/components/**/*.js",
     "./src/components/**/*.jsx",
-    "./node_modules/react-i18next/dist/commonjs/index.js"
+    "./node_modules/react-i18next/dist/commonjs/index.js",
+    "./src/samples/HighIncomeCase/reuseables/AppContext.ts"
   ],
   "exclude": [
     "./src/**/*.stories.ts",

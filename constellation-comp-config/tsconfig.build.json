@@ -7,7 +7,8 @@
     "../src/components/custom-constellation/**/**/*.jsx",
     "../src/components/helpers/formatters/ParsedHtml.tsx",
     "../src/components/helpers/hooks/QuestionDisplayHooks.ts",
-    "../src/components/helpers/HMRCAppContext.tsx"
+    "../src/components/helpers/HMRCAppContext.tsx",
+    "../src/samples/HighIncomeCase/reuseables/AppContext.ts"
     // "../src/components/override-sdk/**/**/*.ts",
     // "../src/components/override-sdk/**/**/*.tsx",
     // "../src/components/override-sdk/**/**/*.js",

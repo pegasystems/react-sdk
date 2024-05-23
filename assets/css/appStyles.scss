@@ -54,3 +54,31 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
 .pg-conf-bank > .govuk-summary-list__row {
   display: none;
 }
+
+.loading-spinner {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  border: 6px solid #dee0e2;
+  border-radius: 50%;
+  border-top-color: #1d70b8;
+  width: 40px;
+  height: 40px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite; 
+}
+
+.spinner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

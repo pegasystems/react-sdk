@@ -269,7 +269,8 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       'assignmentFinished',
       () => {
-        if (!assignmentFinishedFlag) { // Temporary workaround to restrict infinite update calls
+        if (!assignmentFinishedFlag) {
+          // Temporary workaround to restrict infinite update calls
           setShowStartPage(false);
           setShowUserPortal(false);
           setShowPega(false);
@@ -284,7 +285,7 @@ export default function ChildBenefitsClaim() {
             displayServiceNotAvailable();
 
             PCore.getContainerUtils().closeContainerItem(context);
-            //Temporary workaround to restrict infinite update calls
+            //  Temporary workaround to restrict infinite update calls
             assignmentFinishedFlag = true;
             PCore?.getPubSubUtils().unsubscribe(
               PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,

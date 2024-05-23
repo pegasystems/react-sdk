@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 export default function StaticPageErrorSummary({ errorSummary, linkHref }) {
+  const { t } = useTranslation();
   return (
     <>
       <>
         {errorSummary && errorSummary.length > 0 ? (
           <div className='govuk-error-summary' data-module='govuk-error-summary' tabIndex={-1}>
             <div role='alert'>
-              <h2 className='govuk-error-summary__title'>There is a problem</h2>
+              <h2 className='govuk-error-summary__title'>{t('THERE_IS_A_PROBLEM')}</h2>
               <div className='govuk-error-summary__body'>
                 <ul className='govuk-list govuk-error-summary__list'>
                   <li key='error-summary'>

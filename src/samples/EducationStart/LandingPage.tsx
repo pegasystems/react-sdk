@@ -38,8 +38,9 @@ export default function LandingPage(props) {
     history.push('/education/start');
     // appName and mainRedirect params have to be same as earlier invocation
     loginIfNecessary({ appName: 'embedded', mainRedirect: true });
-    // eslint-disable-next-line no-console
+
     // TODO - Need to cover with future userstory
+    // eslint-disable-next-line no-console
     console.log(operatorName);
   }
 

@@ -4,7 +4,19 @@
   "description": "Boolean",
   "type": "Field",
   "subtype": "Boolean",
-  "componentKey" : "Checkbox",
+  "componentKey": "Checkbox",
   "properties": [
+    {
+      "name": "ShowChangeLink",
+      "label": "Show change link",
+      "format": "BOOLEAN"
+    },
+    {
+      "format": "TEXT",
+      "name": "stepId",
+      "label": "stepId for Changelink",
+      "required": false,
+      "visibility": "$this.ShowChangeLink"
+    }
   ]
 }

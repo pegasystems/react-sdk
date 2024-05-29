@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import GDSAutocomplete from '../../../BaseComponents/Autocomplete/Autocomplete';
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import isDeepEqual from 'fast-deep-equal/react';
@@ -8,6 +8,9 @@ import FieldValueList from '@pega/react-sdk-components/lib/components/designSyst
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
+import GDSCheckAnswers from '../../../BaseComponents/CheckAnswer/index';
+import { ReadOnlyDefaultFormContext } from '../../../helpers/HMRCAppContext';
+import { checkStatus } from '../../../helpers/utils';
 
 interface IOption {
   key: string;
@@ -52,6 +55,7 @@ interface AutoCompleteProps extends PConnFieldProps {
   displayOrder: string;
   hideLabel: boolean;
   name: string;
+  configAlternateDesignSystem: any;
 }
 
 export default function AutoComplete(props: AutoCompleteProps) {
@@ -68,9 +72,10 @@ export default function AutoComplete(props: AutoCompleteProps) {
     helperText,
     hideLabel,
     displayOrder,
+    configAlternateDesignSystem,
     name
   } = props;
-
+  const { hasBeenWrapped } = useContext(ReadOnlyDefaultFormContext);
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const [errorMessage, setErrorMessage] = useState(localizedVal(validatemessage));
   const [isAutocompleteLoaded, setAutocompleteLoaded] = useState(false);
@@ -217,11 +222,36 @@ export default function AutoComplete(props: AutoCompleteProps) {
   if (displayMode === 'STACKED_LARGE_VAL') {
     return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
   }
+  const selectedOption = options?.filter(item => {
+    return item?.key === value;
+  });
+  const inprogressStatus = checkStatus();
+
+  if (
+    hasBeenWrapped &&
+    configAlternateDesignSystem?.ShowChangeLink &&
+    inprogressStatus === 'Open-InProgress'
+  ) {
+    return (
+      <GDSCheckAnswers
+        label={props.label}
+        value={selectedOption[0]?.value}
+        name={name}
+        stepId={configAlternateDesignSystem.stepId}
+        getPConnect={getPConnect}
+        required={false}
+        disabled={false}
+        validatemessage=''
+        onChange={undefined}
+        readOnly={false}
+        testId=''
+        helperText=''
+        hideLabel={false}
+      />
+    );
+  }
 
   if (readOnly) {
-    const selectedOption = options?.filter(item => {
-      return item?.key === value;
-    });
     return (
       selectedOption?.length > 0 && (
         <ReadOnlyDisplay label={label} value={selectedOption[0]?.value} name={name} />

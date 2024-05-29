@@ -118,6 +118,14 @@ export const removeRedundantString = (redundantString: string, separator: string
   return uniqueString;
 };
 
+export const checkStatus = () => {
+  const containername = PCore.getContainerUtils().getActiveContainerItemName(
+    `${PCore.getConstants().APP.APP}/primary`
+  );
+  const context = PCore.getContainerUtils().getActiveContainerItemName(`${containername}/workarea`);
+  const status = PCore.getStoreValue('.pyStatusWork', 'caseInfo.content', context);
+  return status;
+};
 export const triggerLogout = () => {
   let authType = 'gg';
   getSdkConfig().then(sdkConfig => {

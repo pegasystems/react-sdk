@@ -1,9 +1,22 @@
 {
-    "componentKey": "Dropdown",
-    "name": "Dropdown",
-    "label": "Dropdown",
-    "description": "Picklist",
-    "type": "Field",
-    "subtype": "Picklist",
-    "properties": []
+  "componentKey": "Dropdown",
+  "name": "Dropdown",
+  "label": "Dropdown",
+  "description": "Picklist",
+  "type": "Field",
+  "subtype": "Picklist",
+  "properties": [
+    {
+      "name": "ShowChangeLink",
+      "label": "Show change link",
+      "format": "BOOLEAN"
+    },
+    {
+      "format": "TEXT",
+      "name": "stepId",
+      "label": "stepId for Changelink",
+      "required": false,
+      "visibility": "$this.ShowChangeLink"
+    }
+  ]
 }

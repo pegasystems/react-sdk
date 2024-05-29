@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import FieldSet from '../../../BaseComponents/FormGroup/FieldSet';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
+import GDSCheckAnswers from '../../../BaseComponents/CheckAnswer/index';
+import { ReadOnlyDefaultFormContext } from '../../../helpers/HMRCAppContext';
+import { checkStatus } from '../../../helpers/utils';
 
 declare const PCore: any;
 
@@ -14,7 +17,7 @@ export default function Group(props) {
   const [stateChanged, setStateChanged] = useState(false);
 
   const { isOnlyField } = useIsOnlyField(props.displayOrder);
-
+  const { hasBeenWrapped } = useContext(ReadOnlyDefaultFormContext);
   const formattedContext = thePConn.options.pageReference
     ? thePConn.options.pageReference.split('.').pop()
     : '';
@@ -38,18 +41,51 @@ export default function Group(props) {
   if (children?.length > 0) {
     const errors = [''];
     if (children[0].props?.getPConnect().getMetadata().type === 'Checkbox') {
+      const valuesList = children
+        .filter(child => {
+          const childPConnect = child.props.getPConnect();
+          const resolvedProps = childPConnect.resolveConfigProps(childPConnect.getConfigProps());
+
+          return resolvedProps.value;
+        })
+        .map(child => {
+          const childPConnect = child.props.getPConnect();
+          const resolvedProps = childPConnect.resolveConfigProps(childPConnect.getConfigProps());
+          return resolvedProps.caption;
+        });
+      const inprogressStatus = checkStatus();
+
+      const getconfigAlternateDesignSystem = children[0].props.getPConnect().getMetadata()
+        .config.configAlternateDesignSystem;
+
+      if (getconfigAlternateDesignSystem) {
+        let stepId = getconfigAlternateDesignSystem?.stepId;
+        stepId = stepId.split('@L ').pop();
+        if (
+          hasBeenWrapped &&
+          getconfigAlternateDesignSystem?.ShowChangeLink &&
+          inprogressStatus === 'Open-InProgress'
+        ) {
+          return (
+            <GDSCheckAnswers
+              label={heading}
+              value={valuesList}
+              name={props.name}
+              stepId={stepId}
+              getPConnect={getPConnect}
+              required={false}
+              disabled={false}
+              validatemessage=''
+              onChange={undefined}
+              readOnly={false}
+              testId=''
+              helperText=''
+              hideLabel={false}
+            />
+          );
+        }
+      }
       if (readOnly) {
-        const valuesList = children
-          .filter(child => {
-            const childPConnect = child.props.getPConnect();
-            const resolvedProps = childPConnect.resolveConfigProps(childPConnect.getConfigProps());
-            return resolvedProps.value;
-          })
-          .map(child => {
-            const childPConnect = child.props.getPConnect();
-            const resolvedProps = childPConnect.resolveConfigProps(childPConnect.getConfigProps());
-            return resolvedProps.caption;
-          });
         return <ReadOnlyDisplay value={valuesList} label={heading} />;
       }
 
@@ -77,6 +113,7 @@ export default function Group(props) {
       let firstOptionPropertyName = null;
       children.forEach((child, index) => {
         const childPConnect = child.props.getPConnect();
+
         const resolvedProps = childPConnect.resolveConfigProps(childPConnect.getConfigProps());
         childPConnect.populateAdditionalProps(childPConnect.getConfigProps());
         errors.push(

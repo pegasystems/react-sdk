@@ -4,8 +4,20 @@
   "description": "Picklist",
   "type": "Field",
   "subtype": "Picklist",
-  "componentKey" : "AutoComplete",
+  "componentKey": "AutoComplete",
   "icon": "",
   "properties": [
+    {
+      "name": "ShowChangeLink",
+      "label": "Show change link",
+      "format": "BOOLEAN"
+    },
+    {
+      "format": "TEXT",
+      "name": "stepId",
+      "label": "stepId for Changelink",
+      "required": false,
+      "visibility": "$this.ShowChangeLink"
+    }
   ]
 }

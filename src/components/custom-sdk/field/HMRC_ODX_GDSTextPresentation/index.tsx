@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { TextField } from '@material-ui/core';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyValue from '../../../BaseComponents/ReadOnlyValue/ReadOnlyValue';
 
 import StyledHmrcOdxGdsTextPresentationWrapper from './styles';
+import GDSCheckAnswers from '../../../BaseComponents/CheckAnswer';
+import { ReadOnlyDefaultFormContext } from '../../../helpers/HMRCAppContext';
+import { checkStatus } from '../../../helpers/utils';
 
 interface HmrcOdxGdsTextPresentationProps extends PConnFieldProps {
+  stepId: any;
   fieldMetadata?: any;
   configAlternateDesignSystem;
   displayOrder?: any;
+  name?: any;
 }
 
 // props passed in combination of props from property panel (config.json) and run time props from Constellation
@@ -25,10 +30,13 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
     onBlur,
     readOnly = true,
     testId,
+    name,
     fieldMetadata,
     helperText,
+    getPConnect,
     configAlternateDesignSystem
   } = props;
+  const { hasBeenWrapped } = useContext(ReadOnlyDefaultFormContext);
   const helperTextToDisplay = validatemessage || helperText;
 
   const maxLength = fieldMetadata?.maxLength;
@@ -60,6 +68,26 @@ export default function HmrcOdxGdsTextPresentation(props: HmrcOdxGdsTextPresenta
       .replace(/(.{2})/g, '$1 ')
       .trim();
   };
+  const inprogressStatus = checkStatus();
+  if (hasBeenWrapped && props.stepId && inprogressStatus === 'Open-InProgress') {
+    return (
+      <GDSCheckAnswers
+        label={label}
+        value={formatValue(value)}
+        name={name}
+        stepId={props.stepId}
+        getPConnect={getPConnect}
+        required={false}
+        disabled={false}
+        validatemessage=''
+        onChange={undefined}
+        readOnly={false}
+        testId=''
+        helperText=''
+        hideLabel={false}
+      />
+    );
+  }
 
   if (readOnly) {
     return <ReadOnlyValue label={label} value={formatValue(value)} />;

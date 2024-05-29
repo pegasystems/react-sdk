@@ -5,6 +5,11 @@ export default function ReadOnlyDisplay(props) {
   const COMMA_DELIMITED_FIELD = 'CSV';
   const { label, value, name } = props;
   const [formattedValue, setFormattedValue] = useState<string | []>(value);
+  let isCSV = false;
+
+  if (name && name.includes(COMMA_DELIMITED_FIELD) && value.includes(',')) {
+    isCSV = true;
+  }
 
   useEffect(() => {
     if (name && name.indexOf(COMMA_DELIMITED_FIELD) !== -1 && value.indexOf(',') !== -1) {
@@ -17,16 +22,19 @@ export default function ReadOnlyDisplay(props) {
     <div className='govuk-summary-list__row'>
       <dt className='govuk-summary-list__key'>{label}</dt>
 
-      <dd className='govuk-summary-list__value'>
+      <dd className='govuk-summary-list__value' data-is-csv={isCSV}>
         {Array.isArray(formattedValue) ? (
-          <ul className='govuk-list'>
-            {formattedValue.map(valueItem => (
-              <li key={valueItem}>{valueItem}</li>
+          <>
+            {formattedValue?.map(item => (
+              <React.Fragment key={item}>
+                {item}
+                <br />
+              </React.Fragment>
             ))}
-          </ul>
+          </>
         ) : (
           formattedValue || value
-        )}{' '}
+        )}
       </dd>
     </div>
   );

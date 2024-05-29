@@ -4,8 +4,20 @@
   "description": "Date only",
   "type": "Field",
   "subtype": "Date",
-  "componentKey" : "Date",
+  "componentKey": "Date",
   "properties": [
+    {
+      "name": "ShowChangeLink",
+      "label": "Show change link",
+      "format": "BOOLEAN"
+    },
+    {
+      "format": "TEXT",
+      "name": "stepId",
+      "label": "stepId for Changelink",
+      "required": false,
+      "visibility": "$this.ShowChangeLink"
+    },
     {
       "format": "SELECT",
       "name": "autocomplete",

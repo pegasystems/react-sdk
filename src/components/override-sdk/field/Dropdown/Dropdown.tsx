@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import Select from '../../../BaseComponents/Select/Select';
 import useIsOnlyField from '../../../helpers/hooks/QuestionDisplayHooks';
 import ReadOnlyDisplay from '../../../BaseComponents/ReadOnlyDisplay/ReadOnlyDisplay';
+import GDSCheckAnswers from '../../../BaseComponents/CheckAnswer/index';
+import { ReadOnlyDefaultFormContext } from '../../../helpers/HMRCAppContext';
+import { checkStatus } from '../../../helpers/utils';
 
 interface IOption {
   key: string;
@@ -21,8 +24,10 @@ export default function Dropdown(props) {
     helperText,
     readOnly,
     name,
-    fieldMetadata
+    fieldMetadata,
+    configAlternateDesignSystem
   } = props;
+  const { hasBeenWrapped } = useContext(ReadOnlyDefaultFormContext);
 
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const [options, setOptions] = useState<Array<IOption>>([]);
@@ -75,7 +80,35 @@ export default function Dropdown(props) {
     const selectedValue = evt.target.value === placeholder ? '' : evt.target.value;
     handleEvent(actionsApi, 'changeNblur', propName, selectedValue);
   };
+  const inprogressStatus = checkStatus();
 
+  if (
+    hasBeenWrapped &&
+    configAlternateDesignSystem?.ShowChangeLink &&
+    inprogressStatus === 'Open-InProgress'
+  ) {
+    return (
+      <GDSCheckAnswers
+        label={props.label}
+        value={thePConn.getLocalizedValue(
+          displayValue,
+          localePath,
+          thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+        )}
+        name={name}
+        stepId={configAlternateDesignSystem.stepId}
+        getPConnect={getPConnect}
+        required={false}
+        disabled={false}
+        validatemessage=''
+        onChange={undefined}
+        readOnly={false}
+        testId=''
+        helperText=''
+        hideLabel={false}
+      />
+    );
+  }
   if (readOnly) {
     return (
       <ReadOnlyDisplay

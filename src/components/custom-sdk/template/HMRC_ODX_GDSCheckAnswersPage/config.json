@@ -1,0 +1,45 @@
+{
+  "name": "HMRC_ODX_GDSCheckAnswersPage",
+  "label": "GDS Check Answers Page",
+  "description": "GDS page pattern to let users check their answers before submitting information to a service. Use on top level view of CYA page",
+  "organization": "HMRC",
+  "version": "0.0.1",
+  "library": "ODX",
+  "allowedApplications": [],
+  "componentKey": "HMRC_ODX_GDSCheckAnswersPage",
+  "type": "Template",
+  "subtype": "FORM",
+  "icon": "DefaultForm.svg",
+    "properties": [
+    {
+      "format": "SELECT",
+      "name": "NumCols",
+      "label": "Number of columns",
+      "defaultValue": "1",
+      "source": [
+        { "key": "1", "value": "One" },
+        { "key": "2", "value": "Two" },
+        { "key": "3", "value": "Three" }
+      ]
+    },
+    {
+      "format": "SELECT",
+      "name": "templateOverrideMode",
+      "label": "Template for embedded views",
+      "defaultValue": "USE_TEMPLATE",
+      "source": [
+        { "key": "USE_TEMPLATE", "value": "Use template" },
+        { "key": "IGNORE_TEMPLATE", "value": "Ignore template" }
+      ]
+    },
+    {
+      "format": "INSTRUCTIONS"
+    },
+    {
+      "name": "Fields",
+      "label": "Fields",
+      "format": "CONTENTPICKER",
+      "allowCreatingGroup": true
+    }
+  ]
+}

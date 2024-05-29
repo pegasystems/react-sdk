@@ -189,8 +189,14 @@ export default function DefaultForm(props) {
     return batchChildren(dfChildren).map((childGroup, index) => {
       const key = `${getPConnect().getMetadata().name}-${index}`;
       return (
+        // <ConditionalWrapper
+        //   condition={childGroup.wrapWithDl && !hasBeenWrapped}
+        //   wrapper={children => (
+        //     <ReadOnlyDefaultFormContext.Provider value={{ hasBeenWrapped: true }}>
+        //       <dl className='govuk-summary-list'>{children}</dl>
+        //     </ReadOnlyDefaultFormContext.Provider>
         <ConditionalWrapper
-          condition={childGroup.wrapWithDl && !hasBeenWrapped}
+          condition={!hasBeenWrapped}
           wrapper={children => (
             <ReadOnlyDefaultFormContext.Provider value={{ hasBeenWrapped: true }}>
               <dl className='govuk-summary-list'>{children}</dl>

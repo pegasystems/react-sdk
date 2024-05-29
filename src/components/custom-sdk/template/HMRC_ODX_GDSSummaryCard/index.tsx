@@ -31,6 +31,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
       break;
   }
   const [childName, setChildName] = useState(itemName);
+
   useEffect(() => {
     const elms: Array<string> = [];
     let finalELms: Array<string> = [];
@@ -72,7 +73,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
   useEffect(() => {
     formElms.forEach(field => {
       if (
-        (field as any)?.props?.label === 'First Name' ||
+        (field as any)?.props?.label === 'Name' ||
         (field as any)?.props?.label === 'Enw cyntaf'
       ) {
         setChildName((field as any)?.props?.value);

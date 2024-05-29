@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="70px" viewBox="0 0 100 70" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>2 col  copy</title>
+    <g id="Views" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Template-icons" transform="translate(-320.000000, -925.000000)">
+            <g id="2-col--copy" transform="translate(320.000000, 925.000000)">
+                <rect id="bg" stroke="#A5A8BC" stroke-width="0.5" fill="#E7E9EB" x="0.25" y="0.25" width="99.5" height="69.5"></rect>
+                <g id="white" transform="translate(3.000000, 3.000000)" fill="#FFFFFF">
+                    <rect id="Rectangle" x="0" y="0" width="94" height="66.5"></rect>
+                </g>
+                <g id="gray-copy-2" transform="translate(6.000000, 6.000000)" fill="#8084A7">
+                    <rect id="Rectangle" x="0" y="-2.84217094e-14" width="42" height="11.8"></rect>
+                    <rect id="Rectangle" x="46" y="-2.84217094e-14" width="42" height="11.8"></rect>
+                    <rect id="Rectangle-Copy-5" x="0" y="16" width="42" height="11.8"></rect>
+                    <rect id="Rectangle-Copy-3" x="46" y="16" width="42" height="11.8"></rect>
+                    <rect id="Rectangle-Copy-15" x="0" y="32" width="42" height="11.8"></rect>
+                    <rect id="Rectangle-Copy-14" x="46" y="32" width="42" height="11.8"></rect>
+                    <rect id="Rectangle-Copy-17" x="0" y="48" width="42" height="11.8"></rect>
+                    <rect id="Rectangle-Copy-16" x="46" y="48" width="42" height="11.8"></rect>
+                </g>
+                <g id="Group-7" transform="translate(28.000000, 11.000000)">
+                    <path id="Line-12-Copy" d="M35.1666667,42.75 L47.1666667,48.5 L35.1666667,54.25 L35.166,49.25 L-0.25,49.25 L-0.25,47.75 L35.166,47.75 L35.1666667,42.75 Z" fill="#1E1F27" fill-rule="nonzero"></path>
+                    <line x1="0.5" y1="48.5" x2="43.5" y2="32.5" id="Line" stroke="#1E1F27" stroke-width="1.5" stroke-linecap="square"></line>
+                    <line x1="43.5" y1="32.5" x2="1.5" y2="32.5" id="Line-2" stroke="#1E1F27" stroke-width="1.5" stroke-linecap="square"></line>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

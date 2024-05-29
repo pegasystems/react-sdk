@@ -1,4 +1,4 @@
-import React, { lazy, useState } from 'react';
+import React, { useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { initReactI18next } from 'react-i18next';
 import Backend from 'i18next-http-backend';
@@ -12,8 +12,7 @@ import AreYouSureToContinueWithoutSignIn from '../StaticPages/AreYouSureToContin
 import DoYouWantToSignIn from '../StaticPages/DoYouWantToSignIn/doYouWantToSignIn';
 import CheckOnClaim from '../StaticPages/CheckOnClaim';
 import RecentlyClaimedChildBenefit from '../StaticPages/ChooseClaimService';
-
-const EducationStart = lazy(() => import('../EducationStart'));
+import EducationStart from '../EducationStart';
 
 const AppSelector = () => {
   const [i18nloaded, seti18nloaded] = useState(false);
@@ -43,14 +42,7 @@ const AppSelector = () => {
       <Route exact path='/' component={ChildBenefitsClaim} />
       <Route exact path='/ua' component={UnAuthChildBenefitsClaim} />
       <Route exact path='/hicbc/opt-in' component={HighIncomeCase} />
-      <Route
-        exact
-        path='/education/start'        
-      >
-        <React.Suspense fallback={<></>}>
-          <EducationStart />
-        </React.Suspense>
-      </Route>
+      <Route exact path='/education/start' component={EducationStart} />
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
       <Route

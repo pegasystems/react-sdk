@@ -277,5 +277,24 @@
   "YOUR_DETAILS": "Eich manylion",
   "RELATIONSHIP_DETAILS": "Manylion perthynas",
   "CHILD_DETAILS": "Manylion y plentyn",
-  "INCOME_DETAILS": "Manylion incwm"
+  "INCOME_DETAILS": "Manylion incwm",
+
+  "EDUCATION_START": "Education Start",
+  "EDUCATION_START_H1": "Extend your Child Benefit while a young person stays in non-advanced education or approved training",
+  "EDUCATION_START_P1": "This can include some of the courses or approved training:",
+  "COURCES_1": "GCSE, A levels or similar",
+  "COURCES_2": "BTEC, level 1, 2 or 3",
+  "COURCES_3": "T Levels, Level, 1, 2 or 3",
+  "COURCES_4": "NVQs and most vocational qualifications levels, 1, 2 or 3",
+  "COURCES_5": "Scottish Highers - up to and including level 7 (apart from HNC level 7 or the Certificate of Higher Education level 7, because these are advanced courses)",
+  "COURCES_6": "International Baccalaureate",
+  "COURCES_7": "an approved training course in either Wales, Scotland or Northern Ireland",
+  "EDUCATION_START_P2": "The young person will need to be:",
+  "ELIGIBILITY_1": "Under 20 years old",
+  "ELIGIBILITY_2": "on their course for up to and including 3 academic years",
+  "ELIGIBILITY_3": "In full-time education, which is more than an average of 12 hours per week, or on an approved training course.",
+  "ELIGIBILITY_4": "on a course provided by a school or college",
+  "EDUCATION_START_P3": "The young person must be accepted onto their course before they turn 19.",
+  "EDUCATION_START_P4": "You may need to provide us with the expected registration, start and end dates for the course or training."
+
 }

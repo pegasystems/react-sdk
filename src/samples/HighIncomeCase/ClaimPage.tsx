@@ -20,6 +20,7 @@ import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLin
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import { triggerLogout } from '../../components/helpers/utils';
 import AppContext from './reuseables/AppContext';
+import toggleNotificationProcess from '../../components/helpers/toggleNotificationLanguage';
 
 // declare const myLoadMashup;
 
@@ -55,7 +56,7 @@ const ClaimPage: FunctionComponent<any> = () => {
         loginIfNecessary({ appName: 'embedded', mainRedirect: true });        
     } 
 
-    const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(setAuthType, doRedirectDone, {appBacklinkProps:{}});
+    const { showPega, setShowPega, showResolutionPage, caseId, assignmentPConn} = useStartMashup(setAuthType, doRedirectDone, {appBacklinkProps:{}});
     
     
     useEffect(() => {
@@ -200,10 +201,10 @@ const ClaimPage: FunctionComponent<any> = () => {
         hasLanguageToggle={showLanguageToggle}
         isPegaApp={showPega}
         languageToggleCallback={
-          () => {} /* toggleNotificationProcess(
+          toggleNotificationProcess(
           { en: 'SwitchLanguageToEnglish', cy: 'SwitchLanguageToWelsh' },
           assignmentPConn 
-          ) */}
+          )}
         betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=463&referrerUrl=${window.location}`}    
       />
       <div className='govuk-width-container'>

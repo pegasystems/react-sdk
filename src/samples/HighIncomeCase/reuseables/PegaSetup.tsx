@@ -170,7 +170,7 @@ export function RootComponent(props) {
  * is ready to be rendered
  * @param inRenderObj the initial, top-level PConnect object to render
  */
-function initialRender(inRenderObj, _AppContextValues: AppContextValues) {
+function initialRender(inRenderObj, setAssignmentPConnect, _AppContextValues: AppContextValues) {
   // loadMashup does its own thing so we don't need to do much/anything here
   // // modified from react_root.js render
   const {
@@ -206,7 +206,7 @@ function initialRender(inRenderObj, _AppContextValues: AppContextValues) {
       {...props}
       portalTarget={portalTarget}
       styleSheetTarget={styleSheetTarget}
-      contextExtensionValues={{ setAssignmentPConnect: () => {} }}
+      contextExtensionValues={{ setAssignmentPConnect: setAssignmentPConnect }}
     />
   );
 
@@ -229,7 +229,7 @@ function initialRender(inRenderObj, _AppContextValues: AppContextValues) {
  * kick off the application's portal that we're trying to serve up
  */
 export function startMashup(
-  { setShowPega, setShowResolutionPage, setCaseId, setCaseStatus },
+  { setShowPega, setShowResolutionPage, setCaseId, setCaseStatus, setAssignmentPConnect },
   _AppContextValues: AppContextValues
 ) {
   // NOTE: When loadMashup is complete, this will be called.
@@ -265,7 +265,7 @@ export function startMashup(
       PCore.getLocaleUtils().GENERIC_BUNDLE_KEY,
       '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE'
     ]);
-    initialRender(renderObj, _AppContextValues);
+    initialRender(renderObj, setAssignmentPConnect, _AppContextValues);
 
     // PM!! operatorId = PCore.getEnvironmentInfo().getOperatorIdentifier();
 
@@ -344,6 +344,7 @@ export const useStartMashup = (
   const [showResolutionPage, setShowResolutionPage] = useState(false);
   const [caseId, setCaseId] = useState('');
   const [caseStatus, setCaseStatus] = useState('');
+  const [assignmentPConn, setAssignmentPConnect] = useState(null);
 
   useEffect(() => {
     getSdkConfig().then(sdkConfig => {
@@ -379,7 +380,7 @@ export const useStartMashup = (
     document.addEventListener('SdkConstellationReady', () => {
       // start the portal
       startMashup(
-        { setShowPega, setShowResolutionPage, setCaseId, setCaseStatus },
+        { setShowPega, setShowResolutionPage, setCaseId, setCaseStatus, setAssignmentPConnect },
         _AppContextValues
       );
     });
@@ -422,5 +423,5 @@ export const useStartMashup = (
     }; */
   }, []);
 
-  return { showPega, setShowPega, showResolutionPage, setShowResolutionPage, caseId, caseStatus };
+  return { showPega, setShowPega, showResolutionPage, setShowResolutionPage, caseId, caseStatus, assignmentPConn };
 };

@@ -206,7 +206,7 @@ function initialRender(inRenderObj, setAssignmentPConnect, _AppContextValues: Ap
       {...props}
       portalTarget={portalTarget}
       styleSheetTarget={styleSheetTarget}
-      contextExtensionValues={{ setAssignmentPConnect: setAssignmentPConnect }}
+      contextExtensionValues={{ setAssignmentPConnect }}
     />
   );
 

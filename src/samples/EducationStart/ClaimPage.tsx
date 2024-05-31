@@ -41,8 +41,6 @@ const ClaimPage: FunctionComponent<any> = () => {
   }>({ content: null, title: null, banner: null });
   const { t } = useTranslation();
 
-  // const history = useHistory();
-
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const [showSignoutModal, setShowSignoutModal] = useState(false);
 
@@ -143,7 +141,6 @@ const ClaimPage: FunctionComponent<any> = () => {
           PCore.getPubSubUtils().subscribe(
             PCore.getConstants().PUB_SUB_EVENTS.CONTAINER_EVENTS.CLOSE_CONTAINER_ITEM,
             () => {
-              // console.log("SUBEVENT!!! showStartPageOnCloseContainerItem")
               setShowPega(false);
             },
             'showStartPageOnCloseContainerItem'

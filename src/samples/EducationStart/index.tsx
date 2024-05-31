@@ -196,7 +196,6 @@ const EducationStartCase: FunctionComponent<any> = () => {
   }, []);
 
   const landingPageProceedHandler = () => {
-    // localStorage.setItem('showLandingPage', 'false');
     setShowLandingPage(false);
     startClaim();
   };

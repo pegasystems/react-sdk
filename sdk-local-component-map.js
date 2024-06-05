@@ -14,7 +14,6 @@ import Region from './src/components/override-sdk/widget/Region';
 import TextInput from './src/components/override-sdk/field/TextInput/TextInput';
 import View from './src/components/override-sdk/infra/View/';
 import FlowContainer from './src/components/override-sdk/infra/FlowContainer';
-import CaseView from '@pega/react-sdk-components/lib/components/template/CaseView/CaseView';
 import Details from './src/components/override-sdk/template/Details/';
 import PegaExtensionsPersonalDetails from './src/components/override-sdk/widget/PegaExtensionsPersonalDetails';
 import Dropdown from './src/components/override-sdk/field/Dropdown/';
@@ -25,6 +24,8 @@ import Integer from './src/components/override-sdk/field/Integer/';
 import Currency from './src/components/override-sdk/field/Currency/';
 import FieldGroup from './src/components/override-sdk/designSystemExtension/FieldGroup/';
 import FieldValueList from './src/components/override-sdk/designSystemExtension/FieldValueList/';
+import CaseView from './src/components/override-sdk/template/CaseView/';
+import Assignment from './src/components/override-sdk/infra/Assignment/';
 /* import end - DO NOT REMOVE */
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -56,7 +57,9 @@ const localSdkComponentMap = {
   Integer: Integer,
   Currency: Currency,
   FieldGroup: FieldGroup,
-  FieldValueList: FieldValueList
+  FieldValueList: FieldValueList,
+  CaseView: CaseView,
+  Assignment: Assignment
   /* map end - DO NOT REMOVE */
 };
 

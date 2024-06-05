@@ -80,7 +80,7 @@ export default function Currency(props: CurrrencyProps) {
       variant={readOnly ? 'standard' : 'outlined'}
       helperText={helperTextToDisplay}
       placeholder={placeholder ?? ''}
-      size='small'
+      size='medium'
       required={required}
       disabled={disabled}
       readOnly={!!readOnly}

@@ -82,7 +82,7 @@ export default function TextInput(props: TextInputProps) {
       variant={readOnly ? 'standard' : 'outlined'}
       helperText={helperTextToDisplay}
       placeholder={placeholder ?? ''}
-      size='small'
+      size='medium'
       required={required}
       disabled={disabled}
       onChange={handleChange}

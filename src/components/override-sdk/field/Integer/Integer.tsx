@@ -2,6 +2,7 @@ import { TextField } from '@material-ui/core';
 
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import './Integer.css';
 
 interface IntegerProps extends PConnFieldProps {
   // If any, enter additional props that only exist on Integer here
@@ -74,7 +75,7 @@ export default function Integer(props: IntegerProps) {
       variant={readOnly ? 'standard' : 'outlined'}
       helperText={helperTextToDisplay}
       placeholder={placeholder ?? ''}
-      size='small'
+      size='medium'
       required={required}
       disabled={disabled}
       onChange={intOnChange}

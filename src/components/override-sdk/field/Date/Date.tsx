@@ -103,7 +103,7 @@ export default function Date(props: DateProps) {
       disabled={disabled}
       error={status === 'error'}
       helperText={helperTextToDisplay}
-      size='small'
+      size='medium'
       label={label}
       value={value || null}
       onChange={handleChange}

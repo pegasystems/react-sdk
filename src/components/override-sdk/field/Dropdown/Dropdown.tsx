@@ -214,7 +214,7 @@ export default function Dropdown(props: DropdownProps) {
       variant={readOnly ? 'standard' : 'outlined'}
       helperText={helperTextToDisplay}
       placeholder={thePConn.getLocalizedValue(placeholder, '', '')} // 2nd and 3rd args empty string until typedef marked correctly
-      size='small'
+      size='medium'
       required={required}
       disabled={disabled}
       onChange={!readOnly ? handleChange : undefined}

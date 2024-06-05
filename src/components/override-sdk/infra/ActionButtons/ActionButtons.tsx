@@ -46,9 +46,7 @@ export default function ActionButtons(props: ActionButtonsProps) {
   }
 
   return (
-    <>
-      <Divider className={classes.divider} />
-      <Grid container spacing={4} justifyContent='space-between'>
+    <Grid container spacing={4} justifyContent='space-between' style={{marginTop: '1em'}}>
         <Grid item>
           <Grid container spacing={1}>
             {arSecondaryButtons.map(sButton => (
@@ -87,7 +85,6 @@ export default function ActionButtons(props: ActionButtonsProps) {
           </Grid>
         </Grid>
       </Grid>
-    </>
   );
 }
 

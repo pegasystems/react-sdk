@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: calc(1rem);
+  margin: '0 0.8em' !important;
 }
 
 .psdk-default-form-two-column {
@@ -29,11 +30,15 @@
 }
 
 .psdk-default-form-instruction-text {
-  padding-top: 0.625rem;
-  padding-bottom: 0.625rem;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
-#instruction-text {
-  font-size: '2em' !important;
+/* #instruction-text {
+  font-size: '1.5em' !important;
   font-weight: 500 !important;
+} */
+
+#instruction-text p{
+  margin: 0.5rem 0;
 }

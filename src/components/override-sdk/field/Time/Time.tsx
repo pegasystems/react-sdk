@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import './Time.css';
 
 interface TimeProps extends PConnFieldProps {
   // If any, enter additional props that only exist on Time here
@@ -64,7 +65,7 @@ export default function Time(props: TimeProps) {
       error={status === 'error'}
       helperText={helperTextToDisplay}
       minutesStep={5}
-      size='small'
+      size='medium'
       label={label}
       autoOk
       mask='__:__ _m'

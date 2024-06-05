@@ -61,7 +61,7 @@ export default function DefaultForm(props: PropsWithChildren<DefaultFormProps>) 
             key='instructions'
             id='instruction-text'
             dangerouslySetInnerHTML={{ __html: instructions }}
-            style={{ fontSize: '2em', fontWeight: 500, padding: '0.5em' }}
+            style={{ fontSize: '1.5em', fontWeight: 500, paddingBottom: '0.5rem' }}
           />
         </div>
       )}

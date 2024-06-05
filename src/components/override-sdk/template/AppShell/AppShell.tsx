@@ -161,23 +161,13 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
         };
       });
 
-  if (pConn.hasChildren()) {
-    // const theChildren = pConn.getChildren();
-    // const mapChildCompNames = theChildren.map((child) => { return child.getPConnect().getComponentName()});
-    // debugging/investigation help
-    // console.log(`AppShell has children: ${theChildren.length}`);
-    // console.log(`--> ${mapChildCompNames.map((name) => {return name;})}`);
-  }
-
-  // style={{ backgroundImage: `url(assets/img/back-image.jpg)` }}
-
-  // const backImage = 'back.svg';
-
   const [backImage, setBackImage] = useState('back.svg');
 
   const handleBackgroundChange = landingPage => {
     if (landingPage === 'Trade in') {
       setBackImage('tradeInBack.svg');
+    } else if (landingPage === 'Profile') {
+      setBackImage('profileBack.svg');
     } else {
       setBackImage('back.svg');
     }
@@ -215,7 +205,6 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
       </div>
     );
   }
-  // style={{ background: `url(${'assets/img/back.svg'}) 100% 100%` }}
 
   return (
     // eslint-disable-next-line react/jsx-no-constructed-context-values

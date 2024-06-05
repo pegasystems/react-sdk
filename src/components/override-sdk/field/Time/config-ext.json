@@ -1,0 +1,9 @@
+{
+    "componentKey": "Time",
+    "name": "Time",
+    "label": "Time only",
+    "description": "Time only",
+    "type": "Field",
+    "subtype": "TimeOfDay",
+    "properties": []
+}

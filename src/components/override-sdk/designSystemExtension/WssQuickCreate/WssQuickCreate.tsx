@@ -42,29 +42,26 @@ const useStyles = makeStyles(theme => ({
     width: '119px',
     height: '40px',
     color: '#fff',
-    textTransform: 'none'
+    textTransform: 'none',
+    '&:hover': {
+      background: '#fa2c2551',
+      color: '#333'
+    }
   }
 }));
 
 export default function WssQuickCreate(props: WssQuickCreateProps) {
   const { heading, actions } = props;
 
-  // const caseTypes = actions;
-
-  // if (actions?.length) {
-  //   caseTypes?.push(actions?.[0]);
-  //   caseTypes?.push(actions?.[0]);
-  // }
-
   const classes = useStyles();
 
-  const operatorDetails = [
-    { name: 'Amy Billings', profile: 'Service Advisor' },
-    { name: 'Luca Lopez', profile: 'Service Teachnician' }
-  ];
+  const quickLinkImages = {
+    'Schedule Service Appointment': 'media.jpg',
+    'Download Users Manual': 'media 2.jpg',
+    'Troubleshoot Infotainment Issue': 'media2.jpg'
+  };
 
-  const uConnectQuickLinkImages = ['media.jpg', 'media 2.jpg', 'media2.jpg'];
-  const tradeInQuickLinkImages = ['media.png'];
+  const defaultQuickLinkImage = 'media.jpg';
 
   return (
     <ul
@@ -76,19 +73,8 @@ export default function WssQuickCreate(props: WssQuickCreateProps) {
         actions.map((element, i) => {
           return (
             <li className='quick-link-list' key={element.label}>
-              {/* <Button className='quick-link-button' onClick={element.onClick}>
-                  <span className='quick-link-button-span'>
-                    {element.icon && <img className='quick-link-icon' src={element.icon} />}
-                    <span>{element.label}</span>
-                  </span>
-                </Button> */}
-
               <Card className={classes.root} style={{ width: 'auto' }}>
-                <img
-                  src={`assets/img/${actions?.length === 3 ? uConnectQuickLinkImages?.[i] : tradeInQuickLinkImages?.[i]}`}
-                  height={180}
-                  width='100%'
-                />
+                <img src={`assets/img/${quickLinkImages[element?.label] || defaultQuickLinkImage}`} height={180} width='100%' />
                 <CardHeader style={{ paddingTop: 0, paddingBottom: 0 }} title={<Typography variant='h6'>{element.label}</Typography>} />
                 <CardContent>
                   <Typography variant='body2' color='textSecondary' component='p'>
@@ -107,52 +93,3 @@ export default function WssQuickCreate(props: WssQuickCreateProps) {
     </ul>
   );
 }
-
-/* Primary button
-
-Buttons communicate actions that users can take. They are typically placed throughout your UI, in places like Dialogs, Modal windows, Forms, Cards and Toolbars
-
-Filled buttons are high-emphasis buttons.
-They have the most visual impact after the FAB, and should be used for important, final actions that complete a flow, like &quot;Save&quot;, &quot;Join now&quot;, or &quot;Confirm&quot;.
-*/
-
-/* Auto layout */
-// display: flex;
-// flex-direction: column;
-// justify-content: center;
-// align-items: center;
-// padding: 0px;
-// gap: 8px;
-
-// width: 119px;
-// height: 40px;
-
-// background: #CE2525;
-// border-radius: 100px;
-
-// /* Inside auto layout */
-// flex: none;
-// order: 1;
-// flex-grow: 0;
-
-/* Stacked card */
-
-// box-sizing: border-box;
-
-// /* Auto layout */
-// display: flex;
-// flex-direction: row;
-// align-items: flex-start;
-// padding: 0px;
-
-// width: 415px;
-// height: 420px;
-
-// background: rgba(255, 255, 255, 0.6);
-// border: 1px solid #CFCFCF;
-// border-radius: 12px;
-
-/* Inside auto layout */
-// flex: none;
-// order: 0;
-// flex-grow: 0;

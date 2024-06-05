@@ -26,7 +26,8 @@ const useStyles = makeStyles((/* theme */) => ({
     borderRadius: '100px',
     margin: '0 auto',
     // width: '78px',
-    height: '40px'
+    height: '40px',
+    textTransform: 'none'
   },
   divider: {
     marginTop: '10px',

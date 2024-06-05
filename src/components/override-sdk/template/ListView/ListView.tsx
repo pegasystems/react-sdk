@@ -1017,7 +1017,7 @@ export default function ListView(props: ListViewProps) {
                   className='list-text'
                   style={{ marginLeft: '1em' }}
                   primary={assignment?.pyLabel}
-                  secondary='Oil Change, Tire rotation, Check fluids'
+                  secondary={assignment?.MaintenanceType || 'Oil Change, Tire rotation, Check fluids'}
                 />
                 <ListItemSecondaryAction>
                   <IconButton>

@@ -30,30 +30,14 @@ export default function Banner(props: BannerProps) {
     'wide-narrow': [12, 0],
     'one-column': [12, 0]
   };
-
-  const aChilds = Children.toArray(a);
-  const bChilds = Children.toArray(b);
-
-  console.log(a.props.getPConnect().getChildren());
-
-  // const ToDo =
-  //   b.props.getPConnect().getChildren()[0].getPConnect().meta.type === 'Todo'
-  //     ? b.props.getPConnect().getChildren()[0].getPConnect()
-  //     : b.props.getPConnect().getChildren()[1].getPConnect();
-
-  // const otherThanToDo =
-  //   b.props.getPConnect().getChildren()[0].getPConnect().meta.type !== 'Todo'
-  //     ? b.props.getPConnect().getChildren()[0].getPConnect()
-  //     : b.props.getPConnect().getChildren()[1].getPConnect();
-
   const serviceTeam = [
-    { name: 'Amy Billings', profile: 'Service Advisor', picture: 'Amy.jpg' },
-    { name: 'Luca Lopez', profile: 'Service Teachnician', picture: 'Luca.jpg' }
+    { name: 'Emily Davis', profile: 'Service Advisor', picture: 'Amy.jpg' },
+    { name: 'Mike Brown', profile: 'Service Technician', picture: 'Luca.jpg' }
   ];
 
   const driverProfiles = [
-    { name: 'Ava', profile: 'Primary driver', picture: 'Ava.jpg' },
-    { name: 'Jeffrey', profile: 'Additional driver', picture: 'Jeffrey.jpg' }
+    { name: 'Alice Johnson', profile: 'Primary driver', picture: 'Ava.jpg' },
+    { name: 'Bob Smith', profile: 'Additional driver', picture: 'Jeffrey.jpg' }
   ];
 
   const middleContainer = [
@@ -62,25 +46,9 @@ export default function Banner(props: BannerProps) {
     { icon: 'assets/img/help.png', text: 'Get a check or credit toward a new purchase' }
   ];
 
-  const backImage = useState('back.svg');
-
   if (variant === 'narrow-wide') {
     return (
       <div style={{ marginBottom: '1rem', height: '110vh' }}>
-        {/* <div className='background-image-style' style={{ backgroundImage: `url(${backgroundImage})` }}>
-      <div className='background-style content'>
-        <div>
-          <h1 className='title'>{title}</h1>
-          <p className='message'>{message}</p>
-        </div>
-      </div>
-    </div> */}
-        {/* <div className='welcome-text' style={{ marginLeft: '25px' }}>
-      <div className='welcome-inside'>
-        <Typography className='hi-text'>Hi Ava,</Typography>
-        <Typography className='help-text'>How can we help you today?</Typography>
-      </div>
-    </div> */}
         <div className='welcome-text' style={{ marginLeft: '25px' }}>
           <div className='welcome-inside'>
             <Typography className='hi-text'>Hi Ava,</Typography>
@@ -88,9 +56,6 @@ export default function Banner(props: BannerProps) {
           </div>
         </div>
         <Grid container item xs={12} className='banner-layout' spacing={1}>
-          {/* <Grid item xs={12} style={{ padding: '1em', width: '100%' }}>
-        {[ToDo]}
-      </Grid> */}
           <Grid item xs={variantMap[variant][0]} style={{ padding: '0 1em', width: '100%', maxWidth: 'none', flexBasis: 'auto' }}>
             {a}
           </Grid>
@@ -116,7 +81,7 @@ export default function Banner(props: BannerProps) {
                 </Card>
 
                 <Card>
-                  <CardHeader title={<Typography variant='h6'>Your Driver profiles</Typography>} style={{ paddingBottom: 0 }} />
+                  <CardHeader title={<Typography variant='h6'>Your Driver Profiles</Typography>} style={{ paddingBottom: 0 }} />
                   <CardContent style={{ padding: '1em 2em' }}>
                     {driverProfiles.map((operator, i) => (
                       <div className='service-operator-container'>
@@ -124,9 +89,6 @@ export default function Banner(props: BannerProps) {
                         <div>
                           <Typography className='operator-name'>{operator.name}</Typography>
                           <Typography className='operator-profile'>{operator.profile}</Typography>
-                        </div>
-                        <div style={{ display: 'flex', marginLeft: i === 0 ? '4em' : '3em' }}>
-                          <Button className='edit-button'>Edit</Button>
                         </div>
                       </div>
                     ))}
@@ -141,20 +103,6 @@ export default function Banner(props: BannerProps) {
   }
   return (
     <div style={{ marginBottom: '1rem', height: '110vh' }}>
-      {/* <div className='background-image-style' style={{ backgroundImage: `url(${backgroundImage})` }}>
-      <div className='background-style content'>
-        <div>
-          <h1 className='title'>{title}</h1>
-          <p className='message'>{message}</p>
-        </div>
-      </div>
-    </div> */}
-      {/* <div className='welcome-text' style={{ marginLeft: '25px' }}>
-      <div className='welcome-inside'>
-        <Typography className='hi-text'>Hi Ava,</Typography>
-        <Typography className='help-text'>How can we help you today?</Typography>
-      </div>
-    </div> */}
       <div className='welcome-text' style={{ paddingTop: '6em', justifyContent: 'center' }}>
         <div className='welcome-inside'>
           <Typography className='interest-text'>We’re interested in your car!</Typography>
@@ -188,9 +136,6 @@ export default function Banner(props: BannerProps) {
       </div>
 
       <Grid container item xs={12} className='banner-layout' spacing={1} style={{ justifyContent: 'center', marginTop: '2em' }}>
-        {/* <Grid item xs={12} style={{ padding: '1em', width: '100%' }}>
-        {[ToDo]}
-      </Grid> */}
         <Grid item xs={4} style={{ padding: '0 1em', width: '100%', flexBasis: 'auto', marginRight: '2.5em' }}>
           {a}
         </Grid>

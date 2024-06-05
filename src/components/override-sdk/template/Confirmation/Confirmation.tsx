@@ -33,7 +33,11 @@ const useStyles = makeStyles(theme => ({
     width: '119px',
     height: '40px',
     color: '#fff',
-    textTransform: 'none'
+    textTransform: 'none',
+    '&:hover': {
+      background: '#fa2c2551',
+      color: '#333'
+    }
   }
 }));
 

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState } from 'react';
 import {
   Box,
@@ -19,10 +18,8 @@ import {
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import ArrowForwardIosOutlinedIcon from '@material-ui/icons/ArrowForwardIosOutlined';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import BuildIcon from '@material-ui/icons/Build';
 
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
@@ -89,7 +86,11 @@ const useStyles = makeStyles(theme => ({
     width: '119px',
     height: '40px',
     color: '#fff',
-    textTransform: 'none'
+    textTransform: 'none',
+    '&:hover': {
+      background: '#fa2c2551',
+      color: '#333'
+    }
   }
 }));
 
@@ -223,90 +224,15 @@ export default function ToDo(props: ToDoProps) {
       });
   }
 
-  const renderTaskId = (type, getPConnect, showTodoList, assignment) => {
-    const displayID = getID(assignment);
-
-    if ((showTodoList && type !== CONSTS.TODO) || assignment.isChild === true) {
-      /* Supress link for todo inside flow step */
-      return <Typography>{`${assignment.name} ${getID(assignment)}`}</Typography>;
-    }
-    return displayID;
-  };
-
-  const getListItemComponent = assignment => {
-    if (isDesktop) {
-      return (
-        <>
-          {/* {localizedVal('Task in', localeCategory)} */}
-          {renderTaskId(type, getPConnect, showTodoList, assignment)}
-          {/* {type === CONSTS.WORKLIST && assignment.status ? `\u2022 ` : undefined} */}
-          {/* {type === CONSTS.WORKLIST && assignment.status ? <span className='psdk-todo-assignment-status'>{assignment.status}</span> : undefined} */}
-          {/* {` \u2022  ${localizedVal('Urgency', localeCategory)}  ${getPriority(assignment)}`} */}
-        </>
-      );
-    }
-    return `${assignment.name} ${getID(assignment)}`;
-  };
-
-  const toDoContent = (
-    <>
-      {showTodoList && (
-        <CardHeader
-          title={
-            <Badge badgeContent={assignmentCount} overlap='rectangular' color='primary'>
-              <Typography variant='h6'>{headerText}&nbsp;&nbsp;&nbsp;</Typography>
-            </Badge>
-          }
-        />
-      )}
-      <List>
-        {assignments.map(assignment => (
-          <div className='psdk-todo-avatar-header' key={getAssignmentId(assignment)}>
-            <Avatar className={classes.avatar} style={{ marginRight: '16px' }}>
-              {currentUserInitials}
-            </Avatar>
-            <div style={{ display: 'block' }}>
-              <Typography variant='h6'>{assignment?.name}</Typography>
-              {`${localizedVal('Task in', localeCategory)} ${renderTaskId(type, getPConnect, showTodoList, assignment)} \u2022  ${localizedVal(
-                'Urgency',
-                localeCategory
-              )}  ${getPriority(assignment)}`}
-            </div>
-            {(!isConfirm || canPerform) && (
-              <div style={{ marginLeft: 'auto' }}>
-                <IconButton id='go-btn' onClick={() => clickGo(assignment)}>
-                  <ArrowForwardIosOutlinedIcon />
-                </IconButton>
-              </div>
-            )}
-          </div>
-        ))}
-      </List>
-    </>
-  );
-
-  const show = false;
-
   return (
     <>
-      {type === CONSTS.WORKLIST && assignments?.length > 0 && show && (
+      {type === CONSTS.WORKLIST && assignments?.length > 0 && (
         <Card className={classes.root} style={{ paddingBottom: 0, marginBottom: '2em' }}>
-          {showTodoList && (
-            <CardHeader
-              style={{ padding: '0 2rem' }}
-              title={
-                // <Badge badgeContent={assignmentCount} overlap='rectangular' color='primary'>
-                <Typography variant='h6'>Please let us know how we did!</Typography>
-                // </Badge>
-              }
-              // avatar={<Avatar className={classes.avatar}>{currentUserInitials}</Avatar>}
-            />
-          )}
+          {showTodoList && <CardHeader style={{ padding: '0 2rem' }} title={<Typography variant='h6'>Please let us know how we did!</Typography>} />}
           <CardContent style={{ padding: '0 1em' }}>
             <List>
               {assignments.map(assignment => (
-                <ListItem key={getAssignmentId(assignment)} dense onClick={() => clickGo(assignment)}>
-                  {/* <BuildIcon style={{ color: '#fff', backgroundColor: '#CE2525' }} shapeRendering='circle' /> */}
+                <ListItem key={getAssignmentId(assignment)} dense>
                   <IconButton className='todo-icon'>
                     <img src='assets/img/ToDoIcon.png' />
                   </IconButton>
@@ -328,21 +254,6 @@ export default function ToDo(props: ToDoProps) {
           </CardContent>
         </Card>
       )}
-
-      {/* {type === CONSTS.TODO && !isConfirm && <Card className={classes.todoWrapper}>{toDoContent}</Card>} */}
-      {/* {type === CONSTS.TODO && isConfirm && <>{toDoContent}</>} */}
-
-      {/* {assignmentCount > 3 && (
-        <Box display='flex' justifyContent='center'>
-          {bShowMore ? (
-            <Button color='primary' onClick={_showMore}>
-              {showMoreLocalizedValue === 'show_more' ? 'Show more' : showMoreLocalizedValue}
-            </Button>
-          ) : (
-            <Button onClick={_showLess}>{showlessLocalizedValue === 'show_less' ? 'Show less' : showlessLocalizedValue}</Button>
-          )}
-        </Box>
-      )} */}
 
       <Snackbar
         open={showSnackbar}

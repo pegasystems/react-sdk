@@ -1,0 +1,9 @@
+{
+    "componentKey": "Integer",
+    "name": "Integer",
+    "label": "Integer",
+    "description": "Integer",
+    "type": "Field",
+    "subtype": "Integer",
+    "properties": []
+}

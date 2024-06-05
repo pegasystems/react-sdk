@@ -16,7 +16,7 @@ import View from './src/components/override-sdk/infra/View/';
 import FlowContainer from './src/components/override-sdk/infra/FlowContainer';
 import CaseView from '@pega/react-sdk-components/lib/components/template/CaseView/CaseView';
 import Details from './src/components/override-sdk/template/Details/';
-import PegaExtensionsPersonaDetails from './src/components/override-sdk/widget/Pega_Extensions_personaDetails';
+import PegaExtensionsPersonalDetails from './src/components/override-sdk/widget/PegaExtensionsPersonalDetails';
 /* import end - DO NOT REMOVE */
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -39,7 +39,7 @@ const localSdkComponentMap = {
   View,
   Pega_Extensions_CaseLauncher: QuickCreate,
   Details: Details,
-  Pega_Extensions_personaDetails: PegaExtensionsPersonaDetails
+  Pega_Extensions_personaDetails: PegaExtensionsPersonalDetails
   /* map end - DO NOT REMOVE */
 };
 

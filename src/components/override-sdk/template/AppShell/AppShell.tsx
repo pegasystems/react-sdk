@@ -41,8 +41,7 @@ const useStyles = makeStyles(theme => ({
   wsscontent: {
     flexGrow: 1,
     height: '110vh',
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1)
+    marginLeft: theme.spacing(1)
   }
 }));
 

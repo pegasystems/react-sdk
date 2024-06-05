@@ -58,3 +58,8 @@
 [class*='MuiInputAdornment-positionStart'] {
   margin-right: 0 !important;
 }
+
+.psdk-flow-container-top {
+  margin: auto;
+  margin-top: 100px;
+}

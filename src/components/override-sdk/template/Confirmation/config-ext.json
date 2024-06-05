@@ -1,0 +1,12 @@
+{
+    "componentKey": "Confirmation",
+    "name": "Confirmation",
+    "label": "Confirmation",
+    "description": "Confirmation template",
+    "type": "Template",
+    "subtype": "CASE",
+    "icon": "confirm-view.svg",
+    "hideTemplateEdit": true,
+    "hideViewName": true,
+    "properties": []
+}

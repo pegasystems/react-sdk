@@ -1,0 +1,243 @@
+.psdk-case-view-divider {
+  border-bottom: 0.0625rem solid var(--app-neutral-light-color);
+}
+
+.psdk-icon {
+  padding: 0rem 0.125rem;
+  min-width: unset;
+}
+
+.psdk-icon-current {
+  color: var(--app-primary-color);
+}
+
+.psdk-icon-not-current {
+  color: var(--app-neutral-color);
+}
+
+.psdk-current-svg-icon {
+  width: 1rem;
+  filter: var(--app-primary-color-filter);
+}
+
+.psdk-not-current-svg-icon {
+  width: 1rem;
+  filter: var(--app-neutral-color-filter);
+}
+
+mat-vertical-stepper {
+  background-color: transparent;
+}
+mat-horizontal-stepper {
+  background-color: transparent;
+}
+
+.psdk-sub-step-current {
+  padding-left: 0.625rem;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.psdk-sub-step-not-current {
+  padding-left: 0.625rem;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.psdk-flow-container-top {
+  border-radius: 0.3125rem;
+}
+.psdk-flow-container {
+  padding-left: 2.1875rem;
+}
+
+.psdk-sub-step-list {
+  list-style: none;
+  padding-bottom: 0.625rem;
+}
+
+.psdk-vertical-stepper {
+  background-color: transparent;
+  display: block;
+  text-align: left;
+}
+
+.psdk-vertical-step {
+  display: block;
+}
+
+.psdk-vertical-step-header {
+  overflow: hidden;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  box-sizing: content-box;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding: 24px 24px;
+}
+
+.psdk-vertical-step-icon {
+  margin-right: 12px;
+  background-color: var(--app-neutral-color);
+  color: #fff;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.psdk-vertical-step-icon-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+}
+
+.psdk-vertical-step-icon-selected {
+  margin-right: 12px;
+  background-color: var(--app-primary-color);
+  color: #fff;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.psdk-vertical-step-label {
+  color: rgba(0, 0, 0, 0.54);
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 50px;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.psdk-vertical-step-label-selected {
+  color: rgba(0, 0, 0, 0.87);
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 50px;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.psdk-vertical-step-body {
+  margin-left: 36px;
+  border: 0;
+  position: relative;
+  display: block;
+  text-align: left;
+}
+.psdk-vertical-step-line {
+  display: block;
+}
+
+.psdk-vertical-step-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  border-left-width: 1px;
+  border-left-style: solid;
+  top: -16px;
+  bottom: -16px;
+  border-left-color: rgba(0, 0, 0, 0.12);
+}
+
+.psdk-horizontal-stepper {
+  background-color: transparent;
+  display: block;
+}
+
+.psdk-horizontal-stepper-header-container {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
+
+.psdk-horizontal-step-header {
+  overflow: hidden;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  box-sizing: content-box;
+  display: flex;
+  height: 72px;
+  overflow: hidden;
+  align-items: center;
+  padding: 0 24px;
+}
+
+.psdk-horizontal-step-icon {
+  background-color: var(--app-neutral-color);
+  color: #fff;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  flex-shrink: 0;
+  position: relative;
+  display: block;
+  margin-right: 8px;
+  flex: none;
+}
+
+.psdk-horizontal-step-icon-content {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.psdk-horizontal-step-icon-selected {
+  background-color: var(--app-primary-color);
+  color: #fff;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  flex-shrink: 0;
+  position: relative;
+  display: block;
+  margin-right: 8px;
+  flex: none;
+}
+
+.psdk-horizontal-step-label {
+  color: rgba(0, 0, 0, 0.54);
+  display: inline-block;
+  min-width: 50px;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: initial;
+}
+
+.psdk-horizontal-step-label-selected {
+  color: rgba(0, 0, 0, 0.87);
+  display: inline-block;
+  min-width: 50px;
+  vertical-align: middle;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: initial;
+}
+
+.psdk-horizontal-step-line {
+  border-top-color: rgba(0, 0, 0, 0.12);
+  border-top-width: 1px;
+  border-top-style: solid;
+  flex: auto;
+  height: 0;
+  margin: 0 -16px;
+  min-width: 32px;
+}

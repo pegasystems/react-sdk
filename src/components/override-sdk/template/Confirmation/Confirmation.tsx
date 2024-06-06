@@ -59,6 +59,7 @@ export default function Confirmation(props: PropsWithChildren<ConfirmationProps>
   const onConfirmViewClose = () => {
     setShowConfirmView(false);
     PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CLOSE_CONFIRM_VIEW, rootInfo);
+    window.location.reload();
   };
   const todoProps = { ...props, renderTodoInConfirm: true };
   const toDoList = getToDoAssignments(getPConnect());

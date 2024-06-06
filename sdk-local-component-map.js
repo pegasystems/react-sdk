@@ -26,6 +26,7 @@ import FieldGroup from './src/components/override-sdk/designSystemExtension/Fiel
 import FieldValueList from './src/components/override-sdk/designSystemExtension/FieldValueList/';
 import CaseView from './src/components/override-sdk/template/CaseView/';
 import Assignment from './src/components/override-sdk/infra/Assignment/';
+import MultiStep from './src/components/override-sdk/infra/MultiStep/';
 /* import end - DO NOT REMOVE */
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -59,7 +60,8 @@ const localSdkComponentMap = {
   FieldGroup: FieldGroup,
   FieldValueList: FieldValueList,
   CaseView: CaseView,
-  Assignment: Assignment
+  Assignment: Assignment,
+  MultiStep: MultiStep
   /* map end - DO NOT REMOVE */
 };
 

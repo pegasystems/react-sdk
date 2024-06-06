@@ -13,7 +13,7 @@ export default function AssignmentCard(props: PropsWithChildren<AssignmentCardPr
   // Get emitted components from map (so we can get any override that may exist)
   const ActionButtons = getComponentFromMap('ActionButtons');
 
-  const { children, actionButtons, onButtonPress } = props;
+  const { children, actionButtons, onButtonPress, getPConnect } = props;
 
   const [arMainButtons, setArMainButtons] = useState([]);
   const [arSecondaryButtons, setArSecondaryButtons] = useState([]);
@@ -29,8 +29,11 @@ export default function AssignmentCard(props: PropsWithChildren<AssignmentCardPr
     onButtonPress(sAction, sType);
   }
 
+  const caseType = PCore?.getStore().getState()?.data[getPConnect().getContextName()]?.caseInfo?.caseTypeName;
+
   return (
     <>
+      {caseType && <div style={{ fontSize: '1.5em', fontWeight: 500, paddingBottom: '1em' }}>{caseType}</div>}
       {children}
       {arMainButtons && arSecondaryButtons && (
         <ActionButtons arMainButtons={arMainButtons} arSecondaryButtons={arSecondaryButtons} onButtonPress={buttonPress} />

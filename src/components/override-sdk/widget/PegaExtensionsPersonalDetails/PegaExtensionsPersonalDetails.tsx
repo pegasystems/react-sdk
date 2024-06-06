@@ -83,7 +83,7 @@ export default function PegaExtensionsPersonalDetails(props) {
 
   const itemsToRender = [
     {
-      header: label,
+      header: 'General',
       items: [
         {
           label: 'Name',
@@ -160,9 +160,9 @@ export default function PegaExtensionsPersonalDetails(props) {
                           {element.value}
                         </Typography>
                       </CardContent>
-                      <CardActions style={{ justifyContent: 'end' }}>
+                      {/* <CardActions style={{ justifyContent: 'end' }}>
                         <Button className={classes.editButton}>Edit</Button>
-                      </CardActions>
+                      </CardActions> */}
                     </Card>
                   </li>
                 );
@@ -189,20 +189,20 @@ export default function PegaExtensionsPersonalDetails(props) {
                     <Card className={classes.root} style={{ width: 'auto' }}>
                       <CardHeader style={{ paddingTop: 0, paddingBottom: 0 }} title={<Typography variant='h6'>{element.label}</Typography>} />
                       <CardContent>
-                        <div style={{ display: 'grid', gap: '0.5rem' }}>
-                          {element.values.map(item => {
-                            return (
-                              <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <img src={`assets/img/${item.icon}`} className={classes.caseViewIconImage} />
-                                <span>{item.text}</span>
-                              </div>
-                            );
-                          })}
+                        {/* <div style={{ display: 'grid', gap: '0.5rem' }}> */}
+                        {/* {element.values.map(item => { */}
+
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                          <img src={`assets/img/${element.values[0].icon}`} className={classes.caseViewIconImage} />
+                          <span>{element.values[0].text}</span>
                         </div>
+
+                        {/* })} */}
+                        {/* </div> */}
                       </CardContent>
-                      <CardActions style={{ justifyContent: 'end' }}>
+                      {/* <CardActions style={{ justifyContent: 'end' }}>
                         <Button className={classes.editButton}>Edit</Button>
-                      </CardActions>
+                      </CardActions> */}
                     </Card>
                   </li>
                 );

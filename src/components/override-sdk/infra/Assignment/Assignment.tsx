@@ -193,6 +193,7 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
             cancelPromise
               .then(data => {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
+                window.location.reload();
               })
               .catch(() => {
                 showToast(`${localizedVal('Cancel failed!', localeCategory)}`);
@@ -203,6 +204,7 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
             cancelPromise
               .then(data => {
                 publish(PUB_SUB_EVENTS.EVENT_CANCEL, data);
+                window.location.reload();
               })
               .catch(() => {
                 showToast(`${localizedVal('Cancel failed!', localeCategory)}`);
@@ -275,7 +277,7 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
   }
 
   return (
-    <div id='Assignment' style={{padding: '0 1.4em'}}>
+    <div id='Assignment' style={{ padding: '1em 1.4em' }}>
       {banners}
       {bHasNavigation ? (
         <>

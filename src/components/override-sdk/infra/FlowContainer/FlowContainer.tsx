@@ -305,11 +305,11 @@ export const FlowContainer = (props: FlowContainerProps) => {
         (!todo_showTodo ? (
           !displayOnlyFA ? (
             <Card className={`${classes.root} psdk-root`}>
-              <CardHeader
+              {/* <CardHeader
                 title={<Typography variant='h6'>{containerName}</Typography>}
                 subheader={`Task in ${caseId} \u2022 Priority ${urgency}`}
                 avatar={<Avatar className={`${classes.avatar} psdk-avatar`}>{operatorInitials}</Avatar>}
-              />
+              /> */}
               {displayPageMessages()}
               <MuiPickersUtilsProvider utils={DayjsUtils}>
                 <Assignment getPConnect={getPConnect} itemKey={itemKey}>

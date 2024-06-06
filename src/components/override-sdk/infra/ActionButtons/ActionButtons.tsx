@@ -46,71 +46,47 @@ export default function ActionButtons(props: ActionButtonsProps) {
   }
 
   return (
-    <Grid container spacing={4} justifyContent='space-between' style={{marginTop: '1em'}}>
-        <Grid item>
-          <Grid container spacing={1}>
-            {arSecondaryButtons.map(sButton => (
-              <Grid item key={sButton.name}>
-                <Button
-                  variant='outlined'
-                  color='secondary'
-                  className={classes.secondaryButton}
-                  onClick={() => {
-                    _onButtonPress(sButton.jsAction, 'secondary');
-                  }}
-                >
-                  {localizedVal(sButton.name, localeCategory)}
-                </Button>
-              </Grid>
-            ))}
-          </Grid>
-        </Grid>
-        <Grid item>
-          <Grid container spacing={1}>
-            {arMainButtons.map(mButton => (
-              <Grid item key={mButton.name}>
-                <Button
-                  className={classes.primaryButton}
-                  variant='contained'
-                  color='secondary'
-                  // className='btn-primary'
-                  onClick={() => {
-                    _onButtonPress(mButton.jsAction, 'primary');
-                  }}
-                >
-                  {localizedVal(mButton.name, localeCategory)}
-                </Button>
-              </Grid>
-            ))}
-          </Grid>
+    <Grid container spacing={4} justifyContent='space-between' style={{ marginTop: '1em' }}>
+      <Grid item>
+        <Grid container spacing={1}>
+          {arSecondaryButtons.map(
+            sButton =>
+              sButton?.jsAction !== 'saveAssignment' && (
+                <Grid item key={sButton.name}>
+                  <Button
+                    variant='outlined'
+                    color='secondary'
+                    className={classes.secondaryButton}
+                    onClick={() => {
+                      _onButtonPress(sButton.jsAction, 'secondary');
+                    }}
+                  >
+                    {localizedVal(sButton.name, localeCategory)}
+                  </Button>
+                </Grid>
+              )
+          )}
         </Grid>
       </Grid>
+      <Grid item>
+        <Grid container spacing={1}>
+          {arMainButtons.map(mButton => (
+            <Grid item key={mButton.name}>
+              <Button
+                className={classes.primaryButton}
+                variant='contained'
+                color='secondary'
+                // className='btn-primary'
+                onClick={() => {
+                  _onButtonPress(mButton.jsAction, 'primary');
+                }}
+              >
+                {localizedVal(mButton.name, localeCategory)}
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
-
-/* Button-dark
-
-Buttons communicate actions that users can take. They are typically placed throughout your UI, in places like Dialogs, Modal windows, Forms, Cards and Toolbars
-
-Filled buttons are high-emphasis buttons.
-They have the most visual impact after the FAB, and should be used for important, final actions that complete a flow, like &quot;Save&quot;, &quot;Join now&quot;, or &quot;Confirm&quot;.
-*/
-
-/* Auto layout */
-// display: flex;
-// flex-direction: column;
-// justify-content: center;
-// align-items: center;
-// padding: 0px;
-
-// margin: 0 auto;
-// width: 78px;
-// height: 40px;
-
-// background: #CE2525;
-// border-radius: 100px;
-
-// /* Inside auto layout */
-// flex: none;
-// order: 1;
-// flex-grow: 0;

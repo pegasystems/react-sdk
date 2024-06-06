@@ -159,8 +159,23 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
           requestAnimationFrame(checkChildren);
         }
       };
+      const hasAutocompleteLoaded = window.sessionStorage.getItem('hasAutocompleteLoaded');
 
-      checkChildren();
+      if (hasAutocompleteLoaded === 'true') {
+        PCore.getPubSubUtils().subscribe(
+          'rerenderCYA',
+          () => {
+            window.sessionStorage.setItem('hasAutocompleteLoaded', 'false');
+            checkChildren();
+            PCore?.getPubSubUtils().unsubscribe('rerenderCYA', '');
+          },
+          'rerenderCYA'
+        );
+      } else {
+        setTimeout(() => {
+          checkChildren();
+        }, 2000);
+      }
     }
   }, [dfChildren]);
 

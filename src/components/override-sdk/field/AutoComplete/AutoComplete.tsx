@@ -196,7 +196,16 @@ export default function AutoComplete(props: AutoCompleteProps) {
       e.preventDefault();
     }
   };
+  const selectedOption = options?.filter(item => {
+    return item?.key === value;
+  });
 
+  useEffect(() => {
+    if (selectedOption[0]?.value) {
+      window.sessionStorage.setItem('hasAutocompleteLoaded', 'true');
+      PCore.getPubSubUtils().publish('rerenderCYA', {});
+    }
+  }, [selectedOption[0]?.value]);
   useEffect(() => {
     const element = document.getElementById(formattedPropertyName) as HTMLInputElement;
     const elementUl = document.getElementById(
@@ -222,9 +231,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   if (displayMode === 'STACKED_LARGE_VAL') {
     return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
   }
-  const selectedOption = options?.filter(item => {
-    return item?.key === value;
-  });
+
   const inprogressStatus = checkStatus();
 
   if (

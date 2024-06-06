@@ -62,6 +62,7 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
 
   const handleOnClick = (section: string, event) => {
     event.preventDefault();
+    window.sessionStorage.setItem('hasAutocompleteLoaded', 'false');
     getPConnect().setValue('.SelectedTask', section, '', false);
     getPConnect().getActionsApi().finishAssignment(context);
     PCore.getPubSubUtils().publish('assignmentFinishedOnTaskListClicked', {});

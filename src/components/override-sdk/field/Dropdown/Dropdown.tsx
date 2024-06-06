@@ -75,6 +75,17 @@ export default function Dropdown(props) {
   const localeClass = localeContext === 'datapage' ? '@baseclass' : className;
   const localeName = localeContext === 'datapage' ? metaData?.datasource?.name : refName;
   const localePath = localeContext === 'datapage' ? displayName : localeName;
+  useEffect(() => {
+    const dropdownvalue = thePConn.getLocalizedValue(
+      displayValue,
+      localePath,
+      thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
+    );
+    if (dropdownvalue) {
+      window.sessionStorage.setItem('hasAutocompleteLoaded', 'true');
+      PCore.getPubSubUtils().publish('rerenderCYA', {});
+    }
+  }, [displayValue]);
 
   const handleChange = evt => {
     const selectedValue = evt.target.value === placeholder ? '' : evt.target.value;

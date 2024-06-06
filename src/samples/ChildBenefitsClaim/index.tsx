@@ -514,6 +514,7 @@ export default function ChildBenefitsClaim() {
   }
 
   // One time (initialization) subscriptions and related unsubscribe
+
   useEffect(() => {
     getSdkConfig().then(sdkConfig => {
       const sdkConfigAuth = sdkConfig.authConfig;

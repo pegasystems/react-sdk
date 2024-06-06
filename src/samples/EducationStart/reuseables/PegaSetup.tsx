@@ -222,7 +222,7 @@ function initialRender(inRenderObj, _AppContextValues: AppContextValues) {
     );
   } catch {
     // eslint-disable-next-line no-console
-    console.log('Error');
+    console.log('Error - pega root element not found');
   }
 
   /* const root = render(target); // createRoot(container!) if you use TypeScript

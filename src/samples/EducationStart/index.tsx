@@ -25,7 +25,7 @@ import { useHistory } from 'react-router-dom';
 const EducationStartCase: FunctionComponent<any> = () => {
   const [showLandingPage, setShowLandingPage] = useState<boolean>(true);
   const [shuttered, setShuttered] = useState(null);
-  
+
   const [shutterServicePage /* setShutterServicePage */] = useState(false);
   const [serviceNotAvailable /* setServiceNotAvailable */] = useState(false);
   const [pCoreReady, setPCoreReady] = useState(false);
@@ -126,8 +126,6 @@ const EducationStartCase: FunctionComponent<any> = () => {
 
   const startClaim = () => {
     setShowPega(true);
-    // PCore.getMashupApi().createCase('HMRC-ChB-Work-HICBCPreference', PCore.getConstants().APP.APP);
-    PCore.getMashupApi().createCase('HMRC-ChB-Work-EducationStart', PCore.getConstants().APP.APP);
   };
 
   /* ***
@@ -137,6 +135,11 @@ const EducationStartCase: FunctionComponent<any> = () => {
    */
 
   // And clean up
+  useEffect(() => {
+    if (showPega && pCoreReady) {
+      PCore.getMashupApi().createCase('HMRC-ChB-Work-EducationStart', PCore.getConstants().APP.APP);
+    }
+  }, [pCoreReady, showPega]);
 
   useEffect(() => {
     document.addEventListener('SdkConstellationReady', () => {
@@ -286,21 +289,21 @@ const EducationStartCase: FunctionComponent<any> = () => {
               <div id='pega-part-of-page'>
                 <div id='pega-root'></div>
               </div>
-              {showLandingPage && (
-                <MainWrapper showPageNotWorkingLink={showLandingPage}>
+              <MainWrapper>
+                {showLandingPage && (
                   <LandingPage onProceedHandler={() => landingPageProceedHandler()} />
+                )}
 
-                  {serviceNotAvailable && <ServiceNotAvailable />}
-                  {currentDisplay === 'resolutionpage' && (
-                    <SummaryPage
-                      summaryContent={summaryPageContent.content}
-                      summaryTitle={summaryPageContent.title}
-                      summaryBanner={summaryPageContent.banner}
-                      backlinkProps={{}}
-                    />
-                  )}
-                </MainWrapper>
-              )}
+                {serviceNotAvailable && <ServiceNotAvailable />}
+                {currentDisplay === 'resolutionpage' && (
+                  <SummaryPage
+                    summaryContent={summaryPageContent.content}
+                    summaryTitle={summaryPageContent.title}
+                    summaryBanner={summaryPageContent.banner}
+                    backlinkProps={{}}
+                  />
+                )}
+              </MainWrapper>
             </>
           )}
         </div>

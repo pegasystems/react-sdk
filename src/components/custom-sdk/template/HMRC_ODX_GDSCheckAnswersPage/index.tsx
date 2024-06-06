@@ -138,7 +138,7 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
       dfChildrenContainerRef.current.appendChild(fragment);
     }
   }
-
+  const hasAutocompleteLoaded = window.sessionStorage.getItem('hasAutocompleteLoaded');
   useEffect(() => {
     if (dfChildrenContainerRef.current) {
       const checkChildren = () => {
@@ -159,7 +159,6 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
           requestAnimationFrame(checkChildren);
         }
       };
-      const hasAutocompleteLoaded = window.sessionStorage.getItem('hasAutocompleteLoaded');
 
       if (hasAutocompleteLoaded === 'true') {
         PCore.getPubSubUtils().subscribe(
@@ -177,7 +176,7 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
         }, 2000);
       }
     }
-  }, [dfChildren]);
+  }, [dfChildren, hasAutocompleteLoaded]);
 
   return (
     <StyledHmrcOdxGdsCheckAnswersPageWrapper>

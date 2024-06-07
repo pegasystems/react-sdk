@@ -138,29 +138,52 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
       dfChildrenContainerRef.current.appendChild(fragment);
     }
   }
-  const hasAutocompleteLoaded = window.sessionStorage.getItem('hasAutocompleteLoaded');
-  useEffect(() => {
-    if (dfChildrenContainerRef.current) {
-      const checkChildren = () => {
-        const container = dfChildrenContainerRef.current;
-        const summaryListElement = container?.querySelector('.govuk-summary-list');
+  let hasAutocompleteLoaded = window.sessionStorage.getItem('hasAutocompleteLoaded');
 
-        if (summaryListElement) {
-          let htmlContent = '';
-          Array.from(container.children).forEach(child => {
-            if (child instanceof HTMLElement) {
-              htmlContent += child.innerHTML;
-            }
-          });
+  const checkChildren = () => {
+    const container = dfChildrenContainerRef.current;
+    const summaryListElement = container?.querySelector('.govuk-summary-list');
 
-          updateHTML(htmlContent);
-        } else {
-          // Retry until a child with the class "govuk-summary-list" is rendered
-          requestAnimationFrame(checkChildren);
+    if (summaryListElement) {
+      let htmlContent = '';
+      Array.from(container.children).forEach(child => {
+        if (child instanceof HTMLElement) {
+          htmlContent += child.innerHTML;
         }
-      };
+      });
 
+      updateHTML(htmlContent);
+    } else {
+      // Retry until a child with the class "govuk-summary-list" is rendered
+      requestAnimationFrame(checkChildren);
+    }
+  };
+
+  function CYARendering() {
+    if (dfChildrenContainerRef.current) {
+      // moving this code outside in a function and calling it in useEffect
+
+      // const checkChildren = () => {
+      //   const container = dfChildrenContainerRef.current;
+      //   const summaryListElement = container?.querySelector('.govuk-summary-list');
+
+      //   if (summaryListElement) {
+      //     let htmlContent = '';
+      //     Array.from(container.children).forEach(child => {
+      //       if (child instanceof HTMLElement) {
+      //         htmlContent += child.innerHTML;
+      //       }
+      //     });
+
+      //     updateHTML(htmlContent);
+      //   } else {
+      //     // Retry until a child with the class "govuk-summary-list" is rendered
+      //     requestAnimationFrame(checkChildren);
+      //   }
+      // };
+      hasAutocompleteLoaded = window.sessionStorage.getItem('hasAutocompleteLoaded');
       if (hasAutocompleteLoaded === 'true') {
+        window.sessionStorage.setItem('hasAutocompleteLoaded', 'false');
         PCore.getPubSubUtils().subscribe(
           'rerenderCYA',
           () => {
@@ -176,7 +199,14 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
         }, 2000);
       }
     }
-  }, [dfChildren, hasAutocompleteLoaded]);
+  }
+  useEffect(() => {
+    CYARendering();
+
+    setTimeout(() => {
+      checkChildren();
+    }, 2000);
+  }, [dfChildren]);
 
   return (
     <StyledHmrcOdxGdsCheckAnswersPageWrapper>

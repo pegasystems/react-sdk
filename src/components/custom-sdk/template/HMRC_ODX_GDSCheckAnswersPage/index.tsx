@@ -58,8 +58,9 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
   const actions = pConn.getActionsApi();
   const containerItemID = pConn.getContextName();
 
-  function navigateToStep(event, stepId) {
+  function navigateToStep(event, stepId, link) {
     event.preventDefault();
+    link.style.pointerEvents = 'none';
     // eslint-disable-next-line no-console
     console.log('navigation', stepId);
     const navigateToStepPromise = actions.navigateToStep(stepId, containerItemID);
@@ -67,12 +68,16 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
     navigateToStepPromise
       .then(() => {
         //  navigate to step success handling
+        link.style.pointerEvents = 'auto';
         console.log('navigation successful'); // eslint-disable-line
       })
       .catch(error => {
         // navigate to step failure handling
         // eslint-disable-next-line no-console
         console.log('Change link Navigation failed', error);
+      })
+      .finally(() => {
+        link.style.pointerEvents = 'auto';
       });
   }
 
@@ -98,12 +103,14 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
         const isCsV = (elem.children[1] as HTMLElement).dataset.isCsv;
         if (isCsV === 'true') {
           const csvItems = (elem as HTMLElement).children[1].textContent.split(',');
-          (elem as HTMLElement).children[1].innerHTML = '';
-          csvItems.forEach(item => {
-            const textNode = document.createTextNode(item.trim());
-            (elem as HTMLElement).children[1].appendChild(textNode);
-            (elem as HTMLElement).children[1].appendChild(document.createElement('br'));
-          });
+          if (csvItems.length > 1) {
+            (elem as HTMLElement).children[1].innerHTML = '';
+            csvItems.forEach(item => {
+              const textNode = document.createTextNode(item.trim());
+              (elem as HTMLElement).children[1].appendChild(textNode);
+              (elem as HTMLElement).children[1].appendChild(document.createElement('br'));
+            });
+          }
         }
         if (!openDL) {
           openDL = true;
@@ -127,7 +134,7 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
       const originalLink = cloneLink;
       if (originalLink) {
         const stepId = originalLink.getAttribute('data-step-id');
-        cloneLink.addEventListener('click', event => navigateToStep(event, stepId));
+        cloneLink.addEventListener('click', event => navigateToStep(event, stepId, originalLink));
       }
     });
 

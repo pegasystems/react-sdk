@@ -74,7 +74,7 @@ test.describe('E2E test', () => {
     await page.locator('text=United States+1 >> nth=0').click();
     const phoneInput = phone.locator('input');
     await phoneInput.click();
-    await phoneInput.fill('6175551212');
+    await phoneInput.pressSequentially('6175551212');
 
     await page.locator('button:has-text("submit")').click();
 

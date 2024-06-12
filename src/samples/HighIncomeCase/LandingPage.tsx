@@ -1,45 +1,28 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import  MainWrapper   from '../../components/BaseComponents/MainWrapper';
-import  RadioButtons  from '../../components/BaseComponents/RadioButtons/RadioButtons';
 import  Button from '../../components/BaseComponents/Button/Button';
-import ErrorSummary from './reuseables/ErrorSummary';
 import AppHeader from './reuseables/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import AppContext from './reuseables/AppContext';
+import WarningText from './reuseables/WarningText/WarningText';
 
 export default function LandingPage(props){
     const {onProceedHandler} = props;    
-    const beforeOptionValue = 'before6April';     
-    const onOrAfterOptionValue = 'onOrAfter6April'; 
-    const [errorText, setErrorText] = useState('');
-    const [selectedOption, setSelectedOption] = useState(); 
     const {showLanguageToggle} = useContext(AppContext); 
 
     const { hmrcURL } = useHMRCExternalLinks();
 
     useEffect(() => {
-    setPageTitle(!!errorText)
-    }, [errorText] )
+        setPageTitle()
+    })
 
-    const {t} = useTranslation()
-    const changeHandler = (evt) => {
-        setSelectedOption(evt.target.value);        
-    }
+    const {t} = useTranslation()   
 
     const onContinue = () => {
-        if(!selectedOption){    
-            setErrorText(t("HICBC_LANDINGPAGE_NO_OPTION_SELECTED_ERROR_MESSAGE"));   
-        }  
-        else if(selectedOption === beforeOptionValue){
-            window.location.href = 
-            "https://www.tax.service.gov.uk/digital-forms/form/high-income-child-benefit-tax-charge/draft/guide?_ga=2.201863441.1270276781.1710754405-974122855.1694433480";
-        }
-        else if(selectedOption === onOrAfterOptionValue){
-            onProceedHandler();
-        }        
+        onProceedHandler();
     }    
     
     return (
@@ -51,7 +34,6 @@ export default function LandingPage(props){
             />
             <div className='govuk-width-container'>                
                 <MainWrapper>
-                    {errorText && <ErrorSummary errors={[{message:errorText, fieldId:'optin-date'}]}/> }
                     <h1 className="govuk-heading-xl">{t('HIGH_INCOME_BENEFITS')}</h1>
                     <p className="govuk-body"> {t("HICBC_LANDINGPAGE_P1")}</p>
                     <p className="govuk-body"> {t("HICBC_LANDINGPAGE_P2")}</p>
@@ -61,24 +43,12 @@ export default function LandingPage(props){
                             <a className='govuk-link' href='https://www.gov.uk/child-benefit/eligibility' target="_blank" rel="noreferrer noopener">
                                 {t("HICBC_LANDINGPAGE_LISTITEM_STILL_ELIGIBLE_LINK_TEXT")} {t("OPENS_IN_NEW_TAB")}
                             </a>    
-                        </li>
-                        <li>{t("HICBC_LANDINGPAGE_LISTITEM_HAVE_PAYMENT_DETAILS_AVAILABLE")}</li>
+                        </li>                        
                         <li>{t("HICBC_LANDINGPAGE_LISTITEM_OPT_IN_WITHIN_3_MONTHS")}</li>
-                    </ul>
-                    <RadioButtons
-                    name='optin-date' 
-                    options={[
-                        {label:t('HICBC_LANDINGPAGE_BEFORE_6_APRIL_OPTION_LABEL'), value:beforeOptionValue},
-                        {label:t('HICBC_LANDINGPAGE_ONORAFTER_6_APRIL_OPTION_LABEL'), value:onOrAfterOptionValue}   ]} 
-                    displayInline={false}
-                    label={t('HICBC_LANDINGPAGE_QUESTION_LABEL')}
-                    useSmallRadios={false}
-                    legendIsHeading={false}
-                    errorText={errorText}
-                    onChange={changeHandler}  
-                    value={selectedOption}           
-                    />
-                    <Button id='continueToOptin' onClick={onContinue} variant='start'>{t("START_NOW")}</Button>
+                        <li>{t("HICBC_LANDINGPAGE_LISTITEM_HAVE_PAYMENT_DETAILS_AVAILABLE")}</li>
+                    </ul>     
+                    <WarningText className="govuk-body"> {t("HICBC_LANDINGPAGE_WARNING_CAN_ONLY_BE_COMPLETED_BY_CLAIMANT")}</WarningText>         
+                    <Button id='startNow' onClick={onContinue} variant='start'>{t("START_NOW")}</Button>
                     <br />
                 </MainWrapper>
             </div>

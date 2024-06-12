@@ -281,7 +281,7 @@ const EducationStartCase: FunctionComponent<any> = () => {
           assignmentPConn 
           ) */
           }
-          betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=463&referrerUrl=${window.location}`}
+          betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=claim-child-benefit-frontend&backUrl=/fill-online/claim-child-benefit/recently-claimed-child-benefit`}
         />
 
         <div className='govuk-width-container'>

@@ -81,7 +81,11 @@ export default function FieldSet({
         {errMessage && (
           <p id={errorID} className='govuk-error-message'>
             <span className='govuk-visually-hidden'>Error:</span>
-            {removeRedundantString(errMessage)}
+            {PCore.getLocaleUtils().getLocaleValue(
+              removeRedundantString(errMessage),
+              'Messages',
+              PCore.getLocaleUtils().GENERIC_BUNDLE_KEY
+            )}
           </p>
         )}
         {children}

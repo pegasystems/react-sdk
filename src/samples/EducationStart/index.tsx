@@ -21,7 +21,6 @@ import {
 } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import { useStartMashup } from './reuseables/PegaSetup';
 import { useHistory } from 'react-router-dom';
-import Button from '../../components/BaseComponents/Button/Button';
 
 const EducationStartCase: FunctionComponent<any> = () => {
   const [showLandingPage, setShowLandingPage] = useState<boolean>(true);

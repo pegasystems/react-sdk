@@ -98,12 +98,14 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
         const isCsV = (elem.children[1] as HTMLElement).dataset.isCsv;
         if (isCsV === 'true') {
           const csvItems = (elem as HTMLElement).children[1].textContent.split(',');
-          (elem as HTMLElement).children[1].innerHTML = '';
-          csvItems.forEach(item => {
-            const textNode = document.createTextNode(item.trim());
-            (elem as HTMLElement).children[1].appendChild(textNode);
-            (elem as HTMLElement).children[1].appendChild(document.createElement('br'));
-          });
+          if (csvItems.length > 1) {
+            (elem as HTMLElement).children[1].innerHTML = '';
+            csvItems.forEach(item => {
+              const textNode = document.createTextNode(item.trim());
+              (elem as HTMLElement).children[1].appendChild(textNode);
+              (elem as HTMLElement).children[1].appendChild(document.createElement('br'));
+            });
+          }
         }
         if (!openDL) {
           openDL = true;

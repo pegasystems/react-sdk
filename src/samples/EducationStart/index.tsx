@@ -135,11 +135,28 @@ const EducationStartCase: FunctionComponent<any> = () => {
    *
    * TODO Can this be made into a tidy helper? including its own clean up? A custom hook perhaps
    */
+  
+  // TODO - This function will be removed with US-13518 implementation.
+  function removeHmrcLink() {
+    const hmrcLink = document.querySelector(
+      '[href="https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit"]'
+    );    
+    const breakTag = document.querySelectorAll('br');
+
+    if (hmrcLink || breakTag.length) {
+      hmrcLink?.remove();
+      breakTag[0]?.remove();
+      breakTag[1]?.remove();
+    } else {
+      requestAnimationFrame(removeHmrcLink);
+    }
+  }
 
   // And clean up
   useEffect(() => {
     if (showPega && pCoreReady) {
       PCore.getMashupApi().createCase('HMRC-ChB-Work-EducationStart', PCore.getConstants().APP.APP);
+      requestAnimationFrame(removeHmrcLink);  // TODO - To be removed with US-13518 implementation.
     }
   }, [pCoreReady, showPega]);
 

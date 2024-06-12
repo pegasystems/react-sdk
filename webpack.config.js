@@ -227,12 +227,12 @@ module.exports = (env, argv) => {
         {
           test: /\.woff2(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
           loader: 'url-loader',
-          options: { limit: 10000, mimetype: 'application/font-woff2' }
+          options: {mimetype: 'application/font-woff2' }
         },
         {
           test: /\.woff(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
           loader: 'url-loader',
-          options: { limit: 10000, mimetype: 'application/font-woff' }
+          options: {mimetype: 'application/font-woff' }
         },
         {
           test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,

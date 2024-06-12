@@ -148,7 +148,11 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
       let htmlContent = '';
       Array.from(container.children).forEach(child => {
         if (child instanceof HTMLElement) {
-          htmlContent += child.innerHTML;
+          if (child.tagName === 'H2' || child.tagName === 'H3') {
+            htmlContent += child.outerHTML;
+          } else {
+            htmlContent += child.innerHTML;
+          }
         }
       });
 

@@ -47,6 +47,15 @@ test.describe('E2E test', () => {
     requiredEmail.fill('John@doe.com');
     await expect(page.locator('p.Mui-error.Mui-required')).toBeHidden();
 
+    /** Checking 'field label', 'placeholder', and 'helper text' */
+    const requiredEmailFieldLabel = page.locator('text="Required Email"');
+    await expect(requiredEmailFieldLabel && requiredEmailFieldLabel.locator('text="*"')).toBeVisible();
+
+    const placeholderValue = await requiredEmail.getAttribute('placeholder');
+    await expect(placeholderValue).toBe('Email Placeholder');
+
+    await expect(page.locator('div[id="Assignment"] >> p:has-text("Email Helper Text")')).toBeVisible();
+
     attributes = await common.getAttributes(requiredEmail);
     await expect(attributes.includes('required')).toBeTruthy();
 

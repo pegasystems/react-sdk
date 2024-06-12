@@ -58,8 +58,9 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
   const actions = pConn.getActionsApi();
   const containerItemID = pConn.getContextName();
 
-  function navigateToStep(event, stepId) {
+  function navigateToStep(event, stepId, link) {
     event.preventDefault();
+    link.style.pointerEvents = 'none';
     // eslint-disable-next-line no-console
     console.log('navigation', stepId);
     const navigateToStepPromise = actions.navigateToStep(stepId, containerItemID);
@@ -73,6 +74,9 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
         // navigate to step failure handling
         // eslint-disable-next-line no-console
         console.log('Change link Navigation failed', error);
+      })
+      .finally(() => {
+        link.style.pointerEvents = 'auto';
       });
   }
 
@@ -129,7 +133,7 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
       const originalLink = cloneLink;
       if (originalLink) {
         const stepId = originalLink.getAttribute('data-step-id');
-        cloneLink.addEventListener('click', event => navigateToStep(event, stepId));
+        cloneLink.addEventListener('click', event => navigateToStep(event, stepId, originalLink));
       }
     });
 

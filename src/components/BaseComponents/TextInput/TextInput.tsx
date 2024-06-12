@@ -23,7 +23,7 @@ export default function TextInput(props) {
   const inputClasses = `govuk-input ${errorText ? 'govuk-input--error' : ''}`.trim();
 
   const textInputClassesWithWidth = (width: number) => {
-    if (width !== undefined || width !== null) {
+    if (width !== undefined && width !== null) {
       if (width >= 6 && width <= 10) return `${inputClasses} govuk-input--width-${10}`.trim();
       else if (width >= 11 && width <= 20) return `${inputClasses} govuk-input--width-${20}`.trim();
       else if (width >= 21) return `${inputClasses}`.trim();

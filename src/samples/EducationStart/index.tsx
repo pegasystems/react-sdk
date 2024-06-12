@@ -21,6 +21,7 @@ import {
 } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import { useStartMashup } from './reuseables/PegaSetup';
 import { useHistory } from 'react-router-dom';
+import Button from '../../components/BaseComponents/Button/Button';
 
 const EducationStartCase: FunctionComponent<any> = () => {
   const [showLandingPage, setShowLandingPage] = useState<boolean>(true);
@@ -289,21 +290,18 @@ const EducationStartCase: FunctionComponent<any> = () => {
               <div id='pega-part-of-page'>
                 <div id='pega-root'></div>
               </div>
-              <MainWrapper>
-                {showLandingPage && (
-                  <LandingPage onProceedHandler={() => landingPageProceedHandler()} />
-                )}
-
-                {serviceNotAvailable && <ServiceNotAvailable />}
-                {currentDisplay === 'resolutionpage' && (
-                  <SummaryPage
-                    summaryContent={summaryPageContent.content}
-                    summaryTitle={summaryPageContent.title}
-                    summaryBanner={summaryPageContent.banner}
-                    backlinkProps={{}}
-                  />
-                )}
-              </MainWrapper>
+              {showLandingPage && (
+                <LandingPage onProceedHandler={() => landingPageProceedHandler()} />
+              )}
+              {serviceNotAvailable && <ServiceNotAvailable />}
+              {currentDisplay === 'resolutionpage' && (
+                <SummaryPage
+                  summaryContent={summaryPageContent.content}
+                  summaryTitle={summaryPageContent.title}
+                  summaryBanner={summaryPageContent.banner}
+                  backlinkProps={{}}
+                />
+              )}
             </>
           )}
         </div>

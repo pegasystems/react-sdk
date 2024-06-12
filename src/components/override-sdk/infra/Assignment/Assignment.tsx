@@ -210,7 +210,9 @@ export default function Assignment(props) {
         if (errorVal.length > 0) {
           errorVal.forEach(element => {
             validatemessage =
-              validatemessage + (validatemessage.length > 0 ? '. ' : '') + element.message;
+              validatemessage +
+              (validatemessage.length > 0 ? '. ' : '') +
+              localizedVal(removeRedundantString(element.message), 'Messages');
           });
         }
 

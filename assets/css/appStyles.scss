@@ -74,6 +74,22 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
   border-radius: 50%;
 }
 
+ // TODO - Below style will be removed with US-13518 implementation.
+.education-start a[href="https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit"] {
+  display: none;
+}
+
+.education-start a[href="https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit"] + br {
+  display: none;
+}
+
+.education-start a[href="https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit"] + br + br {
+  display: none;
+}
+
+ // TODO - Above style will be removed with US-13518 implementation.
+
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

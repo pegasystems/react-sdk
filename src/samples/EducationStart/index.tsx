@@ -306,7 +306,7 @@ const EducationStartCase: FunctionComponent<any> = () => {
           ) : (
             <>
               <div id='pega-part-of-page'>
-                <div id='pega-root'></div>
+                <div id='pega-root' className='education-start'></div>
               </div>
               {showLandingPage && (
                 <LandingPage onProceedHandler={() => landingPageProceedHandler()} />

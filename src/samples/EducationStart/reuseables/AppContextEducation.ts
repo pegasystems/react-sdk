@@ -1,19 +1,22 @@
 import { createContext } from 'react';
 
+
 export interface AppContextValues {
   appBacklinkProps: {
     appBacklinkAction?: Function | null;
     appBacklinkText?: String | null;
   };
   showLanguageToggle?: boolean;
+  pageNotWorkingUrl?: string;
 }
-
-const AppContext = createContext<AppContextValues>({
+// TODO: Once this code exposed to common folder, we will refer AppContext from reuseable components
+const AppContextEducation = createContext<AppContextValues>({  
   appBacklinkProps: {
     appBacklinkAction: null,
     appBacklinkText: null
   },
-  showLanguageToggle: false
+  showLanguageToggle: false,
+  pageNotWorkingUrl: ''
 });
 
-export { AppContext as default };
+export { AppContextEducation as default };

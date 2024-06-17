@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Button from '../../components/BaseComponents/Button/Button';
 import MainWrapper from '../../components/BaseComponents/MainWrapper';
+import AppContextEducation from './reuseables/AppContextEducation'; // TODO: Once this code exposed to common folder, we will remove this import from EducationStart
 
 export default function LandingPage(props) {
   const { onProceedHandler } = props;
   const { t } = useTranslation();
   const history = useHistory();
-
+  const { pageNotWorkingUrl } = useContext(AppContextEducation);
 
   const onContinue = () => {
     onProceedHandler();
@@ -22,7 +23,7 @@ export default function LandingPage(props) {
         key='StartPageBacklink'
         attributes={{ type: 'link' }}
       />
-      <MainWrapper>
+        <MainWrapper pageNotWorkingUrl={pageNotWorkingUrl}>
         <h1 className='govuk-heading-l'>{t('EDUCATION_START_H1')}</h1>
         <p className='govuk-body'>{t('EDUCATION_START_P1')}</p>
         <ul className='govuk-list govuk-list--bullet'>

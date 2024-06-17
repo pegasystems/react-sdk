@@ -9,7 +9,7 @@ import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import { checkCookie, setCookie } from '../../../components/helpers/cookie';
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../../sdk-local-component-map';
-import AppContext, { AppContextValues } from './AppContext';
+import AppContextEducation, { AppContextValues } from './AppContextEducation'; // TODO: Once this code exposed to common folder, we will refer AppContext from reuseable components
 
 import {
   // sdkIsLoggedIn,
@@ -24,7 +24,7 @@ export function establishPCoreSubscriptions({
   setShowPega,
   setShowResolutionPage,
   setCaseId,
-  setCaseStatus,
+  setCaseStatus
   // setOperatorName
 }) {
   /* ********************************************
@@ -215,9 +215,9 @@ function initialRender(inRenderObj, _AppContextValues: AppContextValues) {
   // Initial render of component passed in (which should be a RootContainer)
   try {
     render(
-      <AppContext.Provider value={_AppContextValues}>
+      <AppContextEducation.Provider value={_AppContextValues}>
         <React.Fragment>{theComponent}</React.Fragment>
-      </AppContext.Provider>,
+      </AppContextEducation.Provider>,
       target
     );
   } catch {
@@ -434,5 +434,13 @@ export const useStartMashup = (
     }; */
   }, []);
 
-  return { showPega, setShowPega, showResolutionPage, setShowResolutionPage, caseId, caseStatus, operatorName };
+  return {
+    showPega,
+    setShowPega,
+    showResolutionPage,
+    setShowResolutionPage,
+    caseId,
+    caseStatus,
+    operatorName
+  };
 };

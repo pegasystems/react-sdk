@@ -10,6 +10,7 @@ import { GBdate, checkStatus } from '../../../helpers/utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import GDSCheckAnswers from '../../../BaseComponents/CheckAnswer/index';
 import { ReadOnlyDefaultFormContext } from '../../../helpers/HMRCAppContext';
+import dayjs from 'dayjs';
 
 declare const global;
 
@@ -147,7 +148,7 @@ export default function Date(props) {
     );
   }
   if (readOnly) {
-    return <ReadOnlyDisplay label={label} value={new global.Date(value).toLocaleDateString()} />;
+    return <ReadOnlyDisplay label={label} value={dayjs(value).format('D MMMM YYYY')} />;
   }
 
   const extraProps = { testProps: { 'data-test-id': testId } };

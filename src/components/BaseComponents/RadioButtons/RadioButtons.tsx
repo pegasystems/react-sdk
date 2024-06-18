@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FieldSet from '../FormGroup/FieldSet';
-import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 import { t } from 'i18next';
+import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 
 // TODO Consider solution to allow for a text divider and/or catch all option, as described here: https://design-system.service.gov.uk/components/radios/divider/index.html
 
@@ -22,10 +22,18 @@ export default function RadioButtons(props) {
     <FieldSet {...props}>
       <div className={radioDivClasses} data-module='govuk-radios'>
         {options.map((option, index) => {
+          let lableOverride = option.label;
+          let hintTextOverride = '';
+          if (option.label.indexOf('!!hint!!')) {
+            // If the label contains '!!hint!!', split the label into mainlabel and hintText as described here:https://design-system.service.gov.uk/components/radios/hint/
+            const [mainLabel, hintText] = option.label.split('!!hint!!');
+            lableOverride = mainLabel;
+            hintTextOverride = hintText;
+          }
           const itemId = `${name}${index > 0 ? `-${index}` : ''}`.trim();
           const itemHintId = `${itemId}-item-hint`;
           let ariaDescBy = {};
-          if (option.hintText) {
+          if (hintTextOverride) {
             ariaDescBy = { 'aria-describedby': itemHintId };
           }
           return (
@@ -46,11 +54,11 @@ export default function RadioButtons(props) {
                   {...ariaDescBy}
                 />
                 <label className='govuk-label govuk-radios__label' htmlFor={itemId}>
-                  {option.label}
+                  {lableOverride || option.label}
                 </label>
-                {option.hintText && (
+                {hintTextOverride && (
                   <div id={itemHintId} className='govuk-hint govuk-radios__hint'>
-                    <HintTextComponent htmlString={option.hintText} />
+                    <HintTextComponent htmlString={hintTextOverride} />
                   </div>
                 )}
               </div>

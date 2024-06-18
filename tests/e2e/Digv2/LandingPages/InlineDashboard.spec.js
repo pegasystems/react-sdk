@@ -37,7 +37,6 @@ test.describe('E2E test', () => {
     const table = await page.locator('div[id="list-view"] >> nth=0');
     const numOfRows = await table.locator('tbody >> tr').count();
 
-    const responsePromise = page.waitForResponse('**/data_views/D_ComplexFieldsList');
     /** Testing My Work List presence */
     const myworkList = page.locator('h6:has-text("My Work List")');
     await expect(myworkList).toBeVisible();
@@ -47,7 +46,7 @@ test.describe('E2E test', () => {
     const caseIdFilter = filters.locator('div:has-text("Case ID")');
     caseIdFilter.locator('input').fill(caseID);
 
-    await responsePromise;
+    await page.waitForResponse('**/data_views/D_ComplexFieldsList');
 
     await expect(table.locator(`td >> text=${caseID}`)).toBeVisible();
     await expect(table.locator('td >> text="Complex  Fields"')).toBeVisible();

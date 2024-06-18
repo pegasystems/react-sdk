@@ -94,6 +94,11 @@ test.describe('E2E test', () => {
     attributes = await common.getAttributes(editableDecimal);
     await expect(attributes.includes('readonly')).toBeFalsy();
 
+    const decimalAsCurrency = page.locator('input[data-test-id="9e438afab6d7ec67b5582bded10f5172"]');
+    attributes = await common.getAttributes(decimalAsCurrency);
+    await expect(attributes.includes('readonly')).toBeTruthy();
+    await expect(await decimalAsCurrency.inputValue()).toBe('$20');
+
     /** Selecting Visibility from the Sub Category dropdown */
     selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');
     await selectedSubCategory.click();

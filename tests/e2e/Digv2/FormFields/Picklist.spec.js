@@ -37,6 +37,12 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Dropdown' }).click();
 
     const dropdown = page.locator('div[data-test-id="94cb322b7468c7827d336398e525827e"]');
+    /** Checking 'placeholder' and 'helper text' */
+    const placeholderValue = await dropdown.locator('input').getAttribute('placeholder');
+    await expect(placeholderValue).toBe('Select...');
+
+    await expect(page.locator('div[id="Assignment"] >> p:has-text("Picklist Helper Text")')).toBeVisible();
+
     await dropdown.click();
     await page.getByRole('option', { name: 'Massachusetts' }).click();
 

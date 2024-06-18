@@ -42,9 +42,13 @@ test.describe('E2E test', () => {
     attributes = await common.getAttributes(notRequiredCurrency);
     await expect(attributes.includes('required')).toBeFalsy();
 
+    await expect(page.locator('div >> label').filter({ hasText: 'Required Currency *' })).toBeVisible();
     const requiredCurrency = page.locator('input[data-test-id="77af0bd660f2e0276e23a7db7d48235a"]');
+    await requiredCurrency.pressSequentially('20');
+    await notRequiredCurrency.click();
     attributes = await common.getAttributes(requiredCurrency);
     await expect(attributes.includes('required')).toBeTruthy();
+    await expect(await requiredCurrency.inputValue()).toBe('$20.00');
 
     /** Selecting Disable from the Sub Category dropdown */
     selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');
@@ -77,6 +81,7 @@ test.describe('E2E test', () => {
     const readonlyCurrency = page.locator('input[data-test-id="32bc05c9bac42b8d76ea72511afa89d0"]');
     attributes = await common.getAttributes(readonlyCurrency);
     await expect(attributes.includes('readonly')).toBeTruthy();
+    await expect(await readonlyCurrency.inputValue()).toBe('$20.00');
 
     const editableCurrency = page.locator('input[data-test-id="837e53069fc48e63debdee7fa61fbc1a"]');
 
@@ -84,6 +89,13 @@ test.describe('E2E test', () => {
 
     attributes = await common.getAttributes(editableCurrency);
     await expect(attributes.includes('readonly')).toBeFalsy();
+
+    const currencyAsDecimal = page.locator('input[data-test-id="a792300f2080cdbcf7a496220fa7a44e"]');
+    attributes = await common.getAttributes(currencyAsDecimal);
+    await expect(attributes.includes('readonly')).toBeTruthy();
+    await expect(await currencyAsDecimal.inputValue()).toBe('$20.00');
+    const symbol = page.locator('div:has-text("currencyAsDecimal")');
+    await expect(symbol.locator('p:has-text("$")')).toBeTruthy();
 
     /** Selecting Visibility from the Sub Category dropdown */
     selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');

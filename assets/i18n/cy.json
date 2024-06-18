@@ -196,8 +196,11 @@
   "IT_HAS_NOT_BEEN_TESTED": "Ni wiriwyd ei fod yn cydymffurfio â safon ‘AA’ Canllawiau Hygyrchedd Cynnwys y We, fersiwn 2.2. Bydd y gwasanaeth yn trefnu archwiliad hygyrchedd llawn erbyn 01 Chwefror 2024.",
 
   "YOU_ARE_ABOUT_TO_SIGN_OUT": "Rydych ar fin allgofnodi",
-  "FOR_YOUR_SECURITY_WE_WILL_SIGN_YOU_OUT": "Er eich diogelwch, byddwn yn eich allgofnodi ymhen",
-  "2_MINUTES": "2 funud",
+  "YOURE_ABOUT_TO_BE_SIGNED_OUT": "Rydych ar fin cael eich allgofnodi",
+  "FOR_YOUR_SECURITY_WE_WILL_SIGN_YOU_OUT": "Er eich diogelwch, byddwn yn eich allgofnodi cyn pen",
+  "2_MINUTES": "2 o funudau",
+  "1_MINUTE": "1 o funudau",
+  "SECONDS": "o eiliadau",
   "FOR_YOUR_SECURITY": "Er eich diogelwch",
   "WE_WILL_DELETE_YOUR_CLAIM": "Byddwn yn dileu’ch hawliad ymhen",
   "DELETE_YOUR_CLAIM": "Dileu eich hawliad",

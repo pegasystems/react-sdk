@@ -198,8 +198,11 @@
   "IT_HAS_NOT_BEEN_TESTED": "It has not been tested for compliance with WCAG 2.2 AA. The service will book a full accessibility audit by 1 February 2024.",
 
   "YOU_ARE_ABOUT_TO_SIGN_OUT": "You're about to sign out",
+  "YOURE_ABOUT_TO_BE_SIGNED_OUT": "You're about to be signed out",
   "FOR_YOUR_SECURITY_WE_WILL_SIGN_YOU_OUT": "For your security, we will sign you out in",
   "2_MINUTES": "2 minutes",
+  "1_MINUTE": "1 minute",
+  "SECONDS": "seconds",
   "FOR_YOUR_SECURITY": "For your security",
   "WE_WILL_DELETE_YOUR_CLAIM": "We will delete your claim in",
   "DELETE_YOUR_CLAIM": "Delete your claim",

@@ -1,11 +1,21 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useReducer } from 'react';
 import Modal from '../../BaseComponents/Modal/Modal';
 import Button from '../../BaseComponents/Button/Button';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 export default function TimeoutPopup(props) {
-  const { show, staySignedinHandler, signoutHandler, isAuthorised, isConfirmationPage, staySignedInButtonText, signoutButtonText, children } = props;
+  const {
+    show,
+    milisecondsTilSignout,
+    staySignedinHandler,
+    signoutHandler,
+    isAuthorised,
+    isConfirmationPage,
+    staySignedInButtonText,
+    signoutButtonText,
+    children
+  } = props;
   const staySignedInCallback = useCallback(
     event => {
       if (event.key === 'Escape') staySignedinHandler();
@@ -13,6 +23,76 @@ export default function TimeoutPopup(props) {
     [staySignedinHandler]
   );
   const { t } = useTranslation();
+
+  const initialTimeoutState = {
+    countdownStart: false,
+    timeRemaining: 60,
+    screenReaderCountdown: ''
+  };
+
+  const reducer = (state, action) => {
+    switch (action.type) {
+      case 'START_COUNTDOWN':
+        return { ...state, countdownStart: action.payload };
+      case 'UPDATE_TIME_REMAINING':
+        return { ...state, timeRemaining: action.payload };
+      case 'UPDATE_SCREEN_READER_COUNTDOWN':
+        return { ...state, screenReaderCountdown: action.payload };
+      default:
+        return state;
+    }
+  };
+
+  const [timeoutState, dispatch] = useReducer(reducer, initialTimeoutState);
+
+  useEffect(() => {
+    if (!show) {
+      // Reset countdown and related states if show is false
+      dispatch({ type: 'UPDATE_TIME_REMAINING', payload: 60 });
+      dispatch({ type: 'UPDATE_SCREEN_READER_COUNTDOWN', payload: '' });
+      dispatch({ type: 'START_COUNTDOWN', payload: false });
+    } else {
+      // Start the countdown only if show is true
+      const milisecondsTilCountdown = milisecondsTilSignout - 60000;
+      const countdownTimeout = setTimeout(() => {
+        dispatch({ type: 'START_COUNTDOWN', payload: true });
+      }, milisecondsTilCountdown);
+
+      return () => {
+        clearTimeout(countdownTimeout);
+      };
+    }
+  }, [show]);
+
+  useEffect(() => {
+    if (timeoutState.countdownStart) {
+      if (timeoutState.timeRemaining === 60) {
+        dispatch({
+          type: 'UPDATE_SCREEN_READER_COUNTDOWN',
+          payload: `${t('FOR_YOUR_SECURITY_WE_WILL_SIGN_YOU_OUT')} ${t('1_MINUTE')}`
+        });
+      }
+
+      if (timeoutState.timeRemaining === 0) return;
+
+      const timeRemainingInterval = setInterval(() => {
+        dispatch({ type: 'UPDATE_TIME_REMAINING', payload: timeoutState.timeRemaining - 1 });
+      }, 1000);
+
+      return () => clearInterval(timeRemainingInterval);
+    }
+  }, [timeoutState.countdownStart, timeoutState.timeRemaining]);
+
+  useEffect(() => {
+    if (timeoutState.timeRemaining < 60 && timeoutState.timeRemaining % 20 === 0) {
+      dispatch({
+        type: 'UPDATE_SCREEN_READER_COUNTDOWN',
+        payload: `${t('FOR_YOUR_SECURITY_WE_WILL_SIGN_YOU_OUT')} ${timeoutState.timeRemaining} ${t(
+          'SECONDS'
+        )}`
+      });
+    }
+  }, [timeoutState.timeRemaining]);
 
   useEffect(() => {
     if (show) {
@@ -24,6 +104,21 @@ export default function TimeoutPopup(props) {
       window.removeEventListener('keydown', staySignedInCallback);
     };
   }, [show]);
+
+  const timeoutText = () => {
+    let timeoutValue;
+
+    if (timeoutState.countdownStart && timeoutState.timeRemaining === 60) {
+      timeoutValue = `${t('1_MINUTE')}.`;
+    } else if (timeoutState.countdownStart && timeoutState.timeRemaining < 60) {
+      timeoutValue = `${timeoutState.timeRemaining} ${t('SECONDS')}.`;
+    } else {
+      timeoutValue = `${t('2_MINUTES')}.`;
+    }
+
+    return timeoutValue;
+  };
+
   const unAuthTimeoutPopupContent = () => {
     return (
       <div>
@@ -79,21 +174,23 @@ export default function TimeoutPopup(props) {
       : unAuthTimeoutPopupContent();
   };
 
-  if(children){
-    return <Modal show={show} id='timeout-popup'>
-      <div>
-        {children}
-        <div className='govuk-button-group govuk-!-padding-top-4'>
-          <Button type='button' onClick={staySignedinHandler}>
-            {staySignedInButtonText}
-          </Button>
+  if (children) {
+    return (
+      <Modal show={show} id='timeout-popup'>
+        <div>
+          {children}
+          <div className='govuk-button-group govuk-!-padding-top-4'>
+            <Button type='button' onClick={staySignedinHandler}>
+              {staySignedInButtonText}
+            </Button>
 
-          <a id='modal-signout-btn' className='govuk-link' href='#' onClick={signoutHandler}>
-            {signoutButtonText}
-          </a>
+            <a id='modal-signout-btn' className='govuk-link' href='#' onClick={signoutHandler}>
+              {signoutButtonText}
+            </a>
+          </div>
         </div>
-      </div>  
-    </Modal>  
+      </Modal>
+    );
   }
 
   return (
@@ -101,11 +198,16 @@ export default function TimeoutPopup(props) {
       {isAuthorised ? (
         <div>
           <h1 id='govuk-timeout-heading' className='govuk-heading-m push--top'>
-            {t('YOU_ARE_ABOUT_TO_SIGN_OUT')}
+            {t('YOURE_ABOUT_TO_BE_SIGNED_OUT')}
           </h1>
           <p className='govuk-body'>
-            {t('FOR_YOUR_SECURITY_WE_WILL_SIGN_YOU_OUT')}{' '}
-            <span className='govuk-!-font-weight-bold'>{t('2_MINUTES')}</span>
+            {`${t('FOR_YOUR_SECURITY_WE_WILL_SIGN_YOU_OUT')} `}
+            <span className='govuk-!-font-weight-bold'>{timeoutText()}</span>
+            {timeoutState.countdownStart && (
+              <span className='govuk-visually-hidden' aria-live='polite'>
+                {timeoutState.screenReaderCountdown}
+              </span>
+            )}
           </p>
           <div className='govuk-button-group govuk-!-padding-top-4'>
             <Button type='button' onClick={staySignedinHandler}>
@@ -126,6 +228,7 @@ export default function TimeoutPopup(props) {
 
 TimeoutPopup.propTypes = {
   show: PropTypes.bool,
+  milisecondsTilSignout: PropTypes.number,
   staySignedinHandler: PropTypes.func,
   signoutHandler: PropTypes.func,
   isAuthorised: PropTypes.bool,

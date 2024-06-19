@@ -7,7 +7,7 @@ export interface AppContextValues {
     appBacklinkText?: String | null;
   };
   showLanguageToggle?: boolean;
-  pageNotWorkingUrl?: string;
+  serviceParam?: string;
 }
 // TODO: Once this code exposed to common folder, we will refer AppContext from reuseable components
 const AppContextEducation = createContext<AppContextValues>({  
@@ -16,7 +16,7 @@ const AppContextEducation = createContext<AppContextValues>({
     appBacklinkText: null
   },
   showLanguageToggle: false,
-  pageNotWorkingUrl: ''
+  serviceParam: ''
 });
 
 export { AppContextEducation as default };

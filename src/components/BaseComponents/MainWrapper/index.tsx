@@ -5,14 +5,14 @@ import { useTranslation } from 'react-i18next';
 export default function MainWrapper({
   children,
   showPageNotWorkingLink = true,
-  pageNotWorkingUrl = ''
+  serviceParam = '463' // Default will be set to chb journey
 }) {
   const { t } = useTranslation();
   const { hmrcURL } = useHMRCExternalLinks();
 
-  pageNotWorkingUrl =
-    pageNotWorkingUrl ||
-    `${hmrcURL}contact/report-technical-problem?newTab=true&service=463&referrerUrl=${window.location}`;
+
+ const pageNotWorkingUrl =
+    `${hmrcURL}contact/report-technical-problem?newTab=true&service=${serviceParam}&referrerUrl=${window.location}`;
 
   return (
     <main className='govuk-main-wrapper govuk-main-wrapper--l' id='main-content' role='main'>

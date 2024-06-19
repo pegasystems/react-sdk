@@ -106,7 +106,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
 
   return (
     <StyledHmrcOdxGdsSummaryCardWrapper>
-      <h2>{sectionHeader}</h2>
+      {sectionHeader && <h2>{sectionHeader}</h2>}
       <Grid
         container={{
           cols: `repeat(${nCols}, minmax(0, 1fr))`,
@@ -115,7 +115,7 @@ export default function HmrcOdxGdsSummaryCard(props) {
       >
         <div className='govuk-summary-card'>
           <div className='govuk-summary-card__title-wrapper'>
-            <h2 className='govuk-summary-card__title'>{itemName}</h2>
+            {itemName && <h2 className='govuk-summary-card__title'>{itemName}</h2>}
             <ul className='govuk-summary-card__actions'>
               {!isSingleEntity(pageReference, getPConnect) && (
                 <li className='govuk-summary-card__action remove-link'>

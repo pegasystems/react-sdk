@@ -34,7 +34,7 @@ export default function View(props) {
   // call the locale reference api when we toggle the languge from English to Welsh
   useEffect(() => {
     PCore.getPubSubUtils().subscribe('languageToggleTriggered', locale => {
-      if(!locale.localeRef.includes(props.localeReference)) {
+      if (!locale.localeRef.includes(props.localeReference)) {
         locale.localeRef.push(props.localeReference);
         PCore.getLocaleUtils().loadLocaleResources([props.localeReference]);
       }
@@ -98,7 +98,7 @@ export default function View(props) {
 
     return (
       <>
-        {showLabel && !NO_HEADER_TEMPLATES.includes(template) && (
+        {showLabel && !NO_HEADER_TEMPLATES.includes(template) && label && label !== ' ' && (
           <h2 className='govuk-heading-m'>{label}</h2>
         )}
         {RenderedTemplate}

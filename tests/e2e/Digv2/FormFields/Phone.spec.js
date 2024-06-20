@@ -39,6 +39,16 @@ test.describe('E2E test', () => {
 
     /** Required tests */
     const requiredPhone = page.locator('div[data-test-id="af983eaa1b85b015a7654702abd0b249"] >> input');
+
+    /** Checking 'field label', 'placeholder', and 'helper text' */
+    const requiredPhoneFieldLabel = page.locator('text="Required Phone"');
+    await expect(requiredPhoneFieldLabel && requiredPhoneFieldLabel.locator('text="*"')).toBeVisible();
+
+    const placeholderValue = await requiredPhone.getAttribute('placeholder');
+    await expect(placeholderValue).toBe('Phone Placeholder');
+
+    await expect(page.locator('div[id="Assignment"] >> p:has-text("Phone Helper Text")')).toBeVisible();
+
     attributes = await common.getAttributes(requiredPhone);
     await expect(attributes.includes('required')).toBeTruthy();
 
@@ -87,7 +97,7 @@ test.describe('E2E test', () => {
     await editablePhoneInput.pressSequentially('6175551212');
 
     /** Validation tests */
-    const validationMsg = 'Invalid Phone';
+    const validationMsg = 'Enter a valid phone number';
     await editablePhoneInput.clear();
     await countrySelector.click();
     await page.locator('text=United States+1 >> nth=0').click();

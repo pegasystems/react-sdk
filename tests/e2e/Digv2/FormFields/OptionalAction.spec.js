@@ -6,7 +6,7 @@ const common = require('../../../common');
 test.beforeEach(common.launchPortal);
 
 test.describe('E2E test', () => {
-  test('should login, create case and run the Email tests', async ({ page }) => {
+  test('should login, create case and run the Optional Action tests', async ({ page }) => {
     await common.login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
 
     /** Testing announcement banner presence */

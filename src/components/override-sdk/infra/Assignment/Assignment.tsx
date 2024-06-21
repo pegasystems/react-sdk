@@ -47,7 +47,8 @@ export default function Assignment(props) {
   const serviceShuttered = useServiceShuttered();
   const { setAssignmentPConnect }: any = useContext(StoreContext);
   const { appBacklinkProps } = useContext(AppContext);
-  const { serviceParam } = useContext(AppContextEducation);
+  const { appBacklinkProps: appBacklinkPropsEducation, serviceParam } =
+    useContext(AppContextEducation); // TODO: Once this code exposed to common folder, we will refer AppContext from reuseable components
 
   const AssignmentCard = SdkComponentMap.getLocalComponentMap()['AssignmentCard']
     ? SdkComponentMap.getLocalComponentMap()['AssignmentCard']
@@ -468,7 +469,17 @@ export default function Assignment(props) {
     );
   }
 
+  function triggerBack() {
+    if (typeof appBacklinkProps.appBacklinkAction === 'function') {
+      appBacklinkProps.appBacklinkAction();
+    }
+    if (typeof appBacklinkPropsEducation.appBacklinkAction === 'function') {
+      appBacklinkPropsEducation.appBacklinkAction();
+    }
+  }
+
   const shouldRemoveFormTag = shouldRemoveFormTagForReadOnly(containerName);
+
   return (
     <>
       {serviceShutteredStatus ? (
@@ -491,17 +502,18 @@ export default function Assignment(props) {
           {
             // If there is no previous action button, and a 'appcontext' backlink action is set, show a backlink that performs the appcontext backlink action
             arSecondaryButtons?.findIndex(button => button.name === 'Previous') === -1 &&
-              appBacklinkProps.appBacklinkAction && (
+              (appBacklinkProps.appBacklinkAction ||
+                appBacklinkPropsEducation.appBacklinkAction) && (
                 <Button
                   variant='backlink'
-                  onClick={e => {
-                    e.target.blur();
-                    appBacklinkProps.appBacklinkAction();
-                  }}
+                  onClick={triggerBack}
                   key='createstagebacklink'
                   attributes={{ type: 'link' }}
                 >
-                  {t(appBacklinkProps.appBacklinkText as string)}
+                  {t(
+                    (appBacklinkProps.appBacklinkText as string) ||
+                      (appBacklinkPropsEducation.appBacklinkText as string)
+                  )}
                 </Button>
               )
           }

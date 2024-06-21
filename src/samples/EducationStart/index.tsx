@@ -70,7 +70,16 @@ const EducationStartCase: FunctionComponent<any> = () => {
   const { showPega, setShowPega, showResolutionPage, caseId } = useStartMashup(
     setAuthType,
     doRedirectDone,
-    { appBacklinkProps: {}, serviceParam: educationStartParam }
+    {
+      appBacklinkProps: {
+        appBacklinkAction: () => {
+          setShowPega(false);
+          setShowLandingPage(true);
+        },
+        appBacklinkText: 'BACK'
+      },
+      serviceParam: educationStartParam
+    }
   );
 
   useEffect(() => {
@@ -220,7 +229,7 @@ const EducationStartCase: FunctionComponent<any> = () => {
     };
   }, []);
 
-  const landingPageProceedHandler = (e) => {
+  const landingPageProceedHandler = e => {
     e.preventDefault();
     setShowLandingPage(false);
     startClaim();
@@ -274,7 +283,6 @@ const EducationStartCase: FunctionComponent<any> = () => {
           serviceParam: educationStartParam
         }}
       >
-        {' '}
         <TimeoutPopup
           show={showTimeoutModal}
           staySignedinHandler={() =>
@@ -314,11 +322,13 @@ const EducationStartCase: FunctionComponent<any> = () => {
             <ShutterServicePage />
           ) : (
             <>
-              <div id='pega-part-of-page'>
-                <div id='pega-root' className='education-start'></div>
-              </div>
+              {showPega && (
+                <div id='pega-part-of-page'>
+                  <div id='pega-root'></div>
+                </div>
+              )}
               {showLandingPage && (
-                <LandingPage onProceedHandler={(e) => landingPageProceedHandler(e)} />
+                <LandingPage onProceedHandler={e => landingPageProceedHandler(e)} />
               )}
               {serviceNotAvailable && <ServiceNotAvailable />}
               {currentDisplay === 'resolutionpage' && (

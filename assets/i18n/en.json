@@ -303,5 +303,6 @@
   "ELIGIBILITY_3": "in full-time education, which is more than an average of 12 hours per week or on an approved training course",
   "ELIGIBILITY_4": "on a course provided by a school or college",
   "EDUCATION_START_P3": "The young person must be accepted onto their course or training before they turn 19.",
-  "EDUCATION_START_P4": "You may need to provide us with the expected registration, start and end dates for the course or training."
+  "EDUCATION_START_P4": "You may need to provide us with the expected registration, start and end dates for the course or training.",
+  "EDUCATION_START_UNIVERSAL_CREDIT_WARNING": "If the young person is receiving Universal Credit you cannot apply for an extension to their payments."
 }

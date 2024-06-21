@@ -95,6 +95,18 @@ export default function TimeoutPopup(props) {
   }, [timeoutState.timeRemaining]);
 
   useEffect(() => {
+    if (isAuthorised && timeoutState.timeRemaining === 0) {
+      const signoutHandlerTimeout = setTimeout(() => {
+        signoutHandler();
+      }, 1000);
+
+      return () => {
+        clearTimeout(signoutHandlerTimeout);
+      };
+    }
+  }, [isAuthorised, timeoutState.timeRemaining]);
+
+  useEffect(() => {
     if (show) {
       window.addEventListener('keydown', staySignedInCallback);
     } else {

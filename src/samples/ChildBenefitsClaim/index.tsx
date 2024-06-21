@@ -37,7 +37,6 @@ declare const myLoadMashup: any;
 
 /* Time out modal functionality */
 let applicationTimeout = null;
-let signoutTimeout = null;
 // Sets default timeouts (13 mins for warning, 115 seconds for sign out after warning shows)
 let milisecondsTilSignout = 115 * 1000;
 let milisecondsTilWarning = 780 * 1000;
@@ -45,13 +44,9 @@ let milisecondsTilWarning = 780 * 1000;
 // Clears any existing timeouts and starts the timeout for warning, after set time shows the modal and starts signout timer
 function initTimeout(setShowTimeoutModal) {
   clearTimeout(applicationTimeout);
-  clearTimeout(signoutTimeout);
 
   applicationTimeout = setTimeout(() => {
     setShowTimeoutModal(true);
-    signoutTimeout = setTimeout(() => {
-      triggerLogout();
-    }, milisecondsTilSignout);
   }, milisecondsTilWarning);
 }
 

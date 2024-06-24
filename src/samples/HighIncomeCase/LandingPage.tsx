@@ -28,13 +28,13 @@ export default function LandingPage(props){
     return (
         <>
             <AppHeader
-                appname={t('HIGH_INCOME_BENEFITS')}
+                appname={t('HICBC_APP_NAME')}
                 hasLanguageToggle={showLanguageToggle}
                 betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=463&referrerUrl=${window.location}`}                  
             />
             <div className='govuk-width-container'>                
                 <MainWrapper>
-                    <h1 className="govuk-heading-xl">{t('HIGH_INCOME_BENEFITS')}</h1>
+                    <h1 className="govuk-heading-xl">{t('HICBC_LANDINGPAGE_HEADING')}</h1>
                     <p className="govuk-body"> {t("HICBC_LANDINGPAGE_P1")}</p>
                     <p className="govuk-body"> {t("HICBC_LANDINGPAGE_P2")}</p>
                     <ul className="govuk-list govuk-list--bullet">

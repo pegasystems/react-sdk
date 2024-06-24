@@ -255,14 +255,15 @@
   "YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO": "You will need to sign in to access this information. If you do not have sign in details, you can create them (opens in new tab).",
   "EXCLUSIVEOPTION_OR": "or",
 
-  "HIGH_INCOME_BENEFITS": "Child Benefit Payments",
+  "HICBC_LANDINGPAGE_HEADING": "Start or stop receiving Child Benefit payments",
+  "HICBC_APP_NAME": "Child Benefit Payments",
   "HICBC_LANDINGPAGE_P1": "Use this service to opt-in for Child Benefit payments or opt-out to stop receiving payments.",
   "HICBC_LANDINGPAGE_P2": "To use this service you will need to:",
   "HICBC_LANDINGPAGE_LISTITEM_BE_CHB_CLAIMANT": "be a Child Benefit claimant",
   "HICBC_LANDINGPAGE_LISTITEM_HAVE_PAYMENT_DETAILS_AVAILABLE": "have your bank or payments details available to opt-in",
   "HICBC_LANDINGPAGE_LISTITEM_STILL_ELIGIBLE": "still be eligible for",
   "HICBC_LANDINGPAGE_LISTITEM_STILL_ELIGIBLE_LINK_TEXT": "Child Benefit",
-  "HICBC_LANDINGPAGE_LISTITEM_OPT_IN_WITHIN_3_MONTHS": "wish to opt-in or opt-out within the next 3 months",
+  "HICBC_LANDINGPAGE_LISTITEM_OPT_IN_WITHIN_3_MONTHS": "want to opt-in or opt-out within the next 3 months",
 
   "HICBC_LANDINGPAGE_WARNING_CAN_ONLY_BE_COMPLETED_BY_CLAIMANT": "This service can only be completed by the person who claims Child Benefit." ,
 

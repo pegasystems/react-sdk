@@ -24,7 +24,7 @@ const LanguageToggle = props => {
         '@BASECLASS!DATAPAGE!D_SCOPEDREFERENCEDATALISTBYTYPE',
         'HMRC-CHB-WORK-CLAIM!CASE!CLAIM'
       ]);
-
+      
       PCore.getPubSubUtils().publish('languageToggleTriggered', {language: lang, localeRef: []});
     }
     if (languageToggleCallback) {

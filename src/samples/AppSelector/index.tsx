@@ -13,6 +13,7 @@ import DoYouWantToSignIn from '../StaticPages/DoYouWantToSignIn/doYouWantToSignI
 import CheckOnClaim from '../StaticPages/CheckOnClaim';
 import RecentlyClaimedChildBenefit from '../StaticPages/ChooseClaimService';
 import EducationStart from '../EducationStart';
+import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 
 const AppSelector = () => {
   const [i18nloaded, seti18nloaded] = useState(false);
@@ -35,6 +36,7 @@ const AppSelector = () => {
     })
     .finally(() => {
       seti18nloaded(true);
+      setPageTitle();
     });
 
   return !i18nloaded ? null : (

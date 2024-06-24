@@ -253,7 +253,8 @@
   "YOU_NEED_TO_SIGN_IN_TO_ACCESS_INFO": "Bydd angen i chi mewngofnodi i gael at yr wybodaeth hon. Os nad oes gennych fanylion mewngofnodi, gallwch eu creu (yn agor tab newydd).",
   "EXCLUSIVEOPTION_OR": "neu",
 
-  "HIGH_INCOME_BENEFITS": "Taliadau Budd-dal Plant",
+  "HICBC_LANDINGPAGE_HEADING": "Dechrau cael taliadau Budd-dal Plant, neu roi’r gorau i wneud hynny",
+  "HICBC_APP_NAME": "Taliadau Budd-dal Plant",
   "HICBC_LANDINGPAGE_P1": "Defnyddiwch y gwasanaeth hwn i optio i mewn i gael taliadau Budd-dal Plant, neu optio allan er mwyn dod â’r taliadau hyn i ben.",
   "HICBC_LANDINGPAGE_P2": "I ddefnyddio’r gwasanaeth hwn, bydd angen i’r canlynol fod yn wir:",
   "HICBC_LANDINGPAGE_LISTITEM_BE_CHB_CLAIMANT": "rydych yn hawliwr Budd-dal Plant",
@@ -261,12 +262,8 @@
   "HICBC_LANDINGPAGE_LISTITEM_STILL_ELIGIBLE": "rydych yn dal i fod yn gymwys i gael",
   "HICBC_LANDINGPAGE_LISTITEM_STILL_ELIGIBLE_LINK_TEXT": "Budd-dal Plant",
   "HICBC_LANDINGPAGE_LISTITEM_OPT_IN_WITHIN_3_MONTHS": "rydych am optio i mewn neu optio allan cyn pen y 3 mis nesaf",
-  "HICBC_LANDINGPAGE_WARNING_CAN_ONLY_BE_COMPLETED_BY_CLAIMANT": "Gall y gwasanaeth hwn dim ond cael ei ddefnyddio gan y person sy’n hawlio Budd-dal Plant",
-  
-  "HICBC_LANDINGPAGE_BEFORE_6_APRIL_OPTION_LABEL": "Cyn 6 Ebrill 2024",
-  "HICBC_LANDINGPAGE_ONORAFTER_6_APRIL_OPTION_LABEL": "Ar neu ar ôl 6 Ebrill 2024",
-  "HICBC_LANDINGPAGE_QUESTION_LABEL": "Pryd ydych chi am optio i mewn i daliadau Budd-dal Plant?",
-  "HICBC_LANDINGPAGE_NO_OPTION_SELECTED_ERROR_MESSAGE": "Dewiswch ddyddiad i optio i mewn",
+
+  "HICBC_LANDINGPAGE_WARNING_CAN_ONLY_BE_COMPLETED_BY_CLAIMANT": "Gall y gwasanaeth hwn dim ond cael ei ddefnyddio gan y person sy’n hawlio Budd-dal Plant" ,
 
   "BACK_TO_START_PAGE": "Yn ôl i’r dudalen cychwyn",
 

@@ -17,7 +17,7 @@ const HighIncomeCase: FunctionComponent<any> = () => {
   const [showLanguageToggle, setShowLanguageToggle] = useState(false);
 
   const { t } = useTranslation();
-  registerServiceName(t('HIGH_INCOME_BENEFITS'));
+  registerServiceName(t('HICBC_APP_NAME'));
   const landingPageProceedHandler = () => {
     localStorage.setItem('showLandingPage', 'false');
     setShowLandingPage(false);
@@ -44,7 +44,7 @@ const HighIncomeCase: FunctionComponent<any> = () => {
     setPageTitle();
     return (
       <>
-        <AppHeader appname={t('HIGH_INCOME_BENEFITS')} hasLanguageToggle={false} />
+        <AppHeader appname={t('HICBC_APP_NAME')} hasLanguageToggle={false} />
         <div className='govuk-width-container'>
           <MainWrapper showPageNotWorkingLink={false}>
             <h1 className='govuk-heading-l'>Sorry, the service is unavailable</h1>

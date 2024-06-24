@@ -71,13 +71,7 @@ const EducationStartCase: FunctionComponent<any> = () => {
     setAuthType,
     doRedirectDone,
     {
-      appBacklinkProps: {
-        appBacklinkAction: () => {
-          setShowPega(false);
-          setShowLandingPage(true);
-        },
-        appBacklinkText: 'BACK'
-      },
+      appBacklinkProps: {},
       serviceParam: educationStartParam
     }
   );
@@ -322,11 +316,9 @@ const EducationStartCase: FunctionComponent<any> = () => {
             <ShutterServicePage />
           ) : (
             <>
-              {showPega && (
-                <div id='pega-part-of-page'>
-                  <div id='pega-root'></div>
-                </div>
-              )}
+              <div id='pega-part-of-page'>
+                <div id='pega-root' className='education-start'></div>
+              </div>
               {showLandingPage && (
                 <LandingPage onProceedHandler={e => landingPageProceedHandler(e)} />
               )}

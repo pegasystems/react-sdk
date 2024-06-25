@@ -24,7 +24,7 @@ export default function SummaryPage(props){
                         {summaryTitle}
                     </h1>
             }
-            <ParsedHTML htmlString={summaryContent} />
+            <div><ParsedHTML htmlString={summaryContent} /></div>
         </MainWrapper>
     </>
 }

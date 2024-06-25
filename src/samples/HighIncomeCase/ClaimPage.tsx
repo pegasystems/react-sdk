@@ -23,6 +23,7 @@ import AppContext from './reuseables/AppContext';
 import toggleNotificationProcess from '../../components/helpers/toggleNotificationLanguage';
 
 // declare const myLoadMashup;
+declare const PCore:any;
 
 const ClaimPage: FunctionComponent<any> = () => {
     // const [bShowPega, setShowPega] = useState(false);
@@ -34,7 +35,8 @@ const ClaimPage: FunctionComponent<any> = () => {
     const setAuthType = useState('gg')[1];
 
     const [currentDisplay, setCurrentDisplay] = useState<|'pegapage'|'resolutionpage'|'servicenotavailable'|'shutterpage'|'loading'>('pegapage');
-    const [summaryPageContent, setSummaryPageContent] = useState<{content:string|null, title:string|null, banner:string|null}>({content:null, title:null, banner:null})
+    // Holds relevant summary page content (specific language)
+    const [summaryPageContent, setSummaryPageContent] = useState<any>({content:null, title:null, banner:null})    
     const { t } = useTranslation();
     
     const history = useHistory();
@@ -73,17 +75,23 @@ const ClaimPage: FunctionComponent<any> = () => {
               withoutDefaultHeaders: false,
             },
             '')
-            .then((response) => {
-              const summaryData = response.data.data.caseInfo.content;
-              setSummaryPageContent({content:summaryData.SubmissionContent, title:summaryData.SubmissionTitle, banner:summaryData.SubmissionBanner})
-            })
-            .catch(() => {                            
-              return false;
-            });
-        }
+            .then((response) => {     
+              PCore.getPubSubUtils().unsubscribe('languageToggleTriggered', 'summarypageLanguageChange');
+              const summaryData:Array<any> = response.data.data.caseInfo.content.ScreenContent.LocalisedContent;
+              /* const summaryData={
+                en:{content:'English content', title: 'English Title', banner:null},
+                cy:{content:'Welsh content', banner: 'Welsh Banner', title:null},
+              } */
+              // setSummaryPageData(summaryData); 
+              const currentLang = sessionStorage.getItem('rsdk_locale')?.slice(0,2).toUpperCase() || 'EN';
 
-        )
-      }
+              setSummaryPageContent(summaryData.find(data => data.Language === currentLang));                              
+
+              PCore.getPubSubUtils().subscribe('languageToggleTriggered', ({language}) => {
+                setSummaryPageContent(summaryData.find(data => data.Language === language.toUpperCase()));             
+              }, 'summarypageLanguageChange');
+            })
+      })}
       else if(shutterServicePage){setCurrentDisplay('shutterpage')}      
       else if(serviceNotAvailable){setCurrentDisplay('servicenotavailable')}
       else {
@@ -217,9 +225,9 @@ const ClaimPage: FunctionComponent<any> = () => {
             </div>
             { serviceNotAvailable && <ServiceNotAvailable /> }            
             { currentDisplay === 'resolutionpage' && <SummaryPage summaryContent={
-              summaryPageContent.content}
-              summaryTitle={summaryPageContent.title}
-              summaryBanner={summaryPageContent.banner}
+              summaryPageContent.Content}
+              summaryTitle={summaryPageContent.Title}
+              summaryBanner={summaryPageContent.Banner}
               backlinkProps={{}}  
             />}        
           </>

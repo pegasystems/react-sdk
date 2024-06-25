@@ -37,11 +37,12 @@ const EducationStartCase: FunctionComponent<any> = () => {
   const [currentDisplay, setCurrentDisplay] = useState<
     'pegapage' | 'resolutionpage' | 'servicenotavailable' | 'shutterpage' | 'loading'
   >('pegapage');
-  const [summaryPageContent, setSummaryPageContent] = useState<{
-    content: string | null;
-    title: string | null;
-    banner: string | null;
-  }>({ content: null, title: null, banner: null });
+
+  const [summaryPageContent, setSummaryPageContent] = useState<any>({
+    content: null,
+    title: null,
+    banner: null
+  });
 
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const [showSignoutModal, setShowSignoutModal] = useState(false);
@@ -94,12 +95,26 @@ const EducationStartCase: FunctionComponent<any> = () => {
             ''
           )
           .then(response => {
-            const summaryData = response.data.data.caseInfo.content;
-            setSummaryPageContent({
-              content: summaryData.SubmissionContent,
-              title: summaryData.SubmissionTitle,
-              banner: summaryData.SubmissionBanner
-            });
+            PCore.getPubSubUtils().unsubscribe(
+              'languageToggleTriggered',
+              'summarypageLanguageChange'
+            );
+            const summaryData: Array<any> =
+              response.data.data.caseInfo.content.ScreenContent.LocalisedContent;
+            const currentLang =
+              sessionStorage.getItem('rsdk_locale')?.slice(0, 2).toUpperCase() || 'EN';
+
+            setSummaryPageContent(summaryData.find(data => data.Language === currentLang));
+
+            PCore.getPubSubUtils().subscribe(
+              'languageToggleTriggered',
+              ({ language }) => {
+                setSummaryPageContent(
+                  summaryData.find(data => data.Language === language.toUpperCase())
+                );
+              },
+              'summarypageLanguageChange'
+            );
           })
           .catch(() => {
             return false;
@@ -325,9 +340,9 @@ const EducationStartCase: FunctionComponent<any> = () => {
               {serviceNotAvailable && <ServiceNotAvailable />}
               {currentDisplay === 'resolutionpage' && (
                 <SummaryPage
-                  summaryContent={summaryPageContent.content}
-                  summaryTitle={summaryPageContent.title}
-                  summaryBanner={summaryPageContent.banner}
+                  summaryContent={summaryPageContent.Content}
+                  summaryTitle={summaryPageContent.Title}
+                  summaryBanner={summaryPageContent.Banner}
                   backlinkProps={{}}
                 />
               )}

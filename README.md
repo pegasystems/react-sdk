@@ -7,7 +7,7 @@
 
 **Note**: The main branch is the active development branch for future versions of React SDK.
 
-This release allows React SDK users to to take advantage of the latest SDK enhancements and fixes. For more information, see [ **What's New in SDK-R 24.1.10**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
+This release allows React SDK users to take advantage of the latest SDK enhancements and fixes. For more information, see [ **What's New in SDK-R 24.1.10**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
 <br />
 
 This

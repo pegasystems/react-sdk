@@ -1,13 +1,13 @@
 <p align="center"><img width=60% src="docs/media/ReactSDK-Logo.png">
 
-# React SDK - Release Announcement - v23.1.11
+# React SDK - Release Announcement - v24.1.10
 
-**SDK-R v23.1.11** is **only compatible with Pega Infinity '23** and is related to the [**release/23.1.11**](https://github.com/pegasystems/react-sdk/tree/release/23.1.11) branch of the React SDK repository.
+**SDK-R v24.1.10** is **only compatible with Pega Infinity '24.1** and is related to the [**release/24.1.10**](https://github.com/pegasystems/react-sdk/tree/release/24.1.10) branch of the React SDK repository.
 <br>
 
-**Note**: From **SDK-R v23.1.11** onwards, the main branch will be the development branch for future versions or the latest version of Infinity.
+**Note**: The main branch is the active development branch for future versions of React SDK.
 
-The SDK-R v23.1.11 release upgrades the React version to React 17. This release allows React SDK users to to take advantage of the latest SDK enhancements and fixes. For more information, see [ **What's New in SDK-R 23.1.11**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
+This release allows React SDK users to to take advantage of the latest SDK enhancements and fixes. For more information, see [ **What's New in SDK-R 24.1.10**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
 <br />
 
 This
@@ -16,33 +16,8 @@ about all of the React SDK releases.
 
 <hr>
 
-## Previous releases
-
-### React SDK - Release Announcement - v23.1.10
-
-The **SDK-R v23.1.10** release is **only compatible with Pega Infinity '23**. This release is related to the [**release/23.1.10**](https://github.com/pegasystems/react-sdk/tree/release/23.1.10) branch of the React SDK repository.
-<br>
-(If you currently are using the React SDK with Pega Infinity 8.8, update your SDK to
-the [SDK-R v8.8.20 - release/8.8.20 branch](https://github.com/pegasystems/react-sdk/tree/release/8.8.20).)
-
-The SDK-R v23.1.10 and v8.8.20 releases allow React SDK users to to take advantage of the latest SDK enhancements and fixes. For more information, see [**What's New in SDK-R 23.1.10 and SDK-R 8.8.20**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
-
-* Added the use of **TypeScript typedefs** (from @pega/pcore-pconnect-typedefs) to SDK components.
-For more information, see [Using type definitions](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/type-definitions-constellation-sdks.html)
-* Additional functionality including **RichTextEditor** and **Dynamic Tabs** components and **many-to-many data reference** support
-* Updated Constellation Design System support to Cosmos 4 (for custom Constellation components).
-* Enhanced security including token storage and item obfuscation support.
-* Bug fixes.
-* Full set of merged PRs can be found in the [react-sdk-components GitHub repo list of merged PRs](https://github.com/pegasystems/react-sdk-components/pulls?q=is%3Apr+is%3Amerged+base%3Amaster+). This release includes all PRs since (and including) #166 and #230.
-
-
-For more information about the react-sdk-components and react-sdk-overrides packages, and enhancements and bug fixes in the packages, click [here](https://github.com/pegasystems/react-sdk-components/blob/master/packages/react-sdk-components/doc/KeyReleaseUpdates.md).
-
----
 
 ***IMPORTANT:***  Please follow the guidelines documented here if you are upgrading from a previous version of React SDK: [Upgrading the SDK](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/upgrading-sdk.html)
-
-If you want to continue using the previous release you can checkout [release/8.8.10](https://github.com/pegasystems/react-sdk/tree/release/8.8.10)
 
 ---
 
@@ -65,13 +40,13 @@ A summary of the latest updates to the **@pega/react-sdk-components** and
 
 ## Pega Infinity Server and Constellation-enabled Application
 
-This version of the React SDK assumes that you have access to a Pega Infinity server (**23.1.0+**) running an application that is configured to run using the Constellation UI service. _(If you need to use Infinity 8.8.x, please use the **release/8.8.20** branch instead of the **release/23.1.11** branch.)_
+This version of the React SDK assumes that you have access to a Pega Infinity server (**24.1.0+**) running an application that is configured to run using the Constellation UI service.
 
 The **MediaCo** sample application is already configured as a Constellation application and can be found in the React SDK download associated with this repo which is available at [https://community.pega.com/marketplace/components/react-sdk](https://community.pega.com/marketplace/components/react-sdk). The OAuth 2.0 Client Registration records associated with the **MediaCo** application are available in the same React SDK download. For more information about the MediaCo sample application, see [MediaCo sample application](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/mediaco-sample-application.html).
 
 The **React SDK** has been tested with:
 - node 18.12.1/18.13.0
-- npm 8.19.2/8.19.3 - **note: at this time, do not use _npm 9_**
+- npm 8.19.2/8.19.3 - **Note: Do not use _npm 9_**
 
 Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
 

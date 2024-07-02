@@ -203,6 +203,7 @@
   "2_MINUTES": "2 minutes",
   "1_MINUTE": "1 minute",
   "SECONDS": "seconds",
+  "SECOND": "second",
   "FOR_YOUR_SECURITY": "For your security",
   "WE_WILL_DELETE_YOUR_CLAIM": "We will delete your claim in",
   "DELETE_YOUR_CLAIM": "Delete your claim",
@@ -265,7 +266,7 @@
   "HICBC_LANDINGPAGE_LISTITEM_STILL_ELIGIBLE_LINK_TEXT": "Child Benefit",
   "HICBC_LANDINGPAGE_LISTITEM_OPT_IN_WITHIN_3_MONTHS": "want to opt-in or opt-out within the next 3 months",
 
-  "HICBC_LANDINGPAGE_WARNING_CAN_ONLY_BE_COMPLETED_BY_CLAIMANT": "This service can only be completed by the person who claims Child Benefit." ,
+  "HICBC_LANDINGPAGE_WARNING_CAN_ONLY_BE_COMPLETED_BY_CLAIMANT": "This service can only be completed by the person who claims Child Benefit.",
 
   "HICBC_LANDINGPAGE_BEFORE_6_APRIL_OPTION_LABEL": "Before 6 April 2024",
   "HICBC_LANDINGPAGE_ONORAFTER_6_APRIL_OPTION_LABEL": "On or after 6 April 2024",

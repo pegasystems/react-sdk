@@ -201,6 +201,7 @@
   "2_MINUTES": "2 o funudau",
   "1_MINUTE": "1 o funudau",
   "SECONDS": "o eiliadau",
+  "SECOND": "o eiliadau",
   "FOR_YOUR_SECURITY": "Er eich diogelwch",
   "WE_WILL_DELETE_YOUR_CLAIM": "Byddwn yn dileu’ch hawliad ymhen",
   "DELETE_YOUR_CLAIM": "Dileu eich hawliad",
@@ -263,7 +264,7 @@
   "HICBC_LANDINGPAGE_LISTITEM_STILL_ELIGIBLE_LINK_TEXT": "Budd-dal Plant",
   "HICBC_LANDINGPAGE_LISTITEM_OPT_IN_WITHIN_3_MONTHS": "rydych am optio i mewn neu optio allan cyn pen y 3 mis nesaf",
 
-  "HICBC_LANDINGPAGE_WARNING_CAN_ONLY_BE_COMPLETED_BY_CLAIMANT": "Gall y gwasanaeth hwn dim ond cael ei ddefnyddio gan y person sy’n hawlio Budd-dal Plant" ,
+  "HICBC_LANDINGPAGE_WARNING_CAN_ONLY_BE_COMPLETED_BY_CLAIMANT": "Gall y gwasanaeth hwn dim ond cael ei ddefnyddio gan y person sy’n hawlio Budd-dal Plant",
 
   "BACK_TO_START_PAGE": "Yn ôl i’r dudalen cychwyn",
 

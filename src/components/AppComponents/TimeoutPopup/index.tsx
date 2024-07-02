@@ -118,17 +118,19 @@ export default function TimeoutPopup(props) {
   }, [show]);
 
   const timeoutText = () => {
-    let timeoutValue;
+    const { countdownStart, timeRemaining } = timeoutState;
 
-    if (timeoutState.countdownStart && timeoutState.timeRemaining === 60) {
-      timeoutValue = `${t('1_MINUTE')}.`;
-    } else if (timeoutState.countdownStart && timeoutState.timeRemaining < 60) {
-      timeoutValue = `${timeoutState.timeRemaining} ${t('SECONDS')}.`;
-    } else {
-      timeoutValue = `${t('2_MINUTES')}.`;
+    if (countdownStart) {
+      if (timeRemaining === 60) {
+        return `${t('1_MINUTE')}.`;
+      } else if (timeRemaining === 1) {
+        return `${timeRemaining} ${t('SECOND')}.`;
+      } else if (timeRemaining < 60 || timeRemaining === 0) {
+        return `${timeRemaining} ${t('SECONDS')}.`;
+      }
     }
 
-    return timeoutValue;
+    return `${t('2_MINUTES')}.`;
   };
 
   const unAuthTimeoutPopupContent = () => {

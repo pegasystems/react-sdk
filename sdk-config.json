@@ -1,9 +1,8 @@
 {
   "comment_sdk_config": "This is the configuration file for the React SDK",
+  "sdk_optional_configs_doc_comment": "See the document(link below) for the available optional config settings",
+  "sdk_optional_configs_doc": "https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/configuring-sdk-config-json.html",
   "authConfig": {
-    "authConfig_comment": "Optional Full paths to Infinity server OAuth endpoints (Only needed if using custom OAuth service)",
-    "authConfig_comment2": "Optional attributes are: authorize, token, revoke, redirectUri, authService, silentTimeout, iframeLoginUI,",
-    "authConfig_comment3": "mashupAuthService, portalGrantType, mashupGrantType, portalClientSecret, mashupClientSecret, tokenStorage",
     "authService": "pega",
 
     "mashupClient_comment": "Client ID and Client secret from the OAuth 2.0 Client Registration record used for mashup use case",
@@ -20,18 +19,6 @@
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
     "infinityRestServerUrl": "https://localhost:1080/prweb",
 
-    "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
-    "appAlias": "",
-
-    "sdkContentServerUrl_comment": "If specified, the given URL will be used. If left blank, window.location.origin will be used.",
-    "sdkContentServerUrl": "",
-
-    "appPortal_comment": "If specified, the given appPortal will be loaded. If left blank, the operator's default Portal is used. Ignored for Embedded use",
-    "appPortal": "",
-
-    "appMashupCaseType_comment": "If specified, uses this case type for mashup.  Otherwise, uses the first case type found for the app",
-    "appMashupCaseType": "",
-
     "excludePortals_comment": "Array of specific portals to avoid attempting to load with SDK",
     "excludePortals": ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"]
   },
@@ -39,38 +26,19 @@
     "publishAccess": {
       "rulesetName": "CustomDXComponents",
       "rulesetVersion": "01-01-01",
-      "sourceOfComponents": "Server",
-      "devBuild": false,
       "clientId": "10095186356008396159",
-      "clientSecret_comment": "Needed only when using 'passwordCreds' or 'clientCreds' grantType",
-      "clientSecret": "",
       "grantType_comment": "Preferred is 'authCode' as it works for public registrations (no clientSecret)",
       "grantType": "authCode",
-      "redirectUri": "https://localhost:4010/",
-      "cert_and_key_comment": "Path to SSL certificate file and SSL key file to use when starting local HTTPS server",
-      "cert_and_key_comment2": "Needed only when using 'authCode' grantType and redirectUri begins with 'https://localhost'",
-      "cert": "./keys/sdk-r.crt",
-      "key": "./keys/sdk-r.key",
-      "user_and_password_comment": "Useful primarily when using 'passwordCreds' grantType",
-      "user": "",
-      "password": ""
+      "redirectUri": "https://localhost:4010/"
     },
-
     "componentDefaults": {
       "organization": "YourOrg",
       "library": "YourComponentLib",
       "version": "0.0.1",
-      "type": "",
-      "subtype": "",
-      "description": "",
-      "icon": "",
       "lintAction": "show"
     },
-
     "componentTemplates": {
-      "componentTemplates_comment": "Optional paths for location of custom or override templates.",
-      "customTemplatesPath": "",
-      "overrideTemplatesPath": ""
+      "componentTemplates_comment": "Optional paths for location of custom or override templates."
     }
   }
 }

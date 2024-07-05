@@ -4,7 +4,7 @@ const config = require('../../../config');
 const common = require('../../../common');
 
 test.beforeEach(common.launchPortal);
-/** Added tests for french locale (fr-FR) */
+/** Added tests for spanish(Latin America) locale (es-XL) */
 test.describe('E2E test', () => {
   test('should login, create case and test the localized values', async ({ page }) => {
     await common.login(config.config.apps.digv2.localizedUser.username, config.config.apps.digv2.localizedUser.password, page);
@@ -121,4 +121,4 @@ test.describe('E2E test', () => {
 });
 
 const outputDir = './test-reports/e2e/DigV2/Localization/Localization';
-test.afterEach(async ({ page }) => await common.calculateCoverage(page, outputDir));
+test.afterEach(async ({ page }) => common.closePage(page));

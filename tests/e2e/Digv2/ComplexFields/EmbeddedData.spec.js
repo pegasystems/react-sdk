@@ -127,8 +127,7 @@ test.describe('E2E test', () => {
     await phone.locator('button').click();
     /** Selecting the country code */
     await page.locator('text=United States+1 >> nth=0').click();
-    await phone.locator('input').click();
-    await phone.locator('input').pressSequentially('6175551212');
+    await common.enterPhoneNumber(phone, '6175551212');
 
     /** Creating second row by clicking on `+Add` button */
     await page.locator('a:has-text("+ Add")').click();
@@ -143,8 +142,7 @@ test.describe('E2E test', () => {
     await phone.locator('button').click();
     /** Selecting the country code */
     await page.locator('text=United States+1 >> nth=0').click();
-    await phone.locator('input').click();
-    await phone.locator('input').pressSequentially('6175451212');
+    await common.enterPhoneNumber(phone, '6175451212');
 
     await page.locator('button:has-text("Next")').click();
 
@@ -241,8 +239,7 @@ test.describe('E2E test', () => {
     await phone.locator('button').click();
     /** Selecting the country code */
     await page.locator('text=United States+1 >> nth=0').click();
-    await phone.locator('input').click();
-    await phone.locator('input').pressSequentially('6175551212');
+    await common.enterPhoneNumber(phone, '6175551212');
 
     const country = modal.locator('div[data-test-id="59716c97497eb9694541f7c3d37b1a4d"]');
     await country.click();
@@ -335,8 +332,7 @@ test.describe('E2E test', () => {
     await phone.locator('button').click();
     /** Selecting the country code */
     await page.locator('text=United States+1 >> nth=0').click();
-    await phone.locator('input').click();
-    await phone.locator('input').pressSequentially('6175551212');
+    await common.enterPhoneNumber(phone, '6175551212');
 
     let countryName = page.locator('div[data-test-id="59716c97497eb9694541f7c3d37b1a4d"]');
     await countryName.click();
@@ -355,8 +351,7 @@ test.describe('E2E test', () => {
     await phone.locator('button').click();
     /** Selecting the country code */
     await page.locator('text=United States+1 >> nth=0').click();
-    await phone.locator('input').click();
-    await phone.locator('input').pressSequentially('6175451212');
+    await common.enterPhoneNumber(phone, '6175451212');
 
     countryName = page.locator('div[data-test-id="59716c97497eb9694541f7c3d37b1a4d"] >> nth=1');
     await countryName.click();

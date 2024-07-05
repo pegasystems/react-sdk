@@ -50,6 +50,12 @@ const closePage = async page => {
   await page.close();
 };
 
+const enterPhoneNumber = async (phone, number) => {
+  const phoneInput = phone.locator('input');
+  await phoneInput.click();
+  await phoneInput.pressSequentially(number);
+};
+
 module.exports = {
   launchPortal,
   launchEmbedded,
@@ -57,5 +63,6 @@ module.exports = {
   login,
   getAttributes,
   getFutureDate,
-  closePage
+  closePage,
+  enterPhoneNumber
 };

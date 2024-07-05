@@ -217,7 +217,7 @@ test.describe('E2E test', () => {
     await selectProducts.click();
     await page.locator('li:has-text("Mobile")').click();
     await page.locator('li:has-text("Telivision")').click();
-    await expect(selectProducts).toBeVisible();
+    await selectProducts.click();
 
     await page.locator('button:has-text("Next")').click();
 

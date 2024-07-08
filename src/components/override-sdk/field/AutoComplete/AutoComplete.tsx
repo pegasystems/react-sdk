@@ -159,23 +159,50 @@ export default function AutoComplete(props: AutoCompleteProps) {
     }
   }, [theDatasource]);
 
+  const [currentLang, setCurrentLang] = useState(
+    sessionStorage.getItem('rsdk_locale')?.substring(0, 2).toUpperCase() || 'EN'
+  );
+
+  PCore.getPubSubUtils().subscribe(
+    'languageToggleTriggered',
+    ({ language }) => {
+      setCurrentLang(language.toUpperCase());
+    },
+    ''
+  );
+
   useEffect(() => {
+    if (currentLang === 'CY') {
+      PCore.getLocaleUtils().loadLocaleResources([
+        `@BASECLASS!DATAPAGE!${datasource.toUpperCase()}`
+      ]);
+    }
+
     if (!displayMode && listType !== 'associated') {
       getDataPage(datasource, parameters, context).then((results: any) => {
         const optionsData: Array<any> = [];
         const displayColumn = getDisplayFieldsMetaData(columns);
+        const translationDataPage = `@BASECLASS!DATAPAGE!${datasource.toUpperCase()}`;
+        const localePath = datasource === 'D_NationalityList' ? 'Value' : 'CountryName';
+
         results?.forEach(element => {
           const val = element[displayColumn.primary]?.toString();
+          const valTranslated = PCore.getLocaleUtils().getLocaleValue(
+            val,
+            localePath,
+            translationDataPage
+          );
           const obj = {
             key: element[displayColumn.key] || element.pyGUID,
-            value: val
+            value: valTranslated
           };
           optionsData.push(obj);
         });
+
         setOptions(optionsData);
       });
     }
-  }, []);
+  }, [currentLang]);
 
   function handleChange(event) {
     const optionValue = event.target.value;

@@ -115,7 +115,7 @@ export default function ChildBenefitsClaim() {
   let operatorId = '';
   const serviceName = t('CLAIM_CHILD_BENEFIT');
   registerServiceName(serviceName);
-  let assignmentFinishedFlag = false;
+
   useEffect(() => {
     setPageTitle();
   }, [
@@ -153,6 +153,7 @@ export default function ChildBenefitsClaim() {
     if (pConn) {
       setIsCreateCaseBlocked(true);
       createCase();
+      sessionStorage.setItem('assignmentFinishedFlag', 'false');
     }
   }
 
@@ -160,10 +161,12 @@ export default function ChildBenefitsClaim() {
     // Added to ensure that clicking begin claim restarts timeout
     staySignedIn(setShowTimeoutModal);
     displayStartPage();
+    setIsCreateCaseBlocked(false);
   }
   function returnToPortalPage() {
     staySignedIn(setShowTimeoutModal);
     setServiceNotAvailable(false);
+
     displayUserPortal();
     PCore.getContainerUtils().closeContainerItem(
       PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
@@ -264,7 +267,8 @@ export default function ChildBenefitsClaim() {
     PCore.getPubSubUtils().subscribe(
       'assignmentFinished',
       () => {
-        if (!assignmentFinishedFlag) {
+        const assignmentFinishedFlag = sessionStorage.getItem('assignmentFinishedFlag');
+        if (assignmentFinishedFlag !== 'true') {
           // Temporary workaround to restrict infinite update calls
           setShowStartPage(false);
           setShowUserPortal(false);
@@ -281,7 +285,7 @@ export default function ChildBenefitsClaim() {
 
             PCore.getContainerUtils().closeContainerItem(context);
             //  Temporary workaround to restrict infinite update calls
-            assignmentFinishedFlag = true;
+            sessionStorage.setItem('assignmentFinishedFlag', 'true');
             PCore?.getPubSubUtils().unsubscribe(
               PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
               'assignmentFinished'

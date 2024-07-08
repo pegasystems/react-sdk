@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Button from '../../components/BaseComponents/Button/Button';
 import MainWrapper from '../../components/BaseComponents/MainWrapper';
 import AppContextEducation from './reuseables/AppContextEducation'; // TODO: Once this code exposed to common folder, we will remove this import from EducationStart
-import WarningText from './reuseables/WarningText';
+import WarningText from './reuseables/WarningText/WarningText';
 
 export default function LandingPage(props) {
   const { onProceedHandler } = props;

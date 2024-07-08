@@ -40,7 +40,6 @@ export function establishPCoreSubscriptions({
   setShowResolutionPage,
   setCaseId,
   setCaseStatus
-  // setOperatorName
 }) {
   /* ********************************************
    * Registers close active container on end of assignment processing
@@ -187,7 +186,7 @@ export function RootComponent(props) {
  * is ready to be rendered
  * @param inRenderObj the initial, top-level PConnect object to render
  */
-function initialRender(inRenderObj, _AppContextValues: AppContextValues) {
+function initialRender(inRenderObj, setAssignmentPConnect, _AppContextValues: AppContextValues) {
   // loadMashup does its own thing so we don't need to do much/anything here
   // // modified from react_root.js render
   const {
@@ -198,8 +197,8 @@ function initialRender(inRenderObj, _AppContextValues: AppContextValues) {
     styleSheetTarget
   } = inRenderObj;
 
-  // const thePConn = props.getPConnect();
-
+  const thePConn = props.getPConnect();
+  setAssignmentPConnect(thePConn);
   // PM!! setPConn(thePConn);
 
   let target: any = null;
@@ -223,7 +222,7 @@ function initialRender(inRenderObj, _AppContextValues: AppContextValues) {
       {...props}
       portalTarget={portalTarget}
       styleSheetTarget={styleSheetTarget}
-      contextExtensionValues={{ setAssignmentPConnect: () => {} }}
+      contextExtensionValues={{ setAssignmentPConnect }}
     />
   );
 
@@ -251,7 +250,7 @@ function initialRender(inRenderObj, _AppContextValues: AppContextValues) {
  * kick off the application's portal that we're trying to serve up
  */
 export function startMashup(
-  { setShowPega, setShowResolutionPage, setCaseId, setCaseStatus, setOperatorName, setShutterServicePage },
+  { setShowPega, setShowResolutionPage, setCaseId, setCaseStatus, setAssignmentPConnect, setShutterServicePage },
   _AppContextValues: AppContextValues
 ) {
   // NOTE: When loadMashup is complete, this will be called.
@@ -259,9 +258,6 @@ export function startMashup(
     // Check that we're seeing the PCore version we expect
     compareSdkPCoreVersions();
     establishPCoreSubscriptions({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus });
-    const name = PCore.getEnvironmentInfo().getOperatorName();
-    setOperatorName(name);
-
     // PM!! setShowAppName(true);
 
     // Fetches timeout length config
@@ -290,7 +286,7 @@ export function startMashup(
       PCore.getLocaleUtils().GENERIC_BUNDLE_KEY,
       '@BASECLASS!DATAPAGE!D_LISTREFERENCEDATABYTYPE'
     ]);
-    initialRender(renderObj, _AppContextValues);
+    initialRender(renderObj, setAssignmentPConnect, _AppContextValues);
 
     // PM!! operatorId = PCore.getEnvironmentInfo().getOperatorIdentifier();
 
@@ -370,8 +366,8 @@ export const useStartMashup = (
   const [showResolutionPage, setShowResolutionPage] = useState(false);
   const [shutterServicePage, setShutterServicePage ] = useState(false);
   const [caseId, setCaseId] = useState('');
-  const [operatorName, setOperatorName] = useState('');
   const [caseStatus, setCaseStatus] = useState('');
+  const [assignmentPConn, setAssignmentPConnect] = useState(null);
 
   useEffect(() => {
     getSdkConfig().then(sdkConfig => {
@@ -407,7 +403,7 @@ export const useStartMashup = (
     document.addEventListener('SdkConstellationReady', () => {
       // start the portal
       startMashup(
-        { setShowPega, setShowResolutionPage, setCaseId, setCaseStatus, setOperatorName, setShutterServicePage },
+        { setShowPega, setShowResolutionPage, setCaseId, setCaseStatus, setAssignmentPConnect, setShutterServicePage },
         _AppContextValues
       );
     });
@@ -460,6 +456,6 @@ export const useStartMashup = (
     shutterServicePage,
     setShutterServicePage,
     caseStatus,
-    operatorName
+    assignmentPConn
   };
 };

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { getInstructions } from './utils';
 import type { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import { scrollToTop } from '../../../helpers/utils';
 
 import './DefaultForm.css';
 
@@ -68,6 +69,7 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
     navigateToStepPromise
       .then(() => {
         //  navigate to step success handling
+        scrollToTop();
         console.log('navigation successful'); // eslint-disable-line
       })
       .catch(error => {

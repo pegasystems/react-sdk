@@ -14,6 +14,8 @@ import CheckOnClaim from '../StaticPages/CheckOnClaim';
 import RecentlyClaimedChildBenefit from '../StaticPages/ChooseClaimService';
 import EducationStart from '../EducationStart';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
+import ChildBenefitHub from '../ChildBenefitHub/ChildBenefitHub';
+import ProofOfEntitlement from '../ProofOfEntitlement/ProofOfEntitlement';
 
 const AppSelector = () => {
   const [i18nloaded, seti18nloaded] = useState(false);
@@ -42,9 +44,13 @@ const AppSelector = () => {
   return !i18nloaded ? null : (
     <Switch>
       <Route exact path='/' component={ChildBenefitsClaim} />
-      <Route exact path='/ua' component={UnAuthChildBenefitsClaim} />
+      <Route exact path='/ua' component={UnAuthChildBenefitsClaim} />  
+
+      <Route exact path='/home' component={ChildBenefitHub} />      
+      <Route exact path='/view-proof-entitlement' component={ProofOfEntitlement} />
+
       <Route exact path='/hicbc/opt-in' component={HighIncomeCase} />
-      <Route exact path='/education/start' component={EducationStart} />
+      <Route exact path='/education/start' component={EducationStart} />      
       <Route path='/cookies' component={CookiePage} />
       <Route path='/accessibility' component={Accessibility} />
       <Route

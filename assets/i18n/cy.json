@@ -298,5 +298,18 @@
   "ELIGIBILITY_4": "on a course provided by a school or college",
   "EDUCATION_START_P3": "The young person must be accepted onto their course or training before they turn 19.",
   "EDUCATION_START_P4": "You may need to provide us with the expected registration, start and end dates for the course or training.",
-  "EDUCATION_START_UNIVERSAL_CREDIT_WARNING": "If the young person is receiving Universal Credit you cannot apply for an extension to their payments."
+  "EDUCATION_START_UNIVERSAL_CREDIT_WARNING": "If the young person is receiving Universal Credit you cannot apply for an extension to their payments.",
+
+  "CHB_HOMEPAGE_HEADING":"Budd-dal Plant",
+  "CHB_HOMEPAGE_MAKING_CLAIM_SUBHEADING":"Hawlio",
+  "CHB_HOMEPAGE_CHECK_IF_CAN_CLAIM_LINK":"Gwirio a allwch hawlio",
+  "CHB_HOMEPAGE_MAKE_A_CLAIM_LINK":"Gwneud hawliad",
+  "CHB_HOMEPAGE_MANAGE_CLAIM_SUBHEADING":"Rheoli hawliad",
+  "CHB_HOMEPAGE_REPORT_CHANGES_LINK":"Rhoi gwybod am newidiadau sy’n effeithio ar eich Budd-dal Plant",
+  "CHB_HOMEPAGE_CHILD_TURNS_16_GUIDANCE_LINK":"Arweiniad ar gyfer pan fydd eich plentyn yn troi’n 16 oed",
+  "CHB_HOMEPAGE_EXTEND_PAYMENTS_LINK":"Ymestyn eich taliadau tra bo’ch plentyn yn aros mewn addysg",
+  "CHB_HOMEPAGE_VIEW_PAYMENT_HISTORY_LINK":"Bwrw golwg dros hanes eich taliadau Budd-dal Plant",
+  "CHB_HOMEPAGE_CHANGE_BANK_DETAILS_LINK":"Newid eich manylion banc",
+  "CHB_HOMEPAGE_VIEW_PROOF_OF_ENTITLEMENT_LINK":"Bwrw golwg dros eich tystiolaeth o hawl i Fudd-dal Plant",
+  "CHB_HOMEPAGE_HICBC_CHARGE_LINK":"Tâl Treth Budd-dal Plant Incwm Uchel"
 }

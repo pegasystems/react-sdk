@@ -38,15 +38,19 @@ export default function RecentlyClaimedChildBenefit() {
     },
     {
       value: 'checkonprogressofclaim',
-      label: t('CHECK_PROGRESS_OF_CLAIM')
+      label: t('CHECK_PROGRESS_OF_SUBMITTED_CLAIM')
+    },
+    {
+      value: 'viewmyproofofentitlement',
+      label: t('VIEW_MY_PROOF_OF_ENTITLEMENT')
     },
     {
       value: 'restartyourpayments',
-      label: t('RESTART_YOUR_PAYMENTS')
+      label: t('RESTART_MY_PAYMENTS')
     },
     {
       value: 'stopyourpayments',
-      label: t('STOP_YOUR_PAYMENTS')
+      label: t('STOP_MY_PAYMENTS')
     }
   ];
 
@@ -63,6 +67,11 @@ export default function RecentlyClaimedChildBenefit() {
           break;
         case 'checkonprogressofclaim':
           history.push('/check-on-claim');
+          break;
+        case 'viewmyproofofentitlement':
+          window.location.assign(
+            'https://www.tax.service.gov.uk/child-benefit/view-proof-entitlement'
+          );
           break;
         case 'restartyourpayments':
           window.location.assign(
@@ -92,9 +101,8 @@ export default function RecentlyClaimedChildBenefit() {
               value=''
               useSmallRadios={false}
               options={radioOptions}
-              label={t('MAKE_SURE_YOU_USE_RIGHT_CHBS')}
+              label={t('WHICH_CHBS_DO_YOU_WANT_TO_USE')}
               legendIsHeading
-              hintText={`${t('CONFIRM_YOUR_SERVICE')}`}
               errorText={errorMsg}
             ></RadioButtons>
             <button

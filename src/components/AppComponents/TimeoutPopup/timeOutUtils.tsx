@@ -1,5 +1,5 @@
 import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
-import { triggerLogout } from '../../helpers/utils';
+import { isUnAuthJourney, triggerLogout } from '../../helpers/utils';
 
 let milisecondsTilWarning = 780 * 1000;
 let milisecondsTilSignout = 115 * 1000;
@@ -79,11 +79,13 @@ export function staySignedIn(
   refreshSignin = true,
   isConfirmationPage = false
 ) {
+  const operatorId = {};
   if (refreshSignin && !!claimsListApi) {
+    if(isUnAuthJourney()) {
+      operatorId['OperatorId'] = 'Model_Unauth@ChB';
+    }
     // @ts-ignore
-    PCore.getDataPageUtils().getDataAsync(claimsListApi, 'root', {
-      OperatorId: 'Model_Unauth@ChB'
-    });
+    PCore.getDataPageUtils().getDataAsync(claimsListApi, 'root', {...operatorId});
   }
   setShowTimeoutModal(false);
   resetTimeout(setShowTimeoutModal, deleteData, isAuthorised, isConfirmationPage);

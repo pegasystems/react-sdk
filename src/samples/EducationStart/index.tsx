@@ -23,6 +23,9 @@ import { useStartMashup } from './reuseables/PegaSetup';
 import { useHistory } from 'react-router-dom';
 
 const EducationStartCase: FunctionComponent<any> = () => {
+  const educationStartParam = 'claim-child-benefit';
+  const claimsListApi = 'D_ClaimantWorkAssignmentEdStartCases';
+
   const [showLandingPage, setShowLandingPage] = useState<boolean>(true);
   const [shuttered, setShuttered] = useState(null);
 
@@ -54,8 +57,6 @@ const EducationStartCase: FunctionComponent<any> = () => {
 
   registerServiceName(t('EDUCATION_START'));
 
-  // Construct the final URL for the education flow page not working
-  const educationStartParam = 'claim-child-benefit';
 
   useEffect(() => {
     initTimeout(setShowTimeoutModal, false, true, false);
@@ -144,7 +145,8 @@ const EducationStartCase: FunctionComponent<any> = () => {
     e.preventDefault();
     setShowSignoutModal(false);
     // Extends manual signout popup 'stay signed in' to reset the automatic timeout timer also
-    staySignedIn(setShowTimeoutModal, 'D_ClaimantSubmittedChBCases', null, null);
+    staySignedIn(setShowTimeoutModal, claimsListApi, null, false, true, (currentDisplay === 'resolutionpage'));
+
   };
 
   const startClaim = () => {
@@ -295,7 +297,7 @@ const EducationStartCase: FunctionComponent<any> = () => {
         <TimeoutPopup
           show={showTimeoutModal}
           staySignedinHandler={() =>
-            staySignedIn(setShowTimeoutModal, 'D_ClaimantWorkAssignmentChBCases')
+            staySignedIn(setShowTimeoutModal, claimsListApi, null, false, true, (currentDisplay === 'resolutionpage'))
           }
           signoutHandler={triggerLogout}
           isAuthorised={false}
@@ -304,8 +306,8 @@ const EducationStartCase: FunctionComponent<any> = () => {
         >
           <h1 id='hmrc-timeout-heading' className='govuk-heading-m push--top'>
             You’re about to be signed out
-          </h1>
-          <p className='govuk-body hmrc-timeout-dialog__message' aria-hidden='true'>
+          </h1>            
+          <p className='govuk-body hmrc-timeout-dialog__message'> {/* Todo Aria-hidden will be added back with US-13474 implementation */}
             For your security, we will sign you out in{' '}
             <span id='hmrc-timeout-countdown' className='hmrc-timeout-dialog__countdown'>
               2 minutes

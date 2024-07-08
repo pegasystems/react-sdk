@@ -362,7 +362,8 @@ const EducationStartCase: FunctionComponent<any> = () => {
           <h1 id='govuk-timeout-heading' className='govuk-heading-m push--top'>
             {t('YOU_ARE_ABOUT_TO_SIGN_OUT')}
           </h1>
-          <p className='govuk-body'>If you sign out now, your progress will be lost.</p>
+          <p className='govuk-body'>{t('YOU_STILL_NEED_TO_SAVE_YOUR_PROGRESS')}</p>
+          <p className='govuk-body'>{t('TO_SAVE_YOUR_PROGRESS')}</p>
         </LogoutPopup>
         <AppFooter />
       </AppContextEducation.Provider>

@@ -68,6 +68,13 @@
       "label": "stepId for Changelink",
       "required": false,
       "visibility": "$this.ShowChangeLink"
+    },
+    {
+      "format": "TEXT",
+      "name": "hiddenText",
+      "label": "hidden text for Changelink",
+      "required": false,
+      "visibility": "$this.ShowChangeLink"
     }
   ]
 }

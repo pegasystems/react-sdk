@@ -135,6 +135,7 @@ export default function Date(props) {
         value={dayjs(value).format('D MMMM YYYY')}
         name={name}
         stepId={configAlternateDesignSystem.stepId}
+        hiddenText={configAlternateDesignSystem.hiddenText}
         getPConnect={getPConnect}
         required={false}
         disabled={false}

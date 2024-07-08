@@ -272,6 +272,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
         value={selectedOption[0]?.value}
         name={name}
         stepId={configAlternateDesignSystem.stepId}
+        hiddenText={configAlternateDesignSystem.hiddenText}
         getPConnect={getPConnect}
         required={false}
         disabled={false}

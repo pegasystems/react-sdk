@@ -77,6 +77,7 @@ export default function CheckboxComponent(props) {
         value={value ? props.trueLabel : props.falseLabel}
         name={name}
         stepId={configAlternateDesignSystem.stepId}
+        hiddenText={configAlternateDesignSystem.hiddenText}
         getPConnect={getPConnect}
         required={false}
         disabled={false}

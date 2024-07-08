@@ -17,7 +17,7 @@
       "label": "stepId for Changelink",
       "required": false,
       "visibility": "$this.ShowChangeLink"
-    },
+    },    
     {
       "format": "SELECT",
       "name": "autocomplete",
@@ -32,6 +32,13 @@
         { "key": "bday-month", "value": "bday-month" },
         { "key": "bday-year", "value": "bday-year" }
       ]
+    },
+    {
+      "format": "TEXT",
+      "name": "hiddenText",
+      "label": "hidden text for Changelink",
+      "required": false,
+      "visibility": "$this.ShowChangeLink"
     }
   ]
 }

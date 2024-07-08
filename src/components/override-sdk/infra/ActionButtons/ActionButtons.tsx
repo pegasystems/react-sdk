@@ -46,7 +46,6 @@ export default function ActionButtons(props) {
                 _onButtonPress(sButton.jsAction, 'secondary');
               }}
               key={sButton.actionID}
-              attributes={{ type: 'link' }}
             >
               {localizedVal(sButton.name, localeCategory)}
             </Button>

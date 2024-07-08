@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import dayjs from 'dayjs';
+require('dayjs/locale/cy');
 
 declare const PCore: any;
 
@@ -14,6 +16,7 @@ const LanguageToggle = props => {
     lang = e.currentTarget.getAttribute('lang');
     setSelectedLang(lang);
     sessionStorage.setItem('rsdk_locale', `${lang}_GB`);
+    dayjs.locale(lang);
     i18n.changeLanguage(lang);
     if (typeof PCore !== 'undefined') {
       PCore.getEnvironmentInfo().setLocale(`${lang}_GB`);
@@ -31,6 +34,18 @@ const LanguageToggle = props => {
       languageToggleCallback(lang);
     }
   };
+
+
+  // Initialises language value in session storage, and for dayjs
+  useEffect(() => {
+    if(!sessionStorage.getItem('rsdk_locale')){
+      sessionStorage.setItem('rsdk_locale', `en_GB`);
+      dayjs.locale('en');
+    } else {
+      const currentLang = sessionStorage.getItem('rsdk_locale').slice(0,2).toLowerCase();
+      dayjs.locale(currentLang);
+    }
+  }, [])
 
   useEffect(() => {
     document.documentElement.lang = selectedLang;

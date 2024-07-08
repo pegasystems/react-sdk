@@ -12,8 +12,6 @@ import GDSCheckAnswers from '../../../BaseComponents/CheckAnswer/index';
 import { ReadOnlyDefaultFormContext } from '../../../helpers/HMRCAppContext';
 import dayjs from 'dayjs';
 
-declare const global;
-
 export default function Date(props) {
   const {
     getPConnect,

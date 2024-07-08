@@ -59,6 +59,19 @@ export default function FieldSet({
   const ariaDescBy =
     describedByIDs.length !== 0 ? { 'aria-describedby': describedByIDs.join(' ') } : {};
 
+  const getErrMessagePCore = () => {
+    if (typeof PCore !== 'undefined' && errMessage) {
+      return PCore.getLocaleUtils().getLocaleValue(
+        removeRedundantString(errMessage),
+        'Messages',
+        PCore.getLocaleUtils().GENERIC_BUNDLE_KEY
+      );
+    }
+    return errMessage;
+  };
+
+  const errMessageToDisplay = getErrMessagePCore();
+
   return (
     <div className={formGroupDivClasses} {...testProps}>
       <fieldset className='govuk-fieldset' {...ariaDescBy} {...fieldsetElementProps}>
@@ -81,11 +94,7 @@ export default function FieldSet({
         {errMessage && (
           <p id={errorID} className='govuk-error-message'>
             <span className='govuk-visually-hidden'>Error:</span>
-            {PCore.getLocaleUtils().getLocaleValue(
-              removeRedundantString(errMessage),
-              'Messages',
-              PCore.getLocaleUtils().GENERIC_BUNDLE_KEY
-            )}
+            {errMessageToDisplay}
           </p>
         )}
         {children}

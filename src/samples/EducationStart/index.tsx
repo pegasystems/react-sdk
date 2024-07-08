@@ -29,7 +29,6 @@ const EducationStartCase: FunctionComponent<any> = () => {
   const [showLandingPage, setShowLandingPage] = useState<boolean>(true);
   const [shuttered, setShuttered] = useState(null);
 
-  const [serviceNotAvailable /* setServiceNotAvailable */] = useState(false);
   const [pCoreReady, setPCoreReady] = useState(false);
   const { showLanguageToggle } = useContext(AppContextEducation);
   const [showLanguageToggleState, setShowLanguageToggleState] = useState(showLanguageToggle);
@@ -69,7 +68,7 @@ const EducationStartCase: FunctionComponent<any> = () => {
     setIsLoggedIn(true);
   }
 
-  const { showPega, setShowPega, showResolutionPage, caseId, shutterServicePage } = useStartMashup(
+  const { showPega, setShowPega, showResolutionPage, caseId, shutterServicePage, serviceNotAvailable } = useStartMashup(
     setAuthType,
     doRedirectDone,
     {
@@ -147,6 +146,17 @@ const EducationStartCase: FunctionComponent<any> = () => {
     // Extends manual signout popup 'stay signed in' to reset the automatic timeout timer also
     staySignedIn(setShowTimeoutModal, claimsListApi, null, false, true, (currentDisplay === 'resolutionpage'));
 
+  };
+
+  function returnToPortalPage() {
+    setShowSignoutModal(false);
+    staySignedIn(setShowTimeoutModal, claimsListApi, null, false, true, (currentDisplay === 'resolutionpage'));
+    setCurrentDisplay('loading');
+    setShowLandingPage(true);
+    PCore.getContainerUtils().closeContainerItem(
+      PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
+      { skipDirtyCheck: true }
+    );
   };
 
   const startClaim = () => {
@@ -264,11 +274,21 @@ const EducationStartCase: FunctionComponent<any> = () => {
 
   if (!isLoggedIn || shuttered === null) {
     return null;
+  } else if (currentDisplay === 'servicenotavailable') {
+    return (
+      <>
+        <AppHeader appname={t('EDUCATION_START')} />
+        <div className='govuk-width-container'>
+          <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />
+        </div>
+        <AppFooter />
+      </>
+    );
   } else if (shuttered) {
     setPageTitle();
     return (
       <>
-        <AppHeader appname={t('EDUCATION_START')} hasLanguageToggle={false} />
+        <AppHeader appname={t('EDUCATION_START')} />
         <div className='govuk-width-container'>
           <MainWrapper showPageNotWorkingLink={false}>
             <h1 className='govuk-heading-l'>Sorry, the service is unavailable</h1>
@@ -339,7 +359,6 @@ const EducationStartCase: FunctionComponent<any> = () => {
               {showLandingPage && (
                 <LandingPage onProceedHandler={e => landingPageProceedHandler(e)} />
               )}
-              {serviceNotAvailable && <ServiceNotAvailable />}
               {currentDisplay === 'resolutionpage' && (
                 <SummaryPage
                   summaryContent={summaryPageContent.Content}

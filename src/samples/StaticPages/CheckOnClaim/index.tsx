@@ -42,7 +42,7 @@ export default function CheckOnClaim() {
 
       switch (selectedOptionValue) {
         case 'viewmysavedorsubmittedclaims':
-          window.location.assign('/');
+          history.push('/');
           break;
         case 'checkwhenicanexpectareply':
           window.location.assign(

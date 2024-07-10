@@ -21,6 +21,7 @@ import {
 } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import { useStartMashup } from './reuseables/PegaSetup';
 import { useHistory } from 'react-router-dom';
+import toggleNotificationProcess from '../../components/helpers/toggleNotificationLanguage';
 
 const EducationStartCase: FunctionComponent<any> = () => {
   const educationStartParam = 'claim-child-benefit';
@@ -68,7 +69,7 @@ const EducationStartCase: FunctionComponent<any> = () => {
     setIsLoggedIn(true);
   }
 
-  const { showPega, setShowPega, showResolutionPage, caseId, shutterServicePage, serviceNotAvailable } = useStartMashup(
+  const { showPega, setShowPega, showResolutionPage, caseId, shutterServicePage, serviceNotAvailable, assignmentPConn } = useStartMashup(
     setAuthType,
     doRedirectDone,
     {
@@ -340,11 +341,11 @@ const EducationStartCase: FunctionComponent<any> = () => {
           appname={t('EDUCATION_START')}
           hasLanguageToggle={showLanguageToggleState}
           isPegaApp={showPega}
-          languageToggleCallback={
-            () => {} /* toggleNotificationProcess(
+          languageToggleCallback= {
+            toggleNotificationProcess(
           { en: 'SwitchLanguageToEnglish', cy: 'SwitchLanguageToWelsh' },
           assignmentPConn 
-          ) */
+          ) 
           }
           betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=claim-child-benefit-frontend&backUrl=/fill-online/claim-child-benefit/recently-claimed-child-benefit`}
         />

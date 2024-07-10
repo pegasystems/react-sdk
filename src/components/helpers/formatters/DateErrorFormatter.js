@@ -1,4 +1,5 @@
 import i18n from 'i18next';
+import { isMultipleDateInput } from './../utils';
 
 const _DateErrorFormatter = (message, propertyName) => {
   // Function to check if the user has entered hyphens into the input
@@ -8,6 +9,7 @@ const _DateErrorFormatter = (message, propertyName) => {
   const originalDate = matchedDates?.length > 0 ? matchedDates[0] : null;
   const targets = [];
   const isDateOfBirth = propertyName?.toLowerCase().includes('date of birth');
+  let invalidDateErrorMsgByField = '';
 
   if (originalDate && !hasMoreThanThreeHyphens(message)) {
     const [year, month, day] = originalDate.split('-');
@@ -28,20 +30,25 @@ const _DateErrorFormatter = (message, propertyName) => {
       else missingPartMessage += '_A_YEAR';
       targets.push('year');
     }
-    const shortPropertyName = 'DATE';
+    let missingPartErrorMessage = i18n.t(`DATE_MUST_INCLUDE${missingPartMessage}`);
+    if(isMultipleDateInput()) {
+      missingPartErrorMessage = `${i18n.t('THE')} ${propertyName?.toLowerCase()} ${i18n.t(`MUST_INCLUDE${missingPartMessage}`)}`;
+      invalidDateErrorMsgByField = `${i18n.t('THE')} ${propertyName?.toLowerCase()} ${i18n.t('MUST_BE_A_REAL_DATE')}`;
+    }
 
     if (missingPartMessage.length > 0) {
-      return {
-        message: i18n.t(`${shortPropertyName}_MUST_INCLUDE${missingPartMessage}`),
-        targets
-      };
+        return {
+          message: missingPartErrorMessage,
+          targets
+        };
     }
 
     if (message.search(i18n.t('IS_NOT_A_VALID_DATE'))) {
+      const invalidDateErrorMsg = invalidDateErrorMsgByField || i18n.t(`DATE_MUST_BE_A_REAL_DATE`);
       return {
         message: isDateOfBirth
           ? `${i18n.t('DATE_OF_BIRTH')} ${i18n.t('MUST_BE_A_REAL_DATE')}`
-          : i18n.t(`${shortPropertyName}_MUST_BE_A_REAL_DATE`),
+          : invalidDateErrorMsg,
         targets
       };
     }

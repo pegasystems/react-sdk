@@ -186,3 +186,22 @@ export const triggerLogout = () => {
 export const setAppServiceName = serviceName => {
   appServiceName = serviceName || null;
 };
+
+export const getWorkareaContainerName = () => {
+  const primaryContainer = PCore.getContainerUtils().getActiveContainerItemContext(
+    `${PCore.getConstants().APP.APP}/primary`
+  );
+  const containerName = PCore.getContainerUtils().getActiveContainerItemName(
+    `${primaryContainer}/workarea`
+  );
+  return containerName;
+}
+
+export const isMultipleDateInput = () => {
+  const containerName = getWorkareaContainerName();
+  const formEditablefields = PCore.getFormUtils().getEditableFields(containerName);
+  if(formEditablefields?.length > 1) {
+    return formEditablefields.filter(field => field.type.toLowerCase() === 'date').length > 1 ? true : false;;
+  }
+  return false;
+}

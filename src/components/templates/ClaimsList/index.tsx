@@ -11,7 +11,10 @@ declare const PCore: any;
 export default function ClaimsList(props) {
   const { thePConn, data, title, rowClickAction, buttonContent, caseId, checkShuttered } = props;
   const { t } = useTranslation();
+  const docIDForReturnSlip = 'CR0002';
+  const locale = PCore.getEnvironmentInfo().locale.replaceAll('-', '_');
   const [claims, setClaims] = useState([]);
+
   const statusMapping = status => {
     switch (status) {
       case 'Open-InProgress':
@@ -78,6 +81,27 @@ export default function ClaimsList(props) {
     return JSON.parse(childrenJSON.slice(childrenJSON.indexOf(':') + 1));
   }
 
+  const generateReturnSlip = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    perCaseId: any
+  ) => {
+    e.preventDefault();
+    PCore.getDataPageUtils()
+      .getPageDataAsync('D_DocumentContent', 'root', {
+        DocumentID: docIDForReturnSlip,
+        Locale: locale,
+        CaseID: perCaseId
+      })
+      .then(pageData => {
+        const myWindow = window.open('');
+        myWindow.document.write(pageData.DocumentContentHTML);
+      })
+      .catch(err => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
+  };
+
   function getClaims() {
     const claimsData = [];
     data.forEach(item => {
@@ -88,16 +112,32 @@ export default function ClaimsList(props) {
         children: [],
         childrenAdded: item.Claim.Child.pyFirstName !== null,
         actionButton: (
-          <Button
-            attributes={{ className: 'govuk-!-margin-top-4 govuk-!-margin-bottom-4' }}
-            variant='secondary'
-            onClick={() => {
-              _rowClick(item);
-            }}
-          >
-            {buttonContent}
-          </Button>
+          <>
+            <Button
+              attributes={{ className: 'govuk-!-margin-top-4 govuk-!-margin-bottom-4' }}
+              variant='secondary'
+              onClick={() => {
+                _rowClick(item);
+              }}
+            >
+              {buttonContent}
+            </Button>
+            {item.Claim.ShowPrintSlip && (
+              <div className='govuk-body'>
+                <a
+                  className='govuk-link'
+                  href=''
+                  onClick={e => generateReturnSlip(e, item.pzInsKey)}
+                  target='_blank'
+                  rel='noreferrer noopener'
+                >
+                  {t('PRINT_REPLY_SLIP')} {t('OPENS_IN_NEW_TAB')}
+                </a>
+              </div>
+            )}{' '}
+          </>
         ),
+
         status: statusMapping(item.pyStatusWork)
       };
 

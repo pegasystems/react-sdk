@@ -11,7 +11,7 @@ export default function WarningText(props) {
       </span>
       <strong className='govuk-warning-text__text'>
         <span className='govuk-visually-hidden'> {t('GDS_INFO_WARNING')}</span>{" "}
-        {children}
+       {children}
       </strong>
     </div>
   );

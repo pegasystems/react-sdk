@@ -54,6 +54,8 @@
   "WE_HAVE_SENT_YOUR_APPLICATION": "We've sent your application to the Child Benefit Office.",
   "WE_WILL_TELL_YOU_IN_28_DAYS": "We'll tell you in 28 calendar days if your application has been successful.",
   "CONTINUE_CLAIM": "Continue claim",
+  "CONTINUE_MY_REQUEST": "Continue my request",
+  "VIEW_MY_REQUEST": "View my request",
   "CLAIMS_IN_PROGRESS": "Child Benefit claims in progress",
   "SUBMITTED_CLAIMS": "Child Benefit submitted claims",
   "VIEW_CLAIM": "View claim",
@@ -74,6 +76,7 @@
   "CHILD_NAME": "Child name",
   "DATE_OF_BIRTH": "Date of birth",
   "CREATED_DATE": "Created date",
+  "SUBMITTED_DATE": "Submitted date",
   "YOU_STILL_NEED_TO_SAVE_YOUR_PROGRESS": "You still need to save your progress. If you sign out without saving, your progress will be lost.",
   "TO_SAVE_YOUR_PROGRESS": "To save your progress, select the 'Save and come back later' link.",
   "SIGN-OUT": "Sign out",
@@ -319,7 +322,21 @@
   "EDUCATION_START_P3": "The young person must be accepted onto their course or training before they turn 19.",
   "EDUCATION_START_P4": "You may need to provide us with the expected registration, start and end dates for the course or training.",
   "EDUCATION_START_UNIVERSAL_CREDIT_WARNING": "If the young person is receiving Universal Credit you cannot apply for an extension to their payments.",
-
+  "YOUNG_PERSON_NAME": "Young person name",
+  "EDUCATION_PORTAL_WARNING_TEXT2": "and will keep your information for 28 days.",
+  "VIEW_STATUS_OR_NOTIFY_CHANGES": "You can view the status of your Child Benefit extension requests here or notify us of any changes.",
+  "YOUR_VIEW":"You can also view your",
+  "PROOF_OF_ENTITLEMENT": "proof of entitlement and upcoming payments",
+  "REQUESTS_IN_PROGRESS": "Requests in progress",
+  "SUBMITTED_REQUESTS": "Submitted requests",
+  "VIEW_DECISION_NOTICE": "View my decision notice",
+  "TELL_US_ABOUT_EDUCATION": "Tell us if your child is starting non-advanced education or approved training",
+  "USE_THIS_SERVICE_TO_TELL_US": "You can use this service to tell us",
+  "STARTING_NON_ADVANCED_EDUCATION": "if your child is starting non-advanced education or approved training.",
+  "MUST_TELL": "You must tell the",
+  "LEAVES_FULL_TIME_EDUCATION": "Child Benefit Office immediately if your child leaves full time non-advanced education or approved training",
+  "CHILD_BENEFIT_EXTENSION_REQUESTS": "Child Benefit extension requests",
+  
   "CHB_HOMEPAGE_HEADING":"Child Benefit",
   "CHB_HOMEPAGE_MAKING_CLAIM_SUBHEADING":"Make a claim",
   "CHB_HOMEPAGE_CHECK_IF_CAN_CLAIM_LINK":"Check if you can claim",
@@ -332,5 +349,4 @@
   "CHB_HOMEPAGE_CHANGE_BANK_DETAILS_LINK":"Change your bank details",
   "CHB_HOMEPAGE_VIEW_PROOF_OF_ENTITLEMENT_LINK":"View your proof of entitlement to Child Benefit",
   "CHB_HOMEPAGE_HICBC_CHARGE_LINK":"High Income Child Benefit Charge"
-
 }

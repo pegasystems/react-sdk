@@ -94,7 +94,7 @@ export default function ClaimsList(props) {
     data.forEach(item => {
       const claimItem = {
         claimRef: item.pyID,
-        dateCreated: DateFormatter.Date(item.pxCreateDateTime, { format: 'DD/MM/YYYY' }),
+        dateCreated: DateFormatter.Date(item.pxCreateDateTime, { format: 'DD MMM YYYY' }),
         dateUpdated: item.pxUpdateDateTime,
         children: [],
         childrenAdded: item.ClaimExtension?.Child?.pyFirstName !== null,
@@ -178,7 +178,7 @@ export default function ClaimsList(props) {
               {fieldType}
             </dt>
             <dd className='govuk-summary-list__value govuk-!-width-one-third govuk-!-padding-bottom-2'>
-              {dayjs(claimItem.dateCreated).format('DD MMM YYYY')}
+              {claimItem.dateCreated}
             </dd>
             <dd className='govuk-summary-list__actions govuk-!-width-one-third govuk-!-padding-bottom-2'>
               {!claimItem.childrenAdded && (

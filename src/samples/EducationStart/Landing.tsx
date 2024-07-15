@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import StartClaim from './StartClaim';
 import PortalPage from './PortalPage';
+import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 
 export default function Landing({ handleStartCliam, assignmentPConn, showPortalBanner, setShowLandingPage }) {
   const [inProgressClaims, setInProgressClaims] = useState([]);
@@ -10,6 +11,10 @@ export default function Landing({ handleStartCliam, assignmentPConn, showPortalB
   const [showStartClaim, setShowStartClaim] = useState(false);
   const [loadingInProgressClaims, setLoadingInProgressClaims] = useState(true);
   const [loadingSubmittedClaims, setLoadingSubmittedClaims] = useState(true);
+
+  useEffect(() => {
+    setPageTitle()
+  });
 
   function fetchSubmittedClaimsData() {
     const operatorId = PCore.getEnvironmentInfo().getOperatorIdentifier();

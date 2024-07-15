@@ -349,7 +349,7 @@ const EducationStartCase: FunctionComponent<any> = () => {
   } else if (currentDisplay === 'servicenotavailable') {
     return (
       <>
-        <AppHeader appname={t('EDUCATION_START')} />
+        <AppHeader appname={t('EDUCATION_START')} hasLanguageToggle={showLanguageToggleState} />
         <div className='govuk-width-container'>
           <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />
         </div>
@@ -421,10 +421,12 @@ const EducationStartCase: FunctionComponent<any> = () => {
           appname={t('EDUCATION_START')}
           hasLanguageToggle={showLanguageToggleState}
           isPegaApp={showPega}
-          languageToggleCallback={toggleNotificationProcess(
-            { en: 'SwitchLanguageToEnglish', cy: 'SwitchLanguageToWelsh' },
-            pConnect
-          )}
+          languageToggleCallback= {
+            toggleNotificationProcess(
+          { en: 'SwitchLanguageToEnglish', cy: 'SwitchLanguageToWelsh' },
+          assignmentPConnect?.getDataObject()?.caseInfo ? assignmentPConnect : null
+          ) 
+          }
           betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=claim-child-benefit-frontend&backUrl=/fill-online/claim-child-benefit/recently-claimed-child-benefit`}
         />
         <div className='govuk-width-container'>
@@ -445,9 +447,9 @@ const EducationStartCase: FunctionComponent<any> = () => {
               )}
               {currentDisplay === 'resolutionpage' && (
                 <SummaryPage
-                  summaryContent={summaryPageContent.Content}
-                  summaryTitle={summaryPageContent.Title}
-                  summaryBanner={summaryPageContent.Banner}
+                  summaryContent={summaryPageContent?.Content}
+                  summaryTitle={summaryPageContent?.Title}
+                  summaryBanner={summaryPageContent?.Banner}
                   backlinkProps={{}}
                 />
               )}

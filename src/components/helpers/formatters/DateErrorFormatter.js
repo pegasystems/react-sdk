@@ -1,5 +1,5 @@
 import i18n from 'i18next';
-import { isMultipleDateInput } from './../utils';
+import { isMultipleDateInput, getWorkareaContainerName } from './../utils';
 
 const _DateErrorFormatter = (message, propertyName) => {
   // Function to check if the user has entered hyphens into the input
@@ -32,8 +32,13 @@ const _DateErrorFormatter = (message, propertyName) => {
     }
     let missingPartErrorMessage = i18n.t(`DATE_MUST_INCLUDE${missingPartMessage}`);
     if(isMultipleDateInput()) {
-      missingPartErrorMessage = `${i18n.t('THE')} ${propertyName?.toLowerCase()} ${i18n.t(`MUST_INCLUDE${missingPartMessage}`)}`;
-      invalidDateErrorMsgByField = `${i18n.t('THE')} ${propertyName?.toLowerCase()} ${i18n.t('MUST_BE_A_REAL_DATE')}`;
+      const containerName = getWorkareaContainerName();
+      const formEditablefields = PCore?.getFormUtils()?.getEditableFields(containerName);
+      const formFields = formEditablefields?.filter(field => field.label === propertyName);
+      let langLabelKey = formFields[0]?.fieldC11nEnv?.getMetadata()?.config?.label?.split('@L ').pop();
+      langLabelKey = langLabelKey?.replace(' ', '_')?.toUpperCase();
+      missingPartErrorMessage = i18n.t(`${langLabelKey}_MUST_INCLUDE${missingPartMessage}`);
+      invalidDateErrorMsgByField = i18n.t(`${langLabelKey}_MUST_BE_A_REAL_DATE`);
     }
 
     if (missingPartMessage.length > 0) {

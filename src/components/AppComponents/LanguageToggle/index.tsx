@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import 'dayjs/locale/cy';
+import setPageTitle from '../../helpers/setPageTitleHelpers';
 
 declare const PCore: any;
 
@@ -17,7 +18,9 @@ const LanguageToggle = props => {
     setSelectedLang(lang);
     sessionStorage.setItem('rsdk_locale', `${lang}_GB`);
     dayjs.locale(lang);
-    i18n.changeLanguage(lang);
+    i18n.changeLanguage(lang).then(() => {
+      setPageTitle();
+    });
     if (typeof PCore !== 'undefined') {
       PCore.getEnvironmentInfo().setLocale(`${lang}_GB`);
       PCore.getLocaleUtils().resetLocaleStore();
@@ -27,7 +30,7 @@ const LanguageToggle = props => {
         '@BASECLASS!DATAPAGE!D_SCOPEDREFERENCEDATALISTBYTYPE',
         'HMRC-CHB-WORK-CLAIM!CASE!CLAIM'
       ]);
-
+      
       PCore.getPubSubUtils().publish('languageToggleTriggered', { language: lang, localeRef: [] });
     }
     if (languageToggleCallback) {

@@ -33,7 +33,7 @@ export default function ReadOnlyDisplay(props) {
             ))}
           </>
         ) : (
-          formattedValue || value
+          isCSV && formattedValue || value
         )}
       </dd>
     </div>

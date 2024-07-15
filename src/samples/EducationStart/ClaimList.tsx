@@ -37,7 +37,7 @@ export default function ClaimsList(props) {
       case 'Pending-AwaitingDocumentation':
       case 'Pending-Disallowance':
       case 'Resolved-Disallowance':
-        return { text: t('CLAIM_RECEIVED'), tagColour: 'purple' };
+        return { text: t('SUBMITTED'), tagColour: 'purple' };
       default:
         return { text: status, tagColour: 'grey' };
     }
@@ -211,7 +211,7 @@ export default function ClaimsList(props) {
 
   return (
     <>
-      {claims.length !== 0 && <h2 className='govuk-heading-l'>{title}</h2>}
+      {claims.length !== 0 && claims.find((item)=> item.childrenAdded) && <h2 className='govuk-heading-l'>{title}</h2>}
 
       {claims.map(claimItem => (
         <React.Fragment key={claimItem.claimRef}>

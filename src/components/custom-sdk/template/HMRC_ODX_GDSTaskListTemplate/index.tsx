@@ -104,11 +104,11 @@ export default function HmrcOdxGdsTaskListTemplate(props: HmrcOdxGdsTaskListTemp
         {children[0]}
       </Grid>
       <div className='govuk-!-padding-bottom-4'>
-        <p className='govuk-body govuk-!-font-weight-bold'>
+        <h2 className='govuk-heading-s'>
           {completedSections < totalSections
             ? `${t('CLAIM')} ${t('INCOMPLETE')}`
             : `${t('CLAIM')} ${t('COMPLETE')}`}
-        </p>
+        </h2>
         <p className='govuk-body govuk-!-padding-bottom-4'>
           {`${t('YOU_HAVE_COMPLETED')} ${completedSections} ${t('OF')} ${totalSections} ${t(
             'SECTIONS'

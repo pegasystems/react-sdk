@@ -94,6 +94,16 @@ export function establishPCoreSubscriptions({
     'handleServiceNotAvailableOnAssignmentFinished'
   );
 
+  function customAssignmentFinishedEvent() {
+    showResolutionScreen();
+    PCore?.getPubSubUtils().unsubscribe('CustomAssignmentFinishedForEducation');
+  }
+
+  PCore.getPubSubUtils().subscribe(
+    'CustomAssignmentFinishedForEducation',
+    customAssignmentFinishedEvent
+  );
+
   /* ********************************
    * On Cancel event, ?
    ******************************** */

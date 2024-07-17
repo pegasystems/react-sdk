@@ -60,10 +60,9 @@ export default function PortalPage(props) {
               {children}
               <ClaimsList
                 thePConn={assignmentPConn}
-                data={inProgressClaims}
+                cases={inProgressClaims}
                 title={t('REQUESTS_IN_PROGRESS')}
                 rowClickAction='OpenAssignment'
-                buttonContent={t('CONTINUE_MY_REQUEST')}
                 caseId={getClaimsCaseId()}
                 fieldType={t('CREATED_DATE')}
                 setShowLandingPage={setShowLandingPage}
@@ -78,10 +77,9 @@ export default function PortalPage(props) {
               {children}
               <ClaimsList
                 thePConn={assignmentPConn}
-                data={submittedClaims}
+                cases={submittedClaims}
                 title={t('SUBMITTED_REQUESTS')}
                 rowClickAction='OpenCase'
-                buttonContent={t('VIEW_MY_REQUEST')}
                 caseId={getClaimsCaseId()}
                 fieldType={t('SUBMITTED_DATE')}
                 setShowLandingPage={setShowLandingPage}

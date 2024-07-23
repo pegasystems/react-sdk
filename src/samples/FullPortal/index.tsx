@@ -164,7 +164,7 @@ export default function FullPortal() {
   }
 
   function doRedirectDone() {
-    history.push(window.location.pathname);
+    history.replace(window.location.pathname);
     let localeOverride: any = sessionStorage.getItem('rsdk_locale');
     if (!localeOverride) {
       localeOverride = undefined;

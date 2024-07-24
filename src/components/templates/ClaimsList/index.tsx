@@ -86,12 +86,20 @@ export default function ClaimsList(props) {
     perCaseId: any
   ) => {
     e.preventDefault();
+    const options = {
+      invalidateCache: true
+    };
     PCore.getDataPageUtils()
-      .getPageDataAsync('D_DocumentContent', 'root', {
-        DocumentID: docIDForReturnSlip,
-        Locale: locale,
-        CaseID: perCaseId
-      })
+      .getPageDataAsync(
+        'D_DocumentContent',
+        'root',
+        {
+          DocumentID: docIDForReturnSlip,
+          Locale: locale,
+          CaseID: perCaseId
+        },
+        options
+      )
       .then(pageData => {
         const myWindow = window.open('');
         myWindow.document.write(pageData.DocumentContentHTML);

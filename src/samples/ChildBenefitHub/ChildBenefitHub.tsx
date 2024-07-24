@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { loginIfNecessary, sdkIsLoggedIn } from '@pega/auth/lib/sdk-auth-manager';
 import AppHeader from '../../components/AppComponents/AppHeader';
@@ -8,9 +8,15 @@ import { registerServiceName } from '../../components/helpers/setPageTitleHelper
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 import { triggerLogout } from '../../components/helpers/utils';
 import { Link } from 'react-router-dom';
+import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
+import {
+  initTimeout,
+} from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
+
 
 export default function ChildBenefitHub() {
   const history = useHistory();
+  const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const { t } = useTranslation();
   const { hmrcURL } = useHMRCExternalLinks();
 
@@ -20,6 +26,10 @@ export default function ChildBenefitHub() {
     // appName and mainRedirect params have to be same as earlier invocation
     loginIfNecessary({ appName: 'embedded', mainRedirect: true });
   };
+
+  useEffect(() => {        
+    initTimeout(setShowTimeoutModal, false, true, false)
+  }, [])
 
   useEffect(() => {
     if (!sdkIsLoggedIn()) {
@@ -39,6 +49,21 @@ export default function ChildBenefitHub() {
         appname={t('CHB_HOMEPAGE_HEADING')}
         handleSignout={handleSignout}
       />
+      <TimeoutPopup
+                show={showTimeoutModal}
+                staySignedinHandler={() =>
+                  {
+                    setShowTimeoutModal(false);
+                    initTimeout(setShowTimeoutModal, false, true, false);
+                    // Using operator details call as 'app agnostic' session keep-alive
+                    PCore.getUserApi().getOperatorDetails(PCore.getEnvironmentInfo().getOperatorIdentifier());
+                  }                 
+                }
+                signoutHandler={triggerLogout}
+                isAuthorised
+                signoutButtonText='Sign out'
+                staySignedInButtonText='Stay signed in'
+             />
       <div className='govuk-width-container'>
         <main className='govuk-main-wrapper govuk-main-wrapper--l' id='main-content' role='main'>
           <div className='govuk-grid-row'>

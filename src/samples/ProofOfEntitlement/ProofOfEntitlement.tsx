@@ -11,6 +11,8 @@ import { registerServiceName } from '../../components/helpers/setPageTitleHelper
 import { triggerLogout } from '../../components/helpers/utils';
 import MainWrapper from '../../components/BaseComponents/MainWrapper';
 import Button from '../../components/BaseComponents/Button/Button';
+import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
+import {initTimeout} from '../../components/AppComponents/TimeoutPopup/timeOutUtils'
 
 declare const PCore;
 declare const myLoadMashup: any;
@@ -20,6 +22,7 @@ export default function ProofOfEntitlement(){
     const [entitlementData, setEntitlementData] = useState(null);
     const [showNoAward, setShowNoAward] = useState(false);    
     const [showProblemWithService, setShowProblemWithService] = useState(false);    
+    const [showTimeoutModal, setShowTimeoutModal] = useState(false);
     const history = useHistory();
     const {t} = useTranslation();
 
@@ -30,6 +33,10 @@ export default function ProofOfEntitlement(){
         // appName and mainRedirect params have to be same as earlier invocation
         loginIfNecessary({ appName: 'embedded', mainRedirect: true });   
     }
+
+    useEffect(() => {        
+        initTimeout(setShowTimeoutModal, false, true, false)
+    }, [])
 
     useEffect( () => {
         if(!sdkIsLoggedIn()){
@@ -64,6 +71,21 @@ export default function ProofOfEntitlement(){
     return (
         <>
             <AppHeader appname={t('CHB_HOMEPAGE_HEADING')} hasLanguageToggle handleSignout={sdkIsLoggedIn() ? triggerLogout : null} />
+            <TimeoutPopup
+                show={showTimeoutModal}
+                staySignedinHandler={() =>
+                    {
+                        setShowTimeoutModal(false);                        
+                        initTimeout(setShowTimeoutModal, false, true, false);
+                        // Using operator details call as 'app agnostic' session keep-alive
+                        PCore.getUserApi().getOperatorDetails(PCore.getEnvironmentInfo().getOperatorIdentifier());
+                    }                 
+                }
+                signoutHandler={triggerLogout}
+                isAuthorised
+                signoutButtonText='Sign out'
+                staySignedInButtonText='Stay signed in'
+             />
             {sdkIsLoggedIn() && 
             <div className='govuk-width-container'>
             <MainWrapper>
@@ -118,7 +140,7 @@ export default function ProofOfEntitlement(){
                             {
                                 showProblemWithService && <>
                                     <h1 className="govuk-heading-l">{t('SERVICE_NOT_AVAILABLE')}</h1>
-                                    <p className='govuk-body'>{t('COME_BACK_LATER')}</p>
+                                    <p className='govuk-body'>{t('TRY_AGAIN_LATER')}</p>
                                     <p className='govuk-body'>{t('YOU_WILL_NEED_TO_START_AGAIN')}</p>
                                 </>
                             }

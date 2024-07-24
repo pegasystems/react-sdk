@@ -13,6 +13,10 @@ export const GBdate = date => {
   return d.length > 1 ? `${d[2]}/${d[1]}/${d[0]}` : date;
 };
 
+export const formatCurrency = amount => {
+  return new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(amount);
+};
+
 export const checkErrorMsgs = (errorMsgs = [], fieldIdentity = '', fieldElement = '') => {
   return errorMsgs.find(
     element =>
@@ -195,22 +199,23 @@ export const getWorkareaContainerName = () => {
     `${primaryContainer}/workarea`
   );
   return containerName;
-}
+};
 
 export const isMultipleDateInput = () => {
   const containerName = getWorkareaContainerName();
   const formEditablefields = PCore.getFormUtils().getEditableFields(containerName);
-  if(formEditablefields?.length > 1) {
-    return formEditablefields.filter(field => field.type.toLowerCase() === 'date').length > 1 ? true : false;;
+  if (formEditablefields?.length > 1) {
+    return formEditablefields.filter(field => field.type.toLowerCase() === 'date').length > 1
+      ? true
+      : false;
   }
   return false;
-}
+};
 
-
-export const getClaimsCaseId = ()=> {
+export const getClaimsCaseId = () => {
   const context = PCore.getContainerUtils().getActiveContainerItemName(
     `${PCore.getConstants().APP.APP}/primary`
   );
   const caseId = PCore.getStoreValue('.ID', 'caseInfo', context) || '';
   return caseId;
-}
+};

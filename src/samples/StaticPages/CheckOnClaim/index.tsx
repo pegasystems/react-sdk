@@ -8,6 +8,7 @@ import Button from '../../../components/BaseComponents/Button/Button';
 import setPageTitle from '../../../components/helpers/setPageTitleHelpers';
 import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioButtons';
 import StaticPageErrorSummary from '../ErrorSummary';
+import useTranslatedStaticPageError from '../../../components/helpers/hooks/useTranslatedStaticPageError';
 
 export default function CheckOnClaim() {
   const { t } = useTranslation();
@@ -15,6 +16,11 @@ export default function CheckOnClaim() {
   const lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
   const [errorMsg, setErrorMsg] = useState('');
   const errorHref = `#typeOfClaimCheck`;
+  const translatedError = useTranslatedStaticPageError(
+    'SELECT_CHILD_BENEFIT_SERVICE',
+    lang,
+    errorMsg
+  );
 
   useEffect(() => {
     const setPageTitleInterval = setInterval(() => {
@@ -68,7 +74,7 @@ export default function CheckOnClaim() {
           attributes={{ type: 'link' }}
         />
         <MainWrapper>
-          <StaticPageErrorSummary errorSummary={errorMsg} linkHref={errorHref} />
+          <StaticPageErrorSummary errorSummary={translatedError} linkHref={errorHref} />
           <form>
             <RadioButtons
               name='typeOfClaimCheck'
@@ -78,7 +84,7 @@ export default function CheckOnClaim() {
               options={radioOptions}
               label={t('HOW_DO_YOU_WANT_TO_CHECK_ON_YOUR_CLAIM')}
               legendIsHeading
-              errorText={errorMsg}
+              errorText={translatedError}
             ></RadioButtons>
             <button
               className='govuk-button'

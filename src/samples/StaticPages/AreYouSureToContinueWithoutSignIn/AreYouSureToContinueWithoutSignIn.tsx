@@ -10,12 +10,19 @@ import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import setPageTitle from '../../../components/helpers/setPageTitleHelpers';
 import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
+import useTranslatedStaticPageError from '../../../components/helpers/hooks/useTranslatedStaticPageError';
 
 export default function AreYouSureToContinueWithoutSignIn() {
   const [errorMsg, setErrorMsg] = useState('');
   const { t } = useTranslation();
   const history = useHistory();
   const lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
+  const translatedError = useTranslatedStaticPageError(
+    'SELECT_YES_IF_YOU_WANT_TO_CONTINUE_WO_SIGN_IN',
+    lang,
+    errorMsg
+  );
+
   useEffect(() => {
     const setPageTitleInterval = setInterval(() => {
       clearInterval(setPageTitleInterval);
@@ -75,7 +82,7 @@ export default function AreYouSureToContinueWithoutSignIn() {
         />
         <MainWrapper>
           <StaticPageErrorSummary
-            errorSummary={errorMsg}
+            errorSummary={translatedError}
             linkHref='#areYouSureToContinueWoSignIn'
           />
           <form>
@@ -87,7 +94,7 @@ export default function AreYouSureToContinueWithoutSignIn() {
               options={radioOptions}
               label={t('ARE_YOU_SURE_YOU_WANT_TO_CONTINUE_WO_SIGN_IN')}
               legendIsHeading
-              errorText={errorMsg}
+              errorText={translatedError}
             ></RadioButtons>
             <button
               className='govuk-button'

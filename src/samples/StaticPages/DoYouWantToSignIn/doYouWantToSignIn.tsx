@@ -9,12 +9,19 @@ import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import StaticPageErrorSummary from '../ErrorSummary';
 import setPageTitle from '../../../components/helpers/setPageTitleHelpers';
+import useTranslatedStaticPageError from '../../../components/helpers/hooks/useTranslatedStaticPageError';
 
 export default function DoYouWantToSignIn() {
   const [errorMsg, setErrorMsg] = useState('');
   const { t } = useTranslation();
   const history = useHistory();
   const lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
+  const translatedError = useTranslatedStaticPageError(
+    'SELECT_YES_IF_YOU_WANT_TO_SIGN_IN',
+    lang,
+    errorMsg
+  );
+
   useEffect(() => {
     const setPageTitleInterval = setInterval(() => {
       clearInterval(setPageTitleInterval);
@@ -71,7 +78,7 @@ export default function DoYouWantToSignIn() {
           attributes={{ type: 'link' }}
         />
         <MainWrapper>
-          <StaticPageErrorSummary errorSummary={errorMsg} linkHref='#doYouWantToSignIn' />
+          <StaticPageErrorSummary errorSummary={translatedError} linkHref='#doYouWantToSignIn' />
           <form>
             <RadioButtons
               name='doYouWantToSignIn'
@@ -81,7 +88,7 @@ export default function DoYouWantToSignIn() {
               options={radioOptions}
               hintText={hintText}
               legendIsHeading
-              errorText={errorMsg}
+              errorText={translatedError}
               label={t('DO_YOU_WANT_TO_SIGN_IN')}
             ></RadioButtons>
             <button

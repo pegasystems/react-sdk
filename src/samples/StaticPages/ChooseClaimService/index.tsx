@@ -8,6 +8,7 @@ import RadioButtons from '../../../components/BaseComponents/RadioButtons/RadioB
 import '../../../../assets/css/appStyles.scss';
 import StaticPageErrorSummary from '../ErrorSummary';
 import setPageTitle from '../../../components/helpers/setPageTitleHelpers';
+import useTranslatedStaticPageError from '../../../components/helpers/hooks/useTranslatedStaticPageError';
 
 export default function RecentlyClaimedChildBenefit() {
   const { t } = useTranslation();
@@ -15,6 +16,12 @@ export default function RecentlyClaimedChildBenefit() {
   const [errorMsg, setErrorMsg] = useState('');
   const errorHref = `#serviceType`;
   const lang = sessionStorage.getItem('rsdk_locale')?.substring(0, 2) || 'en';
+
+  const translatedError = useTranslatedStaticPageError(
+    'SELECT_CHILD_BENEFIT_SERVICE',
+    lang,
+    errorMsg
+  );
 
   useEffect(() => {
     const setPageTitleTimeout = setTimeout(() => {
@@ -93,7 +100,7 @@ export default function RecentlyClaimedChildBenefit() {
       <AppHeader appname={t('CLAIM_CHILD_BENEFIT')} hasLanguageToggle isPegaApp={false} />
       <div className='govuk-width-container'>
         <MainWrapper>
-          <StaticPageErrorSummary errorSummary={errorMsg} linkHref={errorHref} />
+          <StaticPageErrorSummary errorSummary={translatedError} linkHref={errorHref} />
           <form>
             <RadioButtons
               name='serviceType'
@@ -103,7 +110,7 @@ export default function RecentlyClaimedChildBenefit() {
               options={radioOptions}
               label={t('WHICH_CHBS_DO_YOU_WANT_TO_USE')}
               legendIsHeading
-              errorText={errorMsg}
+              errorText={translatedError}
             ></RadioButtons>
             <button
               className='govuk-button'

@@ -190,9 +190,9 @@ const EducationStartCase: FunctionComponent<any> = () => {
 
   useEffect(() => {
     function handleClick(e) {
-      e.preventDefault();
       const targetId = e.target.id;
       if (targetId === 'homepage') {
+        e.preventDefault();
         returnedToPortal(false);
         setShowPortalPageDefault(true);
       }

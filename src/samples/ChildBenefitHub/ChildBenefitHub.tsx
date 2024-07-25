@@ -7,18 +7,15 @@ import { useTranslation } from 'react-i18next';
 import { registerServiceName } from '../../components/helpers/setPageTitleHelpers';
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 import { triggerLogout } from '../../components/helpers/utils';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
-import {
-  initTimeout,
-} from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
-
+import { initTimeout } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 
 export default function ChildBenefitHub() {
   const history = useHistory();
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const { t } = useTranslation();
-  const { hmrcURL } = useHMRCExternalLinks();
+  const { referrerURL, hmrcURL } = useHMRCExternalLinks();
 
   registerServiceName(t('CHB_HOMEPAGE_HEADING'));
   const onRedirectDone = () => {
@@ -27,9 +24,9 @@ export default function ChildBenefitHub() {
     loginIfNecessary({ appName: 'embedded', mainRedirect: true });
   };
 
-  useEffect(() => {        
-    initTimeout(setShowTimeoutModal, false, true, false)
-  }, [])
+  useEffect(() => {
+    initTimeout(setShowTimeoutModal, false, true, false);
+  }, []);
 
   useEffect(() => {
     if (!sdkIsLoggedIn()) {
@@ -50,20 +47,18 @@ export default function ChildBenefitHub() {
         handleSignout={handleSignout}
       />
       <TimeoutPopup
-                show={showTimeoutModal}
-                staySignedinHandler={() =>
-                  {
-                    setShowTimeoutModal(false);
-                    initTimeout(setShowTimeoutModal, false, true, false);
-                    // Using operator details call as 'app agnostic' session keep-alive
-                    PCore.getUserApi().getOperatorDetails(PCore.getEnvironmentInfo().getOperatorIdentifier());
-                  }                 
-                }
-                signoutHandler={triggerLogout}
-                isAuthorised
-                signoutButtonText='Sign out'
-                staySignedInButtonText='Stay signed in'
-             />
+        show={showTimeoutModal}
+        staySignedinHandler={() => {
+          setShowTimeoutModal(false);
+          initTimeout(setShowTimeoutModal, false, true, false);
+          // Using operator details call as 'app agnostic' session keep-alive
+          PCore.getUserApi().getOperatorDetails(PCore.getEnvironmentInfo().getOperatorIdentifier());
+        }}
+        signoutHandler={triggerLogout}
+        isAuthorised
+        signoutButtonText='Sign out'
+        staySignedInButtonText='Stay signed in'
+      />
       <div className='govuk-width-container'>
         <main className='govuk-main-wrapper govuk-main-wrapper--l' id='main-content' role='main'>
           <div className='govuk-grid-row'>
@@ -116,9 +111,14 @@ export default function ChildBenefitHub() {
                 </a>
               </p>
               <p>
+                {/* TODO: Fix issue with ConstellationJS bootstrap on route change, 
+                temporary fix provided for BUG-8996 (it is blocking US-14576-1)
                 <Link to='/view-proof-entitlement' className='govuk-link'>
                   {t('CHB_HOMEPAGE_VIEW_PROOF_OF_ENTITLEMENT_LINK')}
-                </Link>
+                </Link> */}
+                <a href={`${referrerURL}view-proof-entitlement`} className='govuk-link'>
+                  {t('CHB_HOMEPAGE_VIEW_PROOF_OF_ENTITLEMENT_LINK')}
+                </a>
               </p>
               <p>
                 <a className='govuk-link' href='https://www.gov.uk/child-benefit-tax-charge'>

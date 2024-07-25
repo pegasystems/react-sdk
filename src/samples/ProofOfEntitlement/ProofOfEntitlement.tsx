@@ -29,7 +29,7 @@ export default function ProofOfEntitlement() {
   registerServiceName(t('CHB_HOMEPAGE_HEADING'));
 
   const onRedirectDone = () => {
-    history.push('/view-proof-entitlement');
+    history.replace('/view-proof-entitlement');
     // appName and mainRedirect params have to be same as earlier invocation
     loginIfNecessary({ appName: 'embedded', mainRedirect: true });
   };

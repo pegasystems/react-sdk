@@ -55,7 +55,7 @@ export default function UnAuthChildBenefitsClaim() {
   registerServiceName(serviceName);
 
   function doRedirectDone() {
-    history.push('/ua');
+    history.replace('/ua');
     // appName and mainRedirect params have to be same as earlier invocation
     loginIfNecessary({ appName: 'embedded', mainRedirect: true });
   }

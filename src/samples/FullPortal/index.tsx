@@ -182,7 +182,7 @@ export default function FullPortal() {
   }
 
   function doRedirectDone() {
-    history.push(window.location.pathname);
+    history.replace(window.location.pathname);
     // appName and mainRedirect params have to be same as earlier invocation
     loginIfNecessary({ appName: 'portal', mainRedirect: true });
   }

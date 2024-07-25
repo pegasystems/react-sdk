@@ -53,7 +53,7 @@ const ClaimPage: FunctionComponent<any> = () => {
     , []);    
     
     function doRedirectDone() {
-        history.push('/hicbc/opt-in');
+        history.replace('/hicbc/opt-in');
         // appName and mainRedirect params have to be same as earlier invocation
         loginIfNecessary({ appName: 'embedded', mainRedirect: true });        
     } 

@@ -19,7 +19,7 @@ export default function ChildBenefitHub() {
 
   registerServiceName(t('CHB_HOMEPAGE_HEADING'));
   const onRedirectDone = () => {
-    history.push('/home');
+    history.replace('/home');
     // appName and mainRedirect params have to be same as earlier invocation
     loginIfNecessary({ appName: 'embedded', mainRedirect: true });
   };

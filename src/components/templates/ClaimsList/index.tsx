@@ -86,6 +86,7 @@ export default function ClaimsList(props) {
     perCaseId: any
   ) => {
     e.preventDefault();
+
     const options = {
       invalidateCache: true
     };

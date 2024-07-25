@@ -248,7 +248,12 @@ const ConfirmationPage = ({ caseId, caseStatus, isUnAuth }) => {
       </>
     );
   };
-
+  useEffect(() => {
+    const element: HTMLElement = document.querySelector('div.rdlWrapperDiv');
+    if (element) {
+      element.style.display = 'none';
+    }
+  });
   const setCasetype = () => {
     if (caseStatus === undefined) {
       if (!loading && isBornAbroadOrAdopted) {

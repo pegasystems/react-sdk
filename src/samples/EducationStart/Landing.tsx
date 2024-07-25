@@ -35,7 +35,7 @@ export default function Landing({
   const statusMapping = status => {
     switch (status) {
       case 'Open-InProgress':
-        return { text: t('IN_PROGRESS'), tagColour: 'blue' };
+        return { text: t('IN_PROGRESS_1'), tagColour: 'blue' };
       case 'Pending-CBS':
       case 'Resolved-Completed':
       case 'Resolved-Rejected':
@@ -109,7 +109,7 @@ export default function Landing({
       .getDataAsync('D_ClaimantWorkAssignmentEdStartCases', 'root')
       .then(resp => {
         resp = resp.data.slice(0, 10);
-        inProgressClaimsData = getClaims(resp, t('REQUESTS_IN_PROGRESS'));
+        inProgressClaimsData = getClaims(resp, t('CONTINUE_MY_REQUEST'));
         setInProgressClaims(inProgressClaimsData);
       })
       .finally(() => {

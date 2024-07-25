@@ -3,6 +3,7 @@
 @import 'node_modules/hmrc-frontend/hmrc/components/language-select/_language-select.scss';
 @import 'node_modules/hmrc-frontend/hmrc/components/timeout-dialog/_timeout-dialog.scss';
 @import './location-autocomplete.min.css';
+@import './print.scss';
 
 .app-claimslist-tag {
   @include govuk-media-query($from: tablet) {
@@ -65,7 +66,7 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
   width: 40px;
   height: 40px;
   -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite; 
+  animation: spin 2s linear infinite;
 }
 
 .spinner {
@@ -74,21 +75,23 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
   border-radius: 50%;
 }
 
- // TODO - Below style will be removed with US-13518 implementation.
-.education-start a[href="https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit"] {
+// TODO - Below style will be removed with US-13518 implementation.
+.education-start a[href="https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit"]
+{
   display: none;
 }
 
-.education-start a[href="https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit"] + br {
+.education-start a[href="https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit"] + br
+{
   display: none;
 }
 
-.education-start a[href="https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit"] + br + br {
+.education-start a[href="https://www.tax.service.gov.uk/ask-hmrc/chat/child-benefit"] + br + br
+{
   display: none;
 }
 
- // TODO - Above style will be removed with US-13518 implementation.
-
+// TODO - Above style will be removed with US-13518 implementation.
 
 @keyframes spin {
   0% {

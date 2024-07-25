@@ -87,21 +87,33 @@ export default function ProofOfEntitlement() {
         staySignedInButtonText='Stay signed in'
       />
       {sdkIsLoggedIn() && (
-        <div className='govuk-width-container'>
+        <div className='govuk-width-container' id='poe-page'>
           <MainWrapper>
             {entitlementData && (
               <>
+                <p className='print-only govuk-caption-xl govuk-!-margin-bottom-3'>
+                  {entitlementData.Claimant?.pyFullName}
+                </p>
                 <h1 className='govuk-heading-l'>{t('PROOF_ENTITLEMENT_HEADING')}</h1>
 
-                <Button variant='link' onClick={() => {}}>
+                <Button
+                  variant='link'
+                  attributes={{ className: 'print-hidden' }}
+                  onClick={window.print}
+                >
                   {t('PRINT_THIS_PAGE')}
                 </Button>
                 <p className='govuk-body'>
                   {t('PROOF_ENTITLEMENT_CONFIRMATION')} {entitlementData.Claimant?.pyFullName}{' '}
                   {t('ON')} {dayjs().format('D MMMM YYYY')}.
                 </p>
+                <p className='print-only govuk-body'>{t('POE_CHB_PAID_AT')}</p>
+                <ul className='print-only govuk-list govuk-list--bullet'>
+                  <li>{t('POE_FOR_ELDEST_CHILD')}</li>
+                  <li>{t('POE_FOR_ADDITIONAL_CHILD')}</li>
+                </ul>
                 <h2 className='govuk-heading-m'>{t('PROOF_ENTITLEMENT_DETAILS_H2')}</h2>
-                <p className='govuk-body'>
+                <p className='govuk-body print-hidden'>
                   {t('PROOF_ENTITLEMENT_IF_DETAILS_INCORRECT')}{' '}
                   <a
                     href='https://www.gov.uk/report-changes-child-benefit/if-your-familys-circumstances-change'
@@ -125,7 +137,7 @@ export default function ProofOfEntitlement() {
                   {t('PROOF_ENTITLMENT_IF_DETAILS_INCORRECT_WILL_UPDATE')}
                 </p>
 
-                <dl className='govuk-summary-list'>
+                <dl className='govuk-summary-list page-break-after'>
                   <ReadOnlyDisplay
                     key='name'
                     label={t('POE_LABEL_NAME')}
@@ -185,10 +197,12 @@ export default function ProofOfEntitlement() {
                   );
                 })}
 
-                <h2 className='govuk-heading-m'>{t('PROOF_ENTITLEMENT_VIEW_YOUR_PAYMENTS_H2')}</h2>
+                <h2 className='govuk-heading-m print-hidden'>
+                  {t('PROOF_ENTITLEMENT_VIEW_YOUR_PAYMENTS_H2')}
+                </h2>
                 <a
                   href='https://www.tax.service.gov.uk/child-benefit/view-payment-history'
-                  className='govuk-link'
+                  className='govuk-link print-hidden'
                 >
                   {t('PROOF_ENTITLEMENT_VIEW_PAST_PAYMENTS_LINK')}
                 </a>

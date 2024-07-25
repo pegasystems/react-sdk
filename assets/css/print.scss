@@ -1,0 +1,46 @@
+.print-only {
+  display: none;
+}
+@media print {
+  @page {
+    size: A4;
+    margin: 50px;
+  }
+
+  .print-only {
+    display: block;
+  }
+
+  .page-break-after {
+    page-break-after: always;
+  }
+
+  .hmrc-sign-out-nav,
+  .hmrc-language-select,
+  .govuk-footer,
+  .govuk-button-group,
+  .hmrc-report-technical-issue,
+  .print-hidden {
+    display: none;
+  }
+
+  .govuk-grid-column-two-thirds {
+    width: 100%;
+  }
+
+  .govuk-summary-list__key {
+    width: 100%;
+    display: block;
+    padding-bottom: 0;
+  }
+  .govuk-summary-list__value {
+    display: block;
+    padding-top: 0;
+  }
+
+  #poe-page {
+    .govuk-main-wrapper--l {
+      padding-top: 25px;
+    }
+  }
+}

@@ -369,6 +369,9 @@
   "DOWNLOAD_THIS_PAGE": "Lawrlwytho’r dudalen hon",
   "YOU_WILL_NEED_TO_START_AGAIN": "Bydd rhaid i chi ddechrau o’r dechrau pan mae’r gwasanaeth ar gael.",
   "ON_OR_BEFORE": "Ar neu cyn",
+  "POE_CHB_PAID_AT": "Caiff Budd-dal Plant ei dalu fel a ganlyn:",
+  "POE_FOR_ELDEST_CHILD": "£25.60 ar gyfer y plentyn hynaf neu’r unig blentyn",
+  "POE_FOR_ADDITIONAL_CHILD": "£16.95 ar gyfer pob plentyn ychwanegol",
 
   "CHB_HOMEPAGE_HEADING": "Budd-dal Plant",
   "CHB_HOMEPAGE_MAKING_CLAIM_SUBHEADING": "Hawlio",
@@ -384,7 +387,7 @@
   "CHB_HOMEPAGE_HICBC_CHARGE_LINK": "Tâl Treth Budd-dal Plant Incwm Uchel",
 
   "CHILD_BENEFIT": "Budd-dal Plant",
-  
+
   "TRY_AGAIN_LATER": "Rhowch gynnig arall arni yn nes ymlaen.",
 
   "NO_AWARD_HEADING": "Nid ydych yn hawlio Budd-dal Plant",

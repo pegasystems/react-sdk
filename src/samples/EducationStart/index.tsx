@@ -76,6 +76,7 @@ const EducationStartCase: FunctionComponent<any> = () => {
     showPega,
     setShowPega,
     showResolutionPage,
+    setShutterServicePage,
     caseId,
     shutterServicePage,
     serviceNotAvailable,
@@ -481,6 +482,7 @@ const EducationStartCase: FunctionComponent<any> = () => {
                   setShowLandingPage={setShowLandingPage}
                   showPortalPageDefault={showPortalPageDefault}
                   setShowPortalPageDefault={setShowPortalPageDefault}
+                  setShutterServicePage={setShutterServicePage}
                 />
               )}
               {currentDisplay === 'resolutionpage' && (

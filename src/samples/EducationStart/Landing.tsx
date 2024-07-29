@@ -14,7 +14,8 @@ export default function Landing({
   showPortalBanner,
   setShowLandingPage,
   showPortalPageDefault,
-  setShowPortalPageDefault
+  setShowPortalPageDefault,
+  setShutterServicePage
 }) {
   const [inProgressClaims, setInProgressClaims] = useState([]);
   const [submittedClaims, setSubmittedClaims] = useState([]);
@@ -135,6 +136,7 @@ export default function Landing({
             showPortalBanner={showPortalBanner}
             setShowLandingPage={setShowLandingPage}
             setShowPortalPageDefault={setShowPortalPageDefault}
+            setShutterServicePage={setShutterServicePage}
           />
         ) : (
           <StartClaim

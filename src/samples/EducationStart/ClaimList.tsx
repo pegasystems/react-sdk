@@ -16,7 +16,7 @@ export default function ClaimsList(props) {
     fieldType,
     rowClickAction,
     caseId,
-    checkShuttered,
+    setShutterServicePage,
     setShowLandingPage
   } = props;
   const { t } = useTranslation();
@@ -54,7 +54,7 @@ export default function ClaimsList(props) {
     } else if (rowClickAction === 'OpenCase') {
       const status = await getServiceShutteredStatus();
       if (status) {
-        checkShuttered(status);
+        setShutterServicePage(status);
       } else {
         PCore.getMashupApi()
           .openCase(pzInsKey, target, { pageName: 'SummaryClaim' })
@@ -168,5 +168,6 @@ ClaimsList.propTypes = {
   fieldType: PropTypes.string,
   rowClickAction: PropTypes.oneOf(['OpenCase', 'OpenAssignment']),
   caseId: PropTypes.string,
-  setShowLandingPage: PropTypes.func
+  setShowLandingPage: PropTypes.func,
+  setShutterServicePage: PropTypes.func
 };

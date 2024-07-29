@@ -5,13 +5,15 @@ import MainWrapper from '../../components/BaseComponents/MainWrapper';
 import AppContextEducation from './reuseables/AppContextEducation'; // TODO: Once this code exposed to common folder, we will remove this import from EducationStart
 import WarningText from './reuseables/WarningText/WarningText';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
+import { scrollToTop } from '../../components/helpers/utils';
 
 export default function StartClaim({ handleStartCliam, setShowStartClaim, showStartClaim }) {
   const { t } = useTranslation();
   const { serviceParam } = useContext(AppContextEducation);
 
   useEffect(() => {
-    setPageTitle()
+    setPageTitle();
+    scrollToTop();
   })
 
   return (

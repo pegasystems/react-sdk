@@ -4,7 +4,7 @@
 @media print {
   @page {
     size: A4;
-    margin: 50px;
+    margin: 80px 50px 50px;
   }
 
   .print-only {
@@ -41,6 +41,10 @@
   #poe-page {
     .govuk-main-wrapper--l {
       padding-top: 25px;
+    }
+
+    .govuk-summary-list {
+      margin-bottom: 50px;
     }
   }
 }

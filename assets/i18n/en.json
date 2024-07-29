@@ -365,8 +365,8 @@
   "YOU_WILL_NEED_TO_START_AGAIN": "You will have to start again when the service is available.",
   "ON_OR_BEFORE": "On or before",
   "POE_CHB_PAID_AT": "Child Benefit is paid at:",
-  "POE_FOR_ELDEST_CHILD": "£25.60 for the eldest or only child",
-  "POE_FOR_ADDITIONAL_CHILD": "£16.95 for each additional child",
+  "POE_FOR_ELDEST_CHILD": " for the eldest or only child",
+  "POE_FOR_ADDITIONAL_CHILD": " for each additional child",
 
   "CHB_HOMEPAGE_HEADING": "Child Benefit",
   "CHB_HOMEPAGE_MAKING_CLAIM_SUBHEADING": "Make a claim",

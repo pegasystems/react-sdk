@@ -10,7 +10,6 @@ import NoAwardPage from './NoAward';
 import { registerServiceName } from '../../components/helpers/setPageTitleHelpers';
 import { triggerLogout } from '../../components/helpers/utils';
 import MainWrapper from '../../components/BaseComponents/MainWrapper';
-import Button from '../../components/BaseComponents/Button/Button';
 import { formatCurrency } from '../../components/helpers/utils';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
 import { initTimeout } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
@@ -23,6 +22,8 @@ export default function ProofOfEntitlement() {
   const [showNoAward, setShowNoAward] = useState(false);
   const [showProblemWithService, setShowProblemWithService] = useState(false);
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
+  const [b64PDFstring, setB64PDFstring] = useState(false);
+
   const history = useHistory();
   const { t } = useTranslation();
 
@@ -63,6 +64,16 @@ export default function ProofOfEntitlement() {
             setShowProblemWithService(true);
           });
       });
+
+      PCore.getDataPageUtils()
+        .getPageDataAsync('D_GetChBEntitlementContent', 'root', {
+          NINO: PCore.getEnvironmentInfo().getOperatorIdentifier(),
+          DocumentID: 'POE0001',
+          Locale: PCore.getEnvironmentInfo().locale.replaceAll('-', '_')
+        })
+        .then(result => {
+          setB64PDFstring(result.pyNote);
+        });
     });
   }, []);
 
@@ -95,22 +106,32 @@ export default function ProofOfEntitlement() {
                   {entitlementData.Claimant?.pyFullName}
                 </p>
                 <h1 className='govuk-heading-l'>{t('PROOF_ENTITLEMENT_HEADING')}</h1>
-
-                <Button
-                  variant='link'
-                  attributes={{ className: 'print-hidden' }}
-                  onClick={window.print}
-                >
-                  {t('PRINT_THIS_PAGE')}
-                </Button>
+                <p className='print-hidden govuk-body'>
+                  <a href='#' className='govuk-link' onClick={window.print}>
+                    {t('PRINT_THIS_PAGE')}
+                  </a>
+                  <br />
+                  <a
+                    className='govuk-link'
+                    download='ProofOfEntitlement.pdf'
+                    href={`data:application/pdf;base64,${b64PDFstring}`}
+                  >
+                    {t('DOWNLOAD_THIS_PAGE')}
+                  </a>
+                </p>
                 <p className='govuk-body'>
                   {t('PROOF_ENTITLEMENT_CONFIRMATION')} {entitlementData.Claimant?.pyFullName}{' '}
                   {t('ON')} {dayjs().format('D MMMM YYYY')}.
                 </p>
-                <p className='print-only govuk-body'>{t('POE_CHB_PAID_AT')}</p>
-                <ul className='print-only govuk-list govuk-list--bullet'>
-                  <li>{t('POE_FOR_ELDEST_CHILD')}</li>
-                  <li>{t('POE_FOR_ADDITIONAL_CHILD')}</li>
+                <p className='govuk-body'>{t('POE_CHB_PAID_AT')}</p>
+                <ul className='govuk-list govuk-list--bullet'>
+                  <li>
+                    {formatCurrency(entitlementData.HigherRateValue)} {t('POE_FOR_ELDEST_CHILD')}
+                  </li>
+                  <li>
+                    {formatCurrency(entitlementData.StandardRateValue)}
+                    {t('POE_FOR_ADDITIONAL_CHILD')}
+                  </li>
                 </ul>
                 <h2 className='govuk-heading-m'>{t('PROOF_ENTITLEMENT_DETAILS_H2')}</h2>
                 <p className='govuk-body print-hidden'>
@@ -146,8 +167,10 @@ export default function ProofOfEntitlement() {
                   <ReadOnlyDisplay
                     key='address'
                     label={t('POE_LABEL_ADDRESS')}
-                    value={entitlementData.Claimant?.pyAddress}
-                    name={entitlementData.Claimant?.pyAddress.indexOf(',') ? 'CSV' : ''}
+                    value={entitlementData.Claimant?.CurrentAddress.AddressCSV}
+                    name={
+                      entitlementData.Claimant?.CurrentAddress.AddressCSV.indexOf(',') ? 'CSV' : ''
+                    }
                   />
                   <ReadOnlyDisplay
                     key='amount'

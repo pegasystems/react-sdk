@@ -47,7 +47,7 @@ export default function RadioButtons(props) {
   configProperty = configProperty.startsWith('.') ? configProperty.substring(1) : configProperty;
 
   const metaData = Array.isArray(fieldMetadata)
-    ? fieldMetadata.filter(field => field?.classID === className)[0]
+    ? (fieldMetadata.filter(field => field?.classID === className)[0] || fieldMetadata.filter(field => field?.displayAs === 'pxRadioButtons')[0])
     : fieldMetadata;
   let displayName = metaData?.datasource?.propertyForDisplayText;
   displayName = displayName?.slice(displayName.lastIndexOf('.') + 1);

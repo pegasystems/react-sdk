@@ -5,9 +5,7 @@ import {
   getServiceShutteredStatus,
   scrollToTop,
   shouldRemoveFormTagForReadOnly,
-  removeRedundantString,
-  isEduStartJourney,
-  checkStatus
+  removeRedundantString
 } from '../../../helpers/utils';
 import ErrorSummary from '../../../BaseComponents/ErrorSummary/ErrorSummary';
 import {
@@ -429,10 +427,6 @@ export default function Assignment(props) {
 
             finishPromise
               .then(() => {
-                // TODO -  This is temporary workaround solution till pega provide standard solution ready
-                if (isEduStartJourney() && checkStatus() === 'Pending-ManualInvestigation') {
-                  PCore.getPubSubUtils().publish('CustomAssignmentFinishedForEducation');
-                }
                 scrollToTop();
                 setErrorSummary(false);
               })

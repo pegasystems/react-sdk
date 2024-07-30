@@ -56,10 +56,10 @@ export function establishPCoreSubscriptions({
     setCaseStatus(status);
     setCaseId(id);
     // console.log('SUBEVENT! closeActiveContainerOnEndOfAssignment');
-    PCore.getContainerUtils().closeContainerItem(
-      PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
-      { skipDirtyCheck: true }
-    );
+      PCore.getContainerUtils().closeContainerItem(
+        PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
+        { skipDirtyCheck: true }
+      );
     setShowResolutionPage(true);
   }
   /* *********************************************
@@ -89,19 +89,11 @@ export function establishPCoreSubscriptions({
   }
 
   PCore.getPubSubUtils().subscribe(
-    'assignmentFinished',
-    handleServiceNotAvailable,
-    'handleServiceNotAvailableOnAssignmentFinished'
-  );
-
-  function customAssignmentFinishedEvent() {
-    showResolutionScreen();
-    PCore?.getPubSubUtils().unsubscribe('CustomAssignmentFinishedForEducation');
-  }
-
-  PCore.getPubSubUtils().subscribe(
-    'CustomAssignmentFinishedForEducation',
-    customAssignmentFinishedEvent
+    PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
+    () => {
+      handleServiceNotAvailable();
+    },
+    'assignmentFinished'
   );
 
   /* ********************************
@@ -442,6 +434,11 @@ export const useStartMashup = (
         PCore?.getPubSubUtils().unsubscribe(
           PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
           'cancelAssignment'
+        );
+
+        PCore?.getPubSubUtils().unsubscribe(
+          PCore.getConstants().PUB_SUB_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
+          'assignmentFinished'
         );
     };
     // PM!!

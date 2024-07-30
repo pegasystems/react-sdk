@@ -98,6 +98,25 @@ export default function Assignment(props) {
     setServiceShutteredStatus(serviceShuttered);
   }, [serviceShuttered]);
 
+  // Sets the language for the texts and emails if the user changes the language before opening an existing claim.
+  function initialLanguageCall() {
+    const config = { en: 'SwitchLanguageToEnglish', cy: 'SwitchLanguageToWelsh' };
+
+    const processActionPromise = thePConn.getActionsApi().openProcessAction(config[lang], {
+      caseID: thePConn.getCaseInfo()?.getKey(),
+      type: 'Case'
+    });
+
+    processActionPromise.catch(err => {
+      // eslint-disable-next-line no-console
+      console.log(`Initial language not set: ${err}`);
+    });
+  }
+
+  useEffect(() => {
+    initialLanguageCall();
+  }, []);
+
   useEffect(() => {
     const updateErrorTimeOut = setTimeout(() => {
       setPageTitle(errorMessages.length > 0);
@@ -427,7 +446,7 @@ export default function Assignment(props) {
             finishPromise
               .then(() => {
                 // TODO -  This is temporary workaround solution till pega provide standard solution ready
-                if(isEduStartJourney() && checkStatus() === 'Pending-ManualInvestigation') {
+                if (isEduStartJourney() && checkStatus() === 'Pending-ManualInvestigation') {
                   PCore.getPubSubUtils().publish('CustomAssignmentFinishedForEducation');
                 }
                 scrollToTop();

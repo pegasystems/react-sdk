@@ -220,7 +220,7 @@ export default function DefaultForm(props) {
           value={{
             displayAsSingleQuestion: configAlternateDesignSystem?.hidePageLabel,
             DFName: props.localeReference,
-            OverrideLabelValue: localizedVal(containerName, '', props.localeReference),
+            OverrideLabelValue: localizedVal(containerName,  'Assignment', '@BASECLASS!GENERIC!PYGENERICFIELDS'),
             instructionText:
               instructionExists && !singleQuestionPage
                 ? null

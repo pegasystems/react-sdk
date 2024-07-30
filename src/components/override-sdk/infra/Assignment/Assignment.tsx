@@ -163,28 +163,12 @@ export default function Assignment(props) {
     setSelectedLang(langreference?.language);
   });
 
-  // To update the title when we toggle the language
   useEffect(() => {
     setTimeout(() => {
-      let tryTranslate = localizedVal(containerName, '', 'HMRC-CHB-WORK-CLAIM!CASE!CLAIM');
-      if (tryTranslate === containerName) {
-        tryTranslate = localizedVal(tryTranslate, '', headerLocaleLocation);
-      }
-      if (containerName?.toLowerCase() === 'claim child benefit') {
-        tryTranslate = t('CLAIM_CHILD_BENEFIT');
-      }
-      // Set our translated header!
-      setHeader(tryTranslate);
-    }, 300);
-  }, [selectedLang]);
+      setHeader(localizedVal(containerName, 'Assignment', '@BASECLASS!GENERIC!PYGENERICFIELDS'));
+    }, 60);
 
-  useEffect(() => {
-    const headerFetch = setTimeout(() => {
-      setHeader(localizedVal(containerName, '', headerLocaleLocation));
-    }, 50);
-
-    return () => clearTimeout(headerFetch);
-  }, [headerLocaleLocation, containerName]);
+  }, [headerLocaleLocation, containerName, selectedLang]);
 
   useEffect(() => {
     if (children && children.length > 0) {

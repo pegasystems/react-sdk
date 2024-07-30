@@ -20,7 +20,9 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
     propertyLabel,
     showLabel
   } = props;
-
+  
+  const LocaleRefLocation = PCore.getStoreValue('localeReference', '', 'app');
+  const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const label = labelProp || propertyLabel;
   const propsToUse = { label, showLabel, ...getPConnect().getInheritedProps() };
   if (propsToUse.showLabel === false) {
@@ -77,7 +79,7 @@ export default function SimpleTableManual(props: PropsWithChildren<SimpleTableMa
     <table className='govuk-table'>
       {propsToUse?.label && (
         <caption className='govuk-table__caption govuk-table__caption--m'>
-          {propsToUse.label}
+          {localizedVal(propsToUse.label, '', LocaleRefLocation)}
         </caption>
       )}
       <thead className='govuk-table__head'>{renderTh(headingList)}</thead>

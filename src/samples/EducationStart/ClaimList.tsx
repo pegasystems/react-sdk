@@ -87,7 +87,7 @@ export default function ClaimsList(props) {
                   {/* If this is the first entry add the status */}
                   {index === 0 ? (
                     <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>
-                      {claimItem.status.text}
+                      {t(claimItem.status.text)}
                     </strong>
                   ) : (
                     <span className='govuk-visually-hidden'>No action</span>
@@ -117,7 +117,7 @@ export default function ClaimsList(props) {
               <dd className='govuk-summary-list__actions govuk-!-width-one-third'>
                 {!claimItem.childrenAdded && (
                   <strong className={`govuk-tag govuk-tag--${claimItem.status.tagColour}`}>
-                    {claimItem.status.text}
+                    {t(claimItem.status.text)}
                   </strong>
                 )}
               </dd>
@@ -132,11 +132,11 @@ export default function ClaimsList(props) {
             _rowClick(e, claimItem.rowDetails);
           }}
         >
-          {claimItem.actionButton}
+          {t(claimItem.actionButton)}
         </Button>
 
         {!caseId?.includes(claimItem.claimRef) &&
-          (claimItem?.status?.text === 'In Progress' || claimItem?.status?.text === 'Ar Waith') && (
+          (claimItem?.status?.text === 'IN_PROGRESS_1') && (
             <p className='govuk-body'>
               {t('PORTAL_WARNING_TEXT')} {getCurrentDate(claimItem?.dateUpdated)}{' '}
               {t('EDUCATION_PORTAL_WARNING_TEXT2')}

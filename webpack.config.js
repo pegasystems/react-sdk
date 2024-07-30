@@ -42,8 +42,16 @@ module.exports = (env, argv) => {
           to: './auth.html'
         },
         {
+          from: './node_modules/@pega/auth/lib/oauth-client/authDone.html',
+          to: './education/auth.html'
+        },
+        {
           from: './node_modules/@pega/auth/lib/oauth-client/authDone.js',
           to: './'
+        },
+        {
+          from: './node_modules/@pega/auth/lib/oauth-client/authDone.js',
+          to: './education'
         },
         {
           from: './node_modules/govuk-frontend/dist/govuk/assets/images',

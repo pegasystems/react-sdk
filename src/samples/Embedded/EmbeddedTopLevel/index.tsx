@@ -430,8 +430,8 @@ export default function EmbeddedTopLevel() {
     getSdkConfig().then(sdkConfig => {
       let mashupCaseType = sdkConfig.serverConfig.appMashupCaseType;
       if (!mashupCaseType) {
-        const caseTypes = PCore.getEnvironmentInfo().environmentInfoObject.pyCaseTypeList;
-        mashupCaseType = caseTypes[0].pyWorkTypeImplementationClassName;
+        const caseTypes = PCore.getEnvironmentInfo().environmentInfoObject?.pyCaseTypeList;
+        mashupCaseType = caseTypes && caseTypes[0].pyWorkTypeImplementationClassName;
       }
 
       const options: any = {

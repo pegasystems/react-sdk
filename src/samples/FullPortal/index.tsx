@@ -128,7 +128,7 @@ export default function FullPortal() {
     //  top level Pega root element (likely a RootContainer)
 
     const { appPortal: thePortal, excludePortals } = SdkConfigAccess.getSdkConfigServer();
-    const defaultPortal = PCore?.getEnvironmentInfo?.().getDefaultPortal?.();
+    const defaultPortal = PCore?.getEnvironmentInfo?.().getDefaultPortal?.() ?? '';
     const queryPortal = sessionStorage.getItem('rsdk_portalName');
 
     // Note: myLoadPortal and myLoadDefaultPortal are set when bootstrapWithAuthHeader is invoked

@@ -10,6 +10,7 @@ import NoAwardPage from './NoAward';
 import { registerServiceName } from '../../components/helpers/setPageTitleHelpers';
 import { triggerLogout } from '../../components/helpers/utils';
 import MainWrapper from '../../components/BaseComponents/MainWrapper';
+import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 import { formatCurrency } from '../../components/helpers/utils';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
 import { initTimeout } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
@@ -24,8 +25,9 @@ export default function ProofOfEntitlement() {
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
   const [b64PDFstring, setB64PDFstring] = useState(false);
 
+  const { hmrcURL } = useHMRCExternalLinks(); 
   const history = useHistory();
-  const { t } = useTranslation();
+  const {t} = useTranslation();
 
   registerServiceName(t('CHB_HOMEPAGE_HEADING'));
 
@@ -54,7 +56,7 @@ export default function ProofOfEntitlement() {
             // If no claimant data in response, assume no award (or api error)
             if (result.IsAPIError) {
               setShowProblemWithService(true);
-            } else if (result.HasAward === false || !result.Claimant) {
+            } else if (!result.HasAward) {
               setShowNoAward(true);
             } else {
               setEntitlementData(result);
@@ -81,7 +83,8 @@ export default function ProofOfEntitlement() {
     <>
       <AppHeader
         appname={t('CHB_HOMEPAGE_HEADING')}
-        hasLanguageToggle
+        hasLanguageToggle        
+        betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=463&referrerUrl=${window.location}`}
         handleSignout={sdkIsLoggedIn() ? triggerLogout : null}
       />
       <TimeoutPopup
@@ -167,10 +170,11 @@ export default function ProofOfEntitlement() {
                   <ReadOnlyDisplay
                     key='address'
                     label={t('POE_LABEL_ADDRESS')}
-                    value={entitlementData.Claimant?.CurrentAddress.AddressCSV}
+                    value={entitlementData.Claimant?.CurrentAddress?.AddressCSV}
                     name={
-                      entitlementData.Claimant?.CurrentAddress.AddressCSV.indexOf(',') ? 'CSV' : ''
-                    }
+                      entitlementData.Claimant?.CurrentAddress?.AddressCSV.indexOf(',') ? 'CSV' : ''
+                    }                           
+   
                   />
                   <ReadOnlyDisplay
                     key='amount'

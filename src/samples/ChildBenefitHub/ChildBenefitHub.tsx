@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { loginIfNecessary, sdkIsLoggedIn } from '@pega/auth/lib/sdk-auth-manager';
-import AppHeader from '../../components/AppComponents/AppHeader';
+import AppHeader from '../../samples/HighIncomeCase/reuseables/AppHeader';
 import AppFooter from '../../components/AppComponents/AppFooter';
 import { useTranslation } from 'react-i18next';
 import { registerServiceName } from '../../components/helpers/setPageTitleHelpers';
 import useHMRCExternalLinks from '../../components/helpers/hooks/HMRCExternalLinks';
 import { triggerLogout } from '../../components/helpers/utils';
+
+import MainWrapper from '../../components/BaseComponents/MainWrapper';
 // import { Link } from 'react-router-dom';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
 import { initTimeout } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
+
 
 export default function ChildBenefitHub() {
   const history = useHistory();
@@ -60,9 +63,7 @@ export default function ChildBenefitHub() {
         staySignedInButtonText='Stay signed in'
       />
       <div className='govuk-width-container'>
-        <main className='govuk-main-wrapper govuk-main-wrapper--l' id='main-content' role='main'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds-from-desktop'>
+        <MainWrapper>
               <h1 className='govuk-heading-xl'>{t('CHB_HOMEPAGE_HEADING')}</h1>
               <h2 className='govuk-heading-m'>{t('CHB_HOMEPAGE_MAKING_CLAIM_SUBHEADING')}</h2>
               <p>
@@ -126,14 +127,7 @@ export default function ChildBenefitHub() {
                 </a>
               </p>
               <p className='govuk-body govuk-!-margin-bottom-9'></p>
-            </div>
-          </div>
-          <a
-            lang='en'
-            className='govuk-link hmrc-report-technical-issue '
-            href='https://www.tax.service.gov.uk/contact/report-technical-problem?newTab=true&service=PTA&referrerUrl=https%3A%2F%2Fwww.tax.service.gov.uk%2Fpersonal-account%2Fchild-benefit%2Fhome'
-          >{`${t('PAGE_NOT_WORKING_PROPERLY')} ${t('OPENS_IN_NEW_TAB')}`}</a>
-        </main>
+            </MainWrapper>       
       </div>
 
       <AppFooter />

@@ -55,6 +55,7 @@ export default function Dropdown(props) {
         const selectedOption = optionsList.find(option => option.key === value);
         if (selectedOption && selectedOption.value) {
           setDisplayValue(selectedOption.value);
+          sessionStorage.setItem('dropdownEmptyValue', selectedOption.value);
         }
         setOptions(optionsList);
       } catch (err) {
@@ -75,20 +76,10 @@ export default function Dropdown(props) {
   const localeClass = localeContext === 'datapage' ? '@baseclass' : className;
   const localeName = localeContext === 'datapage' ? metaData?.datasource?.name : refName;
   const localePath = localeContext === 'datapage' ? displayName : localeName;
-  useEffect(() => {
-    const dropdownvalue = thePConn.getLocalizedValue(
-      displayValue,
-      localePath,
-      thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
-    );
-    if (dropdownvalue) {
-      window.sessionStorage.setItem('hasAutocompleteLoaded', 'true');
-      PCore.getPubSubUtils().publish('rerenderCYA', {});
-    }
-  }, [displayValue]);
 
   const handleChange = evt => {
     const selectedValue = evt.target.value === placeholder ? '' : evt.target.value;
+
     handleEvent(actionsApi, 'changeNblur', propName, selectedValue);
   };
   const inprogressStatus = checkStatus();
@@ -118,10 +109,18 @@ export default function Dropdown(props) {
         testId=''
         helperText=''
         hideLabel={false}
+        emptyValue={sessionStorage.getItem('dropdownEmptyValue')}
       />
     );
   }
+
   if (readOnly) {
+    const optionsList = [...Utils.getOptionList(props, getPConnect().getDataObject())];
+    const selectedOption = optionsList.find(option => option.key === value);
+    let dropdownValue = '';
+    if (selectedOption && selectedOption.value) {
+      dropdownValue = selectedOption.value;
+    }
     return (
       <ReadOnlyDisplay
         label={label}
@@ -130,6 +129,7 @@ export default function Dropdown(props) {
           localePath,
           thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
         )}
+        emptyValue={dropdownValue}
       />
     );
   }

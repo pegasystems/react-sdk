@@ -206,6 +206,8 @@ export default function AutoComplete(props: AutoCompleteProps) {
 
   function handleChange(event) {
     const optionValue = event.target.value;
+    sessionStorage.setItem(`autocompleteEmptyValue${name}`, optionValue);
+
     const selectedOptionKey = options.filter(item => {
       return item.value === optionValue;
     });
@@ -227,12 +229,6 @@ export default function AutoComplete(props: AutoCompleteProps) {
     return item?.key === value;
   });
 
-  useEffect(() => {
-    if (selectedOption[0]?.value) {
-      window.sessionStorage.setItem('hasAutocompleteLoaded', 'true');
-      PCore.getPubSubUtils().publish('rerenderCYA', {});
-    }
-  }, [selectedOption[0]?.value]);
   useEffect(() => {
     const element = document.getElementById(formattedPropertyName) as HTMLInputElement;
     const elementUl = document.getElementById(
@@ -282,6 +278,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
         testId=''
         helperText=''
         hideLabel={false}
+        emptyValue={sessionStorage.getItem(`autocompleteEmptyValue${name}`)}
       />
     );
   }

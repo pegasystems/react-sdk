@@ -102,6 +102,7 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
         }
       } else if (elem.tagName === 'DIV') {
         const isCsV = (elem.children[1] as HTMLElement).dataset.isCsv;
+        const emptyValue = (elem.children[1] as HTMLElement).dataset.emptyValue;
         if (isCsV === 'true') {
           const csvItems = (elem as HTMLElement).children[1].textContent.split(',');
           if (csvItems.length > 1) {
@@ -112,7 +113,10 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
               (elem as HTMLElement).children[1].appendChild(document.createElement('br'));
             });
           }
+        } else if (emptyValue && (elem as HTMLElement).children[1].innerHTML === '') {
+          (elem as HTMLElement).children[1].innerHTML = emptyValue;
         }
+
         if (!openDL) {
           openDL = true;
           currentDL = document.createElement('dl');
@@ -146,78 +150,34 @@ export default function HmrcOdxGdsCheckAnswersPage(props: HmrcOdxGdsCheckAnswers
       dfChildrenContainerRef.current.appendChild(fragment);
     }
   }
-  let hasAutocompleteLoaded = window.sessionStorage.getItem('hasAutocompleteLoaded');
 
-  const checkChildren = () => {
-    const container = dfChildrenContainerRef.current;
-    const summaryListElement = container?.querySelector('.govuk-summary-list');
-
-    if (summaryListElement) {
-      let htmlContent = '';
-      Array.from(container.children).forEach(child => {
-        if (child instanceof HTMLElement) {
-          if (child.tagName === 'H2' || child.tagName === 'H3') {
-            htmlContent += child.outerHTML;
-          } else {
-            htmlContent += child.innerHTML;
-          }
-        }
-      });
-
-      updateHTML(htmlContent);
-    } else {
-      // Retry until a child with the class "govuk-summary-list" is rendered
-      requestAnimationFrame(checkChildren);
-    }
-  };
-
-  function CYARendering() {
-    if (dfChildrenContainerRef.current) {
-      // moving this code outside in a function and calling it in useEffect
-
-      // const checkChildren = () => {
-      //   const container = dfChildrenContainerRef.current;
-      //   const summaryListElement = container?.querySelector('.govuk-summary-list');
-
-      //   if (summaryListElement) {
-      //     let htmlContent = '';
-      //     Array.from(container.children).forEach(child => {
-      //       if (child instanceof HTMLElement) {
-      //         htmlContent += child.innerHTML;
-      //       }
-      //     });
-
-      //     updateHTML(htmlContent);
-      //   } else {
-      //     // Retry until a child with the class "govuk-summary-list" is rendered
-      //     requestAnimationFrame(checkChildren);
-      //   }
-      // };
-      hasAutocompleteLoaded = window.sessionStorage.getItem('hasAutocompleteLoaded');
-      if (hasAutocompleteLoaded === 'true') {
-        window.sessionStorage.setItem('hasAutocompleteLoaded', 'false');
-        PCore.getPubSubUtils().subscribe(
-          'rerenderCYA',
-          () => {
-            window.sessionStorage.setItem('hasAutocompleteLoaded', 'false');
-            checkChildren();
-            PCore?.getPubSubUtils().unsubscribe('rerenderCYA', '');
-          },
-          'rerenderCYA'
-        );
-      } else {
-        setTimeout(() => {
-          checkChildren();
-        }, 2000);
-      }
-    }
-  }
   useEffect(() => {
-    CYARendering();
+    if (dfChildrenContainerRef.current) {
+      const checkChildren = () => {
+        const container = dfChildrenContainerRef.current;
+        const summaryListElement = container?.querySelector('.govuk-summary-list');
 
-    setTimeout(() => {
+        if (summaryListElement) {
+          let htmlContent = '';
+          Array.from(container.children).forEach(child => {
+            if (child instanceof HTMLElement) {
+              if (child.tagName === 'H2' || child.tagName === 'H3') {
+                htmlContent += child.outerHTML;
+              } else {
+                htmlContent += child.innerHTML;
+              }
+            }
+          });
+
+          updateHTML(htmlContent);
+        } else {
+          // Retry until a child with the class "govuk-summary-list" is rendered
+          requestAnimationFrame(checkChildren);
+        }
+      };
+
       checkChildren();
-    }, 2000);
+    }
   }, [dfChildren]);
 
   return (

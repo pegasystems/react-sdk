@@ -111,7 +111,7 @@ export default function ClaimsList(props) {
               {fieldType}
             </dt>
             <dd className='govuk-summary-list__value govuk-!-width-one-third govuk-!-padding-bottom-2'>
-              {claimItem.dateCreated}
+              {dayjs(claimItem.dateCreated).format('DD MMM YYYY')}
             </dd>
             {!child?.firstName && !child?.lastName && (
               <dd className='govuk-summary-list__actions govuk-!-width-one-third'>

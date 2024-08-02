@@ -1,0 +1,69 @@
+{
+  "name": "HMRC_ODX_sectionBased",
+  "label": "Section based",
+  "description": "Template for displaying large amounts of data in defined sections",
+  "organization": "HMRC",
+  "version": "0.0.1",
+  "library": "ODX",
+  "allowedApplications": [],
+  "componentKey": "HMRC_ODX_sectionBased",
+  "type": "Template",
+  "subtype": "FORM",
+  "icon": "DefaultForm.svg",
+  "properties": [
+    {
+      "format": "SELECT",
+      "name": "NumCols",
+      "label": "Number of columns",
+      "defaultValue": "1",
+      "source": [
+        { "key": "1", "value": "One" },
+        { "key": "2", "value": "Two" },
+        { "key": "3", "value": "Three" }
+      ]
+    },
+    {
+      "format": "SELECT",
+      "name": "templateOverrideMode",
+      "label": "Template for embedded views",
+      "defaultValue": "USE_TEMPLATE",
+      "source": [
+        { "key": "USE_TEMPLATE", "value": "Use template" },
+        { "key": "IGNORE_TEMPLATE", "value": "Ignore template" }
+      ]
+    },
+    {
+      "format": "INSTRUCTIONS"
+    },
+    {
+      "name": "A",
+      "label": "Region A",
+      "format": "CONTENTPICKER"
+    },
+    {
+      "name": "B",
+      "label": "Region B",
+      "format": "CONTENTPICKER"
+    },
+    {
+      "name": "C",
+      "label": "Region C",
+      "format": "CONTENTPICKER"
+    },
+    {
+      "name": "D",
+      "label": "Region D",
+      "format": "CONTENTPICKER"
+    },
+    {
+      "name": "E",
+      "label": "Region E",
+      "format": "CONTENTPICKER"
+    },
+    {
+      "name": "F",
+      "label": "Region F",
+      "format": "CONTENTPICKER"
+    }
+  ]
+}

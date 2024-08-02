@@ -16,15 +16,15 @@ import {
   loginIfNecessary,
   sdkSetAuthHeader
 } from '@pega/auth/lib/sdk-auth-manager';
-import { getServiceShutteredStatus } from '../../../components/helpers/utils';
+import { checkStatus, getServiceShutteredStatus } from '../../../components/helpers/utils';
 
 declare const myLoadMashup: any;
 declare const PCore: any;
 
- /*
-  * This fucntion is to invoke shuttering service
-  */
- async function checkShutterService({setShutterServicePage}) {
+/*
+ * This fucntion is to invoke shuttering service
+ */
+async function checkShutterService({ setShutterServicePage }) {
   try {
     const status = await getServiceShutteredStatus();
     setShutterServicePage(status);
@@ -56,10 +56,10 @@ export function establishPCoreSubscriptions({
     setCaseStatus(status);
     setCaseId(id);
     // console.log('SUBEVENT! closeActiveContainerOnEndOfAssignment');
-      PCore.getContainerUtils().closeContainerItem(
-        PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
-        { skipDirtyCheck: true }
-      );
+    PCore.getContainerUtils().closeContainerItem(
+      PCore.getContainerUtils().getActiveContainerItemContext('app/primary'),
+      { skipDirtyCheck: true }
+    );
     setShowResolutionPage(true);
   }
   /* *********************************************
@@ -88,13 +88,20 @@ export function establishPCoreSubscriptions({
     }
   }
 
+  async function customAssignmentFinished() {
+    const sdkConfig = await getSdkConfig();
+    if (sdkConfig.showResolutionStatuses?.includes(checkStatus())) {
+      showResolutionScreen();
+    }
+  }
+
   PCore.getPubSubUtils().subscribe(
-    PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
-    () => {
-      handleServiceNotAvailable();
-    },
-    'assignmentFinished'
+    'assignmentFinished',
+    handleServiceNotAvailable,
+    'handleServiceNotAvailableOnAssignmentFinished'
   );
+
+  PCore.getPubSubUtils().subscribe('CustomAssignmentFinished', customAssignmentFinished);
 
   /* ********************************
    * On Cancel event, ?
@@ -260,14 +267,30 @@ function initialRender(inRenderObj, setAssignmentPConnect, _AppContextValues: Ap
  * kick off the application's portal that we're trying to serve up
  */
 export function startMashup(
-  { setShowPega, setShowResolutionPage, setCaseId, setCaseStatus, setAssignmentPConnect, setShutterServicePage, setServiceNotAvailable, setAssignmentCancelled },
+  {
+    setShowPega,
+    setShowResolutionPage,
+    setCaseId,
+    setCaseStatus,
+    setAssignmentPConnect,
+    setShutterServicePage,
+    setServiceNotAvailable,
+    setAssignmentCancelled
+  },
   _AppContextValues: AppContextValues
 ) {
   // NOTE: When loadMashup is complete, this will be called.
   PCore.onPCoreReady(renderObj => {
     // Check that we're seeing the PCore version we expect
     compareSdkPCoreVersions();
-    establishPCoreSubscriptions({ setShowPega, setShowResolutionPage, setCaseId, setCaseStatus, setServiceNotAvailable, setAssignmentCancelled });
+    establishPCoreSubscriptions({
+      setShowPega,
+      setShowResolutionPage,
+      setCaseId,
+      setCaseStatus,
+      setServiceNotAvailable,
+      setAssignmentCancelled
+    });
     // PM!! setShowAppName(true);
 
     // Fetches timeout length config
@@ -358,7 +381,7 @@ export function startMashup(
         // eslint-disable-next-line no-console
         console.error(err);
       }); */
-  checkShutterService({setShutterServicePage});
+  checkShutterService({ setShutterServicePage });
 
   // load the Mashup and handle the onPCoreEntry response that establishes the
   //  top level Pega root element (likely a RootContainer)
@@ -373,7 +396,7 @@ export const useStartMashup = (
 ) => {
   const [showPega, setShowPega] = useState(false);
   const [showResolutionPage, setShowResolutionPage] = useState(false);
-  const [shutterServicePage, setShutterServicePage ] = useState(false);
+  const [shutterServicePage, setShutterServicePage] = useState(false);
   const [serviceNotAvailable, setServiceNotAvailable] = useState(false);
   const [assignmentCancelled, setAssignmentCancelled] = useState(false);
   const [caseId, setCaseId] = useState('');
@@ -413,9 +436,18 @@ export const useStartMashup = (
 
     document.addEventListener('SdkConstellationReady', () => {
       // start the portal
-      if(!assignmentPConnect) {
+      if (!assignmentPConnect) {
         startMashup(
-          { setShowPega, setShowResolutionPage, setCaseId, setCaseStatus, setAssignmentPConnect, setShutterServicePage, setServiceNotAvailable, setAssignmentCancelled },
+          {
+            setShowPega,
+            setShowResolutionPage,
+            setCaseId,
+            setCaseStatus,
+            setAssignmentPConnect,
+            setShutterServicePage,
+            setServiceNotAvailable,
+            setAssignmentCancelled
+          },
           _AppContextValues
         );
       }
@@ -435,11 +467,7 @@ export const useStartMashup = (
           PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL,
           'cancelAssignment'
         );
-
-        PCore?.getPubSubUtils().unsubscribe(
-          PCore.getConstants().PUB_SUB_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
-          'assignmentFinished'
-        );
+      PCore?.getPubSubUtils().unsubscribe('CustomAssignmentFinished');
     };
     // PM!!
     /*

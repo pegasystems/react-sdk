@@ -165,7 +165,6 @@ export default function Assignment(props) {
     setTimeout(() => {
       setHeader(localizedVal(containerName, 'Assignment', '@BASECLASS!GENERIC!PYGENERICFIELDS'));
     }, 60);
-
   }, [headerLocaleLocation, containerName, selectedLang]);
 
   useEffect(() => {
@@ -429,6 +428,7 @@ export default function Assignment(props) {
               .then(() => {
                 scrollToTop();
                 setErrorSummary(false);
+                PCore.getPubSubUtils().publish('CustomAssignmentFinished');
               })
               .catch(() => {
                 scrollToTop();

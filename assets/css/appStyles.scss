@@ -56,10 +56,19 @@ div.MuiGrid-root.MuiGrid-item .govuk-summary-list:last-of-type ~ br {
   display: none;
 }
 
+.loader-container {
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 9999;
+  padding: 50px;
+
+  h1 {
+    text-align: center;
+  }
+}
+
 .loading-spinner {
-  display: inline-block;
-  margin-left: auto;
-  margin-right: auto;
+  display: block;
+  margin: 0 auto;
   border: 6px solid #dee0e2;
   border-radius: 50%;
   border-top-color: #1d70b8;

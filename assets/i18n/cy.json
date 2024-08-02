@@ -399,5 +399,6 @@
   "NO_AWARD_SOMEONE_ELSE_MADE_CLAIM_LISTITEM": "cafodd yr hawliad ei wneud gan rywun arall - er enghraifft, mae’n bosibl ei fod yn enw eich partner",
   "NO_AWARD_NO_LONGER_RECEIVING_BENEFIT": "nid ydych yn cael Budd-dal Plant mwyach",
   "NO_AWARD_YOU_CAN": "Gallwch",
-  "NO_AWARD_FIND_OUT_MORE_LINKTEXT": "ddysgu rhagor am Fudd-dal Plant"
+  "NO_AWARD_FIND_OUT_MORE_LINKTEXT": "ddysgu rhagor am Fudd-dal Plant",
+  "LOADING": "Llwytho"
 }

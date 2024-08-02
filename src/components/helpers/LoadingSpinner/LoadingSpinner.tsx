@@ -18,8 +18,8 @@ const LoadingSpinner = ({
   const TopBorderColor = topBorderColor || '#1d70b8';
 
   return (
-    <>
-      <TopHeaderTag className='govuk-heading-s'>{topText}</TopHeaderTag>
+    <div className='loader-container govuk-width-container'>
+      {topText && <TopHeaderTag className='govuk-heading-s'>{topText}</TopHeaderTag>}
       <div
         className='loading-spinner'
         role='status'
@@ -33,8 +33,8 @@ const LoadingSpinner = ({
       >
         <div className='spinner'></div>
       </div>
-      <BottomTextTag className='govuk-heading-s'>{bottomText}</BottomTextTag>
-    </>
+      {bottomText && <BottomTextTag className='govuk-heading-s'>{bottomText}</BottomTextTag>}
+    </div>
   );
 };
 

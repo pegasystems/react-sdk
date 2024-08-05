@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import StartClaim from './StartClaim';
 import PortalPage from './PortalPage';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
-import { GBdate } from '../../components/helpers/utils';
 
 export default function Landing({
   handleStartCliam,
@@ -69,7 +68,7 @@ export default function Landing({
             const newChild = {
               firstName: child.name,
               lastName: ' ',
-              dob: child.dob ? GBdate(child.dob) : ''
+              dob: child.dob
             };
             claimItem.children.push(newChild);
           });
@@ -78,7 +77,7 @@ export default function Landing({
             firstName: item.ClaimExtension.Child.pyFirstName,
             lastName: item.ClaimExtension.Child.pyLastName,
             dob: item.ClaimExtension.Child.DateOfBirth
-              ? GBdate(item.ClaimExtension.Child.DateOfBirth)
+              ? (item.ClaimExtension.Child.DateOfBirth)
               : ''
           });
         }

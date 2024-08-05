@@ -179,6 +179,11 @@ const EducationStartCase: FunctionComponent<any> = () => {
     setShowPortalBanner(showBanner);
     setAssignmentCancelled(false);
     setStartClaimClicked(false);
+    setSummaryPageContent({
+      content: null,
+      title: null,
+      banner: null
+    });
   }
 
   useEffect(() => {
@@ -439,18 +444,18 @@ const EducationStartCase: FunctionComponent<any> = () => {
           }
           signoutHandler={triggerLogout}
           isAuthorised={false}
-          signoutButtonText='Sign out'
-          staySignedInButtonText='Stay signed in'
+          staySignedInButtonText={t('STAY_SIGNED_IN')}
+          signoutButtonText={t('SIGN-OUT')}
         >
           <h1 id='hmrc-timeout-heading' className='govuk-heading-m push--top'>
-            You’re about to be signed out
+            {t('YOURE_ABOUT_TO_BE_SIGNED_OUT')}
           </h1>
           <p className='govuk-body hmrc-timeout-dialog__message'>
             {' '}
             {/* Todo Aria-hidden will be added back with US-13474 implementation */}
-            For your security, we will sign you out in{' '}
+            {t('FOR_YOUR_SECURITY_WE_WILL_SIGN_YOU_OUT')}{' '}
             <span id='hmrc-timeout-countdown' className='hmrc-timeout-dialog__countdown'>
-              2 minutes
+              {t('2_MINUTES')}
             </span>
             .
           </p>
@@ -502,8 +507,8 @@ const EducationStartCase: FunctionComponent<any> = () => {
           hideModal={() => setShowSignoutModal(false)}
           handleSignoutModal={triggerLogout}
           handleStaySignIn={handleStaySignIn}
-          staySignedInButtonText='Stay signed in'
-          signoutButtonText='Sign out'
+          staySignedInButtonText={t('STAY_SIGNED_IN')}
+          signoutButtonText={t('SIGN-OUT')}
         >
           <h1 id='govuk-timeout-heading' className='govuk-heading-m push--top'>
             {t('YOU_ARE_ABOUT_TO_SIGN_OUT')}

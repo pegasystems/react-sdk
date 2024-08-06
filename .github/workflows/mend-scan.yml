@@ -4,7 +4,6 @@ name: Mend Unified Agent Release Scan
 on:
   workflow_dispatch:
   push:
-  pull_request:
     branches:
       - 'main'
 

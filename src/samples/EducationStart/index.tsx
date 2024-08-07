@@ -223,6 +223,11 @@ const EducationStartCase: FunctionComponent<any> = () => {
     } else if (showPega) {
       setCurrentDisplay('pegapage');
     } else if (showResolutionPage) {
+      setSummaryPageContent({
+        content: null,
+        title: null,
+        banner: null
+      });
       setCurrentDisplay('resolutionpage');
       getSdkConfig().then(config => {
         PCore.getRestClient()
@@ -488,6 +493,7 @@ const EducationStartCase: FunctionComponent<any> = () => {
                   showPortalPageDefault={showPortalPageDefault}
                   setShowPortalPageDefault={setShowPortalPageDefault}
                   setShutterServicePage={setShutterServicePage}
+                  setShowPortalBanner={setShowPortalBanner}
                 />
               )}
               {currentDisplay === 'resolutionpage' && (

@@ -12,11 +12,12 @@ export default function Landing({
   setShowLandingPage,
   showPortalPageDefault,
   setShowPortalPageDefault,
-  setShutterServicePage
+  setShutterServicePage,
+  setShowPortalBanner
 }) {
   const [inProgressClaims, setInProgressClaims] = useState([]);
   const [submittedClaims, setSubmittedClaims] = useState([]);
-  const [showStartClaim, setShowStartClaim] = useState(false);
+  const [showStartClaim, setShowStartClaim] = useState({status: false, fromDefaultPortal: false});
   const [loadingInProgressClaims, setLoadingInProgressClaims] = useState(true);
   const [loadingSubmittedClaims, setLoadingSubmittedClaims] = useState(true);
 
@@ -122,7 +123,7 @@ export default function Landing({
     (!loadingInProgressClaims && !loadingSubmittedClaims) && (
       <>
         {showPortalPageDefault ||
-        (!showStartClaim && (inProgressClaims.length || submittedClaims.length)) ? (
+        (!showStartClaim.status && (inProgressClaims.length || submittedClaims.length)) ? (
           <PortalPage
             inProgressClaims={inProgressClaims}
             submittedClaims={submittedClaims}
@@ -132,12 +133,16 @@ export default function Landing({
             setShowLandingPage={setShowLandingPage}
             setShowPortalPageDefault={setShowPortalPageDefault}
             setShutterServicePage={setShutterServicePage}
+            showPortalPageDefault={showPortalPageDefault}
           />
         ) : (
           <StartClaim
             handleStartCliam={handleStartCliam}
             setShowStartClaim={setShowStartClaim}
             showStartClaim={showStartClaim}
+            showPortalPageDefault={showPortalPageDefault}
+            setShowPortalPageDefault={setShowPortalPageDefault}
+            setShowPortalBanner={setShowPortalBanner}
           />
         )}
       </>

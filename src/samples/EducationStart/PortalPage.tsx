@@ -15,13 +15,14 @@ export default function PortalPage(props) {
     setShowLandingPage,
     setShowStartClaim,
     setShowPortalPageDefault,
-    setShutterServicePage
+    setShutterServicePage,
+    showPortalPageDefault
   } = props;
   const { t } = useTranslation();
 
   function showStartClaim(e) {
     e.preventDefault();
-    setShowStartClaim(true);
+    setShowStartClaim({status: true, fromDefaultPortal: showPortalPageDefault });
     setShowPortalPageDefault(false);
   }
 

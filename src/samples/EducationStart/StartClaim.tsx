@@ -7,21 +7,36 @@ import WarningText from './reuseables/WarningText/WarningText';
 import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 import { scrollToTop } from '../../components/helpers/utils';
 
-export default function StartClaim({ handleStartCliam, setShowStartClaim, showStartClaim }) {
+export default function StartClaim({
+  handleStartCliam,
+  setShowStartClaim,
+  showStartClaim,
+  setShowPortalPageDefault,
+  setShowPortalBanner
+}) {
   const { t } = useTranslation();
   const { serviceParam } = useContext(AppContextEducation);
+
+  function goBack(e) {
+    e.preventDefault();
+    if (showStartClaim.status) {
+      setShowPortalPageDefault(true);
+      setShowPortalBanner(false);
+    }
+    setShowStartClaim({status: false, fromDefaultPortal: false });    
+  }
 
   useEffect(() => {
     setPageTitle();
     scrollToTop();
-  })
+  });
 
   return (
     <>
-      {showStartClaim && (
+      {showStartClaim.status && (
         <Button
           variant='backlink'
-          onClick={() => setShowStartClaim(false)}
+          onClick={goBack}
           key='StartPageBacklink'
           attributes={{ type: 'link' }}
         />

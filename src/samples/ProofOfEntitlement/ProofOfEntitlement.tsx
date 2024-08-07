@@ -15,6 +15,7 @@ import { formatCurrency } from '../../components/helpers/utils';
 import TimeoutPopup from '../../components/AppComponents/TimeoutPopup';
 import { initTimeout } from '../../components/AppComponents/TimeoutPopup/timeOutUtils';
 import LoadingSpinner from '../../components/helpers/LoadingSpinner/LoadingSpinner';
+import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 
 declare const PCore;
 declare const myLoadMashup: any;
@@ -77,6 +78,7 @@ export default function ProofOfEntitlement() {
               setEntitlementData(result);
             }
             setPageContentReady(true);
+            setPageTitle();
           })
           .catch(() => {
             setShowProblemWithService(true);

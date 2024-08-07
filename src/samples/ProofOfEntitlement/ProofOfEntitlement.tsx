@@ -82,6 +82,7 @@ export default function ProofOfEntitlement() {
           })
           .catch(() => {
             setShowProblemWithService(true);
+            setPageTitle();
           });
       });
 

@@ -1,11 +1,13 @@
 # Reference: https://github.com/mend-toolkit/mend-examples/blob/main/Unified%20Agent/CI-CD/GitHub.yml
 
 name: Mend Unified Agent Release Scan
-on: 
+on:
   workflow_dispatch:
   push:
    branches:
-   - 'master'
+   - 'main'
+  schedule:
+  - cron: "0 0 * * 0"
 jobs:
   mendscan:
     env:

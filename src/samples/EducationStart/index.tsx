@@ -387,6 +387,7 @@ const EducationStartCase: FunctionComponent<any> = () => {
           appname={t('EDUCATION_START')}
           hasLanguageToggle={showLanguageToggleState}
           handleSignout={handleSignout}
+          betafeedbackurl={`${hmrcURL}contact/beta-feedback?service=claim-child-benefit-frontend&backUrl=/fill-online/claim-child-benefit/recently-claimed-child-benefit`}
         />
         <div className='govuk-width-container'>
           <ServiceNotAvailable returnToPortalPage={returnToPortalPage} />

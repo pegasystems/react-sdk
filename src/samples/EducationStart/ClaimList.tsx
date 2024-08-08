@@ -40,6 +40,7 @@ export default function ClaimsList(props) {
 
   async function _rowClick(e, row: any) {
     e.preventDefault();
+    sessionStorage.setItem('assignmentFinishedFlag', 'false');
     const { pzInsKey, pyAssignmentID } = row;
 
     // const container = thePConn.getContainerName();

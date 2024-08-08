@@ -66,7 +66,7 @@ export function establishPCoreSubscriptions({
    * closes container item if case is resolved-discarded, on assignmentFinished
    ******************************************** */
   function handleServiceNotAvailable() {
-    // console.log('SUBEVENT! handleServiceNotAvailableOnAssignmentFinished');
+    const assignmentFinishedFlag = sessionStorage.getItem('assignmentFinishedFlag');
     const containername = PCore.getContainerUtils().getActiveContainerItemName(
       `${PCore.getConstants().APP.APP}/primary`
     );
@@ -74,18 +74,20 @@ export function establishPCoreSubscriptions({
       `${containername}/workarea`
     );
     const status = PCore.getStoreValue('.pyStatusWork', 'caseInfo.content', context);
-    if (status === 'Resolved-Discarded') {
-      setServiceNotAvailable(true);
-      PCore.getContainerUtils().closeContainerItem(context);
-      //  Temporary workaround to restrict infinite update calls
-      PCore?.getPubSubUtils().unsubscribe('assignmentFinished', 'assignmentFinished');
-      PCore?.getPubSubUtils().unsubscribe(
-        PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
-        'assignmentFinished'
-      );
-    } else {
-      showResolutionScreen();
-    }
+    if(assignmentFinishedFlag !== 'true') {
+      if (status === 'Resolved-Discarded') {
+        setServiceNotAvailable(true);
+        PCore.getContainerUtils().closeContainerItem(context);
+        //  Temporary workaround to restrict infinite update calls
+        sessionStorage.setItem('assignmentFinishedFlag', 'true');
+        PCore?.getPubSubUtils().unsubscribe(
+          PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
+          'assignmentFinished'
+        );
+      } else {
+        showResolutionScreen();
+      }
+    } 
   }
 
   async function customAssignmentFinished() {

@@ -1,9 +1,10 @@
 /* eslint-disable react/button-has-type */
 import { useState, useEffect } from 'react';
-import { render } from 'react-dom';
-import Typography from '@material-ui/core/Typography';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { createRoot } from 'react-dom/client';
+import Typography from '@mui/material/Typography';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import { sdkIsLoggedIn, loginIfNecessary, sdkSetAuthHeader, sdkSetCustomTokenParamsCB, getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
@@ -11,7 +12,6 @@ import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react
 
 import EmbeddedSwatch from '../EmbeddedSwatch';
 import { compareSdkPCoreVersions } from '@pega/react-sdk-components/lib/components/helpers/versionHelpers';
-
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import localSdkComponentMap from '../../../../sdk-local-component-map';
 import { theme } from '../../../theme';
@@ -287,10 +287,12 @@ export default function EmbeddedTopLevel() {
     return (
       // eslint-disable-next-line react/jsx-no-constructed-context-values
       <StoreContext.Provider value={{ store: PCore.getStore(), displayOnlyFA: true }}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {thePConnObj}
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {thePConnObj}
+          </ThemeProvider>
+        </StyledEngineProvider>
       </StoreContext.Provider>
     );
   }
@@ -327,14 +329,17 @@ export default function EmbeddedTopLevel() {
     }
 
     const theComponent = (
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Component {...props} portalTarget={portalTarget} styleSheetTarget={styleSheetTarget} />
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Component {...props} portalTarget={portalTarget} styleSheetTarget={styleSheetTarget} />
+        </ThemeProvider>
+      </StyledEngineProvider>
     );
+    const root = createRoot(target);
 
     // Initial render of component passed in (which should be a RootContainer)
-    render(<>{theComponent}</>, target);
+    root.render(<>{theComponent}</>);
 
     // Initial render to show that we have a PConnect and can render in the target location
     // render( <div>EmbeddedTopLevel initialRender in {domContainerID} with PConn of {componentName}</div>, target);
@@ -430,7 +435,8 @@ export default function EmbeddedTopLevel() {
     getSdkConfig().then(sdkConfig => {
       let mashupCaseType = sdkConfig.serverConfig.appMashupCaseType;
       if (!mashupCaseType) {
-        const caseTypes = (PCore.getEnvironmentInfo().environmentInfoObject as any).pyCaseTypeList;
+        // @ts-ignore - Object is possibly 'null'
+        const caseTypes: any = PCore.getEnvironmentInfo().environmentInfoObject.pyCaseTypeList;
         mashupCaseType = caseTypes[0].pyWorkTypeImplementationClassName;
       }
 
@@ -443,7 +449,7 @@ export default function EmbeddedTopLevel() {
               }
             : {}
       };
-      (PCore.getMashupApi().createCase(mashupCaseType, PCore.getConstants().APP.APP, options) as any).then(() => {
+      (PCore.getMashupApi().createCase(mashupCaseType, PCore.getConstants().APP.APP, options) as Promise<any>).then(() => {
         // eslint-disable-next-line no-console
         console.log('createCase rendering is complete');
       });

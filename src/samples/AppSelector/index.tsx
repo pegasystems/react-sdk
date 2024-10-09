@@ -1,4 +1,4 @@
-import { Switch, Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import EmbeddedTopLevel from '../Embedded/EmbeddedTopLevel';
 import FullPortal from '../FullPortal';
@@ -16,15 +16,15 @@ const baseURL = '/';
 const AppSelector = () => {
   return (
     <div>
-      <Switch>
-        <Route exact path={`${baseURL}`} component={EmbeddedTopLevel} />
-        <Route path={`${baseURL}index.html`} component={EmbeddedTopLevel} />
-        <Route path={`${baseURL}embedded`} component={EmbeddedTopLevel} />
-        <Route path={`${baseURL}embedded.html`} component={EmbeddedTopLevel} />
-        <Route path={`${baseURL}portal`} component={FullPortal} />
-        <Route path={`${baseURL}portal.html`} component={FullPortal} />
-        <Route path='*' component={EmbeddedTopLevel} />
-      </Switch>
+      <Routes>
+        <Route path={`${baseURL}`} element={<EmbeddedTopLevel />} />
+        <Route path={`${baseURL}index.html`} element={<EmbeddedTopLevel />} />
+        <Route path={`${baseURL}embedded`} element={<EmbeddedTopLevel />} />
+        <Route path={`${baseURL}embedded.html`} element={<EmbeddedTopLevel />} />
+        <Route path={`${baseURL}portal`} element={<FullPortal />} />
+        <Route path={`${baseURL}portal.html`} element={<FullPortal />} />
+        <Route path='*' element={<EmbeddedTopLevel />} />
+      </Routes>
     </div>
   );
 };

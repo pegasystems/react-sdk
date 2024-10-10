@@ -1,5 +1,5 @@
 // from react_root.js
-import { createRoot } from 'react-dom/client';
+import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import TopLevelApp from '../src/samples/TopLevelApp';
 import './common.css';
@@ -7,10 +7,10 @@ import './common.css';
 const outletElement = document.getElementById('outlet');
 
 if (outletElement) {
-  const root = createRoot(outletElement);
-  root.render(
+  render(
     <BrowserRouter>
       <TopLevelApp />
-    </BrowserRouter>
+    </BrowserRouter>,
+    document.getElementById('outlet')
   );
 }

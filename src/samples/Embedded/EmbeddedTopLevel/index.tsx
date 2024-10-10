@@ -1,6 +1,6 @@
 /* eslint-disable react/button-has-type */
 import { useState, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
@@ -336,10 +336,9 @@ export default function EmbeddedTopLevel() {
         </ThemeProvider>
       </StyledEngineProvider>
     );
-    const root = createRoot(target);
 
     // Initial render of component passed in (which should be a RootContainer)
-    root.render(<>{theComponent}</>);
+    ReactDOM.render(<>{theComponent}</>, target);
 
     // Initial render to show that we have a PConnect and can render in the target location
     // render( <div>EmbeddedTopLevel initialRender in {domContainerID} with PConn of {componentName}</div>, target);

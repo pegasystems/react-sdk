@@ -11,6 +11,18 @@ declare module '@mui/styles/defaultTheme' {
 
 // eslint-disable-next-line import/prefer-default-export
 export const theme = createTheme({
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        size: 'small'
+      },
+      styleOverrides: {
+        root: {
+          width: '100%'
+        }
+      }
+    }
+  },
   palette: {
     primary: {
       contrastText: '#fff',

@@ -1,14 +1,22 @@
+import React from 'react';
+import { Preview } from '@storybook/react';
 import { Configuration, PopoverManager, Toaster, ModalManager, WorkTheme } from '@pega/cosmos-react-core';
-
+import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
 import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { theme } from '../src/theme';
 
 import { decorator } from '../__mocks__/react_pconnect';
 
-getSdkComponentMap();
+const isConstellation = process.env.STORYBOOK_CONSTELLATION;
 
-export const decorators = [
+if (!isConstellation) {
+  getSdkComponentMap();
+}
+
+const decorators = [
   (Story, context) => {
-    return (
+    return isConstellation ? (
       <Configuration>
         <PopoverManager>
           <Toaster dismissAfter={5000}>
@@ -18,12 +26,19 @@ export const decorators = [
           </Toaster>
         </PopoverManager>
       </Configuration>
+    ) : (
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Story {...context} />
+        </ThemeProvider>
+      </StyledEngineProvider>
     );
   },
   decorator
 ];
 
-export const parameters = {
+const parameters = {
   backgrounds: {
     default: 'App',
     values: [
@@ -45,3 +60,10 @@ export const parameters = {
     source: { type: 'code' }
   }
 };
+
+const preview: Preview = {
+  decorators,
+  parameters
+};
+
+export default preview;

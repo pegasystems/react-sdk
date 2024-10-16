@@ -60,7 +60,7 @@
     "@mui/material": "^6.1.2",
     "@mui/styles": "^6.1.2",
     "@mui/x-date-pickers": "^7.19.0",
-    "@pega/auth": "^0.2.14",
+    "@pega/auth": "^0.2.15",
     "@pega/cosmos-react-condition-builder": "^4.2.0",
     "@pega/cosmos-react-core": "^4.2.0",
     "@pega/cosmos-react-work": "^4.2.0",

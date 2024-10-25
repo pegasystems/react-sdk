@@ -59,14 +59,7 @@ export default function FullPortal() {
 
     return (
       // eslint-disable-next-line react/jsx-no-constructed-context-values
-      <StoreContext.Provider value={{ store: PCore.getStore() }}>
-        <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            {thePConnObj}
-          </ThemeProvider>
-        </StyledEngineProvider>
-      </StoreContext.Provider>
+      <StoreContext.Provider value={{ store: PCore.getStore() }}>{thePConnObj}</StoreContext.Provider>
     );
   }
 

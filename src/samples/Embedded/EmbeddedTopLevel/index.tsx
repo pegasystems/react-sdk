@@ -18,8 +18,7 @@ import { theme } from '../../../theme';
 
 declare const myLoadMashup: any;
 
-// eslint-disable-next-line @typescript-eslint/no-shadow
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   embedTopRibbon: {
     display: 'none',
     alignItems: 'center',
@@ -286,14 +285,7 @@ export default function EmbeddedTopLevel() {
     //  be done in a future sprint.
     return (
       // eslint-disable-next-line react/jsx-no-constructed-context-values
-      <StoreContext.Provider value={{ store: PCore.getStore(), displayOnlyFA: true }}>
-        <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            {thePConnObj}
-          </ThemeProvider>
-        </StyledEngineProvider>
-      </StoreContext.Provider>
+      <StoreContext.Provider value={{ store: PCore.getStore(), displayOnlyFA: true }}>{thePConnObj}</StoreContext.Provider>
     );
   }
 
@@ -467,7 +459,12 @@ export default function EmbeddedTopLevel() {
 
     const theOptions = shoppingOptions.map((option, index) => {
       return (
-        <EmbeddedSwatch key={shoppingOptions[index].level} pcore={bShowAppName ? PCore : null} {...shoppingOptions[index]} onClick={onShopNow} />
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <EmbeddedSwatch key={shoppingOptions[index].level} pcore={bShowAppName ? PCore : null} {...shoppingOptions[index]} onClick={onShopNow} />
+          </ThemeProvider>
+        </StyledEngineProvider>
       );
     });
 

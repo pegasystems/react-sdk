@@ -89,7 +89,6 @@
     "@babel/preset-env": "^7.23.9",
     "@babel/preset-react": "^7.23.3",
     "@babel/preset-typescript": "^7.23.3",
-    "@kooneko/livereload-webpack-plugin": "^1.2.1",
     "@loadable/component": "^5.16.3",
     "@pega/configs": "^0.6.0",
     "@pega/constellationjs": "^0.242.5",
@@ -116,7 +115,6 @@
     "@types/react": "^17.0.83",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "caniuse-lite": "^1.0.30001576",
-    "clean-webpack-plugin": "^4.0.0",
     "compression-webpack-plugin": "^10.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "cspell": "^8.3.2",
@@ -153,9 +151,9 @@
     "ts-loader": "^9.5.1",
     "typescript": "^4.9.5",
     "update-browserslist-db": "^1.0.13",
-    "webpack": "^5.89.0",
+    "webpack": "^5.95.0",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+    "webpack-dev-server": "^5.1.0"
   },
   "browser": {
     "[module-name]": false

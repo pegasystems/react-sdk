@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
-import EmbeddedTopLevel from '../Embedded/EmbeddedTopLevel';
+import Embedded from '../Embedded';
 import FullPortal from '../FullPortal';
 
 // NOTE: You should update this to be the same value that's in
@@ -17,13 +17,13 @@ const AppSelector = () => {
   return (
     <div>
       <Routes>
-        <Route path={`${baseURL}`} element={<EmbeddedTopLevel />} />
-        <Route path={`${baseURL}index.html`} element={<EmbeddedTopLevel />} />
-        <Route path={`${baseURL}embedded`} element={<EmbeddedTopLevel />} />
-        <Route path={`${baseURL}embedded.html`} element={<EmbeddedTopLevel />} />
+        <Route path={`${baseURL}`} element={<Embedded />} />
+        <Route path={`${baseURL}index.html`} element={<Embedded />} />
+        <Route path={`${baseURL}embedded`} element={<Embedded />} />
+        <Route path={`${baseURL}embedded.html`} element={<Embedded />} />
         <Route path={`${baseURL}portal`} element={<FullPortal />} />
         <Route path={`${baseURL}portal.html`} element={<FullPortal />} />
-        <Route path='*' element={<EmbeddedTopLevel />} />
+        <Route path='*' element={<Embedded />} />
       </Routes>
     </div>
   );

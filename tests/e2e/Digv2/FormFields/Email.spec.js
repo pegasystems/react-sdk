@@ -43,7 +43,8 @@ test.describe('E2E test', () => {
 
     /** Required tests */
     const requiredEmail = page.locator('input[data-test-id="96fa7548c363cdd5adb29c2c2749e436"]');
-    requiredEmail.fill('John@doe.com');
+    await requiredEmail.fill('John@doe.com');
+    await requiredEmail.blur();
     await expect(page.locator('p.Mui-error.Mui-required')).toBeHidden();
 
     /** Checking 'field label', 'placeholder', and 'helper text' */

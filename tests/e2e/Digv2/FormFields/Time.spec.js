@@ -42,16 +42,16 @@ test.describe('E2E test', () => {
     await expect(page.locator('p.Mui-error.Mui-required')).toBeVisible();
 
     /** Required tests */
-    const requiredTime = page.locator('input[data-test-id="2a98fa391e3ce4e2a077bb71271eb2da"]');
+    const requiredTime = page.locator('div[data-test-id="2a98fa391e3ce4e2a077bb71271eb2da"] >> input');
     const date = new Date();
-    const time = `${date.getHours()}${date.getMinutes()}`;
-    requiredTime.fill(time);
+    const time = `${date.getHours()}${date.getMinutes()}${date.getHours() >= 12 ? 'pm' : 'am'}`;
+    requiredTime.pressSequentially(time);
     attributes = await common.getAttributes(requiredTime);
     await expect(attributes.includes('required')).toBeTruthy();
 
     await expect(page.locator('p.Mui-error.Mui-required')).toBeHidden();
 
-    const notRequiredTime = page.locator('input[data-test-id="921d625dba40a48cdcd006d6d17273fd"]');
+    const notRequiredTime = page.locator('div[data-test-id="921d625dba40a48cdcd006d6d17273fd"] >> input');
     attributes = await common.getAttributes(notRequiredTime);
     await expect(attributes.includes('required')).toBeFalsy();
 
@@ -61,11 +61,11 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Disable' }).click();
 
     // /** Disable tests */
-    const alwaysDisabledTime = page.locator('input[data-test-id="b5b2a2335304986a2aba011c0a2a464d"]');
+    const alwaysDisabledTime = page.locator('div[data-test-id="b5b2a2335304986a2aba011c0a2a464d"] >> input');
     attributes = await common.getAttributes(alwaysDisabledTime);
     await expect(attributes.includes('disabled')).toBeTruthy();
 
-    const conditionallyDisabledTime = page.locator('input[data-test-id="9f7b7d5d8793642e0650a03f5f9dd991"]');
+    const conditionallyDisabledTime = page.locator('div[data-test-id="9f7b7d5d8793642e0650a03f5f9dd991"] >> input');
     attributes = await common.getAttributes(conditionallyDisabledTime);
     if (isDisabled) {
       await expect(attributes.includes('disabled')).toBeTruthy();
@@ -73,7 +73,7 @@ test.describe('E2E test', () => {
       await expect(attributes.includes('disabled')).toBeFalsy();
     }
 
-    const neverDisabledTime = page.locator('input[data-test-id="aeb770a579929bf10a1b301600da68ca"]');
+    const neverDisabledTime = page.locator('div[data-test-id="aeb770a579929bf10a1b301600da68ca"] >> input');
     attributes = await common.getAttributes(neverDisabledTime);
     await expect(attributes.includes('disabled')).toBeFalsy();
 
@@ -87,8 +87,8 @@ test.describe('E2E test', () => {
     attributes = await common.getAttributes(readonlyTime);
     await expect(attributes.includes('readonly')).toBeTruthy();
 
-    const editableTime = page.locator('input[data-test-id="9a43bbe34f0e3db5a53f8e89082c0770"]');
-    editableTime.fill(time);
+    const editableTime = page.locator('div[data-test-id="9a43bbe34f0e3db5a53f8e89082c0770"] >> input');
+    editableTime.pressSequentially(time);
 
     attributes = await common.getAttributes(editableTime);
     await expect(attributes.includes('readonly')).toBeFalsy();
@@ -99,12 +99,12 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Visibility' }).click();
 
     /** Visibility tests */
-    await expect(page.locator('input[data-test-id="1b5786591e69307188bb7bb6ed1d6007"]')).toBeVisible();
+    await expect(page.locator('div[data-test-id="1b5786591e69307188bb7bb6ed1d6007"]')).toBeVisible();
 
-    const neverVisibleTime = await page.locator('input[data-test-id="971d3da425a39fac98652a85633db661"]');
+    const neverVisibleTime = await page.locator('div[data-test-id="971d3da425a39fac98652a85633db661"] >> input');
     await expect(neverVisibleTime).not.toBeVisible();
 
-    const conditionallyVisibleTime = await page.locator('input[data-test-id="6e52133ee5d2aef2dab9a8e61511c030"]');
+    const conditionallyVisibleTime = await page.locator('div[data-test-id="6e52133ee5d2aef2dab9a8e61511c030"] >> input');
 
     if (isVisible) {
       await expect(conditionallyVisibleTime).toBeVisible();

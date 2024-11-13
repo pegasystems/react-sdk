@@ -114,7 +114,7 @@ test.describe('E2E test', () => {
     /** Testing error case by uploading empty file */
     await page.setInputFiles(`#AttachmentList`, [zeroBytesFile]);
     await expect(page.locator('div >> text="Error with one or more files"')).toBeVisible();
-    await expect(page.locator(`div >> text="Empty file can't be uploaded."`)).toBeVisible();
+    await expect(page.locator(`div >> text="Empty file can't be uploaded." >> nth=0`)).toBeVisible();
 
     const errorFile = await page.locator('div[class="psdk-utility-card"]:has-text("Unable to upload file")');
     await errorFile.locator('button[aria-label="Delete Attachment"]').click();

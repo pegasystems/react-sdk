@@ -48,9 +48,9 @@ test.describe('E2E test', () => {
     const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}${date
       .getDate()
       .toString()
-      .padStart(2, '0')}${date.getFullYear()}${date.getHours()}${date.getMinutes()}`;
+      .padStart(2, '0')}${date.getFullYear()}${date.getHours()}${date.getMinutes()}${date.getHours() >= 12 ? 'pm' : 'am'}`;
     await requiredDateTimeInput.click();
-    await requiredDateTimeInput.fill(formattedDate);
+    await requiredDateTimeInput.pressSequentially(formattedDate);
 
     await expect(page.locator('p.Mui-error.Mui-required')).toBeHidden();
 
@@ -100,7 +100,7 @@ test.describe('E2E test', () => {
     const editableDateTime = page.locator('div[data-test-id="4e5110fbcaf65441b3e4c763907b5eb8"]');
     const editableDateTimeInput = editableDateTime.locator('input');
     await editableDateTimeInput.click();
-    await editableDateTimeInput.fill(formattedDate);
+    await editableDateTimeInput.pressSequentially(formattedDate);
     attributes = await common.getAttributes(editableDateTimeInput);
     await expect(attributes.includes('readonly')).toBeFalsy();
 

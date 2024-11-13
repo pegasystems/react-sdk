@@ -99,14 +99,16 @@ test.describe('E2E test', () => {
     const validationMsg = 'Enter a valid phone number';
     await editablePhoneInput.clear();
     await countrySelector.click();
-    await page.locator('text=United States+1 >> nth=0').click();
+    await page.locator('text=United Kingdom+44 >> nth=0').click();
     /** Entering an invalid Phone number */
     await common.enterPhoneNumber(editablePhone, '61');
     await editablePhoneInput.blur();
     /** Expecting an error for Invalid phone number */
+
     await expect(page.locator(`p:has-text("${validationMsg}")`)).toBeVisible();
 
     /** Entering a valid Phone number */
+    await editablePhoneInput.click();
     await editablePhoneInput.clear();
     await countrySelector.click();
     await page.locator('text=United States+1 >> nth=0').click();

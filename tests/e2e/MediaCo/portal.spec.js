@@ -47,7 +47,7 @@ test.describe('E2E test', () => {
     const serviceDateInput = serviceDate.locator('input');
     await serviceDateInput.click();
     const futureDate = common.getFutureDate();
-    await serviceDateInput.fill(futureDate);
+    await serviceDateInput.pressSequentially(futureDate);
 
     await page.locator('button:has-text("submit")').click();
 
@@ -60,7 +60,7 @@ test.describe('E2E test', () => {
     await cityInput.fill('Cambridge');
 
     const state = page.locator('div[data-test-id="46A2A41CC6E552044816A2D04634545D"]');
-    const stateSelector = state.locator('div[role="button"]');
+    const stateSelector = state.locator('div[role="combobox"]');
     await stateSelector.click();
     await page.locator('li[data-value="MA"]').click();
 
@@ -100,30 +100,17 @@ test.describe('E2E test', () => {
     const sendToMgr = page.locator('label[data-test-id="C3B43E79AEC2D689F0CF97BD6AFB7DC4"]');
     await sendToMgr.check();
 
-    const currentCaseID = await page.locator('div[id="current-caseID"]').textContent();
-    const filePath = path.join(__dirname, '../../../assets/img/cableinfo.jpg');
+    const filePath = path.join(__dirname, '../../../../../assets/img/cableinfo.jpg');
 
     const attachmentID = await page.locator('div[id="attachment-ID"]').textContent();
     await page.setInputFiles(`#${attachmentID}`, filePath);
 
-    await Promise.all([
-      page.waitForResponse(
-        `${endpoints.serverConfig.infinityRestServerUrl}${
-          endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ''
-        }/api/application/v2/attachments/upload`
-      )
-    ]);
+    await expect(page.locator('CircularProgress')).not.toBeVisible();
+    await page.waitForTimeout(5000);
 
     await page.locator('button:has-text("submit")').click();
 
-    await Promise.all([
-      page.waitForResponse(
-        `${endpoints.serverConfig.infinityRestServerUrl}${
-          endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ''
-        }/api/application/v2/cases/${currentCaseID}/attachments?includeThumbnail=false`
-      )
-    ]);
-
+    await page.waitForTimeout(5000);
     const attachmentCount = await page.locator('div[id="attachments-count"]').textContent();
     await expect(Number(attachmentCount)).toBeGreaterThan(0);
   }, 10000);

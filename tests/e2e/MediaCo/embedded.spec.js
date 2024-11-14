@@ -48,7 +48,7 @@ test.describe('E2E test', () => {
     await cityInput.fill('Cambridge');
 
     const state = page.locator('div[data-test-id="46A2A41CC6E552044816A2D04634545D"]');
-    const stateSelector = state.locator('div[role="button"]');
+    const stateSelector = state.locator('div[role="combobox"]');
     await stateSelector.click();
     await page.locator('li[data-value="MA"]').click();
 
@@ -68,7 +68,7 @@ test.describe('E2E test', () => {
     const dataServiceBeginDateInput = dataServiceBeginDate.locator('input');
     await dataServiceBeginDateInput.click();
     const futureDate = common.getFutureDate();
-    await dataServiceBeginDateInput.fill(futureDate);
+    await dataServiceBeginDateInput.pressSequentially(futureDate);
 
     await page.locator('button:has-text("next")').click();
 

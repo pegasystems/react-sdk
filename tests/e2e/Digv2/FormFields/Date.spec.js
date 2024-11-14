@@ -46,7 +46,7 @@ test.describe('E2E test', () => {
     const requiredDateInput = requiredDate.locator('input');
     await requiredDateInput.click();
     const futureDate = common.getFutureDate();
-    await requiredDateInput.fill(futureDate);
+    await requiredDateInput.pressSequentially(futureDate);
 
     await expect(page.locator('p.Mui-error.Mui-required')).toBeHidden();
 
@@ -96,7 +96,7 @@ test.describe('E2E test', () => {
     const editableDate = page.locator('div[data-test-id="80f5dcc587f457378158bb305ec858a8"]');
     const editableDateInput = editableDate.locator('input');
     await editableDateInput.click();
-    await editableDateInput.fill(futureDate);
+    await editableDateInput.pressSequentially(futureDate);
     attributes = await common.getAttributes(editableDateInput);
     await expect(attributes.includes('readonly')).toBeFalsy();
 

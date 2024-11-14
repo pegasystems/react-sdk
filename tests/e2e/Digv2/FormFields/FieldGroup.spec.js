@@ -62,7 +62,7 @@ test.describe('E2E test', () => {
     // Collapsible Tests
     await expect(page.getByText('Collapsible Field Group')).toBeVisible();
     await expect(page.locator('input[data-test-id="861d2d04e52d59e8b85a27fd5b4aef28"]')).toHaveValue('John Doe');
-    await expect(await page.locator('div[data-test-id="8e70e124867b68bec5cbf1f2f25da383"] >> div[role="button"]').textContent()).toBe(
+    await expect(await page.locator('div[data-test-id="8e70e124867b68bec5cbf1f2f25da383"] >> div[role="combobox"]').textContent()).toBe(
       'United States'
     );
 

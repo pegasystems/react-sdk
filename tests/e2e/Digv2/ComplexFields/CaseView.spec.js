@@ -66,7 +66,7 @@ test.describe('E2E test', () => {
     /** Wait until newly created case loads */
     await expect(page.locator('div[id="Assignment"]')).toBeVisible();
 
-    await page.locator('button >> span:has-text("Cancel")').click();
+    await page.locator('button:has-text("Cancel")').click();
 
     await page.locator('button[id="go-btn"]').click();
 

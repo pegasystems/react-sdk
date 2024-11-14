@@ -46,7 +46,8 @@ test.describe('E2E test', () => {
     const caseIdFilter = filters.locator('div:has-text("Case ID")');
     caseIdFilter.locator('input').fill(caseID);
 
-    await page.waitForResponse('**/data_views/D_ComplexFieldsList');
+    const pagination = page.locator('div[id="pagination"]');
+    await expect(pagination.locator('p:has-text("1–1 of 1")')).toBeVisible();
 
     await expect(table.locator(`td >> text=${caseID}`)).toBeVisible();
     await expect(table.locator('td >> text="Complex  Fields"')).toBeVisible();
@@ -67,12 +68,8 @@ test.describe('E2E test', () => {
     await currentMonthSelector.locator(`text="${day.getDate().toString()}"`).click();
     await currentMonthSelector.locator(`text="${nextDay.getDate().toString()}"`).click();
 
-    const complexTable = page.locator('div[id="list-view"] >> nth=0');
-
-    await expect(complexTable.locator(`td:has-text("${day.getDate().toString().padStart(2, '0')}")`)).toBeVisible();
-
-    const pagination = page.locator('div[id="pagination"]');
-    await expect(pagination.locator('p:has-text("1-1 of 1")')).toBeVisible();
+    const dateCol = await table.locator('td >> nth=2');
+    await expect(dateCol.getByText(`${new Date().getDate().toString().padStart(2, '0')}`)).toBeVisible();
 
     await page.locator('a:has-text("Clear All")').click();
 

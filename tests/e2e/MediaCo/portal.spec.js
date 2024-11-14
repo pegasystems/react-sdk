@@ -106,27 +106,27 @@ test.describe('E2E test', () => {
     const filePath = path.join(__dirname, '../../../assets/img/cableinfo.jpg');
 
     const attachmentID = await page.locator('div[id="attachment-ID"]').textContent();
-    await page.setInputFiles(`#${attachmentID}`, filePath);
 
     const pCoreVersion = await page.evaluate(() => window.PCore.getPCoreVersion());
     const isInfinity23OrHigher = ['8.23.0', '23.1.1'].includes(pCoreVersion);
 
+    // Need to be waiting for the transaction before code to trigger the transaction
     await Promise.all([
       page.waitForResponse(
         `${endpoints.serverConfig.infinityRestServerUrl}${
           endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ''
         }/api/application/v2/attachments/upload`
-      )
+      ),
+      page.setInputFiles(`#${attachmentID}`, filePath)
     ]);
-
-    await page.locator('button:has-text("submit")').click();
 
     await Promise.all([
       page.waitForResponse(
         `${endpoints.serverConfig.infinityRestServerUrl}${
           endpoints.serverConfig.appAlias ? `/app/${endpoints.serverConfig.appAlias}` : ''
         }/api/application/v2/cases/${currentCaseID}/attachments${isInfinity23OrHigher ? '?includeThumbnail=false' : ''}`
-      )
+      ),
+      page.locator('button:has-text("submit")').click()
     ]);
 
     const attachmentCount = await page.locator('div[id="attachments-count"]').textContent();

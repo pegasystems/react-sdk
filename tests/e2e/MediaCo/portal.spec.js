@@ -100,7 +100,7 @@ test.describe('E2E test', () => {
     const sendToMgr = page.locator('label[data-test-id="C3B43E79AEC2D689F0CF97BD6AFB7DC4"]');
     await sendToMgr.check();
 
-    const filePath = path.join(__dirname, '../../../../../assets/img/cableinfo.jpg');
+    const filePath = path.join(__dirname, '../../../assets/img/cableinfo.jpg');
 
     const attachmentID = await page.locator('div[id="attachment-ID"]').textContent();
     await page.setInputFiles(`#${attachmentID}`, filePath);

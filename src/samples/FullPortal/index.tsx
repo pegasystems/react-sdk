@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-console */
 import { useEffect, useMemo, useState } from 'react';
-import ReactDOM from 'react-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
@@ -23,10 +24,22 @@ function useQuery() {
   return useMemo(() => new URLSearchParams(search), [search]);
 }
 
+function RootComponent(props) {
+  const PegaConnectObj = createPConnectComponent();
+  const thePConnObj = <PegaConnectObj {...props} />;
+
+  const contextValue = useMemo(() => {
+    return { store: PCore.getStore() };
+  }, []);
+
+  return <StoreContext.Provider value={contextValue}>{thePConnObj}</StoreContext.Provider>;
+}
+
 export default function FullPortal() {
   const [portalSelectionScreen, setPortalSelectionScreen] = useState(false);
   const [defaultPortalName, setDefaultPortalName] = useState('');
   const [availablePortals, setAvailablePortals] = useState<string[]>([]);
+  const [rootComponentProps, setRootComponentProps] = useState<object | null>(null);
 
   const navigate = useNavigate();
   const query = useQuery();
@@ -39,71 +52,16 @@ export default function FullPortal() {
     sessionStorage.setItem('rsdk_locale', localeOverride);
   }
 
-  //  const outlet = document.getElementById("outlet");
-
-  // from react_root.js with some modifications
-  // eslint-disable-next-line react/no-unstable-nested-components
-  function RootComponent(props) {
-    // const { portalTarget, styleSheetTarget } = props;
-    const PegaConnectObj = createPConnectComponent();
-
-    // remove from Provider to work around compiler error for now: context={StoreContext}
-    // return (
-    //   <Provider store={PCore.getStore()} context={StoreContext} >
-    //     <PegaConnectObj {...props} />
-    //   </Provider>
-    // );
-
-    // const thePConnObj = <div>the RootComponent</div>;
-    const thePConnObj = <PegaConnectObj {...props} />;
-
-    return (
-      // eslint-disable-next-line react/jsx-no-constructed-context-values
-      <StoreContext.Provider value={{ store: PCore.getStore() }}>{thePConnObj}</StoreContext.Provider>
-    );
-  }
-
   /**
    * Callback from onPCoreReady that's called once the top-level render object
    * is ready to be rendered
    * @param inRenderObj the initial, top-level PConnect object to render
    */
   function initialRender(inRenderObj) {
-    // modified from react_root.js render
-    const { props, domContainerID = null, componentName, portalTarget, styleSheetTarget } = inRenderObj;
-    let target: any = null;
-    if (domContainerID !== null) {
-      target = document.getElementById(domContainerID);
-    } else if (portalTarget !== null) {
-      target = portalTarget;
-    }
-    const Component: any = RootComponent;
-    if (componentName) {
-      Component.displayName = componentName;
-    }
+    const { props, portalTarget, styleSheetTarget } = inRenderObj;
 
-    // 1st arg was:
-    // <Component
-    //   {...props}
-    //   portalTarget={portalTarget}
-    //   styleSheetTarget={styleSheetTarget}
-    // />,
-
-    // var theComponent = <div>the Component</div>;
-    const theComponent = (
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Component {...props} portalTarget={portalTarget} styleSheetTarget={styleSheetTarget} />;
-        </ThemeProvider>
-      </StyledEngineProvider>
-    );
-
-    ReactDOM.render(
-      // was <Component
-      theComponent,
-      target || document.getElementById('pega-root') || document.getElementsByTagName(domContainerID)[0]
-    );
+    // set root components props
+    setRootComponentProps({ ...props, portalTarget, styleSheetTarget });
   }
 
   /**
@@ -118,7 +76,6 @@ export default function FullPortal() {
       // Initialize the SdkComponentMap (local and pega-provided)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       getSdkComponentMap(localSdkComponentMap).then((theComponentMap: any) => {
-        // eslint-disable-next-line no-console
         console.log(`SdkComponentMap initialized`);
 
         // Don't call initialRender until SdkComponentMap is fully initialized
@@ -137,15 +94,12 @@ export default function FullPortal() {
     if (queryPortal) {
       myLoadPortal('pega-root', queryPortal, []);
     } else if (thePortal) {
-      // eslint-disable-next-line no-console
       console.log(`Loading specified appPortal: ${thePortal}`);
       myLoadPortal('pega-root', thePortal, []);
     } else if (myLoadDefaultPortal && defaultPortal && !excludePortals.includes(defaultPortal)) {
-      // eslint-disable-next-line no-console
       console.log(`Loading default portal`);
       myLoadDefaultPortal('pega-root', []);
     } else {
-      // eslint-disable-next-line no-console
       console.log('Loading portal selection screen');
       setPortalSelectionScreen(true);
       setDefaultPortalName(defaultPortal);
@@ -162,39 +116,54 @@ export default function FullPortal() {
   }
 
   function doRedirectDone() {
-    navigate(window.location.pathname);
-    let localeOverride: any = sessionStorage.getItem('rsdk_locale');
-    if (!localeOverride) {
-      localeOverride = undefined;
-    }
+    const redirectUrl: any = sessionStorage.getItem('url');
+    navigate(redirectUrl);
+    sessionStorage.removeItem('url');
+
+    const locale: any = sessionStorage.getItem('rsdk_locale') || undefined;
     // appName and mainRedirect params have to be same as earlier invocation
-    loginIfNecessary({ appName: 'portal', mainRedirect: true, locale: localeOverride });
+    loginIfNecessary({ appName: 'portal', mainRedirect: true, locale });
   }
 
   // One time (initialization)
   useEffect(() => {
-    document.addEventListener('SdkConstellationReady', () => {
-      // start the portal
-      startPortal();
-    });
-    let localeOverride: any = sessionStorage.getItem('rsdk_locale');
-    if (!localeOverride) {
-      localeOverride = undefined;
+    document.addEventListener('SdkConstellationReady', handleSdkConstellationReady);
+
+    const locale: any = sessionStorage.getItem('rsdk_locale') || undefined;
+
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+    const redirected = sessionStorage.getItem('redirected');
+    if (isLoggedIn !== 'true' && redirected !== 'true') {
+      sessionStorage.setItem('url', window.location.pathname);
+      navigate('/portal');
     }
+    sessionStorage.setItem('redirected', 'true');
     // Login if needed, doing an initial main window redirect
     loginIfNecessary({
       appName: 'portal',
       mainRedirect: true,
       redirectDoneCB: doRedirectDone,
-      locale: localeOverride
+      locale
+      // semanticUrls: true //. enable this line for semantic urls
     });
   }, []);
+
+  const handleSdkConstellationReady = () => {
+    sessionStorage.setItem('isLoggedIn', 'true');
+    // start the portal
+    startPortal();
+  };
 
   return portalSelectionScreen ? (
     <InvalidPortal defaultPortal={defaultPortalName} portals={availablePortals} onSelect={loadSelectedPortal} />
   ) : (
-    <div>
-      <div id='pega-root' />
+    <div id='pega-root'>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {rootComponentProps && <RootComponent {...rootComponentProps} />}
+        </ThemeProvider>
+      </StyledEngineProvider>
     </div>
   );
 }

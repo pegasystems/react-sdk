@@ -116,13 +116,13 @@ export default function FullPortal() {
   }
 
   function doRedirectDone() {
-    const redirectUrl: any = sessionStorage.getItem('url');
-    navigate(redirectUrl);
-    sessionStorage.removeItem('url');
-
-    const locale: any = sessionStorage.getItem('rsdk_locale') || undefined;
+    navigate(window.location.pathname);
+    let localeOverride: any = sessionStorage.getItem('rsdk_locale');
+    if (!localeOverride) {
+      localeOverride = undefined;
+    }
     // appName and mainRedirect params have to be same as earlier invocation
-    loginIfNecessary({ appName: 'portal', mainRedirect: true, locale });
+    loginIfNecessary({ appName: 'portal', mainRedirect: true, locale: localeOverride });
   }
 
   // One time (initialization)
@@ -131,20 +131,12 @@ export default function FullPortal() {
 
     const locale: any = sessionStorage.getItem('rsdk_locale') || undefined;
 
-    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
-    const redirected = sessionStorage.getItem('redirected');
-    if (isLoggedIn !== 'true' && redirected !== 'true') {
-      sessionStorage.setItem('url', window.location.pathname);
-      navigate('/portal');
-    }
-    sessionStorage.setItem('redirected', 'true');
     // Login if needed, doing an initial main window redirect
     loginIfNecessary({
       appName: 'portal',
       mainRedirect: true,
       redirectDoneCB: doRedirectDone,
       locale
-      // semanticUrls: true //. enable this line for semantic urls
     });
   }, []);
 

@@ -2,7 +2,7 @@
 import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import TopLevelApp from '../src/samples/TopLevelApp';
-import './common.css';
+import '../assets/css/appStyles.scss';
 
 const outletElement = document.getElementById('outlet');
 

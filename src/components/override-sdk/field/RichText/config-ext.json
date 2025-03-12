@@ -1,0 +1,11 @@
+{
+    "componentKey": "RichText",
+    "name": "RichText",
+    "label": "Rich text editor",
+    "description": "Text (paragraph)",
+    "type": "Field",
+    "subtype": "Text-Paragraph",
+    "icon": "images/pz-text-area-active.svg",
+    "properties": [],
+    "defaultConfig": {}
+}

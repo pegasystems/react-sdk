@@ -1,7 +1,13 @@
+import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import i18n from 'i18next';
+import Backend from 'i18next-http-backend';
+import { initReactI18next } from 'react-i18next';
 
 import Embedded from '../Embedded';
 import FullPortal from '../FullPortal';
+import HMRCHome from '../HMRCHome';
+import setPageTitle from '../../components/helpers/setPageTitleHelpers';
 
 // NOTE: You should update this to be the same value that's in
 //  the src/index.html <base href="value"> to allow the React Router
@@ -14,10 +20,35 @@ const baseURL = '/';
 // with /roster or /schedule. The / route will only match
 // when the pathname is exactly the string "/"
 const AppSelector = () => {
-  return (
+  const [i18nloaded, seti18nloaded] = useState(false);
+
+  useEffect(() => {
+    i18n
+      .use(Backend)
+      .use(initReactI18next)
+      .init({
+        lng: 'en',
+
+        backend: {
+          loadPath: `assets/i18n/en.json`
+        },
+        fallbackLng: 'en',
+        debug: false,
+        returnNull: false,
+        react: {
+          useSuspense: false
+        }
+      })
+      .finally(() => {
+        seti18nloaded(true);
+        setPageTitle();
+      });
+  }, []);
+
+  return !i18nloaded ? null : (
     <div>
       <Routes>
-        <Route path={`${baseURL}`} element={<Embedded />} />
+        <Route path={`${baseURL}`} element={<HMRCHome />} />
         <Route path={`${baseURL}index.html`} element={<Embedded />} />
         <Route path={`${baseURL}embedded`} element={<Embedded />} />
         <Route path={`${baseURL}embedded.html`} element={<Embedded />} />

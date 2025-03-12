@@ -34,6 +34,14 @@ module.exports = (env, argv) => {
           to: './'
         },
         {
+          from: './node_modules/govuk-frontend/dist/govuk/assets/images',
+          to: 'assets/images/'
+        },
+        {
+          from: './node_modules/govuk-frontend/dist/govuk/assets/fonts',
+          to: 'assets/fonts/'
+        },
+        {
           from: './assets/icons/*',
           to() {
             return Promise.resolve('constellation/icons/[name][ext]');
@@ -81,6 +89,10 @@ module.exports = (env, argv) => {
         {
           from: './node_modules/@pega/constellationjs/dist/js',
           to: './constellation/prerequisite/js'
+        },
+        {
+          from: './assets/i18n/*',
+          to: './'
         }
       ]
     })

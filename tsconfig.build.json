@@ -1,6 +1,13 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["./src/components/**/*.ts", "./src/components/**/*.tsx", "./src/components/**/*.js", "./src/components/**/*.jsx"],
+  "include": [
+    "./src/components/**/*.ts",
+    "./src/components/**/*.tsx",
+    "./src/components/**/*.js",
+    "./src/components/**/*.jsx",
+    "./node_modules/i18next-http-backend/cjs/index.js",
+    "./node_modules/react-i18next/dist/commonjs/index.js"
+  ],
   "exclude": ["./src/**/*.stories.ts", "./src/**/*.stories.tsx", "./src/**/*.stories.js", "./src/**/*.stories.jsx"],
   "compilerOptions": {
     "noEmit": false,

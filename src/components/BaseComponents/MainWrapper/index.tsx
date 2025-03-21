@@ -1,4 +1,3 @@
-import React from 'react';
 import useHMRCExternalLinks from '../../helpers/hooks/HMRCExternalLinks';
 import { useTranslation } from 'react-i18next';
 
@@ -19,13 +18,7 @@ export default function MainWrapper({
           {children}
           {showPageNotWorkingLink && (
             <p className='govuk-body'>
-              <a
-                lang='en'
-                className='govuk-link hmrc-report-technical-issue '
-                rel='noreferrer noopener'
-                target='_blank'
-                href={pageNotWorkingUrl}
-              >
+              <a lang='en' className='govuk-link hmrc-report-technical-issue ' rel='noreferrer noopener' target='_blank' href={pageNotWorkingUrl}>
                 {t('PAGE_NOT_WORKING_PROPERLY')} {t('OPENS_IN_NEW_TAB')}
               </a>
             </p>

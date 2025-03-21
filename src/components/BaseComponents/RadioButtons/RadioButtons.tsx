@@ -9,9 +9,7 @@ import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 export default function RadioButtons(props) {
   const { name, onChange, displayInline, value, useSmallRadios = false, options } = props;
 
-  const radioDivClasses = `govuk-radios ${displayInline ? 'govuk-radios--inline' : ''} ${
-    useSmallRadios ? 'gobuk-radios--small' : ''
-  }`.trim();
+  const radioDivClasses = `govuk-radios ${displayInline ? 'govuk-radios--inline' : ''} ${useSmallRadios ? 'gobuk-radios--small' : ''}`.trim();
 
   const arrayExclusiveOptions = ['none of the above', "dim un o'r uchod"];
 
@@ -27,6 +25,7 @@ export default function RadioButtons(props) {
             lableOverride = mainLabel;
             hintTextOverride = hintText;
           }
+          // eslint-disable-next-line sonarjs/no-nested-template-literals
           const itemId = `${name}${index > 0 ? `-${index}` : ''}`.trim();
           const itemHintId = `${itemId}-item-hint`;
           let ariaDescBy = {};
@@ -35,9 +34,7 @@ export default function RadioButtons(props) {
           }
           return (
             <React.Fragment key={`${name}_${option.value}`}>
-              {arrayExclusiveOptions.includes(option?.label?.toLowerCase()) && (
-                <div className='govuk-radios__divider'>{t('EXCLUSIVEOPTION_OR')}</div>
-              )}
+              {arrayExclusiveOptions.includes(option?.label?.toLowerCase()) && <div className='govuk-radios__divider'>{t('EXCLUSIVEOPTION_OR')}</div>}
 
               <div className='govuk-radios__item'>
                 <input

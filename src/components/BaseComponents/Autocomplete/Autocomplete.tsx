@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { bool, func, string } from 'prop-types';
 
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
@@ -20,11 +20,7 @@ export default function AutoComplete(props) {
   const inputClasses = `govuk-input ${errorText ? 'govuk-input--error' : ''}`.trim();
 
   useEffect(() => {
-    if (
-      typeof window.openregisterLocationPicker === 'function' &&
-      sessionStorage.getItem('isAutocompleteRendered') !== 'true' &&
-      optionList.length
-    ) {
+    if (typeof window.openregisterLocationPicker === 'function' && sessionStorage.getItem('isAutocompleteRendered') !== 'true' && optionList.length) {
       sessionStorage.setItem('isAutocompleteRendered', 'true');
       window.openregisterLocationPicker({
         selectElement: document.getElementById(id),
@@ -69,21 +65,13 @@ export default function AutoComplete(props) {
         </div>
       )}
       {arrOptions && arrOptions.length > 0 ? (
-        <select
-          className={inputClasses}
-          id={id}
-          name={id}
-          value={getDefaultValue()}
-          data-test-id={testId}
-        >
+        <select className={inputClasses} id={id} name={id} value={getDefaultValue()} data-test-id={testId}>
           <option value='' disabled selected>
             {' '}
           </option>
           {arrOptions}
         </select>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </FormGroup>
   );
 }

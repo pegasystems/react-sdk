@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { TextField } from '@mui/material';
 
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
@@ -7,7 +6,7 @@ import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps
 
 interface TextAreaProps extends PConnFieldProps {
   // If any, enter additional props that only exist on TextArea here
-  fieldMetadata?: any;
+  // fieldMetadata?: any;
 }
 
 export default function TextArea(props: TextAreaProps) {
@@ -17,28 +16,28 @@ export default function TextArea(props: TextAreaProps) {
   const {
     getPConnect,
     label,
-    required,
-    disabled,
+    // required,
+    // disabled,
     value = '',
     validatemessage,
     status,
     readOnly,
-    testId,
-    fieldMetadata,
+    // testId,
+    // fieldMetadata,
     helperText,
     displayMode,
-    hideLabel,
-    placeholder
+    hideLabel
+    // placeholder
   } = props;
   const helperTextToDisplay = validatemessage || helperText;
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
   const propName = (pConn.getStateProps() as any).value;
-  const maxLength = fieldMetadata?.maxLength;
+  // const maxLength = fieldMetadata?.maxLength;
 
   const [inputValue, setInputValue] = useState('');
 
-  let readOnlyProp = {};
+  // let readOnlyProp = {};
 
   useEffect(() => {
     setInputValue(value);
@@ -55,14 +54,14 @@ export default function TextArea(props: TextAreaProps) {
   if (readOnly) {
     // Not just emitting a read only Textfield like some other components do
     //  since we want to preserve the minRows, maxRows info.
-    readOnlyProp = { readOnly: true };
+    // readOnlyProp = { readOnly: true };
   }
 
-  let testProp = {};
+  // let testProp = {};
 
-  testProp = {
-    'data-test-id': testId
-  };
+  // testProp = {
+  //   'data-test-id': testId
+  // };
 
   function handleChange(event) {
     // update internal value

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import DateFormatter from '@pega/react-sdk-components/lib/components/helpers/formatters/Date';
 

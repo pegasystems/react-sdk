@@ -1,22 +1,10 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import FormGroup, { makeErrorId, makeHintId } from '../FormGroup/FormGroup';
 import FieldSet from '../FormGroup/FieldSet';
 
 export default function DateInput(props) {
-  const {
-    name,
-    errorText,
-    hintText,
-    value,
-    onChangeDay,
-    onChangeMonth,
-    onChangeYear,
-    testId,
-    inputProps = {},
-    autoComplete
-  } = props;
+  const { name, errorText, hintText, value, onChangeDay, onChangeMonth, onChangeYear, testId, inputProps = {}, autoComplete } = props;
   let { errorProps } = props;
   const { t } = useTranslation();
 
@@ -45,9 +33,7 @@ export default function DateInput(props) {
 
   // TODO - Investigate if possible to set error class per input depending on error message (e.g. if only year is missing, only error style year input)
 
-  const describedbyIds = `${hintText ? makeHintId(name) : ''} ${
-    errorText ? makeErrorId(name) : ''
-  }`.trim();
+  const describedbyIds = `${hintText ? makeHintId(name) : ''} ${errorText ? makeErrorId(name) : ''}`.trim();
   if (describedbyIds.length !== 0) {
     inputProps['aria-describedby'] = describedbyIds;
   }
@@ -67,18 +53,9 @@ export default function DateInput(props) {
     <FieldSet {...props} fieldsetElementProps={{ role: 'group' }} {...extraProps}>
       <div className='govuk-date-input' id={name}>
         <div className='govuk-date-input__item'>
-          <FormGroup
-            name={`${name}-day`}
-            label={dayLabel}
-            labelIsHeading={false}
-            extraLabelClasses='govuk-date-input__label'
-          >
+          <FormGroup name={`${name}-day`} label={dayLabel} labelIsHeading={false} extraLabelClasses='govuk-date-input__label'>
             <input
-              className={[
-                inputClasses,
-                widthClass(2),
-                errorClass(errorProps?.specificError?.day)
-              ].join(' ')}
+              className={[inputClasses, widthClass(2), errorClass(errorProps?.specificError?.day)].join(' ')}
               id={`${name}-day`}
               name={`${name}-day`}
               type='text'
@@ -90,18 +67,9 @@ export default function DateInput(props) {
           </FormGroup>
         </div>
         <div className='govuk-date-input__item'>
-          <FormGroup
-            name={`${name}-month`}
-            label={monthLabel}
-            labelIsHeading={false}
-            extraLabelClasses='govuk-date-input__label'
-          >
+          <FormGroup name={`${name}-month`} label={monthLabel} labelIsHeading={false} extraLabelClasses='govuk-date-input__label'>
             <input
-              className={[
-                inputClasses,
-                widthClass(2),
-                errorClass(errorProps?.specificError?.month)
-              ].join(' ')}
+              className={[inputClasses, widthClass(2), errorClass(errorProps?.specificError?.month)].join(' ')}
               id={`${name}-month`}
               name={`${name}-month`}
               type='text'
@@ -113,18 +81,9 @@ export default function DateInput(props) {
           </FormGroup>
         </div>
         <div className='govuk-date-input__item'>
-          <FormGroup
-            name={`${name}-year`}
-            label={yearLabel}
-            labelIsHeading={false}
-            extraLabelClasses='govuk-date-input__label'
-          >
+          <FormGroup name={`${name}-year`} label={yearLabel} labelIsHeading={false} extraLabelClasses='govuk-date-input__label'>
             <input
-              className={[
-                inputClasses,
-                widthClass(4),
-                errorClass(errorProps?.specificError?.year)
-              ].join(' ')}
+              className={[inputClasses, widthClass(4), errorClass(errorProps?.specificError?.year)].join(' ')}
               id={`${name}-year`}
               name={`${name}-year`}
               type='text'

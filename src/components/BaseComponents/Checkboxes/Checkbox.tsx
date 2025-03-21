@@ -1,19 +1,16 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { makeItemId, makeHintId } from '../FormGroup/FormGroup';
 import HintTextComponent from '../../helpers/formatters/ParsedHtml';
 
-export default function Checkbox({ item, index, name, inputProps= {}, onChange, onBlur }) {
+export default function Checkbox({ item, index, name, inputProps = {}, onChange, onBlur }) {
   const itemClasses = 'govuk-checkboxes__item';
   const checkboxItemClasses = 'govuk-checkboxes__input';
   const hintTextClasses = `govuk-hint govuk-checkboxes__hint`;
   const labelClasses = `govuk-label govuk-checkboxes__label`;
-  const describedbyIds = `${item.hintText?makeHintId(name):""}`.trim();
-  if(item.hintText){
+  const describedbyIds = `${item.hintText ? makeHintId(name) : ''}`.trim();
+  if (item.hintText) {
     inputProps['aria-describedby'] = describedbyIds;
   }
-
-
 
   return (
     <div className={itemClasses} key={makeItemId(index, name)}>
@@ -27,11 +24,13 @@ export default function Checkbox({ item, index, name, inputProps= {}, onChange, 
         onChange={!item.readOnly ? onChange : () => {}}
         onBlur={!item.readOnly ? onBlur : () => {}}
         checked={item.checked}
-      ></input>
-      <label className={labelClasses} htmlFor={makeItemId(index, name)}>{item.label}</label>
+      />
+      <label className={labelClasses} htmlFor={makeItemId(index, name)}>
+        {item.label}
+      </label>
       {item.hintText ? (
         <div id={makeItemId(index, `${name}-item-hint`)} className={hintTextClasses}>
-          <HintTextComponent htmlString={item.hintText}/>
+          <HintTextComponent htmlString={item.hintText} />
         </div>
       ) : null}
     </div>
@@ -44,5 +43,5 @@ Checkbox.propTypes = {
   name: PropTypes.string,
   inputProps: PropTypes.object,
   onChange: PropTypes.func,
-  onBlur: PropTypes.func,
+  onBlur: PropTypes.func
 };

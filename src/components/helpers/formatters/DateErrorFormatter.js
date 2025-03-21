@@ -31,7 +31,7 @@ const _DateErrorFormatter = (message, propertyName) => {
       targets.push('year');
     }
     let missingPartErrorMessage = i18n.t(`DATE_MUST_INCLUDE${missingPartMessage}`);
-    if(isMultipleDateInput()) {
+    if (isMultipleDateInput()) {
       const containerName = getWorkareaContainerName();
       const formEditablefields = PCore?.getFormUtils()?.getEditableFields(containerName);
       const formFields = formEditablefields?.filter(field => field.label === propertyName);
@@ -42,26 +42,22 @@ const _DateErrorFormatter = (message, propertyName) => {
     }
 
     if (missingPartMessage.length > 0) {
-        return {
-          message: missingPartErrorMessage,
-          targets
-        };
+      return {
+        message: missingPartErrorMessage,
+        targets
+      };
     }
 
     if (message.search(i18n.t('IS_NOT_A_VALID_DATE'))) {
       const invalidDateErrorMsg = invalidDateErrorMsgByField || i18n.t(`DATE_MUST_BE_A_REAL_DATE`);
       return {
-        message: isDateOfBirth
-          ? `${i18n.t('DATE_OF_BIRTH')} ${i18n.t('MUST_BE_A_REAL_DATE')}`
-          : invalidDateErrorMsg,
+        message: isDateOfBirth ? `${i18n.t('DATE_OF_BIRTH')} ${i18n.t('MUST_BE_A_REAL_DATE')}` : invalidDateErrorMsg,
         targets
       };
     }
   } else if (hasMoreThanThreeHyphens(message)) {
     return {
-      message: isDateOfBirth
-        ? `${i18n.t('DATE_OF_BIRTH')} ${i18n.t('MUST_BE_A_REAL_DATE')}`
-        : i18n.t('DATE_MUST_BE_A_REAL_DATE'),
+      message: isDateOfBirth ? `${i18n.t('DATE_OF_BIRTH')} ${i18n.t('MUST_BE_A_REAL_DATE')}` : i18n.t('DATE_MUST_BE_A_REAL_DATE'),
       targets
     };
   }

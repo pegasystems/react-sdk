@@ -87,33 +87,73 @@ export default function Home({ rootProps }) {
         ) : (
           <main className='govuk-main-wrapper' id='main-content' role='main'>
             <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-two-thirds'>
-                <h1 className='govuk-heading-l'>{t('YOUR_CLAIM_APPLICATIONS')}</h1>
+              <div className='govuk-grid-column-full'>
+                <h1 className='govuk-heading-l'>Change your bank details with HMRC</h1>
               </div>
             </div>
 
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-full govuk-prototype-kit-common-templates-mainstream-guide-body'>
-                <p className='govuk-body'>{t('THIS_PAGE_SHOWS')}</p>
+                <p className='govuk-body'>Use this service to update the bank account HMRC uses to make payments to you.</p>
+                <p className='govuk-body'>You can use this service if:</p>
                 <ul className='govuk-list govuk-list--bullet'>
                   <li>
-                    <span className='govuk-body'>{t('CLAIMS_THAT_ARE_IN_PROGRESS')}</span>
+                    <span className='govuk-body'>Your new account is a UK bank account that accepts direct credits.</span>
                   </li>
                   <li>
-                    <span className='govuk-body'>{t('CLAIMS_THAT_ARE_SUBMITTED')}</span>
+                    <span className='govuk-body'>You are the account holder of the new bank account.</span>
+                  </li>
+                  <li>
+                    <span className='govuk-body'>You have your National Insurance Number (NINO) ready.</span>
                   </li>
                 </ul>
-                <hr className='govuk-section-break govuk-section-break--xl govuk-section-break--visible' aria-hidden />
 
-                <div className='govuk-grid-column-two-thirds'>
+                <p className='govuk-body'>You cannot use this service if:</p>
+                <ul className='govuk-list govuk-list--bullet'>
+                  <li>
+                    <span className='govuk-body'>You want to change a business account.</span>
+                  </li>
+                  <li>
+                    <span className='govuk-body'>You receive payments to a joint account where you are not the main contact.</span>
+                  </li>
+                  <li>
+                    <span className='govuk-body'>Your new account does not accept HMRC payments.</span>
+                  </li>
+                </ul>
+
+                {/* <hr className='govuk-section-break govuk-section-break--xl govuk-section-break--visible' aria-hidden /> */}
+
+                <div>
+                  <h1 className='govuk-heading-m'>What you’ll need</h1>
+                  <p className='govuk-body'>Before you start, make sure you have:</p>
+
+                  <ul className='govuk-list govuk-list--bullet' style={{ listStyle: 'none' }}>
+                    <li>
+                      <span className='govuk-body'>Your current bank details (sort code and account number)</span>
+                    </li>
+                    <li>
+                      <span className='govuk-body'>Your new bank details</span>
+                    </li>
+
+                    <li>
+                      <span className='govuk-body'>Your National Insurance Number (NINO)</span>
+                    </li>
+
+                    <li>
+                      <span className='govuk-body'>
+                        It usually takes 7 working days for the change to take effect. You will receive a confirmation when your request is processed.
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
                   <h2 className='govuk-heading-m' id='subsection-title'>
-                    {t('MAKE_A_CLAIM')}
+                    Start now
                   </h2>
 
-                  <p className='govuk-body'>{t('USE_THIS_SERVICE')}</p>
-                  <p className='govuk-body'>{t('WE_MAY_CALL_YOU')}</p>
                   <Button attributes={{ className: 'govuk' }} onClick={beginClaim} variant='start'>
-                    {t('BEGIN_NEW_CLAIM')}
+                    Change your bank details
                   </Button>
                 </div>
               </div>

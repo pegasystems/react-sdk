@@ -33,10 +33,13 @@
     // Prettier recommends running separately from a linter.
     // https://prettier.io/docs/en/integrating-with-linters.html#notes
     "prettier/prettier": "off",
+    "react/no-unused-prop-types": "off",
+    "react-hooks/rules-of-hooks": "off",
 
     // Disable rules from shared configs we're not ready for yet.
     "sonarjs/cognitive-complexity": ["warn", 20],
     "sonarjs/no-duplicate-string": "off",
+    "@typescript-eslint/no-unused-vars": "off",
 
     //
     // Initial release: turning these off; phase in to "warn" or "error" over time

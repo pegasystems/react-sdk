@@ -1,0 +1,209 @@
+.background-image-style {
+  margin-left: -16px;
+  margin-right: -16px;
+  height: calc(19rem);
+  background-size: cover;
+  background-position: center center;
+}
+
+.background-style {
+  background-color: transparent;
+  color: rgb(0, 0, 0);
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: calc(0.5rem);
+}
+
+.title {
+  margin: 0rem;
+  font-size: 1.728rem;
+  font-weight: 600;
+}
+
+.message {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.banner-layout {
+  padding: 1rem;
+}
+
+.welcome-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 16px;
+  gap: 16px;
+}
+
+.welcome-inside {
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.hi-text {
+  width: 900px;
+  height: 58px;
+
+  font-weight: 600 !important;
+  font-size: 32px !important;
+  line-height: 58px !important;
+  /* identical to box height */
+
+  color: #050505;
+}
+
+.interest-text {
+  /* width: 70% !important; */
+  height: 48px !important;
+  font-weight: 600 !important;
+  font-size: 40px !important;
+  line-height: 48px !important;
+  text-align: center !important;
+
+  /* Text/Text and content */
+  color: #050505 !important;
+
+  /* Inside auto layout */
+  flex: none !important;
+  order: 0 !important;
+  flex-grow: 0 !important;
+}
+
+.sub-heading {
+  /* With our quick and easy trade in process, you will get an instant offer that is good for 30 days. */
+
+  /* width: 70% !important; */
+  height: 58px !important;
+
+  font-weight: 600 !important;
+  font-size: 24px !important;
+  line-height: 29px !important;
+  text-align: center !important;
+
+  /* Text/Text and content */
+  color: #050505 !important;
+
+  /* Inside auto layout */
+  flex: none !important;
+  order: 1 !important;
+  flex-grow: 0 !important;
+}
+
+.middle-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  gap: 16px;
+
+  /* width: 70em; */
+  /* height: 248px; */
+
+  /* Inside auto layout */
+  flex: none;
+  order: 1;
+  flex-grow: 0;
+}
+
+.middle-card-heading-text {
+  /* How it works */
+
+  /* width: 717px !important; */
+  height: 39px !important;
+  font-weight: 600 !important;
+  font-size: 32px !important;
+  line-height: 39px !important;
+  /* identical to box height */
+  text-align: center !important;
+
+  color: #000000 !important;
+
+  /* Inside auto layout */
+  flex: none !important;
+  order: 0 !important;
+  flex-grow: 0 !important;
+}
+
+.separator:not(:last-child) {
+  width: 1px;
+  height: 80px;
+
+  margin-top: 3em;
+
+  background: #000000;
+  transform: matrix(1, 0, 0, -1, 0, 0);
+
+  /* Inside auto layout */
+  flex: none;
+}
+
+.service-operator-container:not(:last-child) {
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.service-operator-container:not(:first-child) {
+  padding-top: 0.5em;
+}
+
+.edit-button {
+  /* Primary button
+
+Buttons communicate actions that users can take. They are typically placed throughout your UI, in places like Dialogs, Modal windows, Forms, Cards and Toolbars
+
+Outlined buttons are medium-emphasis buttons.
+They contain actions that are important, but aren’t the primary action in an app.
+
+Outlined buttons pair well with filled buttons to indicate an alternative, secondary action.
+*/
+
+  /* Auto layout */
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  gap: 8px; */
+
+  width: '5em' !important;
+
+  text-transform: none !important;
+  font-weight: 500 !important;
+
+  border: 1px solid #253278 !important;
+  border-radius: 100px !important;
+  color: #253278 !important;
+
+  /* Inside auto layout */
+  /* flex: none;
+  order: 2;
+  flex-grow: 0; */
+}
+
+.edit-btn-container {
+  display: flex;
+  margin-left: '2em';
+}
+
+.operator-name {
+  font-weight: 400 !important;
+  font-size: 1.2em !important;
+}
+.operator-profile {
+  font-weight: 400 !important;
+  font-size: 1em !important;
+}

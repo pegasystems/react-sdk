@@ -23,6 +23,7 @@ const AppSelector = () => {
         <Route path={`${baseURL}embedded.html`} element={<Embedded />} />
         <Route path={`${baseURL}portal`} element={<FullPortal />} />
         <Route path={`${baseURL}portal.html`} element={<FullPortal />} />
+        <Route path={`${baseURL}prweb/*`} element={<FullPortal />} />
         <Route path='*' element={<Embedded />} />
       </Routes>
     </div>

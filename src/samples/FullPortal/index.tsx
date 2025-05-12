@@ -74,7 +74,7 @@ export default function FullPortal() {
       compareSdkPCoreVersions();
 
       // Initialize the SdkComponentMap (local and pega-provided)
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
       getSdkComponentMap(localSdkComponentMap).then((theComponentMap: any) => {
         console.log(`SdkComponentMap initialized`);
 
@@ -135,7 +135,7 @@ export default function FullPortal() {
     const redirected = sessionStorage.getItem('redirected');
     if (isLoggedIn !== 'true' && redirected !== 'true') {
       sessionStorage.setItem('url', window.location.pathname);
-      navigate('/portal');
+      // navigate('/portal');
     }
     sessionStorage.setItem('redirected', 'true');
     // Login if needed, doing an initial main window redirect
@@ -144,7 +144,7 @@ export default function FullPortal() {
       mainRedirect: true,
       redirectDoneCB: doRedirectDone,
       locale
-      // semanticUrls: true //. enable this line for semantic urls
+      // semanticUrls: true // . enable this line for semantic urls
     });
   }, []);
 

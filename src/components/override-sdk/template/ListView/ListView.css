@@ -1,0 +1,36 @@
+.no-records {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+}
+
+.react-datepicker-popper {
+  z-index: 9999 !important;
+}
+
+.todo-icon {
+  width: 44px;
+  height: 44px;
+
+  /* position: absolute; */
+  width: 44px;
+  height: 44px;
+  /* left: calc(50% - 44px / 2); */
+  /* top: calc(50% - 44px / 2); */
+
+  background-color: #ce2525 !important;
+}
+
+.list-text {
+  margin-left: 1em !important;
+}
+
+.list-text p {
+  color: rgba(0, 0, 0, 0.87) !important;
+  font-size: 1em !important;
+}
+
+.list-text span {
+  font-size: 1.2em !important;
+}

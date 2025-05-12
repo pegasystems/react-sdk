@@ -1,0 +1,86 @@
+.quick-link-ul-list {
+  list-style: none;
+  padding: 0;
+  grid-template-columns: repeat(3, 1fr);
+  display: grid;
+  gap: calc(1rem);
+}
+
+.quick-link-list {
+  background-color: transparent;
+  color: white;
+  border-radius: 8px;
+}
+
+.quick-link-button {
+  text-transform: capitalize !important;
+  font-size: 16px !important;
+  color: white !important;
+  padding: calc(0.5rem * 2) !important;
+  height: 6rem;
+  width: 100%;
+  justify-content: start !important;
+}
+
+.quick-link-icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  filter: invert(100%);
+}
+
+.quick-link-button-span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quick-link-heading {
+  margin-top: 8px;
+}
+
+.welcome-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 16px;
+}
+
+.welcome-inside {
+  flex: none;
+  order: 0;
+  align-self: stretch;
+  flex-grow: 0;
+}
+
+.hi-text {
+  width: 900px;
+  height: 58px;
+
+  font-weight: 600 !important;
+  font-size: 48px !important;
+  line-height: 58px !important;
+  /* identical to box height */
+
+  color: #050505;
+}
+
+.help-text {
+  width: 900px;
+  height: 29px;
+
+  font-weight: 600 !important;
+  font-size: 24px !important;
+  line-height: 29px !important;
+  /* identical to box height */
+
+  color: #050505;
+}
+
+.service-operator-container {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}

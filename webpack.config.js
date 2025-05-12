@@ -77,10 +77,6 @@ module.exports = (env, argv) => {
           globOptions: {
             ignore: webpackMode === 'production' ? ['**/constellation-core.*.map'] : undefined
           }
-        },
-        {
-          from: './node_modules/@pega/constellationjs/dist/js',
-          to: './constellation/prerequisite/js'
         }
       ]
     })

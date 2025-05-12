@@ -1,0 +1,10 @@
+{
+  "componentKey": "BannerPage",
+  "name": "BannerPage",
+  "label": "Banner",
+  "description": "Banner Page Template",
+  "type": "Template",
+  "subtype": "PAGE",
+  "icon": "BannerPage.svg",
+  "properties": []
+}

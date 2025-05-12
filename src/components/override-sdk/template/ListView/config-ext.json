@@ -1,0 +1,9 @@
+{
+  "componentKey": "ListView",
+  "name": "ListView",
+  "label": "Table",
+  "description": "Table Template",
+  "type": "Template",
+  "subtype": "LIST",
+  "properties": []
+}

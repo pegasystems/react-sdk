@@ -1,0 +1,9 @@
+{
+  "name": "Checkbox",
+  "label": "Checkbox",
+  "description": "Boolean",
+  "type": "Field",
+  "subtype": "Boolean",
+  "componentKey": "Checkbox",
+  "properties": []
+}

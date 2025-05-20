@@ -42,7 +42,7 @@ export default function MultiStep(props: PropsWithChildren<MultiStepProps>) {
 
   function _getVBodyClass(index: number): string {
     if (index < arNavigationSteps.length - 1) {
-      return 'psdk-vertical-step-body psdk-vertical-step-line';
+      return 'psdk-vertical-step-body';
     }
 
     return 'psdk-vertical-step-body';

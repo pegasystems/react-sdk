@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-plusplus */
 
 /* eslint-disable @typescript-eslint/no-use-before-define */
@@ -70,8 +71,11 @@ export default function ListView(props: ListViewProps) {
   const ref = useRef({}).current;
   const cosmosTableRef = useRef();
 
-  if ((referenceList as any) === 'D_DriverProfilesList' || (referenceList as any) === 'D_ServiceTeamList') {
-    // eslint-disable-next-line react/jsx-no-useless-fragment
+  if (
+    (referenceList as any) === 'D_DriverProfilesList' ||
+    (referenceList as any) === 'D_ServiceTeamList' ||
+    (referenceList as any) === 'D_VehicleList'
+  ) {
     return <></>;
   }
   // List component context

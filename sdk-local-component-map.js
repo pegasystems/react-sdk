@@ -29,6 +29,9 @@ import MultiStep from './src/components/override-sdk/infra/MultiStep/';
 import BannerPage from './src/components/override-sdk/template/BannerPage/';
 import DataReference from './src/components/override-sdk/template/DataReference/';
 import RadioButtons from './src/components/override-sdk/field/RadioButtons/';
+import Checkbox from './src/components/override-sdk/field/Checkbox/';
+import DefaultPage from './src/components/override-sdk/template/DefaultPage/DefaultPage';
+import TextArea from './src/components/override-sdk/field/TextArea/';
 /* import end - DO NOT REMOVE */
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -61,12 +64,14 @@ const localSdkComponentMap = {
   Currency,
   FieldGroup,
   FieldValueList,
-  CaseView,
+  SelfServiceCaseView: CaseView,
   Assignment,
   MultiStep,
-  DefaultPage: BannerPage,
-  DataReference: DataReference,
-  RadioButtons: RadioButtons
+  DefaultPage,
+  DataReference,
+  RadioButtons,
+  Checkbox,
+  TextArea
   /* map end - DO NOT REMOVE */
 };
 

@@ -1,10 +1,10 @@
 {
-    "label": "DataReference",
-    "componentKey": "DataReference",
-    "name": "DataReference",
-    "description": "Data Reference Template",
-    "type": "Template",
-    "icon": "DataReference.svg",
-    "subtype": "DATAVIEW",
-    "properties": []
+  "label": "DataReference",
+  "componentKey": "DataReference",
+  "name": "DataReference",
+  "description": "Data Reference Template",
+  "type": "Template",
+  "icon": "DataReference.svg",
+  "subtype": "DATAVIEW",
+  "properties": []
 }

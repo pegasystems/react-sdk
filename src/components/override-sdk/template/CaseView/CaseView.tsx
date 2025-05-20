@@ -86,8 +86,8 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
    */
   function getChildRegionByName(inName: string): any {
     for (const child of children as ReactElement[]) {
-      const theMetadataType: string = (child as ReactElement).props.getPConnect().getRawMetadata().type.toLowerCase();
-      const theMetadataName: string = (child as ReactElement).props.getPConnect().getRawMetadata().name.toLowerCase();
+      const theMetadataType: string = (child as ReactElement).props.getPConnect().getRawMetadata().type?.toLowerCase();
+      const theMetadataName: string = (child as ReactElement).props.getPConnect().getRawMetadata().name?.toLowerCase();
 
       if (theMetadataType === 'region' && theMetadataName === inName) {
         return child;
@@ -111,7 +111,7 @@ export default function CaseView(props: PropsWithChildren<CaseViewProps>) {
   // const tmpLoadData2 = { config: { label: "Case History", name: "CaseHistory" }, type: "DeferLoad" };
 
   // Extract the tabs we need to display from theTabsRegion (one tab per entry in theTabsRegionChildren)
-  const theTabsRegionChildren = theTabsRegion.props.getPConnect().getChildren();
+  const theTabsRegionChildren = theTabsRegion?.props.getPConnect().getChildren();
 
   // vertTabInfo is sent to VerticalTabs component
   const vertTabInfo: Object[] = [];

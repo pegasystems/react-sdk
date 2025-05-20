@@ -12,6 +12,7 @@ interface BannerPageProps extends PConnProps {
   backgroundImage?: string;
   backgroundColor?: string;
   tintImage?: boolean;
+  variant?: string;
 }
 
 /*
@@ -29,7 +30,8 @@ export default function BannerPage(props: PropsWithChildren<BannerPageProps>) {
     imageTheme = 'light',
     backgroundImage = '',
     backgroundColor = '',
-    tintImage = false
+    tintImage = false,
+    variant
   } = props;
 
   const childArray = useMemo(() => {

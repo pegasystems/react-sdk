@@ -5,12 +5,20 @@ import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
+import SelectableCard from '../SelectableCard/SelectableCard';
 
 // Can't use RadioButtonProps until getLocaleRuleNameFromKeys is NOT private
 interface RadioButtonsProps extends PConnFieldProps {
   // If any, enter additional props that only exist on RadioButtons here
   inline: boolean;
   fieldMetadata?: any;
+  variant?: string;
+  hideFieldLabels?: boolean;
+  additionalProps?: any;
+  imagePosition?: string;
+  imageSize?: string;
+  showImageDescription?: boolean;
+  datasource?: any;
 }
 
 export default function RadioButtons(props: RadioButtonsProps) {
@@ -29,7 +37,14 @@ export default function RadioButtons(props: RadioButtonsProps) {
     inline,
     displayMode,
     hideLabel,
-    fieldMetadata
+    fieldMetadata,
+    variant,
+    hideFieldLabels,
+    additionalProps,
+    datasource,
+    imagePosition,
+    imageSize,
+    showImageDescription
   } = props;
   const [theSelectedButton, setSelectedButton] = useState(value);
 
@@ -89,6 +104,34 @@ export default function RadioButtons(props: RadioButtonsProps) {
   const handleBlur = event => {
     thePConn.getValidationApi().validate(event.target.value, ''); // 2nd arg empty string until typedef marked correctly as optional
   };
+
+  if (variant === 'card') {
+    const stateProps = thePConn.getStateProps();
+    return (
+      <SelectableCard
+        hideFieldLabels={hideFieldLabels}
+        additionalProps={additionalProps}
+        // testId={testId}
+        getPConnect={getPConnect}
+        dataSource={datasource}
+        image={{
+          imagePosition,
+          imageSize,
+          showImageDescription,
+          imageField: stateProps.image?.split('.').pop(),
+          imageDescription: stateProps.imageDescription?.split('.').pop()
+        }}
+        onChange={handleChange}
+        // onClick={hand}
+        // onKeyDown={handleOnKeyDown}
+        recordKey={stateProps.value?.split('.').pop()}
+        cardLabel={stateProps.primaryField?.split('.').pop()}
+        radioBtnValue={value}
+        type='radio'
+        setIsRadioCardSelected={displayMode !== 'DISPLAY_ONLY' ? setSelectedButton : undefined}
+      />
+    );
+  }
 
   return (
     <FormControl variant='standard' error={status === 'error'} required={required}>

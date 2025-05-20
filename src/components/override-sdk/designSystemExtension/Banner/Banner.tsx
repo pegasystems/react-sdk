@@ -40,12 +40,111 @@ export default function Banner(props: BannerProps) {
     { name: 'Bob Smith', profile: 'Additional driver', picture: 'Jeffrey.jpg' }
   ];
 
+  const VehicleList = [
+    { make: 'Mahinrda', model: 'XUV700', picture: 'Ava.jpg' },
+    { make: 'BMW', model: 'X5', picture: 'Jeffrey.jpg' }
+  ];
+
   const middleContainer = [
     { icon: 'assets/img/handshake.png', text: 'Get your instant online guaranteed offer' },
     { icon: 'assets/img/tow-truck.png', text: 'We will pick up your car at your convenience' },
     { icon: 'assets/img/help.png', text: 'Get a check or credit toward a new purchase' }
   ];
 
+  const viewName = a?.length ? a[0].props.getPConnect().viewName : a.props.getPConnect().viewName;
+
+  if (viewName === 'CustomerSelfserviceHomePage') {
+    return (
+      <div style={{ marginBottom: '1rem', height: '110vh' }}>
+        <div className='welcome-text' style={{ marginLeft: '25px' }}>
+          <div className='welcome-inside'>
+            <Typography className='hi-text'>Hi Ava,</Typography>
+            <Typography className='help-text'>How can we help you today?</Typography>
+          </div>
+        </div>
+        <Grid container item xs={12} className='banner-layout' spacing={1}>
+          <Grid item xs={variantMap[variant][0]} style={{ padding: '0 1em', width: '100%', maxWidth: 'none', flexBasis: 'auto' }}>
+            {a}
+          </Grid>
+          <Card>
+            <CardHeader title={<Typography variant='h6'>Your Driver Profiles</Typography>} style={{ paddingBottom: 0 }} />
+            <CardContent style={{ padding: '1em 2em' }}>
+              {driverProfiles.map((operator, i) => (
+                <div className='service-operator-container'>
+                  <Avatar src={`assets/img/${operator.picture}`} />
+                  <div>
+                    <Typography className='operator-name'>{operator.name}</Typography>
+                    <Typography className='operator-profile'>{operator.profile}</Typography>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+          <Grid container item xs={12} style={{ padding: '0 1em', width: '100%' }}>
+            <Grid item xs={9} style={{ padding: '0 1em' }}>
+              {b}
+            </Grid>
+          </Grid>
+        </Grid>
+      </div>
+    );
+  }
+  if (viewName === 'UConnect_new') {
+    return (
+      <div style={{ marginBottom: '1rem', height: '110vh' }}>
+        <div className='welcome-text' style={{ marginLeft: '25px' }}>
+          <div className='welcome-inside'>
+            <Typography className='hi-text'>Welcome, Ava!</Typography>
+          </div>
+        </div>
+
+        <Grid container item xs={12} className='banner-layout' spacing={1}>
+          <Grid item xs={variantMap[variant][0]} style={{ padding: '0 1em', width: '100%', maxWidth: 'none', flexBasis: 'auto' }}>
+            {/* {a} */}
+          </Grid>
+        </Grid>
+        <Grid container item xs={12} style={{ padding: '0 1em', width: '100%' }}>
+          <Grid item xs={12} style={{ padding: '0 1em' }}>
+            {b[0]}
+          </Grid>
+          <Grid container item xs={12} style={{ padding: '0 1em', width: '100%' }}>
+            <Grid item xs={9} style={{ padding: '0 1em' }}>
+              {b[1]}
+            </Grid>
+            <Grid item xs={3} style={{ padding: '0.5em 1em' }} />
+            <Card>
+              <CardHeader title={<Typography variant='h6'>Your Service team</Typography>} style={{ paddingBottom: 0 }} />
+              <CardContent style={{ padding: '1em 2em' }}>
+                {serviceTeam.map(operator => (
+                  <div className='service-operator-container'>
+                    <Avatar src={`assets/img/${operator.picture}`} />
+                    <div className='service-operator-details'>
+                      <Typography className='operator-name'>{operator.name}</Typography>
+                      <Typography className='operator-profile'>{operator.profile}</Typography>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader title={<Typography variant='h6'>Vehicle List</Typography>} style={{ paddingBottom: 0 }} />
+              <CardContent style={{ padding: '1em 2em' }}>
+                {VehicleList.map(vehicle => (
+                  <div className='service-operator-container'>
+                    <Avatar src={`assets/img/${vehicle.picture}`} />
+                    <div className='service-operator-details'>
+                      <Typography className='operator-name'>{vehicle.make}</Typography>
+                      <Typography className='operator-profile'>{vehicle.model}</Typography>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </div>
+    );
+  }
   if (variant === 'narrow-wide') {
     return (
       <div style={{ marginBottom: '1rem', height: '110vh' }}>

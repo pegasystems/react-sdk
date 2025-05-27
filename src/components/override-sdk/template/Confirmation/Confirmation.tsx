@@ -61,8 +61,9 @@ export default function Confirmation(props: PropsWithChildren<ConfirmationProps>
     setShowConfirmView(false);
     PCore.getPubSubUtils().publish(PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.CLOSE_CONFIRM_VIEW, rootInfo);
     // Following is needed for deployed SDK
-    // window.location.href = `${window.location.origin}/SDK-R/portal.html`;
-    window.location.reload();
+    window.location.href = `${window.location.origin}/SDK-R/portal.html`;
+    // window.location.reload();
+    // window.location.href = `${window.location.origin}/portal`;
   };
   const todoProps = { ...props, renderTodoInConfirm: true };
   const toDoList = getToDoAssignments(getPConnect());

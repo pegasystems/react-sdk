@@ -32,6 +32,7 @@ import RadioButtons from './src/components/override-sdk/field/RadioButtons/';
 import Checkbox from './src/components/override-sdk/field/Checkbox/';
 import DefaultPage from './src/components/override-sdk/template/DefaultPage/DefaultPage';
 import TextArea from './src/components/override-sdk/field/TextArea/';
+import AppAnnouncement from './src/components/override-sdk/widget/AppAnnouncement/';
 /* import end - DO NOT REMOVE */
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -65,13 +66,15 @@ const localSdkComponentMap = {
   FieldGroup,
   FieldValueList,
   SelfServiceCaseView: CaseView,
+  CaseView,
   Assignment,
   MultiStep,
   DefaultPage,
   DataReference,
   RadioButtons,
   Checkbox,
-  TextArea
+  TextArea,
+  AppAnnouncement: AppAnnouncement
   /* map end - DO NOT REMOVE */
 };
 

@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { getAllFields } from '@pega/react-sdk-components/lib/components/helpers/template-utils';
@@ -18,6 +18,8 @@ interface ViewProps extends PConnProps {
   visibility?: boolean;
   name?: string;
   bInForm?: boolean;
+  type?: any;
+  getPConnect: () => any;
 }
 
 //
@@ -36,24 +38,58 @@ const NO_HEADER_TEMPLATES = [
   'NarrowWideDetails',
   'WideNarrowDetails',
   'Confirmation',
-  'DynamicTabs'
+  'DynamicTabs',
+  'DetailsSubTabs'
 ];
 
 export default function View(props: PropsWithChildren<ViewProps>) {
-  const { children, template, getPConnect, mode, visibility, name: pageName } = props;
+  const { children, template, getPConnect, mode, visibility, name: pageName, type, title } = props;
   let { label = '', showLabel = false } = props;
+  const { PAGE_TYPES: { PAGE, LANDINGPAGE, LISTPAGE } = {}, MODAL } = PCore.getConstants();
 
   // Get the inherited props from the parent to determine label settings. For 8.6, this is only for embedded data form views
   // Putting this logic here instead of copy/paste in every Form template index.js
 
   const inheritedProps: any = getPConnect().getInheritedProps(); // try to remove any when getInheritedProps typedefs are fixed
   label = inheritedProps.label || label;
-  showLabel = inheritedProps.showLabel || showLabel;
+  const excludedLabels = ['Your Driver Profiles', 'Your Service Team', 'Your Service history'];
+  showLabel = (inheritedProps.showLabel || showLabel) && excludedLabels.findIndex(el => el === label) === -1;
+  const localeUtils = PCore.getLocaleUtils();
 
   const isEmbeddedDataView = mode === 'editable'; // would be better to check the reference child for `context` attribute if possible
   if (isEmbeddedDataView && showLabel === undefined) {
     showLabel = true;
   }
+
+  useEffect(() => {
+    // Get the localized application label
+    let applicationLabel = PCore.getEnvironmentInfo().getApplicationLabel();
+    applicationLabel = localeUtils.getLocaleValue(`${applicationLabel}`, '', '');
+    const caseInfo = getPConnect().getCaseInfo();
+    const isAssignmentInCreateStage = caseInfo && caseInfo.isAssignmentInCreateStage();
+    const isRenderingInModal = getPConnect().getContainerName().includes(MODAL);
+    const isRenderingInPreviewPanel = getPConnect().getContainerName().includes('preview');
+
+    /* If assignment is in create stage and rendering in modal don't update the title.
+      Title will be updated on completion of create stage and when the assignment is rendered inline to the page.
+    */
+    const canUpdateTitle =
+      !isRenderingInPreviewPanel &&
+      (type === PAGE || type === LANDINGPAGE || type === LISTPAGE) &&
+      !(isRenderingInModal && isAssignmentInCreateStage) &&
+      PCore.getEnvironmentInfo().getRenderingMode() === 'FULL_PORTAL';
+    // Incase of home route title is same as applicationLabel so setting to empty to just show applicationLabel
+    let titleVar = title === applicationLabel ? '' : title;
+
+    if (canUpdateTitle) {
+      if (caseInfo) {
+        const name = caseInfo.getName();
+        const id = caseInfo.getBusinessID();
+        titleVar = name && id ? `${name} (${id})` : titleVar;
+      }
+      document.title = titleVar ? `${titleVar} - ${applicationLabel}` : applicationLabel;
+    }
+  }, [type, title, getPConnect, PAGE, LANDINGPAGE, LISTPAGE]);
 
   const key = `${getPConnect().getContextName()}_${getPConnect().getPageReference()}_${pageName}`;
   // As long as the template is defined in the dependencies of the view
@@ -107,11 +143,11 @@ export default function View(props: PropsWithChildren<ViewProps>) {
 
     return (
       <div className='grid-column'>
-        {/* {showLabel && !NO_HEADER_TEMPLATES.includes(template) && (
+        {showLabel && !NO_HEADER_TEMPLATES.includes(template) && (
           <div className='template-title-container'>
             <span>{label}</span>
           </div>
-        )} */}
+        )}
         {RenderedTemplate}
       </div>
     );

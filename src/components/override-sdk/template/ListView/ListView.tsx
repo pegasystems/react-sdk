@@ -139,8 +139,8 @@ export default function ListView(props: ListViewProps) {
       },
       paper: {
         width: '100%',
-        marginTop: theme.spacing(2),
-        marginBottom: theme.spacing(2),
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
         display: 'grid'
       },
       search: {
@@ -175,9 +175,9 @@ export default function ListView(props: ListViewProps) {
         width: 1
       },
       title: {
-        marginTop: theme.spacing(1),
-        marginLeft: theme.spacing(1),
-        paddingLeft: theme.spacing(4),
+        // marginTop: theme.spacing(1),
+        // marginLeft: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(4)
       }
     })

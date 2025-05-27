@@ -1,0 +1,9 @@
+{
+  "componentKey": "AppAnnouncement",
+  "name": "AppAnnouncement",
+  "label": "App announcement",
+  "description": "App announcement widget",
+  "type": "Widget",
+  "subtype": "PAGE",
+  "properties": []
+}

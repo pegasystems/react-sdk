@@ -37,7 +37,7 @@ export default function Time(props: TimeProps) {
   };
 
   const handleChange = date => {
-    const theValue = date && date.isValid() ? date.format('HH:mm') : null;
+    const theValue = date && date.isValid() ? date.format('HH:mm:ss') : null;
     onChange({ value: theValue });
   };
 

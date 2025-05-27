@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-shadow */
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -11,11 +12,9 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
-  ListItemAvatar,
-  ListItemIcon
+  ListItemSecondaryAction
 } from '@mui/material';
-import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
@@ -27,6 +26,39 @@ import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { PConnProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
 import './ToDo.css';
+
+const fetchMyWorkList = (datapage, fields, numberOfRecords, includeTotalCount, context) => {
+  return PCore.getDataPageUtils()
+    .getDataAsync(
+      datapage,
+      context,
+      {},
+      {
+        pageNumber: 1,
+        pageSize: numberOfRecords
+      },
+      {
+        select: Object.keys(fields).map(key => ({ field: PCore.getAnnotationUtils().getPropertyName(fields[key]) }))
+      },
+      {
+        invalidateCache: true,
+        additionalApiParams: {
+          includeTotalCount
+        }
+      }
+    )
+    .then(response => {
+      return {
+        ...response,
+        data: (Array.isArray(response?.data) ? response.data : []).map(row =>
+          Object.keys(fields).reduce((obj, key) => {
+            obj[key] = row[PCore.getAnnotationUtils().getPropertyName(fields[key])];
+            return obj;
+          }, {})
+        )
+      };
+    });
+};
 
 interface ToDoProps extends PConnProps {
   // If any, enter additional props that only exist on this component
@@ -66,16 +98,16 @@ const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
-    paddingBottom: theme.spacing(1)
+    paddingBottom: theme.spacing(1),
     // borderLeft: '6px solid',
-    // borderLeftColor: theme.palette.primary.light
+    borderLeftColor: theme.palette.primary.light
   },
   avatar: {
     backgroundColor: theme.palette.primary.light,
     color: theme.palette.getContrastText(theme.palette.primary.light)
   },
   todoWrapper: {
-    borderLeft: '6px solid',
+    // borderLeft: '6px solid',
     borderLeftColor: theme.palette.primary.light,
     padding: theme.spacing(1),
     margin: theme.spacing(1)
@@ -97,16 +129,23 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ToDo(props: ToDoProps) {
-  const { getPConnect, datasource = [], headerText = 'To do', showTodoList = true, myWorkList = {}, type = 'worklist', isConfirm = false } = props;
+  const {
+    getPConnect,
+    context,
+    datasource = [],
+    headerText = 'To do',
+    showTodoList = true,
+    myWorkList = {},
+    type = 'worklist',
+    isConfirm = false
+  } = props;
 
   const CONSTS = PCore.getConstants();
 
   const bLogging = true;
-  let assignmentCount = 0;
   const currentUser = PCore.getEnvironmentInfo().getOperatorName();
   const currentUserInitials = Utils.getInitials(currentUser);
-  let assignmentsSource = datasource?.source || myWorkList?.source;
-  assignmentsSource = assignmentsSource.slice(0, 1);
+  const assignmentsSource = datasource?.source || myWorkList?.source;
 
   const [bShowMore, setBShowMore] = useState(true);
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -123,16 +162,35 @@ export default function ToDo(props: ToDoProps) {
   const showlessLocalizedValue = localizedVal('show_less', 'CosmosFields');
   const showMoreLocalizedValue = localizedVal('show_more', 'CosmosFields');
   const canPerform = assignments?.[0]?.canPerform === 'true' || assignments?.[0]?.canPerform === true;
-  // const { setOpen } = useNavBar();
+  const [count, setCount] = useState(0);
+
+  const {
+    WORK_BASKET: { MY_WORK_LIST }
+  } = PCore.getConstants();
 
   function initAssignments(): any[] {
     if (assignmentsSource) {
-      assignmentCount = assignmentsSource.length;
       return topThreeAssignments(assignmentsSource);
     }
     // turn off todolist
     return [];
   }
+
+  const deferLoadWorklistItems = useCallback(
+    responseData => {
+      setCount(responseData.totalCount);
+      setAssignments(responseData.data);
+    },
+    [MY_WORK_LIST]
+  );
+
+  useEffect(() => {
+    if (Object.keys(myWorkList).length && myWorkList.datapage) {
+      fetchMyWorkList(myWorkList.datapage, getPConnect().getComponentConfig()?.myWorkList.fields, 3, true, context).then(responseData => {
+        deferLoadWorklistItems(responseData);
+      });
+    }
+  }, []);
 
   const getAssignmentId = assignment => {
     return type === CONSTS.TODO ? assignment.ID : assignment.id;
@@ -154,7 +212,7 @@ export default function ToDo(props: ToDoProps) {
     setShowSnackbar(true);
   }
 
-  function handleSnackbarClose(event: React.SyntheticEvent<any, Event> | Event, reason?: SnackbarCloseReason) {
+  function handleSnackbarClose(event: React.SyntheticEvent<any> | Event, reason?: string) {
     if (reason === 'clickaway') {
       return;
     }
@@ -163,12 +221,18 @@ export default function ToDo(props: ToDoProps) {
 
   function _showMore() {
     setBShowMore(false);
-    setAssignments(assignmentsSource);
+    if (type === CONSTS.WORKLIST && count && count > assignments.length && !assignmentsSource) {
+      fetchMyWorkList(myWorkList.datapage, getPConnect().getComponentConfig()?.myWorkList.fields, count, false, context).then(response => {
+        setAssignments(response.data);
+      });
+    } else {
+      setAssignments(assignmentsSource);
+    }
   }
 
   function _showLess() {
     setBShowMore(true);
-    setAssignments(topThreeAssignments(assignmentsSource));
+    setAssignments(assignments => assignments.slice(0, 3));
   }
 
   function clickGo(assignment) {
@@ -196,44 +260,144 @@ export default function ToDo(props: ToDoProps) {
       options.target = sTarget;
     }
 
-    // thePConn
-    //   .getActionsApi()
-    //   .openAssignment(id, classname, options)
-    //   .then(() => {
-    //     if (bLogging) {
-    //       // eslint-disable-next-line no-console
-    //       console.log(`openAssignment completed`);
-    //     }
-    //   })
-    //   .catch(() => {
-    //     showToast(`Submit failed!`);
-    //   });
-
-    // options.containerName = 'primary';
-
-    options.pageName = 'pyEmbedAssignment';
-
-    PCore.getMashupApi()
-      .openAssignment(id, 'app/primary', options)
+    thePConn
+      .getActionsApi()
+      .openAssignment(id, classname, options)
       .then(() => {
         if (bLogging) {
-          //       // eslint-disable-next-line no-console
-          //       console.log(`openAssignment completed`);
+          // eslint-disable-next-line no-console
+          console.log(`openAssignment completed`);
         }
       })
       .catch(() => {
-        showToast('Submit Failed.');
+        showToast(`Submit failed!`);
       });
   }
 
+  const renderTaskId = (type, getPConnect, showTodoList, assignment) => {
+    const displayID = getID(assignment);
+
+    if ((showTodoList && type !== CONSTS.TODO) || assignment.isChild === true) {
+      /* Supress link for todo inside flow step */
+      return <Button size='small' color='primary'>{`${assignment.name} ${getID(assignment)}`}</Button>;
+    }
+    return displayID;
+  };
+
+  const getListItemComponent = assignment => {
+    if (isDesktop) {
+      return (
+        <>
+          {localizedVal('Task in', localeCategory)}
+          {renderTaskId(type, getPConnect, showTodoList, assignment)}
+          {type === CONSTS.WORKLIST && assignment.status ? `\u2022 ` : undefined}
+          {type === CONSTS.WORKLIST && assignment.status ? <span className='psdk-todo-assignment-status'>{assignment.status}</span> : undefined}
+          {` \u2022  ${localizedVal('Urgency', localeCategory)}  ${getPriority(assignment)}`}
+        </>
+      );
+    }
+    return (
+      <>
+        <Button size='small' color='primary'>{`${assignment.name} ${getID(assignment)}`}</Button>
+        {` \u2022 ${localizedVal('Urgency', localeCategory)}  ${getPriority(assignment)}`}
+      </>
+    );
+  };
+
+  // eslint-disable-next-line no-nested-ternary
+  const getCount = () => (assignmentsSource ? assignmentsSource.length : type === CONSTS.WORKLIST ? count : 0);
+
+  const toDoContent = (
+    <>
+      {showTodoList && (
+        <CardHeader
+          title={
+            <Badge badgeContent={getCount()} overlap='rectangular' color='primary'>
+              <Typography variant='h6'>{headerText}&nbsp;&nbsp;&nbsp;</Typography>
+            </Badge>
+          }
+        />
+      )}
+      <List>
+        {assignments.map(assignment => (
+          <div className='psdk-todo-avatar-header' key={getAssignmentId(assignment)}>
+            <Avatar className={classes.avatar} style={{ marginRight: '16px' }}>
+              {currentUserInitials}
+            </Avatar>
+            <div style={{ display: 'block' }}>
+              <Typography variant='h6'>{assignment?.name}</Typography>
+              {`${localizedVal('Task in', localeCategory)} ${renderTaskId(type, getPConnect, showTodoList, assignment)} \u2022  ${localizedVal(
+                'Urgency',
+                localeCategory
+              )}  ${getPriority(assignment)}`}
+            </div>
+            {(!isConfirm || canPerform) && (
+              <div style={{ marginLeft: 'auto' }}>
+                <IconButton id='go-btn' onClick={() => clickGo(assignment)} size='large'>
+                  <ArrowForwardIosOutlinedIcon />
+                </IconButton>
+              </div>
+            )}
+          </div>
+        ))}
+      </List>
+    </>
+  );
+
+  const modifiedAssignments = assignments?.length > 0 ? [assignments?.[0]] : [];
+
   return (
     <>
-      {type === CONSTS.WORKLIST && assignments?.length > 0 && (
-        <Card className={classes.root} style={{ paddingBottom: 0, marginBottom: '2em' }}>
-          {showTodoList && <CardHeader style={{ padding: '0 2rem' }} title={<Typography variant='h6'>Please let us know how we did!</Typography>} />}
-          <CardContent style={{ padding: '0 1em' }}>
+      {/* {type === CONSTS.WORKLIST && (
+        <Card className={classes.root}>
+          {showTodoList && (
+            <CardHeader
+              title={
+                <Badge badgeContent={getCount()} overlap='rectangular' color='primary'>
+                  <Typography variant='h6'>{headerText}&nbsp;&nbsp;&nbsp;</Typography>
+                </Badge>
+              }
+              avatar={<Avatar className={classes.avatar}>{currentUserInitials}</Avatar>}
+            />
+          )}
+          <CardContent>
             <List>
               {assignments.map(assignment => (
+                <ListItem key={getAssignmentId(assignment)} dense divider onClick={() => clickGo(assignment)}>
+                  <ListItemText primary={getAssignmentName(assignment)} secondary={getListItemComponent(assignment)} />
+                  <ListItemSecondaryAction>
+                    <IconButton onClick={() => clickGo(assignment)} size='large'>
+                      <ArrowForwardIosOutlinedIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+            </List>
+          </CardContent>
+        </Card>
+      )}
+
+      {type === CONSTS.TODO && !isConfirm && <Card className={classes.todoWrapper}>{toDoContent}</Card>}
+      {type === CONSTS.TODO && isConfirm && <>{toDoContent}</>}
+
+      {getCount() > 3 && (
+        <Box display='flex' justifyContent='center'>
+          {bShowMore ? (
+            <Button color='primary' onClick={_showMore}>
+              {showMoreLocalizedValue === 'show_more' ? 'Show more' : showMoreLocalizedValue}
+            </Button>
+          ) : (
+            <Button onClick={_showLess}>{showlessLocalizedValue === 'show_less' ? 'Show less' : showlessLocalizedValue}</Button>
+          )}
+        </Box>
+      )} */}
+
+      {type === CONSTS.WORKLIST && modifiedAssignments?.length > 0 && (
+        <Card className={classes.root} style={{ paddingBottom: 0, marginBottom: '1.2em' }}>
+          {showTodoList && <CardHeader style={{ padding: '0 1rem' }} title={<Typography variant='h6'>{headerText}</Typography>} />}
+          <CardContent style={{ padding: '0 1em' }}>
+            <List>
+              {modifiedAssignments.map(assignment => (
                 <ListItem key={getAssignmentId(assignment)} dense>
                   <IconButton className='todo-icon'>
                     <img src='assets/img/ToDoIcon.png' />
@@ -251,7 +415,7 @@ export default function ToDo(props: ToDoProps) {
                   </ListItemSecondaryAction>
                 </ListItem>
               ))}
-              {assignments?.length === 0 && <Typography style={{ textAlign: 'center' }}>No results found.</Typography>}
+              {/* {assignments?.length === 0 && <Typography style={{ textAlign: 'center' }}>No results found.</Typography>} */}
             </List>
           </CardContent>
         </Card>
@@ -260,7 +424,7 @@ export default function ToDo(props: ToDoProps) {
       <Snackbar
         open={showSnackbar}
         autoHideDuration={3000}
-        onClose={(event, reason) => handleSnackbarClose(event, reason)}
+        onClose={handleSnackbarClose}
         message={snackbarMessage}
         action={
           <IconButton size='small' aria-label='close' color='inherit' onClick={handleSnackbarClose}>

@@ -84,6 +84,12 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
     return formedSteps;
   }
 
+  // useEffect(() => {
+  //   if(arCurrentStepIndicies === arNavigationSteps.length() - 1){
+
+  //   }
+  // })
+
   useEffect(() => {
     if (children) {
       const firstChild = Array.isArray(children) ? children[0] : children;
@@ -134,7 +140,7 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
 
   function handleSnackbarClose(event: Event | React.SyntheticEvent<any, Event>, reason: SnackbarCloseReason) {
     if (reason === 'clickaway') {
-      return;
+      // return;
     }
     setShowSnackbar(false);
   }
@@ -276,11 +282,14 @@ export default function Assignment(props: PropsWithChildren<AssignmentProps>) {
     });
   }
 
+  const caseType = PCore?.getStore().getState()?.data[getPConnect().getContextName()]?.caseInfo?.caseTypeName;
+
   return (
     <div id='Assignment' style={{ padding: '1em 1.4em' }}>
       {banners}
       {bHasNavigation ? (
         <>
+          {caseType && <div style={{ fontSize: '1.5em', fontWeight: 500 }}>{caseType}</div>}
           <MultiStep
             getPConnect={getPConnect}
             itemKey={itemKey}

@@ -50,12 +50,15 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
   const NavBar = getComponentFromMap('NavBar');
   const WssNavBar = getComponentFromMap('WssNavBar');
 
-  const { pages = [], caseTypes = [], showAppName, children = [], getPConnect, portalTemplate, portalName, portalLogo, navDisplayOptions } = props;
+  // eslint-disable-next-line prefer-const
+  let { pages = [], caseTypes = [], showAppName, children = [], getPConnect, portalTemplate, portalName, portalLogo, navDisplayOptions } = props;
 
   const [open, setOpen] = useState(true);
 
   const [activeTab, setActiveTab] = useState(!pages ? null : pages[0]?.pyRuleName);
   const pConn = getPConnect();
+
+  const aa = pConn.resolveConfigProps({ labe: '@L Trade in' });
   const envInfo = PCore.getEnvironmentInfo();
   const imageKey = envInfo.getOperatorImageInsKey();
   const userName = envInfo.getOperatorName();
@@ -150,13 +153,17 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
   const links = !pages
     ? []
     : pages.map(page => {
-        const name = localizedVal(page.pyLabel, '', localeReference);
+        const resolvedPage = pConn.resolveConfigProps(page);
+        const name = localizedVal((resolvedPage as any).pyDefaultHeading, '', localeReference);
         return {
           text: name,
           name,
-          icon: page.pxPageViewIcon.replace('pi pi-', ''),
-          active: page.pyRuleName === activeTab,
-          onClick: () => (!page.pyURLContent || page.pyURLContent === '' ? showPage(page.pyRuleName, page.pyClassName) : openURL(page.pyURLContent))
+          icon: resolvedPage.pxPageViewIcon.replace('pi pi-', ''),
+          active: resolvedPage.pyRuleName === activeTab,
+          onClick: () =>
+            !resolvedPage.pyURLContent || resolvedPage.pyURLContent === ''
+              ? showPage(resolvedPage.pyRuleName, resolvedPage.pyClassName)
+              : openURL(resolvedPage.pyURLContent)
         };
       });
 
@@ -195,10 +202,8 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
               onChange={handleBackgroundChange}
             />
           </Grid>
-          <Grid item xs={10}>
-            <div style={{ background: `url(assets/img/${backImage}) 100% 100%` }} className={classes.wsscontent}>
-              {children}
-            </div>
+          <Grid item xs={10} style={{ background: `url(assets/img/${backImage}) 100% 100%`, height: '110vh' }}>
+            <div className={classes.wsscontent}>{children}</div>
           </Grid>
         </Grid>
       </div>

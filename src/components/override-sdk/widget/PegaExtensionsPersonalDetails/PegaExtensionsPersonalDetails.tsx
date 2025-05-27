@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   headerText: {
-    paddingLeft: '1.8em',
+    paddingLeft: '1.2em',
     fontSize: '1.8em',
     fontWeight: 600
   }
@@ -128,7 +128,7 @@ export default function PegaExtensionsPersonalDetails(props) {
   ];
 
   return (
-    <div style={{ marginTop: '6em' }}>
+    <div style={{ paddingTop: '6em' }}>
       <div style={{ display: 'grid', gap: '3rem' }}>
         <div style={{ display: 'grid', justifyContent: 'center', gap: '1.5em' }}>
           <Avatar style={{ width: 'auto', height: 'auto' }}>
@@ -152,7 +152,7 @@ export default function PegaExtensionsPersonalDetails(props) {
             >
               {itemsToRender[0].items.map((element, i) => {
                 return (
-                  <li className='quick-link-list' style={{ width: '30em' }}>
+                  <li className='quick-link-list' style={{ width: '27em' }}>
                     <Card className={classes.root}>
                       <CardHeader style={{ paddingTop: 0, paddingBottom: 0 }} title={<Typography variant='h6'>{element.label}</Typography>} />
                       <CardContent>
@@ -185,7 +185,7 @@ export default function PegaExtensionsPersonalDetails(props) {
             >
               {itemsToRender[1].items.map((element, i) => {
                 return (
-                  <li className='quick-link-list' style={{ width: '30em' }}>
+                  <li className='quick-link-list' style={{ width: '27em' }}>
                     <Card className={classes.root} style={{ width: 'auto' }}>
                       <CardHeader style={{ paddingTop: 0, paddingBottom: 0 }} title={<Typography variant='h6'>{element.label}</Typography>} />
                       <CardContent>

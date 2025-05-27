@@ -138,39 +138,42 @@ export default function CheckboxComponent(props: CheckboxProps) {
   if (variant === 'card') {
     const stateProps = thePConn.getStateProps();
     return (
-      <SelectableCard
-        {...commonProps}
-        testId={testId}
-        displayMode={displayMode}
-        dataSource={datasource}
-        getPConnect={getPConnect}
-        readOnly={renderMode === 'ReadOnly' || displayMode === 'DISPLAY_ONLY' || readOnly}
-        onChange={e => {
-          e.stopPropagation();
-          const recordKey = selectionKey?.split('.').pop();
-          const selectedItem = datasource?.source?.find(item => item[recordKey as any] === e.target.id) ?? {};
-          handleCheckboxChange(e, {
-            id: selectedItem[recordKey as any],
-            primary: selectedItem[recordKey as any]
-          });
-        }}
-        onBlur={() => {
-          thePConn.getValidationApi().validate(selectedvalues, selectionList);
-        }}
-        hideFieldLabels={hideFieldLabels}
-        recordKey={selectionKey?.split('.').pop()}
-        cardLabel={primaryField.split('.').pop()}
-        image={{
-          imagePosition,
-          imageSize,
-          showImageDescription,
-          imageField: image.split('.').pop(),
-          imageDescription: (thePConn?.getRawMetadata()?.config as any).imageDescription?.split('.').pop()
-        }}
-        readOnlyList={selectedvalues}
-        type='checkbox'
-        showNoValue={(renderMode === 'ReadOnly' || readOnly || displayMode === 'DISPLAY_ONLY') && selectedvalues.length === 0}
-      />
+      <div>
+        <h4 style={{ marginTop: 0, marginBottom: 0 }}>{label}</h4>
+        <SelectableCard
+          {...commonProps}
+          testId={testId}
+          displayMode={displayMode}
+          dataSource={datasource}
+          getPConnect={getPConnect}
+          readOnly={renderMode === 'ReadOnly' || displayMode === 'DISPLAY_ONLY' || readOnly}
+          onChange={e => {
+            e.stopPropagation();
+            const recordKey = selectionKey?.split('.').pop();
+            const selectedItem = datasource?.source?.find(item => item[recordKey as any] === e.target.id) ?? {};
+            handleCheckboxChange(e, {
+              id: selectedItem[recordKey as any],
+              primary: selectedItem[recordKey as any]
+            });
+          }}
+          onBlur={() => {
+            thePConn.getValidationApi().validate(selectedvalues, selectionList);
+          }}
+          hideFieldLabels={hideFieldLabels}
+          recordKey={selectionKey?.split('.').pop()}
+          cardLabel={primaryField.split('.').pop()}
+          image={{
+            imagePosition,
+            imageSize,
+            showImageDescription,
+            imageField: image.split('.').pop(),
+            imageDescription: (thePConn?.getRawMetadata()?.config as any).imageDescription?.split('.').pop()
+          }}
+          readOnlyList={selectedvalues}
+          type='checkbox'
+          showNoValue={(renderMode === 'ReadOnly' || readOnly || displayMode === 'DISPLAY_ONLY') && selectedvalues.length === 0}
+        />
+      </div>
     );
   }
 

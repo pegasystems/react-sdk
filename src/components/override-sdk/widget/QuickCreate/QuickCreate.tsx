@@ -25,6 +25,7 @@ export default function QuickCreate(props: QuickCreateProps) {
 
   const options: any = {
     pageName: 'pyEmbedAssignment',
+    casePage: 'full',
     startingFields:
       mashupCaseType === 'DIXL-MediaCo-Work-NewService'
         ? {

@@ -2,7 +2,7 @@ import dompurify from 'dompurify';
 import get from 'lodash.get';
 import set from 'lodash.set';
 
-import { Link, NoValue, safeStringify } from '@pega/cosmos-react-core';
+import { Link, NoValue } from '@pega/cosmos-react-core';
 
 export const getResolvedConstantValue = (pConnect, key) => {
   return pConnect.getValue(PCore.getResolvedConstantValue(key)) || pConnect.getValue(key);

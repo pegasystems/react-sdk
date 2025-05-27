@@ -1,9 +1,9 @@
 {
-    "componentKey": "TextArea",
-    "name": "TextArea",
-    "label": "Text area",
-    "description": "Text (paragraph)",
-    "type": "Field",
-    "subtype": "Text-Paragraph",
-    "properties": []
+  "componentKey": "TextArea",
+  "name": "TextArea",
+  "label": "Text area",
+  "description": "Text (paragraph)",
+  "type": "Field",
+  "subtype": "Text-Paragraph",
+  "properties": []
 }

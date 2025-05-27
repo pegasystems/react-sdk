@@ -70,10 +70,15 @@ module.exports = (env, argv) => {
           to: './constellation'
         },
         {
+          from: './node_modules/@pega/constellationjs/dist/js',
+          to: './constellation/prerequisite/js'
+        },
+        {
           from: './node_modules/@pega/constellationjs/dist/constellation-core.*.*',
           to() {
             return Promise.resolve('constellation/prerequisite/[name][ext]');
           },
+
           globOptions: {
             ignore: webpackMode === 'production' ? ['**/constellation-core.*.map'] : undefined
           }

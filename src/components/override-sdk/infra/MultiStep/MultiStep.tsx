@@ -42,7 +42,7 @@ export default function MultiStep(props: PropsWithChildren<MultiStepProps>) {
 
   function _getVBodyClass(index: number): string {
     if (index < arNavigationSteps.length - 1) {
-      return 'psdk-vertical-step-body';
+      return 'psdk-vertical-step-body psdk-vertical-step-line';
     }
 
     return 'psdk-vertical-step-body';
@@ -85,15 +85,15 @@ export default function MultiStep(props: PropsWithChildren<MultiStepProps>) {
             return (
               <React.Fragment key={mainStep.actionID}>
                 <div className='psdk-vertical-step'>
-                  {/* <div className='psdk-vertical-step-header'>
+                  <div className='psdk-vertical-step-header'>
                     <div className={_getVIconClass(mainStep.visited_status)}>
                       <div className='psdk-vertical-step-icon-content'>
                         <span>{index + 1}</span>
                       </div>
                     </div>
                     <div className={_getVLabelClass(mainStep.visited_status)}>{mainStep.name}</div>
-                  </div> */}
-                  <div className={_getVBodyClass(index)}>
+                  </div>
+                  <div className={_getVBodyClass(index)} style={{ paddingLeft: '40px' }}>
                     {mainStep?.steps && (
                       <ul
                         style={{
@@ -111,7 +111,13 @@ export default function MultiStep(props: PropsWithChildren<MultiStepProps>) {
                             </div>
                             {subStep.visited_status === 'current' && (
                               <div>
-                                <AssignmentCard getPConnect={getPConnect} itemKey={itemKey} actionButtons={actionButtons} onButtonPress={buttonPress}>
+                                <AssignmentCard
+                                  getPConnect={getPConnect}
+                                  itemKey={itemKey}
+                                  actionButtons={actionButtons}
+                                  onButtonPress={buttonPress}
+                                  style={{ paddingLeft: '35px' }}
+                                >
                                   {children}
                                 </AssignmentCard>
                               </div>

@@ -45,6 +45,8 @@ mat-horizontal-stepper {
 
 .psdk-flow-container-top {
   border-radius: 0.3125rem;
+  margin: auto;
+  padding-top: 100px;
 }
 .psdk-flow-container {
   padding-left: 2.1875rem;
@@ -117,6 +119,7 @@ mat-horizontal-stepper {
   vertical-align: middle;
   font-size: 14px;
   font-weight: 500;
+  padding-left: 20px;
 }
 
 .psdk-vertical-step-label-selected {
@@ -129,6 +132,7 @@ mat-horizontal-stepper {
   vertical-align: middle;
   font-size: 14px;
   font-weight: 500;
+  padding-left: 20px;
 }
 
 .psdk-vertical-step-body {
@@ -146,7 +150,7 @@ mat-horizontal-stepper {
   content: '';
   position: absolute;
   left: 0;
-  border-left-width: 1px;
+  border-left-width: 2px;
   border-left-style: solid;
   top: -16px;
   bottom: -16px;

@@ -108,28 +108,31 @@ export default function RadioButtons(props: RadioButtonsProps) {
   if (variant === 'card') {
     const stateProps = thePConn.getStateProps();
     return (
-      <SelectableCard
-        hideFieldLabels={hideFieldLabels}
-        additionalProps={additionalProps}
-        // testId={testId}
-        getPConnect={getPConnect}
-        dataSource={datasource}
-        image={{
-          imagePosition,
-          imageSize,
-          showImageDescription,
-          imageField: stateProps.image?.split('.').pop(),
-          imageDescription: stateProps.imageDescription?.split('.').pop()
-        }}
-        onChange={handleChange}
-        // onClick={hand}
-        // onKeyDown={handleOnKeyDown}
-        recordKey={stateProps.value?.split('.').pop()}
-        cardLabel={stateProps.primaryField?.split('.').pop()}
-        radioBtnValue={value}
-        type='radio'
-        setIsRadioCardSelected={displayMode !== 'DISPLAY_ONLY' ? setSelectedButton : undefined}
-      />
+      <div>
+        <h4 style={{ marginTop: 0, marginBottom: 0 }}>{label}</h4>
+        <SelectableCard
+          hideFieldLabels={hideFieldLabels}
+          additionalProps={additionalProps}
+          // testId={testId}
+          getPConnect={getPConnect}
+          dataSource={datasource}
+          image={{
+            imagePosition,
+            imageSize,
+            showImageDescription,
+            imageField: stateProps.image?.split('.').pop(),
+            imageDescription: stateProps.imageDescription?.split('.').pop()
+          }}
+          onChange={handleChange}
+          // onClick={hand}
+          // onKeyDown={handleOnKeyDown}
+          recordKey={stateProps.value?.split('.').pop()}
+          cardLabel={stateProps.primaryField?.split('.').pop()}
+          radioBtnValue={value}
+          type='radio'
+          setIsRadioCardSelected={displayMode !== 'DISPLAY_ONLY' ? setSelectedButton : undefined}
+        />
+      </div>
     );
   }
 

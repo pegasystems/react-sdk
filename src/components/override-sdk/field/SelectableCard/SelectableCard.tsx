@@ -14,6 +14,7 @@ const SelectableCard: React.FC<any> = props => {
     recordKey = '',
     className,
     cardLabel,
+    label,
     hideFieldLabels = false,
     readOnly,
     disabled,
@@ -93,7 +94,7 @@ const SelectableCard: React.FC<any> = props => {
           <div style={{ paddingTop: '15px' }}>
             {type === 'checkbox' ? (
               <Card className={className} style={{ display: 'flex' }} data-testid={testId}>
-                {image && <img src={image.src} alt={image.alt} style={{ width: '100px' }} />}
+                {image && <img src={image.src} alt={image.alt} style={{ width: '100px', backgroundColor: '#555' }} />}
                 <CardContent>
                   <FormControlLabel
                     control={

@@ -76,7 +76,14 @@ export default function WssQuickCreate(props: WssQuickCreateProps) {
             <li className='quick-link-list' key={element.label}>
               <Card className={classes.root} style={{ width: 'auto' }}>
                 <img src={`assets/img/${quickLinkImages[element?.label] || defaultQuickLinkImage}`} height={180} width='100%' />
-                <CardHeader style={{ paddingTop: 0, paddingBottom: 0 }} title={<Typography variant='h6'>{element.label}</Typography>} />
+                <CardHeader
+                  style={{ paddingTop: 0, paddingBottom: 0 }}
+                  title={
+                    <Typography variant='h6' style={{ fontSize: '1rem' }}>
+                      {element.label}
+                    </Typography>
+                  }
+                />
                 <CardContent>
                   <Typography variant='body2' color='textSecondary' component='p'>
                     Whether you need to get a simple oil change or need to repair extensive damages, we’ve got you covered.

@@ -6,3 +6,8 @@
   font-weight: 600;
   margin-bottom: 5px;
 }
+
+.grid-column {
+  /* padding-left: 1rem; */
+  padding-right: 1rem;
+}

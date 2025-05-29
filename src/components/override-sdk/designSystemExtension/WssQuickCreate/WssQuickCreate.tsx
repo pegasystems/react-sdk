@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
     marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
+    // marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1)
   },
@@ -79,7 +79,7 @@ export default function WssQuickCreate(props: WssQuickCreateProps) {
                 <CardHeader
                   style={{ paddingTop: 0, paddingBottom: 0 }}
                   title={
-                    <Typography variant='h6' style={{ fontSize: '1rem' }}>
+                    <Typography variant='h6' style={{ fontSize: '1rem', width: '15rem' }}>
                       {element.label}
                     </Typography>
                   }

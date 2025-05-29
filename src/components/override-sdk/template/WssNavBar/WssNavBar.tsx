@@ -224,7 +224,7 @@ export default function WssNavBar(props: WssNavBarProps) {
         <Typography variant='inherit'>{localizedVal('Log off', localeCategory)}</Typography>
       </MenuItem>
     </Menu> */}
-        <Box sx={{ flexGrow: 0 }} style={{ position: 'fixed', right: '60px', top: '15px' }}>
+        <Box sx={{ flexGrow: 0 }} style={{ position: 'fixed', right: '30px', top: '15px' }}>
           {/* <IconButton onClick={handleOpenUserMenu}> */}
           <Avatar onClick={handleOpenUserMenu}>
             <img src='assets/img/Ava.jpg' className={classes.caseViewIconImage} />

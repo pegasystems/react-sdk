@@ -15,18 +15,18 @@ interface FieldValueListProps {
 const useStyles = makeStyles(theme => ({
   root: {
     marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
+    // marginLeft: theme.spacing(1),
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1)
   },
   fieldLabel: {
     fontWeight: 500,
-    fontSize: '1.8rem',
+    fontSize: '1rem',
     color: theme.palette.text.secondary
   },
   fieldValue: {
     color: theme.palette.text.primary,
-    fontSize: '1.5em'
+    fontSize: '1em'
   },
   noPaddingTop: {
     paddingTop: '0 !important'
@@ -53,7 +53,7 @@ export default function FieldValueList(props: FieldValueListProps) {
 
   function getGridItemLabel() {
     return (
-      <Grid item xs={variant === 'stacked' ? 12 : 10} className={variant === 'stacked' ? classes.noPaddingBottom : ''}>
+      <Grid item xs={variant === 'stacked' ? 12 : 10} className={variant === 'stacked' ? classes.noPaddingBottom : ''} style={{ paddingTop: 0 }}>
         <Typography variant='body2' component='span' className={`${classes.fieldLabel}`}>
           {name}
         </Typography>
@@ -65,7 +65,7 @@ export default function FieldValueList(props: FieldValueListProps) {
     const formattedValue = formatItemValue(value);
 
     return (
-      <Grid item xs={variant === 'stacked' ? 12 : 10} className={variant === 'stacked' ? classes.noPaddingTop : ''}>
+      <Grid item xs={variant === 'stacked' ? 12 : 10} className={variant === 'stacked' ? classes.noPaddingTop : ''} style={{ paddingTop: 0 }}>
         {isHtml ? (
           // eslint-disable-next-line react/no-danger
           <div dangerouslySetInnerHTML={{ __html: formattedValue }} />
@@ -79,7 +79,7 @@ export default function FieldValueList(props: FieldValueListProps) {
   }
 
   return (
-    <Grid container spacing={4} justifyContent='space-between' style={{ flexDirection: 'column' }}>
+    <Grid container spacing={4} style={{ flexDirection: 'row', flexWrap: 'nowrap' }} className={classes.root}>
       {getGridItemLabel()}
       {getGridItemValue()}
     </Grid>

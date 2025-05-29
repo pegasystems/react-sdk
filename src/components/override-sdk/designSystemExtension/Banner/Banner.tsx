@@ -59,27 +59,79 @@ export default function Banner(props: BannerProps) {
   // const childs = React.Children.toArray(b[0].props.getPConnect().getChildren());
   // console.log(childs);
 
+  // if (viewName === 'CustomerSelfserviceHomePage') {
+  //   return (
+  //     <div style={{ marginBottom: '1rem', height: '110vh' }}>
+  //       <div className='welcome-text' style={{ marginLeft: '25px' }}>
+  //         <div className='welcome-inside'>
+  //           <Typography className='hi-text'>Welcome, Ava!</Typography>
+  //         </div>
+  //       </div>
+
+  //       <Grid container item xs={12} className='banner-layout' spacing={1}>
+  //         <Grid item xs={variantMap[variant][0]} style={{ padding: '0 1em', display: 'flex', flexDirection: 'row', gap: '1em' }}>
+  //           {b}
+  //         </Grid>
+  //       </Grid>
+  //       <Grid container item xs={12} style={{ padding: '0 1.4em', display: 'flex', flexDirection: 'row' }}>
+  //         <Grid item xs={8} style={{ padding: '0 1em' }}>
+  //           {a}
+  //         </Grid>
+  //         <Grid item xs={4} style={{ padding: '0.5em 1em' }}>
+  //           <Card>
+  //             <CardHeader title={<Typography variant='h6'>Your Service team</Typography>} style={{ paddingBottom: 0, paddingTop: '0.5em' }} />
+  //             <CardContent style={{ padding: '1em 2em' }}>
+  //               {serviceTeam.map(operator => (
+  //                 <div className='service-operator-container'>
+  //                   <Avatar src={`assets/img/${operator.picture}`} />
+  //                   <div className='service-operator-details'>
+  //                     <Typography className='operator-name'>{operator.name}</Typography>
+  //                     <Typography className='operator-profile'>{operator.profile}</Typography>
+  //                   </div>
+  //                 </div>
+  //               ))}
+  //             </CardContent>
+  //           </Card>
+  //           <Card style={{ marginTop: '1em' }}>
+  //             <CardHeader title={<Typography variant='h6'>Your Driver Profiles</Typography>} style={{ paddingBottom: 0, paddingTop: '0.5em' }} />
+  //             <CardContent style={{ padding: '1em 2em' }}>
+  //               {driverProfiles.map(driver => (
+  //                 <div className='service-operator-container'>
+  //                   <Avatar src={`assets/img/${driver.picture}`} />
+  //                   <div className='service-operator-details'>
+  //                     <Typography className='operator-name'>{driver.name}</Typography>
+  //                     <Typography className='operator-profile'>{driver.profile}</Typography>
+  //                   </div>
+  //                 </div>
+  //               ))}
+  //             </CardContent>
+  //           </Card>
+  //         </Grid>
+  //       </Grid>
+  //     </div>
+  //   );
+  // }
   if (viewName === 'CustomerSelfserviceHomePage') {
     return (
-      <div style={{ marginBottom: '1rem', height: '110vh' }}>
-        <div className='welcome-text' style={{ marginLeft: '25px' }}>
+      <div style={{ marginBottom: '1rem' }}>
+        <div className='welcome-text'>
           <div className='welcome-inside'>
             <Typography className='hi-text'>Welcome, Ava!</Typography>
           </div>
         </div>
 
         <Grid container item xs={12} className='banner-layout' spacing={1}>
-          <Grid item xs={variantMap[variant][0]} style={{ padding: '0 1em', display: 'flex', flexDirection: 'row', gap: '1em' }}>
+          <Grid item xs={variantMap[variant][0]} style={{ display: 'flex', flexDirection: 'row', gap: '1em' }}>
             {b}
           </Grid>
         </Grid>
-        <Grid container item xs={12} style={{ padding: '0 1.4em', display: 'flex', flexDirection: 'row' }}>
+        <Grid container item xs={12} style={{ padding: '0 0.5em', display: 'flex', flexDirection: 'row' }}>
           <Grid item xs={8} style={{ padding: '0 1em' }}>
             {a}
           </Grid>
           <Grid item xs={4} style={{ padding: '0.5em 1em' }}>
             <Card>
-              <CardHeader title={<Typography variant='h6'>Your Service team</Typography>} style={{ paddingBottom: 0, paddingTop: 0 }} />
+              <CardHeader title={<Typography variant='h6'>Your Service team</Typography>} style={{ paddingBottom: 0, paddingTop: '0.5em' }} />
               <CardContent style={{ padding: '1em 2em' }}>
                 {serviceTeam.map(operator => (
                   <div className='service-operator-container'>
@@ -93,7 +145,7 @@ export default function Banner(props: BannerProps) {
               </CardContent>
             </Card>
             <Card style={{ marginTop: '1em' }}>
-              <CardHeader title={<Typography variant='h6'>Your Driver Profiles</Typography>} style={{ paddingBottom: 0 }} />
+              <CardHeader title={<Typography variant='h6'>Your Driver Profiles</Typography>} style={{ paddingBottom: 0, paddingTop: '0.5em' }} />
               <CardContent style={{ padding: '1em 2em' }}>
                 {driverProfiles.map(driver => (
                   <div className='service-operator-container'>
@@ -131,7 +183,7 @@ export default function Banner(props: BannerProps) {
           </Grid>
           <Grid item xs={4} style={{ padding: '0.5em 1em' }}>
             <Card>
-              <CardHeader title={<Typography variant='h6'>Your Service team</Typography>} style={{ paddingBottom: 0, paddingTop: 0 }} />
+              <CardHeader title={<Typography variant='h6'>Your Service team</Typography>} style={{ paddingBottom: 0, paddingTop: '0.5em' }} />
               <CardContent style={{ padding: '1em 2em' }}>
                 {serviceTeam.map(operator => (
                   <div className='service-operator-container'>
@@ -145,7 +197,7 @@ export default function Banner(props: BannerProps) {
               </CardContent>
             </Card>
             <Card style={{ marginTop: '1em' }}>
-              <CardHeader title={<Typography variant='h6'>Your Driver Profiles</Typography>} style={{ paddingBottom: 0, paddingTop: 0 }} />
+              <CardHeader title={<Typography variant='h6'>Your Driver Profiles</Typography>} style={{ paddingBottom: 0, ppaddingTop: '0.5em' }} />
               <CardContent style={{ padding: '1em 2em' }}>
                 {driverProfiles.map(driver => (
                   <div className='service-operator-container'>

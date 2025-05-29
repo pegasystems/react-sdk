@@ -178,7 +178,8 @@ export default function ListView(props: ListViewProps) {
         // marginTop: theme.spacing(1),
         // marginLeft: theme.spacing(1),
         paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(4)
+        paddingRight: theme.spacing(4),
+        paddingTop: theme.spacing(1)
       }
     })
   );

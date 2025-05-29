@@ -8,7 +8,8 @@ import FullPortal from '../FullPortal';
 //  to identify the paths correctly.
 const baseURL = '/SDK-R/';
 
-// The Main component renders one of the three provided
+// The Main component renders one of the three p
+// rovided
 // Routes (provided that one matches). Both the /roster
 // and /schedule routes will match any pathname that starts
 // with /roster or /schedule. The / route will only match

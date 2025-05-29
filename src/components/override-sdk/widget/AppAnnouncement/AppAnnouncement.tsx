@@ -51,7 +51,7 @@ export default function AppAnnouncement(props: AppAnnouncementProps) {
 
   return (
     <Card title='AppAnnouncement' className={classes.root}>
-      <CardHeader style={{ padding: '0 1em' }} title={<Typography variant='h6'>{header}</Typography>} />
+      <CardHeader style={{ padding: '0.5em 1em' }} title={<Typography variant='h6'>{header}</Typography>} />
       <CardContent style={{ padding: '0.5em 1em' }}>
         <Typography variant='body1' gutterBottom>
           {description}
@@ -65,7 +65,7 @@ export default function AppAnnouncement(props: AppAnnouncementProps) {
           );
         })}
       </CardContent>
-      <CardActions style={{ paddingLeft: '15px' }}>
+      <CardActions style={{ paddingLeft: '1em', paddingBottom: '1em' }}>
         <Button className={classes.primaryButton} onClick={handleClick} size='small'>
           See what&apos;s new
         </Button>

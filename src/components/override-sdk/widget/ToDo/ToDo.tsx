@@ -394,7 +394,7 @@ export default function ToDo(props: ToDoProps) {
 
       {type === CONSTS.WORKLIST && modifiedAssignments?.length > 0 && (
         <Card className={classes.root} style={{ paddingBottom: 0, marginBottom: '1.2em' }}>
-          {showTodoList && <CardHeader style={{ padding: '0 1rem' }} title={<Typography variant='h6'>{headerText}</Typography>} />}
+          {showTodoList && <CardHeader style={{ padding: '0.5em 1rem' }} title={<Typography variant='h6'>{headerText}</Typography>} />}
           <CardContent style={{ padding: '0 1em' }}>
             <List>
               {modifiedAssignments.map(assignment => (

@@ -44,6 +44,15 @@ export default function TextArea(props: TextAreaProps) {
     setInputValue(value);
   }, [value]);
 
+  if (displayMode === 'LABELS_LEFT') {
+    return (
+      <>
+        <p style={{ fontWeight: 600 }}>{label}</p>
+        <p>{value}</p>
+      </>
+    );
+  }
+
   if (displayMode === 'DISPLAY_ONLY') {
     if (typeof value === 'number' && value === 0 ? false : !value) {
       // eslint-disable-next-line react/jsx-no-useless-fragment
@@ -91,6 +100,7 @@ export default function TextArea(props: TextAreaProps) {
       helperText={helperTextToDisplay}
       placeholder={placeholder ?? ''}
       size='small'
+      style={{ border: 'none' }}
       required={required}
       disabled={disabled}
       onChange={handleChange}

@@ -152,7 +152,7 @@ export default function PegaExtensionsPersonalDetails(props) {
             >
               {itemsToRender[0].items.map((element, i) => {
                 return (
-                  <li className='quick-link-list' style={{ width: '27em' }}>
+                  <li className='quick-link-list' style={{ width: '100%' }}>
                     <Card className={classes.root}>
                       <CardHeader style={{ paddingTop: 0, paddingBottom: 0 }} title={<Typography variant='h6'>{element.label}</Typography>} />
                       <CardContent>
@@ -185,7 +185,7 @@ export default function PegaExtensionsPersonalDetails(props) {
             >
               {itemsToRender[1].items.map((element, i) => {
                 return (
-                  <li className='quick-link-list' style={{ width: '27em' }}>
+                  <li className='quick-link-list' style={{ width: '100%' }}>
                     <Card className={classes.root} style={{ width: 'auto' }}>
                       <CardHeader style={{ paddingTop: 0, paddingBottom: 0 }} title={<Typography variant='h6'>{element.label}</Typography>} />
                       <CardContent>

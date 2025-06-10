@@ -10,22 +10,24 @@ import RadioButtons from './src/components/override-sdk/field/RadioButtons/';
 import RichText from './src/components/override-sdk/field/RichText/';
 import ActionButtons from './src/components/override-sdk/infra/ActionButtons/';
 import TextArea from './src/components/override-sdk/field/TextArea/';
+import Pega_Extensions_UKGovLayout from './src/components/custom-sdk/template/Pega_Extensions_UKGovLayout';
 /* import end - DO NOT REMOVE */
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
 // found locally. If not found here, we'll look in the Pega-provided component map
 
 const localSdkComponentMap = {
-  TextInput: TextInput,
-  AutoComplete: AutoComplete,
-  Checkbox: Checkbox,
-  Date: Date,
-  Dropdown: Dropdown,
-  Phone: Phone,
-  RadioButtons: RadioButtons,
-  RichText: RichText,
-  ActionButtons: ActionButtons,
-  TextArea: TextArea
+  TextInput,
+  AutoComplete,
+  Checkbox,
+  Date,
+  Dropdown,
+  Phone,
+  RadioButtons,
+  RichText,
+  ActionButtons,
+  TextArea,
+  UKGov_Form_Layout: Pega_Extensions_UKGovLayout
   /* map end - DO NOT REMOVE */
 };
 

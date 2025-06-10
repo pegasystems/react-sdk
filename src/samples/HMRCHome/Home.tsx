@@ -8,6 +8,8 @@ import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import Button from '../../components/BaseComponents/Button/Button';
 
+import './home.css';
+
 function RootComponent(props) {
   const PegaConnectObj = createPConnectComponent();
   const thePConnObj = <PegaConnectObj {...props} />;

@@ -1,4 +1,4 @@
-import  {PConnect } from '@pega/pcore-pconnect-typedefs';
+import { PConnect } from '@pega/pcore-pconnect-typedefs';
 
 // PConnProps.d.ts
 // This gives us a place to have each component (which is most DX Components) that is
@@ -22,25 +22,24 @@ export interface PConnProps {
   // [key: string]: any;
 }
 
-
 // PConnFieldProps extends PConnProps to bring in the common properties that are
 // associated with most field components (ex: Dropdown, TextInput, etc.) in the
 //  components/field directory
 export interface PConnFieldProps extends PConnProps {
-  label: string,
-  required: boolean,
-  disabled: boolean,
-  value: any,
-  validatemessage: string,
-  status?: string,
-  onChange?: any,
-  onBlur?: any,
-  readOnly: boolean,
-  testId: string,
-  helperText: string,
-  displayMode?: string,
-  hideLabel: boolean,
-  placeholder?: string,
-  fieldMetadata?: any,
-  additionalProps?: any
+  label: string;
+  required: boolean;
+  disabled: boolean;
+  value: any;
+  validatemessage: string;
+  status?: string;
+  onChange?: any;
+  onBlur?: any;
+  readOnly: boolean;
+  testId: string;
+  helperText: string;
+  displayMode?: string;
+  hideLabel: boolean;
+  placeholder?: string;
+  fieldMetadata?: any;
+  additionalProps?: any;
 }

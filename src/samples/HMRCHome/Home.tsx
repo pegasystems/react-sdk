@@ -88,74 +88,140 @@ export default function Home({ rootProps }) {
           <RootComponent {...rootProps} />
         ) : (
           <main className='govuk-main-wrapper' id='main-content' role='main'>
+            <div className='gem-c-heading govuk-!-margin-bottom-8'>
+              <h1 className='gem-c-heading__text govuk-heading-xl'>Child Benefit</h1>
+            </div>
+
+            <nav
+              data-module='ga4-link-tracker'
+              aria-label='Pages in this guide'
+              className='gem-c-contents-list govuk-!-margin-bottom-4'
+              data-ga4-link-tracker-module-started='true'
+            >
+              <h2 className='gem-c-contents-list__title'>Contents</h2>
+              <ol className='gem-c-contents-list__list'>
+                <li className='gem-c-contents-list__list-item gem-c-contents-list__list-item--dashed'>
+                  <span className='gem-c-contents-list__list-item-dash' aria-hidden='true' />
+                  <a
+                    className='gem-c-contents-list__link govuk-link gem-c-force-print-link-styles'
+                    data-ga4-link='{"event_name":"navigation","section":"Contents","type":"contents list","index_total":7,"index_link":1}'
+                    href='/child-benefit'
+                  >
+                    How it works
+                  </a>
+                </li>
+                <li className='gem-c-contents-list__list-item gem-c-contents-list__list-item--dashed'>
+                  <span className='gem-c-contents-list__list-item-dash' aria-hidden='true' />
+                  <a
+                    className='gem-c-contents-list__link govuk-link gem-c-force-print-link-styles'
+                    data-ga4-link='{"event_name":"navigation","section":"Contents","type":"contents list","index_total":7,"index_link":2}'
+                    href='/child-benefit/what-youll-get'
+                  >
+                    What you&apos;ll get
+                  </a>
+                </li>
+                <li className='gem-c-contents-list__list-item gem-c-contents-list__list-item--dashed'>
+                  <span className='gem-c-contents-list__list-item-dash' aria-hidden='true' />
+                  <a
+                    className='gem-c-contents-list__link govuk-link gem-c-force-print-link-styles'
+                    data-ga4-link='{"event_name":"navigation","section":"Contents","type":"contents list","index_total":7,"index_link":3}'
+                    href='/child-benefit/when-and-how-its-paid'
+                  >
+                    When and how it&apos;s paid
+                  </a>
+                </li>
+                <li className='gem-c-contents-list__list-item gem-c-contents-list__list-item--dashed'>
+                  <span className='gem-c-contents-list__list-item-dash' aria-hidden='true' />
+                  <a
+                    className='gem-c-contents-list__link govuk-link gem-c-force-print-link-styles'
+                    data-ga4-link='{"event_name":"navigation","section":"Contents","type":"contents list","index_total":7,"index_link":4}'
+                    href='/child-benefit/eligibility'
+                  >
+                    Who can get Child Benefit
+                  </a>
+                </li>
+                <li
+                  className='gem-c-contents-list__list-item gem-c-contents-list__list-item--dashed gem-c-contents-list__list-item--active'
+                  aria-current='true'
+                >
+                  <span className='gem-c-contents-list__list-item-dash' aria-hidden='true' />
+                  Make a claim
+                </li>
+                <li className='gem-c-contents-list__list-item gem-c-contents-list__list-item--dashed'>
+                  <span className='gem-c-contents-list__list-item-dash' aria-hidden='true' />
+                  <a
+                    className='gem-c-contents-list__link govuk-link gem-c-force-print-link-styles'
+                    data-ga4-link='{"event_name":"navigation","section":"Contents","type":"contents list","index_total":7,"index_link":6}'
+                    href='/child-benefit/make-a-change-to-your-claim'
+                  >
+                    Make a change to your claim
+                  </a>
+                </li>
+                <li className='gem-c-contents-list__list-item gem-c-contents-list__list-item--dashed'>
+                  <span className='gem-c-contents-list__list-item-dash' aria-hidden='true' />
+                  <a
+                    className='gem-c-contents-list__link govuk-link gem-c-force-print-link-styles'
+                    data-ga4-link='{"event_name":"navigation","section":"Contents","type":"contents list","index_total":7,"index_link":7}'
+                    href='/child-benefit/get-help-with-your-claim'
+                  >
+                    Get help with your claim
+                  </a>
+                </li>
+              </ol>
+            </nav>
+
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-full'>
-                <h1 className='govuk-heading-l'>Change your bank details with HMRC</h1>
+                <h1 className='govuk-heading-l'>Make a claim</h1>
               </div>
             </div>
 
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-full govuk-prototype-kit-common-templates-mainstream-guide-body'>
-                <p className='govuk-body'>Use this service to update the bank account HMRC uses to make payments to you.</p>
-                <p className='govuk-body'>You can use this service if:</p>
-                <ul className='govuk-list govuk-list--bullet'>
-                  <li>
-                    <span className='govuk-body'>Your new account is a UK bank account that accepts direct credits.</span>
-                  </li>
-                  <li>
-                    <span className='govuk-body'>You are the account holder of the new bank account.</span>
-                  </li>
-                  <li>
-                    <span className='govuk-body'>You have your National Insurance Number (NINO) ready.</span>
-                  </li>
-                </ul>
-
-                <p className='govuk-body'>You cannot use this service if:</p>
-                <ul className='govuk-list govuk-list--bullet'>
-                  <li>
-                    <span className='govuk-body'>You want to change a business account.</span>
-                  </li>
-                  <li>
-                    <span className='govuk-body'>You receive payments to a joint account where you are not the main contact.</span>
-                  </li>
-                  <li>
-                    <span className='govuk-body'>Your new account does not accept HMRC payments.</span>
-                  </li>
-                </ul>
+                <p className='govuk-body'>
+                  You can claim Child Benefit 48 hours after you&apos;ve registered the birth of your child, or once a child comes to live with you.
+                </p>
+                <p className='govuk-body'>Child Benefit can be backdated for up to 3 months from the date you make the claim.</p>
+                <div role='note' aria-label='Information' className='application-notice info-notice'>
+                  <p>
+                    If you&apos;re making a new claim for a child over 16, <a href='/child-benefit/eligibility'>check they&apos;re eligible</a>.
+                  </p>
+                </div>
 
                 {/* <hr className='govuk-section-break govuk-section-break--xl govuk-section-break--visible' aria-hidden /> */}
 
                 <div>
-                  <h1 className='govuk-heading-m'>What you’ll need</h1>
-                  <p className='govuk-body'>Before you start, make sure you have:</p>
+                  <h1 className='govuk-heading-m'>Deciding who should claim</h1>
+                  <p className='govuk-body'>
+                    Only one person can get Child Benefit for a child, so you need to decide whether it&apos;s better for you or the other parent to
+                    claim.
+                  </p>
 
-                  <ul className='govuk-list govuk-list--bullet' style={{ listStyle: 'none' }}>
-                    <li>
-                      <span className='govuk-body'>Your current bank details (sort code and account number)</span>
-                    </li>
-                    <li>
-                      <span className='govuk-body'>Your new bank details</span>
-                    </li>
+                  <p className='govuk-body'>
+                    Whoever claims will get National Insurance credits towards their state pension. The credits can fill gaps in your record if
+                    you&apos;re not working or do not earn enough to pay National Insurance contributions.
+                  </p>
+                  <p className='govuk-body'>
+                    You and your partner can claim for different children. If you live together, only one of you can claim at the higher rate, for the
+                    eldest child in the household. If you both claim at the higher rate, you may have to pay back some of the money.
+                  </p>
+                </div>
 
-                    <li>
-                      <span className='govuk-body'>Your National Insurance Number (NINO)</span>
-                    </li>
-
-                    <li>
-                      <span className='govuk-body'>
-                        It usually takes 7 working days for the change to take effect. You will receive a confirmation when your request is processed.
-                      </span>
-                    </li>
-                  </ul>
+                <div>
+                  <h1 className='govuk-heading-s'>If you&apos;re under 16</h1>
+                  <p className='govuk-body'>
+                    You can either claim yourself or someone responsible for you can claim on your behalf. You&apos;ll usually get more if you claim
+                    yourself.
+                  </p>
                 </div>
 
                 <div>
                   <h2 className='govuk-heading-m' id='subsection-title'>
-                    Start now
+                    Make a claim online
                   </h2>
-
+                  <p className='govuk-body'>Use this service to make a claim for Child Benefit or to add another child to an existing claim.</p>
                   <Button attributes={{ className: 'govuk' }} onClick={beginClaim} variant='start'>
-                    Change your bank details
+                    Start now
                   </Button>
                 </div>
               </div>

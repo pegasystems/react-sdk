@@ -1,3 +1,14 @@
 .psdk-flow-container-top {
   margin-bottom: 5rem;
 }
+
+.gem-c-contents-list__title {
+  margin: 0;
+  color: #0b0c0c;
+  font-family: 'GDS Transport', arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+}

@@ -89,21 +89,13 @@ export const PegaExtensionsUKGovLayout = (props: layoutProps) => {
         prevRef.current.style.display = 'block';
       } else {
         nextRef.current.disabled = true;
-        const aiButton = document.querySelector(
-          'button[data-testid=":assignment-action-buttons:fill-form-with-ai"]'
-        ) as HTMLElement;
-        const slButton = document.querySelector(
-          'button[data-testid=":assignment-action-buttons:save"]'
-        ) as HTMLElement;
-        const suButton = document.querySelector(
-          'button[data-testid=":assignment-action-buttons:submit"]'
-        ) as HTMLElement;
-        const cButton = document.querySelector(
-          'button[data-testid=":assignment-action-buttons:cancel"]'
-        ) as HTMLElement;
-        if(aiButton){
-        aiButton.style.display = 'block';
-      }
+        const aiButton = document.querySelector('button[data-testid=":assignment-action-buttons:fill-form-with-ai"]') as HTMLElement;
+        const slButton = document.querySelector('button[data-testid=":assignment-action-buttons:save"]') as HTMLElement;
+        const suButton = document.querySelector('button[data-testid=":assignment-action-buttons:submit"]') as HTMLElement;
+        const cButton = document.querySelector('button[data-testid=":assignment-action-buttons:cancel"]') as HTMLElement;
+        if (aiButton) {
+          aiButton.style.display = 'block';
+        }
         slButton.style.display = 'block';
         suButton.style.display = 'block';
         cButton.style.display = 'block';
@@ -124,25 +116,15 @@ export const PegaExtensionsUKGovLayout = (props: layoutProps) => {
           child[i].style.display = 'none';
         }
         prevRef.current.disabled = false;
-        const aiButton = document.querySelector(
-          'button[data-testid=":assignment-action-buttons:fill-form-with-ai"]'
-        ) as HTMLElement;
-        const slButton = document.querySelector(
-          'button[data-testid=":assignment-action-buttons:save"]'
-        ) as HTMLElement;
-        const suButton = document.querySelector(
-          'button[data-testid=":assignment-action-buttons:submit"]'
-        ) as HTMLElement;
-        const cButton = document.querySelector(
-          'button[data-testid=":assignment-action-buttons:cancel"]'
-        ) as HTMLElement;
-        const summaryPanel = document.querySelector(
-          'div[data-testid=":summary-item:"]'
-        ) as HTMLElement;
+        const aiButton = document.querySelector('button[data-testid=":assignment-action-buttons:fill-form-with-ai"]') as HTMLElement;
+        const slButton = document.querySelector('button[data-testid=":assignment-action-buttons:save"]') as HTMLElement;
+        const suButton = document.querySelector('button[data-testid=":assignment-action-buttons:submit"]') as HTMLElement;
+        const cButton = document.querySelector('button[data-testid=":assignment-action-buttons:cancel"]') as HTMLElement;
+        const summaryPanel = document.querySelector('div[data-testid=":summary-item:"]') as HTMLElement;
 
         summaryPanel.style.display = 'none';
-        if( aiButton) {
-        aiButton.style.display = 'none';
+        if (aiButton) {
+          aiButton.style.display = 'none';
         }
         slButton.style.display = 'none';
         suButton.style.display = 'none';
@@ -176,7 +158,7 @@ export const PegaExtensionsUKGovLayout = (props: layoutProps) => {
           </Button>
         </div>
       </StyledDiv>
-      <div className='navigation-layout'></div>
+      <div className='navigation-layout' />
     </div>
   );
 };

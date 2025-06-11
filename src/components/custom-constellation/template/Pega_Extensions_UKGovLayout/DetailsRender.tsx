@@ -15,9 +15,7 @@ const DetailsRender = (props: DetailsRenderProps) => {
 
   Object.values(kids).forEach((value: any) => {
     const { type } = value.getPConnect().getRawMetadata();
-    const { hideLabel, variant, testId, label } = value
-      .getPConnect()
-      .resolveConfigProps(value.getPConnect().getConfigProps());
+    const { hideLabel, variant, testId, label } = value.getPConnect().resolveConfigProps(value.getPConnect().getConfigProps());
 
     let displayComp;
     const key = JSON.stringify(value.getPConnect());

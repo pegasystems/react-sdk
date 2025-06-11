@@ -1,4 +1,3 @@
-
 /* eslint-disable react/jsx-no-useless-fragment */
 // @ts-nocheck
 import { useState } from 'react';
@@ -47,7 +46,6 @@ const renderField = resolvedProps => {
       ''
     );
 
-
   if (label === 'Service Date') {
     val = (
       <DateInput
@@ -72,7 +70,8 @@ const renderField = resolvedProps => {
         key={key}
         onChange={e => {
           setInputValue(e.target.value);
-        }} />
+        }}
+      />
     );
   }
 
@@ -101,7 +100,6 @@ const renderField = resolvedProps => {
       />
     );
   }
-
 
   if (variant === 'inline') {
     val = value || (
@@ -165,13 +163,7 @@ const renderField = resolvedProps => {
       />
     );
   }
-  return (
-    <FieldValueList
-      variant={variant}
-      fields={[{ name: label, value: val }]}
-      key={key}
-    />
-  );
+  return <FieldValueList variant={variant} fields={[{ name: label, value: val }]} key={key} />;
 };
 
 export const BasePegaExtensionsUkGovLayout: Story = args => {
@@ -238,7 +230,9 @@ export const BasePegaExtensionsUkGovLayout: Story = args => {
 
   return (
     <>
-      <PegaExtensionsUkGovLayout {...props} {...args}>{regionAChildren}</PegaExtensionsUkGovLayout>
+      <PegaExtensionsUkGovLayout {...props} {...args}>
+        {regionAChildren}
+      </PegaExtensionsUkGovLayout>
     </>
   );
 };
@@ -247,5 +241,5 @@ BasePegaExtensionsUkGovLayout.args = {
   readOnly: false,
   showLabel: true,
   label: 'Form template',
-  NumCols: 1,
+  NumCols: 1
 };

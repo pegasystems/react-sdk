@@ -150,9 +150,7 @@
   },
   "overrides": {
     "esbuild": "^0.25.5",
-    "storybook": "$storybook",
-    "brace-expansion": "^4.0.1",
-    "minimatch": "7.4.6"
+    "storybook": "$storybook"
   },
   "browser": {
     "[module-name]": false

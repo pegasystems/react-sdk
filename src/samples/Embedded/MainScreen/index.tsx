@@ -125,9 +125,8 @@ export default function MainScreen(props: MainScreenProps) {
 
     // If mashupCaseType is null or undefined, get the first case type from the environment info
     if (!mashupCaseType) {
-      // @ts-ignore - Object is possibly 'null'
-      const caseTypes: any = PCore.getEnvironmentInfo().environmentInfoObject.pyCaseTypeList;
-      mashupCaseType = caseTypes[0].pyWorkTypeImplementationClassName;
+      const caseTypes = PCore?.getEnvironmentInfo()?.environmentInfoObject?.pyCaseTypeList;
+      mashupCaseType = (caseTypes?.[0] as any).pyWorkTypeImplementationClassName;
     }
 
     // Create options object with default values

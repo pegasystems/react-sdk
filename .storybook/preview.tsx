@@ -58,9 +58,6 @@ const parameters = {
   docs: {
     source: { type: 'code' },
     codePanel: true
-  },
-  typescript: {
-    reactDocgen: 'react-docgen-typescript'
   }
 };
 

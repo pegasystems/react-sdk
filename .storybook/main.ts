@@ -7,6 +7,10 @@ const config = {
       ? ['../src/components/custom-constellation/**/*.stories.@(js|jsx|ts|tsx)']
       : ['../src/components/custom-sdk/**/*.stories.@(js|jsx|ts|tsx)'],
 
+  typescript: {
+    reactDocgen: 'react-docgen-typescript'
+  },
+
   addons: [
     '@storybook/addon-links',
     {

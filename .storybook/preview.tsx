@@ -1,4 +1,3 @@
-import React from 'react';
 import { Preview } from '@storybook/react';
 import { Configuration, PopoverManager, Toaster, ModalManager, WorkTheme } from '@pega/cosmos-react-core';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
@@ -8,7 +7,7 @@ import { theme } from '../src/theme';
 
 import { decorator } from '../__mocks__/react_pconnect';
 
-const isConstellation = process.env.STORYBOOK_CONSTELLATION;
+const isConstellation = process.env.STORYBOOK === 'constellation';
 
 if (!isConstellation) {
   getSdkComponentMap();
@@ -57,7 +56,8 @@ const parameters = {
     ]
   },
   docs: {
-    source: { type: 'code' }
+    source: { type: 'code' },
+    codePanel: true
   }
 };
 

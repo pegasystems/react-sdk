@@ -51,5 +51,4 @@ const config = {
   }
 };
 
-// eslint-disable-next-line no-undef
 exports.config = config;

@@ -1,19 +1,25 @@
-import type { StorybookConfig } from '@storybook/react-webpack5';
 import path from 'path';
 
 /** @type { import('@storybook/react-webpack5').StorybookConfig } */
-const config: StorybookConfig = {
-  stories: process.env.STORYBOOK_CONSTELLATION
-    ? ['../src/components/custom-constellation/**/*.stories.@(js|jsx|ts|tsx)']
-    : ['../src/components/custom-sdk/**/*.stories.@(js|jsx|ts|tsx)'],
-  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+const config = {
+  stories:
+    process.env.STORYBOOK === 'constellation'
+      ? ['../src/components/custom-constellation/**/*.stories.@(js|jsx|ts|tsx)']
+      : ['../src/components/custom-sdk/**/*.stories.@(js|jsx|ts|tsx)'],
+
+  typescript: {
+    reactDocgen: 'react-docgen-typescript'
+  },
+
+  addons: [
+    '@storybook/addon-links',
+    {
+      name: '@storybook/addon-docs',
+      options: { mdxBabelOptions: { babelrc: true, configFile: true } }
+    }
+  ],
   framework: '@storybook/react-webpack5',
-  docs: {
-    autodocs: 'tag'
-  },
-  features: {
-    storyStoreV7: true
-  },
+
   webpackFinal: async config => {
     if (config.resolve?.alias) {
       config.resolve.alias['@pega/react-sdk-components/lib/bridge/react_pconnect'] = path.resolve(__dirname, '../__mocks__/react_pconnect.jsx');
@@ -34,6 +40,11 @@ const config: StorybookConfig = {
         {
           test: /\.(map)$/,
           loader: 'null-loader'
+        },
+        {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/
         }
       );
     }

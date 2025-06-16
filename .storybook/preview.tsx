@@ -7,7 +7,7 @@ import { theme } from '../src/theme';
 
 import { decorator } from '../__mocks__/react_pconnect';
 
-const isConstellation = process.env.STORYBOOK === 'constellation';
+const isConstellation = process.env.STORYBOOK_CONSTELLATION;
 
 if (!isConstellation) {
   getSdkComponentMap();

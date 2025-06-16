@@ -2,10 +2,9 @@ import path from 'path';
 
 /** @type { import('@storybook/react-webpack5').StorybookConfig } */
 const config = {
-  stories:
-    process.env.STORYBOOK === 'constellation'
-      ? ['../src/components/custom-constellation/**/*.stories.@(js|jsx|ts|tsx)']
-      : ['../src/components/custom-sdk/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: process.env.STORYBOOK_CONSTELLATION
+    ? ['../src/components/custom-constellation/**/*.stories.@(js|jsx|ts|tsx)']
+    : ['../src/components/custom-sdk/**/*.stories.@(js|jsx|ts|tsx)'],
 
   typescript: {
     reactDocgen: 'react-docgen-typescript'

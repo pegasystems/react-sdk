@@ -42,7 +42,7 @@ jobs:
           java -jar wss-unified-agent.jar
         fi
     - name: 'Upload WhiteSource folder'
-      uses: actions/upload-artifact@4
+      uses: actions/upload-artifact@v4
       with:
         name: Mend
         path: whitesource

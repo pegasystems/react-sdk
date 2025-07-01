@@ -14,12 +14,6 @@ declare global {
   }
 }
 
-declare global {
-  interface Window {
-    PCore?: any;
-  }
-}
-
 const isConstellation = process.env.STORYBOOK_CONSTELLATION;
 
 if (!isConstellation) {

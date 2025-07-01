@@ -76,6 +76,3 @@ const preview: Preview = {
 };
 
 export default preview;
-function pcoreMocks() {
-  throw new Error('Function not implemented.');
-}

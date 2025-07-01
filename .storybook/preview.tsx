@@ -8,12 +8,6 @@ import { theme } from '../src/theme';
 import { decorator } from '../__mocks__/react_pconnect';
 import setPCoreMocks from '../__mocks__/pcoreMocks';
 
-declare global {
-  interface Window {
-    PCore?: any;
-  }
-}
-
 const isConstellation = process.env.STORYBOOK_CONSTELLATION;
 
 if (!isConstellation) {

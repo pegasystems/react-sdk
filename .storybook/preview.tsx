@@ -6,12 +6,15 @@ import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helper
 import { theme } from '../src/theme';
 
 import { decorator } from '../__mocks__/react_pconnect';
+import setPCoreMocks from '../__mocks__/pcoreMocks';
 
 const isConstellation = process.env.STORYBOOK_CONSTELLATION;
 
 if (!isConstellation) {
   getSdkComponentMap();
 }
+
+setPCoreMocks();
 
 const decorators = [
   (Story, context) => {

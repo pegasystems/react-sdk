@@ -7,11 +7,47 @@ import { theme } from '../src/theme';
 
 import { decorator } from '../__mocks__/react_pconnect';
 
+declare global {
+  interface Window {
+    PCore?: any;
+  }
+}
+
 const isConstellation = process.env.STORYBOOK_CONSTELLATION;
+
+const setPCoreMocks = () => {
+  if (!window.PCore) {
+    window.PCore = {} as any;
+  }
+
+  window.PCore.getEnvironmentInfo = () => {
+    return {
+      getUseLocale: () => 'en-GB',
+      getLocale: () => 'en-GB',
+      getTimeZone: () => ''
+    } as any;
+  };
+
+  window.PCore.getLocaleUtils = () => {
+    return {
+      getLocaleValue: value => value
+    } as any;
+  };
+
+  window.PCore.getConstants = (): any => {
+    return {
+      CASE_INFO: {
+        INSTRUCTIONS: ''
+      }
+    };
+  };
+};
 
 if (!isConstellation) {
   getSdkComponentMap();
 }
+
+setPCoreMocks();
 
 const decorators = [
   (Story, context) => {

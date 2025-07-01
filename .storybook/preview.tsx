@@ -6,12 +6,21 @@ import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helper
 import { theme } from '../src/theme';
 
 import { decorator } from '../__mocks__/react_pconnect';
+import setPCoreMocks from '../__mocks__/pcoreMocks';
+
+declare global {
+  interface Window {
+    PCore?: any;
+  }
+}
 
 const isConstellation = process.env.STORYBOOK_CONSTELLATION;
 
 if (!isConstellation) {
   getSdkComponentMap();
 }
+
+setPCoreMocks();
 
 const decorators = [
   (Story, context) => {
@@ -67,3 +76,6 @@ const preview: Preview = {
 };
 
 export default preview;
+function pcoreMocks() {
+  throw new Error('Function not implemented.');
+}

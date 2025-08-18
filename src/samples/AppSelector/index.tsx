@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router';
 
 import Embedded from '../Embedded';
 import FullPortal from '../FullPortal';

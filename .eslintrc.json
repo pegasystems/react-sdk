@@ -97,7 +97,7 @@
       }
     },
     {
-      "files": "*.@(jsx|tsx|mdx)",
+      "files": "*.@(jsx|ts|tsx|mdx)",
       "rules": {
         "react/react-in-jsx-scope": "off",
         // Set up configuration for future sweep

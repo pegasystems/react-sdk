@@ -18,7 +18,7 @@
 
   "serverConfig": {
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
-    "infinityRestServerUrl": "https://localhost:1080/prweb",
+    "infinityRestServerUrl": "https://lab-11050-hyd.lab-internal.pega.com/prweb",
 
     "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
     "appAlias": "",
@@ -58,14 +58,16 @@
     },
 
     "componentDefaults": {
-      "organization": "YourOrg",
-      "library": "YourComponentLib",
+      "organization": "Pega",
+      "library": "MyLibrary",
       "version": "0.0.1",
       "type": "",
       "subtype": "",
       "description": "",
       "icon": "",
-      "lintAction": "show"
+      "lintAction": "show",
+      "designSystem": "AntD",
+      "agentRestApiURL": "api/application/v2/ai-agents/DIXL-MEDIACO-WORK!DXCBAGENT/conversations/PXCONV-3097"
     },
 
     "componentTemplates": {

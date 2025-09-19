@@ -66,8 +66,8 @@
       "description": "",
       "icon": "",
       "lintAction": "show",
-      "designSystem": "AntD",
-      "agentRestApiURL": "api/application/v2/ai-agents/DIXL-MEDIACO-WORK!DXCBAGENT/conversations/PXCONV-3097"
+      "designSystem": "GOV.UK",
+      "agentRestApiURL": "api/application/v2/ai-agents/DIXL-MEDIACO-WORK!DXCBAGENT/conversations/PXCONV-3180"
     },
 
     "componentTemplates": {

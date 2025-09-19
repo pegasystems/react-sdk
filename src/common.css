@@ -58,3 +58,7 @@
 [class*='MuiInputAdornment-positionStart'] {
   margin-right: 0 !important;
 }
+
+textarea {
+  width: 100% !important;
+}

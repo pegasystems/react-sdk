@@ -9,7 +9,6 @@ declare module '@mui/styles/defaultTheme' {
   interface DefaultTheme extends Theme {}
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const theme = createTheme({
   components: {
     MuiTextField: {

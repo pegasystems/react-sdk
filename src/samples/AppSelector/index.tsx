@@ -8,8 +8,6 @@ import FullPortal from '../FullPortal';
 //  to identify the paths correctly.
 const baseURL = '/';
 
-// @ts-ignore
-
 // The Main component renders one of the three provided
 // Routes (provided that one matches). Both the /roster
 // and /schedule routes will match any pathname that starts

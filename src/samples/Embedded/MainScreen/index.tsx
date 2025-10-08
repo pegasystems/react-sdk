@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import { useEffect, useMemo, useState } from 'react';
 import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
@@ -148,7 +147,6 @@ export default function MainScreen(props: MainScreenProps) {
     PCore.getMashupApi()
       .createCase(mashupCaseType, PCore.getConstants().APP.APP, options)
       .then(() => {
-        // eslint-disable-next-line no-console
         console.log('createCase rendering is complete');
       });
   };

@@ -7,7 +7,7 @@ import { format } from '@pega/react-sdk-components/lib/components/helpers/format
 
 import createPConnectComponent from './react_pconnect';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     paddingRight: theme.spacing(1),
     paddingLeft: theme.spacing(1),

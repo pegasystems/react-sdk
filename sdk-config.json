@@ -2,6 +2,7 @@
   "comment_sdk_config": "This is the configuration file for the React SDK",
   "sdk_optional_configs_doc_comment": "See the document(link below) for more details on all the available config settings",
   "sdk_optional_configs_doc": "https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/configuring-sdk-config-json.html",
+  "theme": "light",
   "authConfig": {
     "authService": "pega",
 

@@ -16,7 +16,7 @@ export default function InvalidPortal({ defaultPortal, portals, onSelect }) {
         Please select one of the portals available to the operator&apos;s access group:
       </div>
       <div className='portals-list'>
-        {portals.map((portal) => (
+        {portals.map(portal => (
           <div key={portal} className='portal-list-item' onClick={() => onSelect(portal)}>
             {portal}
           </div>

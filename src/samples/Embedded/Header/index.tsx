@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   embeddedHeader: {
     display: 'flex',
     alignItems: 'center',

@@ -1,6 +1,6 @@
 import makeStyles from '@mui/styles/makeStyles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   swatchHeader: {
     display: 'flex',
     flexDirection: 'row',

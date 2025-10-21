@@ -36,14 +36,14 @@ export default function Embedded() {
     }
   };
 
-  const initializeRootContainerProps = (renderObj) => {
+  const initializeRootContainerProps = renderObj => {
     const { props } = renderObj;
 
     setRootProps(props);
   };
 
   const startMashup = () => {
-    PCore.onPCoreReady(async (renderObj) => {
+    PCore.onPCoreReady(async renderObj => {
       // Check that we're seeing the PCore version we expect
       compareSdkPCoreVersions();
 

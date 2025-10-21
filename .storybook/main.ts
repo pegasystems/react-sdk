@@ -20,7 +20,7 @@ const config = {
   ],
   framework: '@storybook/react-webpack5',
 
-  webpackFinal: async (config) => {
+  webpackFinal: async config => {
     if (config.resolve?.alias) {
       config.resolve.alias['@pega/react-sdk-components/lib/bridge/react_pconnect'] = path.resolve(__dirname, '../__mocks__/react_pconnect.jsx');
       config.resolve.alias['@pega/react-sdk-components/lib/components/designSystemExtension/DetailsFields'] = path.resolve(

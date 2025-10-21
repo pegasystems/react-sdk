@@ -3,5 +3,7 @@
 
 module.exports = import('@pega/prettier-config').then(pegaPrettierConfig => ({
   ...pegaPrettierConfig.default,
-  printWidth: 150
+  printWidth: 150,
+  trailingComma: 'none',
+  arrowParens: 'avoid'
 }));

@@ -10,6 +10,7 @@ import MainScreen from './MainScreen';
 import localSdkComponentMap from '../../../sdk-local-component-map';
 import { initializeAuthentication } from './utils';
 import { theme } from '../../theme';
+import './styles.css';
 
 declare const myLoadMashup: any;
 

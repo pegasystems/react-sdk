@@ -2,34 +2,31 @@ import { sdkSetAuthHeader, sdkSetCustomTokenParamsCB } from '@pega/auth/lib/sdk-
 
 export const shoppingOptions = [
   {
-    play: 'Triple Play',
-    level: 'Basic',
-    channels: '100+',
-    channels_full: '100+ (Basic +)',
-    banner: 'Value package',
-    price: '99.00',
-    internetSpeed: '100 Mbps',
-    calling: ''
+    name: 'Oceonix 25',
+    imageSrc: './assets/img/WhitePhone.png',
+    saveAmount: 'Save $150',
+    monthlyPrice: 'Starting at $18.05/mo',
+    tenure: 'for 36 months',
+    retailPrice: 'Retail price: $800.00',
+    level: 'Basic'
   },
   {
-    play: 'Triple Play',
-    level: 'Silver',
-    channels: '125+',
-    channels_full: '125+ (Deluxe)',
-    banner: 'Most popular',
-    price: '120.00',
-    internetSpeed: '300 Mbps',
-    calling: ''
+    name: 'Oceonix 25 Max',
+    imageSrc: './assets/img/SilverPhone.png',
+    saveAmount: 'Save $200',
+    monthlyPrice: 'Starting at $22.22/mo',
+    tenure: 'for 36 months',
+    retailPrice: 'Retail price: $1,000.00',
+    level: 'Silver'
   },
   {
-    play: 'Triple Play',
-    level: 'Gold',
-    channels: '175+',
-    channels_full: '175+ (Premium)',
-    banner: 'All the channels you want',
-    price: '150.00',
-    internetSpeed: '1 Gbps',
-    calling: ' & International'
+    name: 'Oceonix 25 Ultra',
+    imageSrc: './assets/img/GoldPhone.png',
+    saveAmount: 'Save $250',
+    monthlyPrice: 'Starting at $26.38/mo',
+    tenure: 'for 36 months',
+    retailPrice: 'Retail price: $1,200.00',
+    level: 'Gold'
   }
 ];
 

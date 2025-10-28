@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { usePega } from '../context/PegaReadyContext';
 
 const useStyles = makeStyles(theme => ({
   embeddedHeader: {
@@ -18,12 +19,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function Header() {
   const classes = useStyles();
+  const { isPegaReady, PegaContainer } = usePega();
 
   return (
     <div className={classes.embeddedHeader}>
-      <Typography variant='h4'>{PCore.getEnvironmentInfo().getApplicationLabel()}</Typography>
+      {isPegaReady && <Typography variant='h4'>{PCore.getEnvironmentInfo().getApplicationLabel()}</Typography>}
       &nbsp;&nbsp;&nbsp;&nbsp;
       <img src='./assets/img/antenna.svg' className={classes.embedTopIcon} />
+      <PegaContainer />
     </div>
   );
 }

@@ -1,32 +1,14 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
-
-import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
-import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 
 import ShoppingOptionCard from '../ShoppingOptionCard';
 import ResolutionScreen from '../ResolutionScreen';
 import { shoppingOptions } from '../utils';
 
-function RootComponent(props) {
-  const PegaConnectObj = createPConnectComponent();
-  const thePConnObj = <PegaConnectObj {...props} />;
-
-  /**
-   * NOTE: For Embedded mode, we add in displayOnlyFA to our React context
-   * so it is available to any component that may need it.
-   * VRS: Attempted to remove displayOnlyFA but it presently handles various components which
-   * SDK does not yet support, so all those need to be fixed up before it can be removed.
-   * To be done in a future sprint.
-   */
-  const contextValue = useMemo(() => {
-    return { store: PCore.getStore(), displayOnlyFA: true };
-  }, [PCore.getStore()]);
-
-  return <StoreContext.Provider value={contextValue}>{thePConnObj}</StoreContext.Provider>;
-}
+import { usePegaAuth } from '../context/PegaAuthProvider';
+import { usePega } from '../context/PegaReadyContext';
 
 const useStyles = makeStyles(() => ({
   embedMainScreen: {
@@ -73,9 +55,10 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-interface MainScreenProps {}
+export default function MainScreen() {
+  const { isAuthenticated } = usePegaAuth();
+  const { isPegaReady, PegaContainer } = usePega();
 
-export default function MainScreen(props: MainScreenProps) {
   const classes = useStyles();
 
   const [showPega, setShowPega] = useState(false);
@@ -83,22 +66,24 @@ export default function MainScreen(props: MainScreenProps) {
   const [showResolution, setShowResolution] = useState(false);
 
   useEffect(() => {
-    // Subscribe to the EVENT_CANCEL event to handle the assignment cancellation
-    PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL, () => cancelAssignment(), 'cancelAssignment');
+    if (isPegaReady) {
+      // Subscribe to the EVENT_CANCEL event to handle the assignment cancellation
+      PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL, () => cancelAssignment(), 'cancelAssignment');
 
-    // Subscribe to the END_OF_ASSIGNMENT_PROCESSING event to handle assignment completion
-    PCore.getPubSubUtils().subscribe(
-      PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
-      () => assignmentFinished(),
-      'endOfAssignmentProcessing'
-    );
+      // Subscribe to the END_OF_ASSIGNMENT_PROCESSING event to handle assignment completion
+      PCore.getPubSubUtils().subscribe(
+        PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
+        () => assignmentFinished(),
+        'endOfAssignmentProcessing'
+      );
 
-    return () => {
-      // unsubscribe to the events
-      PCore.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL, 'cancelAssignment');
-      PCore.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING, 'endOfAssignmentProcessing');
-    };
-  });
+      return () => {
+        // unsubscribe to the events
+        PCore.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL, 'cancelAssignment');
+        PCore.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING, 'endOfAssignmentProcessing');
+      };
+    }
+  }, [isPegaReady]);
 
   const cancelAssignment = () => {
     setShowTriplePlayOptions(true);
@@ -172,6 +157,8 @@ export default function MainScreen(props: MainScreenProps) {
     );
   }
 
+  if (!isAuthenticated) return <div>Loading...</div>;
+
   return (
     <>
       {showTriplePlayOptions ? getShowTriplePlayOptionsMarkup() : null}
@@ -179,7 +166,7 @@ export default function MainScreen(props: MainScreenProps) {
       {showPega ? (
         <div className={classes.pegaPartInfo}>
           <div className={classes.pegaPartPega} id='pega-part-of-page'>
-            <RootComponent {...props} />
+            <PegaContainer />
             <br />
             <div className={classes.pegaPartText}> * - required fields</div>
           </div>

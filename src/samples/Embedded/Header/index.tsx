@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(theme => ({
   header: {
-    backgroundColor: theme.palette.mode === 'dark' ? 'var(--app-nav-bg)' : theme.palette.background.paper,
+    backgroundColor: theme.headerNav.backgroundColor,
     borderBottom: `1px solid ${theme.palette.divider}`,
     padding: '1rem 0'
   },
@@ -64,10 +64,10 @@ const useStyles = makeStyles(theme => ({
     margin: 0,
     '& a': {
       textDecoration: 'none',
-      color: theme.palette.mode === 'dark' ? 'var(--app-nav-color)' : theme.palette.text.primary,
+      color: theme.headerNav.navLinkColor,
       transition: 'color 0.3s ease',
       '&:hover': {
-        color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : theme.palette.primary.main
+        color: theme.headerNav.navLinkHoverColor
       }
     },
     '@media (max-width: 768px)': {
@@ -103,7 +103,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     zIndex: 1001,
     padding: 0,
-    color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : theme.palette.text.primary,
+    color: theme.headerNav.menuToggleColor,
     '@media (max-width: 768px)': {
       display: 'block'
     }

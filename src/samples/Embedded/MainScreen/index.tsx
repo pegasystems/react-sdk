@@ -5,7 +5,6 @@ import { makeStyles } from '@mui/styles';
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
 
-import sdkConfigData from '../../../../sdk-config.json';
 import ShoppingOptionCard from '../ShoppingOptionCard';
 import ResolutionScreen from '../ResolutionScreen';
 import { shoppingOptions } from '../utils';
@@ -165,7 +164,7 @@ export default function MainScreen(props) {
     if (!mashupCaseType) {
       const caseTypes = PCore.getEnvironmentInfo()?.environmentInfoObject?.pyCaseTypeList;
       if (caseTypes && caseTypes.length > 0) {
-        mashupCaseType = sdkConfigData.authConfig.mashupCaseType;
+        mashupCaseType = caseTypes[0].pyWorkTypeImplementationClassName;
       }
     }
     let selectedPhoneGUID = '';

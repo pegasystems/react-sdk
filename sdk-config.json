@@ -32,7 +32,7 @@
     "appPortal": "",
 
     "appMashupCaseType_comment": "If specified, uses this case type for mashup.  Otherwise, uses the first case type found for the app",
-    "appMashupCaseType": "",
+    "appMashupCaseType": "DIXL-MediaCo-Work-PurchasePhone",
 
     "excludePortals_comment": "Array of specific portals to avoid attempting to load with SDK",
     "excludePortals": ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"]

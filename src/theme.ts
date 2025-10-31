@@ -20,6 +20,12 @@ declare module '@mui/styles/defaultTheme' {
       backgroundColor: string;
       topColor: string;
     };
+    headerNav: {
+      backgroundColor: string;
+      navLinkColor: string;
+      navLinkHoverColor: string;
+      menuToggleColor: string;
+    };
     embedded: {
       resolutionTextColor: string;
     };
@@ -53,7 +59,7 @@ const lightThemeColours = {
     '--app-warning-color-dark': '#f57c00',
 
     '--app-background-color': 'whitesmoke',
-    '--app-form-color': 'white',
+    '--app-form-bg-color': 'white',
 
     /* App Navigation */
     '--app-nav-bg': '#262626' /*! default */,
@@ -75,12 +81,16 @@ const lightThemeColours = {
     '--selected-step-label-color': 'rgba(0, 0, 0, 0.87)',
     '--step-label-color': 'rgba(0, 0, 0, 0.54)',
     '--svg-color': 'invert(0%)',
-    '--secondary-button-text-color': '#ffffff'
+    '--secondary-button-text-color': '#ffffff',
+
+    '--text-primary-color': '#000',
+    '--text-secondary-color': '#c0c0c0',
+    '--stepper-completed-bg-color': '#218721'
   }
 };
 const darkThemeColours = {
   ':root': {
-    '--app-primary-color': '#f72585' /* accent pink */,
+    '--app-primary-color': '#C70BB5' /* accent pink */,
     '--app-primary-dark-color': '#c2185b' /* darker pink */,
     '--app-primary-light-color': '#ff5ca2' /* lighter pink */,
     '--app-secondary-color': '#c0c0c0' /* accent silver */,
@@ -95,7 +105,7 @@ const darkThemeColours = {
     '--app-warning-color-dark': '#c68400' /* dark amber */,
 
     '--app-background-color': '#060326' /* main dark background */,
-    '--app-form-color': '#18132c' /* slightly lighter for forms */,
+    '--app-form-bg-color': '#23273f' /* slightly lighter for forms */,
 
     /* App Navigation */
     '--app-nav-bg': '#18132c' /* navigation background */,
@@ -117,7 +127,11 @@ const darkThemeColours = {
     '--selected-step-label-color': 'rgba(0, 0, 0, 0.87)',
     '--step-label-color': 'rgba(0, 0, 0, 0.54)',
     '--svg-color': 'invert(100%)',
-    '--secondary-button-text-color': '#1a103c'
+    '--secondary-button-text-color': '#1a103c',
+
+    '--text-primary-color': '#e0e0e0',
+    '--text-secondary-color': '#c0c0c0',
+    '--stepper-completed-bg-color': '#158715'
   }
 };
 
@@ -138,6 +152,12 @@ const lightTheme = createTheme({
         }
       }
     }
+  },
+  headerNav: {
+    backgroundColor: '#ffffff',
+    navLinkColor: 'rgba(0, 0, 0, 0.87)',
+    navLinkHoverColor: '#3f51b5',
+    menuToggleColor: 'rgba(0, 0, 0, 0.87)'
   },
   actionButtons: {
     primary: {
@@ -187,7 +207,13 @@ const darkTheme = createTheme({
           background: 'radial-gradient(178.62% 112% at 50% -12%, #0B0F2A 69.96%, #111951 89.19%)',
           backgroundAttachment: 'fixed'
         },
-        ...darkThemeColours
+        ...darkThemeColours,
+
+        // scrollbar styling
+        '*': {
+          scrollbarWidth: 'thin', // Options: auto | thin | none
+          scrollbarColor: '#555 #2c2c2c' // thumb color, track color
+        }
       }
     },
     MuiPaper: {
@@ -205,6 +231,12 @@ const darkTheme = createTheme({
         }
       }
     }
+  },
+  headerNav: {
+    backgroundColor: 'var(--app-nav-bg)',
+    navLinkColor: 'var(--app-nav-color)',
+    navLinkHoverColor: '#ffffff',
+    menuToggleColor: '#ffffff'
   },
   actionButtons: {
     primary: {
@@ -228,8 +260,8 @@ const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#f72585', // accent pink
-      light: '#ff5ca2', // lighter shade of pink
+      main: '#C70BB5', // pink
+      light: '#C70BB5', // pink
       dark: '#c2185b', // darker shade
       contrastText: '#ffffff' // white text on pink buttons
     },
@@ -241,13 +273,14 @@ const darkTheme = createTheme({
     },
     info: {
       main: '#e91e63', // Pink
-      dark: '#ad1457', // Darker pink
-      light: '#f8bbd0', // Light pink for backgrounds
+      dark: '#E885D2', // Light pink
+      light: '#C70BB5', // Lighter pink for backgrounds
       contrastText: '#fff'
     },
     background: {
       // default: 'radial-gradient(178.62% 112% at 50% -12%, #0B0F2A 69.96%, #111951 89.19%)',
-      paper: 'rgba(255, 255, 255, 0.1)' // card-bg
+      // paper: '#18132c'
+      paper: '#191b2c' // card-bg
     },
     text: {
       primary: '#e0e0e0', // text-light

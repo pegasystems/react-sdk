@@ -14,8 +14,7 @@
     "mashupPassword": "",
 
     "portalClientId_comment": "Client ID from the OAuth 2.0 Client Registration record used for portal use case",
-    "portalClientId": "25795373220702300272",
-    "mashupCaseType": "DIXL-MediaCo-Work-PurchasePhone"
+    "portalClientId": "25795373220702300272"
   },
 
   "serverConfig": {

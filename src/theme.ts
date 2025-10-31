@@ -278,8 +278,6 @@ const darkTheme = createTheme({
       contrastText: '#fff'
     },
     background: {
-      // default: 'radial-gradient(178.62% 112% at 50% -12%, #0B0F2A 69.96%, #111951 89.19%)',
-      // paper: '#18132c'
       paper: '#191b2c' // card-bg
     },
     text: {

@@ -1,161 +1,118 @@
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(theme => ({
-  swatchHeader: {
-    display: 'flex',
-    flexDirection: 'row',
-    backgroundColor: '#333000'
-  },
-  swatchPackage: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    width: '260px',
-    height: '70px',
-    backgroundColor: '#333000',
-    padding: '5px'
-  },
-  swatchPlay: {
-    letterSpacing: 'normal',
-    color: 'white',
-    fontSize: '25px'
-  },
-  swatchLevel: {
-    letterSpacing: 'normal',
-    color: 'white',
-    fontSize: '28px',
-    fontWeight: 'bold'
-  },
-  swatchChannels: {
+  planCard: {
+    backgroundColor: 'var(--utility-background-color)',
+    padding: '2rem',
+    borderRadius: '16px',
+    textAlign: 'center',
+    position: 'relative',
+    overflow: 'hidden',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    letterSpacing: 'normal',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    '&:hover': {
+      transform: 'translateY(-10px)',
+      boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)'
+    },
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      borderRadius: '16px',
+      border: '2px solid transparent',
+      background: `linear-gradient(to bottom, ${theme.actionButtons.secondary.backgroundColor}, ${theme.actionButtons.primary.backgroundColor}) border-box`,
+      '-webkit-mask': 'linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)',
+      '-webkit-mask-composite': 'destination-out',
+      pointerEvents: 'none'
+    }
+  },
+  phoneImage: {
+    marginBottom: '1.5rem',
+    height: '150px',
+    display: 'flex',
     alignItems: 'center',
-    backgroundColor: theme.palette.primary.main,
-    width: '100px'
+    justifyContent: 'center',
+    '& img': {
+      maxHeight: '100%',
+      width: 'auto'
+    }
   },
-  swatchCount: {
-    letterSpacing: 'normal',
-    color: 'white',
-    fontSize: '40px',
-    fontWeight: 'bold'
+  planName: {
+    fontSize: '1.5rem',
+    fontWeight: 600,
+    marginBottom: '0.5rem',
+    color: theme.palette.text.primary,
+    margin: 0
   },
-  swatchLabel: {
-    letterSpacing: 'normal',
-    color: 'white',
-    fontSize: '17px'
+  saveAmount: {
+    color: '#34d399',
+    fontWeight: 600,
+    marginBottom: '1rem',
+    margin: 0
   },
-  swatchBody: {
-    letterSpacing: 'normal',
-    border: '1px solid lightgray',
-    backgroundColor: '#fafafa',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    paddingBottom: '20px'
+  monthlyPrice: {
+    fontSize: '1rem',
+    color: theme.palette.text.primary,
+    margin: 0
   },
-  swatchBanner: {
-    letterSpacing: 'normal',
-    fontWeight: 'bold',
-    fontSize: '15px',
-    padding: '5px'
+  tenure: {
+    fontSize: '0.8rem',
+    color: theme.palette.text.secondary,
+    marginBottom: '1rem',
+    margin: 0
   },
-  swatchPrice: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center'
+  retailPrice: {
+    fontSize: '0.8rem',
+    color: theme.palette.text.secondary,
+    marginBottom: '1.5rem',
+    flexGrow: 1,
+    margin: 0
   },
-  swatchFromGroup: {
-    height: '90px'
-  },
-  swatchFrom: {
-    color: theme.palette.primary.main,
-    textAlign: 'right'
-  },
-  swatchCurrency: {
-    letterSpacing: 'normal',
-    color: theme.palette.primary.main,
-    fontSize: '30px',
-    fontWeight: 'bold',
-    fontFamily: 'Tahoma'
-  },
-  swatchDollars: {
-    letterSpacing: 'normal',
-    color: theme.palette.primary.main,
-    fontSize: '90px',
-    fontWeight: 'bold',
-    fontFamily: 'Tahoma'
-  },
-  swatchCents: {
-    letterSpacing: 'normal',
-    color: theme.palette.primary.main,
-    fontSize: '20px',
-    fontWeight: 'bold',
-    fontFamily: 'Tahoma'
-  },
-  swatchMonthly: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  swatchShopButton: {
-    color: 'white',
-    backgroundColor: theme.palette.warning.main,
-    fontSize: '25px',
-    fontWeight: 'bold',
-    borderRadius: '25px',
-    border: '0px',
-    margin: '20px',
-    padding: '10px 30px'
+  buyButton: {
+    display: 'inline-block',
+    background: `linear-gradient(90deg, ${theme.actionButtons.primary.backgroundColor}, ${theme.palette.primary.dark}, ${theme.actionButtons.primary.backgroundColor})`,
+    backgroundSize: '200% auto',
+    color: `${theme.actionButtons.primary.color} !important`,
+    padding: '0.75rem 1.5rem',
+    borderRadius: '50px',
+    textAlign: 'center',
+    fontWeight: 600,
+    border: 'none',
+    cursor: 'pointer',
+    textDecoration: 'none',
+    transition: 'background-position 0.4s ease-in-out, transform 0.3s ease',
+    '&:hover': {
+      backgroundPosition: 'right center',
+      transform: 'scale(1.05)',
+      color: theme.actionButtons.primary.color
+    }
   }
 }));
 
 export default function ShoppingOptionCard(props) {
   const classes = useStyles();
-
-  const { play, level, channels, channels_full: channelsFull, banner, price, internetSpeed, calling } = props;
+  const { name, imageSrc, saveAmount, monthlyPrice, tenure, retailPrice, level, onClick } = props;
 
   return (
-    <div>
-      <div className={classes.swatchHeader}>
-        <div className={classes.swatchPackage}>
-          <div className={classes.swatchPlay}>{play}</div>
-          <div className={classes.swatchLevel}>{level}</div>
-        </div>
-        <div className={classes.swatchChannels}>
-          <div className={classes.swatchCount}>{channels}</div>
-          <div className={classes.swatchLabel}>Channels</div>
-        </div>
+    <div className={classes.planCard}>
+      <div className={classes.phoneImage}>
+        <img src={imageSrc} alt={name} />
       </div>
-      <div className={classes.swatchBody}>
-        <div className={classes.swatchBanner}>{banner}</div>
-        <ul>
-          <li>{channelsFull} channels plus FREE HD</li>
-          <li>Thousands of On Demand choices</li>
-          <li>Watch on the {PCore.getEnvironmentInfo().getApplicationLabel()} App</li>
-          <li>Up to {internetSpeed} Internet Speeds</li>
-          <li>Unlimited nationwide calling {calling}</li>
-        </ul>
 
-        <div className={classes.swatchPrice}>
-          <div className={classes.swatchFromGroup}>
-            <div className={classes.swatchFrom}>From</div>
-            <div className={classes.swatchCurrency}>$</div>
-          </div>
+      <h3 className={classes.planName}>{name}</h3>
 
-          <div className={classes.swatchDollars}>{price.substring(0, price.indexOf('.'))}</div>
-          <div className={classes.swatchMonthly}>
-            <div className={classes.swatchCents}>{price.substring(price.indexOf('.') + 1)}</div>
-            <div>for 12 months</div>
-            <div>when bundled</div>
-          </div>
-        </div>
-        <div>
-          <button className={classes.swatchShopButton} type='button' onClick={() => props.onClick(level)}>
-            SHOP NOW
-          </button>
-        </div>
-      </div>
+      <p className={classes.saveAmount}>{saveAmount}</p>
+      <p className={classes.monthlyPrice}>{monthlyPrice}</p>
+      <p className={classes.tenure}>{tenure}</p>
+      <p className={classes.retailPrice}>{retailPrice}</p>
+
+      <button type='button' className={classes.buyButton} onClick={() => onClick(level)}>
+        Buy now
+      </button>
     </div>
   );
 }

@@ -1,3 +1,7 @@
+.psdk-root {
+  background-color: var(--app-form-bg-color);
+}
+
 .portal-load-error {
   height: 100vh;
   width: 100vw;
@@ -37,7 +41,7 @@
 
 .logout-btn:hover {
   background: var(--app-warning-color-dark);
-  color: var(--app-form-color);
+  color: var(--app-form-bg-color);
 }
 
 .portals-list {
@@ -57,9 +61,4 @@
 /* Overriding CurrencyTextField style for fixing the alignment issue */
 [class*='MuiInputAdornment-positionStart'] {
   margin-right: 0 !important;
-}
-
-/* Support for google map autocomplete */
-.pac-container {
-  z-index: 2147483647;
 }

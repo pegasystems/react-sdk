@@ -23,7 +23,7 @@ test.describe('E2E test', () => {
     await newServiceCase.click();
     caseID = await page.locator('#caseId').textContent();
 
-    const firstNameInput = page.locator('input[data-test-id="BC910F8BDF70F29374F496F05BE0330C"]');
+    let firstNameInput = page.locator('input[data-test-id="BC910F8BDF70F29374F496F05BE0330C"]');
     await firstNameInput.click();
     await firstNameInput.fill('John');
 
@@ -31,7 +31,7 @@ test.describe('E2E test', () => {
     await middleNameInput.click();
     await middleNameInput.fill('');
 
-    const lastNameInput = page.locator('input[data-test-id="77587239BF4C54EA493C7033E1DBF636"]');
+    let lastNameInput = page.locator('input[data-test-id="77587239BF4C54EA493C7033E1DBF636"]');
     await lastNameInput.click();
     await lastNameInput.fill('Doe');
 
@@ -39,7 +39,7 @@ test.describe('E2E test', () => {
     await suffix.locator('button[title="Open"]').click();
     await page.locator('li:has-text("Jr")').click();
 
-    const emailInput = page.locator('input[data-test-id="CE8AE9DA5B7CD6C3DF2929543A9AF92D"]');
+    let emailInput = page.locator('input[data-test-id="CE8AE9DA5B7CD6C3DF2929543A9AF92D"]');
     await emailInput.click();
     await emailInput.fill('john@doe.com');
 
@@ -50,6 +50,16 @@ test.describe('E2E test', () => {
     await serviceDateInput.pressSequentially(futureDate);
 
     await page.locator('button:has-text("submit")').click();
+
+    const caseSummary = page.locator('div[id="CaseSummary"]');
+    firstNameInput = caseSummary.locator('input').first();
+    await expect(firstNameInput).toHaveValue('John');
+
+    lastNameInput = caseSummary.locator('input').nth(1);
+    await expect(lastNameInput).toHaveValue('Doe');
+
+    emailInput = caseSummary.locator('input').nth(2);
+    await expect(emailInput).toHaveValue('john@doe.com');
 
     const streetInput = page.locator('input[data-test-id="D61EBDD8A0C0CD57C22455E9F0918C65"]');
     await streetInput.click();
@@ -100,6 +110,7 @@ test.describe('E2E test', () => {
     const sendToMgr = page.locator('label[data-test-id="C3B43E79AEC2D689F0CF97BD6AFB7DC4"]');
     await sendToMgr.check();
 
+    // const currentCaseID = await page.locator('div[id="current-caseID"]').textContent();
     const filePath = path.join(__dirname, '../../../assets/img/cableinfo.jpg');
 
     const attachmentID = await page.locator('div[id="attachment-ID"]').textContent();

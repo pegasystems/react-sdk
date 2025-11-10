@@ -84,7 +84,7 @@ test.describe('E2E test', () => {
     await page.getByRole('option', { name: 'Update' }).click();
 
     /** Update tests */
-    const readonlyPhone = page.locator('input[data-test-id="2c511e68e41cb70907b27a00de6b18b9"]');
+    const readonlyPhone = page.locator('div[data-test-id="2c511e68e41cb70907b27a00de6b18b9"] >> input');
     attributes = await common.getAttributes(readonlyPhone);
     await expect(attributes.includes('readonly')).toBeTruthy();
 

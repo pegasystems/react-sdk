@@ -28,14 +28,49 @@ test.describe('E2E test', () => {
 
     await page.locator('button:has-text("submit")').click();
 
+    /** Testing Advanced Search */
+    let selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');
+    await selectedSubCategory.click();
+    await page.locator('li:has-text("DataPatterns")').click();
+
+    let selectedTestName = page.locator('div[data-test-id="6f64b45d01d11d8efd1693dfcb63b735"]');
+    await selectedTestName.click();
+    await page.locator('li:has-text("Advanced search")').click();
+
+    await page.locator('button:has-text("Search")').click();
+
+    const productName = page.locator('input[data-test-id="85c72bcef3da32c2abc605764537c6a1"]');
+    await productName.fill('item');
+
+    await page.locator('button:has-text("Search")').click();
+
+    let table = page.locator('div[id="list-view"] >> nth = 0');
+    let tableCell = table.locator('tbody >> tr >> td >> nth=1');
+
+    const selectedRow = await table.locator('tbody >> tr >> td >> span >> input[type="radio"] >> nth=0');
+    await selectedRow.click();
+
+    await expect(await tableCell.textContent()).toContain('Item');
+
+    const radiobutton = await page.locator('div[role="radiogroup"]');
+    const requiredDateInput = await radiobutton.locator('label >> span >> input >> nth=1');
+    await requiredDateInput.click();
+
+    await page.locator('button:has-text("Discard")').click();
+
+    const price = await page.locator('input[data-test-id="3601146c4e948c32b6424d2c0a7f0118"]');
+    await price.fill('12');
+
+    await page.locator('button:has-text("Search")').click();
+
     /** Display subcategory tests */
 
     /** Autocomplete display type test */
-    let selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');
+    selectedSubCategory = page.locator('div[data-test-id="9463d5f18a8924b3200b56efaad63bda"]');
     await selectedSubCategory.click();
     await page.locator('li:has-text("Display")').click();
 
-    let selectedTestName = page.locator('div[data-test-id="6f64b45d01d11d8efd1693dfcb63b735"]');
+    selectedTestName = page.locator('div[data-test-id="6f64b45d01d11d8efd1693dfcb63b735"]');
     await selectedTestName.click();
     await page.locator('li:has-text("Autocomplete")').click();
 
@@ -88,7 +123,8 @@ test.describe('E2E test', () => {
 
     selectedTestName = page.locator('div[data-test-id="6f64b45d01d11d8efd1693dfcb63b735"]');
     await selectedTestName.click();
-    await page.locator('li:has-text("Table")').click();
+
+    await page.getByRole('option', { name: 'Table', exact: true }).click();
 
     selectedProduct = page.locator('tr:has-text("Basic Product")');
     const selectedProductRow = selectedProduct.locator('input[type="radio"]');
@@ -213,7 +249,7 @@ test.describe('E2E test', () => {
     await displayAs.click();
     await page.locator('li:has-text("Combo-Box")').click();
 
-    const selectProducts = page.locator('input[role="combobox"]');
+    let selectProducts = page.locator('input[role="combobox"]');
     await selectProducts.click();
     await page.locator('li:has-text("Mobile")').click();
     await page.locator('li:has-text("Television")').click();
@@ -267,7 +303,7 @@ test.describe('E2E test', () => {
     await selectedTestName.click();
     await page.locator('li:has-text("Readonly")').click();
 
-    selectedProduct = page.locator('div[id="semantic-link-grid"] >> span >> text="Basic Product"');
+    selectedProduct = page.locator('button:has-text("Basic Product")');
     await expect(selectedProduct).toBeVisible();
 
     await page.locator('button:has-text("Next")').click();
@@ -292,26 +328,29 @@ test.describe('E2E test', () => {
 
     await page.locator('span:has-text("Product Name")').click();
 
-    const table = page.locator('div[id="list-view"]');
-    let tableCell = table.locator('tbody >> tr >> td >> nth=1');
+    table = page.locator('div[id="list-view"]');
+    tableCell = table.locator('tbody >> tr >> td >> nth=1');
     // "---" should come at the top in the ascending order, since it's a Falsy value
     await expect(await tableCell.textContent()).toBe('---');
 
     await page.locator('span:has-text("Product Name")').click();
 
     tableCell = table.locator('tbody >> tr >> td >> nth=1');
-    // "Luxury Product" should be at the top in the descending order
-    await expect(await tableCell.textContent()).toBe('Luxury Product');
 
-    const lastRow = table.locator('tbody >> tr >> nth=3');
+    // "Luxury Product" should be at the top in the descending order
+    await expect(await tableCell.textContent()).toBe('Red Item');
+
+    const lastRow = table.locator('tbody >> tr >> nth=6');
     tableCell = lastRow.locator('td >> nth=1');
     // "---" should be at the bottom in the descending order
     await expect(await tableCell.textContent()).toBe('---');
 
     await page.locator('button:has-text("Next")').click();
 
+    await page.locator('button:has-text("Previous")').click();
+
     /** Submitting the case */
-    await page.locator('button:has-text("submit")').click();
+    await page.locator('button:has-text("Next")').click();
   }, 10000);
 });
 

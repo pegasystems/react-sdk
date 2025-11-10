@@ -216,6 +216,9 @@ test.describe('E2E test', () => {
 
     await page.locator('button[id="delete-button"] >> nth=0').click();
 
+    await page.locator('button:has-text("Next")').click();
+    await page.locator('button:has-text("Previous")').click();
+
     /** Table Edit Modal tests */
     selectEditMode = page.locator('div[data-test-id="80c1db3a7b228760228004b1a532c71e"]');
     await selectEditMode.click();

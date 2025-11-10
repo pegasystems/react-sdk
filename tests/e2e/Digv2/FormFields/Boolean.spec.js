@@ -42,16 +42,16 @@ test.describe('E2E test', () => {
     await expect(page.locator('div >> p:has-text("Required field")')).toBeVisible();
     const requiredBooleanLabel = page.locator('label[data-test-id="325f4eb20dc7c90a4fb697cd6c6bf0ea"]');
     await expect(await requiredBooleanLabel.locator('span').getByText('BooleanRequired')).toBeVisible();
-    requiredBooleanLabel.click(); // check required field
-    requiredBooleanLabel.click(); // uncheck required field
+    await requiredBooleanLabel.click(); // check required field
+    await requiredBooleanLabel.click(); // uncheck required field
     await expect(page.locator('p.Mui-error.Mui-required')).toBeVisible();
-    requiredBooleanLabel.click();
+    await requiredBooleanLabel.click();
     await expect(page.locator('p.Mui-error.Mui-required')).toBeHidden();
 
     // Checking not required boolean field
     const notRequiredBooleanLabel = page.locator('label[data-test-id="da0d9f2c08a5bebe777c814af80a2351"]');
-    notRequiredBooleanLabel.click(); // check required field
-    notRequiredBooleanLabel.click(); // uncheck required field
+    await notRequiredBooleanLabel.click(); // check required field
+    await notRequiredBooleanLabel.click(); // uncheck required field
     await expect(page.locator('p.Mui-error.Mui-required')).toBeHidden();
 
     /** Selecting Disable from the Sub Category dropdown */

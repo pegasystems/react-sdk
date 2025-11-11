@@ -1,4 +1,5 @@
 // Statically load all "local" components that aren't yet in the npm package
+// import MediaCoTodo from '@pega/react-sdk-components/lib/mediaco/ToDo';
 
 /* import end - DO NOT REMOVE */
 
@@ -6,6 +7,7 @@
 // found locally. If not found here, we'll look in the Pega-provided component map
 
 const localSdkComponentMap = {
+  // Todo: MediaCoTodo,
   /* map end - DO NOT REMOVE */
 };
 

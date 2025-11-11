@@ -51,7 +51,7 @@ const decorators = [
 const parameters: Preview['parameters'] = {
   backgrounds: {
     default: 'App',
-    values: [{ name: 'App', value: CANVAS_COLOR }]
+    values: [{ name: 'App', value: isConstellation ? '' : CANVAS_COLOR }]
   },
   docs: {
     theme: isDark ? sbThemes.dark : sbThemes.light,

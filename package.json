@@ -1,6 +1,6 @@
 {
   "name": "react-sdk",
-  "version": "24.2.11",
+  "version": "25.1.10",
   "private": true,
   "scripts": {
     "_comment_SDK_install_build_run_commands": "The following are public commands to clean, install, build, and run the SDK",
@@ -57,7 +57,7 @@
     "@pega/cosmos-react-condition-builder": "^8.4.1",
     "@pega/cosmos-react-core": "^8.4.1",
     "@pega/cosmos-react-work": "^8.4.1",
-    "@pega/react-sdk-components": "~0.25.7",
+    "@pega/react-sdk-components": "~25.1.10",
     "@storybook/react-webpack5": "^8.6.14",
     "lodash.get": "^4.4.2",
     "lodash.isequal": "^4.5.0",
@@ -73,9 +73,9 @@
     "@loadable/component": "^5.16.3",
     "@pega/configs": "^0.17.0",
     "@pega/constellationjs": "~25.1.0",
-    "@pega/dx-component-builder-sdk": "~0.25.6",
+    "@pega/dx-component-builder-sdk": "~25.1.11",
     "@pega/pcore-pconnect-typedefs": "~4.1.0",
-    "@pega/react-sdk-overrides": "~0.25.7",
+    "@pega/react-sdk-overrides": "~25.1.10",
     "@playwright/test": "^1.54.2",
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/addon-links": "^8.6.14",

@@ -123,7 +123,7 @@
     "prop-types": "^15.8.1",
     "sass-loader": "^16.0.5",
     "shx": "^0.4.0",
-    "storybook": "^8.6.14",
+    "storybook": "^8.6.15",
     "style-loader": "^4.0.0",
     "stylelint": "^16.23.1",
     "tinymce": "^6.8.6",

@@ -1,7 +1,7 @@
 import { connect, Provider, shallowEqual } from 'react-redux';
 
 const connectToState = (mapStateToProps = () => {}) => {
-  return (Component: any) => {
+  return Component => {
     const ConnectedComponent = connect(mapStateToProps, null, null, {
       areStatePropsEqual: (next, prev: any) => {
         // Compare visibility
@@ -29,7 +29,6 @@ const connectToState = (mapStateToProps = () => {}) => {
       const store = { getState: () => {}, subscribe: () => {}, dispatch: () => {} };
 
       return (
-        // @ts-ignore
         <Provider store={store}>
           <ConnectedComponent {...ownProps} />
         </Provider>

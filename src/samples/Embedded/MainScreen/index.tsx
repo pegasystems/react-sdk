@@ -87,13 +87,17 @@ export default function MainScreen(props: MainScreenProps) {
     // Subscribe to the EVENT_CANCEL event to handle the assignment cancellation
     PCore.getPubSubUtils().subscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL, () => cancelAssignment(), 'cancelAssignment');
 
-    // Subscribe to the 'assignmentFinished' event to handle assignment completion
-    PCore.getPubSubUtils().subscribe('assignmentFinished', () => assignmentFinished(), 'assignmentFinished');
+    // Subscribe to the END_OF_ASSIGNMENT_PROCESSING event to handle assignment completion
+    PCore.getPubSubUtils().subscribe(
+      PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING,
+      () => assignmentFinished(),
+      'endOfAssignmentProcessing'
+    );
 
     return () => {
       // unsubscribe to the events
       PCore.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.EVENT_CANCEL, 'cancelAssignment');
-      PCore.getPubSubUtils().unsubscribe('assignmentFinished', 'assignmentFinished');
+      PCore.getPubSubUtils().unsubscribe(PCore.getConstants().PUB_SUB_EVENTS.CASE_EVENTS.END_OF_ASSIGNMENT_PROCESSING, 'endOfAssignmentProcessing');
     };
   });
 
@@ -125,9 +129,8 @@ export default function MainScreen(props: MainScreenProps) {
 
     // If mashupCaseType is null or undefined, get the first case type from the environment info
     if (!mashupCaseType) {
-      // @ts-ignore - Object is possibly 'null'
-      const caseTypes: any = PCore.getEnvironmentInfo().environmentInfoObject.pyCaseTypeList;
-      mashupCaseType = caseTypes[0].pyWorkTypeImplementationClassName;
+      const caseTypes = PCore?.getEnvironmentInfo()?.environmentInfoObject?.pyCaseTypeList;
+      mashupCaseType = (caseTypes?.[0] as any).pyWorkTypeImplementationClassName;
     }
 
     // Create options object with default values

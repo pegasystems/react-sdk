@@ -1,13 +1,13 @@
 <p align="center"><img width=60% src="docs/media/ReactSDK-Logo.png">
 
-# React SDK - Release Announcement - v24.2.10
+# React SDK - Release Announcement - v24.2.11
 
-**SDK-R v24.2.10** is **only compatible with Pega Infinity '24.2** and is related to the [**release/24.2.10**](https://github.com/pegasystems/react-sdk/tree/release/24.2.10) branch of the React SDK repository.
+**SDK-R v24.2.11** is **only compatible with Pega Infinity '24.2** and is related to the [**release/24.2.11**](https://github.com/pegasystems/react-sdk/tree/release/24.2.11) branch of the React SDK repository.
 <br>
 
 **Note**: The main branch is the active development branch for future versions of React SDK.
 
-This release allows React SDK users to take advantage of the latest SDK enhancements and fixes. For more information, see [ **What's New in SDK-R 24.2.10**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
+This release allows React SDK users to take advantage of the latest SDK enhancements and fixes. For more information, see [ **What's New in SDK-R 24.2.11**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
 <br />
 
 This
@@ -44,8 +44,8 @@ The **MediaCo** sample application is already configured as a Constellation appl
 
 The **React SDK** has been tested with:
 
-- node 20.12.1
-- npm 10.5.0
+- node 20.16.0
+- npm 10.8.1
 
 Future updates to the SDK will support more recent LTS versions of node as Constellation supports them.
 

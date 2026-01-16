@@ -43,6 +43,7 @@ pnpm-debug.log*
 test-results/
 tests/coverage
 tests/playwright-report
+test-reports/
 
 
 # unit testing coverage

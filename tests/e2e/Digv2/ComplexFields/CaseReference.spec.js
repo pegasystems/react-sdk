@@ -86,7 +86,7 @@ test.describe('E2E test', () => {
     await selectedTestName.click();
     await page.locator('li:has-text("Text")').click();
 
-    await page.locator('div[role="button"] >> nth=-1').click();
+    await page.locator('div[role="combobox"]:has-text("Select...")').click();
 
     await page.locator(`li >> text="${name}" >> nth=0`).click();
 

@@ -15,8 +15,8 @@ import { theme } from '../../theme';
 
 import InvalidPortal from './InvalidPortal';
 
-declare const myLoadPortal: any;
-declare const myLoadDefaultPortal: any;
+declare const myLoadPortal;
+declare const myLoadDefaultPortal;
 
 function useQuery() {
   const { search } = useLocation();
@@ -37,7 +37,7 @@ function RootComponent(props) {
 
 export default function FullPortal() {
   const [portalSelectionScreen, setPortalSelectionScreen] = useState(false);
-  const [defaultPortalName, setDefaultPortalName] = useState('');
+  const [defaultPortalName, setDefaultPortalName] = useState<string>('');
   const [availablePortals, setAvailablePortals] = useState<string[]>([]);
   const [rootComponentProps, setRootComponentProps] = useState<object | null>(null);
 
@@ -75,7 +75,7 @@ export default function FullPortal() {
 
       // Initialize the SdkComponentMap (local and pega-provided)
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      getSdkComponentMap(localSdkComponentMap).then((theComponentMap: any) => {
+      getSdkComponentMap(localSdkComponentMap).then(theComponentMap => {
         console.log(`SdkComponentMap initialized`);
 
         // Don't call initialRender until SdkComponentMap is fully initialized
@@ -87,7 +87,7 @@ export default function FullPortal() {
     //  top level Pega root element (likely a RootContainer)
 
     const { appPortal: thePortal, excludePortals } = SdkConfigAccess.getSdkConfigServer();
-    const defaultPortal = PCore?.getEnvironmentInfo?.().getDefaultPortal?.();
+    const defaultPortal = PCore.getEnvironmentInfo().getDefaultPortal() || '';
     const queryPortal = sessionStorage.getItem('rsdk_portalName');
 
     // Note: myLoadPortal and myLoadDefaultPortal are set when bootstrapWithAuthHeader is invoked
@@ -116,35 +116,27 @@ export default function FullPortal() {
   }
 
   function doRedirectDone() {
-    const redirectUrl: any = sessionStorage.getItem('url');
-    navigate(redirectUrl);
-    sessionStorage.removeItem('url');
-
-    const locale: any = sessionStorage.getItem('rsdk_locale') || undefined;
+    navigate(window.location.pathname);
+    let localeOverride: any = sessionStorage.getItem('rsdk_locale');
+    if (!localeOverride) {
+      localeOverride = undefined;
+    }
     // appName and mainRedirect params have to be same as earlier invocation
-    loginIfNecessary({ appName: 'portal', mainRedirect: true, locale });
+    loginIfNecessary({ appName: 'portal', mainRedirect: true, locale: localeOverride });
   }
 
   // One time (initialization)
   useEffect(() => {
     document.addEventListener('SdkConstellationReady', handleSdkConstellationReady);
 
-    const locale: any = sessionStorage.getItem('rsdk_locale') || undefined;
+    const locale = sessionStorage.getItem('rsdk_locale') || undefined;
 
-    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
-    const redirected = sessionStorage.getItem('redirected');
-    if (isLoggedIn !== 'true' && redirected !== 'true') {
-      sessionStorage.setItem('url', window.location.pathname);
-      navigate('/portal');
-    }
-    sessionStorage.setItem('redirected', 'true');
     // Login if needed, doing an initial main window redirect
     loginIfNecessary({
       appName: 'portal',
       mainRedirect: true,
       redirectDoneCB: doRedirectDone,
       locale
-      // semanticUrls: true //. enable this line for semantic urls
     });
   }, []);
 

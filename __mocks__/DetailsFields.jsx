@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { createElement, isValidElement } from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -46,7 +47,6 @@ export default function DetailsFields(props) {
     fieldComponents.push({
       type: theCompType,
       label,
-      // eslint-disable-next-line react/no-array-index-key
       value: <React.Fragment key={index}>{createElement(createPConnectComponent(), thePConn.getReferencedViewPConnect())}</React.Fragment>
     });
   });
@@ -115,14 +115,12 @@ export default function DetailsFields(props) {
       }
       if (isValidElement(field?.value)) {
         return (
-          // eslint-disable-next-line react/no-array-index-key
           <Grid container spacing={1} style={{ padding: '4px 0px' }} key={index}>
             {getGridItem(field, `${index}-item`)}
           </Grid>
         );
       }
       return (
-        // eslint-disable-next-line react/no-array-index-key
         <Grid container spacing={1} style={{ padding: '4px 0px' }} key={index}>
           {getGridItemLabel(field, `${index}-label`)}
           {getGridItemValue(field, `${index}-value`)}

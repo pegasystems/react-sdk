@@ -1,4 +1,3 @@
-import React from 'react';
 import { Preview } from '@storybook/react';
 import { Configuration, PopoverManager, Toaster, ModalManager, WorkTheme } from '@pega/cosmos-react-core';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
@@ -7,12 +6,15 @@ import { getSdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helper
 import { theme } from '../src/theme';
 
 import { decorator } from '../__mocks__/react_pconnect';
+import setPCoreMocks from '../__mocks__/pcoreMocks';
 
 const isConstellation = process.env.STORYBOOK_CONSTELLATION;
 
 if (!isConstellation) {
   getSdkComponentMap();
 }
+
+setPCoreMocks();
 
 const decorators = [
   (Story, context) => {
@@ -57,7 +59,8 @@ const parameters = {
     ]
   },
   docs: {
-    source: { type: 'code' }
+    source: { type: 'code' },
+    codePanel: true
   }
 };
 

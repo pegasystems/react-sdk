@@ -1,4 +1,3 @@
-/* eslint-disable react/button-has-type */
 import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
@@ -152,7 +151,7 @@ export default function ShoppingOptionCard(props) {
           </div>
         </div>
         <div>
-          <button className={classes.swatchShopButton} onClick={() => props.onClick(level)}>
+          <button className={classes.swatchShopButton} type='button' onClick={() => props.onClick(level)}>
             SHOP NOW
           </button>
         </div>

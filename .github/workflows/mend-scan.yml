@@ -1,11 +1,13 @@
 # Reference: https://github.com/mend-toolkit/mend-examples/blob/main/Unified%20Agent/CI-CD/GitHub.yml
 
 name: Mend Unified Agent Release Scan
-on: 
+on:
   workflow_dispatch:
   push:
    branches:
-   - 'master'
+   - 'main'
+  schedule:
+  - cron: "0 0 * * 0"
 jobs:
   mendscan:
     env:
@@ -15,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up JDK
       uses: actions/setup-java@v2
       with:
@@ -40,13 +42,13 @@ jobs:
           java -jar wss-unified-agent.jar
         fi
     - name: 'Upload WhiteSource folder'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: Mend
         path: whitesource
         retention-days: 14
     - name: 'Upload Mend folder if failure'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: Mend

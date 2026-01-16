@@ -1,5 +1,5 @@
 // do a check of node version, it should be 18 or greater
-const arNodeVersion  = process.versions.node.split(".");
+const arNodeVersion = process.versions.node.split('.');
 
 const nodeMajorVersion = parseInt(arNodeVersion[0]);
 const nodeMinorVersion = parseInt(arNodeVersion[1]);

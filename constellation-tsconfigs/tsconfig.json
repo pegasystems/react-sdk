@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "experimentalDecorators": true,
+    "strict": true,
+    "sourceMap": true,
+    "module": "ES2022",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "moduleResolution": "Node",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    // Need to specify typeRoots to find the types and types to constrain
+    //  where to look in @pega (to only get pcore-pconnect-typedefs)
+    //  NOTE: need to point to relative path to node_modules (../)
+    "typeRoots": ["../node_modules/@types", "../node_modules/@pega"],
+    "types": ["jest", "@testing-library/jest-dom", "pcore-pconnect-typedefs"]
+  }
+}

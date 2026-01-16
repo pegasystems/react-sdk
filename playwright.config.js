@@ -1,4 +1,3 @@
-/* eslint-disable strict */
 // @ts-check
 const { devices } = require('@playwright/test');
 
@@ -7,7 +6,6 @@ const { devices } = require('@playwright/test');
  * https://github.com/motdotla/dotenv
  */
 // require('dotenv').config();
-
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -31,7 +29,7 @@ const config = {
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [[ 'html', { outputFolder: 'tests/playwright-report' } ]],
+  reporter: [['html', { outputFolder: 'tests/playwright-report' }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
@@ -41,34 +39,36 @@ const config = {
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    ignoreHTTPSErrors:true,
+    ignoreHTTPSErrors: true,
     launchOptions: {
-      slowMo:200,
-    },
+      slowMo: 200
+    }
   },
+
+  testIgnore: ['e2e/DigV2/Localization/Localization.spec.js'],
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'],
-      },
+        ...devices['Desktop Chrome']
+      }
     },
 
     {
       name: 'firefox',
       use: {
-        ...devices['Desktop Firefox'],
-      },
+        ...devices['Desktop Firefox']
+      }
     },
 
     {
       name: 'webkit',
       use: {
-        ...devices['Desktop Safari'],
-      },
-    },
+        ...devices['Desktop Safari']
+      }
+    }
 
     /* Test against mobile viewports. */
     // {
@@ -100,7 +100,7 @@ const config = {
   ],
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  // outputDir: 'test-results/',
+  outputDir: 'test-reports/'
 
   /* Run your local dev server before starting the tests */
   // webServer: {

@@ -1,23 +1,13 @@
-/* eslint-disable no-undef */
 const { test, expect } = require('@playwright/test');
 
 const config = require('../../../config');
 const common = require('../../../common');
 
-test.beforeEach(async ({ page }) => {
-  await page.setViewportSize({ width: 1720, height: 1080 });
-  await page.goto(config.config.baseUrl, { waitUntil: 'networkidle' });
-});
+test.beforeEach(common.launchPortal);
 
 test.describe('E2E test', () => {
-  test('should login, create case and run different test cases for Query', async ({
-    page
-  }) => {
-    await common.Login(
-      config.config.apps.digv2.user.username,
-      config.config.apps.digv2.user.password,
-      page
-    );
+  test('should login, create case and run different test cases for Query', async ({ page }) => {
+    await common.login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
 
     /** Testing announcement banner presence */
     const announcementBanner = page.locator('h6:has-text("Announcements")');
@@ -39,9 +29,7 @@ test.describe('E2E test', () => {
     await page.locator('button:has-text("submit")').click();
 
     /** selecting SingleRecord option from dropdown  */
-    const selectedOption = await page.locator(
-      'div[data-test-id="365ab066d5dd67171317bc3fc755245a"]'
-    );
+    const selectedOption = await page.locator('div[data-test-id="365ab066d5dd67171317bc3fc755245a"]');
     await selectedOption.click();
     await page.locator('li:has-text("SingleRecord")').click();
 
@@ -59,9 +47,7 @@ test.describe('E2E test', () => {
     await page.locator('li:has-text("ListOfRecords")').click();
 
     /** selecting Table option from dropdown  */
-    const selectedDisplayAs = await page.locator(
-      'div[data-test-id="03e83bd975984c06d12c584cb59cc4ad"]'
-    );
+    const selectedDisplayAs = await page.locator('div[data-test-id="03e83bd975984c06d12c584cb59cc4ad"]');
     await selectedDisplayAs.click();
     await page.locator('li:has-text("Table")').click();
 
@@ -70,6 +56,4 @@ test.describe('E2E test', () => {
   }, 10000);
 });
 
-test.afterEach(async ({ page }) => {
-  await page.close();
-});
+test.afterEach(async ({ page }) => common.closePage(page));

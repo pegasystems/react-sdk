@@ -1,12 +1,12 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-		"debug.allowBreakpointsEverywhere": true,
-		"debug.toolBarLocation": "floating",
-		"git.ignoreLimitWarning": true
-	}
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "debug.allowBreakpointsEverywhere": true,
+    "debug.toolBarLocation": "floating",
+    "git.ignoreLimitWarning": true
+  }
 }

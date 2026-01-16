@@ -1,0 +1,26 @@
+/* global styles*/
+#pega-part-of-page .psdk-flow-container-top {
+  max-width: 1400px;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5%;
+  padding: 16px;
+}
+
+#pega-part-of-page .psdk-horizontal-stepper-header-container {
+  display: none;
+  margin-bottom: 2rem;
+}
+
+#pega-part-of-page .MuiCard-root {
+  padding: 16px;
+}
+
+#pega-part-of-page .MuiCardContent-root:first-child {
+  padding-top: 0px !important;
+}
+
+#pega-part-of-page .MuiCardContent-root:last-child {
+  padding-bottom: 0px !important;
+}

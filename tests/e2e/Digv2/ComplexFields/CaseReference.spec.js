@@ -1,7 +1,5 @@
-/* eslint-disable no-template-curly-in-string */
-/* eslint-disable no-undef */
-
 const { test, expect } = require('@playwright/test');
+
 const config = require('../../../config');
 const common = require('../../../common');
 
@@ -10,14 +8,8 @@ test.beforeEach(async ({ page }) => {
 });
 
 test.describe('E2E test', () => {
-  test('should login, create case and run different test cases for Case Reference', async ({
-    page
-  }) => {
-    await common.Login(
-      config.config.apps.digv2.user.username,
-      config.config.apps.digv2.user.password,
-      page
-    );
+  test('should login, create case and run different test cases for Case Reference', async ({ page }) => {
+    await common.login(config.config.apps.digv2.user.username, config.config.apps.digv2.user.password, page);
 
     /** Testing announcement banner presence */
     const announcementBanner = page.locator('h6:has-text("Announcements")');
@@ -31,12 +23,12 @@ test.describe('E2E test', () => {
     let queryCase = page.locator('div[role="button"]:has-text("Query")');
     await queryCase.click();
 
-    let modal =  page.locator('div[role="dialog"]');
+    let modal = page.locator('div[role="dialog"]');
 
     /** Value to be typed in the Name input */
-    const name = "John Doe";
+    const name = 'John Doe';
 
-    await modal.locator('input').type(name);
+    await modal.locator('input').fill(name);
     await modal.locator('button:has-text("submit")').click();
 
     /** Storing case-id of the newly created Query case-type(s), will be used later */
@@ -51,7 +43,7 @@ test.describe('E2E test', () => {
 
     modal = page.locator('div[role="dialog"]');
 
-    await modal.locator('input').type(name);
+    await modal.locator('input').fill(name);
     await modal.locator('button:has-text("submit")').click();
 
     /** Wait until modal closes */
@@ -96,7 +88,7 @@ test.describe('E2E test', () => {
     await selectedTestName.click();
     await page.locator('li:has-text("Text")').click();
 
-    await page.locator('div[role="button"] >> nth=-1').click();
+    await page.locator('div[role="combobox"]:has-text("Select...")').click();
 
     await page.locator(`li >> text="${name}" >> nth=0`).click();
 
@@ -127,7 +119,7 @@ test.describe('E2E test', () => {
     await selectedTestName.click();
     await page.locator('li:has-text("SingleRecord")').click();
 
-    await page.locator('input[id="search"]').type(caseID[0]);
+    await page.locator('input[id="search"]').fill(caseID[0]);
 
     const selectedRow = await page.locator(`tr:has-text("${caseID[0]}")`);
     await selectedRow.locator('td >> span >> nth=0').click();
@@ -135,7 +127,7 @@ test.describe('E2E test', () => {
     await page.locator('button:has-text("Next")').click();
 
     const assignment = page.locator('div[id="Assignment"]');
-    await expect(assignment.locator(`div >> span >> text="${caseID[0]}"`)).toBeVisible();
+    await expect(assignment.locator(`button:has-text("${caseID[0]}")`)).toBeVisible();
 
     await page.locator('button:has-text("Previous")').click();
 
@@ -143,7 +135,7 @@ test.describe('E2E test', () => {
     await selectedTestName.click();
     await page.locator('li:has-text("ListOfRecords")').click();
 
-    await page.locator('input[id="search"]').type(caseID[0]);
+    await page.locator('input[id="search"]').fill(caseID[0]);
 
     const selectedRow1 = await page.locator(`tr:has-text("${caseID[0]}")`);
     await selectedRow1.locator('td >> input >> nth=0').click();
@@ -163,6 +155,4 @@ test.describe('E2E test', () => {
   }, 10000);
 });
 
-test.afterEach(async ({ page }) => {
-  await page.close();
-});
+test.afterEach(async ({ page }) => common.closePage(page));

@@ -1,0 +1,117 @@
+.quick-link-ul-list {
+  list-style: none;
+  padding: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(20ch, 100%), 1fr));
+  display: grid;
+  gap: calc(1rem);
+}
+
+.quick-link-button {
+  text-transform: capitalize !important;
+  font-size: 16px !important;
+  color: var(--app-text-color) !important;
+  height: 10rem;
+  width: 100%;
+}
+
+.quick-link-icon {
+  flex-shrink: 0;
+  object-fit: contain;
+  width: 3rem;
+  height: 3rem;
+}
+
+.quick-link-button-span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.quick-link-heading {
+  margin-top: 8px;
+}
+
+/* Import GDS Transport font if not already available in your project */
+/* @import url('https://fonts.googleapis.com/css?family=GDS+Transport:400,700'); */
+
+body {
+  font-family: 'GDS Transport', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.govuk-width-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 15px; /* Added padding for presentation */
+}
+
+.govuk-grid-row {
+  margin-right: -15px;
+  margin-left: -15px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.govuk-grid-column-one-third {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 15px;
+  margin-bottom: 30px; /* Space between rows on mobile */
+}
+
+/* Tablet and up: 3 columns */
+@media (min-width: 641px) {
+  .govuk-grid-column-one-third {
+    width: 33.3333%;
+    float: left;
+  }
+}
+
+/* Link Component Styling */
+.govuk-popular-link {
+  display: flex;
+  align-items: center; /* Vertically center the icon with the text */
+  text-decoration: none;
+}
+
+.govuk-popular-link__circle {
+  flex-shrink: 0; /* Prevent circle from squishing */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f3f2f1; /* govuk-colour-gray-4 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.govuk-popular-link__icon-svg {
+  fill: #0b0c0c; /* govuk-colour-black */
+  width: 20px;
+  height: 20px;
+}
+
+.govuk-popular-link__link {
+  color: #1d70b8; /* govuk-link-colour */
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.1em;
+  font-size: 19px;
+  line-height: 1.31579;
+}
+
+.govuk-popular-link__link:hover {
+  color: #003078; /* govuk-link-hover-colour */
+  text-decoration-thickness: 3px;
+}
+
+.govuk-popular-link__link:visited {
+  color: #4c2c92; /* govuk-link-visited-colour */
+}
+
+/* Utility class for bold font if not using GDS styles globally */
+.govuk-font-weight-bold {
+  font-weight: 700 !important;
+}

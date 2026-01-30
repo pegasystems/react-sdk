@@ -165,7 +165,7 @@ module.exports = (env, argv) => {
           const iconsPath = path.join(__dirname, 'dist/constellation/icons', fileName);
 
           // Try to serve from dist/assets/img first, then from dist/constellation/icons
-          require('fs').stat(imgPath, (err) => {
+          require('fs').stat(imgPath, err => {
             if (!err) {
               console.log(`intercepted .svg request, serving from dist/assets/img: ${fileName}`);
               res.sendFile(imgPath);

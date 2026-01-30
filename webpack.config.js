@@ -3,6 +3,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const zlib = require('zlib');
+const http = require('node:http');
+const appBundleFile = path.join(__dirname, 'dist/app.bundle.js');
+const sdkConfigFile = path.join(__dirname, 'dist/sdk-config.json');
+const bootstrapShellFile = path.join(__dirname, 'dist/constellation/bootstrap-shell.js');
+const libAssetFile = path.join(__dirname, 'dist/constellation/lib_asset.json');
+const constellationPrereqDir = path.join(__dirname, 'dist/constellation/prerequisite');
 
 module.exports = (env, argv) => {
   const pluginsToAdd = [];
@@ -125,6 +131,35 @@ module.exports = (env, argv) => {
       app: './src/index.tsx'
     },
     devServer: {
+      setupMiddlewares: (middlewares, devServer) => {
+        if (!devServer) {
+          throw new Error('webpack-dev-server is not defined');
+        }
+        devServer.app.get('*/app.bundle.js', (req, res) => {
+          res.type('application/javascript');
+          console.log('entered custom app.bundle.js route');
+          res.sendFile(appBundleFile);
+        });
+        devServer.app.get(/\/sdk-config\.json(\?.*)?$/, (req, res) => {
+          res.type('application/json');
+          console.log('entered custom sdk-config.json route');
+          res.sendFile(sdkConfigFile);
+        });
+        devServer.app.get(/\/lib_asset\.json(\?.*)?$/, (req, res) => {
+          res.type('application/json');
+          res.sendFile(libAssetFile);
+        });
+        devServer.app.get(/\/bootstrap-shell\.js(\?.*)?$/, (req, res) => {
+          res.type('application/javascript');
+          res.sendFile(bootstrapShellFile);
+        });
+        devServer.app.get(/\/constellation-core\.[a-f0-9]+\.js(\?.*)?$/, (req, res) => {
+          res.type('application/javascript');
+          const requestedFile = path.basename(req.path);
+          res.sendFile(path.join(constellationPrereqDir, requestedFile));
+        });
+        return middlewares;
+      },
       static: path.join(__dirname, 'dist'), // was called contentBase in earlier versions
       historyApiFallback: true,
       host: 'localhost',

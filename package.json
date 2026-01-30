@@ -53,7 +53,7 @@
     "_internal-build-jest-assets": "dx-component-builder-sdk buildJestAssets"
   },
   "dependencies": {
-    "@pega/auth": "^0.2.34",
+    "@pega/auth": "file:pega-auth-0.2.24.tgz",
     "@pega/cosmos-react-condition-builder": "^8.4.1",
     "@pega/cosmos-react-core": "^8.4.1",
     "@pega/cosmos-react-work": "^8.4.1",

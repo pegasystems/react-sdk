@@ -12,20 +12,21 @@
     "mashupUserIdentifier": "customer@mediaco",
     "mashupClient_comment3": "Note: mashupPassword requires Base64 encoding",
     "mashupPassword": "",
+    "redirectUri": "http://localhost:3502/portal",
 
     "portalClientId_comment": "Client ID from the OAuth 2.0 Client Registration record used for portal use case",
-    "portalClientId": "25795373220702300272"
+    "portalClientId": "14383196414776065370"
   },
 
   "serverConfig": {
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
-    "infinityRestServerUrl": "https://localhost:1080/prweb",
+    "infinityRestServerUrl": "https://dxaui251d.lab.pega.com/prweb/",
 
     "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
-    "appAlias": "",
+    "appAlias": "MediaCo",
 
     "sdkContentServerUrl_comment": "If specified, the given URL will be used. If left blank, window.location.origin will be used.",
-    "sdkContentServerUrl": "",
+    "sdkContentServerUrl": "http://localhost:3502/",
 
     "appPortal_comment": "If specified, the given appPortal will be loaded. If left blank, the operator's default Portal is used. Ignored for Embedded use",
     "appPortal": "",

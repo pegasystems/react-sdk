@@ -23,7 +23,8 @@ const localSdkComponentMap = {
   Email,
   Integer,
   DateTime,
-  AutoComplete: TextInput
+  AutoComplete: TextInput,
+  Phone: TextInput
 };
 
 export default localSdkComponentMap;

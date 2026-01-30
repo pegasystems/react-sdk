@@ -158,6 +158,33 @@ module.exports = (env, argv) => {
           const requestedFile = path.basename(req.path);
           res.sendFile(path.join(constellationPrereqDir, requestedFile));
         });
+        devServer.app.get(/\.svg(\?.*)?$/, (req, res) => {
+          res.type('image/svg+xml');
+          const fileName = path.basename(req.path);
+          const imgPath = path.join(__dirname, 'dist/assets/img', fileName);
+          const iconsPath = path.join(__dirname, 'dist/constellation/icons', fileName);
+
+          // Try to serve from dist/assets/img first, then from dist/constellation/icons
+          require('fs').stat(imgPath, (err) => {
+            if (!err) {
+              console.log(`intercepted .svg request, serving from dist/assets/img: ${fileName}`);
+              res.sendFile(imgPath);
+            } else {
+              console.log(`intercepted .svg request, serving from dist/constellation/icons: ${fileName}`);
+              res.sendFile(iconsPath);
+            }
+          });
+        });
+        devServer.app.get(/sdkCssVars\.css(\?.*)?$/, (req, res) => {
+          res.type('text/css');
+          console.log('intercepted sdkCssVars.css request, serving from dist folder');
+          res.sendFile(path.join(__dirname, 'dist/assets/css/sdkCssVars.css'));
+        });
+        devServer.app.get(/sdkStyles\.css(\?.*)?$/, (req, res) => {
+          res.type('text/css');
+          console.log('intercepted sdkCssVars.css request, serving from dist folder');
+          res.sendFile(path.join(__dirname, 'dist/assets/css/sdkStyles.css'));
+        });
         return middlewares;
       },
       static: path.join(__dirname, 'dist'), // was called contentBase in earlier versions

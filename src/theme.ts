@@ -44,9 +44,9 @@ declare module '@mui/styles/defaultTheme' {
 
 const lightThemeColours = {
   ':root': {
-    '--app-primary-color': '#007bff' /* was #673ab7; */,
-    '--app-primary-dark-color': '#0048cc' /* was #4527A0; */,
-    '--app-primary-light-color': '#33aeff' /* was #B499FC; */,
+    '--app-primary-color': 'rgb(29, 112, 184);' /* was #673ab7; */,
+    '--app-primary-dark-color': 'rgb(29, 112, 184);' /* was #4527A0; */,
+    '--app-primary-light-color': 'rgb(29, 112, 184);' /* was #B499FC; */,
     '--app-secondary-color': '#FFC400',
     '--app-neutral-color': 'grey',
     '--app-neutral-light-color': 'lightgrey',
@@ -72,7 +72,7 @@ const lightThemeColours = {
     '--modal-box-shadow-color': '#777',
     '--utility-count-background-color': '#65b5f5',
     '--utility-card-border-color': '#f5f5f5',
-    '--link-button-color': '#3f51b5',
+    '--link-button-color': 'rgb(29, 112, 184);',
     '--banner-text-color': 'rgb(0, 0, 0)',
     '--app-text-color': 'white',
     '--utility-background-color': 'white',
@@ -161,11 +161,11 @@ const lightTheme = createTheme({
   },
   actionButtons: {
     primary: {
-      backgroundColor: '#cc0f60',
+      backgroundColor: 'rgb(29, 112, 184)',
       color: '#FFFFFF'
     },
     secondary: {
-      backgroundColor: '#3F51B5',
+      backgroundColor: '#00703c',
       color: '#FFFFFF'
     }
   },
@@ -185,9 +185,9 @@ const lightTheme = createTheme({
   palette: {
     primary: {
       contrastText: '#fff',
-      dark: '#303f9f',
-      light: '#7986cb',
-      main: '#3f51b5'
+      dark: 'rgb(29, 112, 184)',
+      light: 'rgb(29, 112, 184)',
+      main: 'rgb(29, 112, 184)'
     },
     secondary: {
       contrastText: '#fff',

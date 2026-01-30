@@ -7,6 +7,7 @@ import Checkbox from './src/components/override-sdk/field/Checkbox';
 import Email from './src/components/override-sdk/field/Email';
 import Integer from './src/components/override-sdk/field/Integer';
 import DateTime from './src/components/override-sdk/field/DateTime';
+import TextInput from './src/components/override-sdk/field/TextInput';
 /* import end - DO NOT REMOVE */
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -15,11 +16,14 @@ import DateTime from './src/components/override-sdk/field/DateTime';
 const localSdkComponentMap = {
   // Todo: MediaCoTodo,
   /* map end - DO NOT REMOVE */
+  TextArea,
+  Date,
   TextInput,
   Checkbox,
   Email,
   Integer,
-  DateTime
+  DateTime,
+  AutoComplete: TextInput
 };
 
 export default localSdkComponentMap;

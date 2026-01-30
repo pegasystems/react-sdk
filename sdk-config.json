@@ -2,7 +2,7 @@
   "comment_sdk_config": "This is the configuration file for the React SDK",
   "sdk_optional_configs_doc_comment": "See the document(link below) for more details on all the available config settings",
   "sdk_optional_configs_doc": "https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/configuring-sdk-config-json.html",
-  "theme": "dark",
+  "theme": "light",
   "authConfig": {
     "authService": "pega",
 
@@ -29,7 +29,7 @@
     "sdkContentServerUrl": "http://localhost:3502/",
 
     "appPortal_comment": "If specified, the given appPortal will be loaded. If left blank, the operator's default Portal is used. Ignored for Embedded use",
-    "appPortal": "",
+    "appPortal": "MediaCoSelfService",
 
     "appMashupCaseType_comment": "If specified, uses this case type for mashup.  Otherwise, uses the first case type found for the app",
     "appMashupCaseType": "DIXL-MediaCo-Work-PurchasePhone",

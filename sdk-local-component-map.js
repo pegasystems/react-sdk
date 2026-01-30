@@ -4,6 +4,10 @@ import TextInput from './src/components/override-sdk/field/TextInput/TextInput';
 
 import TextArea from './src/components/override-sdk/field/TextArea/';
 import Date from './src/components/override-sdk/field/Date/';
+import Checkbox from './src/components/override-sdk/field/Checkbox';
+import Email from './src/components/override-sdk/field/Email';
+import Integer from './src/components/override-sdk/field/Integer';
+import DateTime from './src/components/override-sdk/field/DateTime';
 /* import end - DO NOT REMOVE */
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -13,7 +17,11 @@ const localSdkComponentMap = {
   TextArea: TextArea,
   Date: Date,
   /* map end - DO NOT REMOVE */
-  TextInput
+  TextInput,
+  Checkbox,
+  Email,
+  Integer,
+  DateTime
 };
 
 export default localSdkComponentMap;

@@ -1,0 +1,8 @@
+{
+  "name": "Email",
+  "label": "Email",
+  "description": "Email",
+  "type": "Field",
+  "subtype": "Text-Email",
+  "properties": []
+}

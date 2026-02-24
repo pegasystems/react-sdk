@@ -153,10 +153,16 @@ module.exports = (env, argv) => {
           res.type('application/javascript');
           res.sendFile(bootstrapShellFile);
         });
-        devServer.app.get(/\/constellation-core\.[a-f0-9]+\.js(\?.*)?$/, (req, res) => {
+        devServer.app.get(/\/constellation-core-web\.js(\?.*)?$/, (req, res) => {
           res.type('application/javascript');
-          const requestedFile = path.basename(req.path);
-          res.sendFile(path.join(constellationPrereqDir, requestedFile));
+          const fs = require('fs');
+          const files = fs.readdirSync(constellationPrereqDir);
+          const matchedFile = files.find(f => f.startsWith('constellation-core') && f.endsWith('.js'));
+          if (matchedFile) {
+            res.sendFile(path.join(constellationPrereqDir, matchedFile));
+          } else {
+            res.status(404).send('constellation-core JS file not found');
+          }
         });
         devServer.app.get(/\.svg(\?.*)?$/, (req, res) => {
           res.type('image/svg+xml');

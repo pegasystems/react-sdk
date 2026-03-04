@@ -1,2 +1,69 @@
 .mediaco {
+  // Action Buttons styles for MediaCo sample app - start
+  .button-bar {
+    gap: 1rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .right-group {
+    margin-left: 0 !important;
+  }
+
+  .secondary-button {
+    background-color: var(--app-sys-secondary-button-background) !important;
+    border-color: var(--app-sys-secondary-button-border) !important;
+  }
+  // Action Buttons styles for MediaCo sample app - end
+
+  // Self Service Case View styles for MediaCo sample app - start
+  .psdk-flow-container-top {
+    background-color: #fff !important;
+    padding: 0 !important;
+
+    h2:nth-child(1) {
+      color: #46185a;
+      font-weight: 700;
+      font-size: 20px;
+      padding-left: 1rem;
+      margin: 1rem 0 0;
+    }
+  }
+
+  .psdk-self-service-case-view {
+    background-color: #fff !important;
+    padding: 1rem 2rem !important;
+    border-radius: 0 !important;
+    border-top-left-radius: 2rem !important;
+  }
+
+  .psdk-self-service-case-view-header {
+    background-color: transparent !important;
+    padding: 1.5rem 0 0 1rem !important;
+  }
+
+  .heading {
+    color: #46185a !important;
+    font-weight: 700 !important;
+    font-size: 36px !important;
+  }
+
+  // Self Service Case View styles for MediaCo sample app - end
+
+  // Confirmation screen styles for MediaCo sample app - start
+  .done-button {
+    justify-content: start !important;
+    padding-inline: 1rem;
+
+    button {
+      color: #fff;
+      background-color: #6750a4;
+      box-shadow: none;
+    }
+  }
+
+  .confirmation-details {
+    padding-inline: 1rem;
+  }
+  // Confirmation screen styles for MediaCo sample app - end
 }

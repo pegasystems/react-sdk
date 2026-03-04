@@ -195,6 +195,10 @@ const lightTheme = createTheme({
       light: '#ff4081',
       main: '#f50057'
     },
+    background: {
+      default: '#fff',
+      paper: '#fff'
+    },
     backgroundColor: '#fff'
   }
 });

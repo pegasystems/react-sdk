@@ -1,22 +1,13 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import StarIcon from '@mui/icons-material/Star';
-import { getImageSrc, getActivityIcon, timeSince, CASE_TYPE_TO_ACTIVITY_MAP } from '../utils/helpers';
-import Carousel from './Carousel';
-import GalleryGrid from './GalleryGrid';
+import { getImageSrc, bgColors, colorFilters } from '../../utils/helpers';
+import { getActivityIcon, timeSince, CASE_TYPE_TO_ACTIVITY_MAP } from './helpers';
+import Carousel from '../carousel/Carousel';
+import GalleryGrid from '../gallery-grid/GalleryGrid';
 import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-
-const bgColors = ['#ede9fe', '#fce7f3', '#e0f2fe', '#ffedd5', '#f3e8ff', '#d1fae5'];
-const colorFilters = [
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(250deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(320deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(190deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(25deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(120deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(90deg) saturate(500%)'
-];
 
 /** Custom MediaCo data pages that get the gallery/carousel/table treatment */
 const MEDIACO_DATA_PAGES = ['D_AccountHistoryList', 'D_TrendingItemsList', 'D_CarouselitemList'];
@@ -28,12 +19,10 @@ interface ListViewProps {
 }
 
 export default function ListView(props: ListViewProps) {
-  const { getPConnect, bInForm = true } = props;
+  const { getPConnect, referenceList = '' } = props;
   const pConn = getPConnect();
 
-  // ── Determine route (custom vs OOTB) from config props ONCE, before any state ──
-  const configProps: any = pConn.getConfigProps();
-  const refList: string = configProps?.referenceList || '';
+  const refList: string = referenceList;
   const isCustomDataPage = MEDIACO_DATA_PAGES.includes(refList);
 
   // ── If NOT a custom MediaCo data page → delegate to OOTB ListView immediately ──
@@ -47,15 +36,15 @@ export default function ListView(props: ListViewProps) {
   }
 
   // ── Custom MediaCo rendering (gallery / carousel / table) ──
-  return <MediaCoListView pConn={pConn} configProps={configProps} refList={refList} />;
+  return <MediaCoListView pConn={pConn} refList={refList} />;
 }
 
 /** Inner component for the custom MediaCo data pages */
-function MediaCoListView({ pConn, configProps, refList }: { pConn: any; configProps: any; refList: string }) {
+function MediaCoListView({ pConn, refList }: { pConn: any; refList: string }) {
   const [sourceList, setSourceList] = useState<any[] | null>(null);
-  const [columns, setColumns] = useState<any[]>([]);
   const [galleryOpen, setGalleryOpen] = useState(false);
 
+  const configProps: any = pConn.getConfigProps();
   const preset = configProps?.presets?.[0];
   const template = preset?.template || '';
   const title = configProps?.title || '';
@@ -78,8 +67,6 @@ function MediaCoListView({ pConn, configProps, refList }: { pConn: any; configPr
       if (theField.indexOf('.') === 0) theField = theField.substring(1);
       return { id: theField, label: field.config?.label || '', index };
     });
-    setColumns(cols);
-
     if (dataPage === 'D_AccountHistoryList') {
       setSourceList(
         data.map(item => {
@@ -125,7 +112,16 @@ function MediaCoListView({ pConn, configProps, refList }: { pConn: any; configPr
         {refList === 'D_AccountHistoryList' && (
           <button
             onClick={() => setGalleryOpen(true)}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 8,
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
           >
             <ArrowForwardIcon />
           </button>
@@ -156,8 +152,12 @@ function MediaCoListView({ pConn, configProps, refList }: { pConn: any; configPr
                 transition: 'background-color 0.3s ease',
                 borderBottom: i < sourceList.slice(0, 5).length - 1 ? '1px solid #e5e7eb' : 'none'
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#f6f5f5'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#fff'; }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.backgroundColor = '#f6f5f5';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.backgroundColor = '#fff';
+              }}
             >
               {/* Icon */}
               <div
@@ -177,7 +177,7 @@ function MediaCoListView({ pConn, configProps, refList }: { pConn: any; configPr
                 {item.icon && !item.icon.endsWith('/.svg') ? (
                   <img src={item.icon} alt='' style={{ width: 24, height: 24, objectFit: 'contain', filter: colorFilters[i % 6] }} />
                 ) : (
-                  <span style={{ fontWeight: 600, fontSize: 14, filter: colorFilters[i % 6] }}>{item.number ?? (i + 1)}</span>
+                  <span style={{ fontWeight: 600, fontSize: 14, filter: colorFilters[i % 6] }}>{item.number ?? i + 1}</span>
                 )}
               </div>
 

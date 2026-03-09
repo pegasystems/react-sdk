@@ -1,6 +1,6 @@
-import React, { type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import Box from '@mui/material/Box';
-import { usePortal } from '../context/PortalContext';
+import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 /**
  * Banner is called by BannerPage/DefaultPage via getComponentFromMap('Banner').
@@ -25,11 +25,16 @@ interface BannerProps {
 }
 
 export default function Banner(props: BannerProps) {
+  // Delegate to OOTB Banner when not on the WSS portal
+  const isWssPortal = (PCore.getEnvironmentInfo() as any).environmentInfoObject?.pyPortalTemplate === 'wss';
+  if (!isWssPortal) {
+    const OOTBBanner = SdkComponentMap.getPegaProvidedComponentMap().Banner;
+    return <OOTBBanner {...props} />;
+  }
+
   const { a, b, banner, variant = 'two-column' } = props;
   const title = banner?.title || '';
   const message = banner?.message || '';
-
-  const { portalContent } = usePortal();
 
   // Grid column sizes based on variant/layout
   const getGridColumns = () => {
@@ -64,19 +69,13 @@ export default function Banner(props: BannerProps) {
           <Box sx={{ display: 'flex', flexDirection: 'column', pt: '5rem', gap: '0.5rem' }}>
             <Box sx={{ justifyContent: 'center', display: 'inline-grid' }}>
               {title && (
-                <Box
-                  component='h1'
-                  sx={{ m: 0, fontSize: 36, color: '#46185a', fontWeight: 700 }}
-                  dangerouslySetInnerHTML={{ __html: title }}
-                />
+                <Box component='h1' sx={{ m: 0, fontSize: 36, color: '#46185a', fontWeight: 700 }} dangerouslySetInnerHTML={{ __html: title }} />
               )}
               {message && (
                 <Box component='p' sx={{ fontSize: 14, mt: '16px', color: '#49454f' }}>
                   {message}
                 </Box>
               )}
-              {/* Portal content from Todo (survey banner) */}
-              {portalContent}
             </Box>
           </Box>
         </Box>
@@ -97,16 +96,8 @@ export default function Banner(props: BannerProps) {
           borderTopLeftRadius: '28px'
         }}
       >
-        {a && (
-          <Box sx={{ minWidth: 0 }}>
-            {a}
-          </Box>
-        )}
-        {b && (
-          <Box sx={{ minWidth: 0 }}>
-            {b}
-          </Box>
-        )}
+        {a && <Box sx={{ minWidth: 0 }}>{a}</Box>}
+        {b && <Box sx={{ minWidth: 0 }}>{b}</Box>}
       </Box>
     </div>
   );

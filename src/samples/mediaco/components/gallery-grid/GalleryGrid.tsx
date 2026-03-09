@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 import CloseIcon from '@mui/icons-material/Close';
+import { bgColors, colorFilters } from '../../utils/helpers';
 
 interface GalleryGridProps {
   open: boolean;
@@ -10,16 +11,6 @@ interface GalleryGridProps {
   items: any[];
   dataPage: string;
 }
-
-const bgColors = ['#ede9fe', '#fce7f3', '#e0f2fe', '#ffedd5', '#f3e8ff', '#d1fae5'];
-const colorFilters = [
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(250deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(320deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(190deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(25deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(120deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(90deg) saturate(500%)'
-];
 
 function TableTemplateCard({ data, index }: { data: any; index: number }) {
   const bgIdx = index % 6;
@@ -64,10 +55,17 @@ export default function GalleryGrid({ open, onClose, items, dataPage }: GalleryG
   const isAccountHistory = dataPage === 'D_AccountHistoryList';
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth={false} PaperProps={{ sx: { width: '100%', maxWidth: 1400, maxHeight: '90vh', background: '#f8f2fb' } }}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth={false}
+      PaperProps={{ sx: { width: '100%', maxWidth: 1400, maxHeight: '90vh', background: '#f8f2fb' } }}
+    >
       <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
         {/* Header */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: '2rem', py: '1.5rem', borderBottom: '1px solid #e0e0e0' }}>
+        <Box
+          sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: '2rem', py: '1.5rem', borderBottom: '1px solid #e0e0e0' }}
+        >
           <Box>
             <Typography sx={{ fontSize: 45, fontWeight: 400, lineHeight: '52px', m: 0 }}>
               {isAccountHistory ? 'All Activities' : 'Featured Content'}

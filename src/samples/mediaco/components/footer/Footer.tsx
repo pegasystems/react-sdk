@@ -65,7 +65,10 @@ export default function Footer() {
             <List disablePadding>
               {['About Us', 'Services', 'Plans & Pricing', 'Help Center', 'Contact'].map(text => (
                 <ListItemButton key={text} sx={footerLinkStyle}>
-                  <ListItemText primary={text} primaryTypographyProps={{ sx: { color: '#49454f', fontSize: '0.9rem', '&:hover': { color: '#6750a4' } } }} />
+                  <ListItemText
+                    primary={text}
+                    primaryTypographyProps={{ sx: { color: '#49454f', fontSize: '0.9rem', '&:hover': { color: '#6750a4' } } }}
+                  />
                 </ListItemButton>
               ))}
             </List>
@@ -79,7 +82,10 @@ export default function Footer() {
             <List disablePadding>
               {['FAQ', 'Account Settings', 'Billing', 'Technical Support', 'Privacy Policy'].map(text => (
                 <ListItemButton key={text} sx={footerLinkStyle}>
-                  <ListItemText primary={text} primaryTypographyProps={{ sx: { color: '#49454f', fontSize: '0.9rem', '&:hover': { color: '#6750a4' } } }} />
+                  <ListItemText
+                    primary={text}
+                    primaryTypographyProps={{ sx: { color: '#49454f', fontSize: '0.9rem', '&:hover': { color: '#6750a4' } } }}
+                  />
                 </ListItemButton>
               ))}
             </List>

@@ -15,8 +15,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { logout } from '@pega/auth/lib/sdk-auth-manager';
 
-import { getInitials } from '../utils/helpers';
-import Footer from './Footer';
+import Footer from '../footer/Footer';
 
 const COLLAPSED_WIDTH = '5rem';
 const EXPANDED_WIDTH = '15rem';
@@ -39,8 +38,6 @@ export default function WssNavBar(props: PropsWithChildren<WssNavBarProps>) {
 
   const actionsAPI = pConn.getActionsApi();
   const showPage = useMemo(() => actionsAPI.showPage.bind(actionsAPI), [actionsAPI]);
-  const portalOperator = PCore.getEnvironmentInfo().getOperatorName();
-  const portalOperatorInitials = getInitials(portalOperator ?? '');
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
 
   const navPanelButtonClick = useCallback(
@@ -218,9 +215,7 @@ export default function WssNavBar(props: PropsWithChildren<WssNavBarProps>) {
         </AppBar>
 
         {/* View Container Children */}
-        <Box sx={{ flex: 1, backgroundColor: '#fff', width: '100%' }}>
-          {children}
-        </Box>
+        <Box sx={{ flex: 1, backgroundColor: '#fff', width: '100%' }}>{children}</Box>
 
         {/* Footer */}
         <Footer />

@@ -1,12 +1,9 @@
 import { type PropsWithChildren, useEffect, useState } from 'react';
-import Snackbar from '@mui/material/Snackbar';
-import Button from '@mui/material/Button';
-import { getSDKStaticContentUrl } from '../utils/helpers';
-import { PortalProvider } from '../context/PortalContext';
-import WssNavBar from './WssNavBar';
+import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { getSDKStaticContentUrl } from '../../utils/helpers';
+import WssNavBar from '../wss-nav-bar/WssNavBar';
 
 interface IPage {
-  classID: string;
   pxPageViewIcon: string;
   pyClassName: string;
   pyLabel: string;
@@ -22,23 +19,19 @@ interface AppShellProps {
   portalTemplate?: string;
   portalName?: string;
   portalLogo?: string;
+  navDisplayOptions?: {
+    alignment: string;
+    position: string;
+  };
+  httpMessages?: string[];
+  pageMessages?: string[];
 }
 
 export default function AppShell(props: PropsWithChildren<AppShellProps>) {
-  const {
-    pages = [],
-    caseTypes = [],
-    showAppName,
-    children,
-    getPConnect,
-    portalTemplate = '',
-    portalLogo
-  } = props;
+  const { pages = [], caseTypes = [], showAppName, children, getPConnect, portalTemplate = '', portalLogo } = props;
 
   const pConn = getPConnect();
   const [imageURL, setImageURL] = useState('');
-  const [snackOpen, setSnackOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
 
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const envInfo = PCore.getEnvironmentInfo();
@@ -46,6 +39,12 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
   const portalClass = pConn.getValue('.classID', '');
   const envPortalName = envInfo.getPortalName();
   const appName = localizedVal(appNameToDisplay || '', '', `${portalClass}!PORTAL!${envPortalName}`.toUpperCase());
+
+  // If not WSS portal, delegate to the OOTB AppShell
+  if (portalTemplate !== 'wss') {
+    const OOTBAppShell = SdkComponentMap.getPegaProvidedComponentMap().AppShell;
+    return <OOTBAppShell {...props} />;
+  }
 
   const bShowAppShell = pages.length > 0;
   const links = pages.filter((_page, index) => index !== 0);
@@ -101,34 +100,12 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
   }, [portalLogo]);
 
   return (
-    <PortalProvider>
     <div style={{ display: 'flex', width: '100%', minHeight: '100vh', backgroundColor: '#fff' }}>
       {bShowAppShell && portalTemplate === 'wss' && (
-        <WssNavBar
-          getPConnect={getPConnect}
-          appName={appName}
-          pages={links}
-          caseTypes={caseTypes}
-          homePage={homePage}
-          portalLogoImage={imageURL}
-        >
+        <WssNavBar getPConnect={getPConnect} appName={appName} pages={links} caseTypes={caseTypes} homePage={homePage} portalLogoImage={imageURL}>
           {children}
         </WssNavBar>
       )}
-
-      {/* Error Snackbar */}
-      <Snackbar
-        open={snackOpen}
-        autoHideDuration={5000}
-        onClose={() => setSnackOpen(false)}
-        message={errorMessage}
-        action={
-          <Button color='inherit' size='small' onClick={() => setSnackOpen(false)}>
-            Ok
-          </Button>
-        }
-      />
     </div>
-    </PortalProvider>
   );
 }

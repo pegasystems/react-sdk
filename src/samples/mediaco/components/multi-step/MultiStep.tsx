@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { getComponentFromMap, SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 interface MultiStepProps {
   getPConnect?: () => typeof PConnect;
@@ -8,29 +8,19 @@ interface MultiStepProps {
   itemKey?: string;
   actionButtons?: any;
   onButtonPress?: (sAction: string, sButtonType: string) => void;
-  arMainButtons?: any[];
-  arSecondaryButtons?: any[];
-  arChildren?: any[];
   bIsVertical?: boolean;
-  arCurrentStepIndicies?: number[];
   arNavigationSteps?: any[];
-  onActionButtonClick?: (data: any) => void;
 }
 
 export default function MultiStep(props: MultiStepProps) {
-  const {
-    getPConnect,
-    children,
-    itemKey = '',
-    actionButtons,
-    onButtonPress,
-    bIsVertical = false,
-    arNavigationSteps = [],
-    arChildren = [],
-    arMainButtons = [],
-    arSecondaryButtons = [],
-    onActionButtonClick
-  } = props;
+  // Delegate to OOTB MultiStep when not on the WSS portal
+  const isWssPortal = (PCore.getEnvironmentInfo() as any).environmentInfoObject?.pyPortalTemplate === 'wss';
+  if (!isWssPortal) {
+    const OOTBMultiStep = SdkComponentMap.getPegaProvidedComponentMap().MultiStep;
+    return <OOTBMultiStep {...props} />;
+  }
+
+  const { getPConnect, children, itemKey = '', actionButtons, onButtonPress, bIsVertical = false, arNavigationSteps = [] } = props;
 
   // Get AssignmentCard from the component map (same as OOTB)
   const AssignmentCard = getComponentFromMap('AssignmentCard');
@@ -51,9 +41,6 @@ export default function MultiStep(props: MultiStepProps) {
     }
     currentStep = arNavigationSteps[lastActiveStepIndex >= 0 ? lastActiveStepIndex : 0];
   }
-  const getVIconClass = (status: string) => (status === 'current' ? 'psdk-vertical-step-icon-selected' : 'psdk-vertical-step-icon');
-  const getVLabelClass = (status: string) => (status === 'current' ? 'psdk-vertical-step-label-selected' : 'psdk-vertical-step-label');
-
   const getHIconSx = (status: string) => {
     if (status === 'current')
       return {
@@ -66,8 +53,7 @@ export default function MultiStep(props: MultiStepProps) {
           '100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 rgba(106,27,154,0)' }
         }
       };
-    if (status === 'success')
-      return { backgroundColor: '#5a3a9b', border: '1px solid #5a3a9b' };
+    if (status === 'success') return { backgroundColor: '#5a3a9b', border: '1px solid #5a3a9b' };
     return { backgroundColor: '#e6e0e9', border: '1px solid #e6e0e9' };
   };
 
@@ -123,12 +109,7 @@ export default function MultiStep(props: MultiStepProps) {
             >
               {mainStep.visited_status === 'current' && (
                 <Box sx={{ pl: '20px' }}>
-                  <AssignmentCard
-                    getPConnect={getPConnect}
-                    itemKey={itemKey}
-                    actionButtons={actionButtons}
-                    onButtonPress={buttonPress}
-                  >
+                  <AssignmentCard getPConnect={getPConnect} itemKey={itemKey} actionButtons={actionButtons} onButtonPress={buttonPress}>
                     {children}
                   </AssignmentCard>
                 </Box>
@@ -197,12 +178,7 @@ export default function MultiStep(props: MultiStepProps) {
         if (mainStep.visited_status !== 'current') return null;
         return (
           <Box key={i} sx={{ px: '1.5rem', pb: '1rem' }}>
-            <AssignmentCard
-              getPConnect={getPConnect}
-              itemKey={itemKey}
-              actionButtons={actionButtons}
-              onButtonPress={buttonPress}
-            >
+            <AssignmentCard getPConnect={getPConnect} itemKey={itemKey} actionButtons={actionButtons} onButtonPress={buttonPress}>
               {children}
             </AssignmentCard>
           </Box>

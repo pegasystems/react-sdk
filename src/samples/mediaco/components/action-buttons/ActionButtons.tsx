@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 
 /**
  * Custom ActionButtons for WSS (MediaCo) portal.
@@ -15,6 +16,13 @@ interface ActionButtonsProps {
 }
 
 export default function ActionButtons(props: ActionButtonsProps) {
+  // Delegate to OOTB ActionButtons when not on the WSS portal
+  const isWssPortal = (PCore.getEnvironmentInfo() as any).environmentInfoObject?.pyPortalTemplate === 'wss';
+  if (!isWssPortal) {
+    const OOTBActionButtons = SdkComponentMap.getPegaProvidedComponentMap().ActionButtons;
+    return <OOTBActionButtons {...props} />;
+  }
+
   const { arMainButtons = [], arSecondaryButtons = [], onButtonPress } = props;
   const localizedVal = PCore.getLocaleUtils().getLocaleValue;
   const localeCategory = 'Assignment';

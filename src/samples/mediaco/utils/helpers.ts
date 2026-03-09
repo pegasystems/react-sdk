@@ -16,12 +16,12 @@ export function getSDKStaticContentUrl(): string {
  * Uses a relative path so icons are served from the local dev server
  * (webpack copies assets/icons/* to constellation/icons/).
  */
-export function getImageSrc(name: string, _staticUrl?: string): string {
+export function getImageSrc(name: string): string {
   // Absolute path — icons are bundled locally by webpack into /constellation/icons/
   return `/constellation/icons/${name}.svg`;
 }
 
-export function getIconPath(_staticUrl?: string): string {
+export function getIconPath(): string {
   return '/constellation/icons/';
 }
 
@@ -36,27 +36,15 @@ export function getInitials(name: string): string {
 }
 
 /**
- * Human-readable time-since string.
- */
-export function timeSince(date: Date): string {
-  const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
-  let interval = seconds / 31536000;
-  if (interval > 1) return `${Math.floor(interval)}y ago`;
-  interval = seconds / 2592000;
-  if (interval > 1) return `${Math.floor(interval)} months ago`;
-  interval = seconds / 86400;
-  if (interval > 1) return `${Math.floor(interval)}d ago`;
-  interval = seconds / 3600;
-  if (interval > 1) return `${Math.floor(interval)}h ago`;
-  interval = seconds / 60;
-  if (interval > 1) return `${Math.floor(interval)}m ago`;
-  return `${Math.floor(seconds)}s ago`;
-}
-
-/**
  * Fetch work list data from a data page (mirrors Angular fetchMyWorkList).
  */
-export function fetchMyWorkList(datapage: string, fields: Record<string, string>, numberOfRecords: number, includeTotalCount: boolean, context: string) {
+export function fetchMyWorkList(
+  datapage: string,
+  fields: Record<string, string>,
+  numberOfRecords: number,
+  includeTotalCount: boolean,
+  context: string
+) {
   return PCore.getDataPageUtils()
     .getDataAsync(
       datapage,
@@ -89,33 +77,13 @@ export function fetchMyWorkList(datapage: string, fields: Record<string, string>
     });
 }
 
-/**
- * Maps activity types to icons (for Account History list).
- */
-export const CASE_TYPE_TO_ACTIVITY_MAP: Record<string, string> = {
-  'Plan Upgrade': 'Plan Upgrade',
-  Payment: 'Make Payment',
-  AddOnPurchase: 'Add-On Services',
-  'New Statement': 'New Service',
-  ProfileUpdated: 'Get Help',
-  'Product Demo': 'Purchase Phone'
-};
-
-export function getActivityIcon(activityType: string): string {
-  switch (activityType) {
-    case 'Plan Upgrade':
-      return 'trending-up';
-    case 'Make Payment':
-      return 'wallet';
-    case 'Add-On Services':
-      return 'monitor';
-    case 'New Service':
-      return 'shopping-cart';
-    case 'Get Help':
-      return 'headphones';
-    case 'Purchase Phone':
-      return 'smartphone';
-    default:
-      return '';
-  }
-}
+/** Shared palette colors for card/icon backgrounds (used by ListView + GalleryGrid). */
+export const bgColors = ['#ede9fe', '#fce7f3', '#e0f2fe', '#ffedd5', '#f3e8ff', '#d1fae5'];
+export const colorFilters = [
+  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(250deg) saturate(500%)',
+  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(320deg) saturate(500%)',
+  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(190deg) saturate(500%)',
+  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(25deg) saturate(500%)',
+  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(120deg) saturate(500%)',
+  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(90deg) saturate(500%)'
+];

@@ -1,10 +1,10 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { getImageSrc } from '../utils/helpers';
-import { QUICK_LINKS_DATA } from '../utils/quickCreateData';
+import { getImageSrc } from '../../utils/helpers';
+import { QUICK_LINKS_DATA } from './quickCreateData';
 
 const bgGradients: Record<string, string> = {
   'bg-purple': 'linear-gradient(135deg, rgb(184,167,212) 0%, rgb(212,199,232) 100%)',
@@ -16,12 +16,14 @@ const bgGradients: Record<string, string> = {
 
 interface QuickCreateProps {
   getPConnect: () => typeof PConnect;
+  heading?: string;
+  showCaseIcons?: boolean;
+  classFilter?: any[];
 }
 
-export default function QuickCreate({ getPConnect }: QuickCreateProps) {
+export default function QuickCreate({ getPConnect, classFilter: classFilterProp }: QuickCreateProps) {
   const pConn = getPConnect();
   const [cases, setCases] = useState<any[]>([]);
-  const gridRef = useRef<HTMLDivElement>(null);
 
   const createCase = useCallback(
     (className: string) => {
@@ -36,8 +38,6 @@ export default function QuickCreate({ getPConnect }: QuickCreateProps) {
   );
 
   useEffect(() => {
-    const configProps: any = pConn.resolveConfigProps(pConn.getConfigProps());
-    const classFilter = configProps?.classFilter;
     const defaultCases: any[] = [];
 
     const envInfo = PCore.getEnvironmentInfo();
@@ -68,9 +68,9 @@ export default function QuickCreate({ getPConnect }: QuickCreateProps) {
     }
 
     let filteredCases = defaultCases;
-    if (classFilter?.length > 0) {
+    if (classFilterProp && classFilterProp.length > 0) {
       filteredCases = [];
-      classFilter.forEach((item: string) => {
+      classFilterProp.forEach((item: string) => {
         defaultCases.forEach(casetype => {
           if (casetype.classname === item) filteredCases.push(casetype);
         });
@@ -85,7 +85,7 @@ export default function QuickCreate({ getPConnect }: QuickCreateProps) {
     });
 
     setCases(merged);
-  }, [pConn, createCase]);
+  }, [createCase, classFilterProp]);
 
   return (
     <Box sx={{ backgroundColor: 'transparent' }}>
@@ -100,7 +100,6 @@ export default function QuickCreate({ getPConnect }: QuickCreateProps) {
 
         {/* Grid */}
         <Box
-          ref={gridRef}
           sx={{
             display: 'grid',
             gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
@@ -123,10 +122,36 @@ export default function QuickCreate({ getPConnect }: QuickCreateProps) {
                     flexDirection: 'column'
                   }}
                 >
-                  <Box sx={{ height: 140, borderRadius: '0 0 16px 16px', animation: 'skeleton-loading 1s linear infinite alternate', '@keyframes skeleton-loading': { '0%': { backgroundColor: 'hsl(200,20%,80%)' }, '100%': { backgroundColor: 'hsl(200,20%,95%)' } } }} />
+                  <Box
+                    sx={{
+                      height: 140,
+                      borderRadius: '0 0 16px 16px',
+                      animation: 'skeleton-loading 1s linear infinite alternate',
+                      '@keyframes skeleton-loading': {
+                        '0%': { backgroundColor: 'hsl(200,20%,80%)' },
+                        '100%': { backgroundColor: 'hsl(200,20%,95%)' }
+                      }
+                    }}
+                  />
                   <Box sx={{ p: 2 }}>
-                    <Box sx={{ width: '100%', height: '0.7rem', mb: '0.5rem', borderRadius: '0.25rem', animation: 'skeleton-loading 1s linear infinite alternate' }} />
-                    <Box sx={{ width: '100%', height: '0.7rem', mb: '0.5rem', borderRadius: '0.25rem', animation: 'skeleton-loading 1s linear infinite alternate' }} />
+                    <Box
+                      sx={{
+                        width: '100%',
+                        height: '0.7rem',
+                        mb: '0.5rem',
+                        borderRadius: '0.25rem',
+                        animation: 'skeleton-loading 1s linear infinite alternate'
+                      }}
+                    />
+                    <Box
+                      sx={{
+                        width: '100%',
+                        height: '0.7rem',
+                        mb: '0.5rem',
+                        borderRadius: '0.25rem',
+                        animation: 'skeleton-loading 1s linear infinite alternate'
+                      }}
+                    />
                     <Box sx={{ width: 100, height: 36, borderRadius: '18px', animation: 'skeleton-loading 1s linear infinite alternate' }} />
                   </Box>
                 </Box>
@@ -163,7 +188,11 @@ export default function QuickCreate({ getPConnect }: QuickCreateProps) {
                     {/* Watermark */}
                     {card.icon && (
                       <Box sx={{ position: 'absolute', opacity: 0.1, transform: 'rotate(45deg) scale(8)', pointerEvents: 'none' }}>
-                        <Box component='img' src={getImageSrc(card.icon)} sx={{ color: '#fff', height: 48, filter: 'brightness(0) saturate(100%) invert(100%)', width: 48 }} />
+                        <Box
+                          component='img'
+                          src={getImageSrc(card.icon)}
+                          sx={{ color: '#fff', height: 48, filter: 'brightness(0) saturate(100%) invert(100%)', width: 48 }}
+                        />
                       </Box>
                     )}
                     {/* Icon box */}
@@ -185,13 +214,17 @@ export default function QuickCreate({ getPConnect }: QuickCreateProps) {
                         backgroundImage: card.gradient || undefined
                       }}
                     >
-                      {card.icon && <Box component='img' src={getImageSrc(card.icon)} sx={{ height: 45, filter: 'brightness(0) saturate(100%) invert(100%)' }} />}
+                      {card.icon && (
+                        <Box component='img' src={getImageSrc(card.icon)} sx={{ height: 45, filter: 'brightness(0) saturate(100%) invert(100%)' }} />
+                      )}
                     </Box>
                   </Box>
 
                   {/* Card Body */}
                   <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <Typography sx={{ m: '0 0 10px', fontSize: 16, fontWeight: 500, lineHeight: '24px', color: '#1a1a1a' }}>{card.title || card.label}</Typography>
+                    <Typography sx={{ m: '0 0 10px', fontSize: 16, fontWeight: 500, lineHeight: '24px', color: '#1a1a1a' }}>
+                      {card.title || card.label}
+                    </Typography>
                     <Typography sx={{ m: '0 0 16px', color: '#555', fontSize: 14 }}>{card.description}</Typography>
                     <Button
                       variant='outlined'

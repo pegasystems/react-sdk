@@ -1,7 +1,7 @@
 import { Avatar, Card, CardHeader, Divider, Typography, Button, Menu, MenuItem } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-import { useState, type MouseEvent, type ReactElement } from 'react';
-import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { useState, type MouseEvent } from 'react';
+import { getComponentFromMap, SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { prepareCaseSummaryData, filterUtilities } from '@pega/react-sdk-components/lib/components/template/utils';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 
@@ -52,8 +52,14 @@ interface SelfServiceCaseViewProps {
 }
 
 export default function SelfServiceCaseView(props: SelfServiceCaseViewProps) {
+  // Delegate to OOTB SelfServiceCaseView when not on the WSS portal
+  const isWssPortal = (PCore.getEnvironmentInfo() as any).environmentInfoObject?.pyPortalTemplate === 'wss';
+  if (!isWssPortal) {
+    const OOTBSelfServiceCaseView = SdkComponentMap.getPegaProvidedComponentMap().SelfServiceCaseView;
+    return <OOTBSelfServiceCaseView {...props} />;
+  }
+
   const classes = useStyles();
-  const CaseViewActionsMenu = getComponentFromMap('CaseViewActionsMenu');
   const CaseSummary = getComponentFromMap('CaseSummary');
 
   const {
@@ -67,7 +73,7 @@ export default function SelfServiceCaseView(props: SelfServiceCaseViewProps) {
     showCaseActions = true,
     children,
     caseClass,
-    caseInfo: { availableActions = [], availableProcesses = [], caseTypeID = '', caseTypeName = '' }
+    caseInfo: { availableActions = [], availableProcesses = [] }
   } = props;
 
   const pConnect = getPConnect();

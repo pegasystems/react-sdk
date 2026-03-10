@@ -1,6 +1,7 @@
 import { type PropsWithChildren, useEffect, useState } from 'react';
 import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import { getSDKStaticContentUrl } from '../../utils/helpers';
+import { TodoPortalProvider } from '../../utils/TodoPortalContext';
 import WssNavBar from '../wss-nav-bar/WssNavBar';
 
 interface IPage {
@@ -102,9 +103,11 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
   return (
     <div style={{ display: 'flex', width: '100%', minHeight: '100vh', backgroundColor: '#fff' }}>
       {bShowAppShell && portalTemplate === 'wss' && (
-        <WssNavBar getPConnect={getPConnect} appName={appName} pages={links} caseTypes={caseTypes} homePage={homePage} portalLogoImage={imageURL}>
-          {children}
-        </WssNavBar>
+        <TodoPortalProvider>
+          <WssNavBar getPConnect={getPConnect} appName={appName} pages={links} caseTypes={caseTypes} homePage={homePage} portalLogoImage={imageURL}>
+            {children}
+          </WssNavBar>
+        </TodoPortalProvider>
       )}
     </div>
   );

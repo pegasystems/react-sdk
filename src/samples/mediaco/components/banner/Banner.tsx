@@ -1,6 +1,10 @@
 import { type ReactNode } from 'react';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { useTodoPortal } from '../../utils/TodoPortalContext';
+import { getImageSrc } from '../../utils/helpers';
 
 /**
  * Banner is called by BannerPage/DefaultPage via getComponentFromMap('Banner').
@@ -35,6 +39,8 @@ export default function Banner(props: BannerProps) {
   const { a, b, banner, variant = 'two-column' } = props;
   const title = banner?.title || '';
   const message = banner?.message || '';
+  const { surveyCase, clickGoRef } = useTodoPortal();
+  const imgSrc = getImageSrc('message-circle');
 
   // Grid column sizes based on variant/layout
   const getGridColumns = () => {
@@ -54,7 +60,7 @@ export default function Banner(props: BannerProps) {
 
   return (
     <div style={{ width: '100%', backgroundColor: '#fff' }}>
-      {/* Banner header area — sticky like Angular's .background-image-style */}
+      {/* Banner header area  */}
       <Box
         sx={{
           position: 'sticky',
@@ -74,6 +80,102 @@ export default function Banner(props: BannerProps) {
               {message && (
                 <Box component='p' sx={{ fontSize: 14, mt: '16px', color: '#49454f' }}>
                   {message}
+                </Box>
+              )}
+
+              {/* Todo survey banner */}
+              {surveyCase && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    width: '100%',
+                    py: '1rem'
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '24px',
+                      background: 'linear-gradient(135deg, rgb(103,80,164) 0%, rgb(248,20,227) 50%, rgb(0,201,255) 100%)',
+                      backgroundSize: '200% 200%',
+                      borderRadius: '24px',
+                      padding: '24px 32px',
+                      width: '670px',
+                      maxWidth: '100%',
+                      color: '#fff',
+                      boxShadow: '0 8px 20px rgba(94, 75, 159, 0.25)',
+                      fontFamily: "'Roboto', sans-serif",
+                      textAlign: 'left',
+                      '@media (max-width: 768px)': {
+                        flexDirection: 'column',
+                        textAlign: 'center',
+                        padding: '32px 24px'
+                      }
+                    }}
+                  >
+                    <Box sx={{ flexShrink: 0 }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: '72px',
+                          height: '72px',
+                          borderRadius: '16px',
+                          backgroundColor: 'rgba(255,255,255,0.15)',
+                          backdropFilter: 'blur(4px)'
+                        }}
+                      >
+                        <Box
+                          component='img'
+                          src={imgSrc}
+                          sx={{
+                            height: '35px',
+                            filter: 'brightness(0) saturate(100%) invert(100%)'
+                          }}
+                        />
+                      </Box>
+                    </Box>
+
+                    <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                      <Box component='h2' sx={{ m: '0 0 6px 0', fontSize: '22px', fontWeight: 400 }}>
+                        Share Your Experience
+                      </Box>
+                      <Box component='p' sx={{ m: 0, fontSize: '15px', opacity: 0.9, fontWeight: 400, lineHeight: 1.4 }}>
+                        Take a quick survey about your recent experience with MediaCo.
+                      </Box>
+                    </Box>
+
+                    <Box sx={{ flexShrink: 0 }}>
+                      <Button
+                        onClick={() => clickGoRef.current()}
+                        sx={{
+                          backgroundColor: '#fff',
+                          color: '#5c4498',
+                          border: 'none',
+                          padding: '12px 28px',
+                          borderRadius: '50px',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          letterSpacing: '0.1px',
+                          fontSize: '14px',
+                          fontWeight: 500,
+                          lineHeight: '20px',
+                          textTransform: 'none',
+                          '&:hover': {
+                            backgroundColor: '#f0f0f0'
+                          }
+                        }}
+                      >
+                        Start
+                        <ArrowForwardIcon sx={{ fontSize: '20px' }} />
+                      </Button>
+                    </Box>
+                  </Box>
                 </Box>
               )}
             </Box>

@@ -15,11 +15,12 @@ const MEDIACO_DATA_PAGES = ['D_AccountHistoryList', 'D_TrendingItemsList', 'D_Ca
 interface ListViewProps {
   getPConnect: () => typeof PConnect;
   bInForm?: boolean;
+  title: any;
   [key: string]: any; // pass-through props for OOTB ListView
 }
 
 export default function ListView(props: ListViewProps) {
-  const { getPConnect, referenceList = '' } = props;
+  const { getPConnect, referenceList = '', title } = props;
   const pConn = getPConnect();
 
   const refList: string = referenceList;
@@ -31,18 +32,17 @@ export default function ListView(props: ListViewProps) {
   }
 
   // ── Custom MediaCo rendering (gallery / carousel / table) ──
-  return <MediaCoListView pConn={pConn} refList={refList} />;
+  return <MediaCoListView pConn={pConn} refList={refList} title={title} />;
 }
 
 /** Inner component for the custom MediaCo data pages */
-function MediaCoListView({ pConn, refList }: { pConn: any; refList: string }) {
+function MediaCoListView({ pConn, refList, title }: { pConn: any; refList: string; title: any }) {
   const [sourceList, setSourceList] = useState<any[] | null>(null);
   const [galleryOpen, setGalleryOpen] = useState(false);
 
   const componentConfig: any = pConn.getComponentConfig();
   const preset = componentConfig?.presets?.[0];
   const template = preset?.template || '';
-  const title = componentConfig?.title || '';
 
   useEffect(() => {
     const componentConfig: any = pConn.getComponentConfig();

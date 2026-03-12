@@ -53,10 +53,10 @@ interface SelfServiceCaseViewProps {
 }
 
 export default function SelfServiceCaseView(props: SelfServiceCaseViewProps) {
-  // Delegate to OOTB SelfServiceCaseView when not on the WSS portal
+  //Delegate to OOTB SelfServiceCaseView when not on the WSS portal
   const isWssPortal = (PCore.getEnvironmentInfo() as any).environmentInfoObject?.pyPortalTemplate === 'wss';
   if (!isWssPortal) {
-    return <OOTBSelfServiceCaseView {...props} />;
+    return <OOTBSelfServiceCaseView {...(props as any)} />;
   }
 
   const classes = useStyles();

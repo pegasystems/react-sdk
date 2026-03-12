@@ -1,5 +1,4 @@
 // Statically load all "MediaCo" components.
-import ActionButtons from './components/action-buttons/ActionButtons';
 import AppShell from './components/app-shell/AppShell';
 import Banner from './components/banner/Banner';
 import ListView from './components/list-view/ListView';
@@ -15,7 +14,6 @@ import WssNavBar from './components/wss-nav-bar/WssNavBar';
 // specific to MediaCo application.
 
 const sdkMediaCoComponentMap = {
-  ActionButtons,
   AppShell,
   Banner,
   ListView,

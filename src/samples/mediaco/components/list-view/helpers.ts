@@ -1,6 +1,5 @@
 /**
  * ListView-specific helpers — co-located with the ListView component.
- * Mirrors Angular's list-view/listViewHelpers.ts + utils.ts pattern.
  */
 
 /**

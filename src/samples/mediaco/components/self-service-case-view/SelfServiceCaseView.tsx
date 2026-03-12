@@ -197,7 +197,7 @@ export default function SelfServiceCaseView(props: SelfServiceCaseViewProps) {
         )}
       </div>
 
-      {/* Main case view with flex layout (matching Angular SDK) */}
+      {/* Main case view with flex layout */}
       <div
         style={{
           boxSizing: 'border-box',

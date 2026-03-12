@@ -1,6 +1,5 @@
 /**
  * Utility to build the SDK static content URL for icon/image assets.
- * Mirrors the Angular Utils.getSDKStaticContentUrl / getImageSrc pattern.
  */
 export function getSDKStaticContentUrl(): string {
   // PCore.getAssetLoader().getStaticServerUrl() returns the base URL for static assets
@@ -36,7 +35,7 @@ export function getInitials(name: string): string {
 }
 
 /**
- * Fetch work list data from a data page (mirrors Angular fetchMyWorkList).
+ * Fetch work list data from a data page.
  */
 export function fetchMyWorkList(
   datapage: string,

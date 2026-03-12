@@ -192,7 +192,7 @@ body {
   border-color: #6750a4 !important;
 }
 
-/* ========== MediaCo WSS: Assignment-routed banner (matches Angular mat-card style) ========== */
+/* ========== MediaCo WSS: Assignment-routed banner ========== */
 /* Shown by OOTB FlowContainer when assignment goes to another user's queue */
 .psdk-alert {
   margin: 1rem;

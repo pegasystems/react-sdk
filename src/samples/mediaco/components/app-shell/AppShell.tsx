@@ -2,7 +2,7 @@ import { type PropsWithChildren, useEffect, useState } from 'react';
 import OOTBAppShell from '@pega/react-sdk-components/lib/components/template/AppShell';
 import { getSDKStaticContentUrl } from '../../utils/helpers';
 import { TodoPortalProvider } from '../../utils/TodoPortalContext';
-import WssNavBar from '../wss-nav-bar/WssNavBar';
+import WssNavBar from '../wss-nav-bar';
 
 interface IPage {
   pxPageViewIcon: string;
@@ -43,7 +43,7 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
 
   // If not WSS portal, delegate to the OOTB AppShell
   if (portalTemplate !== 'wss') {
-    return <OOTBAppShell {...props as any} />;
+    return <OOTBAppShell {...(props as any)} />;
   }
 
   const bShowAppShell = pages.length > 0;
@@ -100,7 +100,7 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
   }, [portalLogo]);
 
   return (
-    <div style={{ display: 'flex', width: '100%', minHeight: '100vh', backgroundColor: '#fff' }}>
+    <div className='mc-app-shell'>
       {bShowAppShell && portalTemplate === 'wss' && (
         <TodoPortalProvider>
           <WssNavBar getPConnect={getPConnect} appName={appName} pages={links} caseTypes={caseTypes} homePage={homePage} portalLogoImage={imageURL}>

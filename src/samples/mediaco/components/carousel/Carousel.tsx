@@ -135,42 +135,11 @@ export default function Carousel({ data }: CarouselProps) {
   }, [isLoading, displayItems]);
 
   // Skeleton placeholders while images are preloading
-  const skeletonItems = Array.from({ length: 6 }).map((_, i) => (
-    <Box
-      key={`skeleton-${i}`}
-      sx={{
-        flex: '0 0 200px',
-        height: 350,
-        mx: '10px',
-        borderRadius: '8px',
-        background: 'linear-gradient(90deg, #e0e0e0 25%, #ececec 50%, #e0e0e0 75%)',
-        backgroundSize: '200% 100%',
-        animation: 'shimmer 1.5s infinite',
-        '@keyframes shimmer': {
-          '0%': { backgroundPosition: '200% 0' },
-          '100%': { backgroundPosition: '-200% 0' }
-        }
-      }}
-    />
-  ));
+  const skeletonItems = Array.from({ length: 6 }).map((_, i) => <Box key={`skeleton-${i}`} className='mc-carousel-skeleton-item' />);
 
   return (
-    <Box sx={{ width: '100%', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-      <Box
-        ref={scrollRef}
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          width: '100%',
-          maxWidth: '100%',
-          overflowX: 'auto',
-          overflowY: 'hidden',
-          scrollBehavior: 'auto',
-          borderRadius: '12px',
-          '&::-webkit-scrollbar': { display: 'none' },
-          scrollbarWidth: 'none'
-        }}
-      >
+    <Box className='mc-carousel-root'>
+      <Box ref={scrollRef} className='mc-carousel-track'>
         {isLoading
           ? skeletonItems
           : displayItems.map((item, i) => (
@@ -179,29 +148,12 @@ export default function Carousel({ data }: CarouselProps) {
                 ref={(el: HTMLDivElement | null) => {
                   cardRefs.current[i] = el;
                 }}
-                sx={{
-                  flex: '0 0 200px',
-                  height: 350,
-                  mx: '10px',
-                  transition: 'flex-basis 0.1s linear, min-width 0.1s linear',
-                  willChange: 'flex-basis, min-width',
-                  minWidth: 0
-                }}
+                className='mc-carousel-item'
               >
-                <Card sx={{ width: '100%', height: '100%', p: 0, overflow: 'hidden', position: 'relative', background: '#000', borderRadius: '8px' }}>
-                  <Box component='img' src={item.img} alt='Card Image' sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      bottom: 0,
-                      left: 0,
-                      width: '100%',
-                      p: 2,
-                      background: 'linear-gradient(transparent, rgba(0,0,0,0.9))',
-                      color: '#fff'
-                    }}
-                  >
-                    <Typography variant='subtitle1' sx={{ m: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <Card className='mc-carousel-card'>
+                  <Box component='img' src={item.img} alt='Card Image' className='mc-carousel-image' />
+                  <Box className='mc-carousel-overlay'>
+                    <Typography variant='subtitle1' className='mc-carousel-title'>
                       {item.title}
                     </Typography>
                   </Box>

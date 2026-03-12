@@ -17,9 +17,6 @@ import { logout } from '@pega/auth/lib/sdk-auth-manager';
 
 import Footer from '../footer/Footer';
 
-const COLLAPSED_WIDTH = '5rem';
-const EXPANDED_WIDTH = '15rem';
-
 interface WssNavBarProps {
   getPConnect: () => typeof PConnect;
   appName: string;
@@ -55,159 +52,69 @@ export default function WssNavBar(props: PropsWithChildren<WssNavBarProps>) {
     });
   }, []);
 
-  const navItemSx = (isActive: boolean) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: collapsed ? 'center' : 'flex-start',
-    flexDirection: collapsed ? 'column' : 'row',
-    cursor: 'pointer',
-    p: '8px',
-    borderRadius: '16px',
-    transition: 'all 0.2s ease-in-out',
-    ...(isActive && {
-      backgroundColor: 'rgba(63, 81, 181, 0.1)',
-      color: '#6750a4',
-      '& .MuiSvgIcon-root': { color: '#6750a4' }
-    }),
-    '&:hover': {
-      backgroundColor: 'rgba(63, 81, 181, 0.1)',
-      borderRadius: '16px'
-    }
-  });
-
-  const circleIconSx = {
-    background: 'linear-gradient(135deg, rgb(255, 179, 217) 0%, rgb(255, 196, 232) 100%)',
-    borderRadius: '50%',
-    width: 40,
-    height: 40,
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: '#333',
-    mr: 1
+  const getNavItemClass = (isActive: boolean) => {
+    const stateClass = isActive ? 'mc-wss-nav-item-active' : 'mc-wss-nav-item-default';
+    const sizeClass = collapsed ? 'mc-wss-nav-item-collapsed' : 'mc-wss-nav-item-expanded';
+    return `mc-wss-nav-item ${stateClass} ${sizeClass}`;
   };
 
+  const drawerPaperClass = collapsed ? 'mc-wss-drawer-paper mc-wss-drawer-paper-collapsed' : 'mc-wss-drawer-paper mc-wss-drawer-paper-expanded';
+
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', width: '100%' }}>
+    <Box className='mc-wss-layout'>
       {/* Side Drawer */}
-      <Drawer
-        variant='permanent'
-        sx={{
-          width: collapsed ? COLLAPSED_WIDTH : EXPANDED_WIDTH,
-          flexShrink: 0,
-          transition: 'width 0.2s ease-in-out',
-          '& .MuiDrawer-paper': {
-            width: collapsed ? COLLAPSED_WIDTH : EXPANDED_WIDTH,
-            transition: 'width 0.2s ease-in-out',
-            overflowX: 'hidden',
-            backgroundColor: '#fef7ff',
-            boxSizing: 'border-box',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.75rem',
-            pt: '2rem',
-            px: collapsed ? '3.5px' : '0.75rem'
-          }
-        }}
-      >
+      <Drawer variant='permanent' className='mc-wss-drawer-root' PaperProps={{ className: drawerPaperClass }}>
         {/* Toggle Button */}
         <Box
           onClick={() => setCollapsed(prev => !prev)}
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 56,
-            height: 56,
-            borderRadius: '16px',
-            backgroundColor: 'rgba(63, 81, 181, 0.1)',
-            cursor: 'pointer',
-            mx: collapsed ? '0.75rem' : 0,
-            alignSelf: collapsed ? 'center' : 'flex-start'
-          }}
+          className={`mc-wss-toggle ${collapsed ? 'mc-wss-toggle-collapsed' : 'mc-wss-toggle-expanded'}`}
         >
-          <IconButton disableRipple>{collapsed ? <MenuIcon /> : <CloseIcon />}</IconButton>
+          <IconButton disableRipple className='mc-wss-toggle-icon'>
+            {collapsed ? <MenuIcon /> : <CloseIcon />}
+          </IconButton>
         </Box>
 
         {/* Home Button */}
-        <Box onClick={() => navPanelButtonClick(homePage)} sx={navItemSx(activePage === 'Self-service Main page')}>
-          <IconButton disableRipple>
+        <Box onClick={() => navPanelButtonClick(homePage)} className={getNavItemClass(activePage === 'Self-service Main page')}>
+          <IconButton disableRipple className='mc-wss-nav-icon-button'>
             <HomeIcon />
           </IconButton>
-          <Typography
-            sx={{
-              fontSize: collapsed ? 12 : 14,
-              mt: collapsed ? '4px' : 0,
-              ml: collapsed ? 0 : 0,
-              whiteSpace: collapsed ? 'normal' : 'nowrap',
-              textAlign: 'center',
-              maxWidth: '100%'
-            }}
-          >
-            Home
-          </Typography>
+          <Typography className='mc-wss-nav-label'>Home</Typography>
         </Box>
 
         {/* Dynamic Pages */}
         {pages?.map((page: any, idx: number) => (
-          <Box key={idx} onClick={() => navPanelButtonClick(page)} sx={navItemSx(activePage === page.pyLabel)}>
-            <IconButton disableRipple>
+          <Box key={idx} onClick={() => navPanelButtonClick(page)} className={getNavItemClass(activePage === page.pyLabel)}>
+            <IconButton disableRipple className='mc-wss-nav-icon-button'>
               <DashboardIcon />
             </IconButton>
-            <Typography
-              sx={{
-                fontSize: collapsed ? 12 : 14,
-                mt: collapsed ? '4px' : 0,
-                whiteSpace: collapsed ? 'normal' : 'nowrap',
-                textAlign: 'center',
-                maxWidth: '100%'
-              }}
-            >
-              {page.pyDefaultHeading}
-            </Typography>
+            <Typography className='mc-wss-nav-label'>{page.pyDefaultHeading}</Typography>
           </Box>
         ))}
       </Drawer>
 
       {/* Main content area */}
-      <Box
-        sx={{
-          flexGrow: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: '100vh',
-          transition: 'margin-left 0.2s ease-in-out'
-        }}
-      >
+      <Box className='mc-wss-main'>
         {/* Top AppBar */}
-        <AppBar
-          position='sticky'
-          elevation={0}
-          sx={{
-            backgroundColor: '#fff',
-            color: '#333',
-            zIndex: 10,
-            borderBottom: '1px solid #e0e0e0'
-          }}
-        >
-          <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <AppBar position='sticky' elevation={0} className='mc-wss-appbar'>
+          <Toolbar className='mc-wss-toolbar'>
             {/* Logo + App Name */}
-            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => navPanelButtonClick(homePage)}>
-              {portalLogoImage && <Box component='img' src={portalLogoImage} sx={{ height: 32, mr: 1.5 }} />}
-              <Typography variant='subtitle1' sx={{ fontWeight: 500 }}>
+            <Box className='mc-wss-brand' onClick={() => navPanelButtonClick(homePage)}>
+              {portalLogoImage && <Box component='img' src={portalLogoImage} className='mc-wss-brand-logo' />}
+              <Typography variant='subtitle1' className='mc-wss-brand-name'>
                 {appName}
               </Typography>
             </Box>
 
             {/* Right side: profile + notifications */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Box sx={circleIconSx} onClick={e => setAnchorEl(e.currentTarget)} style={{ cursor: 'pointer' }}>
+            <Box className='mc-wss-actions'>
+              <Box className='mc-wss-circle-icon mc-wss-circle-icon-clickable' onClick={e => setAnchorEl(e.currentTarget)}>
                 <PersonIcon />
               </Box>
-              <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)} sx={{ '& .MuiMenu-paper': { p: 0 } }}>
+              <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)} PaperProps={{ className: 'mc-wss-menu-paper' }}>
                 <MenuItem onClick={navPanelLogoutClick}>{localizedVal('Log off', 'AppShell')}</MenuItem>
               </Menu>
-              <Box sx={circleIconSx}>
+              <Box className='mc-wss-circle-icon'>
                 <NotificationsIcon />
               </Box>
             </Box>
@@ -215,7 +122,7 @@ export default function WssNavBar(props: PropsWithChildren<WssNavBarProps>) {
         </AppBar>
 
         {/* View Container Children */}
-        <Box sx={{ flex: 1, backgroundColor: '#fff', width: '100%' }}>{children}</Box>
+        <Box className='mc-wss-content'>{children}</Box>
 
         {/* Footer */}
         <Footer />

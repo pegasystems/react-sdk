@@ -1,37 +1,9 @@
 import { Avatar, Card, CardHeader, Divider, Typography, Button, Menu, MenuItem } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useState, type MouseEvent } from 'react';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import OOTBSelfServiceCaseView from '@pega/react-sdk-components/lib/components/template/SelfServiceCaseView';
 import { prepareCaseSummaryData, filterUtilities } from '@pega/react-sdk-components/lib/components/template/utils';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
-
-const useStyles = makeStyles((theme: any) => ({
-  root: {
-    paddingRight: theme.spacing(1),
-    paddingLeft: theme.spacing(1),
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },
-  caseViewHeader: {
-    backgroundColor: theme.palette.info.light,
-    color: theme.palette.getContrastText(theme.palette.info.light),
-    borderRadius: 'inherit'
-  },
-  caseViewIconBox: {
-    backgroundColor: theme.palette.info.dark,
-    width: theme.spacing(8),
-    height: theme.spacing(8),
-    padding: theme.spacing(1)
-  },
-  caseViewIconImage: {
-    filter: 'var(--svg-color)'
-  }
-}));
 
 interface SelfServiceCaseViewProps {
   icon?: string;
@@ -59,7 +31,6 @@ export default function SelfServiceCaseView(props: SelfServiceCaseViewProps) {
     return <OOTBSelfServiceCaseView {...(props as any)} />;
   }
 
-  const classes = useStyles();
   const CaseSummary = getComponentFromMap('CaseSummary');
 
   const {
@@ -147,38 +118,15 @@ export default function SelfServiceCaseView(props: SelfServiceCaseViewProps) {
   };
 
   return (
-    <div
-      style={{
-        width: '100%',
-        minHeight: '100%',
-        backgroundColor: '#fff',
-        display: 'flex',
-        flexDirection: 'column'
-      }}
-    >
+    <div className='mc-case-view-root'>
       {/* Header bar with heading + actions */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '1rem 2rem 0.5rem 2rem'
-        }}
-      >
-        <Typography
-          variant='h4'
-          sx={{
-            color: '#46185a',
-            fontWeight: 700,
-            fontSize: '2rem',
-            lineHeight: 1.3
-          }}
-        >
+      <div className='mc-case-view-header'>
+        <Typography variant='h4' className='mc-case-view-header-title'>
           {localizedVal(header, '', localeKey)}
         </Typography>
         {bShowCaseActions && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Button variant='contained' color='secondary' onClick={handleActionsClick}>
+          <div className='mc-case-view-header-actions'>
+            <Button variant='contained' color='secondary' onClick={handleActionsClick} className='mc-case-view-actions-button'>
               {localizedVal('Actions...', 'CaseView')}
             </Button>
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
@@ -198,41 +146,26 @@ export default function SelfServiceCaseView(props: SelfServiceCaseViewProps) {
       </div>
 
       {/* Main case view with flex layout */}
-      <div
-        style={{
-          boxSizing: 'border-box',
-          display: 'flex',
-          width: '100%',
-          flex: 1,
-          padding: '0 1rem'
-        }}
-      >
+      <div className='mc-case-view-main'>
         {/* Left sidebar: Case Summary */}
         {hasSummaryData && (
-          <div
-            style={{
-              flex: '0 0 auto',
-              width: '25rem',
-              backgroundColor: '#f5f5f5',
-              height: '100%'
-            }}
-          >
-            <Card className={classes.root}>
+          <div className='mc-case-view-left'>
+            <Card className='mc-case-view-card'>
               <CardHeader
-                className={classes.caseViewHeader}
+                className='mc-case-view-card-header'
                 title={
-                  <Typography variant='h6' component='div' id='case-name'>
+                  <Typography variant='h6' component='div' id='case-name' className='mc-case-view-card-title'>
                     {localizedVal(header, '', localeKey)}
                   </Typography>
                 }
                 subheader={
-                  <Typography variant='body1' component='div' id='caseId'>
+                  <Typography variant='body1' component='div' id='caseId' className='mc-case-view-card-subheader'>
                     {subheader}
                   </Typography>
                 }
                 avatar={
-                  <Avatar className={classes.caseViewIconBox} variant='square'>
-                    <img src={svgCase} className={classes.caseViewIconImage} />
+                  <Avatar className='mc-case-view-icon-box' variant='square'>
+                    <img src={svgCase} className='mc-case-view-icon-image' />
                   </Avatar>
                 }
               />
@@ -244,30 +177,13 @@ export default function SelfServiceCaseView(props: SelfServiceCaseViewProps) {
         )}
 
         {/* Center: Stages + Todo — flex-grow to fill all remaining space */}
-        <div
-          style={{
-            flexGrow: 1,
-            minWidth: 0,
-            width: '100%'
-          }}
-        >
+        <div className='mc-case-view-center'>
           {bShowCaseLifecycle && renderedRegions.stages}
           {renderedRegions.todo}
         </div>
 
         {/* Right sidebar: Utilities */}
-        {hasUtilities && (
-          <div
-            style={{
-              backgroundColor: '#f5f5f5',
-              width: '21.875rem',
-              flex: '0 0 auto',
-              padding: '0 0.3125rem'
-            }}
-          >
-            {renderedRegions.utilities}
-          </div>
-        )}
+        {hasUtilities && <div className='mc-case-view-right'>{renderedRegions.utilities}</div>}
       </div>
     </div>
   );

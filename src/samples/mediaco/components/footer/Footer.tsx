@@ -13,44 +13,28 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 
-const footerLinkStyle = {
-  px: 0,
-  py: 0.5,
-  '&:hover': { backgroundColor: 'transparent', transform: 'translateX(4px)', transition: 'transform 0.3s ease' }
-};
-
 export default function Footer() {
   return (
-    <Box component='footer' sx={{ backgroundColor: '#f7f2fa', color: '#333', py: '30px' }}>
-      <Box sx={{ mx: 'auto', px: '20px' }}>
+    <Box component='footer' className='mc-footer'>
+      <Box className='mc-footer-container'>
         {/* Top Section */}
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '2rem', mb: '2rem' }}>
+        <Box className='mc-footer-top'>
           {/* Column 1 - MediaCo */}
-          <Box sx={{ flex: 1, minWidth: 220, mb: '20px', pl: '10px' }}>
-            <Typography variant='h6' sx={{ fontWeight: 'bold', mb: '15px', fontSize: 18 }}>
+          <Box className='mc-footer-column'>
+            <Typography variant='h6' className='mc-footer-column-title'>
               MediaCo
             </Typography>
-            <Typography variant='body2' sx={{ lineHeight: 1.6, mb: '20px', pt: 0.5 }}>
+            <Typography variant='body2' className='mc-footer-about'>
               Your trusted partner for premium entertainment and connectivity solutions.
             </Typography>
-            <Box sx={{ display: 'flex' }}>
+            <Box className='mc-footer-social-row'>
               {[
                 { icon: <FacebookIcon />, label: 'Facebook' },
                 { icon: <TwitterIcon />, label: 'Twitter' },
                 { icon: <InstagramIcon />, label: 'Instagram' },
                 { icon: <YouTubeIcon />, label: 'YouTube' }
               ].map(social => (
-                <IconButton
-                  key={social.label}
-                  aria-label={social.label}
-                  sx={{
-                    width: 40,
-                    height: 40,
-                    mr: '10px',
-                    backgroundColor: '#edeaf2',
-                    '&:hover': { backgroundColor: '#6750a4', '& .MuiSvgIcon-root': { color: '#fff' } }
-                  }}
-                >
+                <IconButton key={social.label} aria-label={social.label} className='mc-footer-social-button'>
                   {social.icon}
                 </IconButton>
               ))}
@@ -58,48 +42,42 @@ export default function Footer() {
           </Box>
 
           {/* Column 2 - Quick Links */}
-          <Box sx={{ flex: 1, minWidth: 220, mb: '20px', pl: '10px' }}>
-            <Typography variant='h6' sx={{ fontWeight: 'bold', mb: '15px', fontSize: 18 }}>
+          <Box className='mc-footer-column'>
+            <Typography variant='h6' className='mc-footer-column-title'>
               Quick Links
             </Typography>
             <List disablePadding>
               {['About Us', 'Services', 'Plans & Pricing', 'Help Center', 'Contact'].map(text => (
-                <ListItemButton key={text} sx={footerLinkStyle}>
-                  <ListItemText
-                    primary={text}
-                    primaryTypographyProps={{ sx: { color: '#49454f', fontSize: '0.9rem', '&:hover': { color: '#6750a4' } } }}
-                  />
+                <ListItemButton key={text} className='mc-footer-link-item'>
+                  <ListItemText primary={text} primaryTypographyProps={{ className: 'mc-footer-link-text' }} />
                 </ListItemButton>
               ))}
             </List>
           </Box>
 
           {/* Column 3 - Support */}
-          <Box sx={{ flex: 1, minWidth: 220, mb: '20px', pl: '10px' }}>
-            <Typography variant='h6' sx={{ fontWeight: 'bold', mb: '15px', fontSize: 18 }}>
+          <Box className='mc-footer-column'>
+            <Typography variant='h6' className='mc-footer-column-title'>
               Support
             </Typography>
             <List disablePadding>
               {['FAQ', 'Account Settings', 'Billing', 'Technical Support', 'Privacy Policy'].map(text => (
-                <ListItemButton key={text} sx={footerLinkStyle}>
-                  <ListItemText
-                    primary={text}
-                    primaryTypographyProps={{ sx: { color: '#49454f', fontSize: '0.9rem', '&:hover': { color: '#6750a4' } } }}
-                  />
+                <ListItemButton key={text} className='mc-footer-link-item'>
+                  <ListItemText primary={text} primaryTypographyProps={{ className: 'mc-footer-link-text' }} />
                 </ListItemButton>
               ))}
             </List>
           </Box>
 
           {/* Column 4 - Contact Us */}
-          <Box sx={{ flex: 1, minWidth: 220, mb: '20px', pl: '10px' }}>
-            <Typography variant='h6' sx={{ fontWeight: 'bold', mb: '15px', fontSize: 18 }}>
+          <Box className='mc-footer-column'>
+            <Typography variant='h6' className='mc-footer-column-title'>
               Contact Us
             </Typography>
-            <Box sx={{ pt: '1rem' }}>
+            <Box className='mc-footer-contact-list'>
               {[
                 {
-                  icon: <PhoneIcon sx={{ color: '#6750a4', mr: '10px' }} />,
+                  icon: <PhoneIcon className='mc-footer-contact-icon' />,
                   text: (
                     <>
                       1-800-MEDIACO
@@ -108,9 +86,9 @@ export default function Footer() {
                     </>
                   )
                 },
-                { icon: <EmailIcon sx={{ color: '#6750a4', mr: '10px' }} />, text: 'support@mediaco.com' },
+                { icon: <EmailIcon className='mc-footer-contact-icon' />, text: 'support@mediaco.com' },
                 {
-                  icon: <LocationOnIcon sx={{ color: '#6750a4', mr: '10px' }} />,
+                  icon: <LocationOnIcon className='mc-footer-contact-icon' />,
                   text: (
                     <>
                       123 Media Street
@@ -120,7 +98,7 @@ export default function Footer() {
                   )
                 }
               ].map((item, i) => (
-                <Box key={i} sx={{ display: 'flex', alignItems: 'flex-start', mb: '15px', fontSize: 14 }}>
+                <Box key={i} className='mc-footer-contact-item'>
                   {item.icon}
                   <Typography variant='body2'>{item.text}</Typography>
                 </Box>
@@ -132,18 +110,13 @@ export default function Footer() {
         <Divider />
 
         {/* Bottom Section */}
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', pt: '20px', fontSize: 14 }}>
-          <Typography variant='body2' sx={{ color: '#555' }}>
+        <Box className='mc-footer-bottom'>
+          <Typography variant='body2' className='mc-footer-copyright'>
             &copy; 2025 MediaCo. All rights reserved.
           </Typography>
-          <Box>
+          <Box className='mc-footer-bottom-links'>
             {['Terms of Service', 'Privacy Policy', 'Cookie Policy'].map(text => (
-              <Typography
-                key={text}
-                component='a'
-                variant='body2'
-                sx={{ color: '#555', textDecoration: 'none', ml: '20px', cursor: 'pointer', '&:hover': { color: '#6750a4' } }}
-              >
+              <Typography key={text} component='a' variant='body2' className='mc-footer-bottom-link'>
                 {text}
               </Typography>
             ))}

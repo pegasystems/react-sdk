@@ -7,7 +7,7 @@ import { getImageSrc, bgColors, colorFilters } from '../../utils/helpers';
 import { getActivityIcon, timeSince, CASE_TYPE_TO_ACTIVITY_MAP } from './helpers';
 import Carousel from '../carousel/Carousel';
 import GalleryGrid from '../gallery-grid/GalleryGrid';
-import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import OOTBListView from '@pega/react-sdk-components/lib/components/template/ListView';
 
 /** Custom MediaCo data pages that get the gallery/carousel/table treatment */
 const MEDIACO_DATA_PAGES = ['D_AccountHistoryList', 'D_TrendingItemsList', 'D_CarouselitemList'];
@@ -27,12 +27,7 @@ export default function ListView(props: ListViewProps) {
 
   // ── If NOT a custom MediaCo data page → delegate to OOTB ListView immediately ──
   if (!isCustomDataPage) {
-    const pegaMap = SdkComponentMap?.getPegaProvidedComponentMap?.();
-    const OOTBListView = pegaMap?.['ListView'];
-    if (OOTBListView) {
-      return <OOTBListView {...props} />;
-    }
-    return null;
+    return <OOTBListView {...(props as any)} />;
   }
 
   // ── Custom MediaCo rendering (gallery / carousel / table) ──
@@ -44,10 +39,10 @@ function MediaCoListView({ pConn, refList }: { pConn: any; refList: string }) {
   const [sourceList, setSourceList] = useState<any[] | null>(null);
   const [galleryOpen, setGalleryOpen] = useState(false);
 
-  const configProps: any = pConn.getConfigProps();
-  const preset = configProps?.presets?.[0];
+  const componentConfig: any = pConn.getComponentConfig();
+  const preset = componentConfig?.presets?.[0];
   const template = preset?.template || '';
-  const title = configProps?.title || '';
+  const title = componentConfig?.title || '';
 
   useEffect(() => {
     const componentConfig: any = pConn.getComponentConfig();

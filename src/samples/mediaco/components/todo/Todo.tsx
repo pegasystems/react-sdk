@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import OOTBTodo from '@pega/react-sdk-components/lib/components/widget/ToDo';
 import { useTodoPortal } from '../../utils/TodoPortalContext';
 
 interface TodoProps {
@@ -45,8 +45,7 @@ export default function Todo(props: TodoProps) {
   }, []);
 
   const updateToDo = useCallback(() => {
-    const configProps: any = pConn.resolveConfigProps(pConn.getConfigProps());
-    const checked = !!configProps?.isMyWorklistChecked;
+    const checked = !!(props as any)?.isMyWorklistChecked;
     setIsMyWorklistChecked(checked);
 
     if (!checked) return;
@@ -118,12 +117,7 @@ export default function Todo(props: TodoProps) {
 
   // If not worklist-checked, delegate to OOTB Todo
   if (!isMyWorklistChecked) {
-    const pegaMap = SdkComponentMap?.getPegaProvidedComponentMap?.();
-    const OOTBTodo = pegaMap?.['Todo'];
-    if (OOTBTodo) {
-      return <OOTBTodo {...props} />;
-    }
-    return null;
+    return <OOTBTodo {...props} />;
   }
 
   return null;

@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { getComponentFromMap, SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import OOTBMultiStep from '@pega/react-sdk-components/lib/components/infra/MultiStep';
 
 interface MultiStepProps {
   getPConnect?: () => typeof PConnect;
@@ -16,8 +17,7 @@ export default function MultiStep(props: MultiStepProps) {
   // Delegate to OOTB MultiStep when not on the WSS portal
   const isWssPortal = (PCore.getEnvironmentInfo() as any).environmentInfoObject?.pyPortalTemplate === 'wss';
   if (!isWssPortal) {
-    const OOTBMultiStep = SdkComponentMap.getPegaProvidedComponentMap().MultiStep;
-    return <OOTBMultiStep {...props} />;
+    return <OOTBMultiStep {...props as any} />;
   }
 
   const { getPConnect, children, itemKey = '', actionButtons, onButtonPress, bIsVertical = false, arNavigationSteps = [] } = props;

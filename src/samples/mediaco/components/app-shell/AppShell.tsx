@@ -1,5 +1,5 @@
 import { type PropsWithChildren, useEffect, useState } from 'react';
-import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import OOTBAppShell from '@pega/react-sdk-components/lib/components/template/AppShell';
 import { getSDKStaticContentUrl } from '../../utils/helpers';
 import { TodoPortalProvider } from '../../utils/TodoPortalContext';
 import WssNavBar from '../wss-nav-bar/WssNavBar';
@@ -43,8 +43,7 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
 
   // If not WSS portal, delegate to the OOTB AppShell
   if (portalTemplate !== 'wss') {
-    const OOTBAppShell = SdkComponentMap.getPegaProvidedComponentMap().AppShell;
-    return <OOTBAppShell {...props} />;
+    return <OOTBAppShell {...props as any} />;
   }
 
   const bShowAppShell = pages.length > 0;

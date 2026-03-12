@@ -1,7 +1,8 @@
 import { Avatar, Card, CardHeader, Divider, Typography, Button, Menu, MenuItem } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { useState, type MouseEvent } from 'react';
-import { getComponentFromMap, SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import OOTBSelfServiceCaseView from '@pega/react-sdk-components/lib/components/template/SelfServiceCaseView';
 import { prepareCaseSummaryData, filterUtilities } from '@pega/react-sdk-components/lib/components/template/utils';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 
@@ -55,7 +56,6 @@ export default function SelfServiceCaseView(props: SelfServiceCaseViewProps) {
   // Delegate to OOTB SelfServiceCaseView when not on the WSS portal
   const isWssPortal = (PCore.getEnvironmentInfo() as any).environmentInfoObject?.pyPortalTemplate === 'wss';
   if (!isWssPortal) {
-    const OOTBSelfServiceCaseView = SdkComponentMap.getPegaProvidedComponentMap().SelfServiceCaseView;
     return <OOTBSelfServiceCaseView {...props} />;
   }
 

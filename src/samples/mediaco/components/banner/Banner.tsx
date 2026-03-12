@@ -2,7 +2,7 @@ import { type ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { SdkComponentMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
+import OOTBBanner from '@pega/react-sdk-components/lib/components/designSystemExtension/Banner';
 import { useTodoPortal } from '../../utils/TodoPortalContext';
 import { getImageSrc } from '../../utils/helpers';
 
@@ -32,8 +32,7 @@ export default function Banner(props: BannerProps) {
   // Delegate to OOTB Banner when not on the WSS portal
   const isWssPortal = (PCore.getEnvironmentInfo() as any).environmentInfoObject?.pyPortalTemplate === 'wss';
   if (!isWssPortal) {
-    const OOTBBanner = SdkComponentMap.getPegaProvidedComponentMap().Banner;
-    return <OOTBBanner {...props} />;
+    return <OOTBBanner {...(props as any)} />;
   }
 
   const { a, b, banner, variant = 'two-column' } = props;

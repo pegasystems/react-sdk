@@ -195,6 +195,10 @@ const lightTheme = createTheme({
       light: '#ff4081',
       main: '#f50057'
     },
+    background: {
+      default: '#fff',
+      paper: '#fff'
+    },
     backgroundColor: '#fff'
   }
 });
@@ -288,4 +292,118 @@ const darkTheme = createTheme({
   }
 });
 
-export const theme = sdkConfig.theme === 'dark' ? darkTheme : lightTheme;
+const mediacoThemeColours = {
+  ':root': {
+    '--app-primary-color': '#9c27b0' /* magenta primary */,
+    '--app-primary-dark-color': '#7b1fa2',
+    '--app-primary-light-color': '#ce93d8',
+    '--app-secondary-color': '#f50057',
+    '--app-neutral-color': 'grey',
+    '--app-neutral-light-color': 'lightgrey',
+    '--app-neutral-dark-color': '#262626',
+    '--app-error-color': '#f44336',
+    '--app-error-light-color': '#e57373',
+    '--app-error-dark-color': '#d32f2f',
+    '--app-warning-color': '#ff9800',
+    '--app-warning-color-light': '#ffb74d',
+    '--app-warning-color-dark': '#f57c00',
+
+    '--app-background-color': 'whitesmoke',
+    '--app-form-bg-color': 'white',
+
+    /* App Navigation */
+    '--app-nav-bg': '#262626',
+    '--app-nav-color': '#d9d9d9',
+
+    '--modal-background-color': 'rgba(100, 100, 100, 0.4)',
+    '--modal-top-color': 'white',
+    '--modal-border-color': 'black',
+    '--modal-box-shadow-color': '#777',
+    '--utility-count-background-color': '#ce93d8',
+    '--utility-card-border-color': '#f5f5f5',
+    '--link-button-color': '#9c27b0',
+    '--banner-text-color': 'rgb(0, 0, 0)',
+    '--app-text-color': 'white',
+    '--utility-background-color': 'white',
+    '--table-header-background': '#f5f5f5',
+    '--step-line-color': 'rgba(0, 0, 0, 0.12)',
+    '--selected-step-label-color': 'rgba(0, 0, 0, 0.87)',
+    '--step-label-color': 'rgba(0, 0, 0, 0.54)',
+    '--svg-color': 'invert(0%)',
+    '--secondary-button-text-color': '#ffffff',
+
+    '--text-primary-color': '#000',
+    '--text-secondary-color': '#c0c0c0',
+    '--stepper-completed-bg-color': '#218721'
+  }
+};
+
+const mediacoTheme = createTheme({
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        ...mediacoThemeColours
+      }
+    },
+    MuiTextField: {
+      defaultProps: {
+        size: 'small'
+      },
+      styleOverrides: {
+        root: {
+          width: '100%'
+        }
+      }
+    }
+  },
+  headerNav: {
+    backgroundColor: '#ffffff',
+    navLinkColor: 'rgba(0, 0, 0, 0.87)',
+    navLinkHoverColor: '#9c27b0',
+    menuToggleColor: 'rgba(0, 0, 0, 0.87)'
+  },
+  actionButtons: {
+    primary: {
+      backgroundColor: '#9c27b0',
+      color: '#FFFFFF'
+    },
+    secondary: {
+      backgroundColor: '#f50057',
+      color: '#FFFFFF'
+    }
+  },
+  modal: {
+    backgroundColor: 'rgba(100, 100, 100, 0.4)',
+    topColor: 'white'
+  },
+  embedded: {
+    resolutionTextColor: 'darkslategray'
+  },
+  backgroundColor: '#fff',
+  card: {
+    backgroundColor: '#fff',
+    borderLeft: '6px solid',
+    borderLeftColor: '#9c27b0'
+  },
+  palette: {
+    primary: {
+      contrastText: '#fff',
+      dark: '#7b1fa2',
+      light: '#ce93d8',
+      main: '#9c27b0'
+    },
+    secondary: {
+      contrastText: '#fff',
+      dark: '#c51162',
+      light: '#ff4081',
+      main: '#f50057'
+    },
+    background: {
+      default: '#fff',
+      paper: '#fff'
+    },
+    backgroundColor: '#fff'
+  }
+});
+
+export const theme = sdkConfig.theme === 'dark' ? darkTheme : sdkConfig.theme === 'mediaco' ? mediacoTheme : lightTheme;

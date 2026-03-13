@@ -17,9 +17,7 @@ export default function Footer() {
   return (
     <Box component='footer' className='mc-footer'>
       <Box className='mc-footer-container'>
-        {/* Top Section */}
         <Box className='mc-footer-top'>
-          {/* Column 1 - MediaCo */}
           <Box className='mc-footer-column'>
             <Typography variant='h6' className='mc-footer-column-title'>
               MediaCo
@@ -41,7 +39,6 @@ export default function Footer() {
             </Box>
           </Box>
 
-          {/* Column 2 - Quick Links */}
           <Box className='mc-footer-column'>
             <Typography variant='h6' className='mc-footer-column-title'>
               Quick Links
@@ -55,7 +52,6 @@ export default function Footer() {
             </List>
           </Box>
 
-          {/* Column 3 - Support */}
           <Box className='mc-footer-column'>
             <Typography variant='h6' className='mc-footer-column-title'>
               Support
@@ -69,7 +65,6 @@ export default function Footer() {
             </List>
           </Box>
 
-          {/* Column 4 - Contact Us */}
           <Box className='mc-footer-column'>
             <Typography variant='h6' className='mc-footer-column-title'>
               Contact Us
@@ -109,7 +104,6 @@ export default function Footer() {
 
         <Divider />
 
-        {/* Bottom Section */}
         <Box className='mc-footer-bottom'>
           <Typography variant='body2' className='mc-footer-copyright'>
             &copy; 2025 MediaCo. All rights reserved.

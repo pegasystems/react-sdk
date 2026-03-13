@@ -59,7 +59,6 @@ export default function MediaCoBanner(props: BannerProps) {
 
   return (
     <div className='mc-banner-root'>
-      {/* Banner header area  */}
       <Box className='mc-banner-header'>
         <Box className='mc-banner-header-inner'>
           <Box className='mc-banner-header-stack'>
@@ -71,7 +70,6 @@ export default function MediaCoBanner(props: BannerProps) {
                 </Box>
               )}
 
-              {/* Todo survey banner */}
               {surveyCase && (
                 <Box className='mc-banner-survey-wrap'>
                   <Box className='mc-banner-survey-card'>
@@ -104,7 +102,6 @@ export default function MediaCoBanner(props: BannerProps) {
         </Box>
       </Box>
 
-      {/* Content regions */}
       <Box className={`mc-banner-content ${gridClass}`}>
         {a && <Box className='mc-banner-region'>{a}</Box>}
         {b && <Box className='mc-banner-region'>{b}</Box>}

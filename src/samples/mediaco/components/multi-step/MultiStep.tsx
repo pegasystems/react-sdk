@@ -30,9 +30,7 @@ function getLineStateClass(status: string) {
 export default function MediaCoMultiStep(props: MultiStepProps) {
   // Delegate to SDK MultiStep when not on the WSS portal
   const isWssPortal = (PCore.getEnvironmentInfo() as any).environmentInfoObject?.pyPortalTemplate === 'wss';
-  if (!isWssPortal) {
-    return <MultiStep {...(props as any)} />;
-  }
+
 
   const { getPConnect, children, itemKey = '', actionButtons, onButtonPress, bIsVertical = false, arNavigationSteps = [] } = props;
 

@@ -1,7 +1,7 @@
 import { Avatar, Card, CardHeader, Divider, Typography, Button, Menu, MenuItem } from '@mui/material';
 import { useState, type MouseEvent } from 'react';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import OOTBSelfServiceCaseView from '@pega/react-sdk-components/lib/components/template/SelfServiceCaseView';
+import SelfServiceCaseView from '@pega/react-sdk-components/lib/components/template/SelfServiceCaseView';
 import { prepareCaseSummaryData, filterUtilities } from '@pega/react-sdk-components/lib/components/template/utils';
 import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 
@@ -24,11 +24,11 @@ interface SelfServiceCaseViewProps {
   };
 }
 
-export default function SelfServiceCaseView(props: SelfServiceCaseViewProps) {
-  //Delegate to OOTB SelfServiceCaseView when not on the WSS portal
+export default function MediaCoSelfServiceCaseView(props: SelfServiceCaseViewProps) {
+  // Delegate to SDK SelfServiceCaseView when not on the WSS portal
   const isWssPortal = (PCore.getEnvironmentInfo() as any).environmentInfoObject?.pyPortalTemplate === 'wss';
   if (!isWssPortal) {
-    return <OOTBSelfServiceCaseView {...(props as any)} />;
+    return <SelfServiceCaseView {...(props as any)} />;
   }
 
   const CaseSummary = getComponentFromMap('CaseSummary');

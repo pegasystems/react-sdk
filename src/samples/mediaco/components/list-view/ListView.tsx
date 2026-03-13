@@ -3,11 +3,11 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import StarIcon from '@mui/icons-material/Star';
+import ListView from '@pega/react-sdk-components/lib/components/template/ListView';
 import { getImageSrc } from '../../utils/helpers';
 import { getActivityIcon, timeSince, CASE_TYPE_TO_ACTIVITY_MAP } from './helpers';
 import Carousel from '../carousel';
 import GalleryGrid from '../gallery-grid';
-import OOTBListView from '@pega/react-sdk-components/lib/components/template/ListView';
 
 /** Custom MediaCo data pages that get the gallery/carousel/table treatment */
 const MEDIACO_DATA_PAGES = ['D_AccountHistoryList', 'D_TrendingItemsList', 'D_CarouselitemList'];
@@ -16,27 +16,27 @@ interface ListViewProps {
   getPConnect: () => typeof PConnect;
   bInForm?: boolean;
   title: any;
-  [key: string]: any; // pass-through props for OOTB ListView
+  [key: string]: any; // pass-through props for SDK ListView
 }
 
-export default function ListView(props: ListViewProps) {
+export default function MediaCoListView(props: ListViewProps) {
   const { getPConnect, referenceList = '', title } = props;
   const pConn = getPConnect();
 
   const refList: string = referenceList;
   const isCustomDataPage = MEDIACO_DATA_PAGES.includes(refList);
 
-  // ── If NOT a custom MediaCo data page → delegate to OOTB ListView immediately ──
+  // ── If NOT a custom MediaCo data page → delegate to SDK ListView ──
   if (!isCustomDataPage) {
-    return <OOTBListView {...(props as any)} />;
+    return <ListView {...(props as any)} />;
   }
 
   // ── Custom MediaCo rendering (gallery / carousel / table) ──
-  return <MediaCoListView pConn={pConn} refList={refList} title={title} />;
+  return <MediaCoListViewContent pConn={pConn} refList={refList} title={title} />;
 }
 
 /** Inner component for the custom MediaCo data pages */
-function MediaCoListView({ pConn, refList, title }: { pConn: any; refList: string; title: any }) {
+function MediaCoListViewContent({ pConn, refList, title }: { pConn: any; refList: string; title: any }) {
   const [sourceList, setSourceList] = useState<any[] | null>(null);
   const [galleryOpen, setGalleryOpen] = useState(false);
 

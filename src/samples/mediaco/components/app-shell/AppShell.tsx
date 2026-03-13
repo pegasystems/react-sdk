@@ -1,5 +1,5 @@
 import { type PropsWithChildren, useEffect, useState } from 'react';
-import OOTBAppShell from '@pega/react-sdk-components/lib/components/template/AppShell';
+import AppShell from '@pega/react-sdk-components/lib/components/template/AppShell';
 import { getSDKStaticContentUrl } from '../../utils/helpers';
 import { TodoPortalProvider } from '../../utils/TodoPortalContext';
 import WssNavBar from '../wss-nav-bar';
@@ -28,7 +28,7 @@ interface AppShellProps {
   pageMessages?: string[];
 }
 
-export default function AppShell(props: PropsWithChildren<AppShellProps>) {
+export default function MediaCoAppShell(props: PropsWithChildren<AppShellProps>) {
   const { pages = [], caseTypes = [], showAppName, children, getPConnect, portalTemplate = '', portalLogo } = props;
 
   const pConn = getPConnect();
@@ -41,9 +41,9 @@ export default function AppShell(props: PropsWithChildren<AppShellProps>) {
   const envPortalName = envInfo.getPortalName();
   const appName = localizedVal(appNameToDisplay || '', '', `${portalClass}!PORTAL!${envPortalName}`.toUpperCase());
 
-  // If not WSS portal, delegate to the OOTB AppShell
+  // If not WSS portal, delegate to the SDK AppShell
   if (portalTemplate !== 'wss') {
-    return <OOTBAppShell {...(props as any)} />;
+    return <AppShell {...(props as any)} />;
   }
 
   const bShowAppShell = pages.length > 0;

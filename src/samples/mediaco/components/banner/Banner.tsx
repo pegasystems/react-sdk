@@ -2,13 +2,13 @@ import { type ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import OOTBBanner from '@pega/react-sdk-components/lib/components/designSystemExtension/Banner';
+import Banner from '@pega/react-sdk-components/lib/components/designSystemExtension/Banner';
 import { useTodoPortal } from '../../utils/TodoPortalContext';
 import { getImageSrc } from '../../utils/helpers';
 
 /**
  * Banner is called by BannerPage/DefaultPage via getComponentFromMap('Banner').
- * The OOTB caller passes: { a, b, banner, variant }
+ * The caller passes: { a, b, banner, variant }
  *   - a: first region content (React element)
  *   - b: second region content (React element)
  *   - banner: { title, message, backgroundImage, variant, backgroundColor, tintImage }
@@ -28,11 +28,11 @@ interface BannerProps {
   variant?: string;
 }
 
-export default function Banner(props: BannerProps) {
-  // Delegate to OOTB Banner when not on the WSS portal
+export default function MediaCoBanner(props: BannerProps) {
+  // Delegate to SDK Banner when not on the WSS portal
   const isWssPortal = (PCore.getEnvironmentInfo() as any).environmentInfoObject?.pyPortalTemplate === 'wss';
   if (!isWssPortal) {
-    return <OOTBBanner {...(props as any)} />;
+    return <Banner {...(props as any)} />;
   }
 
   const { a, b, banner, variant = 'two-column' } = props;

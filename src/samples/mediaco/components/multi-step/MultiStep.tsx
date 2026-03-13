@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
-import OOTBMultiStep from '@pega/react-sdk-components/lib/components/infra/MultiStep';
+import MultiStep from '@pega/react-sdk-components/lib/components/infra/MultiStep';
 
 interface MultiStepProps {
   getPConnect?: () => typeof PConnect;
@@ -27,16 +27,16 @@ function getLineStateClass(status: string) {
   return status === 'success' ? 'mc-multi-step-line-success' : 'mc-multi-step-line-default';
 }
 
-export default function MultiStep(props: MultiStepProps) {
-  // Delegate to OOTB MultiStep when not on the WSS portal
+export default function MediaCoMultiStep(props: MultiStepProps) {
+  // Delegate to SDK MultiStep when not on the WSS portal
   const isWssPortal = (PCore.getEnvironmentInfo() as any).environmentInfoObject?.pyPortalTemplate === 'wss';
   if (!isWssPortal) {
-    return <OOTBMultiStep {...(props as any)} />;
+    return <MultiStep {...(props as any)} />;
   }
 
   const { getPConnect, children, itemKey = '', actionButtons, onButtonPress, bIsVertical = false, arNavigationSteps = [] } = props;
 
-  // Get AssignmentCard from the component map (same as OOTB)
+  // Get AssignmentCard from the component map
   const AssignmentCard = getComponentFromMap('AssignmentCard');
 
   function buttonPress(sAction: string, sButtonType: string) {

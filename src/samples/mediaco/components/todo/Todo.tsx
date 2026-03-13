@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import OOTBTodo from '@pega/react-sdk-components/lib/components/widget/ToDo';
+import Todo from '@pega/react-sdk-components/lib/components/widget/ToDo';
 import { useTodoPortal } from '../../utils/TodoPortalContext';
 
 interface TodoProps {
@@ -17,7 +17,7 @@ interface TodoProps {
 
 const SURVEY_CLASSNAME = 'DIXL-MediaCo-Work-SatisfactionSurvey';
 
-export default function Todo(props: TodoProps) {
+export default function MediaCoTodo(props: TodoProps) {
   const { getPConnect, datasource, myWorkList } = props;
   const pConn = getPConnect();
   const [isMyWorklistChecked, setIsMyWorklistChecked] = useState(false);
@@ -115,9 +115,9 @@ export default function Todo(props: TodoProps) {
     return () => setPortalSurveyCase(null);
   }, [surveyCase, setPortalSurveyCase]);
 
-  // If not worklist-checked, delegate to OOTB Todo
+  // If not worklist-checked, delegate to SDK Todo
   if (!isMyWorklistChecked) {
-    return <OOTBTodo {...props} />;
+    return <Todo {...props} />;
   }
 
   return null;

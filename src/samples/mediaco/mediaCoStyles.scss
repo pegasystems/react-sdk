@@ -1588,7 +1588,7 @@
   box-sizing: border-box !important;
 }
 
-/* Override OOTB MultiStep flow container left padding for full-width layout */
+/* Override MultiStep flow container left padding for full-width layout */
 .psdk-flow-container {
   padding-left: 1rem !important;
   padding-right: 1rem !important;
@@ -1617,7 +1617,7 @@
   background-color: #9c27b0 !important;
 }
 
-/* ========== MediaCo: Prevent OOTB AppShell whitesmoke/gray backgrounds ========== */
+/* ========== MediaCo: Prevent AppShell whitesmoke/gray backgrounds ========== */
 .appshell-top,
 .appshell-main {
   background-color: #fff !important;
@@ -1676,7 +1676,7 @@ body {
 }
 
 /* ========== MediaCo WSS: Assignment-routed banner (matches Angular mat-card style) ========== */
-/* Shown by OOTB FlowContainer when assignment goes to another user's queue */
+/* Shown by FlowContainer when assignment goes to another user's queue */
 .psdk-alert {
   margin: 1rem;
 }
@@ -1702,4 +1702,3 @@ body {
   font-size: 1rem !important;
   padding: 0.2rem 0 !important;
 }
-

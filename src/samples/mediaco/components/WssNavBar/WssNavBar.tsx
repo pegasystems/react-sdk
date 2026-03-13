@@ -15,7 +15,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { logout } from '@pega/auth/lib/sdk-auth-manager';
 
-import Footer from '../footer/Footer';
+import Footer from '../Footer/Footer';
 
 interface WssNavBarProps {
   getPConnect: () => typeof PConnect;

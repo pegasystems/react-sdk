@@ -6,8 +6,8 @@ import StarIcon from '@mui/icons-material/Star';
 import ListView from '@pega/react-sdk-components/lib/components/template/ListView';
 import { getImageSrc } from '../../utils/helpers';
 import { getActivityIcon, timeSince, CASE_TYPE_TO_ACTIVITY_MAP } from './helpers';
-import Carousel from '../carousel';
-import GalleryGrid from '../gallery-grid';
+import Carousel from '../Carousel';
+import GalleryGrid from '../GalleryGrid';
 
 /** Custom MediaCo data pages that get the gallery/carousel/table treatment */
 const MEDIACO_DATA_PAGES = ['D_AccountHistoryList', 'D_TrendingItemsList', 'D_CarouselitemList'];

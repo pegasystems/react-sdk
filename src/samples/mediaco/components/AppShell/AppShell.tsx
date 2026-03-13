@@ -2,7 +2,7 @@ import { type PropsWithChildren, useEffect, useState } from 'react';
 import AppShell from '@pega/react-sdk-components/lib/components/template/AppShell';
 import { getSDKStaticContentUrl } from '../../utils/helpers';
 import { TodoPortalProvider } from '../../utils/TodoPortalContext';
-import WssNavBar from '../wss-nav-bar';
+import WssNavBar from '../WssNavBar';
 import '../../mediaCoStyles.scss';
 
 interface IPage {

@@ -1,16 +1,9 @@
-/**
- * ListView-specific helpers — co-located with the ListView component.
- */
-
-/**
- * Maps activity types to icons (for Account History list).
- */
 export const CASE_TYPE_TO_ACTIVITY_MAP: Record<string, string> = {
   'Plan Upgrade': 'Plan Upgrade',
-  Payment: 'Make Payment',
-  AddOnPurchase: 'Add-On Services',
+  'Payment': 'Make Payment',
+  'AddOnPurchase': 'Add-On Services',
   'New Statement': 'New Service',
-  ProfileUpdated: 'Get Help',
+  'ProfileUpdated': 'Get Help',
   'Product Demo': 'Purchase Phone'
 };
 

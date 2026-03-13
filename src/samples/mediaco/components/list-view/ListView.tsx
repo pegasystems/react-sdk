@@ -43,10 +43,9 @@ function MediaCoListViewContent({ pConn, refList, title }: { pConn: any; refList
   const componentConfig: any = pConn.getComponentConfig();
   const preset = componentConfig?.presets?.[0];
   const template = preset?.template || '';
+  const columnFields = preset?.children?.[0]?.children || [];
 
   useEffect(() => {
-    const componentConfig: any = pConn.getComponentConfig();
-    const columnFields = componentConfig?.presets?.[0]?.children?.[0]?.children || [];
 
     PCore.getDataPageUtils()
       .getDataAsync(refList, pConn.getContextName())

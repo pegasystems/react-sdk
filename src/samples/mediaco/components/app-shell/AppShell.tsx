@@ -42,7 +42,6 @@ export default function MediaCoAppShell(props: PropsWithChildren<AppShellProps>)
   const envPortalName = envInfo.getPortalName();
   const appName = localizedVal(appNameToDisplay || '', '', `${portalClass}!PORTAL!${envPortalName}`.toUpperCase());
 
-  // If not WSS portal, delegate to the SDK AppShell
   if (portalTemplate !== 'wss') {
     return <AppShell {...(props as any)} />;
   }
@@ -51,20 +50,17 @@ export default function MediaCoAppShell(props: PropsWithChildren<AppShellProps>)
   const links = pages.filter((_page, index) => index !== 0);
   const homePage = pages[0];
 
-  // Set pyPortalTemplate for WSS mode
   useEffect(() => {
     if (portalTemplate === 'wss') {
-      PCore.getEnvironmentInfo().setEnvironmentInfo({
-        ...(PCore.getEnvironmentInfo() as any).environmentInfoObject,
+      envInfo.setEnvironmentInfo({
+        ...(envInfo as any).environmentInfoObject,
         pyPortalTemplate: 'wss'
       } as any);
     }
   }, [portalTemplate]);
 
-  // Fetch case types available to create
   useEffect(() => {
-    const ei: any = PCore.getEnvironmentInfo();
-    const caseTypesAvailableToCreateDP = ei.environmentInfoObject?.pxApplication?.pyCaseTypesAvailableToCreateDP;
+    const caseTypesAvailableToCreateDP = (envInfo as any).environmentInfoObject?.pxApplication?.pyCaseTypesAvailableToCreateDP;
     if (caseTypesAvailableToCreateDP) {
       const portalID = pConn.getValue('.pyOwner');
       PCore.getDataPageUtils()
@@ -81,7 +77,6 @@ export default function MediaCoAppShell(props: PropsWithChildren<AppShellProps>)
     }
   }, []);
 
-  // Resolve portal logo
   useEffect(() => {
     if (
       !portalLogo ||

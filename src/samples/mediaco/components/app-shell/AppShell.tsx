@@ -3,6 +3,7 @@ import AppShell from '@pega/react-sdk-components/lib/components/template/AppShel
 import { getSDKStaticContentUrl } from '../../utils/helpers';
 import { TodoPortalProvider } from '../../utils/TodoPortalContext';
 import WssNavBar from '../wss-nav-bar';
+import '../../mediaCoStyles.scss';
 
 interface IPage {
   pxPageViewIcon: string;

@@ -29,10 +29,10 @@ export default function Footer() {
             </Typography>
             <Box className='mc-footer-social-row'>
               {[
-                { icon: <FacebookIcon />, label: 'Facebook' },
-                { icon: <TwitterIcon />, label: 'Twitter' },
-                { icon: <InstagramIcon />, label: 'Instagram' },
-                { icon: <YouTubeIcon />, label: 'YouTube' }
+                { icon: <FacebookIcon className='mc-footer-social-icon' />, label: 'Facebook' },
+                { icon: <TwitterIcon className='mc-footer-social-icon' />, label: 'Twitter' },
+                { icon: <InstagramIcon className='mc-footer-social-icon' />, label: 'Instagram' },
+                { icon: <YouTubeIcon className='mc-footer-social-icon' />, label: 'YouTube' }
               ].map(social => (
                 <IconButton key={social.label} aria-label={social.label} className='mc-footer-social-button'>
                   {social.icon}

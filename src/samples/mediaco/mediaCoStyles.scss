@@ -244,7 +244,7 @@
   background-color: #6750a4;
 }
 
-.mc-footer-social-button:hover .MuiSvgIcon-root {
+.mc-footer-social-button:hover .mc-footer-social-icon {
   color: #fff;
 }
 
@@ -1145,7 +1145,7 @@
 }
 
 .mc-wss-nav-item-default,
-.mc-wss-nav-item-default .MuiSvgIcon-root {
+.mc-wss-nav-item-default .mc-wss-nav-icon {
   color: #49454f;
 }
 
@@ -1170,7 +1170,7 @@
 }
 
 .mc-wss-nav-item-active,
-.mc-wss-nav-item-active .MuiSvgIcon-root {
+.mc-wss-nav-item-active .mc-wss-nav-icon {
   color: #6750a4;
 }
 
@@ -1547,8 +1547,8 @@
 }
 
 /*========== MediaCo: Case creation dialog (ModalViewContainer) ========== */
-/* Make the case-creation modal near-full-screen instead of a small dialog */
-.MuiDialog-root .MuiDialog-paper {
+/* Near-full-screen case-creation dialog — uses :has() to avoid MUI class selectors */
+div:has(> .psdk-dialog-title) {
   width: 90vw !important;
   max-width: 1200px !important;
   max-height: 90vh !important;
@@ -1566,139 +1566,131 @@
   padding: 24px !important;
 }
 
-/* ========== MediaCo: FlowContainer card styling ========== */
-/* Remove constraining margins/padding on the assignment card when rendered inline */
-.psdk-root {
-  background-color: var(--app-form-bg-color);
-  margin: 0 !important;
-  padding: 0 !important;
-  border-radius: 16px;
-  box-shadow:
-    0px 1px 3px 0px rgba(0, 0, 0, 0.12),
-    0px 1px 2px 0px rgba(0, 0, 0, 0.24) !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-/* Ensure flow container top wrapper takes full width */
-.psdk-flow-container-top {
-  width: 100% !important;
-  max-width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-/* Override MultiStep flow container left padding for full-width layout */
-.psdk-flow-container {
-  padding-left: 1rem !important;
-  padding-right: 1rem !important;
-}
-
-/* ========== MediaCo WSS: Inner form content padding ========== */
-/* Add horizontal + top spacing so fields & buttons don't touch card edges */
-.psdk-flow-container-top .MuiCardContent-root {
-  padding: 1.25rem 1.5rem !important;
-}
-
-/* Assignment header in case creation */
-#assignment-header {
-  background-color: #f7f2fa;
-  border-radius: 16px 16px 0 0;
-  padding: 12px 16px;
-}
-
-#assignment-header .MuiCardHeader-title {
-  color: #46185a;
-  font-weight: 600;
-}
-
-/* ========== MediaCo: Assignment card avatar ========== */
-.psdk-avatar {
-  background-color: #9c27b0 !important;
-}
-
 /* ========== MediaCo: Prevent AppShell whitesmoke/gray backgrounds ========== */
 .appshell-top,
 .appshell-main {
   background-color: #fff !important;
 }
 
-/* Override MUI CssBaseline default body background (#fafafa light gray) */
 body {
   background-color: #fff !important;
 }
 
-/* Neutralise any MUI Paper/Card gray in Banner content regions */
-.MuiPaper-root {
-  background-color: #fff;
-}
+/* ========== MediaCo WSS: SDK component overrides (scoped to .mc-app-shell) ========== */
+/* MUI class references below target SDK-rendered elements we cannot modify directly. */
+/* Scoping under .mc-app-shell prevents them from leaking into non-WSS portals. */
+.mc-app-shell {
+  /* FlowContainer card styling */
+  .psdk-root {
+    background-color: var(--app-form-bg-color);
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 16px;
+    box-shadow:
+      0px 1px 3px 0px rgba(0, 0, 0, 0.12),
+      0px 1px 2px 0px rgba(0, 0, 0, 0.24) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
 
-/* Ensure MUI Cards used as flow containers stretch to full width */
-.psdk-flow-container-top > .MuiCard-root,
-.psdk-flow-container-top > .MuiPaper-root {
-  width: 100% !important;
-  max-width: 100% !important;
-}
+  /* Flow container top wrapper — full width */
+  .psdk-flow-container-top {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
 
-/* ========== MediaCo WSS: Confirmation screen Done button ========== */
-.psdk-flow-container-top .MuiButton-containedPrimary {
-  border-radius: 20px !important;
-  padding: 10px 24px !important;
-  font-weight: 500 !important;
-  text-transform: none !important;
-  letter-spacing: 0.02em !important;
-  background-color: #6750a4 !important;
-  box-shadow: none !important;
-  min-height: 40px !important;
-}
+    /* Cards stretch to full width */
+    > :first-child {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+  }
 
-.psdk-flow-container-top .MuiButton-containedPrimary:hover {
-  background-color: #53429a !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
-}
+  /* Flow container padding */
+  .psdk-flow-container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
 
-.psdk-flow-container-top .MuiButton-containedSecondary {
-  border-radius: 20px !important;
-  padding: 10px 24px !important;
-  font-weight: 500 !important;
-  text-transform: none !important;
-  letter-spacing: 0.02em !important;
-  background-color: transparent !important;
-  color: #6750a4 !important;
-  border: 1px solid #79747e !important;
-  box-shadow: none !important;
-  min-height: 40px !important;
-}
+  /* Inner form content padding */
+  .psdk-flow-container-top .MuiCardContent-root {
+    padding: 1.25rem 1.5rem !important;
+  }
 
-.psdk-flow-container-top .MuiButton-containedSecondary:hover {
-  background-color: rgba(103, 80, 164, 0.08) !important;
-  border-color: #6750a4 !important;
-}
+  /* Assignment header */
+  #assignment-header {
+    background-color: #f7f2fa;
+    border-radius: 16px 16px 0 0;
+    padding: 12px 16px;
+    color: #46185a;
+    font-weight: 600;
+  }
 
-/* ========== MediaCo WSS: Assignment-routed banner (matches Angular mat-card style) ========== */
-/* Shown by FlowContainer when assignment goes to another user's queue */
-.psdk-alert {
-  margin: 1rem;
-}
+  /* Assignment card avatar */
+  .psdk-avatar {
+    background-color: #9c27b0 !important;
+  }
 
-.psdk-alert .MuiAlert-standardSuccess {
-  background-color: #f7f2fa !important;
-  color: #1b1b1f !important;
-  border: 1px solid #cac4d0 !important;
-  border-radius: 12px !important;
-  padding: 1rem 1.5rem !important;
-  font-size: 1rem !important;
-  font-weight: 500 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
-}
+  /* Confirmation screen buttons */
+  .psdk-flow-container-top .MuiButton-containedPrimary {
+    border-radius: 20px !important;
+    padding: 10px 24px !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    letter-spacing: 0.02em !important;
+    background-color: #6750a4 !important;
+    box-shadow: none !important;
+    min-height: 40px !important;
 
-.psdk-alert .MuiAlert-standardSuccess .MuiAlert-icon {
-  color: #5a3a9b !important;
-  font-size: 1.6rem !important;
-}
+    &:hover {
+      background-color: #53429a !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+    }
+  }
 
-.psdk-alert .MuiAlert-standardSuccess .MuiAlert-message {
-  color: #1b1b1f !important;
-  font-size: 1rem !important;
-  padding: 0.2rem 0 !important;
+  .psdk-flow-container-top .MuiButton-containedSecondary {
+    border-radius: 20px !important;
+    padding: 10px 24px !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    letter-spacing: 0.02em !important;
+    background-color: transparent !important;
+    color: #6750a4 !important;
+    border: 1px solid #79747e !important;
+    box-shadow: none !important;
+    min-height: 40px !important;
+
+    &:hover {
+      background-color: rgba(103, 80, 164, 0.08) !important;
+      border-color: #6750a4 !important;
+    }
+  }
+
+  /* Assignment-routed banner */
+  .psdk-alert {
+    margin: 1rem;
+
+    .MuiAlert-standardSuccess {
+      background-color: #f7f2fa !important;
+      color: #1b1b1f !important;
+      border: 1px solid #cac4d0 !important;
+      border-radius: 12px !important;
+      padding: 1rem 1.5rem !important;
+      font-size: 1rem !important;
+      font-weight: 500 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12) !important;
+
+      .MuiAlert-icon {
+        color: #5a3a9b !important;
+        font-size: 1.6rem !important;
+      }
+
+      .MuiAlert-message {
+        color: #1b1b1f !important;
+        font-size: 1rem !important;
+        padding: 0.2rem 0 !important;
+      }
+    }
+  }
 }

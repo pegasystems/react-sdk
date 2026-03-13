@@ -77,7 +77,7 @@ export default function WssNavBar(props: PropsWithChildren<WssNavBarProps>) {
         {/* Home Button */}
         <Box onClick={() => navPanelButtonClick(homePage)} className={getNavItemClass(activePage === 'Self-service Main page')}>
           <IconButton disableRipple className='mc-wss-nav-icon-button'>
-            <HomeIcon />
+            <HomeIcon className='mc-wss-nav-icon' />
           </IconButton>
           <Typography className='mc-wss-nav-label'>Home</Typography>
         </Box>
@@ -86,7 +86,7 @@ export default function WssNavBar(props: PropsWithChildren<WssNavBarProps>) {
         {pages?.map((page: any, idx: number) => (
           <Box key={idx} onClick={() => navPanelButtonClick(page)} className={getNavItemClass(activePage === page.pyLabel)}>
             <IconButton disableRipple className='mc-wss-nav-icon-button'>
-              <DashboardIcon />
+              <DashboardIcon className='mc-wss-nav-icon' />
             </IconButton>
             <Typography className='mc-wss-nav-label'>{page.pyDefaultHeading}</Typography>
           </Box>

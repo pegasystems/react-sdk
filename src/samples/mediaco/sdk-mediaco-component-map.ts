@@ -7,7 +7,7 @@ import QuickCreate from './components/quick-create';
 import SelfServiceCaseView from './components/self-service-case-view/SelfServiceCaseView';
 import Todo from './components/todo/Todo';
 import WssNavBar from './components/wss-nav-bar';
-import './mediaCoStyles.scss';
+//import './mediaCoStyles.scss';
 
 /* import end - DO NOT REMOVE */
 

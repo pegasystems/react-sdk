@@ -4,7 +4,6 @@ import Banner from './components/banner/Banner';
 import ListView from './components/list-view/ListView';
 import MultiStep from './components/multi-step';
 import QuickCreate from './components/quick-create';
-import SelfServiceCaseView from './components/self-service-case-view/SelfServiceCaseView';
 import Todo from './components/todo/Todo';
 import WssNavBar from './components/wss-nav-bar';
 //import './mediaCoStyles.scss';
@@ -20,7 +19,6 @@ const sdkMediaCoComponentMap = {
   ListView,
   MultiStep,
   QuickCreate,
-  SelfServiceCaseView,
   Todo,
   WssNavBar
   /* map end - DO NOT REMOVE */

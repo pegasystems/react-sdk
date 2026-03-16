@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Banner from '@pega/react-sdk-components/lib/components/designSystemExtension/Banner';
+import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { useTodoPortal } from '../../utils/TodoPortalContext';
-import { getImageSrc } from '../../utils/helpers';
 
 /**
  * Banner is called by BannerPage/DefaultPage via getComponentFromMap('Banner').
@@ -39,7 +39,7 @@ export default function MediaCoBanner(props: BannerProps) {
   const title = banner?.title || '';
   const message = banner?.message || '';
   const { surveyCase, clickGoRef } = useTodoPortal();
-  const imgSrc = getImageSrc('message-circle');
+  const imgSrc = Utils.getImageSrc('message-circle', Utils.getSDKStaticConentUrl());
 
   // Grid class based on variant/layout
   const getGridClass = () => {

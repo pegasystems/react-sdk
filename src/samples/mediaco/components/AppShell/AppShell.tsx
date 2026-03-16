@@ -1,6 +1,6 @@
 import { type PropsWithChildren, useEffect, useState } from 'react';
 import AppShell from '@pega/react-sdk-components/lib/components/template/AppShell';
-import { getSDKStaticContentUrl } from '../../utils/helpers';
+import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { TodoPortalProvider } from '../../utils/TodoPortalContext';
 import WssNavBar from '../WssNavBar';
 import '../../mediaCoStyles.scss';
@@ -84,7 +84,7 @@ export default function MediaCoAppShell(props: PropsWithChildren<AppShellProps>)
       portalLogo.toLowerCase().includes('py-logo') ||
       portalLogo.toLowerCase().includes('py-full-logo')
     ) {
-      setImageURL(`${getSDKStaticContentUrl()}icons/pzpega-logo-mark.svg`);
+      setImageURL(`${Utils.getSDKStaticConentUrl()}icons/pzpega-logo-mark.svg`);
     } else {
       PCore.getAssetLoader()
         .getSvcImageUrl(portalLogo)

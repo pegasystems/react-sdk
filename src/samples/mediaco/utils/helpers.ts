@@ -1,40 +1,4 @@
 /**
- * Utility to build the SDK static content URL for icon/image assets.
- */
-export function getSDKStaticContentUrl(): string {
-  // PCore.getAssetLoader().getStaticServerUrl() returns the base URL for static assets
-  try {
-    return `${PCore.getAssetLoader().getStaticServerUrl()}constellation/`;
-  } catch {
-    return 'constellation/';
-  }
-}
-
-/**
- * Get image src URL for a local icon.
- * Uses a relative path so icons are served from the local dev server
- * (webpack copies assets/icons/* to constellation/icons/).
- */
-export function getImageSrc(name: string): string {
-  // Absolute path — icons are bundled locally by webpack into /constellation/icons/
-  return `/constellation/icons/${name}.svg`;
-}
-
-export function getIconPath(): string {
-  return '/constellation/icons/';
-}
-
-/**
- * Get user initials from a full name string.
- */
-export function getInitials(name: string): string {
-  if (!name) return '';
-  const parts = name.trim().split(/\s+/);
-  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
-  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
-}
-
-/**
  * Fetch work list data from a data page.
  */
 export function fetchMyWorkList(
@@ -75,14 +39,3 @@ export function fetchMyWorkList(
       };
     });
 }
-
-/** Shared palette colors for card/icon backgrounds (used by ListView + GalleryGrid). */
-export const bgColors = ['#ede9fe', '#fce7f3', '#e0f2fe', '#ffedd5', '#f3e8ff', '#d1fae5'];
-export const colorFilters = [
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(250deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(320deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(190deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(25deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(120deg) saturate(500%)',
-  'brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(90deg) saturate(500%)'
-];

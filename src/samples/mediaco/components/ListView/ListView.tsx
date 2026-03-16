@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import StarIcon from '@mui/icons-material/Star';
 import ListView from '@pega/react-sdk-components/lib/components/template/ListView';
-import { getImageSrc } from '../../utils/helpers';
+import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { getActivityIcon, timeSince, CASE_TYPE_TO_ACTIVITY_MAP } from './helpers';
 import Carousel from '../Carousel';
 import GalleryGrid from '../GalleryGrid';
@@ -65,7 +65,7 @@ function MediaCoListViewContent({ pConn, refList, title }: { pConn: any; refList
         data.map(item => {
           const caseType = CASE_TYPE_TO_ACTIVITY_MAP[item.ActivityType] || '';
           return {
-            icon: getImageSrc(getActivityIcon(caseType)),
+            icon: Utils.getImageSrc(getActivityIcon(caseType), Utils.getSDKStaticConentUrl()),
             title: cols[0] ? item[cols[0].id] : undefined,
             title_subtext: cols[2] ? timeSince(new Date(item[cols[2].id] || item.pxCreateDateTime)) : undefined,
             description: cols[1] ? item[cols[1].id] : undefined

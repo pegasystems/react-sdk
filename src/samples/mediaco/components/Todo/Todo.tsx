@@ -109,7 +109,6 @@ export default function MediaCoTodo(props: TodoProps) {
     };
   }, [updateToDo]);
 
-  // Sync surveyCase into the shared context so Banner can render the banner
   useEffect(() => {
     setPortalSurveyCase(surveyCase);
     return () => setPortalSurveyCase(null);

@@ -1,67 +1,11 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { getImageSrc } from '../../utils/helpers';
-import { QUICK_LINKS_DATA } from './quickCreateData';
-
-/**
- * Uses CSS Grid with `grid-auto-rows: 1px` and calculates row spans
- * from each card's rendered height so cards pack tightly without gaps.
- */
-function useMasonry(gap = 16, rowHeight = 1, itemSelector = '.mc-card') {
-  const gridRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const grid = gridRef.current;
-    if (!grid) return;
-
-    const applyLayout = () => {
-      const items = grid.querySelectorAll<HTMLElement>(itemSelector);
-      if (items.length === 0) return;
-
-      // Reset spans first
-      items.forEach(item => item.style.removeProperty('grid-row-end'));
-
-      // Measure and set spans in the next frame
-      requestAnimationFrame(() => {
-        items.forEach(item => {
-          const height = item.getBoundingClientRect().height;
-          const span = Math.ceil((height + gap) / (rowHeight + gap));
-          item.style.gridRowEnd = `span ${span}`;
-        });
-      });
-    };
-
-    // Initial layout (slight delay for render to settle)
-    const initTimer = setTimeout(applyLayout, 100);
-
-    // Recalculate on resize (throttled)
-    let resizeTimer: ReturnType<typeof setTimeout>;
-    const onResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(applyLayout, 150);
-    };
-    window.addEventListener('resize', onResize);
-
-    // Recalculate on DOM mutations (debounced)
-    const observer = new MutationObserver(() => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(applyLayout, 100);
-    });
-    observer.observe(grid, { childList: true, subtree: true });
-
-    return () => {
-      clearTimeout(initTimer);
-      clearTimeout(resizeTimer);
-      window.removeEventListener('resize', onResize);
-      observer.disconnect();
-    };
-  }, [gap, rowHeight, itemSelector]);
-
-  return gridRef;
-}
+import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
+import useMasonry from '../../hooks/useMasonry';
+import { QUICK_LINKS_DATA } from './data';
 
 const headerGradientClassMap: Record<string, string> = {
   'bg-purple': 'mc-quick-create-header-purple',
@@ -194,12 +138,22 @@ export default function QuickCreate({ getPConnect, classFilter: classFilterProp 
                     {/* Watermark */}
                     {card.icon && (
                       <Box className='mc-quick-create-watermark'>
-                        <Box component='img' src={getImageSrc(card.icon)} className='mc-quick-create-watermark-image' />
+                        <Box
+                          component='img'
+                          src={Utils.getImageSrc(card.icon, Utils.getSDKStaticConentUrl())}
+                          className='mc-quick-create-watermark-image'
+                        />
                       </Box>
                     )}
                     {/* Icon box */}
                     <Box className={`mc-icon-box mc-quick-create-icon-box ${getIconGradientClass(card.iconBgClass)}`}>
-                      {card.icon && <Box component='img' src={getImageSrc(card.icon)} className='mc-quick-create-icon-image' />}
+                      {card.icon && (
+                        <Box
+                          component='img'
+                          src={Utils.getImageSrc(card.icon, Utils.getSDKStaticConentUrl())}
+                          className='mc-quick-create-icon-image'
+                        />
+                      )}
                     </Box>
                   </Box>
 

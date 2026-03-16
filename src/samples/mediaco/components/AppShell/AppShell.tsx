@@ -4,6 +4,7 @@ import { Utils } from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { TodoPortalProvider } from '../../utils/TodoPortalContext';
 import WssNavBar from '../WssNavBar';
 import '../../mediaCoStyles.scss';
+import './AppShell.scss';
 
 interface IPage {
   pxPageViewIcon: string;

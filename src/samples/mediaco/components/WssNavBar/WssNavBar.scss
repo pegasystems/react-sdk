@@ -1,0 +1,182 @@
+.mc-wss-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.mc-wss-drawer-root {
+  flex-shrink: 0;
+}
+
+.mc-wss-drawer-paper {
+  overflow-x: hidden;
+  background-color: #fef7ff;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 2rem;
+  transition: width 0.2s ease-in-out;
+  position: relative;
+}
+
+.mc-wss-drawer-paper-collapsed {
+  width: 5rem;
+  padding-left: 3.5px;
+  padding-right: 3.5px;
+}
+
+.mc-wss-drawer-paper-expanded {
+  width: 15rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.mc-wss-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background-color: rgba(63, 81, 181, 0.1);
+  cursor: pointer;
+}
+
+.mc-wss-toggle-icon {
+  color: #6750a4;
+  padding: 0;
+}
+
+.mc-wss-toggle-collapsed {
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+  align-self: center;
+}
+
+.mc-wss-toggle-expanded {
+  margin-left: 0;
+  margin-right: 0;
+  align-self: flex-start;
+}
+
+.mc-wss-nav-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 16px;
+  transition: all 0.2s ease-in-out;
+}
+
+.mc-wss-nav-item-default,
+.mc-wss-nav-item-default .mc-wss-nav-icon {
+  color: #49454f;
+}
+
+.mc-wss-nav-icon-button {
+  color: inherit;
+  padding: 8px;
+}
+
+.mc-wss-nav-item-collapsed {
+  justify-content: center;
+  flex-direction: column;
+}
+
+.mc-wss-nav-item-expanded {
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.mc-wss-nav-item:hover,
+.mc-wss-nav-item-active {
+  background-color: rgba(63, 81, 181, 0.1);
+}
+
+.mc-wss-nav-item-active,
+.mc-wss-nav-item-active .mc-wss-nav-icon {
+  color: #6750a4;
+}
+
+.mc-wss-nav-label {
+  font-size: 14px;
+  text-align: center;
+  max-width: 100%;
+}
+
+.mc-wss-nav-item-collapsed .mc-wss-nav-label {
+  font-size: 12px;
+  margin-top: 4px;
+  white-space: normal;
+}
+
+.mc-wss-nav-item-expanded .mc-wss-nav-label {
+  white-space: nowrap;
+  margin-top: 0;
+}
+
+.mc-wss-main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mc-wss-appbar {
+  background-color: #fff;
+  color: #333;
+  z-index: 10;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.mc-wss-toolbar {
+  justify-content: space-between;
+}
+
+.mc-wss-brand {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.mc-wss-brand-logo {
+  height: 32px;
+  margin-right: 12px;
+}
+
+.mc-wss-brand-name {
+  font-weight: 500;
+}
+
+.mc-wss-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mc-wss-circle-icon {
+  background: linear-gradient(135deg, rgb(255, 179, 217) 0%, rgb(255, 196, 232) 100%);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  margin-right: 4px;
+}
+
+.mc-wss-circle-icon-clickable {
+  cursor: pointer;
+}
+
+.mc-wss-menu-paper {
+  padding: 0;
+}
+
+.mc-wss-content {
+  flex: 1;
+  background-color: #fff;
+  width: 100%;
+}

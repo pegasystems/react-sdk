@@ -1,0 +1,235 @@
+.mc-list-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 28px;
+}
+
+.mc-list-view-header-title-wrap {
+  display: flex;
+  padding: 0 4px;
+}
+
+.mc-list-view-header-title-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.mc-list-view-title {
+  font-size: 22px;
+  font-weight: 400;
+  color: #2c2c2c;
+  margin: 0 0 4px;
+}
+
+.mc-list-view-title-underline {
+  height: 4px;
+  background-color: #9c27b0;
+  width: 100%;
+  border-radius: 2px;
+}
+
+.mc-list-view-arrow-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mc-list-view-arrow-icon {
+  color: #6750a4;
+}
+
+.mc-list-view-table {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.mc-list-view-row {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px 25px;
+  position: relative;
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.mc-list-view-row-last {
+  border-bottom: none;
+}
+
+.mc-list-view-row:hover {
+  background-color: #f6f5f5;
+}
+
+.mc-list-view-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.mc-list-view-row:hover .mc-list-view-icon-box {
+  transform: scale(1.05);
+}
+
+.mc-list-view-icon-box-0 {
+  background-color: #ede9fe;
+}
+
+.mc-list-view-icon-box-1 {
+  background-color: #fce7f3;
+}
+
+.mc-list-view-icon-box-2 {
+  background-color: #e0f2fe;
+}
+
+.mc-list-view-icon-box-3 {
+  background-color: #ffedd5;
+}
+
+.mc-list-view-icon-box-4 {
+  background-color: #f3e8ff;
+}
+
+.mc-list-view-icon-box-5 {
+  background-color: #d1fae5;
+}
+
+.mc-list-view-icon-image {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.mc-list-view-icon-index {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.mc-list-view-icon-filter-0 {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(250deg) saturate(500%);
+}
+
+.mc-list-view-icon-filter-1 {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(320deg) saturate(500%);
+}
+
+.mc-list-view-icon-filter-2 {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(190deg) saturate(500%);
+}
+
+.mc-list-view-icon-filter-3 {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(25deg) saturate(500%);
+}
+
+.mc-list-view-icon-filter-4 {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(120deg) saturate(500%);
+}
+
+.mc-list-view-icon-filter-5 {
+  filter: brightness(0) saturate(100%) invert(20%) sepia(80%) hue-rotate(90deg) saturate(500%);
+}
+
+.mc-list-view-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 12px;
+  height: 48px;
+  flex: 1;
+}
+
+.mc-list-view-content-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mc-list-view-content-bottom {
+  color: #4b5563;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mc-list-view-item-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.mc-list-view-dot {
+  width: 3px;
+  height: 3px;
+  background-color: #9ca3af;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.mc-list-view-subtext {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.mc-list-view-rating {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.mc-list-view-rating-icon {
+  color: #ffc107;
+  height: 16px;
+  margin-right: 5px;
+}
+
+.mc-list-view-loading {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.mc-list-view-loading-text {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.mc-list-view-gallery {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.mc-list-view-gallery-actions {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+
+.mc-list-view-show-all {
+  color: rgb(103, 80, 164);
+  text-transform: none;
+}

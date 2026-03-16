@@ -5,6 +5,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Banner from '@pega/react-sdk-components/lib/components/designSystemExtension/Banner';
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import { useTodoPortal } from '../../utils/TodoPortalContext';
+import './Banner.scss';
 
 /**
  * Banner is called by BannerPage/DefaultPage via getComponentFromMap('Banner').

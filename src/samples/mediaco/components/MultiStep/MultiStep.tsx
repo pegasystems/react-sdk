@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import MultiStep from '@pega/react-sdk-components/lib/components/infra/MultiStep';
+import './MultiStep.scss';
 
 interface MultiStepProps {
   getPConnect?: () => typeof PConnect;

@@ -6,6 +6,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Utils from '@pega/react-sdk-components/lib/components/helpers/utils';
 import useMasonry from '../../hooks/useMasonry';
 import { QUICK_LINKS_DATA } from './data';
+import './QuickCreate.scss';
 
 const headerGradientClassMap: Record<string, string> = {
   'bg-purple': 'mc-quick-create-header-purple',

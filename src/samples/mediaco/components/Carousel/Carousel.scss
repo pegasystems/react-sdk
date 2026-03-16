@@ -1,0 +1,89 @@
+.mc-carousel-root {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.mc-carousel-track {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: auto;
+  border-radius: 12px;
+  scrollbar-width: none;
+}
+
+.mc-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.mc-carousel-item,
+.mc-carousel-skeleton-item {
+  flex: 0 0 200px;
+  height: 350px;
+  margin: 0 10px;
+  border-radius: 8px;
+}
+
+.mc-carousel-item {
+  transition:
+    flex-basis 0.1s linear,
+    min-width 0.1s linear;
+  will-change: flex-basis, min-width;
+  min-width: 0;
+}
+
+.mc-carousel-skeleton-item {
+  background: linear-gradient(90deg, #e0e0e0 25%, #ececec 50%, #e0e0e0 75%);
+  background-size: 200% 100%;
+  animation: mc-carousel-shimmer 1.5s infinite;
+}
+
+@keyframes mc-carousel-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.mc-carousel-card {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+  border-radius: 8px;
+}
+
+.mc-carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.mc-carousel-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+  color: #fff;
+}
+
+.mc-carousel-title {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,11 +1,11 @@
 // Statically load all "MediaCo" components.
 import AppShell from './components/AppShell/AppShell';
-import Banner from './components/Banner1/Banner';
-import ListView from './components/ListView1/ListView';
+import Banner from './components/Banner/Banner';
+import ListView from './components/ListView/ListView';
 import MultiStep from './components/MultiStep';
 import QuickCreate from './components/QuickCreate';
-import Todo from './components/Todo1/Todo';
-import WssNavBar from './components/WssNavBar1';
+import Todo from './components/Todo/Todo';
+import WssNavBar from './components/WssNavBar';
 //import './mediaCoStyles.scss';
 
 /* import end - DO NOT REMOVE */

@@ -14,7 +14,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { logout } from '@pega/auth/lib/sdk-auth-manager';
-
+import './WssNavBar.scss';
 import Footer from '../Footer/Footer';
 
 interface WssNavBarProps {

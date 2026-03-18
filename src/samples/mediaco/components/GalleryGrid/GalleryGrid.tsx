@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 import CloseIcon from '@mui/icons-material/Close';
+import './GalleryGrid.scss';
 
 interface GalleryGridProps {
   open: boolean;

@@ -29,6 +29,7 @@ import Time from './src/components/override-sdk/field/Time/';
 import Url from './src/components/override-sdk/field/URL/';
 import UserReference from './src/components/override-sdk/field/UserReference/';
 import ActionButtons from './src/components/override-sdk/infra/ActionButtons/';
+import FieldValueList from './src/components/override-sdk/designSystemExtension/FieldValueList/';
 /* import end - DO NOT REMOVE */
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -63,7 +64,8 @@ const localSdkComponentMap = {
   Time: Time,
   URL: Url,
   UserReference: UserReference,
-  ActionButtons: ActionButtons
+  ActionButtons: ActionButtons,
+  FieldValueList: FieldValueList
   /* map end - DO NOT REMOVE */
 };
 

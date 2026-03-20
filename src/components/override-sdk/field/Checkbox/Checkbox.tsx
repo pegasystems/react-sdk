@@ -71,9 +71,13 @@ const CheckBox = styled.span<{ $checked?: boolean; $hasError?: boolean; $disable
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+  line-height: 0;
+  overflow: hidden;
   flex-shrink: 0;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 2px;
   border: 2px solid
     ${({ $hasError, $checked }) =>
@@ -85,12 +89,17 @@ const CheckBox = styled.span<{ $checked?: boolean; $hasError?: boolean; $disable
   /* Checkmark (shown when checked) */
   &::after {
     content: '';
-    display: ${({ $checked }) => ($checked ? 'block' : 'none')};
-    width: 1.15rem;
-    height: 0.65rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    opacity: ${({ $checked }) => ($checked ? '1' : '0')};
+    width: 1rem;
+    height: 0.6rem;
     border-left: 3px solid #fff;
     border-bottom: 3px solid #fff;
-    transform: rotate(-45deg) translateY(-0.08rem);
+    transform: translate(-50%, -58%) rotate(-45deg);
+    transition: opacity 0.1s ease;
   }
 `;
 

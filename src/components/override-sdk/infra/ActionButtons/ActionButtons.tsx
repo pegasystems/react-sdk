@@ -22,11 +22,11 @@ const useStyles = makeStyles(() => ({
   },
   buttonBase: {
     minWidth: '10rem',
-    height: '2.75rem',
+    height: '2.5rem',
     borderRadius: '1.5em',
     fontFamily: 'Graphik, Helvetica Neue, Helvetica, sans-serif',
     textTransform: 'none',
-    fontWeight: 600,
+    fontWeight: 500,
     fontSize: '1.125rem',
     letterSpacing: '0.005em',
     boxShadow: 'none'

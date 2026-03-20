@@ -1,10 +1,10 @@
-# [25.1.11](https://github.com/pegasystems/react-sdk/tree/release/25.1.10) - Released: 20/03/2026
+# [25.1.11](https://github.com/pegasystems/react-sdk/tree/release/25.1.11) - Released: 20/03/2026
 
 ## Non Breaking changes
 
 ### **Features**
 
-*   A new self-service portal called **MediaCoSelfService** has been introduced for the MediaCo sample application.
+*   A new MediaCo theme has been introduced through the theme attribute in the sdk-config.json file for the **MediaCoSelfService** self-service portal.
 
     * Github: [PR-355](https://github.com/pegasystems/react-sdk/pull/599)
 
@@ -38,7 +38,7 @@
 ### **Dependencies & Infrastructure**
 
 *   The `npm` vulerabilities have been reduced.
-    * Github: [PR-561](https://github.com/pegasystems/react-sdk-components/pull/561)
+    * Github: [PR-607](https://github.com/pegasystems/react-sdk/pull/607)
 
 *   The following table lists the packages whose versions have been updated:
 

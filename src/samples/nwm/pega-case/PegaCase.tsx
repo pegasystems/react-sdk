@@ -17,24 +17,6 @@ const Content = styled.div`
   margin-right: 48px;
 `;
 
-const BackBtn = styled.button`
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: none;
-  border: none;
-  color: ${colors.accent};
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 0;
-  margin-bottom: 24px;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
 export default function PegaCase() {
   const [searchParams] = useSearchParams();
   const casetype = searchParams.get('casetype');
@@ -54,10 +36,7 @@ export default function PegaCase() {
   return (
     <Page>
       <Header title={casetype ? decodeURIComponent(casetype) : 'New Case'} />
-      <Content>
-        <BackBtn onClick={() => navigate('/nwm')}>&larr; Back to Home</BackBtn>
-        {isPegaReady && <PegaContainer />}
-      </Content>
+      <Content>{isPegaReady && <PegaContainer />}</Content>
       <Sidebar />
     </Page>
   );

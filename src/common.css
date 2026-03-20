@@ -1,5 +1,50 @@
+@font-face {
+  font-family: 'Graphik';
+  src: url('/assets/fonts/Graphik-Regular-Web.woff2') format('woff2'),
+    url('/assets/fonts/Graphik-Regular-Web.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Graphik';
+  src: url('/assets/fonts/Graphik-RegularItalic-Web.woff2') format('woff2'),
+    url('/assets/fonts/Graphik-RegularItalic-Web.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Graphik';
+  src: url('/assets/fonts/Graphik-Medium-Web.woff2') format('woff2'),
+    url('/assets/fonts/Graphik-Medium-Web.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Graphik';
+  src: url('/assets/fonts/Graphik-MediumItalic-Web.woff2') format('woff2'),
+    url('/assets/fonts/Graphik-MediumItalic-Web.woff') format('woff');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
 .psdk-root {
+  font-family: 'Graphik', 'Helvetica Neue', Helvetica, sans-serif;
   background-color: var(--app-form-bg-color);
+}
+
+.psdk-root h1,
+#nwm-root h1 {
+  font-family: 'Graphik', 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 44px;
+  font-weight: 500;
+  color: rgb(74, 74, 74);
 }
 
 .portal-load-error {

@@ -1,0 +1,9 @@
+{
+    "componentKey": "Decimal",
+    "name": "Decimal",
+    "label": "Decimal",
+    "description": "Decimal",
+    "type": "Field",
+    "subtype": "Decimal",
+    "properties": []
+}

@@ -1,0 +1,4 @@
+/* Support for google map autocomplete */
+.pac-container {
+  z-index: 2147483647;
+}

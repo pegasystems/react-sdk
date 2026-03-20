@@ -1,0 +1,79 @@
+.tox .tox-toolbar {
+  background-color: var(--app-background-color) !important;
+}
+
+.tox .tox-toolbar__primary {
+  background-color: var(--app-background-color) !important;
+}
+
+.tox .tox-toolbar__button {
+  color: var(--app-text-color) !important;
+}
+
+.tox .tox-toolbar__button--enabled {
+  background: var(--app-primary-color) !important;
+  color: #fff !important;
+}
+
+.tox .tox-dialog {
+  background-color: var(--modal-top-color) !important;
+  color: var(--app-text-color) !important;
+  border: 1px solid var(--modal-border-color) !important;
+  padding: 20px !important;
+  box-shadow: 0 0 10px 3px var(--modal-box-shadow-color) !important;
+}
+
+.tox .tox-dialog__header {
+  background-color: var(--modal-top-color) !important;
+  color: var(--app-text-color) !important;
+  font-weight: 500;
+  border-bottom: 1px solid var(--modal-border-color);
+}
+
+.tox .tox-dialog__footer {
+  background: transparent !important;
+  border-top: 1px solid var(--modal-border-color);
+}
+
+.tox .tox-dialog-wrap__backdrop {
+  background-color: var(--modal-background-color) !important;
+}
+
+.tox .tox-dialog__body input,
+.tox .tox-dialog__body textarea,
+.tox .tox-dialog__body select {
+  background: initial !important;
+  color: var(--app-text-color) !important;
+  border: 1px solid var(--app-neutral-color) !important;
+  border-radius: 4px !important;
+  padding: 6px 10px !important;
+  font-size: 1em !important;
+  font-family: inherit !important;
+}
+
+.tox .tox-dialog__body button {
+  background: transparent;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 8px 16px !important;
+  font-size: 1em !important;
+  cursor: pointer !important;
+}
+
+.tox .tox-dialog__footer .tox-button {
+  background: var(--app-primary-color) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 8px 16px !important;
+  font-size: 1em !important;
+  cursor: pointer !important;
+}
+
+.tox .tox-dialog__footer .tox-button--secondary {
+  background: var(--app-secondary-color) !important;
+  color: var(--secondary-button-text-color) !important;
+  font-size: 0.875rem !important;
+  cursor: pointer !important;
+}

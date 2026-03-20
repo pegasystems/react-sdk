@@ -1,0 +1,9 @@
+{
+  "name": "Currency",
+  "label": "Currency",
+  "description": "Currency",
+  "type": "Field",
+  "subtype": "Decimal-Currency",
+  "componentKey": "Currency",
+  "properties": []
+}

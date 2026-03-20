@@ -1,0 +1,9 @@
+{
+    "componentKey": "Percentage",
+    "name": "Percentage",
+    "label": "Percentage",
+    "description": "Percentage",
+    "type": "Field",
+    "subtype": "Decimal-Percentage",
+    "properties": []
+}

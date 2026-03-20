@@ -1,0 +1,9 @@
+{
+    "componentKey": "RadioButtons",
+    "name": "RadioButtons",
+    "label": "Radio buttons",
+    "description": "Picklist",
+    "type": "Field",
+    "subtype": "Picklist",
+    "properties": []
+}

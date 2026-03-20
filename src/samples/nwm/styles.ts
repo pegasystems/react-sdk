@@ -19,12 +19,17 @@ export const colors = {
 /* ── global reset scoped to #nwm-root ── */
 export const NwmGlobalStyle = createGlobalStyle`
   #nwm-root {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Graphik', 'Helvetica Neue', Helvetica, sans-serif;
     color: ${colors.textPrimary};
     background: ${colors.background};
     min-height: 100vh;
     box-sizing: border-box;
+  }
+
+  #nwm-root h1 {
+    font-size: 44px;
+    font-weight: 500;
+    color: rgb(74, 74, 74);
   }
 
   #nwm-root *, #nwm-root *::before, #nwm-root *::after {
@@ -74,7 +79,7 @@ export const Button = styled.button<{ $variant?: 'primary' | 'outline' }>`
   align-items: center;
   gap: 6px;
   padding: 10px 20px;
-  border-radius: 6px;
+  border-radius: 2px;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;

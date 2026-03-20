@@ -1,0 +1,9 @@
+{
+    "componentKey": "DateTime",
+    "name": "DateTime",
+    "label": "Date & time",
+    "description": "Date & time",
+    "type": "Field",
+    "subtype": "DateTime",
+    "properties": []
+}

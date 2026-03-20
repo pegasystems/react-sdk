@@ -1,0 +1,9 @@
+{
+  "name": "Date",
+  "label": "Date only",
+  "description": "Date only",
+  "type": "Field",
+  "subtype": "Date",
+  "componentKey": "Date",
+  "properties": []
+}

@@ -1,0 +1,9 @@
+{
+    "label": "TextContent",
+    "componentKey": "TextContent",
+    "name": "TextContent",
+    "description": "Text",
+    "type": "Field",
+    "subtype": "DATA_CAPTURE",
+    "properties": []
+}

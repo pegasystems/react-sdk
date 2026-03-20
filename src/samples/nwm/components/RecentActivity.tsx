@@ -205,7 +205,7 @@ export default function RecentActivity() {
 
   const handleCreateCase = (caseType: string) => {
     setNewReqMenuOpen(false);
-    navigate(`/pega-case/${encodeURIComponent(caseType)}`);
+    navigate(`/nwm/pega-case?casetype=${encodeURIComponent(caseType)}`);
   };
 
   return (

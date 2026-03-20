@@ -10,10 +10,16 @@ const Nav = styled.header`
   align-items: center;
   padding: 0 24px;
   height: 56px;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+`;
+
+const NavSpacer = styled.div`
+  height: 56px;
 `;
 
 const NavLinks = styled.nav`
@@ -166,36 +172,39 @@ export default function Header() {
   }, []);
 
   return (
-    <Nav>
-      <LogoCircle />
+    <>
+      <Nav>
+        <LogoCircle />
 
-      <NavLinks>
-        {NAV_ITEMS.map(item => (
-          <NavLink key={item.label} $active={item.label === active} onClick={() => setActive(item.label)}>
-            {item.label}
-            {item.hasDropdown && <Chevron>&#9662;</Chevron>}
-          </NavLink>
-        ))}
-      </NavLinks>
+        <NavLinks>
+          {NAV_ITEMS.map(item => (
+            <NavLink key={item.label} $active={item.label === active} onClick={() => setActive(item.label)}>
+              {item.label}
+              {item.hasDropdown && <Chevron>&#9662;</Chevron>}
+            </NavLink>
+          ))}
+        </NavLinks>
 
-      <Spacer />
+        <Spacer />
 
-      <SearchBox>
-        <SearchInput placeholder='Search' aria-label='Search' />
-      </SearchBox>
+        <SearchBox>
+          <SearchInput placeholder='Search' aria-label='Search' />
+        </SearchBox>
 
-      <div ref={menuRef} style={{ position: 'relative' }}>
-        <AvatarButton aria-label='User menu' aria-expanded={menuOpen} onClick={() => setMenuOpen(prev => !prev)}>
-          SS
-        </AvatarButton>
-        {menuOpen && (
-          <DropdownMenu role='menu'>
-            <DropdownItem role='menuitem'>My Profile</DropdownItem>
-            <DropdownItem role='menuitem'>Settings</DropdownItem>
-            <DropdownItem role='menuitem'>Sign Out</DropdownItem>
-          </DropdownMenu>
-        )}
-      </div>
-    </Nav>
+        <div ref={menuRef} style={{ position: 'relative' }}>
+          <AvatarButton aria-label='User menu' aria-expanded={menuOpen} onClick={() => setMenuOpen(prev => !prev)}>
+            SS
+          </AvatarButton>
+          {menuOpen && (
+            <DropdownMenu role='menu'>
+              <DropdownItem role='menuitem'>My Profile</DropdownItem>
+              <DropdownItem role='menuitem'>Settings</DropdownItem>
+              <DropdownItem role='menuitem'>Sign Out</DropdownItem>
+            </DropdownMenu>
+          )}
+        </div>
+      </Nav>
+      <NavSpacer />
+    </>
   );
 }

@@ -3,7 +3,8 @@ import { Route, Routes } from 'react-router';
 import Embedded from '../Embedded';
 import FullPortal from '../FullPortal';
 import NwmHome from '../nwm';
-import PegaCase from '../nwm/PegaCase';
+import PegaCase from '../nwm/pega-case/PegaCase';
+import Home from '../nwm/components/Home';
 
 // NOTE: You should update this to be the same value that's in
 //  the src/index.html <base href="value"> to allow the React Router
@@ -25,8 +26,10 @@ const AppSelector = () => {
         <Route path={`${baseURL}embedded.html`} element={<Embedded />} />
         <Route path={`${baseURL}portal`} element={<FullPortal />} />
         <Route path={`${baseURL}portal.html`} element={<FullPortal />} />
-        <Route path={`${baseURL}nwm`} element={<NwmHome />} />
-        <Route path={`${baseURL}pega-case/:casetype`} element={<PegaCase />} />
+        <Route path={`${baseURL}nwm`} element={<NwmHome />}>
+          <Route index element={<Home />} />
+          <Route path='pega-case' element={<PegaCase />} />
+        </Route>
         <Route path='*' element={<Embedded />} />
       </Routes>
     </div>

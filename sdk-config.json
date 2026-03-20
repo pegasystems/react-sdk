@@ -2,27 +2,27 @@
   "comment_sdk_config": "This is the configuration file for the React SDK",
   "sdk_optional_configs_doc_comment": "See the document(link below) for more details on all the available config settings",
   "sdk_optional_configs_doc": "https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/configuring-sdk-config-json.html",
-  "theme": "dark",
+  "theme": "light",
   "authConfig": {
     "authService": "pega",
 
     "mashupClient_comment": "Client ID and Client secret from the OAuth 2.0 Client Registration record used for mashup use case",
     "mashupClient_comment2": "See SDK Guide for instructions on how to generate and obtain the proper values for the following entries",
-    "mashupClientId": "10534620123703590455",
+    "mashupClientId": "13311699353239192619",
     "mashupUserIdentifier": "shipra.gupta@pega.com",
     "mashupClient_comment3": "Note: mashupPassword requires Base64 encoding",
     "mashupPassword": "aW5zdGFsbCEyMzQ1",
 
     "portalClientId_comment": "Client ID from the OAuth 2.0 Client Registration record used for portal use case",
-    "portalClientId": "10534620123703590455"
+    "portalClientId": "13311699353239192619"
   },
 
   "serverConfig": {
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
-    "infinityRestServerUrl": "https://lab-16761-us-east-1.internal.pegalabs.io/prweb",
+    "infinityRestServerUrl": "https://lab-17581-ap-south-1.external.pegalabs.io/prweb",
 
     "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
-    "appAlias": "cs-for-insurance--surrenders-v051",
+    "appAlias": "cs-for-insurance--surrenders-v051-2",
 
     "sdkContentServerUrl_comment": "If specified, the given URL will be used. If left blank, window.location.origin will be used.",
     "sdkContentServerUrl": "",

@@ -1,0 +1,51 @@
+.psdk-default-form-one-column {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: calc(1rem);
+}
+
+.psdk-default-form-two-column {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: calc(1rem);
+}
+
+.psdk-default-form-three-column {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(1rem);
+}
+
+.psdk-default-form-three-column .grid-column {
+  grid-column: 1 / span 3;
+}
+
+.psdk-default-form-two-column .grid-column {
+  grid-column: 1 / span 2;
+}
+
+.psdk-default-form-one-column .grid-column {
+  grid-column: 1;
+}
+
+.psdk-default-form-instruction-text {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #f0f4f8;
+  border-left: 4px solid #6b7a8d;
+  border-radius: 4px;
+  padding: 16px 20px;
+  margin: 16px 0 24px;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #3a3a4a;
+}
+
+.psdk-default-form-instruction-text::before {
+  content: 'ⓘ';
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  color: #6b7a8d;
+  line-height: 1.5;
+}

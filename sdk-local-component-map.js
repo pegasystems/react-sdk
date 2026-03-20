@@ -33,6 +33,7 @@ import UserReference from './src/components/override-sdk/field/UserReference/';
 import ActionButtons from './src/components/override-sdk/infra/ActionButtons/';
 import FieldValueList from './src/components/override-sdk/designSystemExtension/FieldValueList/';
 import MultiStep from './src/components/override-sdk/infra/MultiStep/';
+import DefaultForm from './src/components/override-sdk/template/DefaultForm/';
 /* import end - DO NOT REMOVE */
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -69,7 +70,8 @@ const localSdkComponentMap = {
   UserReference: UserReference,
   ActionButtons: ActionButtons,
   FieldValueList: FieldValueList,
-  MultiStep: MultiStep
+  MultiStep: MultiStep,
+  DefaultForm: DefaultForm
   /* map end - DO NOT REMOVE */
 };
 

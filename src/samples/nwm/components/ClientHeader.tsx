@@ -55,7 +55,7 @@ const ClientName = styled.h1`
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
-  color: #fff;
+  color: #fff !important;
 `;
 
 const QuickActionsBtn = styled.button`

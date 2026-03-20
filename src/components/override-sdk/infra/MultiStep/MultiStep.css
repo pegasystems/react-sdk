@@ -1,0 +1,292 @@
+.psdk-case-view-divider {
+  border-bottom: 0.0625rem solid var(--app-neutral-light-color);
+}
+
+.psdk-icon {
+  padding: 0rem 0.125rem;
+  min-width: unset;
+}
+
+.psdk-icon-current {
+  color: var(--app-primary-color);
+}
+
+.psdk-icon-not-current {
+  color: var(--app-neutral-color);
+}
+
+.psdk-current-svg-icon {
+  width: 1rem;
+  filter: var(--svg-color);
+}
+
+.psdk-not-current-svg-icon {
+  width: 1rem;
+  filter: var(--app-neutral-color-filter);
+}
+
+mat-vertical-stepper {
+  background-color: transparent;
+}
+mat-horizontal-stepper {
+  background-color: transparent;
+}
+
+.psdk-sub-step-current {
+  padding-left: 0.625rem;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.psdk-sub-step-not-current {
+  padding-left: 0.625rem;
+  color: var(--step-label-color);
+}
+
+.psdk-flow-container-top {
+  border-radius: 0.3125rem;
+}
+.psdk-flow-container {
+  padding-left: 2.1875rem;
+}
+
+.psdk-sub-step-list {
+  list-style: none;
+  padding-bottom: 0.625rem;
+}
+
+/* ── Vertical stepper layout ── */
+.psdk-vertical-stepper {
+  background-color: transparent;
+  display: flex;
+  text-align: left;
+  gap: 0;
+}
+
+.psdk-vertical-stepper-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 240px;
+  max-width: 280px;
+  padding: 16px 0;
+  border-right: 1px solid var(--app-neutral-light-color);
+  position: relative;
+  align-self: flex-start;
+}
+
+/* Continuous vertical line behind all step icons */
+.psdk-vertical-stepper-nav::before {
+  content: '';
+  position: absolute;
+  left: 23px; /* 16px step padding-left + 7px (half of 14px icon) */
+  top: 35px; /* 16px nav padding + 12px step padding + 7px half icon */
+  bottom: 35px;
+  width: 2px;
+  background-color: #c0c0c8;
+  z-index: 0;
+}
+
+.psdk-vertical-stepper-content {
+  flex: 1;
+  padding: 24px 32px;
+  min-width: 0;
+}
+
+.psdk-vertical-step-connector {
+  display: none;
+}
+
+.psdk-vertical-step {
+  display: block;
+}
+
+/* ── Step header row ── */
+.psdk-vertical-step-header {
+  overflow: visible;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: auto;
+  padding: 12px 16px;
+  border-radius: 0;
+  margin-right: 12px;
+  transition: background 0.15s;
+  z-index: 1;
+}
+
+.psdk-vertical-step-header.current {
+  background-color: #e8e4ee;
+  border-radius: 0 24px 24px 0;
+}
+
+/* ── Step circle / icon ── */
+.psdk-vertical-step-icon {
+  margin-right: 12px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  height: 14px;
+  width: 14px;
+  min-width: 14px;
+  position: relative;
+  flex-shrink: 0;
+  z-index: 1;
+  background: #fff;
+  overflow: visible;
+}
+
+.success .psdk-vertical-step-icon {
+  background-color: #3a3a4a;
+  border: none;
+}
+
+.future .psdk-vertical-step-icon {
+  border: 2px solid #b0b0ba;
+  background-color: #fff;
+}
+
+.current .psdk-vertical-step-icon {
+  background-color: #fff;
+  border: 2px solid var(--app-primary-color);
+}
+
+/* Inner content (dot for current step) */
+.psdk-vertical-step-icon-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+}
+
+.psdk-step-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--app-primary-color);
+}
+
+/* ── Step label ── */
+.psdk-vertical-step-label {
+  color: #a0a0aa;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+  vertical-align: middle;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.current .psdk-vertical-step-label {
+  color: var(--app-primary-color);
+  font-weight: 700;
+}
+
+/* ── Checkmark on completed steps (right-aligned) ── */
+.psdk-step-check {
+  margin-left: auto;
+  color: #5a5a6a;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.success .psdk-vertical-step-label {
+  color: var(--text-primary-color);
+  font-weight: 600;
+}
+
+.psdk-vertical-step-body {
+  margin-left: 36px;
+  border: 0;
+  position: relative;
+  display: block;
+  text-align: left;
+}
+
+.psdk-vertical-step-line {
+  display: block;
+}
+
+.psdk-vertical-step-line::before {
+  display: none;
+}
+
+.psdk-horizontal-stepper {
+  background-color: transparent;
+  display: block;
+}
+
+.psdk-horizontal-stepper-header-container {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.psdk-horizontal-step-header {
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  box-sizing: content-box;
+  display: flex;
+  height: 72px;
+  align-items: center;
+}
+
+.psdk-horizontal-step-icon {
+  color: white;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+
+.future .psdk-horizontal-step-icon {
+  color: var(--app-neutral-color);
+  border: 1px solid var(--app-neutral-color);
+}
+
+.current .psdk-horizontal-step-icon {
+  color: var(--app-text-color);
+  background-color: var(--app-primary-color);
+}
+
+.success .psdk-horizontal-step-icon {
+  color: var(--app-text-color);
+  background-color: var(--stepper-completed-bg-color);
+}
+
+.psdk-horizontal-step-icon-content {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.psdk-horizontal-step-label {
+  color: var(--text-secondary-color);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: initial;
+}
+
+.current .psdk-horizontal-step-label {
+  color: var(--text-primary-color);
+  margin-left: 8px;
+}
+
+.flex-auto {
+  flex: auto;
+}
+
+.psdk-horizontal-step-line {
+  border-top: 1px solid var(--app-neutral-color);
+  min-width: 32px;
+  margin: 0px 8px;
+}

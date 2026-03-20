@@ -8,12 +8,11 @@ import { usePega } from '../../Embedded/context/PegaReadyContext';
 
 const Page = styled.div`
   min-height: 100vh;
-  background: ${colors.background};
+  background: ${colors.surface};
   overflow-x: hidden;
 `;
 
 const Content = styled.div`
-  padding: 32px;
   margin-right: 48px;
 `;
 
@@ -21,6 +20,7 @@ export default function PegaCase() {
   const [searchParams] = useSearchParams();
   const casetype = searchParams.get('casetype');
   const navigate = useNavigate();
+  let title = 'New Case';
   const { isPegaReady, PegaContainer, createCase } = usePega();
 
   useEffect(() => {
@@ -33,9 +33,13 @@ export default function PegaCase() {
     });
   }, [casetype, navigate]);
 
+  if (isPegaReady) {
+    const caseTypes = PCore.getEnvironmentInfo().environmentInfoObject?.pyCaseTypeList || [];
+    title = caseTypes.find(ct => ct.pyWorkTypeImplementationClassName === casetype)?.pyWorkTypeName || 'New Case';
+  }
   return (
     <Page>
-      <Header title={casetype ? decodeURIComponent(casetype) : 'New Case'} />
+      <Header title={title} />
       <Content>{isPegaReady && <PegaContainer />}</Content>
       <Sidebar />
     </Page>

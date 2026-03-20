@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'Graphik';
-  src: url('/assets/fonts/Graphik-Regular-Web.woff2') format('woff2'),
+  src:
+    url('/assets/fonts/Graphik-Regular-Web.woff2') format('woff2'),
     url('/assets/fonts/Graphik-Regular-Web.woff') format('woff');
   font-weight: 400;
   font-style: normal;
@@ -9,7 +10,8 @@
 
 @font-face {
   font-family: 'Graphik';
-  src: url('/assets/fonts/Graphik-RegularItalic-Web.woff2') format('woff2'),
+  src:
+    url('/assets/fonts/Graphik-RegularItalic-Web.woff2') format('woff2'),
     url('/assets/fonts/Graphik-RegularItalic-Web.woff') format('woff');
   font-weight: 400;
   font-style: italic;
@@ -18,7 +20,8 @@
 
 @font-face {
   font-family: 'Graphik';
-  src: url('/assets/fonts/Graphik-Medium-Web.woff2') format('woff2'),
+  src:
+    url('/assets/fonts/Graphik-Medium-Web.woff2') format('woff2'),
     url('/assets/fonts/Graphik-Medium-Web.woff') format('woff');
   font-weight: 500;
   font-style: normal;
@@ -27,7 +30,8 @@
 
 @font-face {
   font-family: 'Graphik';
-  src: url('/assets/fonts/Graphik-MediumItalic-Web.woff2') format('woff2'),
+  src:
+    url('/assets/fonts/Graphik-MediumItalic-Web.woff2') format('woff2'),
     url('/assets/fonts/Graphik-MediumItalic-Web.woff') format('woff');
   font-weight: 500;
   font-style: italic;
@@ -37,6 +41,9 @@
 .psdk-root {
   font-family: 'Graphik', 'Helvetica Neue', Helvetica, sans-serif;
   background-color: var(--app-form-bg-color);
+
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .psdk-root h1,

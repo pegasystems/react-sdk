@@ -7,6 +7,7 @@ const Banner = styled.header`
   color: #fff;
   width: 100%;
   padding: 0 24px;
+  padding-right: 55px;
   height: 56px;
   display: flex;
   align-items: center;

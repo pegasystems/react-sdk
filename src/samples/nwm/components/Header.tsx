@@ -8,7 +8,7 @@ const Nav = styled.header`
   color: #fff;
   display: flex;
   align-items: center;
-  padding: 0 24px;
+  padding-right: 55px;
   height: 56px;
   position: fixed;
   top: 0;

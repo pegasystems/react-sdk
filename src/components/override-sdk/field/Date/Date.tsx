@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event-utils';
 import { format } from '@pega/react-sdk-components/lib/components/helpers/formatters';
@@ -40,6 +40,11 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: 100%;
   font-family: ${NM.fontFamily};
+`;
+
+const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
 `;
 
 const Label = styled.label<{ $required?: boolean; $hasError?: boolean }>`
@@ -87,8 +92,6 @@ const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
     width: 1.5rem;
     height: 1.5rem;
     cursor: pointer;
-    position: absolute;
-    right: 0;
   }
   &::-webkit-inner-spin-button,
   &::-webkit-clear-button {
@@ -128,6 +131,37 @@ const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
   `}
 `;
 
+const CalendarButton = styled.button<{ $disabled?: boolean }>`
+  position: absolute;
+  top: 50%;
+  right: 0.375rem;
+  transform: translateY(-50%);
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  background: transparent;
+  border-radius: 4px;
+  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
+  opacity: ${({ $disabled }) => ($disabled ? NM.disabledOpacity : '1')};
+
+  &::before {
+    content: '';
+    display: block;
+    width: 1rem;
+    height: 1rem;
+    margin: 0 auto;
+    background-image: ${CALENDAR_ICON};
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${NM.focusBlue};
+    outline-offset: 1px;
+  }
+`;
+
 const HelperText = styled.span<{ $hasError?: boolean }>`
   font-size: ${NM.helperFontSize};
   color: ${({ $hasError }) => ($hasError ? NM.errorRed : NM.helperText)};
@@ -145,13 +179,30 @@ interface DateProps extends PConnFieldProps {
   // If any, enter additional props that only exist on Date here
 }
 
+function toDateInputValue(rawValue: unknown): string {
+  if (!rawValue) {
+    return '';
+  }
+
+  if (typeof rawValue === 'string') {
+    const yyyyMmDdMatch = rawValue.match(/^(\d{4}-\d{2}-\d{2})/);
+    if (yyyyMmDdMatch) {
+      return yyyyMmDdMatch[1];
+    }
+  }
+
+  const parsed = dayjs(rawValue as any);
+  return parsed.isValid() ? parsed.format('YYYY-MM-DD') : '';
+}
+
 export default function Date(props: DateProps) {
   const TextInput = getComponentFromMap('TextInput');
   const FieldValueList = getComponentFromMap('FieldValueList');
 
   const { getPConnect, label, required, disabled, value, validatemessage, status, readOnly, testId, helperText, displayMode, hideLabel } = props;
 
-  const [dateValue, setDateValue] = useState<Dayjs | null>(value ? dayjs(value) : null);
+  const [dateValue, setDateValue] = useState<string>(() => toDateInputValue(value));
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
@@ -168,7 +219,7 @@ export default function Date(props: DateProps) {
   dateFormatInfo.dateFormatMask = theDateFormat.dateFormatMask;
 
   useEffect(() => {
-    setDateValue(dayjs(value));
+    setDateValue(toDateInputValue(value));
   }, [value]);
 
   if (displayMode === 'DISPLAY_ONLY') {
@@ -189,20 +240,27 @@ export default function Date(props: DateProps) {
     return <TextInput {...props} />;
   }
 
-  // date inputs require YYYY-MM-DD format for their value
-  const inputValue = dateValue && dateValue.isValid() ? dateValue.format('YYYY-MM-DD') : '';
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value; // already YYYY-MM-DD from the native input
-    if (!raw) {
-      setDateValue(null);
-      handleEvent(actions, 'changeNblur', propName, '');
+    setDateValue(raw);
+    handleEvent(actions, 'changeNblur', propName, raw || '');
+  };
+
+  const openDatePicker = () => {
+    if (disabled || readOnly) {
       return;
     }
-    const parsed = dayjs(raw);
-    if (parsed.isValid()) {
-      setDateValue(parsed);
-      handleEvent(actions, 'changeNblur', propName, raw);
+
+    const inputEl = inputRef.current as HTMLInputElement & { showPicker?: () => void };
+    if (!inputEl) {
+      return;
+    }
+
+    if (typeof inputEl.showPicker === 'function') {
+      inputEl.showPicker();
+    } else {
+      inputEl.focus();
+      inputEl.click();
     }
   };
 
@@ -215,19 +273,30 @@ export default function Date(props: DateProps) {
           {label}
         </Label>
       )}
-      <StyledInput
-        id={inputId}
-        type='date'
-        value={inputValue}
-        required={required}
-        disabled={disabled}
-        $hasError={hasError}
-        $readOnly={readOnly}
-        onChange={handleChange}
-        data-test-id={testId}
-        aria-invalid={hasError}
-        aria-describedby={helperTextToDisplay ? `${inputId}-helper` : undefined}
-      />
+      <InputWrapper>
+        <StyledInput
+          id={inputId}
+          ref={inputRef}
+          type='date'
+          value={dateValue}
+          required={required}
+          disabled={disabled}
+          $hasError={hasError}
+          $readOnly={readOnly}
+          onChange={handleChange}
+          data-test-id={testId}
+          aria-invalid={hasError}
+          aria-describedby={helperTextToDisplay ? `${inputId}-helper` : undefined}
+        />
+        <CalendarButton
+          type='button'
+          aria-label='Open calendar'
+          onClick={openDatePicker}
+          disabled={disabled || readOnly}
+          $disabled={disabled || readOnly}
+          tabIndex={disabled || readOnly ? -1 : 0}
+        />
+      </InputWrapper>
       {helperTextToDisplay && (
         <HelperText id={`${inputId}-helper`} $hasError={hasError} role={hasError ? 'alert' : undefined}>
           {helperTextToDisplay}

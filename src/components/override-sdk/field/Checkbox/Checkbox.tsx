@@ -21,7 +21,7 @@ const NM = {
   fontFamily: "'Graphik', 'Helvetica Neue', Helvetica, sans-serif",
   fontSize: '1rem',
   labelFontSize: '0.875rem',
-  helperFontSize: '0.75rem',
+  helperFontSize: '0.75rem'
 };
 
 // --- Styled primitives -------------------------------------------------------
@@ -79,11 +79,12 @@ const CheckBox = styled.span<{ $checked?: boolean; $hasError?: boolean; $disable
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 2px;
-  border: 2px solid
-    ${({ $hasError, $checked }) =>
-      $hasError ? NM.errorRed : $checked ? NM.navy : NM.border};
+  border: 2px solid ${({ $hasError, $checked }) => ($hasError ? NM.errorRed : $checked ? NM.navy : NM.border)};
   background-color: ${({ $checked }) => ($checked ? NM.navy : '#fff')};
-  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
   opacity: ${({ $disabled }) => ($disabled ? NM.disabledOpacity : '1')};
 
   /* Checkmark (shown when checked) */
@@ -164,7 +165,6 @@ export default function CheckboxComponent(props: CheckboxProps) {
     value,
     readOnly,
     testId,
-    required,
     disabled,
     status,
     helperText,

@@ -1,8 +1,8 @@
 {
-    "componentKey": "Group",
-    "name": "Group",
-    "label": "Field Group",
-    "description": "Field Group",
-    "type": "Group",
-    "properties": []
+  "componentKey": "Group",
+  "name": "Group",
+  "label": "Field Group",
+  "description": "Field Group",
+  "type": "Group",
+  "properties": []
 }

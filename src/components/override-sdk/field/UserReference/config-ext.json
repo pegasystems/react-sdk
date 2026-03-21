@@ -1,9 +1,9 @@
 {
-    "label": "UserReference",
-    "componentKey": "UserReference",
-    "name": "UserReference",
-    "description": "User reference",
-    "type": "Field",
-    "subtype": "DATA_CAPTURE",
-    "properties": []
+  "label": "UserReference",
+  "componentKey": "UserReference",
+  "name": "UserReference",
+  "description": "User reference",
+  "type": "Field",
+  "subtype": "DATA_CAPTURE",
+  "properties": []
 }

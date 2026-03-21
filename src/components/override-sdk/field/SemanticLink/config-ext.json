@@ -1,9 +1,9 @@
 {
-    "label": "SemanticLink",
-    "componentKey": "SemanticLink",
-    "name": "SemanticLink",
-    "description": "SemanticLink",
-    "type": "Field",
-    "subtype": "ACTION",
-    "properties": []
+  "label": "SemanticLink",
+  "componentKey": "SemanticLink",
+  "name": "SemanticLink",
+  "description": "SemanticLink",
+  "type": "Field",
+  "subtype": "ACTION",
+  "properties": []
 }

@@ -22,7 +22,7 @@ const NM = {
   fontFamily: "'Graphik', 'Helvetica Neue', Helvetica, sans-serif",
   labelFontSize: '0.875rem',
   helperFontSize: '0.75rem',
-  transitionSpeed: '0.2s',
+  transitionSpeed: '0.2s'
 };
 
 const GroupWrapper = styled.fieldset<{ $hasError?: boolean }>`
@@ -76,8 +76,7 @@ const RadioCircle = styled.span<{ $checked?: boolean; $hasError?: boolean }>`
   width: 1.25rem;
   height: 1.25rem;
   border-radius: 50%;
-  border: 2px solid ${({ $checked, $hasError }) =>
-    $hasError ? NM.errorRed : $checked ? NM.textColor : NM.border};
+  border: 2px solid ${({ $checked, $hasError }) => ($hasError ? NM.errorRed : $checked ? NM.textColor : NM.border)};
   background: transparent;
   flex-shrink: 0;
   transition: border-color ${NM.transitionSpeed} ease;
@@ -176,7 +175,9 @@ export default function RadioButtons(props: RadioButtonsProps) {
 
   const theOptions = Utils.getOptionList(theConfigProps, thePConn.getDataObject(''));
 
-  useEffect(() => { setSelectedButton(value); }, [value]);
+  useEffect(() => {
+    setSelectedButton(value);
+  }, [value]);
 
   if (displayMode === 'DISPLAY_ONLY') {
     return (
@@ -240,7 +241,9 @@ export default function RadioButtons(props: RadioButtonsProps) {
   return (
     <GroupWrapper $hasError={hasError} aria-required={required}>
       {!hideLabel && label && (
-        <GroupLegend $required={required} $hasError={hasError}>{label}</GroupLegend>
+        <GroupLegend $required={required} $hasError={hasError}>
+          {label}
+        </GroupLegend>
       )}
       <OptionsWrapper $inline={inline}>
         {theOptions.map(theOption => {

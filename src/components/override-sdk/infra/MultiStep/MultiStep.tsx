@@ -27,13 +27,6 @@ export default function MultiStep(props: PropsWithChildren<MultiStepProps>) {
     currentStep = arNavigationSteps[lastActiveStepIndex >= 0 ? lastActiveStepIndex : 0];
   }
 
-  function _getVBodyClass(index: number): string {
-    const baseClass = 'psdk-vertical-step-body';
-    const isNotLastStep = index < arNavigationSteps.length - 1;
-
-    return isNotLastStep ? `${baseClass} psdk-vertical-step-line` : baseClass;
-  }
-
   function _getAutoFlexClass(currentStep): string {
     const currentStepIndex = arNavigationSteps.findIndex(step => step.ID === currentStep?.ID);
     const totalSteps = arNavigationSteps.length;

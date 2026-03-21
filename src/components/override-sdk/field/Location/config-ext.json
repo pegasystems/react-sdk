@@ -1,10 +1,10 @@
 {
-    "label": "Location",
-    "componentKey": "Location",
-    "name": "Location",
-    "description": "Location input field with optional coordinates",
-    "type": "Field",
-    "subtype": "Text-Location",
-    "icon": "images/pz-text-input-active.svg",
-    "properties": []
+  "label": "Location",
+  "componentKey": "Location",
+  "name": "Location",
+  "description": "Location input field with optional coordinates",
+  "type": "Field",
+  "subtype": "Text-Location",
+  "icon": "images/pz-text-input-active.svg",
+  "properties": []
 }

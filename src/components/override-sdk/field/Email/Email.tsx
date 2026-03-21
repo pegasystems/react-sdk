@@ -23,13 +23,14 @@ const NM = {
   fontSize: '1rem',
   labelFontSize: '0.875rem',
   helperFontSize: '0.75rem',
-  transitionSpeed: '0.2s',
+  transitionSpeed: '0.2s'
 };
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 400px;
   font-family: ${NM.fontFamily};
 `;
 
@@ -96,7 +97,21 @@ export default function Email(props: EmailProps) {
   const TextInput = getComponentFromMap('TextInput');
   const FieldValueList = getComponentFromMap('FieldValueList');
 
-  const { getPConnect, label, required, disabled, value = '', validatemessage, status, readOnly, testId, helperText, displayMode, hideLabel, placeholder } = props;
+  const {
+    getPConnect,
+    label,
+    required,
+    disabled,
+    value = '',
+    validatemessage,
+    status,
+    readOnly,
+    testId,
+    helperText,
+    displayMode,
+    hideLabel,
+    placeholder
+  } = props;
 
   const pConn = getPConnect();
   const actions = pConn.getActionsApi();
@@ -106,21 +121,29 @@ export default function Email(props: EmailProps) {
 
   const [inputValue, setInputValue] = useState('');
 
-  useEffect(() => { setInputValue(value); }, [value]);
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   if (displayMode === 'DISPLAY_ONLY') return <FieldValueList name={hideLabel ? '' : label} value={value} />;
   if (displayMode === 'STACKED_LARGE_VAL') return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
   if (readOnly) return <TextInput {...props} />;
 
-  function handleChange(event) { setInputValue(event?.target?.value); }
-  function handleBlur() { handleEvent(actions, 'changeNblur', propName, inputValue); }
+  function handleChange(event) {
+    setInputValue(event?.target?.value);
+  }
+  function handleBlur() {
+    handleEvent(actions, 'changeNblur', propName, inputValue);
+  }
 
   const inputId = `nm-email-${testId ?? propName ?? label}`;
 
   return (
     <Wrapper>
       {!hideLabel && label && (
-        <Label htmlFor={inputId} $required={required} $hasError={hasError}>{label}</Label>
+        <Label htmlFor={inputId} $required={required} $hasError={hasError}>
+          {label}
+        </Label>
       )}
       <InputWrapper>
         <StyledInput

@@ -30,7 +30,7 @@ const NM = {
   fontSize: '1rem',
   labelFontSize: '0.875rem',
   helperFontSize: '0.75rem',
-  transitionSpeed: '0.2s',
+  transitionSpeed: '0.2s'
 };
 
 // --- Styled primitives -------------------------------------------------------
@@ -39,6 +39,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 400px;
   font-family: ${NM.fontFamily};
   position: relative;
 `;
@@ -49,9 +50,7 @@ const Label = styled.label<{ $required?: boolean; $hasError?: boolean }>`
   color: ${({ $hasError }) => ($hasError ? NM.errorRed : NM.labelColor)};
   margin-bottom: 0.375rem;
   letter-spacing: 0.01em;
-  ${({ $required }) =>
-    $required &&
-    `&::after { content: ' *'; color: ${NM.errorRed}; }`}
+  ${({ $required }) => $required && `&::after { content: ' *'; color: ${NM.errorRed}; }`}
 `;
 
 const InputWrapper = styled.div`
@@ -334,9 +333,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
   }
 
   // Filter options by whatever the user has typed
-  const filteredOptions = inputValue
-    ? options.filter(o => o.value.toLowerCase().includes(inputValue.toLowerCase()))
-    : options;
+  const filteredOptions = inputValue ? options.filter(o => o.value.toLowerCase().includes(inputValue.toLowerCase())) : options;
 
   const handleSelect = (option: IOption) => {
     handleEvent(actionsApi, 'changeNblur', propName, option.key);
@@ -424,11 +421,7 @@ export default function AutoComplete(props: AutoCompleteProps) {
         </OptionList>
       </InputWrapper>
       {helperTextToDisplay && (
-        <HelperText
-          id={`${inputId}-helper`}
-          $hasError={hasError}
-          role={hasError ? 'alert' : undefined}
-        >
+        <HelperText id={`${inputId}-helper`} $hasError={hasError} role={hasError ? 'alert' : undefined}>
           {helperTextToDisplay}
         </HelperText>
       )}

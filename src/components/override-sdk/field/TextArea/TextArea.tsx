@@ -23,13 +23,14 @@ const NM = {
   fontSize: '1rem',
   labelFontSize: '0.875rem',
   helperFontSize: '0.75rem',
-  transitionSpeed: '0.2s',
+  transitionSpeed: '0.2s'
 };
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 400px;
   font-family: ${NM.fontFamily};
 `;
 
@@ -60,7 +61,10 @@ const StyledTextArea = styled.textarea<{ $hasError?: boolean; $readOnly?: boolea
     border-color ${NM.transitionSpeed} ease,
     border-bottom-color ${NM.transitionSpeed} ease,
     box-shadow ${NM.transitionSpeed} ease;
-  &::placeholder { color: ${NM.placeholder}; opacity: 1; }
+  &::placeholder {
+    color: ${NM.placeholder};
+    opacity: 1;
+  }
   &:hover:not(:disabled) {
     border-color: ${({ $hasError }) => ($hasError ? 'transparent' : NM.borderHover)};
     border-bottom-color: ${({ $hasError }) => ($hasError ? NM.errorRedDark : NM.borderHover)};
@@ -70,8 +74,13 @@ const StyledTextArea = styled.textarea<{ $hasError?: boolean; $readOnly?: boolea
     border-bottom-color: ${({ $hasError }) => ($hasError ? NM.errorRed : NM.focusBlue)};
     box-shadow: 0 1px 0 0 ${({ $hasError }) => ($hasError ? NM.errorRed : NM.focusBlue)};
   }
-  &:disabled { opacity: ${NM.disabledOpacity}; cursor: not-allowed; }
-  ${({ $readOnly }) => $readOnly && `background-color: transparent; border: none; border-bottom: 1px dashed ${NM.border}; border-radius: 0; cursor: default; resize: none;`}
+  &:disabled {
+    opacity: ${NM.disabledOpacity};
+    cursor: not-allowed;
+  }
+  ${({ $readOnly }) =>
+    $readOnly &&
+    `background-color: transparent; border: none; border-bottom: 1px dashed ${NM.border}; border-radius: 0; cursor: default; resize: none;`}
 `;
 
 const HelperText = styled.span<{ $hasError?: boolean }>`
@@ -118,12 +127,16 @@ export default function TextArea(props: TextAreaProps) {
 
   const [inputValue, setInputValue] = useState('');
 
-  useEffect(() => { setInputValue(value); }, [value]);
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
 
   if (displayMode === 'DISPLAY_ONLY') return <FieldValueList name={hideLabel ? '' : label} value={value} />;
   if (displayMode === 'STACKED_LARGE_VAL') return <FieldValueList name={hideLabel ? '' : label} value={value} variant='stacked' />;
 
-  function handleChange(event) { setInputValue(event?.target?.value); }
+  function handleChange(event) {
+    setInputValue(event?.target?.value);
+  }
   function handleBlur() {
     if (!readOnly) handleEvent(actions, 'changeNblur', propName, inputValue);
   }
@@ -133,7 +146,9 @@ export default function TextArea(props: TextAreaProps) {
   return (
     <Wrapper>
       {!hideLabel && label && (
-        <Label htmlFor={inputId} $required={required} $hasError={hasError}>{label}</Label>
+        <Label htmlFor={inputId} $required={required} $hasError={hasError}>
+          {label}
+        </Label>
       )}
       <StyledTextArea
         id={inputId}

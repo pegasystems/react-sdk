@@ -45,6 +45,9 @@ mat-horizontal-stepper {
 
 .psdk-flow-container-top {
   border-radius: 0.3125rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
 }
 .psdk-flow-container {
   padding-left: 2.1875rem;
@@ -61,6 +64,7 @@ mat-horizontal-stepper {
   display: flex;
   text-align: left;
   gap: 0;
+  min-height: calc(100vh - 56px);
 }
 
 .psdk-vertical-stepper-nav {
@@ -70,26 +74,27 @@ mat-horizontal-stepper {
   min-width: 240px;
   max-width: 280px;
   padding: 16px 0;
-  border-right: 1px solid var(--app-neutral-light-color);
   position: relative;
-  align-self: flex-start;
+  align-self: stretch;
+  background-color: #f8f8f8;
 }
 
-/* Continuous vertical line behind all step icons */
-.psdk-vertical-stepper-nav::before {
+/* Vertical line between steps — per-step connector instead of full-height line */
+.psdk-vertical-step-header.psdk-has-next .psdk-vertical-step-icon::after {
   content: '';
   position: absolute;
-  left: 23px; /* 16px step padding-left + 7px (half of 14px icon) */
-  top: 35px; /* 16px nav padding + 12px step padding + 7px half icon */
-  bottom: 35px;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
   width: 2px;
+  height: calc(100% + 24px);
   background-color: #c0c0c8;
   z-index: 0;
 }
 
 .psdk-vertical-stepper-content {
   flex: 1;
-  padding: 24px 32px;
+  padding: 40px 32px 24px;
   min-width: 0;
 }
 
@@ -113,14 +118,13 @@ mat-horizontal-stepper {
   height: auto;
   padding: 12px 16px;
   border-radius: 0;
-  margin-right: 12px;
   transition: background 0.15s;
   z-index: 1;
 }
 
 .psdk-vertical-step-header.current {
   background-color: #e8e4ee;
-  border-radius: 0 24px 24px 0;
+  border-radius: 0;
 }
 
 /* ── Step circle / icon ── */

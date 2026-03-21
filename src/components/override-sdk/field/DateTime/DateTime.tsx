@@ -28,7 +28,7 @@ const NM = {
   fontSize: '1rem',
   labelFontSize: '0.875rem',
   helperFontSize: '0.75rem',
-  transitionSpeed: '0.2s',
+  transitionSpeed: '0.2s'
 };
 
 // Luna calendar icon (encoded SVG, steel grey fill to match icon style)
@@ -40,6 +40,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 400px;
   font-family: ${NM.fontFamily};
 `;
 
@@ -190,9 +191,7 @@ export default function DateTime(props: DateTimeProps) {
   const environmentInfo = PCore.getEnvironmentInfo();
   const timezone = environmentInfo && environmentInfo.getTimeZone();
 
-  const [dateValue, setDateValue] = useState<Dayjs | null>(
-    value ? dayjs(DateFormatter.convertToTimezone(value, { timezone })) : null
-  );
+  const [dateValue, setDateValue] = useState<Dayjs | null>(value ? dayjs(DateFormatter.convertToTimezone(value, { timezone })) : null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const pConn = getPConnect();

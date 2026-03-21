@@ -11,13 +11,21 @@ const Banner = styled.header`
   height: 56px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
+`;
+
+const BannerInner = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
 `;
 
 const BannerSpacer = styled.div`
@@ -50,6 +58,12 @@ const BackBtn = styled.button`
   }
 `;
 
+const AvailableAmount = styled.div`
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 500;
+`;
+
 const BackArrow = styled.span`
   display: inline-flex;
   align-items: center;
@@ -74,6 +88,12 @@ const CaseTitle = styled.span`
   letter-spacing: 0.2px;
 `;
 
+const CaseUser = styled.span`
+  font-size: 0.75rem;
+  opacity: 0.85;
+  margin-top: 2px;
+`;
+
 const RightSection = styled.div`
   display: flex;
   align-items: center;
@@ -84,26 +104,34 @@ const RightSection = styled.div`
 
 interface HeaderProps {
   title: string;
+  user?: string;
 }
 
-export default function Header({ title }: HeaderProps) {
+export default function Header({ title, user }: HeaderProps) {
   const navigate = useNavigate();
 
   return (
     <>
       <Banner>
-        <LeftSection>
-          <BackBtn onClick={() => navigate('/nwm')}>
-            <BackArrow>&larr;</BackArrow>
-            Return to Summary
-          </BackBtn>
-        </LeftSection>
+        <BannerInner>
+          <LeftSection>
+            <BackBtn onClick={() => navigate('/nwm')}>
+              <BackArrow>&larr;</BackArrow>
+              Return to Summary
+            </BackBtn>
+          </LeftSection>
 
-        <CenterSection>
-          <CaseTitle>{title}</CaseTitle>
-        </CenterSection>
+          <CenterSection>
+            <CaseTitle>{title}</CaseTitle>
+            <CaseUser>{user}</CaseUser>
+          </CenterSection>
 
-        <RightSection></RightSection>
+          <RightSection>
+            <AvailableAmount>
+              Available loan amount: <strong>$12,500</strong>
+            </AvailableAmount>
+          </RightSection>
+        </BannerInner>
       </Banner>
       <BannerSpacer />
     </>

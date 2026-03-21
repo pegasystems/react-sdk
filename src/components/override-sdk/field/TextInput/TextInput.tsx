@@ -5,7 +5,6 @@ import handleEvent from '@pega/react-sdk-components/lib/components/helpers/event
 import { getComponentFromMap } from '@pega/react-sdk-components/lib/bridge/helpers/sdk_component_map';
 import type { PConnFieldProps } from '@pega/react-sdk-components/lib/types/PConnProps';
 
-
 // ---------------------------------------------------------------------------
 // Northwestern Mutual "Luna" design tokens
 // Source: login.northwesternmutual.com/registration (luna design system CSS)
@@ -29,7 +28,7 @@ const NM = {
   helperFontSize: '0.75rem',
   lineHeight: '1.5',
   borderRadius: '0', // Luna uses flat bottom-border inputs
-  transitionSpeed: '0.2s',
+  transitionSpeed: '0.2s'
 };
 
 // --- Styled primitives -------------------------------------------------------
@@ -38,6 +37,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 400px;
   font-family: ${NM.fontFamily};
 `;
 

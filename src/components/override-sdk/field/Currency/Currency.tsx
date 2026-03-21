@@ -26,13 +26,14 @@ const NM = {
   fontSize: '1rem',
   labelFontSize: '0.875rem',
   helperFontSize: '0.75rem',
-  transitionSpeed: '0.2s',
+  transitionSpeed: '0.2s'
 };
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 400px;
   font-family: ${NM.fontFamily};
 `;
 
@@ -52,7 +53,7 @@ const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
   color: ${NM.textColor};
   background-color: ${NM.surface};
   border: 1px solid ${({ $hasError }) => ($hasError ? 'transparent' : NM.border)};
-  border-bottom: ${({ $hasError }) => ($hasError ? `2px solid ${NM.errorRed}` : `1px solid ${NM.border}`)}
+  border-bottom: ${({ $hasError }) => ($hasError ? `2px solid ${NM.errorRed}` : `1px solid ${NM.border}`)};
   border-radius: ${({ $hasError }) => ($hasError ? '0' : '4px')};
   padding: 0.625rem 0.75rem;
   outline: none;
@@ -60,7 +61,10 @@ const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
     border-color ${NM.transitionSpeed} ease,
     border-bottom-color ${NM.transitionSpeed} ease,
     box-shadow ${NM.transitionSpeed} ease;
-  &::placeholder { color: ${NM.placeholder}; opacity: 1; }
+  &::placeholder {
+    color: ${NM.placeholder};
+    opacity: 1;
+  }
   &:hover:not(:disabled) {
     border-color: ${({ $hasError }) => ($hasError ? 'transparent' : NM.borderHover)};
     border-bottom-color: ${({ $hasError }) => ($hasError ? NM.errorRedDark : NM.borderHover)};
@@ -70,8 +74,12 @@ const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
     border-bottom-color: ${({ $hasError }) => ($hasError ? NM.errorRed : NM.focusBlue)};
     box-shadow: 0 1px 0 0 ${({ $hasError }) => ($hasError ? NM.errorRed : NM.focusBlue)};
   }
-  &:disabled { opacity: ${NM.disabledOpacity}; cursor: not-allowed; }
-  ${({ $readOnly }) => $readOnly && `background-color: transparent; border: none; border-bottom: 1px dashed ${NM.border}; border-radius: 0; cursor: default;`}
+  &:disabled {
+    opacity: ${NM.disabledOpacity};
+    cursor: not-allowed;
+  }
+  ${({ $readOnly }) =>
+    $readOnly && `background-color: transparent; border: none; border-bottom: 1px dashed ${NM.border}; border-radius: 0; cursor: default;`}
 `;
 
 const HelperText = styled.span<{ $hasError?: boolean }>`
@@ -86,9 +94,7 @@ const HelperText = styled.span<{ $hasError?: boolean }>`
 `;
 
 // forwardRef wrapper so NumericFormat can use our styled input as customInput
-const NMInputForNumeric = React.forwardRef<HTMLInputElement, any>((props, ref) => (
-  <StyledInput ref={ref} {...props} />
-));
+const NMInputForNumeric = React.forwardRef<HTMLInputElement, any>((props, ref) => <StyledInput ref={ref} {...props} />);
 
 /* Using react-number-format component here, since it allows formatting decimal values,
 as per the locale.
@@ -127,7 +133,9 @@ export default function Currency(props: CurrrencyProps) {
   const hasError = status === 'error';
   const [values, setValues] = useState(value.toString());
 
-  useEffect(() => { setValues(value.toString()); }, [value]);
+  useEffect(() => {
+    setValues(value.toString());
+  }, [value]);
 
   const theSymbols = getCurrencyCharacters(currencyISOCode);
   const theCurrSym = theSymbols.theCurrencySymbol;
@@ -140,15 +148,21 @@ export default function Currency(props: CurrrencyProps) {
   if (displayMode === 'DISPLAY_ONLY') return <FieldValueList name={hideLabel ? '' : label} value={formattedValue} />;
   if (displayMode === 'STACKED_LARGE_VAL') return <FieldValueList name={hideLabel ? '' : label} value={formattedValue} variant='stacked' />;
 
-  function currOnBlur() { handleEvent(actions, 'changeNblur', propName, values); }
-  const handleChange = val => { setValues(val.value); };
+  function currOnBlur() {
+    handleEvent(actions, 'changeNblur', propName, values);
+  }
+  const handleChange = val => {
+    setValues(val.value);
+  };
 
   const inputId = `nm-currency-${testId ?? propName ?? label}`;
 
   return (
     <Wrapper>
       {!hideLabel && label && (
-        <Label htmlFor={inputId} $required={required} $hasError={hasError}>{label}</Label>
+        <Label htmlFor={inputId} $required={required} $hasError={hasError}>
+          {label}
+        </Label>
       )}
       <NumericFormat
         id={inputId}

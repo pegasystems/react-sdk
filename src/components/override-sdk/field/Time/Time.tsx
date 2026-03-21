@@ -22,13 +22,14 @@ const NM = {
   fontSize: '1rem',
   labelFontSize: '0.875rem',
   helperFontSize: '0.75rem',
-  transitionSpeed: '0.2s',
+  transitionSpeed: '0.2s'
 };
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 400px;
   font-family: ${NM.fontFamily};
 `;
 
@@ -62,7 +63,10 @@ const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
     border-color ${NM.transitionSpeed} ease,
     border-bottom-color ${NM.transitionSpeed} ease,
     box-shadow ${NM.transitionSpeed} ease;
-  &::placeholder { color: ${NM.placeholder}; opacity: 1; }
+  &::placeholder {
+    color: ${NM.placeholder};
+    opacity: 1;
+  }
   &:hover:not(:disabled) {
     border-color: ${({ $hasError }) => ($hasError ? 'transparent' : NM.borderHover)};
     border-bottom-color: ${({ $hasError }) => ($hasError ? NM.errorRedDark : NM.borderHover)};
@@ -72,10 +76,21 @@ const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
     border-bottom-color: ${({ $hasError }) => ($hasError ? NM.errorRed : NM.focusBlue)};
     box-shadow: 0 1px 0 0 ${({ $hasError }) => ($hasError ? NM.errorRed : NM.focusBlue)};
   }
-  &:disabled { opacity: ${NM.disabledOpacity}; cursor: not-allowed; }
-  ${({ $readOnly }) => $readOnly && `background-color: transparent; border: none; border-bottom: 1px dashed ${NM.border}; border-radius: 0; cursor: default;`}
+  &:disabled {
+    opacity: ${NM.disabledOpacity};
+    cursor: not-allowed;
+  }
+  ${({ $readOnly }) =>
+    $readOnly && `background-color: transparent; border: none; border-bottom: 1px dashed ${NM.border}; border-radius: 0; cursor: default;`}
   /* hide native time picker icon on webkit/blink */
-  &::-webkit-calendar-picker-indicator { opacity: 0; position: absolute; right: 0; width: 2.5rem; height: 100%; cursor: pointer; }
+  &::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    width: 2.5rem;
+    height: 100%;
+    cursor: pointer;
+  }
 `;
 
 const ClockIconButton = styled.span<{ $disabled?: boolean }>`
@@ -104,7 +119,17 @@ const HelperText = styled.span<{ $hasError?: boolean }>`
 
 // Clock SVG icon
 const ClockIcon = () => (
-  <svg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round' aria-hidden='true'>
+  <svg
+    width='18'
+    height='18'
+    viewBox='0 0 24 24'
+    fill='none'
+    stroke='currentColor'
+    strokeWidth='2'
+    strokeLinecap='round'
+    strokeLinejoin='round'
+    aria-hidden='true'
+  >
     <circle cx='12' cy='12' r='10' />
     <polyline points='12 6 12 12 16 14' />
   </svg>
@@ -143,7 +168,9 @@ export default function Time(props: TimeProps) {
   return (
     <Wrapper>
       {!hideLabel && label && (
-        <Label htmlFor={inputId} $required={required} $hasError={hasError}>{label}</Label>
+        <Label htmlFor={inputId} $required={required} $hasError={hasError}>
+          {label}
+        </Label>
       )}
       <InputWrapper>
         <StyledInput

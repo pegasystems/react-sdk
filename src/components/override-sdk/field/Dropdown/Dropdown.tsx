@@ -27,13 +27,14 @@ const NM = {
   fontSize: '1rem',
   labelFontSize: '0.875rem',
   helperFontSize: '0.75rem',
-  transitionSpeed: '0.2s',
+  transitionSpeed: '0.2s'
 };
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 400px;
   font-family: ${NM.fontFamily};
 `;
 
@@ -43,9 +44,7 @@ const Label = styled.label<{ $required?: boolean; $hasError?: boolean }>`
   color: ${({ $hasError }) => ($hasError ? NM.errorRed : NM.labelColor)};
   margin-bottom: 0.375rem;
   letter-spacing: 0.01em;
-  ${({ $required }) =>
-    $required &&
-    `&::after { content: ' *'; color: ${NM.errorRed}; }`}
+  ${({ $required }) => $required && `&::after { content: ' *'; color: ${NM.errorRed}; }`}
 `;
 
 // Wraps the <select> and injects the chevron icon via ::after pseudo-element
@@ -316,13 +315,9 @@ export default function Dropdown(props: DropdownProps) {
     const displayValue = options.find(o => o.key === value)?.value || value;
     return (
       <Wrapper>
-        {!hideLabel && label && (
-          <Label $hasError={hasError}>{label}</Label>
-        )}
+        {!hideLabel && label && <Label $hasError={hasError}>{label}</Label>}
         <ReadOnlyValue>{displayValue}</ReadOnlyValue>
-        {helperTextToDisplay && (
-          <HelperText $hasError={hasError}>{helperTextToDisplay}</HelperText>
-        )}
+        {helperTextToDisplay && <HelperText $hasError={hasError}>{helperTextToDisplay}</HelperText>}
       </Wrapper>
     );
   }
@@ -362,21 +357,13 @@ export default function Dropdown(props: DropdownProps) {
         >
           {options.map(option => (
             <option key={option.key} value={option.key}>
-              {thePConn.getLocalizedValue(
-                option.value,
-                localePath,
-                thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName)
-              )}
+              {thePConn.getLocalizedValue(option.value, localePath, thePConn.getLocaleRuleNameFromKeys(localeClass, localeContext, localeName))}
             </option>
           ))}
         </StyledSelect>
       </SelectWrapper>
       {helperTextToDisplay && (
-        <HelperText
-          id={`${selectId}-helper`}
-          $hasError={hasError}
-          role={hasError ? 'alert' : undefined}
-        >
+        <HelperText id={`${selectId}-helper`} $hasError={hasError} role={hasError ? 'alert' : undefined}>
           {helperTextToDisplay}
         </HelperText>
       )}

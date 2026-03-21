@@ -38,16 +38,33 @@ export default function RichText(props: RichTextProps) {
   if (readOnly) {
     // Rich Text read-only component
     richTextComponent = (
-      <div style={{ backgroundColor: '#e0e6f0' }}>
-        <RichTextEditor
-          {...additionalProps}
-          label={label}
-          labelHidden={hideLabel}
-          defaultValue={value}
-          info={helperTextToDisplay}
-          ref={editorRef}
-          readOnly
-        />
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '12px',
+          background: '#fff7ed',
+          borderLeft: '4px solid #e67e22',
+          borderRadius: '4px',
+          padding: '16px 20px',
+          margin: '16px 0',
+          fontSize: '0.875rem',
+          lineHeight: '1.6',
+          color: '#7c4a03'
+        }}
+      >
+        <span style={{ flexShrink: 0, fontSize: '1.1rem', color: '#e67e22', lineHeight: '1.5' }}>⚠</span>
+        <div style={{ flex: 1 }}>
+          <RichTextEditor
+            {...additionalProps}
+            label={label}
+            labelHidden={hideLabel}
+            defaultValue={value}
+            info={helperTextToDisplay}
+            ref={editorRef}
+            readOnly
+          />
+        </div>
       </div>
     );
   } else {

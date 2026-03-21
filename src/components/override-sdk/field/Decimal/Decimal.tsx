@@ -26,13 +26,14 @@ const NM = {
   fontSize: '1rem',
   labelFontSize: '0.875rem',
   helperFontSize: '0.75rem',
-  transitionSpeed: '0.2s',
+  transitionSpeed: '0.2s'
 };
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 400px;
   font-family: ${NM.fontFamily};
 `;
 
@@ -86,9 +87,7 @@ const HelperText = styled.span<{ $hasError?: boolean }>`
 `;
 
 // forwardRef wrapper so NumericFormat can use our styled input as customInput
-const NMInputForNumeric = React.forwardRef<HTMLInputElement, any>((props, ref) => (
-  <StyledInput ref={ref} {...props} />
-));
+const NMInputForNumeric = React.forwardRef<HTMLInputElement, any>((props, ref) => <StyledInput ref={ref} {...props} />);
 
 /* Using react-number-format component here, since it allows formatting decimal values,
 as per the locale.
@@ -140,7 +139,9 @@ export default function Decimal(props: DecimalProps) {
 
   const theCurrencyOptions = getCurrencyOptions(currencyISOCode);
 
-  useEffect(() => { setValues(value.toString()); }, [value]);
+  useEffect(() => {
+    setValues(value.toString());
+  }, [value]);
 
   let formattedValue = '';
   if (formatter === 'Currency') {
@@ -152,15 +153,21 @@ export default function Decimal(props: DecimalProps) {
   if (displayMode === 'DISPLAY_ONLY') return <FieldValueList name={hideLabel ? '' : label} value={formattedValue} />;
   if (displayMode === 'STACKED_LARGE_VAL') return <FieldValueList name={hideLabel ? '' : label} value={formattedValue} variant='stacked' />;
 
-  function decimalOnBlur() { handleEvent(actions, 'changeNblur', propName, values); }
-  const handleChange = val => { setValues(val.value); };
+  function decimalOnBlur() {
+    handleEvent(actions, 'changeNblur', propName, values);
+  }
+  const handleChange = val => {
+    setValues(val.value);
+  };
 
   const inputId = `nm-decimal-${testId ?? propName ?? label}`;
 
   return (
     <Wrapper>
       {!hideLabel && label && (
-        <Label htmlFor={inputId} $required={required} $hasError={hasError}>{label}</Label>
+        <Label htmlFor={inputId} $required={required} $hasError={hasError}>
+          {label}
+        </Label>
       )}
       <NumericFormat
         id={inputId}

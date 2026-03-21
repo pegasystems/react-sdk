@@ -23,13 +23,14 @@ const NM = {
   fontSize: '1rem',
   labelFontSize: '0.875rem',
   helperFontSize: '0.75rem',
-  transitionSpeed: '0.2s',
+  transitionSpeed: '0.2s'
 };
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 400px;
   font-family: ${NM.fontFamily};
 `;
 
@@ -133,8 +134,12 @@ export default function URLComponent(props: URLComponentProps) {
     return <TextInput {...props} />;
   }
 
-  function handleChange(event) { setInputValue(event?.target?.value); }
-  function handleBlur() { handleEvent(actions, 'changeNblur', propName, inputValue); }
+  function handleChange(event) {
+    setInputValue(event?.target?.value);
+  }
+  function handleBlur() {
+    handleEvent(actions, 'changeNblur', propName, inputValue);
+  }
 
   const hasError = status === 'error';
   const inputId = `nm-url-${testId ?? propName ?? label}`;
@@ -142,7 +147,9 @@ export default function URLComponent(props: URLComponentProps) {
   return (
     <Wrapper>
       {!hideLabel && label && (
-        <Label htmlFor={inputId} $required={required} $hasError={hasError}>{label}</Label>
+        <Label htmlFor={inputId} $required={required} $hasError={hasError}>
+          {label}
+        </Label>
       )}
       <StyledInput
         id={inputId}

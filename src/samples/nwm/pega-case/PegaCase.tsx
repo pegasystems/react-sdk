@@ -20,10 +20,16 @@ export default function PegaCase() {
   const [searchParams] = useSearchParams();
   const casetype = searchParams.get('casetype');
   const navigate = useNavigate();
-  let title = 'New Case';
   const { isPegaReady, PegaContainer, createCase } = usePega();
 
+  console.log('PegaCase component rendering with casetype:', casetype);
+
   useEffect(() => {
+    if (!isPegaReady) {
+      console.log('Pega is not ready yet. Waiting...');
+      return;
+    }
+
     if (!casetype) {
       navigate('/nwm');
     }
@@ -31,15 +37,18 @@ export default function PegaCase() {
     createCase(casetype || '', {}).then(() => {
       console.log('createCase rendering is complete');
     });
-  }, [casetype, navigate]);
+  }, [casetype, navigate, isPegaReady]);
 
-  if (isPegaReady) {
-    const caseTypes = PCore.getEnvironmentInfo().environmentInfoObject?.pyCaseTypeList || [];
-    title = caseTypes.find(ct => ct.pyWorkTypeImplementationClassName === casetype)?.pyWorkTypeName || 'New Case';
+  if (!isPegaReady) {
+    return <div>Loading...</div>;
   }
+
+  const caseTypes = PCore.getEnvironmentInfo().environmentInfoObject?.pyCaseTypeList || [];
+  const title = caseTypes.find(ct => ct.pyWorkTypeImplementationClassName === casetype)?.pyWorkTypeName || 'New Case';
+
   return (
     <Page>
-      <Header title={title} />
+      <Header title={title} user='Shivtysr Sharty' />
       <Content>{isPegaReady && <PegaContainer />}</Content>
       <Sidebar />
     </Page>

@@ -1,4 +1,3 @@
-import Grid2 from '@mui/material/Grid2';
 import Typography from '@mui/material/Typography';
 import makeStyles from '@mui/styles/makeStyles';
 
@@ -25,12 +24,6 @@ const useStyles = makeStyles(theme => ({
   },
   fieldValue: {
     color: theme.palette.text.primary
-  },
-  noPaddingTop: {
-    paddingTop: '0 !important'
-  },
-  noPaddingBottom: {
-    paddingBottom: '0 !important'
   }
 }));
 
@@ -49,36 +42,27 @@ export default function FieldValueList(props: FieldValueListProps) {
   const { name, value, variant = 'inline', isHtml = false } = props;
   const classes = useStyles();
 
-  function getGridItemLabel() {
-    return (
-      <Grid2 size={{ xs: variant === 'stacked' ? 12 : 2 }} className={variant === 'stacked' ? classes.noPaddingBottom : ''}>
-        <Typography variant='body2' component='span' className={`${classes.fieldLabel}`}>
-          {name}
-        </Typography>
-      </Grid2>
-    );
-  }
+  const isStacked = variant === 'stacked';
+  const formattedValue = formatItemValue(value);
 
-  function getGridItemValue() {
-    const formattedValue = formatItemValue(value);
-
-    return (
-      <Grid2 size={{ xs: variant === 'stacked' || !name ? 12 : 10 }} className={variant === 'stacked' ? classes.noPaddingTop : ''}>
+  return (
+    <div style={{ display: 'flex', flexDirection: isStacked ? 'column' : 'row', gap: isStacked ? 0 : 16, padding: '4px 0' }}>
+      {name && (
+        <div style={{ flexShrink: 0, maxWidth: isStacked ? 'none' : 160, width: isStacked ? '100%' : 'auto' }}>
+          <Typography variant='body2' component='span' className={classes.fieldLabel}>
+            {name}
+          </Typography>
+        </div>
+      )}
+      <div style={{ flex: 1, minWidth: 0 }}>
         {isHtml ? (
           <div dangerouslySetInnerHTML={{ __html: formattedValue }} />
         ) : (
-          <Typography variant={variant === 'stacked' ? 'h6' : 'body2'} component='span' className={classes.fieldValue}>
+          <Typography variant={isStacked ? 'h6' : 'body2'} component='span' className={classes.fieldValue}>
             {formattedValue}
           </Typography>
         )}
-      </Grid2>
-    );
-  }
-
-  return (
-    <Grid2 container spacing={4} justifyContent='space-between'>
-      {name ? getGridItemLabel() : null}
-      {getGridItemValue()}
-    </Grid2>
+      </div>
+    </div>
   );
 }

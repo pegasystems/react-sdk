@@ -53,7 +53,7 @@ const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
   color: ${NM.textColor};
   background-color: ${NM.surface};
   border: 1px solid ${({ $hasError }) => ($hasError ? 'transparent' : NM.border)};
-  border-bottom: ${({ $hasError }) => ($hasError ? `2px solid ${NM.errorRed}` : `1px solid ${NM.border}`)}
+  border-bottom: ${({ $hasError }) => ($hasError ? `2px solid ${NM.errorRed}` : `1px solid ${NM.border}`)};
   border-radius: ${({ $hasError }) => ($hasError ? '0' : '4px')};
   padding: 0.625rem 0.75rem;
   outline: none;
@@ -61,7 +61,10 @@ const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
     border-color ${NM.transitionSpeed} ease,
     border-bottom-color ${NM.transitionSpeed} ease,
     box-shadow ${NM.transitionSpeed} ease;
-  &::placeholder { color: ${NM.placeholder}; opacity: 1; }
+  &::placeholder {
+    color: ${NM.placeholder};
+    opacity: 1;
+  }
   &:hover:not(:disabled) {
     border-color: ${({ $hasError }) => ($hasError ? 'transparent' : NM.borderHover)};
     border-bottom-color: ${({ $hasError }) => ($hasError ? NM.errorRedDark : NM.borderHover)};
@@ -71,8 +74,12 @@ const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
     border-bottom-color: ${({ $hasError }) => ($hasError ? NM.errorRed : NM.focusBlue)};
     box-shadow: 0 1px 0 0 ${({ $hasError }) => ($hasError ? NM.errorRed : NM.focusBlue)};
   }
-  &:disabled { opacity: ${NM.disabledOpacity}; cursor: not-allowed; }
-  ${({ $readOnly }) => $readOnly && `background-color: transparent; border: none; border-bottom: 1px dashed ${NM.border}; border-radius: 0; cursor: default;`}
+  &:disabled {
+    opacity: ${NM.disabledOpacity};
+    cursor: not-allowed;
+  }
+  ${({ $readOnly }) =>
+    $readOnly && `background-color: transparent; border: none; border-bottom: 1px dashed ${NM.border}; border-radius: 0; cursor: default;`}
 `;
 
 const HelperText = styled.span<{ $hasError?: boolean }>`

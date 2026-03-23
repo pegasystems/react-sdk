@@ -24,6 +24,7 @@ export const NwmGlobalStyle = createGlobalStyle`
     background: ${colors.background};
     min-height: 100vh;
     box-sizing: border-box;
+    padding-right: 48px;
   }
 
   #nwm-root h1 {

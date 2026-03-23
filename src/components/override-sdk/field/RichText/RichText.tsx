@@ -53,7 +53,7 @@ export default function RichText(props: RichTextProps) {
           color: '#7c4a03'
         }}
       >
-        <span style={{ flexShrink: 0, fontSize: '1.1rem', color: '#e67e22', lineHeight: '1.5' }}>⚠</span>
+        <span style={{ flexShrink: 0, fontSize: '1.1rem', color: '#e67e22', lineHeight: '1.5', alignSelf: 'center' }}>⚠</span>
         <div style={{ flex: 1 }}>
           <RichTextEditor
             {...additionalProps}

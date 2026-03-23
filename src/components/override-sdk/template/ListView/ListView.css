@@ -1,0 +1,10 @@
+.no-records {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+}
+
+.react-datepicker-popper {
+  z-index: 9999 !important;
+}

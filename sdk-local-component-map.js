@@ -12,7 +12,6 @@ import Currency from './src/components/override-sdk/field/Currency/';
 import Decimal from './src/components/override-sdk/field/Decimal/';
 import Email from './src/components/override-sdk/field/Email/';
 import Integer from './src/components/override-sdk/field/Integer/';
-// eslint-disable-next-line no-redeclare
 import Percentage from './src/components/override-sdk/field/Percentage/';
 import RadioButtons from './src/components/override-sdk/field/RadioButtons/';
 import RichText from './src/components/override-sdk/field/RichText/';
@@ -23,6 +22,9 @@ import ActionButtons from './src/components/override-sdk/infra/ActionButtons/';
 import FieldValueList from './src/components/override-sdk/designSystemExtension/FieldValueList/';
 import MultiStep from './src/components/override-sdk/infra/MultiStep/';
 import DefaultForm from './src/components/override-sdk/template/DefaultForm/';
+import SimpleTableSelect from './src/components/override-sdk/template/SimpleTableSelect/';
+import SimpleTable from './src/components/override-sdk/template/SimpleTable/';
+import ListView from './src/components/override-sdk/template/ListView/';
 /* import end - DO NOT REMOVE */
 
 // localSdkComponentMap is the JSON object where we'll store the components that are
@@ -49,7 +51,10 @@ const localSdkComponentMap = {
   ActionButtons: ActionButtons,
   FieldValueList: FieldValueList,
   MultiStep: MultiStep,
-  DefaultForm: DefaultForm
+  DefaultForm: DefaultForm,
+  SimpleTableSelect: SimpleTableSelect,
+  SimpleTable: SimpleTable,
+  ListView: ListView
   /* map end - DO NOT REMOVE */
 };
 

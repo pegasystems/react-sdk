@@ -1,4 +1,4 @@
-# [25.1.11](https://github.com/pegasystems/react-sdk/tree/release/25.1.11) - Released: 20/03/2026
+# [25.1.11](https://github.com/pegasystems/react-sdk/tree/release/25.1.11) - Released: 23/03/2026
 
 ## Non Breaking changes
 

@@ -70,6 +70,8 @@ const SelectWrapper = styled.div`
 // Luna bottom-border-only select — no full box, animated focus underline
 const StyledSelect = styled.select<{ $hasError?: boolean; $isPlaceholder?: boolean }>`
   width: 100%;
+  box-sizing: border-box;
+  height: 44px;
   font-family: ${NM.fontFamily};
   font-size: ${NM.fontSize};
   line-height: 1.5;

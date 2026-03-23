@@ -48,6 +48,8 @@ const Label = styled.label<{ $required?: boolean; $hasError?: boolean }>`
 
 const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
   width: 100%;
+  box-sizing: border-box;
+  height: 44px;
   font-family: ${NM.fontFamily};
   font-size: ${NM.fontSize};
   color: ${NM.textColor};

@@ -67,6 +67,8 @@ const InputWrapper = styled.div`
 // Luna inputs: full border normally, bottom-only red in error state
 const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
   width: 100%;
+  box-sizing: border-box;
+  height: 44px;
   font-family: ${NM.fontFamily};
   font-size: ${NM.fontSize};
   line-height: ${NM.lineHeight};

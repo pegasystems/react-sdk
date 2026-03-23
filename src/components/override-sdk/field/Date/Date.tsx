@@ -68,6 +68,8 @@ const Label = styled.label<{ $required?: boolean; $hasError?: boolean }>`
 // Luna form_control-date_picker pattern: native date input, bottom-border only
 const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
   width: 100%;
+  box-sizing: border-box;
+  height: 44px;
   font-family: ${NM.fontFamily};
   font-size: ${NM.fontSize};
   color: ${NM.textColor};

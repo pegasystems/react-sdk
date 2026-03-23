@@ -79,6 +79,8 @@ const InputWrapper = styled.div`
 
 const StyledInput = styled.input<{ $hasError?: boolean }>`
   width: 100%;
+  box-sizing: border-box;
+  height: 44px;
   font-family: ${NM.fontFamily};
   font-size: ${NM.fontSize};
   line-height: 1.5;

@@ -48,13 +48,14 @@ const Label = styled.label<{ $required?: boolean; $hasError?: boolean }>`
 
 const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
   width: 100%;
+  box-sizing: border-box;
+  height: 44px;
   font-family: ${NM.fontFamily};
   font-size: ${NM.fontSize};
   color: ${NM.textColor};
   background-color: ${NM.surface};
-  border: 1px solid ${({ $hasError }) => ($hasError ? 'transparent' : NM.border)};
-  border-bottom: ${({ $hasError }) => ($hasError ? `2px solid ${NM.errorRed}` : `1px solid ${NM.border}`)};
-  border-radius: ${({ $hasError }) => ($hasError ? '0' : '4px')};
+  border: 1px solid ${({ $hasError }) => ($hasError ? NM.errorRed : NM.border)};
+  border-radius: 4px;
   padding: 0.625rem 0.75rem;
   outline: none;
   transition:
@@ -66,13 +67,11 @@ const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
     opacity: 1;
   }
   &:hover:not(:disabled) {
-    border-color: ${({ $hasError }) => ($hasError ? 'transparent' : NM.borderHover)};
-    border-bottom-color: ${({ $hasError }) => ($hasError ? NM.errorRedDark : NM.borderHover)};
+    border-color: ${({ $hasError }) => ($hasError ? NM.errorRedDark : NM.borderHover)};
   }
   &:focus {
-    border-color: ${({ $hasError }) => ($hasError ? 'transparent' : NM.focusBlue)};
-    border-bottom-color: ${({ $hasError }) => ($hasError ? NM.errorRed : NM.focusBlue)};
-    box-shadow: 0 1px 0 0 ${({ $hasError }) => ($hasError ? NM.errorRed : NM.focusBlue)};
+    border-color: ${({ $hasError }) => ($hasError ? NM.errorRed : NM.focusBlue)};
+    box-shadow: 0 0 0 1px ${({ $hasError }) => ($hasError ? NM.errorRed : NM.focusBlue)};
   }
   &:disabled {
     opacity: ${NM.disabledOpacity};
@@ -80,6 +79,41 @@ const StyledInput = styled.input<{ $hasError?: boolean; $readOnly?: boolean }>`
   }
   ${({ $readOnly }) =>
     $readOnly && `background-color: transparent; border: none; border-bottom: 1px dashed ${NM.border}; border-radius: 0; cursor: default;`}
+`;
+
+const InputGroup = styled.div`
+  display: flex;
+  align-items: stretch;
+`;
+
+const CurrencyAddon = styled.span<{ $hasError?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 44px;
+  padding: 0 0.75rem;
+  font-family: ${NM.fontFamily};
+  font-size: ${NM.fontSize};
+  color: ${NM.labelColor};
+  background-color: #f5f6f8;
+  border: 1px solid ${({ $hasError }) => ($hasError ? NM.errorRed : NM.border)};
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  user-select: none;
+`;
+
+const ReadOnlyValue = styled.span`
+  font-family: ${NM.fontFamily};
+  font-size: ${NM.fontSize};
+  color: ${NM.textColor};
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px dashed ${NM.border};
+  border-radius: 0;
+  padding: 0.625rem 0.75rem;
+  cursor: default;
+  display: inline-block;
 `;
 
 const HelperText = styled.span<{ $hasError?: boolean }>`
@@ -157,6 +191,22 @@ export default function Currency(props: CurrrencyProps) {
 
   const inputId = `nm-currency-${testId ?? propName ?? label}`;
 
+  if (readOnly) {
+    return (
+      <Wrapper>
+        {!hideLabel && label && <Label htmlFor={inputId}>{label}</Label>}
+        <ReadOnlyValue>
+          {values && values !== ''
+            ? `${theCurrSym}${Number(values).toLocaleString(undefined, {
+                minimumFractionDigits: allowDecimals !== false ? 2 : 0,
+                maximumFractionDigits: allowDecimals !== false ? 2 : 0
+              })}`
+            : ''}
+        </ReadOnlyValue>
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper>
       {!hideLabel && label && (
@@ -164,29 +214,31 @@ export default function Currency(props: CurrrencyProps) {
           {label}
         </Label>
       )}
-      <NumericFormat
-        id={inputId}
-        customInput={NMInputForNumeric}
-        valueIsNumericString
-        value={values}
-        placeholder={placeholder ?? ''}
-        required={required}
-        disabled={disabled}
-        readOnly={readOnly}
-        name='numberformat'
-        prefix={theCurrSym}
-        decimalSeparator={theCurrDec}
-        thousandSeparator={theCurrSep}
-        decimalScale={allowDecimals !== false ? 2 : 0}
-        fixedDecimalScale={allowDecimals}
-        onValueChange={val => handleChange(val)}
-        onBlur={!readOnly ? currOnBlur : undefined}
-        data-test-id={testId}
-        aria-invalid={hasError}
-        aria-describedby={helperTextToDisplay ? `${inputId}-helper` : undefined}
-        $hasError={hasError}
-        $readOnly={readOnly}
-      />
+      <InputGroup>
+        <CurrencyAddon $hasError={hasError}>{theCurrSym}</CurrencyAddon>
+        <NumericFormat
+          id={inputId}
+          customInput={NMInputForNumeric}
+          valueIsNumericString
+          value={values}
+          placeholder={placeholder ?? ''}
+          required={required}
+          disabled={disabled}
+          readOnly={readOnly}
+          name='numberformat'
+          decimalSeparator={theCurrDec}
+          thousandSeparator={theCurrSep}
+          decimalScale={allowDecimals !== false ? 2 : 0}
+          fixedDecimalScale={allowDecimals}
+          onValueChange={val => handleChange(val)}
+          onBlur={!readOnly ? currOnBlur : undefined}
+          data-test-id={testId}
+          aria-invalid={hasError}
+          aria-describedby={helperTextToDisplay ? `${inputId}-helper` : undefined}
+          $hasError={hasError}
+          style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+        />
+      </InputGroup>
       {helperTextToDisplay && (
         <HelperText id={`${inputId}-helper`} $hasError={hasError} role={hasError ? 'alert' : undefined}>
           {helperTextToDisplay}

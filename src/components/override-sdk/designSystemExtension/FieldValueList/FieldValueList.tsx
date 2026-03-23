@@ -58,7 +58,7 @@ export default function FieldValueList(props: FieldValueListProps) {
         {isHtml ? (
           <div dangerouslySetInnerHTML={{ __html: formattedValue }} />
         ) : (
-          <Typography variant={isStacked ? 'h6' : 'body2'} component='span' className={classes.fieldValue}>
+          <Typography variant={isStacked ? 'h6' : 'body2'} component='span' className={classes.fieldValue} style={{ fontWeight: '600' }}>
             {formattedValue}
           </Typography>
         )}

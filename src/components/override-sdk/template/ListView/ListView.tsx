@@ -86,7 +86,6 @@ const NMTH = styled.th`
   font-size: 0.75rem;
   font-weight: 600;
   color: ${NM.labelColor};
-  text-transform: uppercase;
   letter-spacing: 0.06em;
   border-bottom: 1px solid ${NM.border};
   white-space: nowrap;

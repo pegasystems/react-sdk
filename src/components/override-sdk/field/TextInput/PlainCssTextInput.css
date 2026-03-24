@@ -1,0 +1,101 @@
+/* PlainCssTextInput — Custom design-system override for TextInput
+   Uses namespaced class names to avoid collision with MUI styles */
+
+.plain-ds-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+  font-family:
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+.plain-ds-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a3a5c;
+  letter-spacing: 0.3px;
+}
+
+.plain-ds-label--required::after {
+  content: ' *';
+  color: #d32f2f;
+}
+
+.plain-ds-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.plain-ds-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #1a1a2e;
+  background-color: #f0f4ff;
+  border: 2px solid #5b8def;
+  border-radius: 6px;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.plain-ds-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.plain-ds-input:disabled {
+  background-color: #e5e7eb;
+  border-color: #9ca3af;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.plain-ds-input--error {
+  border-color: #d32f2f;
+  background-color: #fef2f2;
+}
+
+.plain-ds-input--error:focus {
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.2);
+}
+
+.plain-ds-input--readonly {
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #d1d5db;
+  border-radius: 0;
+  padding-left: 0;
+}
+
+.plain-ds-helper {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.plain-ds-helper--error {
+  color: #d32f2f;
+}
+
+.plain-ds-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-left: 8px;
+  vertical-align: middle;
+}

@@ -110,11 +110,11 @@
     "@testing-library/react": "^14.1.2",
     "@types/lodash.isequal": "^4.5.8",
     "@types/react": "^17.0.83",
-    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/eslint-plugin": "^8.35.0",
     "@typescript-eslint/parser": "^8.34.1",
     "caniuse-lite": "^1.0.30001576",
-    "compression-webpack-plugin": "^10.0.0",
-    "copy-webpack-plugin": "^11.0.0",
+    "compression-webpack-plugin": "^12.0.0",
+    "copy-webpack-plugin": "^14.0.0",
     "cspell": "^8.3.2",
     "css-loader": "^6.8.1",
     "eslint": "^8.56.0",
@@ -132,7 +132,7 @@
     "html-webpack-plugin": "^5.6.0",
     "http-server": "^14.1.1",
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
+    "jest-environment-jsdom": "^30.3.0",
     "npm-run-all": "^4.1.5",
     "null-loader": "^4.0.1",
     "prettier": "^3.1.1",
@@ -151,6 +151,12 @@
     "webpack": "^5.95.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.1.0"
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.5",
+    "lodash": "^4.17.24",
+    "@tootallnate/once": "^3.0.1",
+    "minimatch": "^9.0.7"
   },
   "browser": {
     "[module-name]": false

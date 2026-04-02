@@ -65,6 +65,9 @@
     "@typescript-eslint/naming-convention": "off", // prefer warn but needs different parserOptions
     "@typescript-eslint/ban-types": "off", // also, see override below
 
+    "@typescript-eslint/lines-between-class-members": "off",
+    "@typescript-eslint/no-throw-literal": "off",
+
     "import/no-relative-packages": "off" // arnab
   },
   "overrides": [

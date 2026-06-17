@@ -76,23 +76,22 @@ export default function TextInput(props: TextInputProps) {
 
   return (
     <>
-    <TextField
-      fullWidth
-      variant={readOnly ? 'standard' : 'outlined'}
-      helperText={helperTextToDisplay}
-      placeholder={placeholder ?? ''}
-      size='small'
-      required={required}
-      disabled={disabled}
-      onChange={handleChange}
-      onBlur={!readOnly ? handleBlur : undefined}
-      error={status === 'error'}
-      label={label}
-      value={inputValue}
-      InputProps={{ ...readOnlyProp, inputProps: { maxLength, ...testProp } }}
-    />
-    <div>Hellooooo</div>
+      <TextField
+        fullWidth
+        variant={readOnly ? 'standard' : 'outlined'}
+        helperText={helperTextToDisplay}
+        placeholder={placeholder ?? ''}
+        size='small'
+        required={required}
+        disabled={disabled}
+        onChange={handleChange}
+        onBlur={!readOnly ? handleBlur : undefined}
+        error={status === 'error'}
+        label={label}
+        value={inputValue}
+        InputProps={{ ...readOnlyProp, inputProps: { maxLength, ...testProp } }}
+      />
+      <div>Hellooooo</div>
     </>
-
   );
 }

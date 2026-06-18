@@ -1,6 +1,6 @@
 {
   "name": "react-sdk",
-  "version": "24.2.11",
+  "version": "24.2.12",
   "private": true,
   "scripts": {
     "_comment_SDK_install_build_run_commands": "The following are public commands to clean, install, build, and run the SDK",

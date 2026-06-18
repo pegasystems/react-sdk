@@ -20,5 +20,6 @@
     "allowSyntheticDefaultImports": true,
     // "skipLibCheck" must be true in order to not see errors in the @pega/pcore-pconnect-typedefs files themselves
     "skipLibCheck": true
-  }
+  },
+  "files": ["../types/mui-theme/index.d.ts"]
 }

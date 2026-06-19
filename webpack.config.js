@@ -1,12 +1,95 @@
 const path = require('path');
+const crypto = require('crypto');
+const zlib = require('zlib');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const zlib = require('zlib');
+
+/**
+ * Computes the SHA-384 hash of bootstrap-shell.js and injects a build-time
+ * <script type="importmap"> into index.html for SRI enforcement via import().
+ * In production the pre-compressed .gz is hashed (what the browser executes);
+ * in development the raw .js is used.
+ */
+class BootstrapShellSRIPlugin {
+  apply(compiler) {
+    compiler.hooks.thisCompilation.tap('BootstrapShellSRIPlugin', compilation => {
+      compilation.hooks.processAssets.tap(
+        {
+          name: 'BootstrapShellSRIPlugin',
+          // Run after HtmlWebpackPlugin (OPTIMIZE_INLINE) and CopyWebpackPlugin (ADDITIONS) have
+          // both emitted their assets — SUMMARIZE stage (1000) is safely after OPTIMIZE_INLINE (700)
+          stage: compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_SUMMARIZE
+        },
+        () => {
+          const shellAsset = compilation.assets['constellation/bootstrap-shell.js'];
+          if (!shellAsset) {
+            compilation.warnings.push(new Error('[BootstrapShellSRIPlugin] constellation/bootstrap-shell.js not found — SRI meta tag not injected.'));
+            return;
+          }
+
+          // http-server --gzip serves bootstrap-shell.js.gz (pre-compressed by @pega/constellationjs).
+          // The browser decompresses it and verifies integrity against the decompressed bytes,
+          // so hash the decompressed .gz content — not the raw .js — to get a matching hash.
+          // Fall back to the raw .js if no .gz asset is present.
+          const gzAsset = compilation.assets['constellation/bootstrap-shell.js.gz'];
+          let buffer;
+          if (gzAsset) {
+            buffer = zlib.gunzipSync(Buffer.from(gzAsset.source()));
+          } else {
+            buffer = Buffer.from(shellAsset.source());
+          }
+          const hash = crypto.createHash('sha384').update(buffer).digest('base64');
+          const integrity = `sha384-${hash}`;
+
+          const htmlAsset = compilation.assets['index.html'];
+          if (!htmlAsset) return;
+          const htmlSource = htmlAsset.source();
+
+          // Root-relative URL used as both the import() argument in authManager and the
+          // import map key here — they must match exactly for the browser to enforce SRI.
+          // Using the hash as the version param ensures same build hits cache; new build forces re-fetch.
+          const versionedPath = `/constellation/bootstrap-shell.js?v=${integrity}`;
+
+          // The HTML spec allows only ONE <script type="importmap"> per document.
+          // If the template already contains one, merge our integrity entry into it rather than
+          // appending a second script (which the browser would reject).
+          const existingMapMatch = htmlSource.match(/<script type="importmap">([\s\S]*?)<\/script>/);
+          let importMapScript;
+          if (existingMapMatch) {
+            let existingMap;
+            try {
+              existingMap = JSON.parse(existingMapMatch[1]);
+            } catch {
+              compilation.warnings.push(new Error('[BootstrapShellSRIPlugin] Existing importmap JSON is invalid — cannot merge SRI entry.'));
+              existingMap = {};
+            }
+            existingMap.integrity = existingMap.integrity || {};
+            existingMap.integrity[versionedPath] = integrity;
+            importMapScript = `<script type="importmap">${JSON.stringify(existingMap)}</script>`;
+          } else {
+            importMapScript = `<script type="importmap">${JSON.stringify({ integrity: { [versionedPath]: integrity } })}</script>`;
+          }
+
+          let html;
+          if (existingMapMatch) {
+            // Replace the existing importmap in-place
+            html = htmlSource.replace(existingMapMatch[0], importMapScript);
+          } else {
+            html = htmlSource.replace('</head>', `  ${importMapScript}\n</head>`);
+          }
+          compilation.updateAsset('index.html', new compiler.webpack.sources.RawSource(html));
+        }
+      );
+    });
+  }
+}
 
 module.exports = (env, argv) => {
   const pluginsToAdd = [];
   const webpackMode = argv.mode;
+
+  pluginsToAdd.push(new BootstrapShellSRIPlugin());
 
   pluginsToAdd.push(
     new HtmlWebpackPlugin({

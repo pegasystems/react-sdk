@@ -131,8 +131,8 @@ test.describe('E2E test', () => {
 
     /** Delete attachment */
     await menuSelector.locator('li >> text="Delete"').click();
-    await expect(page.locator('div >> text="cableinfo.jpg"')).toBeVisible();
-    await expect(page.locator('div >> text="cablechat.jpg"')).toBeHidden();
+    await expect(page.locator('div >> text="cableinfo.jpg"')).toBeHidden();
+    await expect(page.locator('div >> text="cablechat.jpg"')).toBeVisible();
   }, 10000);
 });
 

@@ -88,7 +88,7 @@ test.describe('E2E test', () => {
 
     selectedTestName = page.locator('div[data-test-id="6f64b45d01d11d8efd1693dfcb63b735"]');
     await selectedTestName.click();
-    await page.locator('li:has-text("Table")').click();
+    await page.getByRole('option', { name: 'Table', exact: true }).click();
 
     selectedProduct = page.locator('tr:has-text("Basic Product")');
     const selectedProductRow = selectedProduct.locator('input[type="radio"]');

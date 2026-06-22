@@ -42,4 +42,5 @@
 | **@pega/react-sdk-overrides** | 24.2.12 |
 | **@pega/dx-component-builder-sdk** | 24.2.15 |
 | **@pega/constellationjs** | 24.2.3-2 |
+| **@pega/configs** | 0.17.0 |
 

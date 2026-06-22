@@ -24,6 +24,8 @@
       * Github: [PR-593](https://github.com/pegasystems/react-sdk-components/pull/593)
     **Case Summary fields not updating**
       * Github: [PR-609](https://github.com/pegasystems/react-sdk-components/pull/609)
+    **Simple Table Modal edit/delete after sort or filter issue**
+      * Github: [PR-614](https://github.com/pegasystems/react-sdk-components/pull/614)
 
 *   The following table lists the packages whose versions have been updated:
 

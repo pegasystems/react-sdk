@@ -1,13 +1,13 @@
 <p align="center"><img width=60% src="docs/media/ReactSDK-Logo.png">
 
-# React SDK - Release Announcement - v24.2.11
+# React SDK - Release Announcement - v24.2.12
 
-**SDK-R v24.2.11** is **only compatible with Pega Infinity '24.2** and is related to the [**release/24.2.11**](https://github.com/pegasystems/react-sdk/tree/release/24.2.11) branch of the React SDK repository.
+**SDK-R v24.2.12** is **only compatible with Pega Infinity '24.2** and is related to the [**release/24.2.12**](https://github.com/pegasystems/react-sdk/tree/release/24.2.12) branch of the React SDK repository.
 <br>
 
 **Note**: The main branch is the active development branch for future versions of React SDK.
 
-This release allows React SDK users to take advantage of the latest SDK enhancements and fixes. For more information, see [ **What's New in SDK-R 24.2.11**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
+This release allows React SDK users to take advantage of the latest SDK enhancements and fixes. For more information, see [ **What's New in SDK-R 24.2.12**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
 <br />
 
 This
@@ -29,8 +29,7 @@ A DX component contains logic and presentation tags to merge the alternate desig
 The alternative design system used in the React SDK is [Material UI](https://v4.mui.com/). For more information about Constellation SDKs, see the [Constellation SDKs](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/constellation-sdks.html) documentation.
 
 A summary of the latest updates to the **@pega/react-sdk-components** and
-**@pega/react-sdk-overrides** used by the React SDK can be found in
-[react-sdk-components KeyReleaseUpdates.md](./node_modules/@pega/react-sdk-components/lib/doc/KeyReleaseUpdates.md).
+**@pega/react-sdk-overrides** used by the React SDK can be found in [react-sdk CHANGELOG.md](./CHANGELOG.md).
 
 <br>
 
@@ -93,9 +92,9 @@ Refer to our [guidelines for contributors](./docs/CONTRIBUTING.md) if you are in
 
 ## Additional Resources
 
-- [**KeyReleaseUpdates.md**](./node_modules/@pega/react-sdk-components/lib/doc/KeyReleaseUpdates.md): A summary of the latest updates to the **@pega/react-sdk-components** and
+- [**CHANGELOG.md**](./CHANGELOG.md): A summary of the latest updates to the **@pega/react-sdk-components** and
   **@pega/react-sdk-overrides** used by the React SDK can be found in the
-  [react-sdk-components package's **KeyReleaseUpdates.md**](./node_modules/@pega/react-sdk-components/lib/doc/KeyReleaseUpdates.md).
+  [react-sdk's **CHANGELOG.md**](./CHANGELOG.md).
   - To see if there are updates in the @pega/react-sdk-components and
     @pega/react-sdk-overrides packages published in a newer version than is
     currently installed, see the [**KeyReleaseUpdates.md** file in the package's main GitHub repo](https://github.com/pegasystems/react-sdk-components/blob/master/packages/react-sdk-components/doc/KeyReleaseUpdates.md).

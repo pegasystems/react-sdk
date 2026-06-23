@@ -1,4 +1,4 @@
-# [24.2.12](https://github.com/pegasystems/react-sdk/tree/release/24.2.12) - Released: 22/06/2026
+# [24.2.12](https://github.com/pegasystems/react-sdk/tree/release/24.2.12) - Released: 23/06/2026
 
 ## Breaking changes
 
@@ -43,4 +43,3 @@
 | **@pega/dx-component-builder-sdk** | 24.2.15 |
 | **@pega/constellationjs** | 24.2.3-2 |
 | **@pega/configs** | 0.17.0 |
-

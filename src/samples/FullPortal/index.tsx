@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
-import { SdkConfigAccess, loginIfNecessary, getAvailablePortals } from '@pega/auth/lib/sdk-auth-manager';
+import { getNormalizedSdkConfig, loginIfNecessary, getAvailablePortals } from '@pega/auth/lib/sdk-auth-manager';
 
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
@@ -65,7 +65,7 @@ export default function FullPortal() {
   /**
    * kick off the application's portal that we're trying to serve up
    */
-  function startPortal() {
+  async function startPortal() {
     // NOTE: When loadMashup is complete, this will be called.
     PCore.onPCoreReady(renderObj => {
       // Check that we're seeing the PCore version we expect
@@ -84,7 +84,8 @@ export default function FullPortal() {
     // load the Portal and handle the onPCoreEntry response that establishes the
     //  top level Pega root element (likely a RootContainer)
 
-    const { appPortal: thePortal, excludePortals } = SdkConfigAccess.getSdkConfigServer();
+    const sdkConfig = await getNormalizedSdkConfig(true);
+    const { appPortal: thePortal, excludePortals } = sdkConfig.serverConfig;
     const defaultPortal = PCore.getEnvironmentInfo().getDefaultPortal() || '';
     const queryPortal = sessionStorage.getItem('rsdk_portalName');
 
@@ -119,8 +120,11 @@ export default function FullPortal() {
     if (!localeOverride) {
       localeOverride = undefined;
     }
-    // appName and mainRedirect params have to be same as earlier invocation
-    loginIfNecessary({ appName: 'portal', mainRedirect: true, locale: localeOverride });
+
+    getNormalizedSdkConfig(true).then(sdkConfig => {
+      // appName and mainRedirect params have to be same as earlier invocation
+      loginIfNecessary({ appName: 'portal', mainRedirect: true, locale: localeOverride, sdkConfig });
+    });
   }
 
   // One time (initialization)
@@ -129,12 +133,15 @@ export default function FullPortal() {
 
     const locale = sessionStorage.getItem('rsdk_locale') || undefined;
 
-    // Login if needed, doing an initial main window redirect
-    loginIfNecessary({
-      appName: 'portal',
-      mainRedirect: true,
-      redirectDoneCB: doRedirectDone,
-      locale
+    getNormalizedSdkConfig(true).then(sdkConfig => {
+      // Login if needed, doing an initial main window redirect
+      loginIfNecessary({
+        appName: 'portal',
+        mainRedirect: true,
+        redirectDoneCB: doRedirectDone,
+        locale,
+        sdkConfig
+      });
     });
   }, []);
 

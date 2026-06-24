@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
+import { getNormalizedSdkConfig } from '@pega/auth/lib/sdk-auth-manager';
 import { makeStyles } from '@mui/styles';
 
 import { usePegaAuth } from '../context/PegaAuthProvider';
@@ -148,7 +148,7 @@ export default function MainScreen() {
   const onShopNow = async optionClicked => {
     setShowLandingPage(false);
     setShowPega(true);
-    const sdkConfig = await getSdkConfig();
+    const sdkConfig = await getNormalizedSdkConfig(false);
     const mashupCaseType = sdkConfig.serverConfig.appMashupCaseType;
 
     let selectedPhoneGUID = '';

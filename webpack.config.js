@@ -66,9 +66,9 @@ class BootstrapShellSRIPlugin {
             }
             existingMap.integrity = existingMap.integrity || {};
             existingMap.integrity[versionedPath] = integrity;
-            importMapScript = `<script type="importmap">${JSON.stringify(existingMap)}</script>`;
+            importMapScript = `<script type="importmap" id="sdkam_impmap">${JSON.stringify(existingMap)}</script>`;
           } else {
-            importMapScript = `<script type="importmap">${JSON.stringify({ integrity: { [versionedPath]: integrity } })}</script>`;
+            importMapScript = `<script type="importmap" id="sdkam_impmap">${JSON.stringify({ integrity: { [versionedPath]: integrity } })}</script>`;
           }
 
           let html;

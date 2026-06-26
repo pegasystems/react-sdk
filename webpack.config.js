@@ -51,33 +51,10 @@ class BootstrapShellSRIPlugin {
           // Using the hash as the version param ensures same build hits cache; new build forces re-fetch.
           const versionedPath = `/constellation/bootstrap-shell.js?v=${integrity}`;
 
-          // The HTML spec allows only ONE <script type="importmap"> per document.
-          // If the template already contains one, merge our integrity entry into it rather than
-          // appending a second script (which the browser would reject).
-          const existingMapMatch = htmlSource.match(/<script type="importmap">([\s\S]*?)<\/script>/);
-          let importMapScript;
-          if (existingMapMatch) {
-            let existingMap;
-            try {
-              existingMap = JSON.parse(existingMapMatch[1]);
-            } catch {
-              compilation.warnings.push(new Error('[BootstrapShellSRIPlugin] Existing importmap JSON is invalid — cannot merge SRI entry.'));
-              existingMap = {};
-            }
-            existingMap.integrity = existingMap.integrity || {};
-            existingMap.integrity[versionedPath] = integrity;
-            importMapScript = `<script type="importmap" id="sdkam_impmap">${JSON.stringify(existingMap)}</script>`;
-          } else {
-            importMapScript = `<script type="importmap" id="sdkam_impmap">${JSON.stringify({ integrity: { [versionedPath]: integrity } })}</script>`;
-          }
-
-          let html;
-          if (existingMapMatch) {
-            // Replace the existing importmap in-place
-            html = htmlSource.replace(existingMapMatch[0], importMapScript);
-          } else {
-            html = htmlSource.replace('</head>', `  ${importMapScript}\n</head>`);
-          }
+          // Inject the import map into index.html before </head>.
+          // The plugin runs at build time against the source template (src/index.html)
+          const importMapScript = `<script type="importmap" id="sdkam_impmap">${JSON.stringify({ integrity: { [versionedPath]: integrity } })}</script>`;
+          const html = htmlSource.replace('</head>', `  ${importMapScript}\n</head>`);
           compilation.updateAsset('index.html', new compiler.webpack.sources.RawSource(html));
         }
       );

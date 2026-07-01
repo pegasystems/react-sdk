@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
-import { getNormalizedSdkConfig, loginIfNecessary, getAvailablePortals } from '@pega/auth/lib/sdk-auth-manager';
+import { setConfigRetrievalOverride, getNormalizedSdkConfig, loginIfNecessary, getAvailablePortals } from '@pega/auth/lib/sdk-auth-manager';
+import { getAlternateConfig } from '../TopLevelApp/index';
 
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
@@ -84,6 +85,7 @@ export default function FullPortal() {
     // load the Portal and handle the onPCoreEntry response that establishes the
     //  top level Pega root element (likely a RootContainer)
 
+    setConfigRetrievalOverride(getAlternateConfig);
     const sdkConfig = await getNormalizedSdkConfig(true);
     const { appPortal: thePortal, excludePortals } = sdkConfig.serverConfig;
     const defaultPortal = PCore.getEnvironmentInfo().getDefaultPortal() || '';
@@ -121,6 +123,7 @@ export default function FullPortal() {
       localeOverride = undefined;
     }
 
+    setConfigRetrievalOverride(getAlternateConfig);
     getNormalizedSdkConfig(true).then(sdkConfig => {
       // appName and mainRedirect params have to be same as earlier invocation
       loginIfNecessary({ appName: 'portal', mainRedirect: true, locale: localeOverride, sdkConfig });
@@ -133,6 +136,7 @@ export default function FullPortal() {
 
     const locale = sessionStorage.getItem('rsdk_locale') || undefined;
 
+    setConfigRetrievalOverride(getAlternateConfig);
     getNormalizedSdkConfig(true).then(sdkConfig => {
       // Login if needed, doing an initial main window redirect
       loginIfNecessary({

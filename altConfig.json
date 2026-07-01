@@ -12,7 +12,7 @@
     "mashupClient_comment3": "Note: mashupPassword requires Base64 encoding",
     "mashupPassword": "",
     "portalClientId_comment": "Client ID from the OAuth 2.0 Client Registration record used for portal use case",
-    "portalClientId": "25795373220702300272"
+    "clientId": "25795373220702300272"
   },
   "serverConfig": {
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",

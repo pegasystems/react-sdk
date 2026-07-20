@@ -78,7 +78,7 @@ module.exports = (env, argv) => {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: './sdk-config.json',
+          from: './altConfig.json',
           to: './'
         },
         {

@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
-import { getNormalizedSdkConfig, loginIfNecessary, getAvailablePortals } from '@pega/auth/lib/sdk-auth-manager';
+import { setConfigRetrievalOverride, getNormalizedSdkConfig, loginIfNecessary, getAvailablePortals } from '@pega/auth/lib/sdk-auth-manager';
+import { getAlternateConfig } from '../TopLevelApp/index';
 
 import StoreContext from '@pega/react-sdk-components/lib/bridge/Context/StoreContext';
 import createPConnectComponent from '@pega/react-sdk-components/lib/bridge/react_pconnect';
@@ -40,6 +41,7 @@ export default function FullPortal() {
   const [rootComponentProps, setRootComponentProps] = useState<object | null>(null);
 
   let sdkConfig; /* initialized in useEffect */
+  setConfigRetrievalOverride(getAlternateConfig);
   const navigate = useNavigate();
   const query = useQuery();
   if (query.get('portal')) {

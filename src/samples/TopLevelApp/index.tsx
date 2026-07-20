@@ -21,4 +21,13 @@ document.addEventListener('SdkLoggedOut', () => {
   sessionStorage.removeItem('rsdk_portalName');
 });
 
-export default TopLevelApp;
+const getAlternateConfig = async () => {
+  return fetch('./altConfig.json').then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error(`Failed with status:${response.status}`);
+  });
+};
+
+export { TopLevelApp, getAlternateConfig };

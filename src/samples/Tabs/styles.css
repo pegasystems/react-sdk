@@ -1,0 +1,210 @@
+/* Home screen */
+.tabs-home {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 4rem;
+}
+
+.tabs-home-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.tabs-home-subtitle {
+  font-size: 1.1rem;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 2.5rem;
+}
+
+.tabs-home-status {
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.tabs-casetype-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.tabs-casetype-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  background-color: #fff;
+  cursor: pointer;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.tabs-casetype-card:hover:not(:disabled) {
+  border-color: #3f51b5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.tabs-casetype-card:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.tabs-casetype-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.tabs-casetype-action {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #3f51b5;
+}
+
+.tabs-create-button {
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 0.85rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #3f51b5;
+  color: #fff;
+}
+
+.tabs-create-button:hover {
+  background-color: #303f9f;
+}
+
+.tabs-create-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Workspace layout */
+.tabs-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--app-background-color);
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.tabs-left-panel {
+  width: 260px;
+  flex-shrink: 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+  background-color: var(--utility-background-color);
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.tabs-left-panel-heading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(0, 0, 0, 0.6);
+  padding: 0 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.tabs-tab-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tabs-tab-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  font-size: 0.9rem;
+}
+
+.tabs-tab-item:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.tabs-tab-item-active {
+  border-left-color: #3f51b5;
+  background-color: rgba(0, 0, 0, 0.08);
+  font-weight: 600;
+}
+
+.tabs-tab-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tabs-close-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0 0.25rem;
+  border-radius: 4px;
+}
+
+.tabs-close-button:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.tabs-content {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow: auto;
+}
+
+.tabs-case-heading {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.87);
+}
+
+/* Case loading indicator */
+.tabs-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 3rem 0;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 1rem;
+}
+
+.tabs-spinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 3px solid rgba(63, 81, 181, 0.25);
+  border-top-color: #3f51b5;
+  border-radius: 50%;
+  animation: tabs-spin 0.8s linear infinite;
+}
+
+@keyframes tabs-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

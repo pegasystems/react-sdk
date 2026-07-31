@@ -2,7 +2,7 @@
   "comment_sdk_config": "This is the configuration file for the React SDK",
   "sdk_optional_configs_doc_comment": "See the document(link below) for more details on all the available config settings",
   "sdk_optional_configs_doc": "https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/configuring-sdk-config-json.html",
-  "theme": "dark",
+  "theme": "light",
   "authConfig": {
     "authService": "pega",
 
@@ -19,10 +19,10 @@
 
   "serverConfig": {
     "infinityRestServerUrl_comment": "Full path to Infinity REST server",
-    "infinityRestServerUrl": "https://localhost:1080/prweb",
+    "infinityRestServerUrl": "https://lab-16027-us-east-1.internal.pegalabs.io/prweb",
 
     "appAlias_comment": "appAlias of the application which operators will be accessing (e.g., MediaCo)",
-    "appAlias": "",
+    "appAlias": "MediaCo",
 
     "sdkContentServerUrl_comment": "If specified, the given URL will be used. If left blank, window.location.origin will be used.",
     "sdkContentServerUrl": "",
@@ -31,7 +31,7 @@
     "appPortal": "",
 
     "appMashupCaseType_comment": "If specified, uses this case type for mashup.  Otherwise, uses the first case type found for the app",
-    "appMashupCaseType": "DIXL-MediaCo-Work-PurchasePhone",
+    "appMashupCaseType": "DIXL-MediaCo-Work-NewService",
 
     "excludePortals_comment": "Array of specific portals to avoid attempting to load with SDK",
     "excludePortals": ["pxExpress", "Developer", "pxPredictionStudio", "pxAdminStudio", "pyCaseWorker", "pyCaseManager7"]

@@ -38,6 +38,7 @@ pnpm-debug.log*
 
 # Files generated during component compilation
 /lib
+*.tsbuildinfo
 
 # test output directories (jest, playwright)
 test-results/

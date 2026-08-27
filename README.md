@@ -1,13 +1,13 @@
 <p align="center"><img width=60% src="docs/media/ReactSDK-Logo.png">
 
-# React SDK - Release Announcement - v25.1.11
+# React SDK - Release Announcement - v26.1.10
 
-**SDK-R v25.1.11** is **only compatible with Pega Infinity '25** and is related to the [**release/25.1.11**](https://github.com/pegasystems/react-sdk/tree/release/25.1.11) branch of the React SDK repository.
+**SDK-R v26.1.10** is **only compatible with Pega Infinity '26** and is related to the [**release/26.1.10**](https://github.com/pegasystems/react-sdk/tree/release/26.1.10) branch of the React SDK repository.
 <br>
 
 **Note**: The main branch is the active development branch for future versions of React SDK.
 
-This release allows React SDK users to take advantage of the latest SDK enhancements and fixes. For more information, see [ **What's New in SDK-R 25.1.11**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
+This release allows React SDK users to take advantage of the latest SDK enhancements and fixes. For more information, see [ **What's New in SDK-R 26.1.10**](https://docs.pega.com/bundle/constellation-sdk/page/constellation-sdks/sdks/react-sdk-updates.html).
 <br />
 
 <hr>

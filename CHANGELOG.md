@@ -2,7 +2,14 @@
 
 ## Breaking changes
 
-*   None.
+Note: Starting with Infinity version 26.1:
+
+*  The metadata for CaseReference and DataReference have changed to ObjectReference. To support this change, the ObjectReference component has been refactored accordingly.
+    * Github: [PR-577](https://github.com/pegasystems/react-sdk-components/pull/577)
+*  The metadata for EmbeddedData has changed. To support this change, the EmbeddedDataMulti component has been introduced, and the SimpleTableManual component has been updated accordingly.
+    * Github: [PR-585](https://github.com/pegasystems/react-sdk-components/pull/585)
+*  Replaced TinyMCE with the Tiptap component in the Rich Text Editor.
+    * Github: [PR-657](https://github.com/pegasystems/react-sdk-components/pull/657)
 
 ## Non Breaking changes
 
@@ -22,8 +29,6 @@
     * Github: [PR-635](https://github.com/pegasystems/react-sdk-components/pull/635)
 *  Added support for the Create New feature in AutoComplete Data Reference and Case Reference fields.
     * Github: [PR-637](https://github.com/pegasystems/react-sdk-components/pull/637)
-*  Replaced TinyMCE with the Tiptap component in the Rich Text Editor.
-    * Github: [PR-657](https://github.com/pegasystems/react-sdk-components/pull/657)
 *  Added row-based validation for the delete action in the Embedded Data editable table.
     * Github: [PR-659](https://github.com/pegasystems/react-sdk-components/pull/659)
 

@@ -4,6 +4,7 @@
 
 Note: Starting with Infinity version 26.1:
 
+*  Updated Constellation Design System support to cosmos 9.
 *  The metadata for CaseReference and DataReference have changed to ObjectReference. To support this change, the ObjectReference component has been refactored accordingly.
     * Github: [PR-577](https://github.com/pegasystems/react-sdk-components/pull/577)
 *  The metadata for EmbeddedData has changed. To support this change, the EmbeddedDataMulti component has been introduced, and the SimpleTableManual component has been updated accordingly.

@@ -54,9 +54,9 @@
   },
   "dependencies": {
     "@pega/auth": "^0.2.45",
-    "@pega/cosmos-react-condition-builder": "^8.4.1",
-    "@pega/cosmos-react-core": "^8.4.1",
-    "@pega/cosmos-react-work": "^8.4.1",
+    "@pega/cosmos-react-condition-builder": "^9.25.1-2",
+    "@pega/cosmos-react-core": "^9.25.1-2",
+    "@pega/cosmos-react-work": "^9.25.1-2",
     "@pega/react-sdk-components": "~26.1.10",
     "@storybook/react-webpack5": "^8.6.14",
     "lodash.get": "^4.4.2",

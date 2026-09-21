@@ -13,6 +13,9 @@ on:
       - main
       - 'release/**'
 
+permissions:
+  contents: read
+
 jobs:
   build:
 
@@ -20,10 +23,10 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [22.x]
+        node-version: [24.x]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: "finnp/create-file-action@master"
         env:
           FILE_NAME: "constellation/lib_asset.json"
@@ -37,9 +40,10 @@ jobs:
           FILE_NAME: "constellation/constellation-core.placeholder.js"
           FILE_DATA: "// placeholder for constellaiton-core.js"
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: npm
       - name: Install dependencies
         run: npm run build:dev:ci
       - name: Run build:dev

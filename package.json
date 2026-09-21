@@ -127,7 +127,6 @@
     "storybook": "^8.6.14",
     "style-loader": "^4.0.0",
     "stylelint": "^16.23.1",
-    "tinymce": "^6.8.6",
     "trim-newlines": "^5.0.0",
     "ts-jest": "^29.4.1",
     "ts-loader": "^9.5.1",

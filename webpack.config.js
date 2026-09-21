@@ -112,10 +112,6 @@ module.exports = (env, argv) => {
           to: './'
         },
         {
-          from: './node_modules/tinymce',
-          to: './tinymce'
-        },
-        {
           from: './node_modules/@pega/constellationjs/dist/bootstrap-shell.js',
           to: './constellation'
         },

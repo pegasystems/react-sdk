@@ -124,7 +124,7 @@
     "sass": "^1.98.0",
     "sass-loader": "^16.0.5",
     "shx": "^0.4.0",
-    "storybook": "^8.6.14",
+    "storybook": "^8.6.19",
     "style-loader": "^4.0.0",
     "stylelint": "^16.23.1",
     "trim-newlines": "^5.0.0",

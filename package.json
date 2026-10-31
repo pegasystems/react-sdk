@@ -57,7 +57,7 @@
     "@pega/cosmos-react-condition-builder": "^9.25.1-2",
     "@pega/cosmos-react-core": "^9.25.1-2",
     "@pega/cosmos-react-work": "^9.25.1-2",
-    "@pega/react-sdk-components": "~26.1.10",
+    "@pega/react-sdk-components": "file:pega-react-sdk-components-26.1.10.tgz",
     "@storybook/react-webpack5": "^8.6.14",
     "lodash.get": "^4.4.2",
     "lodash.isequal": "^4.5.0",

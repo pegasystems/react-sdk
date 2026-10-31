@@ -1,6 +1,7 @@
 const path = require('path');
 const crypto = require('crypto');
 const zlib = require('zlib');
+const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
@@ -62,9 +63,67 @@ class BootstrapShellSRIPlugin {
   }
 }
 
+/**
+ * Optional live link to a local react-sdk-components checkout.
+ * Set REACT_SDK_COMPONENTS_PATH to the root of the react-sdk-components repo
+ * and run `npm run watch-sdk` there; edits are then picked up by the dev server.
+ */
+function getLocalComponentsPackagePath() {
+  const componentsRepoPath = process.env.REACT_SDK_COMPONENTS_PATH;
+  if (!componentsRepoPath) return null;
+
+  const packagePath = path.resolve(__dirname, componentsRepoPath, 'packages/react-sdk-components');
+  if (!fs.existsSync(path.join(packagePath, 'lib'))) {
+    throw new Error(`REACT_SDK_COMPONENTS_PATH: ${packagePath}/lib not found. Run "npm run build-sdk" in react-sdk-components first.`);
+  }
+  console.log(`Using local @pega/react-sdk-components from: ${packagePath}`);
+  return packagePath;
+}
+
+/**
+ * Optional same-origin proxy for the Pega DX API (dev server only).
+ * Set REACT_SDK_PEGA_PROXY=true to route DX API calls through the dev server, which avoids browser CORS limits
+ * (e.g. remote/federated case responses and GenAI agent headers). OAuth still talks to the Pega server directly.
+ */
+function getPegaProxy() {
+  if (process.env.REACT_SDK_PEGA_PROXY !== 'true') return null;
+
+  const sdkConfig = JSON.parse(fs.readFileSync(path.join(__dirname, 'sdk-config.json'), 'utf8'));
+  const { authConfig = {}, serverConfig = {} } = sdkConfig;
+  const serverUrl = new URL(serverConfig.pegaServerUrl || serverConfig.infinityRestServerUrl);
+  const basePath = serverUrl.pathname.replace(/\/$/, '');
+  const pegaUrl = `${serverUrl.origin}${basePath}/`;
+  const appAliasSeg = serverConfig.appAlias ? `app/${serverConfig.appAlias}/` : '';
+  // Same defaults @pega/auth derives from the server URL, pinned to the real server so login isn't proxied.
+  const oauthUrl = `${pegaUrl}${authConfig.secureCookie && appAliasSeg ? `${appAliasSeg}api/` : 'api/'}`;
+  const authEndpoints = {
+    authorize: authConfig.authorize || `${pegaUrl}api/oauth2/v1/authorize`,
+    token: authConfig.token || `${oauthUrl}oauth2/v1/token`,
+    revoke: authConfig.revoke || `${oauthUrl}oauth2/v1/revoke`,
+    userinfo: authConfig.userinfo || `${pegaUrl}${appAliasSeg}api/oauthclients/v1/userinfo/JSON`
+  };
+
+  console.log(`Proxying ${basePath}/* to ${serverUrl.origin}`);
+  return {
+    basePath,
+    target: serverUrl.origin,
+    // sdk-config.json served by the dev server: DX API on this origin, OAuth endpoints on the Pega server.
+    configFor: origin => ({
+      ...sdkConfig,
+      authConfig: { ...authConfig, ...authEndpoints },
+      serverConfig: { ...serverConfig, pegaServerUrl: undefined, infinityRestServerUrl: `${origin}${basePath}` }
+    })
+  };
+}
+
 module.exports = (env, argv) => {
   const pluginsToAdd = [];
   const webpackMode = argv.mode;
+  const pegaProxy = getPegaProxy();
+  const localComponentsPath = getLocalComponentsPackagePath();
+  const localComponentsLib = localComponentsPath && path.join(localComponentsPath, 'lib');
+  // When linked, types come from the local components build, which ts-loader can't see; type-check separately.
+  const tsLoader = localComponentsLib ? { loader: 'ts-loader', options: { transpileOnly: true } } : 'ts-loader';
 
   pluginsToAdd.push(new BootstrapShellSRIPlugin());
 
@@ -192,7 +251,16 @@ module.exports = (env, argv) => {
           warnings: false,
           runtimeErrors: false
         }
-      }
+      },
+      ...(pegaProxy && {
+        // Compression would buffer streamed (SSE) agent responses.
+        compress: false,
+        proxy: [{ context: [`${pegaProxy.basePath}/`], target: pegaProxy.target, changeOrigin: true, secure: true }],
+        setupMiddlewares: (middlewares, devServer) => {
+          devServer.app.get('/sdk-config.json', (req, res) => res.json(pegaProxy.configFor(`${req.protocol}://${req.get('host')}`)));
+          return middlewares;
+        }
+      })
     },
     devtool: argv.mode === 'production' ? false : 'inline-source-map',
     plugins: pluginsToAdd,
@@ -205,20 +273,21 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.tsx?$/,
-          use: 'ts-loader',
-          exclude: /node_modules/
+          use: tsLoader,
+          exclude: [/node_modules/, ...(localComponentsLib ? [localComponentsLib] : [])]
         },
         {
           test: /\.jsx?$/,
-          use: 'ts-loader',
-          exclude: /node_modules/
+          use: tsLoader,
+          exclude: [/node_modules/, ...(localComponentsLib ? [localComponentsLib] : [])]
         },
         {
           test: /\.css$/,
           include: [
             path.resolve(__dirname, 'src'),
             path.resolve(__dirname, 'node_modules/react-datepicker'),
-            path.resolve(__dirname, 'node_modules/@pega/react-sdk-components/lib') /* needed to resolve CSS files in new SDK packaging */
+            path.resolve(__dirname, 'node_modules/@pega/react-sdk-components/lib') /* needed to resolve CSS files in new SDK packaging */,
+            ...(localComponentsLib ? [localComponentsLib] : [])
           ],
           use: ['style-loader', 'css-loader']
         },
@@ -252,7 +321,12 @@ module.exports = (env, argv) => {
       ]
     },
     resolve: {
-      extensions: ['.tsx', '.ts', '.js', '.jsx']
+      extensions: ['.tsx', '.ts', '.js', '.jsx'],
+      ...(localComponentsPath && {
+        alias: { '@pega/react-sdk-components': localComponentsPath },
+        // Resolve shared deps (react, MUI, react-redux...) from this app first so the linked package doesn't load duplicates
+        modules: [path.resolve(__dirname, 'node_modules'), 'node_modules']
+      })
     }
   };
   return initConfig;

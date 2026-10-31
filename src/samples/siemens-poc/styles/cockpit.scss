@@ -1,0 +1,911 @@
+// SCM Buyer Cockpit look & feel for the Siemens POC. Scoped under .ck-root so other portals are unaffected.
+// Colors must stay in sync with cockpitTheme.ts (dark = default, light = .ck-light).
+
+.ck-root {
+  --ck-bg: #0b0d22;
+  --ck-surface: #171a3a;
+  --ck-surface-raised: #1d2149;
+  --ck-surface-hover: #232858;
+  --ck-input: #12152f;
+  --ck-border: rgba(148, 163, 255, 0.14);
+  --ck-text: #f1f3ff;
+  --ck-muted: #9aa3c7;
+  --ck-subtle: #6b7399;
+  --ck-accent: #2dd4bf;
+  --ck-accent-strong: #14b8a6;
+  --ck-accent-soft: rgba(45, 212, 191, 0.12);
+  --ck-accent-border: rgba(45, 212, 191, 0.45);
+  --ck-on-accent: #0b0d22;
+  --ck-hero-tint: rgba(37, 52, 120, 0.55);
+  --ck-row-hover: rgba(255, 255, 255, 0.02);
+  --ck-danger-text: #fda4af;
+  --ck-high-text: #f9a8d4;
+  --ck-radius: 14px;
+
+  // Recolor SDK stylesheets that read the app CSS variables.
+  --app-primary-color: var(--ck-accent);
+  --app-primary-dark-color: var(--ck-accent-strong);
+  --app-primary-light-color: #5eead4;
+  --app-background-color: var(--ck-bg);
+  --app-form-bg-color: var(--ck-surface);
+  --link-button-color: var(--ck-accent);
+  --text-primary-color: var(--ck-text);
+  --app-text-color: var(--ck-text);
+
+  min-height: 100vh;
+  background: var(--ck-bg);
+  color: var(--ck-text);
+  font-family: Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color-scheme: dark;
+}
+
+.ck-root.ck-light {
+  --ck-bg: #f4f6fb;
+  --ck-surface: #ffffff;
+  --ck-surface-raised: #f1f4fa;
+  --ck-surface-hover: #e8edf7;
+  --ck-input: #f8fafc;
+  --ck-border: rgba(15, 23, 42, 0.1);
+  --ck-text: #0f172a;
+  --ck-muted: #5b6478;
+  --ck-subtle: #8a93a8;
+  --ck-accent: #0d9488;
+  --ck-accent-strong: #0f766e;
+  --ck-accent-soft: rgba(13, 148, 136, 0.1);
+  --ck-accent-border: rgba(13, 148, 136, 0.45);
+  --ck-on-accent: #ffffff;
+  --ck-hero-tint: rgba(13, 148, 136, 0.12);
+  --ck-row-hover: rgba(15, 23, 42, 0.03);
+  --ck-danger-text: #be123c;
+  --ck-high-text: #be185d;
+  --app-primary-light-color: #14b8a6;
+
+  color-scheme: light;
+
+  .ck-stat-icon-teal {
+    color: #0d9488;
+  }
+  .ck-stat-icon-rose {
+    color: #db2777;
+  }
+  .ck-stat-icon-amber {
+    color: #d97706;
+  }
+}
+
+.ck-accent-teal {
+  background: linear-gradient(135deg, #14b8a6, #0d9488);
+}
+.ck-accent-blue {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+.ck-accent-violet {
+  background: linear-gradient(135deg, #a855f7, #7e22ce);
+}
+.ck-accent-indigo {
+  background: linear-gradient(135deg, #6366f1, #4338ca);
+}
+.ck-accent-amber {
+  background: linear-gradient(135deg, #f59e0b, #b45309);
+}
+
+// ───────── Header ─────────
+.ck-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0.9rem 2.5rem;
+  background: var(--ck-bg);
+  border-bottom: 1px solid var(--ck-border);
+}
+
+.ck-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+}
+
+.ck-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: var(--ck-accent);
+  color: var(--ck-on-accent);
+  font-weight: 700;
+  font-size: 1.1rem;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.ck-brand-name {
+  display: block;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.ck-brand-sub {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--ck-muted);
+}
+
+.ck-nav {
+  display: flex;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.ck-nav-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--ck-muted);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+
+  svg {
+    font-size: 1.05rem;
+  }
+
+  &:hover {
+    color: var(--ck-text);
+    background: var(--ck-surface);
+  }
+}
+
+.ck-nav-item-active,
+.ck-nav-item-active:hover {
+  background: var(--ck-accent);
+  color: var(--ck-on-accent);
+}
+
+.ck-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  .MuiIconButton-root {
+    color: var(--ck-text);
+  }
+}
+
+.ck-user {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.4rem;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ck-surface);
+  }
+}
+
+.ck-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.ck-user-name {
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-align: left;
+}
+
+// ───────── Main / page ─────────
+.ck-main {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.25rem 2.5rem 3rem;
+
+  // The Cockpit hero and cards carry their own titles, so hide the SDK page/reference titles on the home page.
+  .grid-column:has(> .ck-page) > .template-title-container,
+  .ck-columns .template-title-container,
+  .template-title-container:has(> span:empty) {
+    display: none;
+  }
+
+  // Case view header ("<Case type> … Actions"): SDK class names are generated, so anchor on the actions menu button.
+  div:has(> #actions-menu) {
+    margin: 0 0.5rem 0.25rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--ck-border);
+    border-radius: var(--ck-radius);
+    background: linear-gradient(110deg, var(--ck-hero-tint), var(--ck-surface) 60%);
+    color: var(--ck-text);
+
+    > div:first-child {
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    #actions-menu {
+      border: 1px solid var(--ck-border);
+      color: var(--ck-text);
+
+      &:hover {
+        border-color: var(--ck-accent);
+        background: var(--ck-accent-soft);
+      }
+    }
+  }
+}
+
+.ck-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.ck-card {
+  background: var(--ck-surface);
+  border: 1px solid var(--ck-border);
+  border-radius: var(--ck-radius);
+}
+
+.ck-section-title {
+  margin: 0 0 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+// ───────── Hero ─────────
+.ck-hero {
+  overflow: hidden;
+}
+
+.ck-hero-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  border-bottom: 1px solid var(--ck-border);
+}
+
+.ck-greeting {
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(110deg, var(--ck-hero-tint), transparent);
+}
+
+.ck-greeting-eyebrow {
+  color: var(--ck-accent);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.ck-greeting-name {
+  margin: 0.25rem 0 0.5rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.ck-greeting-text {
+  margin: 0;
+  max-width: 34rem;
+  color: var(--ck-muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.ck-overview {
+  padding: 1.1rem 1.5rem;
+}
+
+.ck-overview-title {
+  font-size: 0.75rem;
+  color: var(--ck-muted);
+  margin-bottom: 0.75rem;
+}
+
+.ck-overview-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.ck-stat {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+}
+
+.ck-stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+
+  svg {
+    font-size: 1.05rem;
+  }
+}
+
+.ck-stat-icon-teal {
+  background: rgba(45, 212, 191, 0.15);
+  color: #2dd4bf;
+}
+.ck-stat-icon-rose {
+  background: rgba(244, 114, 182, 0.15);
+  color: #f472b6;
+}
+.ck-stat-icon-amber {
+  background: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+}
+
+.ck-stat-value {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.ck-stat-label {
+  font-size: 0.72rem;
+  color: var(--ck-muted);
+}
+
+.ck-hero-banner {
+  padding: 1rem 1.5rem 1.1rem;
+}
+
+// ───────── AI box (GenAICoach) ─────────
+.ck-ai {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ck-ai-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 52rem;
+}
+
+.ck-ai-suggestions-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ck-subtle);
+}
+
+.ck-chip {
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--ck-border);
+  background: var(--ck-surface-raised);
+  color: var(--ck-text);
+  font-size: 0.75rem;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--ck-accent);
+  }
+}
+
+.ck-ai-composer {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 30rem;
+  padding: 0.35rem 0.4rem 0.35rem 0.6rem;
+  border-radius: 10px;
+  border: 1px solid var(--ck-border);
+  background: var(--ck-input);
+
+  &:focus-within {
+    border-color: var(--ck-accent);
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--ck-text);
+    font-size: 0.82rem;
+
+    &::placeholder {
+      color: var(--ck-subtle);
+    }
+  }
+
+  .MuiIconButton-root {
+    color: var(--ck-muted);
+    background: var(--ck-surface-raised);
+    width: 30px;
+    height: 30px;
+
+    &:hover:not(.Mui-disabled) {
+      color: var(--ck-on-accent);
+      background: var(--ck-accent);
+    }
+  }
+}
+
+.ck-ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--ck-accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  svg {
+    font-size: 1.1rem;
+  }
+}
+
+.ck-ai-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  color: var(--ck-subtle);
+
+  strong {
+    color: var(--ck-accent);
+    font-weight: 600;
+  }
+}
+
+.ck-ai-conversation {
+  width: 100%;
+  max-width: 52rem;
+  max-height: 26rem;
+  overflow-y: auto;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--ck-border);
+  background: var(--ck-input);
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+.ck-ai-conversation-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--ck-muted);
+}
+
+.ck-link-button {
+  border: 0;
+  background: none;
+  color: var(--ck-accent);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.ck-ai-status {
+  font-size: 0.75rem;
+  color: var(--ck-danger-text);
+}
+
+// ───────── Quick Access tiles (Shortcuts) ─────────
+.ck-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.ck-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 1rem 1.1rem 1.1rem;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+
+  &:hover {
+    background: var(--ck-surface-hover);
+    border-color: var(--ck-accent-border);
+  }
+}
+
+.ck-tile-icon,
+.ck-app-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #fff;
+  overflow: hidden;
+
+  img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+  }
+}
+
+.ck-tile-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  margin-bottom: 0.6rem;
+}
+
+.ck-tile-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.ck-tile-desc {
+  font-size: 0.72rem;
+  color: var(--ck-muted);
+}
+
+// ───────── Apps & News column ─────────
+.ck-columns {
+  display: grid;
+  grid-template-columns: minmax(250px, 1fr) minmax(0, 3fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.ck-side {
+  padding: 1rem;
+}
+
+.ck-tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.9rem;
+  padding: 0.25rem;
+  border-radius: 10px;
+  background: var(--ck-input);
+}
+
+.ck-tab {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.5rem;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ck-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  svg {
+    font-size: 0.95rem;
+  }
+}
+
+.ck-tab-active {
+  background: var(--ck-surface-raised);
+  color: var(--ck-text);
+}
+
+.ck-search {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--ck-border);
+  background: var(--ck-input);
+  color: var(--ck-subtle);
+
+  svg {
+    font-size: 1rem;
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--ck-text);
+    font-size: 0.78rem;
+  }
+}
+
+.ck-app-list,
+.ck-news-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ck-app {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: var(--ck-surface-raised);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--ck-accent-border);
+  }
+
+  svg.ck-app-open {
+    margin-left: auto;
+    font-size: 1rem;
+    color: var(--ck-muted);
+  }
+}
+
+.ck-app-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+}
+
+.ck-app-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.ck-app-desc {
+  font-size: 0.7rem;
+  color: var(--ck-muted);
+}
+
+.ck-news {
+  padding: 0.8rem;
+  border-radius: 10px;
+  background: var(--ck-surface-raised);
+}
+
+.ck-news-headline {
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.ck-news-body {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--ck-muted);
+}
+
+.ck-news-meta {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 6px;
+  background: var(--ck-accent-soft);
+  color: var(--ck-accent);
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.ck-empty {
+  padding: 1rem 0.25rem;
+  font-size: 0.78rem;
+  color: var(--ck-muted);
+}
+
+// ───────── Taskboard (ListView) ─────────
+.ck-taskboard {
+  overflow: hidden;
+}
+
+.ck-taskboard-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+
+  h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  .ck-tabs {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+}
+
+.ck-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+
+  th {
+    padding: 0.6rem 0.9rem;
+    text-align: left;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ck-subtle);
+    border-top: 1px solid var(--ck-border);
+    border-bottom: 1px solid var(--ck-border);
+  }
+
+  td {
+    padding: 0.75rem 0.9rem;
+    border-bottom: 1px solid var(--ck-border);
+    vertical-align: middle;
+  }
+
+  tbody tr:hover {
+    background: var(--ck-row-hover);
+  }
+}
+
+.ck-row-index {
+  color: var(--ck-subtle);
+  font-size: 0.68rem;
+}
+
+.ck-task {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+}
+
+.ck-task-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--ck-accent-soft);
+  color: var(--ck-accent);
+  flex-shrink: 0;
+
+  svg {
+    font-size: 0.9rem;
+  }
+}
+
+.ck-reference {
+  color: var(--ck-accent);
+  font-family: 'Roboto Mono', Menlo, monospace;
+  font-size: 0.72rem;
+}
+
+.ck-pill {
+  display: inline-block;
+  min-width: 2rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  background: var(--ck-surface-raised);
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--ck-muted);
+}
+
+.ck-pill-high {
+  background: rgba(244, 114, 182, 0.15);
+  color: var(--ck-high-text);
+}
+
+.ck-start {
+  padding: 0.3rem 0.7rem;
+  border-radius: 7px;
+  border: 1px solid var(--ck-accent);
+  background: transparent;
+  color: var(--ck-accent);
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ck-accent);
+    color: var(--ck-on-accent);
+  }
+}
+
+.ck-taskboard-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.72rem;
+  color: var(--ck-muted);
+}
+
+.ck-pager {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .MuiIconButton-root {
+    color: var(--ck-text);
+    border: 1px solid var(--ck-border);
+    border-radius: 7px;
+    width: 26px;
+    height: 26px;
+
+    &.Mui-disabled {
+      color: var(--ck-subtle);
+    }
+  }
+}
+
+@media (max-width: 960px) {
+  .ck-header,
+  .ck-main {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .ck-hero-top,
+  .ck-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
